@@ -20,5 +20,7 @@
   <modules>
   	<module>study-spring-boot</module>
     <module>study-redis</module>
+    <module>study-docker</module>
+    <module>study-java</module>
   </modules>
 </project>
