@@ -22,5 +22,7 @@
     <module>study-redis</module>
     <module>study-docker</module>
     <module>study-java</module>
+    <module>study-cryption</module>
+    <module>study-swagger</module>
   </modules>
 </project>
