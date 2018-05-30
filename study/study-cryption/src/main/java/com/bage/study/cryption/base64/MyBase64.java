@@ -1,4 +1,4 @@
-package com.bage.study.cryption;
+package com.bage.study.cryption.base64;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;

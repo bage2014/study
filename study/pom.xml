@@ -26,5 +26,6 @@
     <module>study-swagger</module>
     <module>study-spring-dependencies</module>
     <module>study-spring</module>
+    <module>study-utils</module>
   </modules>
 </project>
