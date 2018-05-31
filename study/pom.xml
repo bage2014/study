@@ -27,5 +27,8 @@
     <module>study-spring-dependencies</module>
     <module>study-spring</module>
     <module>study-utils</module>
+    <module>study-mybatis</module>
+    <module>study-spring-boot-h2</module>
+    <module>study-spring-boot-dependencies</module>
   </modules>
 </project>
