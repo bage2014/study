@@ -7,12 +7,10 @@
     <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>study-spring-boot-h2</artifactId>
-  <name>study-spring-boot-h2</name>
+  <artifactId>study-spring-boot-concurrency</artifactId>
+  <packaging>war</packaging>
+  <name>study-spring-boot-concurrency Maven Webapp</name>
   <url>http://maven.apache.org</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -20,21 +18,14 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>com.bage</groupId>
       <artifactId>study-spring-boot-dependencies</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
-        
-    	<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>2.0.1.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.196</version>
-        </dependency>
+    
   </dependencies>
+  <build>
+    <finalName>study-spring-boot-concurrency</finalName>
+  </build>
 </project>

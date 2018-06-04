@@ -30,5 +30,6 @@
     <module>study-mybatis</module>
     <module>study-spring-boot-h2</module>
     <module>study-spring-boot-dependencies</module>
+    <module>study-spring-boot-concurrency</module>
   </modules>
 </project>
