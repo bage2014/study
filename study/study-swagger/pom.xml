@@ -14,87 +14,43 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<joda-version>1.2</joda-version>
-		<joda-time-version>2.2</joda-time-version>
-		<swagger-version>1.5.10</swagger-version>
-		<swagger-ui-version>2.1.4</swagger-ui-version>
-		<scala-version>2.10.4</scala-version>
-		<felix-version>2.3.4</felix-version>
-		<servlet-api-version>2.5</servlet-api-version>
-		<jersey-version>1.13</jersey-version>
-		<jersey2-version>2.1</jersey2-version>
-		<jackson-version>2.4.2</jackson-version>
-		<jackson-guava-version>2.4.2</jackson-guava-version>
-		<logback-version>1.0.1</logback-version>
-
-		<junit-version>4.8.1</junit-version>
-		<maven-plugin-version>1.0.0</maven-plugin-version>
-		<commons-lang-version>3.2.1</commons-lang-version>
-		<slf4j-version>1.6.3</slf4j-version>
-		<scala-test-version>2.1.3</scala-test-version>
-		<jetty-version>8.1.11.v20130520</jetty-version>
-		<scala-maven-plugin-version>3.1.5</scala-maven-plugin-version>
-		<coverage.complexity.minimum>0.90</coverage.complexity.minimum>
-		<coverage.line.minimum>0.90</coverage.line.minimum>
-		<coverage.missed.classes>0</coverage.missed.classes>
-
-		<testng-version>6.9.4</testng-version>
-        <jetty-version>9.2.9.v20150224</jetty-version>
-        <slf4j-version>1.6.3</slf4j-version>
-        <junit-version>4.8.1</junit-version>
-        <spring-boot-version>1.4.0.RELEASE</spring-boot-version>
-        <springfox-version>2.5.0</springfox-version>
-        <swagger-core-version>1.5.10</swagger-core-version>
-        <spring-version>4.3.2.RELEASE</spring-version>
-        <hibernate-validator-version>5.2.4.Final</hibernate-validator-version>
+		
 	</properties>
 
 	<dependencies>
 		
-		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.5</version>
+</dependency>
+		
+		
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.0.1.RELEASE</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+		
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>3.0-alpha-1</version>
-			<scope>provided</scope>
+	      <groupId>com.bage</groupId>
+	      <artifactId>study-spring-boot-dependencies</artifactId>
+	      <version>0.0.1-SNAPSHOT</version>
+	    </dependency>
+    
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
 		</dependency>
+		
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jetty</artifactId>
-            <version>${spring-boot-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-core</artifactId>
-            <version>${swagger-core-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator-version}</version>
-        </dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>study-swagger</finalName>
