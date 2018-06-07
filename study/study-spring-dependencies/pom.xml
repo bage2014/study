@@ -130,14 +130,6 @@
 		    <version>${aspectjweaver.base.version}</version>
 		</dependency>
 		
-		<!-- If you are using the Spring-provided agent to enable instrumentation -->
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-instrument</artifactId>
-		    <version>${spring.base.version}</version>
-		</dependency>
-		<!-- If you are using the Spring-provided agent to enable instrumentation -->
-		
 		<!-- aop end -->
 		
 		<!-- thymeleaf start -->
