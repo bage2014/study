@@ -32,5 +32,7 @@
     <module>study-spring-boot-dependencies</module>
     <module>study-spring-boot-concurrency</module>
     <module>study-jwt</module>
+    <module>study-cas-client</module>
+    <module>study-cas-server</module>
   </modules>
 </project>
