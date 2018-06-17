@@ -13,7 +13,7 @@
   <url>http://maven.apache.org</url>
   
   <properties>
-  	<java.cas.client.version>3.5.0</java.cas.client.version>
+  	<cas.version>3.5.0</cas.version>
   </properties>
   
   <dependencies>
@@ -25,10 +25,24 @@
     </dependency>
     
     <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.0.1</version>
+        <scope>provided</scope>
+    </dependency>
+        
+    <dependency>
+      <groupId>com.bage</groupId>
+      <artifactId>study-spring-dependencies</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
+   <dependency>
 	    <groupId>org.jasig.cas.client</groupId>
 	    <artifactId>cas-client-core</artifactId>
-	    <version>${java.cas.client.version}</version>
+	    <version>${cas.version}</version>
 	</dependency>
+	
   </dependencies>
   <build>
     <finalName>study-cas-client</finalName>
