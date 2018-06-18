@@ -11,6 +11,11 @@
   <packaging>war</packaging>
   <name>study-cas-server Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  
+  <properties>
+  	<cas.version>3.5.0</cas.version>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -28,11 +33,12 @@
     
     
 	<dependency>
-	    <groupId>org.apereo.cas</groupId>
-	    <artifactId>cas-server-core-configuration</artifactId>
-	    <version>5.2.5</version>
-	    <scope>runtime</scope>
-	</dependency>
+            <groupId>org.jasig.cas</groupId>
+            <artifactId>cas-server-webapp</artifactId>
+            <version>${cas.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
 	
 	
   </dependencies>
