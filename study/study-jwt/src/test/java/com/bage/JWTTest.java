@@ -1,4 +1,4 @@
-package com.bage.hello;
+package com.bage;
 
 import java.security.Key;
 
@@ -9,7 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
-public class JWTUtils {
+public class JWTTest {
 
 	public static void main(String[] args) {
 		
