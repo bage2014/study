@@ -18,7 +18,7 @@
 </head>
 <body>
 
-	
+
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -37,7 +37,7 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">用户登录 <span class="sr-only">(current)</span></a></li>
+					<li class="active"><a href="#">用户信息 <span class="sr-only">(current)</span></a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false">菜单 <span class="caret"></span></a>
@@ -54,7 +54,7 @@
 					<button type="submit" class="btn btn-default">查询</button>
 				</form>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">陆瑞华</a></li>
+					<li><a href="#" id="current_user"></a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false">下拉菜单 <span class="caret"></span></a>
@@ -69,17 +69,13 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	<div class="container">
-
-		当前用户：<h3 th:text="${#session.getAttribute('session_attribute_currentuser')}">未登录</h3>
-		
-	</div>
+	<div class="container">这是个人主信息页面</div>
 </body>
 
 
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
 <!-- <script type="text/javascript" src="../../../resources/js/index.js" th:src="@{/resources/js/index.js}"></script>
- -->	
+ -->
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
 	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 	crossorigin="anonymous"></script>
@@ -95,6 +91,20 @@
 
 <script type="text/javascript">
 
+	//首先备份下jquery的ajax方法
+	var _ajax=$.ajax;
+	//重写jquery的ajax方法
+	$.ajax=function(opt){
+		//扩展增强处理
+		var _opt = $.extend(opt,{
+			headers : {
+					'Authorization' : getToken()
+			}
+		});
+		return _ajax(_opt);
+	};
+
+	$("#current_user").html(getCurrentUser());
 
 	/**
 	 * 通过ajax从后台请求数据
@@ -108,8 +118,8 @@
 			'Authorization' : token
 		};
 		$.ajax({ 
-			url: "user/me", 
-			headers : headers,
+			url: "me", 
+			//headers : headers,
 			data : param,
 			success: function(res){
 	        	alert(res);

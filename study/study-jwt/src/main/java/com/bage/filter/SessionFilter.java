@@ -34,13 +34,14 @@ public class SessionFilter implements Filter{
 		HttpServletResponse response = ((HttpServletResponse)res);
 
 		if(!isExcludeUri(request)) {
-			Object account = request.getSession().getAttribute(Constants.session_attribute_currentuser);
-			if(account == null) {
-				response.sendRedirect(request.getServletContext().getContextPath() + "/");
-				return ;
-			}
+//			Object account = request.getSession().getAttribute(Constants.session_attribute_currentuser);
+//			if(account == null) {
+//				response.sendRedirect(request.getServletContext().getContextPath() + "/");
+//				return ;
+//			}
 			
 			String compactJws = request.getHeader("Authorization");
+			
 			System.out.println("参数compactJws：" + compactJws);
 			// 签名验证
 			try {
@@ -70,8 +71,16 @@ public class SessionFilter implements Filter{
 
 	private void checkJwtFail(HttpServletRequest request,HttpServletResponse response) {
 		try {
+			String requestType = request.getHeader("X-Requested-With");
+			if("XMLHttpRequest".equals(requestType)){
+			    System.out.println("AJAX请求..");
+			    response.getWriter().print("Authorization Failed");
+			}else{
+			    System.out.println("非AJAX请求..");
+			    response.sendRedirect(request.getServletContext().getContextPath() + "/");
+			    //此时requestType为null
+			}
 			//request.getSession().removeAttribute(Constants.session_attribute_currentuser);
-			response.sendRedirect(request.getServletContext().getContextPath() + "/");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

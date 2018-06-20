@@ -43,7 +43,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="#">页面跳转</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">请求数据</a></li>
+							<li><a href="javascript:getAjaxData()">请求数据</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-form navbar-left">
@@ -53,7 +53,7 @@
 					<button type="submit" class="btn btn-default">查询</button>
 				</form>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">陆瑞华</a></li>
+					<li><a href="#">[未登录]</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false">下拉菜单 <span class="caret"></span></a>
@@ -83,7 +83,7 @@
 			</div>
 
 			<div class="checkbox">
-				<label> <input type="checkbox"> 记住密码
+				<label> <input type="checkbox" checked="checked"> 记住密码
 				</label>
 			</div>
 			<button type="button" class="btn btn-primary pull-right" onclick="login()">登录</button>
@@ -157,6 +157,28 @@
 	 * 通过ajax从后台请求数据
 	 * @returns
 	 */
+	function getAjaxData(){
+		
+		var param = "";
+		var token = getToken();
+		var headers = {
+			'Authorization' : token
+		};
+		$.ajax({ 
+			url: "me", 
+			headers : headers,
+			data : param,
+			success: function(res){
+	        	alert(res);
+	      	}
+		});
+	} 
+	
+	
+	/**
+	 * 通过ajax从后台请求数据
+	 * @returns
+	 */
 	function login(){
 		
 		var param = "account=" + $("#account").val() + "&password=" + $("#password").val();
@@ -167,11 +189,12 @@
 			success: function(token){
 				
 	        	if(token != ""){
-	        		alert("登录成功");
+	        		//alert("登录成功");
 	        		setCurrentUser($("#account").val());
 	        		setToken(token);
-	        		alert(getToken(token));
-	        		location.href = "user/index";
+
+	        		location.href = "user/index.html";
+	        		
 	        	}
 	      	}
 		});
