@@ -44,7 +44,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="#">页面跳转</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">请求数据</a></li>
+							<li><a href="javascript:getAjaxData()">请求数据</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-form navbar-left">
@@ -76,6 +76,10 @@
 	</div>
 </body>
 
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+<!-- <script type="text/javascript" src="../../../resources/js/index.js" th:src="@{/resources/js/index.js}"></script>
+ -->	
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
 	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 	crossorigin="anonymous"></script>
@@ -85,6 +89,83 @@
 	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 	crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+	/**
+	 * 通过ajax从后台请求数据
+	 * @returns
+	 */
+	function getAjaxData(){
+		
+		var param = "";
+		var token = getToken();
+		var headers = {
+			'Authorization' : token
+		};
+		$.ajax({ 
+			url: "user/me", 
+			headers : headers,
+			data : param,
+			success: function(res){
+	        	alert(res);
+	      	}
+		});
+	} 
+	
+
+
+	function setStore(key,value){
+		
+		if(!window.localStorage){
+	        alert("浏览器支持localstorage");
+	        return false;
+	    }else{
+	        var storage=window.localStorage;
+	        //写入a字段
+	        storage[key]=value;
+	        //写入b字段
+	        //storage.a=1;
+	        //写入c字段
+	        //storage.setItem("c",3);
+	    }
+	}
+	
+	function getStore(key){
+		
+		if(!window.localStorage){
+	        alert("浏览器支持localstorage");
+	        return false;
+	    }else{
+	        var storage=window.localStorage;
+	       return storage[key];
+	    }
+		return "";
+	}
+	
+	function setCurrentUser(user){
+		setStore("_current_user",user);
+	}
+
+	function getCurrentUser(){
+		return getStore("_current_user");
+	}
+	
+	function getToken(){
+		var key = getCurrentUser();
+		return getStore(key);
+	}
+
+	function setToken(token){
+		var key = getCurrentUser();
+		return setStore(key,token);
+	}
+	
+</script>
 
 
 </html>

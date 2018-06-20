@@ -73,12 +73,12 @@
 		<form action="user/index" th:attr="action=@{/user/login}" method="POST">
 			<div class="form-group">
 				<label for="account">账号</label> <input
-					type="text" class="form-control" id="account" name="account"
+					type="text" class="form-control" id="account" name="account" value="bage"
 					placeholder="账号">
 			</div>
 			<div class="form-group">
 				<label for="password">密码</label> <input
-					type="password" class="form-control" id="password" name="password"
+					type="password" class="form-control" id="password" name="password" value="bage"
 					placeholder="password">
 			</div>
 
@@ -86,7 +86,7 @@
 				<label> <input type="checkbox"> 记住密码
 				</label>
 			</div>
-			<button type="submit" class="btn btn-primary pull-right">登录</button>
+			<button type="button" class="btn btn-primary pull-right" onclick="login()">登录</button>
 		</form>
 	</div>
 </body>
@@ -101,5 +101,83 @@
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 	crossorigin="anonymous"></script>
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script type="text/javascript">
+
+
+	function setStore(key,value){
+		
+		if(!window.localStorage){
+	        alert("浏览器支持localstorage");
+	        return false;
+	    }else{
+	        var storage=window.localStorage;
+	        //写入a字段
+	        storage[key]=value;
+	        //写入b字段
+	        //storage.a=1;
+	        //写入c字段
+	        //storage.setItem("c",3);
+	    }
+	}
+	
+	function getStore(key){
+		
+		if(!window.localStorage){
+	        alert("浏览器支持localstorage");
+	        return false;
+	    }else{
+	        var storage=window.localStorage;
+	       return storage[key];
+	    }
+		return "";
+	}
+	
+	function setCurrentUser(user){
+		setStore("_current_user",user);
+	}
+
+	function getCurrentUser(){
+		return getStore("_current_user");
+	}
+	
+	function getToken(){
+		var key = getCurrentUser();
+		return getStore(key);
+	}
+
+	function setToken(token){
+		var key = getCurrentUser();
+		return setStore(key,token);
+	}
+	
+	
+	/**
+	 * 通过ajax从后台请求数据
+	 * @returns
+	 */
+	function login(){
+		
+		var param = "account=" + $("#account").val() + "&password=" + $("#password").val();
+		$.ajax({ 
+			url: "user/login", 
+			type : 'POST',
+			data : param,
+			success: function(token){
+				
+	        	if(token != ""){
+	        		alert("登录成功");
+	        		setCurrentUser($("#account").val());
+	        		setToken(token);
+	        		alert(getToken(token));
+	        		location.href = "user/index";
+	        	}
+	      	}
+		});
+	} 
+	
+
+</script>
 
 </html>

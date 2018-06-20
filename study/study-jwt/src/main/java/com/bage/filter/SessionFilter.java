@@ -1,6 +1,7 @@
 package com.bage.filter;
 
 import java.io.IOException;
+import java.security.Key;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -39,24 +40,26 @@ public class SessionFilter implements Filter{
 				return ;
 			}
 			
-			String compactJws = request.getParameter("compactJws");
+			String compactJws = request.getHeader("Authorization");
+			System.out.println("参数compactJws：" + compactJws);
 			// 签名验证
 			try {
 				
-				Jws<Claims> jws = JWTUtils.parse(compactJws );
+				Key key = (Key) RedisUtils.get(compactJws);
+
+				Jws<Claims> jws = JWTUtils.parse(compactJws,key);
 				String sub = jws.getBody().getSubject();
-				String currentCompactJws = RedisUtils.getString(sub);
+				String currentCompactJws = RedisUtils.getString(Constants.redis_key_currentuser + "_" + sub);
 				if(currentCompactJws == null || !currentCompactJws.equals(compactJws)) {
 					System.out.println("签名不合法:\ncompactJws：" + compactJws);
 					System.out.println("currentCompactJws：" + currentCompactJws);
-					response.sendRedirect(request.getServletContext().getContextPath() + "/");
+					checkJwtFail(request, response);
 					return ;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("解析签名报错");
-				System.out.println("compactJws：" + compactJws);
-				response.sendRedirect(request.getServletContext().getContextPath() + "/");
+				checkJwtFail(request, response);
 				return ;
 			}
 		}
@@ -64,12 +67,29 @@ public class SessionFilter implements Filter{
 		chain.doFilter(request, response);
 	}
 
+
+	private void checkJwtFail(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			//request.getSession().removeAttribute(Constants.session_attribute_currentuser);
+			response.sendRedirect(request.getServletContext().getContextPath() + "/");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private boolean isExcludeUri(HttpServletRequest request) {
 		String uri = request.getRequestURI();
+		System.out.println(uri);
+		if(uri.toLowerCase().endsWith(".html")) { // html页面不拦截
+			return true;
+		}
 		if((request.getServletContext().getContextPath() + "/").equals(uri)) { // 首页不拦截
 			return true;
 		}
 		if((request.getServletContext().getContextPath() + "/user/login").equals(uri)) { // 登录页面不拦截
+			return true;
+		}
+		if((request.getServletContext().getContextPath() + "/user/logout").equals(uri)) { // 注销页面不拦截
 			return true;
 		}
 		return false;
