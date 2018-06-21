@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.datetime.DateFormatter;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -35,6 +36,7 @@ public class WebAppConfig
         this.applicationContext = applicationContext;
     }
 
+    
 
 
     /* ******************************************************************* */
@@ -43,11 +45,20 @@ public class WebAppConfig
     /* ******************************************************************* */
 
     @Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		super.configureDefaultServletHandling(configurer);
+		configurer.enable();
+	}
+
+
+	@Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/resources/images/**").addResourceLocations("/resources/images/");
         registry.addResourceHandler("/resources/css/**").addResourceLocations("/resources/css/");
         registry.addResourceHandler("/resources/js/**").addResourceLocations("/resources/js/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+
     }
 
     @Bean

@@ -7,7 +7,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-public class JWTUtils {
+public class JwtsBuilder {
 
 	public static String compactJws(String sub,SignatureAlgorithm alg, Key key) {
 		return Jwts.builder()

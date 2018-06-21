@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
@@ -30,14 +30,14 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">JWT</a>
+				<a class="navbar-brand" href="#">Crypt</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">用户信息 <span class="sr-only">(current)</span></a></li>
+					<li class="active"><a href="#">测试加解密<span class="sr-only">(current)</span></a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false">菜单 <span class="caret"></span></a>
@@ -61,7 +61,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="#">注册</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="javascript:logout()">退出</a></li>
+							<li><a th:attr="href=@{/user/logout}">退出</a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -69,7 +69,57 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	<div class="container">这是个人主信息页面</div>
+	<div class="container">
+		<div class="row">
+			<form class="form-horizontal">
+			  <div class="form-group">
+			    <label for="text1" class="col-sm-2 control-label">加密前</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="text1" placeholder="text1">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="text2" class="col-sm-2 control-label">加密后</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="text2" placeholder="text2">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-4">
+			      <button type="button" class="btn btn-default" onclick="encrypt()">加密</button>
+			    </div>
+			    <div class="col-sm-offset-2 col-sm-4">
+			      <button type="button" class="btn btn-primary" onclick="decrypt()">解密</button>
+			    </div>
+			  </div>
+			</form>
+		</div>
+		
+		<div class="row">
+				
+			<!-- Standard button -->
+			<button type="button" class="btn btn-default">（默认样式）Default</button>
+			
+			<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+			<button type="button" class="btn btn-primary">（首选项）Primary</button>
+			
+			<!-- Indicates a successful or positive action -->
+			<button type="button" class="btn btn-success">（成功）Success</button>
+			
+			<!-- Contextual button for informational alert messages -->
+			<button type="button" class="btn btn-info">（一般信息）Info</button>
+			
+			<!-- Indicates caution should be taken with this action -->
+			<button type="button" class="btn btn-warning">（警告）Warning</button>
+			
+			<!-- Indicates a dangerous or potentially negative action -->
+			<button type="button" class="btn btn-danger">（危险）Danger</button>
+			
+			<!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
+			<button type="button" class="btn btn-link">（链接）Link</button>
+		</div>
+	
+	</div>
 </body>
 
 
@@ -87,104 +137,22 @@
 	crossorigin="anonymous"></script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
+<!-- <script src="https://unpkg.com/crypto-js/crypto-js.js"></script> -->
+<script src="../../../resources/js/crypto.js"></script>
+<script src="../../../resources/js/crypt.js"></script>
 
 <script type="text/javascript">
 
-	//首先备份下jquery的ajax方法
-	var _ajax=$.ajax;
-	//重写jquery的ajax方法
-	$.ajax=function(opt){
-		var token = getToken();
-		
-		//扩展增强处理
-		var _opt = $.extend(opt,{
-			headers : {
-					'Authorization' : token
-			}
-		});
-		
-		return _ajax(_opt);
-	};
+	var key = "bagebagebagebagebagege";
 
-	$("#current_user").html(getCurrentUser());
-
-	/**
-	 * 通过ajax从后台请求数据
-	 * @returns
-	 */
-	function getAjaxData(){
-		
-		var param = "";
-		$.ajax({ 
-			url: "me", 
-			//type : 'POST',
-			data : param,
-			success: function(res){
-	        	alert(res);
-	      	}
-		});
-	} 
-	
-	function logout(){
-		
-		var param = "";
-		$.ajax({ 
-			url: "logout", 
-			//type : 'POST',
-			data : param,
-			success: function(res){
-				if("success" == res){
-					location.href = "../";
-				}
-	      	}
-		});
-	} 
-
-	function setStore(key,value){
-		
-		if(!window.localStorage){
-	        alert("浏览器支持localstorage");
-	        return false;
-	    }else{
-	        var storage=window.localStorage;
-	        //写入a字段
-	        storage[key]=value;
-	        //写入b字段
-	        //storage.a=1;
-	        //写入c字段
-	        //storage.setItem("c",3);
-	    }
+	function encrypt(){
+		var text2 = encryptAes($("#text1").val(),key);
+		$("#text2").val(text2);
 	}
 	
-	function getStore(key){
-		
-		if(!window.localStorage){
-	        alert("浏览器支持localstorage");
-	        return false;
-	    }else{
-	        var storage=window.localStorage;
-	       return storage[key];
-	    }
-		return "";
-	}
-	
-	function setCurrentUser(user){
-		setStore("_current_user",user);
-	}
-
-	function getCurrentUser(){
-		return getStore("_current_user");
-	}
-	
-	function getToken(){
-		var key = getCurrentUser();
-		return getStore(key);
-	}
-
-	function setToken(token){
-		var key = getCurrentUser();
-		return setStore(key,token);
+	function decrypt(){
+		var text1 = decryptAes($("#text2").val(),key);
+		$("#text1").val(text1);
 	}
 	
 </script>

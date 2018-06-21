@@ -165,7 +165,7 @@
 			'Authorization' : token
 		};
 		$.ajax({ 
-			url: "me", 
+			url: "user/me", 
 			headers : headers,
 			data : param,
 			success: function(res){
@@ -195,6 +195,8 @@
 
 	        		location.href = "user/index.html";
 	        		
+	        	} else {
+	        		alert("登录失败,用户名密码要相同");
 	        	}
 	      	}
 		});
