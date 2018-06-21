@@ -95,6 +95,17 @@
 	var _ajax=$.ajax;
 	//重写jquery的ajax方法
 	$.ajax=function(opt){
+		
+		var expirationDate = getExpirationDate();
+		var serverDate = getServerDate();
+		console.log(expirationDate);
+		console.log(new Date());
+		if(expirationDate <= new Date().getTime()){
+			alert("token超期");
+			return ;
+		}
+		
+		
 		var token = getToken();
 		
 		//扩展增强处理
@@ -156,6 +167,24 @@
 	        //storage.setItem("c",3);
 	    }
 	}
+	
+
+
+	function getExpirationDate(){
+		return getStore("_expiration_date");
+	}
+
+	function setExpirationDate(date){
+		setStore("_expiration_date",date);
+	}
+	function getServerDate(){
+		return getStore("_server_date");
+	}
+
+	function setServerDate(date){
+		setStore("_server_date",date);
+	}
+	
 	
 	function getStore(key){
 		

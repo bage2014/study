@@ -141,6 +141,21 @@
 	function getCurrentUser(){
 		return getStore("_current_user");
 	}
+
+	function getExpirationDate(){
+		return getStore("_expiration_date");
+	}
+
+	function setExpirationDate(date){
+		setStore("_expiration_date",date);
+	}
+	function getServerDate(){
+		return getStore("_server_date");
+	}
+
+	function setServerDate(date){
+		setStore("_server_date",date);
+	}
 	
 	function getToken(){
 		var key = getCurrentUser();
@@ -186,12 +201,17 @@
 			url: "user/login", 
 			type : 'POST',
 			data : param,
-			success: function(token){
+			success: function(res){
 				
-	        	if(token != ""){
+	        	if(res != ""){
+	        		
+	        		res = JSON.parse(res);
+	        		setExpirationDate(res.expirationDate);
+	        		setServerDate(res.serverDate);
+
 	        		//alert("登录成功");
 	        		setCurrentUser($("#account").val());
-	        		setToken(token);
+	        		setToken(res.jws);
 
 	        		location.href = "user/index.html";
 	        		

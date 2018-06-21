@@ -16,6 +16,8 @@ import com.bage.constant.Constants;
 import com.bage.service.UserService;
 import com.bage.utils.DateUtils;
 import com.bage.utils.RedisUtils;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.GsonBuilder;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -61,9 +63,12 @@ public class UserController {
 			RedisUtils.put(Constants.redis_key_currentuser + "_" + account, jws);
 			RedisUtils.put(jws, key);
 			
-			//Map<String, String> res = new HashMap<String, String>();
-			
-			return jws;
+			map = new HashMap<String,Object>();
+			map.put("jws", jws);
+			map.put("now", DateUtils.now());
+			map.put("expirationDate", DateUtils.getJwtsExpirationDate());
+
+			return new GsonBuilder().create().toJson(map);
 			
 		} else { // 登录失败
 			return "";
