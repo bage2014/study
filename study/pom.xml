@@ -34,5 +34,7 @@
     <module>study-jwt</module>
     <module>study-cas-client</module>
     <module>study-cas-server</module>
+    <module>study-oauth</module>
+    <module>study-spring-boot-saml</module>
   </modules>
 </project>

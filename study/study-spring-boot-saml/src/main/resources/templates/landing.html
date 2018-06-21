@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Landing!</title>
+    </head>
+    <body>
+        <h1>You are logged as <span th:text="${username}">null</span>!</h1>
+        <p>
+            <a th:href="@{/saml/logout}">Global Logout</a><br/>
+    		<a th:href="@{/saml/logout?local=true}">Local Logout</a>
+        </p>
+    </body>
+</html>
