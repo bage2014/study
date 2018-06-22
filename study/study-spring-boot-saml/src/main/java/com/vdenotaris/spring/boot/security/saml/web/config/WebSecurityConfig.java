@@ -99,7 +99,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.AntPathRequestMatcher;
 
 import com.vdenotaris.spring.boot.security.saml.web.core.SAMLUserDetailsServiceImpl;
  
@@ -388,7 +388,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         SecurityContextLogoutHandler logoutHandler = 
         		new SecurityContextLogoutHandler();
         logoutHandler.setInvalidateHttpSession(true);
-        logoutHandler.setClearAuthentication(true);
+        //logoutHandler.setClearAuthentication(true);
         return logoutHandler;
     }
  
