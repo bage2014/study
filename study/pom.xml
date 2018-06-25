@@ -36,5 +36,6 @@
     <module>study-cas-server</module>
     <module>study-oauth</module>
     <module>study-spring-boot-saml</module>
+    <module>study-linux</module>
   </modules>
 </project>
