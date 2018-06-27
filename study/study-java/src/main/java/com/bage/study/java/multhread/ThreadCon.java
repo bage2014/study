@@ -1,7 +1,7 @@
 package com.bage.study.java.multhread;
 
 /**
- * 多线程实现
+ * 多线程模拟抢票、多线程下的单例模式实现
  * @author bage
  *
  */

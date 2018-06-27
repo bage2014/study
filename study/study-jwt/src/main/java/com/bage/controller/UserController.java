@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bage.constant.Constants;
 import com.bage.service.UserService;
 import com.bage.utils.DateUtils;
+import com.bage.utils.JsonUtils;
 import com.bage.utils.RedisUtils;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.GsonBuilder;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -68,7 +67,7 @@ public class UserController {
 			map.put("now", DateUtils.now());
 			map.put("expirationDate", DateUtils.getJwtsExpirationDate());
 
-			return new GsonBuilder().create().toJson(map);
+			return JsonUtils.toJson(map);
 			
 		} else { // 登录失败
 			return "";

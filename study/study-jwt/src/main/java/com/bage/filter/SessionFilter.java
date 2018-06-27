@@ -93,6 +93,12 @@ public class SessionFilter implements Filter{
 		if(uri.toLowerCase().endsWith(".html")) { // html页面不拦截
 			return true;
 		}
+		if(uri.toLowerCase().endsWith(".css")) { // css页面不拦截
+			return true;
+		}
+		if(uri.toLowerCase().endsWith(".js")) { // js页面不拦截
+			return true;
+		}
 		if((request.getServletContext().getContextPath() + "/").equals(uri)) { // 首页不拦截
 			return true;
 		}
