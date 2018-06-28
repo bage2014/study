@@ -54,7 +54,11 @@ class Print{
 		for (int i = 0; i < 10; i++) {
 			while(orderNum != 1) {
 				try {
-					wait();
+					wait(); 
+					// Causes the current thread to wait until another thread invokes the 
+					// java.lang.Object.notify() method or the java.lang.Object.notifyAll() method 
+					// for this object. In other words, this method behaves exactly as 
+					// if it simply performs the call wait(0). 
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -62,6 +66,8 @@ class Print{
 			System.out.println("A");
 			orderNum = 2;
 			notifyAll();  
+			// Wakes up all threads that are waiting on this object's monitor. 
+			// A thread waits on an object's monitor by calling one of the wait methods. 
 		}
 	}
 	public synchronized  void printB() {
