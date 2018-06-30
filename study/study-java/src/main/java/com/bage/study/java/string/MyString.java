@@ -41,11 +41,26 @@ public class MyString {
 		System.out.println(String.format("%1$08d", 123456));// 00123456 
 		System.out.println(String.format("%1$.2f", 12.12555));// 12.13  
 		
-		
+		// 相等
 		a = "bas";
 		StringBuffer b = new StringBuffer("bas");
 		System.out.println(a.contentEquals(b)); // contentEquals 不一定是同类型
 		System.out.println(a.equals(b));
+		
+		// 构建对象
+		String temp = "123";
+		String temp2 = "123";
+		String temp3 = new String("123");
+		System.out.println(temp == temp2);
+		System.out.println(temp.equals(temp2));
+		System.out.println(temp == temp3);
+		temp3 = "123".intern();
+		System.out.println(temp == temp3);
+
+		
+		// join
+		System.out.println(String.join(",", "dsd","dsd","dsd"));
+		
 		
 		
 	}
