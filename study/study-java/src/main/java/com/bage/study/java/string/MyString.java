@@ -61,6 +61,18 @@ public class MyString {
 		// join
 		System.out.println(String.join(",", "dsd","dsd","dsd"));
 		
+		temp = "123";
+		temp2 = "1" + "23";
+		
+		Integer vc1 = 13;
+//		if (i >= IntegerCache.low && i <= IntegerCache.high)
+//        	return IntegerCache.cache[i + (-IntegerCache.low)];
+		Integer vc2 = Integer.valueOf(13);
+		Integer vc3 = new Integer(13);
+		System.out.println(vc1 == vc2);
+		System.out.println(vc1 == vc3);
+		
+		
 		
 		
 	}

@@ -8,12 +8,12 @@ public class MainHashMap {
 
 	public static void main(String[] args) {
 		
-		Map<String,String> map = new HashMap<String,String>();
+		Map<String,String> map = new HashMap<String,String>(); // 存在线程安全问题
 		// null
 		map.put(null, null);
 		System.out.println(map.get(null));
 		
-//		map = new Hashtable<String,String>(); 
+//		map = new Hashtable<String,String>(); // 无线程安全问题 
 //		// null
 //		map.put(null, null);// Neither the key nor the value can be null. 
 //		System.out.println(map.get(null));
@@ -27,6 +27,20 @@ public class MainHashMap {
 //		如果节点已经存在就替换old value
 //		如果bucket满了(超过load factor*current capacity)，就要resize。
 		
+		// 位运算
+		int h = -9;
+		System.out.println("888888888888888888888888888888888");
+		System.out.println(Integer.toBinaryString(h));
+		System.out.println("10jinzjhi:"+Integer.valueOf("00011111111111111111111111111110",2));
+		System.out.println("10jinzjhi:"+Integer.valueOf("1111111111111111111111111111110",2));
+		System.out.println("ggg"+(h >> 3));
+		System.out.println("dsd"+(h >>> 3));
+		//16383
+		//-65536
+		System.out.println((h) ^ (h >>> 16));
+
+		
+		
 		// get解析
 		map.get(null);
 //		如果是bucket里的第一个节点，直接取出； 
@@ -36,6 +50,11 @@ public class MainHashMap {
 		
 		System.out.println(map);
 		//map.put(key, value);
+		
+		
+		
+		
+		
 	}
 	
 }
