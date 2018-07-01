@@ -21,15 +21,15 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.println("xml配置方式执行结果。。。。。。");
 		xml();
-		System.out.println("java配置方式执行结果。。。。。。");
-		java();
+		//System.out.println("java配置方式执行结果。。。。。。");
+		//java();
 	}
 
 	private static void java() {
 		WeatherDataSourceFactory weatherDataSourceFactory = new WeatherDataSourceFactory();
 		Properties properties = new Properties();
 		properties.setProperty("driver", "org.postgresql.Driver");
-		properties.setProperty("url", "jdbc:postgresql://192.168.19.130:5432/mydb");
+		properties.setProperty("url", "jdbc:postgresql://192.168.146.133:5432/mydb");
 		properties.setProperty("username", "bage");
 		properties.setProperty("password", "bage");
 

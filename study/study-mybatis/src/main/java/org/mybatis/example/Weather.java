@@ -2,6 +2,20 @@ package org.mybatis.example;
 
 import java.sql.Date;
 
+/**
+ * CREATE TABLE weather (
+    city            VARCHAR(80),
+    temp_lo         INT,           -- low temperature
+    temp_hi         INT,           -- high temperature
+    prcp            REAL,          -- precipitation
+    DATE            DATE
+);
+
+INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
+
+ * @author bage
+ *
+ */
 public class Weather {
 
 	private String city;

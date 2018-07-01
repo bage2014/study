@@ -3,14 +3,28 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+  <databaseIdProvider type="DB_VENDOR">
+	  <property name="SQL Server" value="sqlserver"/>
+	  <property name="DB2" value="db2"/>        
+	  <property name="Oracle" value="oracle" />
+	</databaseIdProvider>
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
         <property name="driver" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://192.168.19.130:5432/mydb"/>
-        <property name="username" value="bage"/>
-        <property name="password" value="bage"/>
+        <property name="url" value="jdbc:postgresql://192.168.146.133:5432/mydb"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="postgres"/>
+      </dataSource>
+    </environment>
+    <environment id="product">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/mydb"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
       </dataSource>
     </environment>
   </environments>
