@@ -37,5 +37,7 @@
     <module>study-oauth</module>
     <module>study-spring-boot-saml</module>
     <module>study-linux</module>
+    <module>study-swagger-cxf</module>
+    <module>study-cxf</module>
   </modules>
 </project>
