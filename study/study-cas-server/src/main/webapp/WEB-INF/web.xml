@@ -9,9 +9,9 @@
         <param-name>isLog4jAutoInitializationDisabled</param-name>
         <param-value>true</param-value>
     </context-param>
-   <!--  <listener>
+    <listener>
         <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
-    </listener> -->
+    </listener>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -68,12 +68,12 @@
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
-    <!-- <listener>
+    <listener>
         <listener-class>
             org.jasig.cas.CasEnvironmentContextListener
         </listener-class>
     </listener>
- -->
+
     <!--
       - This is the Spring dispatcher servlet which delegates all requests to the
       - Spring WebMVC controllers as configured in cas-servlet.xml.
