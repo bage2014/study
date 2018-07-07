@@ -10,7 +10,7 @@ package com.bage.study.java.object;
  * @author bage
  *
  */
-public class MyObject implements Cloneable{
+public class MyObject extends Object implements Cloneable{
 
 	private String uname = "哥哥";
 	
