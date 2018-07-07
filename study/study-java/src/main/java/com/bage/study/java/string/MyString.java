@@ -73,7 +73,21 @@ public class MyString {
 		System.out.println(vc1 == vc3);
 		
 		
-		
-		
+		a = "hello";
+        String bb =  new String("hello");
+        String c =  new String("hello");
+        String d = bb.intern();
+         
+        System.out.println("-----------------");
+        System.out.println(a==bb);
+        System.out.println(bb==c);
+        System.out.println(bb==d);
+        System.out.println(a==d);
+        System.out.println("-----------------");
+
+        a = "hello";
+        bb =  new String(a);
+        System.out.println(a==bb);
+        
 	}
 }

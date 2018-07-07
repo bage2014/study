@@ -1,7 +1,6 @@
 package com.bage.study.java.map;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 public class MainHashMap {
@@ -19,7 +18,7 @@ public class MainHashMap {
 //		System.out.println(map.get(null));
 		
 		// put 解析
-		map.put(null, null); 
+		new HashMap<String,String>().put(null, null); 
 //		对key的hashCode做hash，然后计算index
 //		如果没有冲突，则直接放到对应index的bucket里
 //		如果有冲突，以链表形式存放在buckets后

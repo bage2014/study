@@ -24,7 +24,7 @@ public class Basic {
     	
     	Byte ii = 127; // 1字节   // -128~127 全部缓存
     	Short jj = 1; // 2字节   // -128~127 缓存
-    	Integer aa = 2; // 4字节
+    	Integer aa = 2; // 4字节,自动装箱 == valueOf()
     	Long gg = 2L; // 8字节
     	
     	Boolean ss = false; // 1字节 0/1(只有0或者1)
@@ -32,6 +32,8 @@ public class Basic {
     	Float bb = 2f; // 4字节
     	Double ff = 3d;// 8字节
 		
+    	int bbb = aa; // 自动拆箱 == intValue
+    	
     	//System.out.println(127f == 127d);
     	System.out.println(0.1d); // 11111110111001100110011001100110011001100110011001100110011010
     	System.out.println(0.1f); // 111101110011001100110011001101
