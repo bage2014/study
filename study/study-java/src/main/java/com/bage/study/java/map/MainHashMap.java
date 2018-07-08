@@ -17,7 +17,7 @@ public class MainHashMap {
 //		map.put(null, null);// Neither the key nor the value can be null. 
 //		System.out.println(map.get(null));
 		
-		// put 解析
+		// put 解析(一般equals ==> hashCode，反之不一定)
 		new HashMap<String,String>().put(null, null); 
 //		对key的hashCode做hash，然后计算index
 //		如果没有冲突，则直接放到对应index的bucket里

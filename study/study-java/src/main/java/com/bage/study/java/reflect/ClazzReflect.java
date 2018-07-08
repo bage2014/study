@@ -9,6 +9,8 @@ import java.util.Map;
 
 /**
  * 对class、反射进行解析<br>
+ * 通用框架
+ * 
  * 
  * @author bage
  *

@@ -9,10 +9,11 @@ package com.bage.study.java.basictype;
  */
 public class Basic {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 		byte i = 127; // 1字节  
-    	short j = 1; // 2字节  
+		short j = 1; // 2字节  
     	int a = 2; // 4字节
     	long g = 2; // 8字节
     	

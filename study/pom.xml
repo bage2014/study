@@ -39,5 +39,6 @@
     <module>study-linux</module>
     <module>study-swagger-cxf</module>
     <module>study-cxf</module>
+    <module>study-web</module>
   </modules>
 </project>
