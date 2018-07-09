@@ -7,10 +7,12 @@
     <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>study-oauth</artifactId>
-  <packaging>war</packaging>
-  <name>study-oauth Maven Webapp</name>
+  <artifactId>study-shiro-tutorial</artifactId>
+  <name>study-shiro-tutorial</name>
   <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -19,20 +21,19 @@
       <scope>test</scope>
     </dependency>
     
-     <dependency>
-      <groupId>com.bage</groupId>
-      <artifactId>study-spring-boot-dependencies</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    
     <dependency>
-      <groupId>org.springframework.security.oauth</groupId>
-      <artifactId>spring-security-oauth2</artifactId>
-      <version>2.3.0.RELEASE</version>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-core</artifactId>
+        <version>1.1.0</version>
     </dependency>
-    
+    <!-- Shiro uses SLF4J for logging.  We'll use the 'simple' binding
+         in this example app.  See http://www.slf4j.org for more info. -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.6.1</version>
+        <!-- <scope>test</scope> -->
+    </dependency>
+        
   </dependencies>
-  <build>
-    <finalName>study-oauth</finalName>
-  </build>
 </project>

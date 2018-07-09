@@ -40,5 +40,6 @@
     <module>study-swagger-cxf</module>
     <module>study-cxf</module>
     <module>study-web</module>
+    <module>study-shiro-tutorial</module>
   </modules>
 </project>
