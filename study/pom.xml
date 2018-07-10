@@ -41,5 +41,7 @@
     <module>study-cxf</module>
     <module>study-web</module>
     <module>study-shiro-tutorial</module>
+    <module>study-shiro-web</module>
+    <module>study-jwe</module>
   </modules>
 </project>
