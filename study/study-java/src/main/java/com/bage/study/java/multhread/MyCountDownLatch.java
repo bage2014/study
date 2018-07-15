@@ -23,7 +23,7 @@ public class MyCountDownLatch {
 		
 		System.out.println("所有线程执行开始:" + (System.currentTimeMillis() - before));
 		before = System.currentTimeMillis();
-		startLatch.countDown();
+		//startLatch.countDown();
 		countDownLatch.await();
 		System.out.println("所有线程执行结束：" + (System.currentTimeMillis() - before));
 

@@ -2,6 +2,11 @@ package com.bage.study.java.multhread;
 
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * CountDownLatch 官方使用demo
+ * @author bage
+ *
+ */
 public class Driver { // ...
 	void main(int N) throws InterruptedException {
 		CountDownLatch startSignal = new CountDownLatch(1);
