@@ -1,4 +1,4 @@
-package com.bage.study.java.multhread;
+package com.bage.study.java.multhread.officialdemo;
 
 import java.util.ArrayList;
 import java.util.List;

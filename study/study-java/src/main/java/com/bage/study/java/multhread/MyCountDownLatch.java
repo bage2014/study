@@ -2,6 +2,8 @@ package com.bage.study.java.multhread;
 
 import java.util.concurrent.CountDownLatch;
 
+import com.bage.study.java.multhread.officialdemo.Driver;
+
 /**
  * CountDownLatch 的使用
  * @author bage
@@ -31,7 +33,7 @@ public class MyCountDownLatch {
 
 	private static void defaultExample() {
 		try {
-			new Driver().main(1000);
+			new Driver().main(100);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,5 +65,6 @@ class thread11 extends Thread {
 		}
 		System.out.println("线程"+i+"启动...");
 		countDownLatch.countDown();
+		
 	}
 };

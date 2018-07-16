@@ -1,4 +1,4 @@
-package com.bage.study.java.multhread;
+package com.bage.study.java.multhread.officialdemo;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -8,7 +8,7 @@ import java.util.concurrent.CountDownLatch;
  *
  */
 public class Driver { // ...
-	void main(int N) throws InterruptedException {
+	public void main(int N) throws InterruptedException {
 		CountDownLatch startSignal = new CountDownLatch(1);
 		CountDownLatch doneSignal = new CountDownLatch(N);
 
