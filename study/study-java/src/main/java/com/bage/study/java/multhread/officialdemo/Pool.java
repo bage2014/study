@@ -3,7 +3,7 @@ package com.bage.study.java.multhread.officialdemo;
 import java.util.concurrent.Semaphore;
 
 public class Pool {
-	private static final int MAX_AVAILABLE = 100;
+	private static final int MAX_AVAILABLE = 3;
 	private final Semaphore available = new Semaphore(MAX_AVAILABLE, true);
 
 	public Object getItem() throws InterruptedException {
@@ -11,14 +11,15 @@ public class Pool {
 		return getNextAvailableItem();
 	}
 
-	public void putItem(Object x) {
+	public void putItem(char x) {
 		if (markAsUnused(x))
 			available.release();
 	}
 
 	// Not a particularly efficient data structure; just for demo
 
-	protected Object[] items = new Object[] { "1", "2", "3", "4" };// ...
+	protected char[] items = "0123456789abcedfghijklmnopqrstuvwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+																    // ...
 																	// whatever
 																	// kinds of
 																	// items
@@ -36,7 +37,7 @@ public class Pool {
 		return null; // not reached
 	}
 
-	protected synchronized boolean markAsUnused(Object item) {
+	protected synchronized boolean markAsUnused(char item) {
 		for (int i = 0; i < MAX_AVAILABLE; ++i) {
 			if (item == items[i]) {
 				if (used[i]) {
