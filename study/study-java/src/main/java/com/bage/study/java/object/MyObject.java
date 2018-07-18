@@ -35,6 +35,14 @@ public class MyObject extends Object implements Cloneable{
 		// 相等 == p (重写equals方法一般也会重写hashCode方法)
 		System.out.println(obj.equals(obj.clone())); 
 		// 因为 ：  if(equals == true){ hashCode ==true )
+//		它的性质有：
+//
+//		自反性（reflexive）。对于任意不为null的引用值x，x.equals(x)一定是true。
+//		对称性（symmetric）。对于任意不为null的引用值x和y，当且仅当x.equals(y)是true时，y.equals(x)也是true。
+//		传递性（transitive）。对于任意不为null的引用值x、y和z，如果x.equals(y)是true，同时y.equals(z)是true，那么x.equals(z)一定是true。
+//		一致性（consistent）。对于任意不为null的引用值x和y，如果用于equals比较的对象信息没有被修改的话，多次调用时x.equals(y)要么一致地返回true要么一致地返回false。
+//
+//		对于任意不为null的引用值x，x.equals(null)返回false。
 		
 		System.out.println(obj.getClass()); // 获取class
 		System.out.println(MyObject.class);

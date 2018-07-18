@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bage.constant.Constants;
+import com.bage.utils.JwtsBuilder;
 import com.bage.utils.RedisUtils;
 
 import io.jsonwebtoken.Claims;
@@ -41,12 +42,12 @@ public class JwtFilter implements Filter{
 			// 签名验证
 			try {
 				
-				Key key = (Key) RedisUtils.get(claimsJws);
-
+				Claims claims = JwtsBuilder.decodeTokenClaims(claimsJws);
+				String subject = claims.getSubject();
+				Key key = (Key) RedisUtils.get(Constants.redis_key_jwt + "_" + subject);
 				Jws<Claims> jws = Jwts.parser().setSigningKey(key).parseClaimsJws(claimsJws);
-				String sub = jws.getBody().getSubject();
 				System.out.println("jti:" + jws.getBody().get("jti"));
-				String currentCompactJws = RedisUtils.getString(Constants.redis_key_currentuser + "_" + sub);
+				String currentCompactJws = RedisUtils.getString(Constants.redis_key_jwt + "_" + subject);
 				if(currentCompactJws == null || !currentCompactJws.equals(claimsJws)) {
 					System.out.println("签名不合法:\ncompactJws：" + claimsJws);
 					System.out.println("currentCompactJws：" + currentCompactJws);

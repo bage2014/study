@@ -59,8 +59,8 @@ public class UserController {
 			
 			System.out.println("jws:" + jws);
 			
-			RedisUtils.put(Constants.redis_key_currentuser + "_" + account, jws);
-			RedisUtils.put(jws, key);
+			RedisUtils.put(Constants.redis_key_jwt + "_" + account, jws);
+			RedisUtils.put(Constants.redis_key_jwtkey + "_" + account, key);
 			
 			map = new HashMap<String,Object>();
 			map.put("jws", jws);
@@ -97,8 +97,9 @@ public class UserController {
 			Key key = (Key) RedisUtils.get(claimsJws);
 			Jws<Claims> jws = Jwts.parser().setSigningKey(key).parseClaimsJws(claimsJws);
 			String sub = jws.getBody().getSubject();
-			RedisUtils.clear(Constants.redis_key_currentuser + "_" + sub);
-			
+			RedisUtils.clear(Constants.redis_key_jwt + "_" + sub);
+			RedisUtils.clear(Constants.redis_key_jwtkey + "_" + sub);
+
 			RedisUtils.clear(claimsJws);
 			return "success";
 		} catch (Exception e) {
