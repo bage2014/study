@@ -47,6 +47,8 @@ public class Login extends HttpServlet {
             try {
                 // 执行登陆
                 currentUser.login(token);
+                System.out.println("登录成功--->" + username);
+
             } catch (AuthenticationException ae) {
                 System.out.println("登录失败--->" + ae.getMessage());
             }

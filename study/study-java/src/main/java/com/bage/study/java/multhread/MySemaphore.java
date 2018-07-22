@@ -8,10 +8,11 @@ public class MySemaphore {
 
 	public static void main(String[] args) {
 		
-		// defaultDemo();
+		defaultDemo();
 		
 		 // 信号量共10个
-	    Semaphore semaphore = new Semaphore(10);
+	    System.out.println("自定义demo ： 信号量共10个");
+		Semaphore semaphore = new Semaphore(10);
 	    driveCar(semaphore);
 	    
 	}
@@ -20,6 +21,7 @@ public class MySemaphore {
 			final Pool pool = new Pool();
 			System.out.println(pool.getItem());
 			
+			// 5 s后，放入一个 1
 			new Thread(){
 				public void run() {
 					try {
@@ -34,8 +36,8 @@ public class MySemaphore {
 			}.start();
 			
 			System.out.println(pool.getItem());
-			System.out.println(pool.getItem());
-			System.out.println(pool.getItem());
+			System.out.println(pool.getItem()); 
+			System.out.println(pool.getItem()); // 最大能用三个，此处会等到 pool.putItem('1'); 后才会执行
 			
 			
 			
