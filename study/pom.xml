@@ -43,5 +43,8 @@
     <module>study-shiro-tutorial</module>
     <module>study-shiro-web</module>
     <module>study-jwe</module>
+    <module>study-springmvc-java</module>
+    <module>study-springmvc-xml</module>
+    <module>study-springmvc-nowebxml</module>
   </modules>
 </project>
