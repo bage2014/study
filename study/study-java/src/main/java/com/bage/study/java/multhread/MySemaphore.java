@@ -8,13 +8,33 @@ public class MySemaphore {
 
 	public static void main(String[] args) {
 		
-		defaultDemo();
-		
-		 // 信号量共10个
-	    System.out.println("自定义demo ： 信号量共10个");
-		Semaphore semaphore = new Semaphore(10);
-	    driveCar(semaphore);
+//		defaultDemo();
+//		
+//		 // 信号量共10个
+//	    System.out.println("自定义demo ： 信号量共10个");
+//		Semaphore semaphore = new Semaphore(10);
+//	    driveCar(semaphore);
 	    
+	    myCase(); // 简单设置多线程
+
+	}
+	private static void myCase() {
+		try {
+	    	Semaphore semaphore = new Semaphore(10);
+	    	System.out.println(semaphore.availablePermits());
+			semaphore.acquire();
+			System.out.println(semaphore.availablePermits());
+			semaphore.release();
+			System.out.println(semaphore.availablePermits());
+			
+//			semaphore.tryAcquire(1, 5, TimeUnit.SECONDS);
+//			System.out.println("超时：" + semaphore.availablePermits());
+			
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	private static void defaultDemo() {
 		try {
