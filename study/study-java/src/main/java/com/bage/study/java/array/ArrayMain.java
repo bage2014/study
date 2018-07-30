@@ -14,6 +14,9 @@ public class ArrayMain {
 		Arrays.sort(a);
 		Integer b[] = new Integer[]{2,5,7,1,9,2,};
 		Arrays.sort(b);
+		
+		// Collections.sort(null);
+		
 		System.out.println(Arrays.equals(a, b));// 顺序要一致
 		System.out.println(Arrays.deepEquals(a,b)); 
 		System.out.println(Arrays.toString(b));

@@ -3,11 +3,11 @@ package com.bage.study.java.set;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *  比较List、Map、Set
@@ -24,7 +24,8 @@ public class ListSetMap {
 //		listIterator.previous();
 //		listIterator.remove();
 		Vector<String> vector ; // synchronized 线程安全
-
+		list = new LinkedList();
+		
 //		List：
 //		  1.可以允许重复的对象。
 //	　　       2.可以插入多个null元素。

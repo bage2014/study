@@ -62,6 +62,7 @@ public class MyObject extends Object implements Cloneable{
 		// 线程相关
 		// obj.notify、wait等方法;
 		
+		System.out.println(new Object().hashCode());
 		
 	}
 

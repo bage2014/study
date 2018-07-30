@@ -13,9 +13,9 @@ public class MyExecutors {
 
 	public static void main(String[] args) {
 		
-		int n = 2;
 		ExecutorService executors = Executors.newCachedThreadPool();
 		// 最多同时 n 个线程在执行状态
+		// int n = 2;
 		// ExecutorService executors = Executors.newFixedThreadPool(n);
 		
 		// ExecutorService executors = Executors.newSingleThreadExecutor();

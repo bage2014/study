@@ -89,5 +89,9 @@ public class MyString {
         bb =  new String(a);
         System.out.println(a==bb);
         
+        
+        String aaa = "aa";
+        String bbb = String.valueOf("aa");
+        System.out.println(aaa == bbb);
 	}
 }

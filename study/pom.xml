@@ -49,5 +49,6 @@
     <module>study-activemq</module>
     <module>study-jpush</module>
     <module>study-gateway</module>
+    <module>study-sql</module>
   </modules>
 </project>
