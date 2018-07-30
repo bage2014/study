@@ -13,6 +13,36 @@
 
 	<display-name>Archetype Created Web Application</display-name>
 
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	
+	<!-- The filter-name matches name of a 'shiroFilter' bean inside applicationContext.xml -->
+	<filter>
+	    <filter-name>shiroFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	    <init-param>
+	        <param-name>targetFilterLifecycle</param-name>
+	        <param-value>true</param-value>
+	    </init-param>
+	</filter>
+	
+	<!-- Make sure any request you want accessible to Shiro is filtered. /* catches all -->
+	<!-- requests.  Usually this filter mapping is defined first (before all others) to -->
+	<!-- ensure that Shiro works in subsequent filters in the filter chain:             -->
+	<filter-mapping>
+	    <filter-name>shiroFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 
 	<listener>
 		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
 	</listener>
@@ -41,7 +71,7 @@
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
+	</welcome-file-list> -->
 
 </web-app>
 

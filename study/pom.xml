@@ -46,5 +46,7 @@
     <module>study-springmvc-java</module>
     <module>study-springmvc-xml</module>
     <module>study-springmvc-nowebxml</module>
+    <module>study-activemq</module>
+    <module>study-jpush</module>
   </modules>
 </project>
