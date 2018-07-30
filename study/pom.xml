@@ -47,5 +47,7 @@
     <module>study-springmvc-xml</module>
     <module>study-springmvc-nowebxml</module>
     <module>study-activemq</module>
+    <module>study-jpush</module>
+    <module>study-gateway</module>
   </modules>
 </project>

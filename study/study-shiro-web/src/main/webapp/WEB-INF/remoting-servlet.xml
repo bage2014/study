@@ -1,4 +1,5 @@
-<%--
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements.  See the NOTICE file
   ~ distributed with this work for additional information
@@ -15,15 +16,18 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
-<%@ page session="false" %>
-<%@ include file="/WEB-INF/resources/include.jsp" %>
-<html>
-<head>
-    <meta http-equiv="Refresh" content="0; url=<c:url value="/s/login"/>">
-</head>
-<body>
-Please wait...
-</body>
+  -->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
-</html>
+<!--
+  - Application context definition for "remoting" DispatcherServlet.
+  -->
+<beans>
+
+    <bean name="/sampleManager" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+        <property name="service" ref="sampleManager"/>
+        <property name="serviceInterface" value="org.apache.shiro.samples.spring.SampleManager"/>
+        <property name="remoteInvocationExecutor" ref="secureRemoteInvocationExecutor"/>
+    </bean>
+
+</beans>

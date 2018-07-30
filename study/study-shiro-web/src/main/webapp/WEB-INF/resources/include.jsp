@@ -17,13 +17,8 @@
   ~ under the License.
   --%>
 <%@ page session="false" %>
-<%@ include file="/WEB-INF/resources/include.jsp" %>
-<html>
-<head>
-    <meta http-equiv="Refresh" content="0; url=<c:url value="/s/login"/>">
-</head>
-<body>
-Please wait...
-</body>
 
-</html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
