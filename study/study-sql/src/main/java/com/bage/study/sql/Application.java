@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -29,29 +31,41 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-    	int n = 10000;
+    	// int n = 10000; // jdbcTemplate-13 s
+    	// int n = 100000; // jdbcTemplate-170 s
+    	// int n = 100000; // jdbc-148 s
+    	int n = 1000000; // jdbcTemplate- s
     	long bf = System.currentTimeMillis();
-    	List<Object[]> splitUpNames = initData2(n);
-        // Uses JdbcTemplate's batchUpdate operation to bulk load data
-		jdbcTemplate.batchUpdate("INSERT INTO customers(first_name, last_name) VALUES (?,?)", splitUpNames);
-        System.out.println((System.currentTimeMillis() - bf) / 1000);
-    }
-    private  List<List<Object[]>> initData(int n) {
-    	List<List<Object[]>> params = new LinkedList<List<Object[]>>();
-    	List<Object[]> item = new LinkedList<Object[]>();
-    	for (int j = 0; j < n; j++) {
-    		item.add(new Object[]{"firstName-" + j ,"lastName-" + j});
-    		if(j % 1000 == 999){
-				jdbcTemplate.batchUpdate("INSERT INTO customers(first_name, last_name) VALUES (?,?)", item);
-				item.clear();
-    		}
+    	List<Object[]> splitUpNames = initData(n);
+		
+    	String sql = "INSERT INTO customers(first_name, last_name) VALUES (?,?)";
+    	// 直接插入
+    	// jdbcTemplate.batchUpdate(sql, splitUpNames);
+        
+    	// 分批次插入
+    	Connection conn = null;
+    	try {
+    		conn = jdbcTemplate.getDataSource().getConnection();
+			conn.setAutoCommit(false);
+			PreparedStatement pst = conn.prepareStatement(sql);
+			for (int i = 0; i < splitUpNames.size(); i++) {
+				pst.setObject(1,splitUpNames.get(i)[0]);   
+				pst.setObject(2, splitUpNames.get(i)[1]);   
+				pst.addBatch();   
+			}
+			pst.executeLargeBatch();
+			conn.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			conn.close();
 		}
-    	jdbcTemplate.batchUpdate("INSERT INTO customers(first_name, last_name) VALUES (?,?)", item);
-		item.clear();
-    	return params;
-	}
-    private List<Object[]> initData2(int n) {
-    	List<Object[]> params = new ArrayList<>(n);
+    	
+    	System.out.println((System.currentTimeMillis() - bf) / 1000);
+    }
+    private  List<Object[]> initData(int n) {
+    	List<Object[]> params = new LinkedList<Object[]>();
     	for (int j = 0; j < n; j++) {
     		params.add(new Object[]{"firstName-" + j ,"lastName-" + j});
 		}
