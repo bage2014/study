@@ -5,10 +5,13 @@ import java.util.concurrent.CyclicBarrier;
 
 /**
  * 比较两者区别<br>
+ * 两者结合起来，可以实现类似于同时开始进行，在所有都结束后进行统计的功能 {@link com.bage.study.java.multhread.MyCyclicBarrier} <br>
  * 线程在countDown()之后，会继续执行自己的任务，而CyclicBarrier会在所有线程任务结束之后，才会进行后续任务<br>
  * 参考链接：https://blog.csdn.net/tolcf/article/details/50925145
- * <br><br>CountDownLatch : 一个线程(或者多个)， 等待另外N个线程完成某个事情之后才能执行。   CyclicBarrier        : N个线程相互等待，任何一个线程完成之前，所有的线程都必须等待。
- 对于CountDownLatch来说，重点是那个“一个线程”, 是它在等待， 而另外那N的线程在把“某个事情”做完之后可以继续等待，可以终止。而对于CyclicBarrier来说，重点是那N个线程，他们之间任何一个没有完成，所有的线程都必须等待。<br>
+ * <br>
+ * <br>
+ * CountDownLatch : 一个线程(或者多个)， 等待另外N个线程完成某个事情之后才能执行。   CyclicBarrier        : N个线程相互等待，任何一个线程完成之前，所有的线程都必须等待。
+ * 对于CountDownLatch来说，重点是那个“一个线程”, 是它在等待， 而另外那N的线程在把“某个事情”做完之后可以继续等待，可以终止。而对于CyclicBarrier来说，重点是那N个线程，他们之间任何一个没有完成，所有的线程都必须等待。<br>
  * 参考链接：https://blog.csdn.net/kjfcpua/article/details/7300286
  * @author bage
  *
