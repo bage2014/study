@@ -1,6 +1,6 @@
 package com.bage.study.java.pattern.factory.abstr;
 
-public class HUAWEIFactory extends AbstractFactory{
+public class HuaweiFactory extends AbstractFactory{
 
 	@Override
 	public AbstractProduct getPhoneProudct() {

@@ -2,7 +2,7 @@ package com.bage.study.java.pattern.factory.abstr;
 
 public abstract class AbstractFactory {
 	
-	abstract AbstractProduct getPhoneProudct();
+	public abstract AbstractProduct getPhoneProudct();
 	
-	abstract AbstractProduct getComputerProudct();
+	public abstract AbstractProduct getComputerProudct();
 }

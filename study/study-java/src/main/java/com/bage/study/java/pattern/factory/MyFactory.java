@@ -1,6 +1,7 @@
 package com.bage.study.java.pattern.factory;
 
-import com.bage.study.java.pattern.factory.abstr.HUAWEIFactory;
+import com.bage.study.java.pattern.factory.abstr.AbstractFactory;
+import com.bage.study.java.pattern.factory.abstr.HuaweiFactory;
 import com.bage.study.java.pattern.factory.abstr.SanxingFactory;
 import com.bage.study.java.pattern.factory.normal.ComputerFactory;
 import com.bage.study.java.pattern.factory.normal.PhoneFactory;
@@ -37,8 +38,9 @@ public class MyFactory {
 
 		// 抽象工厂
 		System.out.println("------抽象工厂模式-----------");
-		System.out.println(new HUAWEIFactory().getPhoneProudct().getName());
-		System.out.println(new HUAWEIFactory().getComputerProudct().getName());
+		AbstractFactory abstractFactory = new HuaweiFactory();
+		System.out.println(abstractFactory.getPhoneProudct().getName());
+		System.out.println(new HuaweiFactory().getComputerProudct().getName());
 		System.out.println(new SanxingFactory().getPhoneProudct().getName());
 		System.out.println(new SanxingFactory().getComputerProudct().getName());
 
