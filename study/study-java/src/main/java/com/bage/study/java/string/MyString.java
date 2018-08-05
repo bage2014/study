@@ -1,5 +1,8 @@
 package com.bage.study.java.string;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class MyString {
 
 	public static void main(String[] args) {
@@ -93,5 +96,39 @@ public class MyString {
         String aaa = "aa";
         String bbb = String.valueOf("aa");
         System.out.println(aaa == bbb);
+        
+        long bf = System.nanoTime();
+        String toSplitStr = initString(1000,",");
+        toSplitStr.split(",");
+        System.out.println("耗时：" + (System.nanoTime() - bf));
+        
+        bf = System.nanoTime();
+        mySplit(toSplitStr,",");
+        System.out.println("耗时：" + (System.nanoTime() - bf));
+        
+        
+        
+	}
+
+	private static List<String> mySplit(String toSplitStr, String ch) {
+		List<String> list = new LinkedList<String>();
+	    while(true){
+	        int index = toSplitStr.indexOf(ch);    //找分隔符的位置
+	        if(index < 0){
+	        	break;             //没有分隔符存在，break
+	        }
+	        list.add(toSplitStr.substring(0,index));
+	        toSplitStr = toSplitStr.substring(index+1);       //剩下需要处理的字符串
+	    }
+	    System.out.println(list.size());
+	    return list;
+	}
+
+	private static String initString(int n, String ch) {
+		StringBuilder sb=new StringBuilder();
+		for(int i =0 ; i < n; i ++){
+		    sb.append(i).append(ch);
+		}
+		return sb.toString();
 	}
 }
