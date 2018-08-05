@@ -97,6 +97,7 @@ public class MyString {
         String bbb = String.valueOf("aa");
         System.out.println(aaa == bbb);
         
+        // 测试split性能
         long bf = System.nanoTime();
         String toSplitStr = initString(1000,",");
         toSplitStr.split(",");
