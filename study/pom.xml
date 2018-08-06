@@ -50,5 +50,6 @@
     <module>study-jpush</module>
     <module>study-gateway</module>
     <module>study-sql</module>
+    <module>study-quartz</module>
   </modules>
 </project>

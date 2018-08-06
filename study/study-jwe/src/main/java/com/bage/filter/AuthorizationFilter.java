@@ -98,7 +98,7 @@ public class AuthorizationFilter {
 	private static void jjwt() {
 		try {
 
-			String compactJws = "eyJhbGciOiJIUzI1NiIsImN0eSI6IkpXVCJ9.eyJhZ2UiOiAyMX0.xHq8ROBnmLitd9rdmtB-Tx7t6ZYc9jV85Ig8QwRa1q8";
+			String compactJws = "eyJhbGciOiJIUzI1NiIsImN0eSI6IkpXVCJ9.eyJhZ2UiOjIxfQ.UJlXHGaMknIoRkVec3GRiIFyRzWJQnxT99WORlGSh7Y";
 			byte[] key = "password".getBytes("UTF-8");
 		    Jwts.parser().setSigningKey(key).parseClaimsJws(compactJws);
 
