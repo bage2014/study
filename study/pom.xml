@@ -51,5 +51,6 @@
     <module>study-gateway</module>
     <module>study-sql</module>
     <module>study-quartz</module>
+    <module>study-shiro-web-tutorial</module>
   </modules>
 </project>

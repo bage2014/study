@@ -29,8 +29,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Set;
 
 /**
  * Realm that exists to support salted credentials.  The JdbcRealm implementation needs to be updated in a future
@@ -41,19 +39,6 @@ public class SaltAwareJdbcRealm extends JdbcRealm {
     private static final Logger log = LoggerFactory.getLogger(SaltAwareJdbcRealm.class);
 
     @Override
-	protected Set<String> getPermissions(Connection conn, String username, Collection<String> roleNames)
-			throws SQLException {
-		// TODO Auto-generated method stub
-		return super.getPermissions(conn, username, roleNames);
-	}
-
-	@Override
-	public void setPermissionsQuery(String permissionsQuery) {
-		// TODO Auto-generated method stub
-		super.setPermissionsQuery(permissionsQuery);
-	}
-
-	@Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
         String username = upToken.getUsername();

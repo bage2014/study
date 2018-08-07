@@ -30,15 +30,9 @@
 
     <!-- Sample RDBMS data source that would exist in any application - not Shiro related. -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <!-- 
         <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
         <property name="url" value="jdbc:hsqldb:mem:shiro-spring"/>
-        <property name="username" value="sa"/> 
-        -->
-	      <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	      <property name="url" value="jdbc:mysql://localhost:3306/my_db"/>
-	      <property name="username" value="root"/>
-	      <property name="password" value="root"/>
+        <property name="username" value="sa"/>
     </bean>
     <!-- Populates the sample database with sample users and roles. -->
     <bean id="bootstrapDataPopulator" class="org.apache.shiro.samples.spring.BootstrapDataPopulator">

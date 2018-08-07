@@ -66,11 +66,8 @@ public class BootstrapDataPopulator implements InitializingBean {
     }
 
     public void afterPropertiesSet() throws Exception {
-        // init(); 第一次部署时候调用
-    }
-
-	private void init() {
-		//app starts, so create the tables and insert the 2 sample users on bootstrap:
+        //because we're using an in-memory hsqldb for the sample app, a new one will be created each time the
+        //app starts, so create the tables and insert the 2 sample users on bootstrap:
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(this.dataSource);
         jdbcTemplate.execute(CREATE_TABLES);
@@ -118,6 +115,6 @@ public class BootstrapDataPopulator implements InitializingBean {
         query = "insert into user_roles values ( 'user2', 'role2' )";
         jdbcTemplate.execute(query);
         log.debug("Assigned user2 role role2");
-	}
+    }
 
 }
