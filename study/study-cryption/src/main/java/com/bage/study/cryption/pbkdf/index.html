@@ -1,0 +1,7 @@
+<script src="pbkdf2.js"></script>
+<script>
+
+var key = CryptoJS.PBKDF2("1234", "abcde", { "keySize": 24, "iterations": 1000 });
+console.log(key.toString(CryptoJS.enc.Base64));
+
+</script>
