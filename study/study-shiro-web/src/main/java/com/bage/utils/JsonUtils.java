@@ -1,14 +1,25 @@
 package com.bage.utils;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class JsonUtils {
 
-	public static String toJson(Object obj) {
-		return null;
+	private static Gson gson = new GsonBuilder().create();
+	
+	public static String toJson(Object src) {
+		return gson.toJson(src);
 	}
 
-	public static <T> T fromJson(String resourcesString, Class<T> classOfT) {
-		// TODO Auto-generated method stub
-		return null;
+	public static <T> T fromJson(String json, Class<T> classOfT) {
+		return gson.fromJson(json, classOfT);
+	}
+
+	public static <T> List<T> fromJsonToList(String json, Type classOfT) {
+		return gson.fromJson(json, classOfT);
 	}
 
 }

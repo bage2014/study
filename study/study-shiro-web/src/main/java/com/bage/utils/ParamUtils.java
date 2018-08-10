@@ -6,14 +6,14 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 
 import com.bage.constant.Constants;
-import com.bage.domain.LimitData;
-import com.bage.domain.Operation;
-import com.bage.domain.Resource;
-import com.bage.domain.User;
+import com.bage.domain.base.Operation;
+import com.bage.domain.base.Resource;
+import com.bage.domain.base.User;
+import com.bage.domain.param.DataParam;
 
 public class ParamUtils {
 
-	public static LimitData getLimitData(ServletRequest request) {
+	public static DataParam getLimitData(ServletRequest request) {
 		// TODO Auto-generated method stub
 		return null;
 	}

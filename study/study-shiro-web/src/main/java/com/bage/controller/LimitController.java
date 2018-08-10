@@ -5,9 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bage.domain.LimitData;
-import com.bage.domain.Resource;
-import com.bage.domain.User;
+import com.bage.domain.base.Resource;
+import com.bage.domain.base.User;
+import com.bage.domain.param.DataParam;
 import com.bage.service.LimitService;
 import com.bage.utils.JsonUtils;
 import com.bage.utils.ParamUtils;
@@ -28,7 +28,7 @@ public class LimitController {
 		// 解析资源
 		List<Resource> resources= ParamUtils.getResources(request);
 		// 解析数据
-		LimitData dataDom = ParamUtils.getLimitData(request);
+		DataParam dataDom = ParamUtils.getLimitData(request);
 		// 校验操作用户当前的操作是否具有此操作权限
 		return JsonUtils.toJson(limitService.query(user,resources,dataDom));
 	}
@@ -40,7 +40,7 @@ public class LimitController {
 		// 解析资源
 		Resource resource = ParamUtils.getResource(request);
 		// 解析数据
-		LimitData dataDom = ParamUtils.getLimitData(request);
+		DataParam dataDom = ParamUtils.getLimitData(request);
 		// 校验操作用户当前的操作是否具有此操作权限
 		return JsonUtils.toJson(limitService.query(user,resource,dataDom));
 	}

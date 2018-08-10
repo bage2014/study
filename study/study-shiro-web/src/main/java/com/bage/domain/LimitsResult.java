@@ -2,6 +2,8 @@ package com.bage.domain;
 
 import java.util.List;
 
+import com.bage.domain.base.Resource;
+
 /**
  * 权限结果
  * @author luruihua
@@ -9,20 +11,26 @@ import java.util.List;
  */
 public class LimitsResult {
 	
-	private Resource resource; // 资源
-	private List<Permission> permissions;	
+	private List<Resource> resources; //菜单
 	
+	public LimitsResult() {
+		super();
+	}
+
+	public List<Resource> getResources() {
+		return resources;
+	}
+
+	public void setResources(List<Resource> resources) {
+		this.resources = resources;
+	}
+
 	public static LimitsResult failure() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	public LimitsResult noPermission() {
-		// TODO Auto-generated method stub
 		return null;
 	} 
-	
-	// 其他信息...
 	
 }
