@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author bage
  *
  */
-public class ReentrantLockImp {
+public class MyReentrantLockImp {
 
 	static int count = 10;
 	static ReentrantLock lock = new ReentrantLock();

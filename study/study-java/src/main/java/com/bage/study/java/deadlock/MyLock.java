@@ -1,4 +1,4 @@
-package com.bage.study.java.lock;
+package com.bage.study.java.deadlock;
 
 /**
  * 模拟死锁

@@ -78,7 +78,7 @@ class SingletonDemo3{
  *
  */
 class SingletonDemo4{
-	private static SingletonDemo4 singletonDemo = null;
+	private static volatile SingletonDemo4 singletonDemo = null; // volatile 防止指令重排
 	private SingletonDemo4(){
 		
 	}
