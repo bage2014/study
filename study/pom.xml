@@ -55,5 +55,6 @@
     <module>study-rabbitmq</module>
     <module>study-tomcat</module>
     <module>study-socket</module>
+    <module>study-algorithm</module>
   </modules>
 </project>
