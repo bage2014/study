@@ -17,7 +17,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  <module>study-spring-boot</module>
+  <modules>
+  	<module>study-spring-boot</module>
     <module>study-redis</module>
     <module>study-docker</module>
     <module>study-java</module>
@@ -54,10 +55,6 @@
     <module>study-rabbitmq</module>
     <module>study-tomcat</module>
     <module>study-socket</module>
-    <module>study-cache-memory</module>
-    <module>study-lombok</module>
-    <module>study-guava</module>
-     <module>study-jpush</module>
-    <module>study-gateway</module>
     <module>study-algorithm</module>
+  </modules>
 </project>
