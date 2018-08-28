@@ -56,5 +56,6 @@
     <module>study-tomcat</module>
     <module>study-socket</module>
     <module>study-algorithm</module>
+    <module>study-maven</module>
   </modules>
 </project>
