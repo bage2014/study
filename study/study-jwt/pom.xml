@@ -32,12 +32,6 @@
         <scope>provided</scope>
     </dependency>
         
- 	<dependency>
-      <groupId>com.bage</groupId>
-      <artifactId>study-spring-dependencies</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    
     <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 	<dependency>
 	    <groupId>com.google.code.gson</groupId>
@@ -45,7 +39,11 @@
 	    <version>2.8.0</version>
 	</dependency>
     
-    
+    <dependency>
+	    <groupId>com.auth0</groupId>
+	    <artifactId>java-jwt</artifactId>
+	    <version>3.4.0</version>
+	</dependency>
     
   </dependencies>
   <build>

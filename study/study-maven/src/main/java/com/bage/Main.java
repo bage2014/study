@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
  */
 public class Main {
 
-	// mvn deploy:deploy-file -DgroupId=com.google.guava -DartifactId=guava -Dversion=25.0-jre -Dpackaging=jar -Dfile=E:\repository\com\google\guava\guava\25.0-jre\guava-25.0-jre.jar -Durl=http://192.168.19.130:8081/service/rest/repository/browse/third-part/ -DrepositoryId=third-part
-  
+	// 不能拼写错误！！！！！
+	//D:\professional\apache-maven-3.5.2neiwna\bin>mvn deploy:deploy-file -DgroupId=c3p0 -DartifactId=c3p0 -Dversion=0.9 -Dpackaging=jar -Dfile=E:\repository\c3p0\c3p0\0.9.1.1\c3p0-0.9.1.1.jar -Durl=http://localhost:8081/nexus/content/repositories/thirdparty/ -DrepositoryId=thirdparty
 
   
 	/**
