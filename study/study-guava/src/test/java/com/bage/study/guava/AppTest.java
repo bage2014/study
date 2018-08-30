@@ -6,6 +6,8 @@ import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
+ * https://github.com/google/guava/wiki
+ * 
  */
 public class AppTest 
     extends TestCase
