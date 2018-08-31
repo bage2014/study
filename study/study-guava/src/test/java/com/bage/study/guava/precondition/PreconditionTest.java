@@ -4,6 +4,11 @@ import org.junit.Test;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * 
+ * @author luruihua
+ *
+ */
 public class PreconditionTest {
 
 	@Test(expected=IllegalArgumentException.class)
@@ -22,6 +27,15 @@ public class PreconditionTest {
 	@Test(expected=IllegalStateException.class)
 	public void checkState() {
 		Preconditions.checkState(1 > 2);
+	}
+	
+	@Test
+	public void checkElementIndex() {
+		int index = 1;
+		int size = 10;
+		Preconditions.checkElementIndex(index, size);
+		Preconditions.checkPositionIndex(index, size);
+		
 	}
 	
 	
