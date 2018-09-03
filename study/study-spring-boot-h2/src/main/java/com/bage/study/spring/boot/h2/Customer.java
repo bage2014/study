@@ -1,6 +1,5 @@
 package com.bage.study.spring.boot.h2;
 
-
 public class Customer {
     private long id;
     private String firstName, lastName;

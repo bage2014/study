@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
    Servlet 调用 service() 方法来处理客户端的请求。 
    Servlet 通过调用 destroy() 方法终止（结束）。 
 
- * Servlet implementation class MyServlett
+ * Servlet implementation class MyServlet
  */
 public class MyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
