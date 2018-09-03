@@ -1,4 +1,4 @@
-package com.bage.study.guava;
+package com.bage.study.log4j2;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -6,8 +6,6 @@ import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
- * https://github.com/google/guava/wiki
- * 
  */
 public class AppTest 
     extends TestCase

@@ -1,5 +1,8 @@
 package com.bage.study.java.multhread;
 
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 import com.bage.study.java.multhread.officialdemo.Pool;
@@ -17,6 +20,7 @@ public class MySemaphore {
 	    
 	    myCase(); // 简单设置多线程
 
+	    // rateLimiter
 	}
 	private static void myCase() {
 		try {
@@ -90,4 +94,26 @@ public class MySemaphore {
 	            e.printStackTrace();
 	        }
 	    }
+	 
+		
+		public static void rateLimiter() {
+			int threadCount = 10;
+			final Semaphore semaphore = new Semaphore(2);
+			ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+			for (int i = 0; i < threadCount; i++) {
+				executorService.execute(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							semaphore.acquire();
+							System.out.println("running ..." + new Date().toString());
+							Thread.sleep(500);
+							semaphore.release();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						} // may wait
+					}
+				});
+			}
+		}
 }
