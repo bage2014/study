@@ -13,16 +13,6 @@ public class CacheTest {
 	public void testCache() {
 		
 		
-		LoadingCache<String, User> graphs = CacheBuilder.newBuilder()
-			       .maximumSize(1000)
-			       .expireAfterWrite(10, TimeUnit.SECONDS)
-			       //.removalListener(MY_LISTENER)
-			       .build(
-			           new CacheLoader<String, User>() {
-			             public User load(String key){
-			               return createExpensiveGraph(key);
-			             }
-			           });
 		
 	}
 	class User{

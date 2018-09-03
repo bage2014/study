@@ -5,26 +5,30 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.common.util.concurrent.RateLimiter;
 
 @RestController
 public class CounterController {
 
-	private int counter1 = 0;
-	private AtomicInteger counter2 = new AtomicInteger();
-	
+	private AtomicInteger counter = new AtomicInteger();
+
+	final double permitsPerSecond = 10.0; //
+	final RateLimiter rateLimiter = RateLimiter.create(permitsPerSecond); 
+
 	@RequestMapping("/")
-    String counter1(HttpServletRequest request) {
-		System.out.println("home当前次数：" + (counter1 ++ ) + ":" + request.getRemoteHost());
-		counter2(request);
-		return "Hello World!";
-    }
-	
-	
-    String counter2(HttpServletRequest request) {
-		System.out.println("counter当前次数：" + counter2.incrementAndGet() + ":" + request.getRemoteHost());
-        return "Hello World!";
-    }
-	
-	
+	String counter1(@RequestParam("id") String id, HttpServletRequest request) {
+		try {
+			rateLimiter.acquire();
+			Thread.sleep(1000);
+			System.out.println((counter.incrementAndGet()) + "id：" + ":" + id);
+			return "res-id:" + id;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
 }
