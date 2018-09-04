@@ -7,16 +7,17 @@ package com.bage.study.java.pattern.proxy;
  * @author bage
  *
  */
-public class Proxy {
+public class ProxySubject implements Subject{
 
 	Subject subject;
 	
-	public Proxy(Subject subject){
+	public ProxySubject(Subject subject){
 		this.subject = subject;
 	}
-	
-	public void doSomething(){
-		subject.doSomething();
+
+	@Override
+	public void doSomething() {
+		this.subject.doSomething();
 	}
 	
 }
