@@ -10,6 +10,14 @@ import com.google.common.util.concurrent.RateLimiter;
 
 public class RateLimiterTest {
 
+	public static void main(String[] args) {
+		
+		new RateLimiterTest().rateLimiter();
+		
+	}
+	/**
+	 * 推荐使用 main方法进行测试，Junit只是执行了当前线程
+	 */
 	@Test
 	public void rateLimiter() {
 		

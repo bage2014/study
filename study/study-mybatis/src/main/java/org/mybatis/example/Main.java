@@ -19,10 +19,10 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 public class Main {
 
 	public static void main(String[] args) {
-		//System.out.println("xml配置方式执行结果。。。。。。");
-		//xml();
-		System.out.println("java配置方式执行结果。。。。。。");
-		java();
+		System.out.println("xml配置方式执行结果。。。。。。");
+		xml();
+//		System.out.println("java配置方式执行结果。。。。。。");
+//		java();
 	}
 
 	private static void java() {
@@ -60,7 +60,7 @@ public class Main {
 			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 			SqlSession session = sqlSessionFactory.openSession();
 			try {
-				List<Weather> weathers = session.selectList("org.mybatis.example.BlogMapper.selectBlog");
+				List<Weather> weathers = session.selectList("org.mybatis.example.WeatherMapper.selectBlog");
 				for (int i = 0; i < weathers.size(); i++) {
 					System.out.println(weathers.get(i));
 				}

@@ -3,7 +3,8 @@ package org.mybatis.example;
 import java.sql.Date;
 
 /**
- * CREATE TABLE weather (
+ * 
+CREATE TABLE weather (
     city            VARCHAR(80),
     temp_lo         INT,           -- low temperature
     temp_hi         INT,           -- high temperature
@@ -12,7 +13,7 @@ import java.sql.Date;
 );
 
 INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
-
+INSERT INTO weather VALUES ('nanjing', 129, 45, 0.25, '1999-11-27');
  * @author bage
  *
  */
