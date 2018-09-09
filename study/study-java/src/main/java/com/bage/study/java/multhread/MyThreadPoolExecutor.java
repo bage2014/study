@@ -5,11 +5,13 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 基本线程池的API实现
+ * 参考链接：* https://www.cnblogs.com/dolphin0520/p/3932921.html
  * @author bage
  *
  */
@@ -36,13 +38,11 @@ public class MyThreadPoolExecutor {
 				return thread;
 			}
 		};
-		handler = new RejectedExecutionHandler() {
-			
-			@Override
-			public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-				System.out.println("拒绝线程：workQueue.size():" + executor.getQueue());			
-			}
-		};
+		handler = new DiscardPolicy();
+//		ThreadPoolExecutor.AbortPolicy:丢弃任务并抛出RejectedExecutionException异常。 
+//		ThreadPoolExecutor.DiscardPolicy：也是丢弃任务，但是不抛出异常。 
+//		ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）
+//		ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务 
 		// ThreadPoolExecutor
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
 				corePoolSize , 
@@ -73,7 +73,10 @@ public class MyThreadPoolExecutor {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-				
+			
+		// 
+		// threadPoolExecutor.prestartCoreThread();
+		
 //		SynchronousQueue,
 //		LinkedBlockingDeque,
 //		ArrayBlockingQueue;
