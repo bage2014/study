@@ -7,9 +7,7 @@
     <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.bage</groupId>
   <artifactId>study-algorithm</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>study-algorithm</name>
   <url>http://maven.apache.org</url>
   <properties>
