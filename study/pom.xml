@@ -58,5 +58,7 @@
     <module>study-algorithm</module>
     <module>study-maven</module>
     <module>study-log4j2</module>
+    <module>study-loadbalance</module>
+    <module>study-security</module>    
   </modules>
 </project>
