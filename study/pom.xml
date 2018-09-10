@@ -59,8 +59,8 @@
     <module>study-maven</module>
     <module>study-log4j2</module>
     <module>study-loadbalance</module>
-    <module>study-security</module>
     <module>study-sharedsession</module>
     <module>study-ehcache</module>
+    <module>study-security</module>
   </modules>
 </project>
