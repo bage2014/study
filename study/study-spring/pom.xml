@@ -19,12 +19,6 @@
       <scope>test</scope>
     </dependency>
     
-     <dependency>
-      <groupId>com.bage</groupId>
-      <artifactId>study-spring-dependencies</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    
     <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
