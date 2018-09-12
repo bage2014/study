@@ -21,13 +21,7 @@
         <property name="suffix" value=".jsp"/>
         
 	</bean>
-
-	<!-- <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache"/>
-
-	EhCache library setup
-	<bean id="ehcache"
-        class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="ehcache.xml"/> -->
-        
+      
       <cache:annotation-driven cache-manager="cacheManager" />  
 
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">  

@@ -64,5 +64,7 @@
     <module>study-security</module>
     <module>study-cache-memory-springboot</module>
     <module>study-cache-memory-spring</module>
+    <module>study-cache-redis-spring</module>
+    <module>study-dubbo</module>
   </modules>
 </project>

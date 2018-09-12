@@ -6,7 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Jedis jedis = new Jedis("192.168.19.130");
+		Jedis jedis = new Jedis("localhost");
 		jedis.set("foo", "bar");
 		String value = jedis.get("foo");
 		System.out.println(value);
