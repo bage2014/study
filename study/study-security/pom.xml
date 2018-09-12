@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.base.version>4.3.9.RELEASE</spring.base.version>
 		<junit.base.version>UTF-8</junit.base.version>
-		<servlet.base.version>3.0-alpha-1</servlet.base.version>
+		<servlet.base.version>3.1.0</servlet.base.version>
 		<jsp.base.version>2.1</jsp.base.version>
 		<jstl.base.version>1.2</jstl.base.version>
 		<hsqldb.base.version>2.3.4</hsqldb.base.version>
@@ -44,12 +44,15 @@
 			<version>${jsp.base.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>${servlet.base.version}</version>
-			<scope>provided</scope>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>${servlet.base.version}</version>
+		    <scope>provided</scope>
 		</dependency>
+		
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
