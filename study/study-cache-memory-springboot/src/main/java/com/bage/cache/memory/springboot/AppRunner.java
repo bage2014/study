@@ -1,4 +1,4 @@
-package com.bage.cache.memory;
+package com.bage.cache.memory.springboot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

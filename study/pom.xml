@@ -62,5 +62,7 @@
     <module>study-sharedsession</module>
     <module>study-ehcache</module>
     <module>study-security</module>
+    <module>study-cache-memory-springboot</module>
+    <module>study-cache-memory-spring</module>
   </modules>
 </project>

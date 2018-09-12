@@ -7,13 +7,17 @@
     <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>study-spring-dependencies</artifactId>
-  <name>study-spring-dependencies</name>
+  <artifactId>study-cache-memory-spring</artifactId>
+  <packaging>war</packaging>
+  <name>study-cache-memory-spring Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
-  <properties>
+  
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.base.version>4.3.9.RELEASE</spring.base.version>
+		<spring.base.version>4.1.9.RELEASE</spring.base.version>
 		<junit.base.version>UTF-8</junit.base.version>
 		<servlet.base.version>3.0-alpha-1</servlet.base.version>
 		<jsp.base.version>2.1</jsp.base.version>
@@ -83,7 +87,6 @@
 		    <version>${spring.base.version}</version>
 		</dependency>
 
-
 		<dependency>
 		    <groupId>javax.inject</groupId>
 		    <artifactId>javax.inject</artifactId>
@@ -147,5 +150,22 @@
 
 		<!-- thymeleaf end -->
 		
+		
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.base.version}</version>
+        </dependency>
+		
+		<!-- ehcache 相关依赖  -->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.8.2</version>
+        </dependency>
+        
   </dependencies>
+  <build>
+    <finalName>study-cache-memory-spring</finalName>
+  </build>
 </project>

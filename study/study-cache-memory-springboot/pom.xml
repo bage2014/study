@@ -7,7 +7,7 @@
     <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>study-cache-memory</artifactId>
+  <artifactId>study-cache-memory-springboot</artifactId>
   <packaging>war</packaging>
   <name>study-cache-memory Maven Webapp</name>
   <url>http://maven.apache.org</url>

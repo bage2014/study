@@ -1,4 +1,4 @@
-package com.bage.cache.memory;
+package com.bage.controller;
 
 public interface BookRepository {
 

@@ -1,4 +1,4 @@
-package com.bage.cache.memory;
+package com.bage.cache.memory.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
