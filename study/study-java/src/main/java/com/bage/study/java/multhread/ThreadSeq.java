@@ -12,7 +12,6 @@ public class ThreadSeq {
 	public static void main(String[] args) throws Exception {
 		
 		Thread thread1 = new ThreadSeq1();
-		
 		// 实现方式
 		ThreadSeq2 threadSeq2 = new ThreadSeq2(thread1);  
 		Thread thread2 = new Thread(threadSeq2);
