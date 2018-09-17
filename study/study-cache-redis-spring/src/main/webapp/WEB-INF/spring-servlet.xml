@@ -22,7 +22,7 @@
         
 	</bean>
       
-    <!--  <cache:annotation-driven cache-manager="cacheManager" />  
+    <!-- <cache:annotation-driven cache-manager="cacheManager" />  
 
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">  
         <property name="cacheManager" ref="ehcache"></property>  
@@ -32,50 +32,46 @@
         <property name="configLocation" value="classpath:ehcache.xml"></property>  
     </bean>   -->
     
-    <bean
-        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:jdbc.properties</value>
-                <value>classpath:redis.properties</value>
-            </list>
-        </property>
-    </bean>
-    <!-- redis config start -->
-    <!-- 配置JedisPoolConfig实例 -->
-    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxIdle" value="${redis.maxIdle}" />
-        <property name="maxTotal" value="${redis.maxActive}" />
-        <property name="maxWaitMillis" value="${redis.maxWait}" />
-        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
-    </bean>
-
-    <!-- 配置JedisConnectionFactory -->
-    <bean id="jedisConnectionFactory"
-        class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="hostName" value="${redis.host}" />
-        <property name="port" value="${redis.port}" />
-        <!-- <property name="password" value="${redis.pass}" /> -->
-        <property name="database" value="${redis.dbIndex}" />
-        <property name="poolConfig" ref="poolConfig" />
-    </bean>
-
-    <!-- 配置RedisTemplate -->
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-        <property name="connectionFactory" ref="jedisConnectionFactory" />
-    </bean>
-
-    <!-- 配置RedisCacheManager -->
-    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
-        <constructor-arg name="redisOperations" ref="redisTemplate" />
-        <property name="defaultExpiration" value="${redis.expiration}" />
-    </bean>
-
-    <!-- 配置RedisCacheConfig -->
-    <bean id="redisCacheConfig" class="com.ssm.utils.RedisCacheConfig">
-        <constructor-arg ref="jedisConnectionFactory" />
-        <constructor-arg ref="redisTemplate" />
-        <constructor-arg ref="redisCacheManager" />
-    </bean>
-    <!-- redis config end -->
+    <!-- ******************** redis缓存  **********************-->
+    <context:property-placeholder location="classpath:redis.properties"/>
+    
+<!-- 注解一定要配置，不然不起作用 -->
+<cache:annotation-driven /> 
+  
+  
+<!-- jedis 配置 -->
+  <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig"> 
+    <property name="maxIdle" value="${redis.maxIdle}" /> 
+    <!--<property name="maxWaitMillis" value="${redis.maxWait}" />-->
+    <property name="testOnBorrow" value="${redis.testOnBorrow}" /> 
+  </bean> 
+  
+  <!-- redis服务器中心 -->
+  <bean id="connectionFactory"
+    class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"> 
+    <property name="poolConfig" ref="poolConfig" /> 
+    <property name="port" value="${redis.port}" /> 
+    <property name="hostName" value="${redis.hostname}" /> 
+    <!-- <property name="password" value="${redis.password}" /> -->
+    <property name="timeout" value="${redis.timeout}"></property> 
+  </bean> 
+    
+  <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"> 
+    <property name="connectionFactory" ref="connectionFactory" /> 
+    <property name="keySerializer"> 
+      <bean
+        class="org.springframework.data.redis.serializer.StringRedisSerializer" /> 
+    </property> 
+    <property name="valueSerializer"> 
+      <bean
+        class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" /> 
+    </property> 
+  </bean> 
+  <!-- 配置缓存 -->
+  <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager"> 
+    <constructor-arg ref="redisTemplate" /> 
+  </bean> 
+    
+<!-- ******************** redis缓存  **********************-->  
+    
 </beans>
