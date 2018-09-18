@@ -24,7 +24,9 @@
 		<aspectjrt.base.version>1.8.13</aspectjrt.base.version>
 		<aspectjweaver.base.version>1.8.10</aspectjweaver.base.version>
 	</properties>
+	
 	<dependencies>
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -105,13 +107,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>1.8.0.7</version>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- SpEL start -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -154,7 +149,12 @@
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-jdbc</artifactId>
 			<version>2.0.6.RELEASE</version>
-			<type>pom</type>
+		</dependency>
+
+		<dependency>
+		    <groupId>commons-logging</groupId>
+		    <artifactId>commons-logging</artifactId>
+		    <version>1.2</version>
 		</dependency>
 
 	</dependencies>
