@@ -66,5 +66,6 @@
     <module>study-cache-memory-spring</module>
     <module>study-cache-redis-spring</module>
     <module>study-dubbo</module>
+    <module>study-spring-session</module>
   </modules>
 </project>
