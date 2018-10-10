@@ -3,6 +3,8 @@ package com.bage.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexController {
@@ -31,6 +33,12 @@ public class IndexController {
 			e.printStackTrace();
 		}
 		return "index";
+	}
+	
+	@RequestMapping("/get")
+	@ResponseBody
+	public String get(@RequestParam(value="isbn",required=false,defaultValue="0") String isbn) {
+		return bookRepository.get(isbn).toString();
 	}
 
 }

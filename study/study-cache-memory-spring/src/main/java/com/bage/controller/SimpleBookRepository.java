@@ -1,13 +1,14 @@
 package com.bage.controller;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+
+import com.bage.cache.annotation.MyCacheable;
 
 @Component
 public class SimpleBookRepository implements BookRepository {
 
     @Override
-    @Cacheable("books")
+    @MyCacheable(key="books")
     public Book getByIsbn(String isbn) {
         simulateSlowService();
         return new Book(isbn, "Some book");
@@ -22,5 +23,12 @@ public class SimpleBookRepository implements BookRepository {
             throw new IllegalStateException(e);
         }
     }
+
+    @MyCacheable(key="'getBook'")
+	@Override
+	public Book get(Object param) {
+		System.out.println("currentTimeMillis ：" + System.currentTimeMillis());
+		return new Book(String.valueOf(param), "Some book");
+	}
 
 }
