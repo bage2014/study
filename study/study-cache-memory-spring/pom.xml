@@ -18,7 +18,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.base.version>4.1.9.RELEASE</spring.base.version>
+		<spring.base.version>4.3.0.RELEASE</spring.base.version>
 		<junit.base.version>UTF-8</junit.base.version>
 		<servlet.base.version>3.0-alpha-1</servlet.base.version>
 		<jsp.base.version>2.1</jsp.base.version>
@@ -164,6 +164,19 @@
 			<artifactId>ehcache</artifactId>
 			<version>2.8.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${spring.base.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.base.version}</version>
+		</dependency>
+
 
 	</dependencies>
 	<build>

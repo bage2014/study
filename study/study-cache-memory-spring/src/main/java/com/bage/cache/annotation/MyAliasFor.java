@@ -168,7 +168,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Documented
-public @interface AliasFor {
+public @interface MyAliasFor {
 
 	/**
 	 * Alias for {@link #attribute}.
@@ -176,14 +176,14 @@ public @interface AliasFor {
 	 * is not declared &mdash; for example: {@code @AliasFor("value")} instead of
 	 * {@code @AliasFor(attribute = "value")}.
 	 */
-	@AliasFor("attribute")
+	@MyAliasFor("attribute")
 	String value() default "";
 
 	/**
 	 * The name of the attribute that <em>this</em> attribute is an alias for.
 	 * @see #value
 	 */
-	@AliasFor("value")
+	@MyAliasFor("value")
 	String attribute() default "";
 
 	/**

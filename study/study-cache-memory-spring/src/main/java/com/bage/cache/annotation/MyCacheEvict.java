@@ -5,12 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-@Cacheable(value="books")
-public @interface MyCacheable {
+@CacheEvict(value="books")
+public @interface MyCacheEvict {
 
 	/**
 	 * Spring Expression Language (SpEL) expression for computing the key dynamically.
