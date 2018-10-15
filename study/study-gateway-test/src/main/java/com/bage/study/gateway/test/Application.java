@@ -1,5 +1,6 @@
 package com.bage.study.gateway.test;
 
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,21 +25,21 @@ public class Application implements CommandLineRunner {
     }
 
 	private void testCall(final RestTemplate restTemplate) {
-		int n = 1000;
+		int n = 200;
 		ExecutorService executorService = Executors.newFixedThreadPool(n);
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < 4000; i++) {
 			final int index = i;
 			executorService.execute(new Runnable() {
 				
 				public void run() {
 					long bf =  System.currentTimeMillis();
 					// String response = 
-							restTemplate.getForObject("http://localhost:8080/user?id=" + bf, String.class);
+							restTemplate.getForObject("http://localhost:8080/user?id=" + ( 209797 + new Random().nextInt(10000)), String.class);
 			        System.out.println(index + ":" + (System.currentTimeMillis() - bf));
 				}
 			});
 		}
-		
+		executorService.shutdown();
 	}
 
     public static void main(String[] args) {
