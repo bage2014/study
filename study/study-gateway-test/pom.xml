@@ -7,11 +7,10 @@
     <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>study-gateway</artifactId>
-  <packaging>war</packaging>
-  <name>study-gateway Maven Webapp</name>
+  <artifactId>study-gateway-test</artifactId>
+  <name>study-gateway-test</name>
   <url>http://maven.apache.org</url>
-  <properties>
+   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.boot.base.version>2.0.1.RELEASE</spring.boot.base.version>
 	</properties>
@@ -62,7 +61,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-  <build>
-    <finalName>study-gateway</finalName>
-  </build>
 </project>

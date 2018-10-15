@@ -67,5 +67,6 @@
     <module>study-cache-redis-spring</module>
     <module>study-dubbo</module>
     <module>study-spring-session</module>
+    <module>study-gateway-test</module>
   </modules>
 </project>
