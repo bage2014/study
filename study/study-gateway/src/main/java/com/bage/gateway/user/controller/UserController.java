@@ -2,6 +2,7 @@ package com.bage.gateway.user.controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,7 +26,7 @@ public class UserController {
 	private JdbcTemplate jdbcTemplate;
 	
 
-	final double permitsPerSecond = 100; //
+	final double permitsPerSecond = 200; //
 	final RateLimiter rateLimiter = RateLimiter.create(permitsPerSecond); 
 
 	private AtomicInteger counter = new AtomicInteger();
@@ -43,7 +44,7 @@ public class UserController {
 						}
 		            }
 		    );
-		System.out.println(counter.incrementAndGet() + "--" + list);
+		System.out.println(counter.incrementAndGet() + "-"+list+"-" + new Date().toLocaleString());
 		return id;
 	}
 	
