@@ -68,5 +68,6 @@
     <module>study-dubbo</module>
     <module>study-spring-session</module>
     <module>study-gateway-test</module>
+    <module>study-code-format</module>
   </modules>
 </project>
