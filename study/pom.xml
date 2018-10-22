@@ -69,5 +69,6 @@
     <module>study-spring-session</module>
     <module>study-gateway-test</module>
     <module>study-code-format</module>
+    <module>study-test</module>
   </modules>
 </project>
