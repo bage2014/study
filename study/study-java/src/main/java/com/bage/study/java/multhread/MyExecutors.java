@@ -19,12 +19,12 @@ public class MyExecutors {
 		
 		ExecutorService executors = Executors.newCachedThreadPool();
 		// 最多同时 n 个线程在执行状态
-//		int n = 3;
-//		ExecutorService executors = Executors.newFixedThreadPool(n);
 		
-//		ExecutorService executors = Executors.newSingleThreadExecutor();
-		
-//		ExecutorService executors = Executors.newScheduledThreadPool(n);
+		// 要想运行，注掉下面4行
+		int n = 3;
+		executors = Executors.newFixedThreadPool(n);
+		executors = Executors.newSingleThreadExecutor();
+		executors = Executors.newScheduledThreadPool(n);
 
 		
 		for (int i = 0; i < 5; i++) {
