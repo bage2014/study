@@ -73,5 +73,7 @@
     <module>study-sso-baeldung-auth-server</module>
     <module>study-sso-baeldung-client1</module>
     <module>study-sso-baeldung-client2</module>
+    <module>study-spring-boot-oauth2-server</module>
+    <module>study-spring-boot-oauth2-client1</module>
   </modules>
 </project>
