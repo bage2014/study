@@ -70,5 +70,8 @@
     <module>study-gateway-test</module>
     <module>study-code-format</module>
     <module>study-test</module>
+    <module>study-sso-baeldung-auth-server</module>
+    <module>study-sso-baeldung-client1</module>
+    <module>study-sso-baeldung-client2</module>
   </modules>
 </project>
