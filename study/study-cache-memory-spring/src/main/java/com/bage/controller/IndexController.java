@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ContextLoader;
 
 @Controller
 public class IndexController {
@@ -31,6 +32,7 @@ public class IndexController {
 	@RequestMapping("/index")
 	public String index() {
 	
+		ContextLoader cc;
 		// org.springframework.cache.ehcache.EhCacheCacheManager ehCacheCacheManager;
 		System.out.println("index");
 		try {

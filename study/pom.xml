@@ -75,5 +75,6 @@
     <module>study-sso-baeldung-client2</module>
     <module>study-spring-boot-oauth2-server</module>
     <module>study-spring-boot-oauth2-client1</module>
+    <module>study-log-logback</module>
   </modules>
 </project>
