@@ -16,16 +16,21 @@
 	<h1>Demo</h1>
 	<div class="container">
 		<div class="container unauthenticated">
-		    With Facebook: <a href="/login">click here</a>
+			<div>
+				With Facebook: <a href="/login/facebook">click here</a>
+			</div>
+			<div>
+				With Github: <a href="/login/github">click here</a>
+			</div>
+			<div>
+				With Local: <a href="/login/local">click here</a>
+			</div>
 		</div>
-		<div class="container authenticated" style="display:none">
-		    Logged in as: <span id="user"></span>
-		</div>
-		<div class="container authenticated">
-		  Logged in as: <span id="user"></span>
-		  <div>
-		    <button onClick="logout()" class="btn btn-primary">Logout</button>
-		  </div>
+		<div class="container authenticated" style="display: none">
+			Logged in as: <span id="user"></span>
+			<div>
+				<button onClick="logout()" class="btn btn-primary">Logout</button>
+			</div>
 		</div>
 	</div>
 </body>
