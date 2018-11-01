@@ -36,10 +36,10 @@ github:
        
 local:
   client:
-    clientId: bd1c0a783ccdd1c9b9e4
-    clientSecret: 1a9030fbca47a5b2c28e92f19050bb77824b5ad1
-    accessTokenUri: http://localhost:8088/login/oauth/access_token
-    userAuthorizationUri: http://localhost:8088/login/oauth/authorize
+    clientId: acme
+    clientSecret: acmesecret
+    accessTokenUri: http://localhost:8088/oauth/token
+    userAuthorizationUri: http://localhost:8088/oauth/authorize
     clientAuthenticationScheme: form
   resource:
-    userInfoUri: http://localhost:8088/user
+    userInfoUri: http://localhost:8088/me
