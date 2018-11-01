@@ -1,3 +1,11 @@
+logging:
+  level:
+    root: DEBUG
+server:
+  port: 8001
+  servlet:
+   context-path: /client1
+   
 security:
   oauth2:
     client:
@@ -32,14 +40,23 @@ github:
     clientAuthenticationScheme: form
   resource:
     userInfoUri: https://api.github.com/user
-    
+           
+local2:
+  client:
+    clientId: SampleClientId
+    clientSecret: secret
+    accessTokenUri: http://localhost:8080/auth-server/oauth/token
+    userAuthorizationUri: http://localhost:8080/auth-server/oauth/authorize
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: http://localhost:8080/auth-server/me
        
 local:
   client:
     clientId: acme
     clientSecret: acmesecret
-    accessTokenUri: http://localhost:8088/oauth/token
-    userAuthorizationUri: http://localhost:8088/oauth/authorize
+    accessTokenUri: http://localhost:8088/auth-server/oauth/token
+    userAuthorizationUri: http://localhost:8088/auth-server/oauth/authorize
     clientAuthenticationScheme: form
   resource:
-    userInfoUri: http://localhost:8088/me
+    userInfoUri: http://localhost:8088/auth-server/me
