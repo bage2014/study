@@ -1,7 +1,3 @@
-server:
-  port: 8088
-  servlet:
-   context-path: /auth-server
 logging:
   level:
     root: DEBUG
