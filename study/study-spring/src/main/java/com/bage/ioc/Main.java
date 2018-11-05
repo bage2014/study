@@ -15,8 +15,8 @@ public class Main {
 		};
 		
 		// 加载 spring 容器
-		ApplicationContext context =
-		        new ClassPathXmlApplicationContext(beansFilePathStr); 
+		@SuppressWarnings("resource")
+		ApplicationContext context = new ClassPathXmlApplicationContext(beansFilePathStr); 
 //		ConfigurableApplicationContext context =
 //				new ClassPathXmlApplicationContext(beansFilePathStr); //Shutting down the Spring IoC container gracefully in non-web applications
 		// beans.xml == classpath:beans.xml 等价
@@ -26,13 +26,9 @@ public class Main {
 		// 获取一个基本bean
 		MyBean myBean = context.getBean("myBean",MyBean.class);
 		System.out.println(myBean);
+
+		// 容器启动过程，详见readme.docx 1.3.	IoC容器启动过程
 		
-		// 读取bean 配置 
-		// org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions 获取资源
-		// org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions
-		// org.springframework.context.support.AbstractXmlApplicationContext.loadBeanDefinitions(null); 加载bean
-		// 注册bean
-		// org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.doRegisterBeanDefinitions
 	}
 	
 }
