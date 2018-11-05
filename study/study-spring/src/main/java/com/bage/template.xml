@@ -15,4 +15,8 @@
 	<bean id="myBean" class="com.bage.MyBean">
 		<!-- collaborators and configuration for this bean go here -->
 	</bean>
+	
+	<bean id="lifeCircleBean" class="com.bage.lifecircle.LifeCircleBean">
+	</bean>
+	
 </beans>
