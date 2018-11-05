@@ -27,8 +27,12 @@ public class Main {
 		MyBean myBean = context.getBean("myBean",MyBean.class);
 		System.out.println(myBean);
 		
-		
-		
+		// 读取bean 配置 
+		// org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions 获取资源
+		// org.springframework.beans.factory.xml.XmlBeanDefinitionReader.doLoadBeanDefinitions
+		// org.springframework.context.support.AbstractXmlApplicationContext.loadBeanDefinitions(null); 加载bean
+		// 注册bean
+		// org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader.doRegisterBeanDefinitions
 	}
 	
 }
