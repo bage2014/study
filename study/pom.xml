@@ -77,5 +77,6 @@
     <module>study-spring-boot-sso-oauth2-client1</module>
     <module>study-log-logback</module>
     <module>study-spring-boot-security</module>
+    <module>study-spring-boot-oauth2-auth-server</module>
   </modules>
 </project>
