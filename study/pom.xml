@@ -78,5 +78,6 @@
     <module>study-log-logback</module>
     <module>study-spring-boot-security</module>
     <module>study-spring-boot-oauth2-auth-server</module>
+    <module>study-cglib</module>
   </modules>
 </project>
