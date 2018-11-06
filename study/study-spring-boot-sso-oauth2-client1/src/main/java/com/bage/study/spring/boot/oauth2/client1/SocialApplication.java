@@ -48,11 +48,11 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**", "/error**").permitAll()
+		http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**","/webjars/**", "/error**").permitAll()
 				.anyRequest().authenticated().and().logout().logoutSuccessUrl("/").permitAll()
-//				.and().csrf()
+				.and().csrf().disable()
 //				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-				.and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+				.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
 	}
 
 	
@@ -93,14 +93,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
 		return new ClientResources();
 	}
 	
-	@Bean
-	public FilterRegistrationBean oauth2ClientFilterRegistration(
-	    OAuth2ClientContextFilter filter) {
-	  FilterRegistrationBean registration = new FilterRegistrationBean();
-	  registration.setFilter(filter);
-	  registration.setOrder(-100);
-	  return registration;
-	}
 	
 //	private Filter ssoFilter() {
 //

@@ -7,8 +7,8 @@
     <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>study-spring-boot-oauth2-server</artifactId>
-  <name>study-spring-boot-oauth2-server</name>
+  <artifactId>study-spring-boot-sso-oauth2-server</artifactId>
+  <name>study-spring-boot-sso-oauth2-server</name>
   <url>http://maven.apache.org</url>
   
   
