@@ -1,4 +1,4 @@
-package com.bage.study.gclib;
+package com.bage.study.gclib.officialdemo;
 
 import java.util.List;
 import java.util.Vector;
@@ -20,10 +20,10 @@ public class Trace implements MethodInterceptor {
    private Trace() {
    }
    
-   public static  Object newInstance( Class clazz ){
+   public static  Object newInstance( Class<Vector> class1 ){
      try{
            Enhancer e = new Enhancer();
-           e.setSuperclass(clazz);
+           e.setSuperclass(class1);
            e.setCallback(callback);
            return e.create();
      }catch( Throwable e ){

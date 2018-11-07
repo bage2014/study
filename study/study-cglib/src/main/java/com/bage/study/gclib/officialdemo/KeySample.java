@@ -1,4 +1,4 @@
-package com.bage.study.gclib;
+package com.bage.study.gclib.officialdemo;
 
 import net.sf.cglib.core.KeyFactory;
 public class KeySample {

@@ -1,4 +1,4 @@
-package com.bage.study.gclib;
+package com.bage.study.gclib.officialdemo;
 
 import java.beans.PropertyChangeListener;
 
