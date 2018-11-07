@@ -1,7 +1,7 @@
 package com.bage.study.java.pattern.proxy;
 
 /**
- * 抽象对象
+ * 代理接口
  * @author bage
  *
  */

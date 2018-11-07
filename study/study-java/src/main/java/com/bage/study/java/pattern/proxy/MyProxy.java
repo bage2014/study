@@ -17,15 +17,22 @@ import java.lang.reflect.Proxy;
 public class MyProxy {
 
 	public static void main(String[] args) {
+		System.out.println("--------- 静态代理 ------------");
 		// 静态代理
 		ProxySubject staticProxy = new ProxySubject(new RealSubject());
 		staticProxy.doSomething();
 
-		// 动态代理
-		Subject realSubject = new RealSubject();
-		DynamicProxy dynamicProxy = new DynamicProxy(realSubject);
-		ClassLoader classLoader = realSubject.getClass().getClassLoader();
-		Subject subject = (Subject) Proxy.newProxyInstance(classLoader, new Class[] { Subject.class }, dynamicProxy);
+		System.out.println("--------- 动态代理 ------------");
+		// 1、动态代理	
+		Subject realSubject = new RealSubject(); // 创建待代理的实现类
+		
+		// 2、Proxy.newProxyInstance
+		Subject subject = (Subject) Proxy.newProxyInstance(
+				realSubject.getClass().getClassLoader(), // 类加载器 
+				new Class[]{Subject.class},  // 代理接口类数组
+				new DynamicProxy(realSubject)); // InvocationHandler 的实现
+		
+		// 调用代理对象的方法
 		subject.doSomething();
 	}
 
