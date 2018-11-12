@@ -79,5 +79,6 @@
     <module>study-spring-boot-security</module>
     <module>study-spring-boot-oauth2-auth-server</module>
     <module>study-cglib</module>
+    <module>study-spring-boot-test</module>
   </modules>
 </project>
