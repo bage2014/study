@@ -11,6 +11,7 @@ public class SimpleBookRepository implements BookRepository {
     @Override
     @MyCacheable(key="books")
     public Book getByIsbn(String isbn) {
+    	System.out.println("没有走缓存。。。。");
         simulateSlowService();
         return new Book(isbn, "Some book");
     }

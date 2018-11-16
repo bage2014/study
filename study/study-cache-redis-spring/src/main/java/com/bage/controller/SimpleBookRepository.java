@@ -1,15 +1,16 @@
 package com.bage.controller;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.interceptor.CacheAspectSupport;
 import org.springframework.stereotype.Component;
-
-import com.bage.cache.annotation.MyCacheable;
 
 @Component
 public class SimpleBookRepository implements BookRepository {
 
-    @MyCacheable("books")
+    @Cacheable("books")
     public Book getByIsbn(String isbn) {
         simulateSlowService();
+        CacheAspectSupport vv;
         return new Book(isbn, "Some book");
     }
 

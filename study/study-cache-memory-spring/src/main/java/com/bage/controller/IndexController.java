@@ -22,11 +22,11 @@ public class IndexController {
 	public void query(String... args) throws Exception {
 		System.out.println(".... Fetching books");
 		System.out.println("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
-		System.out.println("isbn-4567 -->" + bookRepository.getByIsbn("isbn-4567"));
+//		System.out.println("isbn-4567 -->" + bookRepository.getByIsbn("isbn-4567"));
 		System.out.println("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
-		System.out.println("isbn-4567 -->" + bookRepository.getByIsbn("isbn-4567"));
-		System.out.println("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
-		System.out.println("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
+//		System.out.println("isbn-4567 -->" + bookRepository.getByIsbn("isbn-4567"));
+//		System.out.println("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
+//		System.out.println("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
 	}
 
 	@RequestMapping("/index")
