@@ -1,5 +1,7 @@
 package com.bage.study.mybatis;
 
+import org.apache.ibatis.type.Alias;
+
 import java.sql.Date;
 
 /**
@@ -17,6 +19,7 @@ INSERT INTO weather VALUES ('nanjing', 129, 45, 0.25, '1999-11-27');
  * @author bage
  *
  */
+// @Alias("Weather")
 public class Weather {
 
 	private String city;

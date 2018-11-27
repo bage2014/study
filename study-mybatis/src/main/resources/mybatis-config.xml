@@ -4,22 +4,30 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-	<properties resource="config.properties">
+	<!--properties配置-->
+	<properties resource="config.properties"> <!--引入 properties 文件-->
 		
-		<!-- Enable this feature -->
-		<property name="org.apache.ibatis.parsing.PropertyParser.enable-default-value" value="true"/> 
+		<property name="org.apache.ibatis.parsing.PropertyParser.enable-default-value" value="true"/> <!-- Enable this feature -->
+		<property name="org.apache.ibatis.parsing.PropertyParser.default-value-separator" value="?:"/> <!-- Change default value of separator -->
 		
 		<!-- MySQL数据库配置 -->
-	  	<property name="driver" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/mydb" /> <!--my_db-->
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+	  	<property name="driver" value="com.mysql.jdbc.Driver" /> <!--直接赋值-->
+		<property name="url" value="jdbc:mysql://localhost:3306/mydb" /> <!--mydb-->
+
+		<!--引入 properties 属性-->
+		<property name="username" value="${db:username?:ut_user}" /> <!--三元运算符(e.g. ${tableName != null ? tableName : 'global_constants'})-->
+		<property name="password" value="${password:root}" /> <!--密码默认为 root-->
 		
 	</properties>
 
 	<settings>
+		<!--全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存-->
 	  <setting name="cacheEnabled" value="true"/>
+
+		<!--延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。 特定关联关系中可通过设置fetchType属性来覆盖该项的开关状态-->
 	  <setting name="lazyLoadingEnabled" value="true"/>
+
+		<!--当开启时，任何方法的调用都会加载该对象的所有属性。否则，每个属性会按需加载（参考lazyLoadTriggerMethods).-->
 	  <setting name="multipleResultSetsEnabled" value="true"/>
 	  <setting name="useColumnLabel" value="true"/>
 	  <setting name="useGeneratedKeys" value="false"/>
@@ -36,11 +44,12 @@
 	</settings>
 
 	<typeAliases>
-	  <typeAlias alias="Weather" type="com.bage.study.mybatis.Weather"/>
+	  <typeAlias alias="Weather" type="com.bage.study.mybatis.Weather"/> <!--类设置别名，也可以使用注解详见com.bage.study.mybatis.Weather -->
+		<package name="domain.blog"/> <!--包设置别名-->
 	</typeAliases>
 
 	<typeHandlers>
-	  <typeHandler handler="com.bage.study.mybatis.ExampleTypeHandler"/>
+	  <typeHandler handler="com.bage.study.mybatis.typehandler.ExampleTypeHandler"/>
 	</typeHandlers>
 
 	<objectFactory type="com.bage.study.mybatis.ExampleObjectFactory">
