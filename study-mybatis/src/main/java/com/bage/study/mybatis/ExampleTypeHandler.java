@@ -1,4 +1,4 @@
-package org.mybatis.example;
+package com.bage.study.mybatis;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
