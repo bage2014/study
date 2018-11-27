@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bage.study.mybatis.WeatherMapper">
+	<!-- demo -->
+	<select id="selectBlog" resultType="Weather" databaseId="mysql">
+		select city,temp_lo,temp_hi,date from weather where city='San Francisco'
+	</select>
+	<select id="selectBlog" resultType="Weather" databaseId="postgresql">
+		select city,temp_lo,temp_hi,date from weather where city='nanjing'
+	</select>
+
+	<insert id="insertAuthor">
+		insert into Author (id,username,password,email,bio)
+		values (#{id},#{username},#{password},#{email},#{bio})
+	</insert>
+
+	<!-- 多行插入 -->
+	<insert id="batchInsertAuthor" useGeneratedKeys="true"
+	    keyProperty="id">
+	  insert into Author (username, password, email, bio) values
+	  <foreach item="item" collection="list" separator=",">
+	    (#{item.username}, #{item.password}, #{item.email}, #{item.bio})
+	  </foreach>
+	</insert>
+
+	<update id="updateAuthor">
+		update Author 
+		set username = #{username},
+			password = #{password},
+			email = #{email},
+			bio = #{bio}
+		where id = #{id}
+	</update>
+
+	<delete id="deleteAuthor">
+		delete from Author where id = #{id}
+	</delete>
+</mapper>
