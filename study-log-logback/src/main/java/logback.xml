@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration scan="true" scanPeriod="3 seconds">
+
+  <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+  <appender name="STDOUT"
+            class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>
+        %d{HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n
+      </pattern>
+    </layout>
+  </appender>
+
+  <appender name="FILE"
+            class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>logFile.log</File>
+    <rollingPolicy
+            class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>
+        logFile.%d{yyyy-MM-dd_HH-mm}.log.zip
+      </FileNamePattern>
+    </rollingPolicy>
+
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>
+        %d{HH:mm:ss,SSS} [%thread] %-5level %logger{32} - %msg%n
+      </Pattern>
+    </layout>
+  </appender>
+
+  <root>
+    <level value="DEBUG"/>
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="FILE"/>
+  </root>
+
+  <!--<include file="/tmp/logback-demo.xml"/>-->
+
+</configuration>

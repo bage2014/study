@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>用户登录</title>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+</head>
+<body>
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+					aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">JWT</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">用户登录 <span class="sr-only">(current)</span></a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">菜单 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">页面跳转</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="javascript:getAjaxData()">请求数据</a></li>
+						</ul></li>
+				</ul>
+				<form class="navbar-form navbar-left">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="输入搜索条件">
+					</div>
+					<button type="submit" class="btn btn-default">查询</button>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">[未登录]</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">下拉菜单 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">注册</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">退出</a></li>
+						</ul></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+	<div class="container">
+
+		<form action="user/index" th:attr="action=@{/user/login}" method="POST">
+			<div class="form-group">
+				<label for="account">账号</label> <input
+					type="text" class="form-control" id="account" name="account" value="bage"
+					placeholder="账号">
+			</div>
+			<div class="form-group">
+				<label for="password">密码</label> <input
+					type="password" class="form-control" id="password" name="password" value="bage"
+					placeholder="password">
+			</div>
+
+			<div class="checkbox">
+				<label> <input type="checkbox" checked="checked"> 记住密码
+				</label>
+			</div>
+			<button type="button" class="btn btn-primary pull-right" onclick="login()">登录</button>
+		</form>
+	</div>
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script th:attr="src=@{/resources/framework/ajax/ajax.js}" src="../../../resources/framework/ajax/ajax.js" ></script>
+
+<script type="text/javascript">
+
+	/**
+	 * 通过ajax从后台请求数据
+	 * @returns
+	 */
+	function getAjaxData(){
+		
+		$.ajax({ 
+			url: "user/me", 
+			success: function(res){
+	        	alert(res);
+	      	}
+		});
+	} 
+	
+	
+	/**
+	 * 通过ajax从后台请求数据
+	 * @returns
+	 */
+	function login(){
+		
+		var param = "account=" + $("#account").val() + "&password=" + $("#password").val();
+		$.ajax({ 
+			url: "user/login", 
+			type : 'POST',
+			data : param,
+			success: function(res){
+				
+	        	if(res != ""){
+	        		
+	        		res = JSON.parse(res);
+	        		setExpirationDate(res.expirationDate);
+	        		setServerDate(res.serverDate);
+
+	        		//alert("登录成功");
+	        		setCurrentUser($("#account").val());
+	        		setToken(res.jws);
+
+	        		location.href = "user/index.html";
+	        		
+	        	} else {
+	        		alert("登录失败,用户名密码要相同");
+	        	}
+	      	}
+		});
+	} 
+	
+
+</script>
+
+</html>

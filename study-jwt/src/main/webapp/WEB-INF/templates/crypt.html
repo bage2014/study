@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>用户信息</title>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+</head>
+<body>
+
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+					aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Crypt</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">测试加解密<span class="sr-only">(current)</span></a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">菜单 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">页面跳转</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="javascript:getAjaxData()">请求数据</a></li>
+						</ul></li>
+				</ul>
+				<form class="navbar-form navbar-left">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="输入搜索条件">
+					</div>
+					<button type="submit" class="btn btn-default">查询</button>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" id="current_user"></a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">下拉菜单 <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">注册</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a th:attr="href=@{/user/logout}">退出</a></li>
+						</ul></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+	<div class="container">
+		<div class="row">
+			<form class="form-horizontal">
+			  <div class="form-group">
+			    <label for="text1" class="col-sm-2 control-label">加密前</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="text1" placeholder="text1">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="text2" class="col-sm-2 control-label">加密后</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="text2" placeholder="text2">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-4">
+			      <button type="button" class="btn btn-default" onclick="encrypt()">加密</button>
+			    </div>
+			    <div class="col-sm-offset-2 col-sm-4">
+			      <button type="button" class="btn btn-primary" onclick="decrypt()">解密</button>
+			    </div>
+			  </div>
+			</form>
+		</div>
+		
+		<div class="row">
+				
+			<!-- Standard button -->
+			<button type="button" class="btn btn-default">（默认样式）Default</button>
+			
+			<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+			<button type="button" class="btn btn-primary">（首选项）Primary</button>
+			
+			<!-- Indicates a successful or positive action -->
+			<button type="button" class="btn btn-success">（成功）Success</button>
+			
+			<!-- Contextual button for informational alert messages -->
+			<button type="button" class="btn btn-info">（一般信息）Info</button>
+			
+			<!-- Indicates caution should be taken with this action -->
+			<button type="button" class="btn btn-warning">（警告）Warning</button>
+			
+			<!-- Indicates a dangerous or potentially negative action -->
+			<button type="button" class="btn btn-danger">（危险）Danger</button>
+			
+			<!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
+			<button type="button" class="btn btn-link">（链接）Link</button>
+		</div>
+	
+	</div>
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+<!-- <script type="text/javascript" src="../../../resources/js/index.js" th:src="@{/resources/js/index.js}"></script>
+ -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!-- <script src="https://unpkg.com/crypto-js/crypto-js.js"></script> -->
+<script src="../../../resources/js/crypto.js"></script>
+<script src="../../../resources/js/crypt.js"></script>
+
+<script type="text/javascript">
+
+	var key = "bagebagebagebagebagege";
+
+	function encrypt(){
+		var text2 = encryptAes($("#text1").val(),key);
+		$("#text2").val(text2);
+	}
+	
+	function decrypt(){
+		var text1 = decryptAes($("#text2").val(),key);
+		$("#text1").val(text1);
+	}
+	
+</script>
+
+
+</html>
