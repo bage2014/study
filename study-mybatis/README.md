@@ -19,8 +19,9 @@ src\main\java\com\bage\study\mybatis 目录下
   
 - settings 设置，修改mybatis的配置
   - 缓存、主键、执行器等，MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为
-  
+  - 详见：[http://www.mybatis.org/mybatis-3/zh/configuration.html#settings](http://www.mybatis.org/mybatis-3/zh/configuration.html#settings "settings设置说明")
 - typeAliases 类型别名，用来减少类完全限定名的冗余
+  - 可以通过 包名配置、类配置、或者注解实现别名设置
   - 类型别名是为 Java 类型设置一个短的名字。它只和 XML 配置有关
   - 主要有 类型别名、包别名和注解别名
   - 常见 Java 类型内建的相应的类型别名
