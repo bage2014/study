@@ -116,6 +116,9 @@
 	    <typeAlias alias="Weather" type="com.bage.study.mybatis.Weather"/> <!--类设置别名，也可以使用注解详见com.bage.study.mybatis.Weather -->
 		<package name="domain.blog"/> <!--包设置别名-->
 		<!-- 也可以在类里面进行设置 详见 com.bage.study.mybatis.Weather  -->
+
+		<package name="com.bage.study.mybatis.springboot.user.domain"/>
+
 	</typeAliases>
 
 	<!--类型处理-->
@@ -175,5 +178,6 @@
 
 	<mappers>
 		<mapper resource="WeatherMapper.xml" />
+		<mapper resource="com/bage/study/mybatis/springboot/user/userMapper.xml"/>
 	</mappers>
 </configuration>
