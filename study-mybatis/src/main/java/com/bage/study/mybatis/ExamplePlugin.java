@@ -14,6 +14,7 @@ import org.apache.ibatis.plugin.Signature;
 @Intercepts({ @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }) })
 public class ExamplePlugin implements Interceptor {
 	public Object intercept(Invocation invocation) throws Throwable {
+		System.out.println("要更新了哦");
 		return invocation.proceed();
 	}
 
