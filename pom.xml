@@ -82,5 +82,6 @@
     <module>study-spring-boot-test</module>
     <module>study-materialize-spring-boot</module>
       <module>study-leancloud</module>
+      <module>study-downtime</module>
   </modules>
 </project>
