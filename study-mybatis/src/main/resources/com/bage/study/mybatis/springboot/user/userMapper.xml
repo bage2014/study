@@ -16,6 +16,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bage.study.mybatis.springboot.user.dao.UserMapper">
     <select id="queryAll" resultType="User">
-        select * from users
+        select * from org_user
     </select>
 </mapper>

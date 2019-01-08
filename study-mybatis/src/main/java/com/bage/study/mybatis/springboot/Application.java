@@ -32,21 +32,21 @@ public class Application implements CommandLineRunner {
 
         log.info("-------------初始化数据库-----------");
 
-        jdbcTemplate.execute("DROP TABLE users IF EXISTS");
-        jdbcTemplate.execute("CREATE TABLE users(" 
+        jdbcTemplate.execute("DROP TABLE org_user IF EXISTS");
+        jdbcTemplate.execute("CREATE TABLE org_user("
         		+ "id SERIAL, "
-                + "name VARCHAR(255)"
+                + "name VARCHAR(255),"
+                + "sex VARCHAR(8) "
                 + ")");
 
         // Split up the array of whole names into an array of first/last names
-        List<String> names = Arrays.asList("John Woo", "Jeff Dean", "Josh Bloch", "Josh Long");
-
-        List<Object[]> params = new ArrayList<Object[]>(names.size());
-        for(int i = 0;i < names.size(); i++) {
-        	params.add(new Object[] {names.get(i)});
+        int n = 10;
+        List<Object[]> params = new ArrayList<Object[]>(n);
+        for(int i = 0;i < n; i++) {
+        	params.add(new Object[] {"姓名" + (i + 1), i % 2 + 1});
         }
 		// Uses JdbcTemplate's batchUpdate operation to bulk load data
-        jdbcTemplate.batchUpdate("INSERT INTO users(name) VALUES (?)", params );
+        jdbcTemplate.batchUpdate("INSERT INTO org_user(name,sex) VALUES (?,?)", params );
 
         log.info("-------------初始化结束------------");
         

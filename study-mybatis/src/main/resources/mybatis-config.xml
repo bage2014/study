@@ -136,7 +136,7 @@
 	  </plugin>
 	</plugins>
 
-	<environments default="development">
+	<environments default="dev-h2">
 	
 		<!-- MySQL数据库配置 -->
 		<environment id="development">
@@ -159,6 +159,19 @@
 				<property name="password" value="postgres" />
 			</dataSource>
 		</environment>
+
+
+		<!-- PostgreSQL数据库配置 -->
+		<environment id="dev-h2">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="org.h2.Driver"/>
+				<property name="url" value="jdbc:h2:~/myDb"/>
+				<property name="username" value="sa" />
+				<property name="password" value="root" />
+			</dataSource>
+		</environment>
+
 	</environments>
 
 	<databaseIdProvider type="DB_VENDOR">

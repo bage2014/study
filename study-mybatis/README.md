@@ -1,15 +1,21 @@
-# study-mybatis
+# study-mybatis  #
 学习mybatis的笔记<br>
 TODO 有待继续了解 typeHandlers、处理枚举类型...
 
-## 参考链接
-MyBatis 官网： [http://www.mybatis.org/mybatis-3/zh/configuration.html](http://www.mybatis.org/mybatis-3/zh/configuration.html "MyBatis官网")
+## 参考链接 ##
+- MyBatis 官网： [http://www.mybatis.org/mybatis-3/zh/configuration.html](http://www.mybatis.org/mybatis-3/zh/configuration.html "MyBatis官网")
+- H2 官网： [http://www.h2database.com/html/tutorial.html#connecting_using_jdbc](http://www.h2database.com/html/tutorial.html#connecting_using_jdbc "H2数据库入门")
 
-## 项目说明
-src\main\java\com\bage\study\mybatis 目录下
-- tutorial 入门程序
+## 项目说明 ##
+- `src\main\java\com\bage\study\mybatis` 目录下
+ - `tutorial` 入门程序
+ - `springboot` Spring Boot的使用示例
 
-## XML 配置[顺序相对有序]
+## 请求用例 ##
+- Mapper注解：[http://localhost:8080/study-mybatis/user/all](http://localhost:8080/study-mybatis/user/all "Mapper注解查询数据")
+- XML配置：[http://localhost:8080/study-mybatis/user/1](http://localhost:8080/study-mybatis/user/1 "XML配置查询数据")
+- H2控制台（jdbc:h2:~/myDb@sa@root）：[http://localhost:8080/study-mybatis/h2-console/](http://localhost:8080/study-mybatis/h2-console/ "H2控制台")
+## XML 配置[顺序相对有序] ##
 详见 ： \src\main\resources\mybatis-config.xml
 
 - properties 属性，用于设置一些变量值，配置属性
@@ -24,35 +30,7 @@ src\main\java\com\bage\study\mybatis 目录下
   - 可以通过 包名配置、类配置、或者注解实现别名设置
   - 类型别名是为 Java 类型设置一个短的名字。它只和 XML 配置有关
   - 主要有 类型别名、包别名和注解别名
-  - 常见 Java 类型内建的相应的类型别名
-  -     别名	映射的类型
-        _byte	byte
-        _long	long
-        _short	short
-        _int	int
-        _integer	int
-        _double	double
-        _float	float
-        _boolean	boolean
-        string	String
-        byte	Byte
-        long	Long
-        short	Short
-        int	Integer
-        integer	Integer
-        double	Double
-        float	Float
-        boolean	Boolean
-        date	Date
-        decimal	BigDecimal
-        bigdecimal	BigDecimal
-        object	Object
-        map	Map
-        hashmap	HashMap
-        list	List
-        arraylist	ArrayList
-        collection	Collection
-        iterator	Iterator
+  - [常见 Java 类型内建的相应的类型别名](http://www.mybatis.org/mybatis-3/zh/configuration.html "详见官网typeAliases")       
         
 - typeHandlers 类型处理器，SQL和Java类型的转化
   - 无论是 MyBatis 在预处理语句（PreparedStatement）中设置一个参数时，还是从结果集中取出一个值时， 都会用类型处理器将获取的值以合适的方式转换成 Java 类型

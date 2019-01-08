@@ -4,13 +4,15 @@ public class User {
 
     private String id;
     private String name;
-    
+	private String sex;
+
 	public User() {
 	}
-	public User(String id, String name) {
+	public User(String id, String name, String sex) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.sex = sex;
 	}
 	public String getId() {
 		return id;
@@ -24,11 +26,21 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + "]";
+
+	public String getSex() {
+		return sex;
 	}
 
-    
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 
+	@Override
+	public String toString() {
+		return "User{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", sex='" + sex + '\'' +
+				'}';
+	}
 }

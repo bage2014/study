@@ -11,7 +11,7 @@ public class UserDaoImp implements UserDao {
 	@Cacheable("books")
     public User getUserById(String id) {
         simulateSlowService();
-        return new User(id, "Some book");
+        return new User(id, "缓存用户","1");
     }
 
     // Don't do this at home
