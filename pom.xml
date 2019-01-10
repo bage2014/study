@@ -84,5 +84,6 @@
       <module>study-leancloud</module>
       <module>study-downtime</module>
     <module>study-xfyun-lfasr</module>
+      <module>study-baidu-asr</module>
   </modules>
 </project>
