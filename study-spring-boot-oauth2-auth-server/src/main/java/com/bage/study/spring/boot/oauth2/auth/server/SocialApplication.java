@@ -66,6 +66,7 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
 		  List<Filter> filters = new ArrayList<Filter>();
 		  filters.add(ssoFilter(facebook(), "/login/facebook"));
 		  filters.add(ssoFilter(github(), "/login/github"));
+		  filters.add(ssoFilter(local(), "/login/local"));
 		  filter.setFilters(filters);
 		  return filter;
 		}
@@ -89,6 +90,12 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
 	  @Bean
 	  @ConfigurationProperties("facebook")
 	  public ClientResources facebook() {
+	    return new ClientResources();
+	  }
+
+	  @Bean
+	  @ConfigurationProperties("local")
+	  public ClientResources local() {
 	    return new ClientResources();
 	  }
 //	  private Filter ssoFilter() {
