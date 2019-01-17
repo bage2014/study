@@ -85,5 +85,6 @@
       <module>study-downtime</module>
     <module>study-xfyun-lfasr</module>
       <module>study-baidu-asr</module>
+      <module>study-spring-boot-docker</module>
   </modules>
 </project>
