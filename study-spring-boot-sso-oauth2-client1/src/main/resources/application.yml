@@ -1,0 +1,22 @@
+logging:
+  level:
+    root: debug
+server:
+  port: 8001
+  servlet:
+   context-path: /client1
+
+security:
+  oauth2:
+    client:
+      client-id: SampleClientId
+      client-secret: secret
+      access-token-uri: http://localhost:8080/oauth/token
+      user-authorization-uri: http://localhost:8080/oauth/authorize
+    resource:
+      user-info-uri: http://localhost:8080/user/me
+
+spring:
+  thymeleaf:
+    cache: false
+       

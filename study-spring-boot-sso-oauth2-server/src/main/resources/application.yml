@@ -1,13 +1,3 @@
 logging:
   level:
     root: DEBUG
-  
-security:
-  oauth2:
-    client:
-      client-id: acme
-      client-secret: acmesecret
-      scope: read,write
-      auto-approve-scopes: '.*'
-      authorized-grant-types: authorization_code,refresh_token,password
-      

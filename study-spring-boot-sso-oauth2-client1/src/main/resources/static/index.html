@@ -7,30 +7,23 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width"/>
     <base href="/"/>
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
 </head>
 <body>
 	<h1>Demo</h1>
 	<div class="container">
+		<h1>Login</h1>
 		<div class="container unauthenticated">
 			<div>
-				With Facebook: <a href="/client1/login/facebook">click here</a>
-			</div>
-			<div>
-				With Github: <a href="/client1/login/github">click here</a>
-			</div>
-			<div>
-				With Local: <a href="/client1/login/local">click here</a>
-			</div>
+		    With Local: <a href="client1/protectresource">click here</a>
+		   </div>
 		</div>
-		<div class="container authenticated" style="display: none">
-			Logged in as: <span id="user"></span>
-			<div>
-				<button onClick="logout()" class="btn btn-primary">Logout</button>
-			</div>
+		<div class="container authenticated" style="display:none">
+		    Logged in as: <span id="user"></span>
+		  <div>
+		    <button onClick="logout()" class="btn btn-primary">Logout</button>
+		  </div>
 		</div>
 	</div>
 </body>
@@ -41,7 +34,6 @@
         $(".unauthenticated").hide()
         $(".authenticated").show()
     });
-    
     var logout = function() {
         $.post("/logout", function() {
             $("#user").html('');
@@ -50,7 +42,6 @@
         })
         return true;
     }
-    
     $.ajaxSetup({
     	beforeSend : function(xhr, settings) {
     	  if (settings.type == 'POST' || settings.type == 'PUT'
