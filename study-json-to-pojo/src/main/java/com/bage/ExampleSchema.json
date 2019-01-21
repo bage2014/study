@@ -1,0 +1,38 @@
+{
+    "name":"Product",
+    "properties":{
+        "id":{
+            "type":"number",
+            "description":"Product identifier",
+            "required":true
+        },
+        "name":{
+            "description":"Name of the product",
+            "type":"string",
+            "required":true
+        },
+        "price":{
+            "required":true,
+            "type":"number",
+            "minimum":0
+        },
+        "tags":{
+            "type":"array",
+            "items":{
+                "type":"string"
+            }
+        },
+        "dateList":{
+            "type":"array",
+            "items":{
+                "type":"string",
+                "format":"date-time",
+                
+            },
+            "description":"This is an example of a list of dates",
+            "title":"Date List",
+            
+        },
+        
+    }
+}
