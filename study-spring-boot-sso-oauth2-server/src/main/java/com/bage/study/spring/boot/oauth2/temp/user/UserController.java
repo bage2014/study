@@ -1,17 +1,29 @@
-package com.bage.study.spring.boot.oauth2.server;
+package com.bage.study.spring.boot.oauth2.temp.user;
 
 
 import java.security.Principal;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
 
+    @Autowired
+    UserService userService;
+
     @RequestMapping("/user/me")
     public Principal user(Principal principal) {
         System.out.println(principal);
         return principal;
     }
+
+
+    @RequestMapping("/user/all")
+    public List<User> all() {
+        return userService.queryAll();
+    }
+
 }
