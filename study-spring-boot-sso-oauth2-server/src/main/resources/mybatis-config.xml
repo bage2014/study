@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!--别名-->
+	<typeAliases>
+		<package name="com.bage.study.spring.boot.oauth2.temp.user"/>
+	</typeAliases>
+
+	<!--类型处理-->
+
+	<environments default="dev-h2">
+	
+		<!-- MySQL数据库配置 -->
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+        		<property name="url" value="${url}"/>
+        		<property name="username" value="${username}"/>
+        		<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+		
+		<!-- PostgreSQL数据库配置 -->
+		<environment id="product">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+			  	<property name="driver" value="org.postgresql.Driver" />
+				<property name="url" value="jdbc:postgresql://localhost:5432/postgres" />
+				<property name="username" value="postgres" />
+				<property name="password" value="postgres" />
+			</dataSource>
+		</environment>
+
+
+		<!-- PostgreSQL数据库配置 -->
+		<environment id="dev-h2">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="org.h2.Driver"/>
+				<property name="url" value="jdbc:h2:~/myDb"/>
+				<property name="username" value="sa" />
+				<property name="password" value="root" />
+			</dataSource>
+		</environment>
+
+	</environments>
+
+	<databaseIdProvider type="DB_VENDOR">
+		<property name="SQL Server" value="sqlserver" />
+		<property name="DB2" value="db2" />
+		<property name="Oracle" value="oracle" />
+		<property name="MySQL" value="mysql" />
+		<property name="H2" value="h2" />
+		<property name="Derby" value="derby" />
+		<property name="HSQL" value="hsql" />
+		<property name="Informix" value="informix" />
+		<property name="MS-SQL" value="ms-sql" />
+		<property name="PostgreSQL" value="postgresql" />
+		<property name="Sybase" value="sybase" />
+		<property name="Hana" value="hana" />
+	</databaseIdProvider>
+
+	<mappers>
+		<mapper resource="userMapper.xml"/>
+	</mappers>
+</configuration>

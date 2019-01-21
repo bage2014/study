@@ -86,5 +86,6 @@
     <module>study-xfyun-lfasr</module>
       <module>study-baidu-asr</module>
       <module>study-spring-boot-docker</module>
+    <module>study-json-to-pojo</module>
   </modules>
 </project>

@@ -1,3 +1,12 @@
 logging:
   level:
     root: DEBUG
+spring:
+  h2:
+    console:
+      settings:
+        web-allow-others: true
+        path: h2-console
+        enable: true
+#mybatis:
+#  config-location: classpath:mybatis-config.xml

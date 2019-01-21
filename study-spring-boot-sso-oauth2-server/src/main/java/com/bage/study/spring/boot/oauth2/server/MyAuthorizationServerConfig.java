@@ -24,8 +24,13 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 @EnableAuthorizationServer
 public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
+    /*
     @Autowired
     PasswordEncoder passwordEncoder;
+*/
+    @Resource
+    private DataSource dataSource;
+
 
     /**
      * 配置授权服务器的安全，意味着实际上是/oauth/token端点。
@@ -44,7 +49,9 @@ public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAd
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        // .jdbc(dataSource);
+        clients.jdbc(dataSource);
+
+       /*
         clients.inMemory()
                 .withClient("SampleClientId")
                 .secret(passwordEncoder.encode("secret"))
@@ -54,6 +61,7 @@ public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAd
                 .redirectUris("http://localhost:8001/client1/login")
         // .accessTokenValiditySeconds(3600)
         ; // 1 hour
+        */
     }
 
     /**
