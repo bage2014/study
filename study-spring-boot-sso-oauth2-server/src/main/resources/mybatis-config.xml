@@ -65,6 +65,6 @@
 	</databaseIdProvider>
 
 	<mappers>
-		<mapper resource="userMapper.xml"/>
+		<!--<mapper resource="userMapper.xml"/>-->
 	</mappers>
 </configuration>
