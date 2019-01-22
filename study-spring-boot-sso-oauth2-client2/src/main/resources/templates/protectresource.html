@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Demo</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <base href="/"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
+</head>
+<body>
+	<h1>Demo</h1>
+	<div class="container">
+		<h1>Login</h1>
+		<div class="container authenticated" style="display:none">
+		    Logged in as: <span id="user"></span>
+		  <div>
+		    <button onClick="logout()" class="btn btn-primary">Logout</button>
+		  </div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+    $.get("/client2/user", function(data) {
+        $("#user").html(data.userAuthentication.details.name);
+        $(".unauthenticated").hide()
+        $(".authenticated").show()
+    });
+    var logout = function() {
+        $.post("/client1/logout", function() {
+            $("#user").html('');
+            $(".unauthenticated").show();
+            $(".authenticated").hide();
+        })
+        return true;
+    }
+
+</script>
+
+</html>

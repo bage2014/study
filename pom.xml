@@ -87,5 +87,6 @@
       <module>study-baidu-asr</module>
       <module>study-spring-boot-docker</module>
     <module>study-json-to-pojo</module>
+      <module>study-spring-boot-sso-oauth2-client2</module>
   </modules>
 </project>
