@@ -1,7 +1,7 @@
 # study-web #
 Web学习笔记
 ## 功能说明 ##
-- GET 和 POST的区别: 详情请查看 com.bage.web.getpost
+- GET 和 POST的区别: 详情请查看 `com.bage.web.getpost`
  - GET 请求查询字符串（名称/值对）是在URL 中发送的
  - GET 请求可被缓存
  - GET 请求保留在浏览器历史记录中
@@ -25,10 +25,16 @@ Web学习笔记
         对数据类型的限制	    只允许 ASCII 字符。	            没有限制。也允许二进制数据。
         安全性                    较差                           密码或其他敏感信息时绝必须使用 POST，参数不会被保存在浏览器历史或 web 服务器日志
  		
-- 自定义HttpServletRequestWrapper和HttpServletResponseWrapper: com.bage.web.reqres
+- 自定义HttpServletRequestWrapper和HttpServletResponseWrapper: `com.bage.web.reqres`
  -  用于封装自定义的request和response，统一设置设置cookie等
  
-- 重写ajax,增加自定义参数： src\main\webapp\ajax
-- ajax请求监听：src\main\webapp\ajax-hook
-- Ztree基本使用： src\main\webapp\ztree
+- 重写ajax,增加自定义参数： `src\main\webapp\ajax`
+- ajax请求监听：`src\main\webapp\ajax-hook`
+- Ztree基本使用： `src\main\webapp\ztree`
 
+## Cookie、Session ##
+- cookie数据存放在客户的浏览器上，session数据放在服务器上。
+- cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗，考虑到安全应当使用session。
+- session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie。
+- 单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。
+- 可以考虑将登陆信息等重要信息存放为session，其他信息如果需要保留，可以放在cookie中。
