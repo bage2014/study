@@ -60,7 +60,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(basePackageClasses = {PetController.class})
 public class Swagger2SpringBoot {
 
  public static void main(String[] args) {
