@@ -89,5 +89,6 @@
     <module>study-json-to-pojo</module>
       <module>study-spring-boot-sso-oauth2-client2</module>
       <module>study-dbschema-to-json</module>
+      <module>study-hanlp</module>
   </modules>
 </project>
