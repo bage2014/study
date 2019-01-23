@@ -16,4 +16,4 @@ spring boot 集成 swagger
 
 [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html "访问地址")
 
-![访问截图](https://github.com/bage2014/study/tree/master/study-swagger/src/main/webapp/resources/index.png)
+![访问截图](https://github.com/bage2014/study/blob/659613cc4a9fc43ab16de29c3a0390a4b4e326fc/study-swagger/src/main/webapp/resources/index.png)
