@@ -91,5 +91,6 @@
       <module>study-dbschema-to-json</module>
       <module>study-hanlp</module>
       <module>study-code-generator</module>
+      <module>study-websocket</module>
   </modules>
 </project>
