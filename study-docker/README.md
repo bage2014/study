@@ -68,14 +68,23 @@ Most users set up Docker’s repositories and install from them, for ease of ins
 ### 查看docker 信息 ###
     docker inspect ${containerId}
 
+
 ### 进入容器 ###
     docker exec -it ${containerID} /bin/bash
+
+### 删除image ###
+    docker rmi ${iamge:v}
 
 ### 宿主机拷贝到容器 ###
     docker cp sourcePath ${containerId}:destinationPath
 
 ### 容器拷贝到宿主机 ###
     docker cp ${containerId}:destinationPath sourcePath 
+
+### 保存一个congtainer到 image ###
+    docker commit ${containerId} image:v 
+
+docker  23c18d958279 bigdata:v0.2
 
 ### 保存一个image ###
     docker save -o ./workspace/docker/tomcat0.1.tar tomcat:0.1 
@@ -159,7 +168,7 @@ connect to it from an application
        datedate
     );
 
-### 安装配置Nginx ###	
+### 安装配置Nginx ###
 下载安装：
 
     docker pull nginx
@@ -171,13 +180,30 @@ connect to it from an application
     docker exec -it tmp-nginx-container /bin/bash
 默认配置文件位置：
 
-    /etc/nginx/nginx.conf
+    /etc/nginx/nginx.conf 
+和
+
+    /etc/nginx/conf.d/default.conf
+
+新建一个临时编辑目录：
+
+    mkdir -p /home/bage/workspace/docker/docker/
 拷贝配置文件出来进行编辑:
 
-    docker cp tmp-nginx-container:/etc/nginx/nginx.conf /home/bage/workspace/docker/docker/
+    docker cp tmp-nginx-container:/etc/nginx/conf.d/default.conf /home/bage/workspace/docker/docker/
 编辑修改后进行返回：
 
     docker cp /home/bage/workspace/docker/docker/ tmp-nginx-container:/etc/nginx/nginx.conf
+
+基本应用
+
+- 参考链接
+  - Nginx的一些基本功能 [https://www.cnblogs.com/jimmy-muyuan/p/5424329.html](https://www.cnblogs.com/jimmy-muyuan/p/5424329.html "Nginx的一些基本功能")
+#### 实例 ####
+
+##### 静态HTTP服务器(配置和代码)  #####
+    study-linux/src/main/resources/nginx-http-static
+
 
 ### 安装配置Nexus[非官方] ###
 下载
