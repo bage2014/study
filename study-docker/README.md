@@ -204,6 +204,8 @@ connect to it from an application
 ##### 静态HTTP服务器(配置和代码)  #####
     study-linux/src/main/resources/nginx-http-static
 
+##### 代理服务器(配置和代码)  #####
+    study-linux/src/main/resources/nginx-proxy
 
 ### 安装配置Nexus[非官方] ###
 下载
