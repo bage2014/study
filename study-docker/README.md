@@ -207,6 +207,10 @@ connect to it from an application
 ##### 代理服务器(配置和代码)  #####
     study-linux/src/main/resources/nginx-proxy
 
+##### 负载均衡(配置和代码)  #####
+    study-linux/src/main/resources/nginx-upstream
+
+
 ### 安装配置Nexus[非官方] ###
 下载
 
