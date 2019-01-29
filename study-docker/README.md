@@ -199,6 +199,7 @@ connect to it from an application
 
 - 参考链接
   - Nginx的一些基本功能 [https://www.cnblogs.com/jimmy-muyuan/p/5424329.html](https://www.cnblogs.com/jimmy-muyuan/p/5424329.html "Nginx的一些基本功能")
+  - Nginx详解-服务器集群 [https://www.cnblogs.com/jiekzou/p/4486447.html](https://www.cnblogs.com/jiekzou/p/4486447.html "Nginx详解-服务器集群")
 #### 实例 ####
 
 ##### 静态HTTP服务器(配置和代码)  #####
@@ -207,7 +208,7 @@ connect to it from an application
 ##### 代理服务器(配置和代码)  #####
     study-linux/src/main/resources/nginx-proxy
 
-##### 负载均衡(配置和代码)  #####
+##### 负载均衡(简单轮询)  #####
     study-linux/src/main/resources/nginx-upstream
 
 
@@ -237,6 +238,19 @@ connect to it from an application
 ... or via redis-cli
 
     $ docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
+
+设置密码(启动时候)
+
+    docker run -p 6379:6379 --name my-redis -d redis --requirepass "bage"
+
+### 安装配置RabbitMQ ###
+参考链接：[https://hub.docker.com/_/rabbitmq](https://hub.docker.com/_/rabbitmq "安装配置RabbitMQ")
+
+Docker Pull Command
+
+    docker pull rabbitmq
+
+
 
 
 ### 常见错误 ###
