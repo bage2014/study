@@ -231,7 +231,7 @@ Docker Pull Command
     docker pull redis
 start a redis instance
 
-    $ docker run --name some-redis -d redis
+    $ docker run -p 6379:6379 --name some-redis -d redis
 connect to it from an application
 
     $ docker run --name some-app --link some-redis:redis -d application-that-uses-redis
@@ -249,6 +249,15 @@ connect to it from an application
 Docker Pull Command
 
     docker pull rabbitmq
+
+
+### 安装配置shipyard ###
+参考链接：[https://hub.docker.com/r/shipyard/shipyard](https://hub.docker.com/r/shipyard/shipyard "安装配置shipyard")
+
+Docker Pull Command
+
+    docker pull shipyard/shipyard
+
 
 
 
