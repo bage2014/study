@@ -8,4 +8,3 @@
 ### 参数配置(VM Options) ###
 - `-XX:+PrintGCDetails` 打印日志参数
 - `-Xmx –Xms`：指定最大堆和最小堆
-
