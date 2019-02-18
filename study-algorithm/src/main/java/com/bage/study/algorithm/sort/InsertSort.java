@@ -1,5 +1,7 @@
 package com.bage.study.algorithm.sort;
 
+import com.bage.study.algorithm.PrintUtils;
+
 /**
  * 插入排序：https://www.lintcode.com/problem/sort-integers/description
  *
@@ -7,32 +9,12 @@ package com.bage.study.algorithm.sort;
 public class InsertSort {
 
     public static void main(String[] args) {
-
-        int a[] = {2,1,3,54,6,7,9,2,4};
-
-        InsertSort  InsertSort = new InsertSort();
-        InsertSort.insertSort(a);
-        InsertSort.myPrint(a);
+        int a[] = {2,1,3,8,6,7,9,5,4};
+        new InsertSort().insertSort(a);
+        PrintUtils.print(a);
     }
 
-    private void myPrint(int[] a) {
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + "\t");
-        }
-        System.out.println();
-    }
-
-    /**
-     * @param A: an integer array
-     * @return: nothing
-     */
-    public void sortIntegers(int[] A) {
-        // write your code here
-        insertSort(A);
-    }
-
-    private void insertSort(int[] a) {
-
+    public void insertSort(int[] a) {
         int currentValue = 0;
         int targetIndex = 0;
         for (int i = 0; i < a.length; i++) { // 从第一个开始
