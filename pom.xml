@@ -92,5 +92,6 @@
       <module>study-hanlp</module>
       <module>study-code-generator</module>
       <module>study-websocket</module>
+      <module>study-spring-boot-mybatis-oracle</module>
   </modules>
 </project>
