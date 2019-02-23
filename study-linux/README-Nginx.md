@@ -24,3 +24,7 @@ Nginx学习笔记
 Nginx的一个 杀手级特性 就是你能使用 debug_connection 指令只调试 某些 连接。
 
 这个设置只有是你使用 --with-debug 编译的nginx才有效。
+
+## 核心模块 ##
+- 主模块
+- 事件模块
