@@ -1,0 +1,13 @@
+server:
+  port: 8080
+  
+Spring:
+    datasource:
+      url: jdbc:oracle:thin:@localhost:1521/ORCL
+        username: username
+        password: password
+        driver-class-name: oracle.jdbc.OracleDriver
+        # type: com.alibaba.druid.pool.DruidDataSource
+    
+mybatis:
+  config-location: classpath:mybatis-config.xml
