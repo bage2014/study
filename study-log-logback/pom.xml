@@ -26,7 +26,6 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>${lb.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -37,7 +36,6 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-access</artifactId>
       <version>${lb.version}</version>
-      <scope>provided</scope>
     </dependency>
 
   </dependencies>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +41,15 @@ public class Application implements CommandLineRunner {
                 + ")");
 
         // Split up the array of whole names into an array of first/last names
-        int n = 10;
+        int n = 100;
         List<Object[]> params = new ArrayList<Object[]>(n);
         for(int i = 0;i < n; i++) {
         	params.add(new Object[] {"姓名" + (i + 1), i % 2 + 1});
         }
 		// Uses JdbcTemplate's batchUpdate operation to bulk load data
         jdbcTemplate.batchUpdate("INSERT INTO org_user(name,sex) VALUES (?,?)", params );
+
+        PageHelper.startPage(1, 20);
 
         log.info("-------------初始化结束------------");
         
