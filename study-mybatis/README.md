@@ -5,6 +5,8 @@ TODO 有待继续了解 typeHandlers、处理枚举类型...
 ## 参考链接 ##
 - MyBatis 官网： [http://www.mybatis.org/mybatis-3/zh/configuration.html](http://www.mybatis.org/mybatis-3/zh/configuration.html "MyBatis官网")
 - H2 官网： [http://www.h2database.com/html/tutorial.html#connecting_using_jdbc](http://www.h2database.com/html/tutorial.html#connecting_using_jdbc "H2数据库入门")
+- 分页插件：[https://github.com/pagehelper/Mybatis-PageHelper](https://github.com/pagehelper/Mybatis-PageHelper)
+- Spring Boot 集成分页插件：[https://github.com/pagehelper/pagehelper-spring-boot](https://github.com/pagehelper/pagehelper-spring-boot)
 
 ## 项目说明 ##
 - `src\main\java\com\bage\study\mybatis` 目录下
