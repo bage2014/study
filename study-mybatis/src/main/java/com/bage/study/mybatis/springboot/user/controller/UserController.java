@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bage.study.mybatis.springboot.user.domain.User;
 import com.bage.study.mybatis.springboot.user.service.UserService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
