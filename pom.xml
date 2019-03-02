@@ -93,5 +93,6 @@
       <module>study-code-generator</module>
       <module>study-websocket</module>
       <module>study-spring-boot-mybatis-oracle</module>
+      <module>study-jmeter</module>
   </modules>
 </project>
