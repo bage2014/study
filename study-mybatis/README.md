@@ -48,4 +48,23 @@ TODO 有待继续了解 typeHandlers、处理枚举类型...
 - mappers 映射器
 
 
+## 缓存 ##
+### 参考链接 ###
+MyBatis 一、二级缓存和自定义缓存 [https://www.cnblogs.com/moongeek/p/7689683.html](https://www.cnblogs.com/moongeek/p/7689683.html)
 
+### 一级缓存 ###
+MyBatis **默认开启**了一级缓存，一级缓存是在SqlSession 层面进行缓存的。即，同一个SqlSession ，多次调用同一个Mapper和同一个方法的同一个参数，只会进行一次数据库查询，然后把数据缓存到缓冲中，以后直接先从缓存中取出数据，不会直接去查数据库。
+
+​ 但是不同的SqlSession对象，因为不用的SqlSession都是相互隔离的，所以相同的Mapper、参数和方法，他还是会再次发送到SQL到数据库去执行，返回结果。
+
+### 二级缓存 ###
+​ 为了克服一级缓存问题，需要开启二级缓存，是的缓存zaiSqlSessionFactory层面给各个SqlSession 对象共享。默认二级缓存是不开启的，需要手动进行配置
+
+    <cache/>
+
+映射文件所有的select 语句会被缓存
+映射文件的所有的insert、update和delete语句会刷新缓存
+缓存会使用默认的Least Recently Used（LRU，最近最少使用原则）的算法来回收缓存空间
+根据时间表，比如No Flush Interval，（CNFI，没有刷新间隔），缓存不会以任何时间顺序来刷新
+缓存会存储列表集合或对象（无论查询方法返回什么）的1024个引用
+缓存会被视为是read/write（可读/可写）的缓存，意味着对象检索不是共享的，而且可以很安全的被调用者修改，不干扰其他调用者或县城所作的潜在修改
