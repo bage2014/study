@@ -244,12 +244,25 @@ connect to it from an application
     docker run -p 6379:6379 --name my-redis -d redis --requirepass "bage"
 
 ### 安装配置RabbitMQ ###
-参考链接：[https://hub.docker.com/_/rabbitmq](https://hub.docker.com/_/rabbitmq "安装配置RabbitMQ")
+#### 参考链接 ####
+安装配置RabbitMQ [https://hub.docker.com/_/rabbitmq](https://hub.docker.com/_/rabbitmq)
 
+docker-library/official-images readme [https://github.com/docker-library/official-images/blob/master/README.md](https://github.com/docker-library/official-images/blob/master/README.md)
+
+#### 环境安装 ####
 Docker Pull Command
 
     docker pull rabbitmq
 
+启动
+    docker run -d --hostname my-rabbit --name some-rabbit-bage -p 15672:15672 -e RABBITMQ_DEFAULT_USER=bage -e RABBITMQ_DEFAULT_PASS=bage rabbitmq:3-management
+
+
+访问
+[http://localhost:15672](http://localhost:15672)
+
+账号/密码
+bage/bage
 
 ### 安装配置shipyard ###
 参考链接：[https://hub.docker.com/r/shipyard/shipyard](https://hub.docker.com/r/shipyard/shipyard "安装配置shipyard")
