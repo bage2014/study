@@ -62,3 +62,21 @@ Web学习笔记
 - header压缩，如上文中所言，对前面提到过HTTP1.x的header带有大量信息，而且每次都要重复发送，HTTP2.0使用encoder来减少需要传输的header大小，通讯双方各自cache一份header fields表，既避免了重复header的传输，又减小了需要传输的大小。
 
 - 服务端推送（server push），同SPDY一样，HTTP2.0也具有server push功能。
+
+
+## 代码规范 ##
+
+- 工程项目(UTF-8)
+- 目录（分模块）
+- 包(分模块)
+- 类（MVC、Exception、Base、Impl、Tests、Factory、Proxy）
+- 方法（驼峰、动名词、insert、delete、update、query）
+- 变量（英文、_、常量大写）
+- 大括号必须存在、运算符左右增加空格、缩进4空格
+- SQL、预编译、大小写
+- 数据库字段尽可能充分利用
+- 编写测试用例
+- 事务、业务逻辑、重写hashcode、equals、toString
+- 序列化增加属性不修改 serialVersionUID
+- switch 包含break、default
+- try-catch-finally区分异常、finally释放资源
