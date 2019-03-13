@@ -38,3 +38,20 @@ Web学习笔记
 - session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie。
 - 单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。
 - 可以考虑将登陆信息等重要信息存放为session，其他信息如果需要保留，可以放在cookie中。
+
+## 代码规范 ##
+
+- 工程项目(UTF-8)
+- 目录（分模块）
+- 包(分模块)
+- 类（MVC、Exception、Base、Impl、Tests、Factory、Proxy）
+- 方法（驼峰、动名词、insert、delete、update、query）
+- 变量（英文、_、常量大写）
+- 大括号必须存在、运算符左右增加空格、缩进4空格
+- SQL、预编译、大小写
+- 数据库字段尽可能充分利用
+- 编写测试用例
+- 事务、业务逻辑、重写hashcode、equals、toString
+- 序列化增加属性不修改 serialVersionUID
+- switch 包含break、default
+- try-catch-finally区分异常、finally释放资源
