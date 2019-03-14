@@ -9,5 +9,7 @@
 - `-XX:+PrintGCDetails` 打印日志参数
 - `-Xmx –Xms`：指定最大堆和最小堆
 
-
 new ArrayList().subList(0,1) 返回的不是ArrayList对象，而是SubList 
+
+subList 不是返回ArrayList，而是SubList
+
