@@ -13,3 +13,10 @@ new ArrayList().subList(0,1) 返回的不是ArrayList对象，而是SubList
 
 subList 不是返回ArrayList，而是SubList
 
+## TODO ##
+- 情景设计题目(比如秒杀)
+- 微服务技术组件预研(有技术对比)
+- hashmap 常用方式过程(大致的过程)
+- 多线程常用方法过程(常用方法、过程)
+- redis（分布式锁）
+- 分布式事务
