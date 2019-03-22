@@ -33,3 +33,4 @@ subList 不是返回ArrayList，而是SubList
 - 消息的堆积解决思路
 - 自己如何实现消息队列
 - 如何保证消息的有序性
+- redis集群
