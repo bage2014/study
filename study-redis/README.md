@@ -201,22 +201,31 @@ redis采用的是定期删除+惰性删除策略
     include /path/to/local.conf
 
 ## 集群 ##
+twitter/twemproxy [https://github.com/twitter/twemproxy](https://github.com/twitter/twemproxy)
+CodisLabs/codis [https://github.com/CodisLabs/codis](https://github.com/CodisLabs/codis)
 
 ### 方案选择 ###
 
 - redis主从方案
 一个Master可以有多个slave主机，支持链式复制；
+一个master可以拥有多个slave
+多个slave链接同一个master，也可以链接其它slave
+主从复制不会阻塞master,在同步数据时，master可以继续处理client请求.
+slave 配置为slave-read-only on需要升级为主节点或者写入配置文件中, 而不能在默认slave情况下直接设置master与slave断开后会检测心跳, 从新建立连接.
+可以直接copy DUMP文件从新重启master，在Master为空以后，slave同步数据会抹掉全部数据.
+
 
 - 官方cluster方案
 从redis 3.0版本开始支持redis-cluster集群，redis-cluster采用无中心结构，每个节点保存数据和整个集群状态，每个节点都和其他节点连接。redis-cluster是一种服务端分片技术
+![](http://https://upload-images.jianshu.io/upload_images/4720632-4168aef31d694023..png?imageMogr2/auto-orient/strip%7CimageView2/2/w/555/format/webp)
 
+- twemproxy代理方案
 
+- 哨兵模式
 
-twemproxy代理方案
+- codis
 
-哨兵模式
-
-codis
+Codis一个比较大的优点是可以不停机动态新增或删除数据节点，旧节点的数据也可以自动恢复到新节点。并且提供图形化的dashboard，方便集群管理
 
 客户端分片
 
