@@ -8,6 +8,10 @@
 - Redis 总结精讲 看一篇成高手系统-4 [https://blog.csdn.net/hjm4702192/article/details/80518856](https://blog.csdn.net/hjm4702192/article/details/80518856)
 - 【原创】分布式之redis复习精讲 [https://www.cnblogs.com/rjzheng/p/9096228.html](https://www.cnblogs.com/rjzheng/p/9096228.html)
 - Redis进阶实践之五Redis的高级特性 [https://www.cnblogs.com/PatrickLiu/p/8341951.html](https://www.cnblogs.com/PatrickLiu/p/8341951.html)
+- Redis集群方案怎么做？大牛给你介绍五种方案！ [https://www.jianshu.com/p/53a9f98976a7](https://www.jianshu.com/p/53a9f98976a7)
+- redis常用集群方案 [https://www.jianshu.com/p/1ecbd1a88924](https://www.jianshu.com/p/1ecbd1a88924)
+- Redis 的主从同步，及两种高可用方式 [https://blog.csdn.net/weixin_42711549/article/details/83061052](https://blog.csdn.net/weixin_42711549/article/details/83061052)
+
 ## 优势 ##
 - Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。
 - Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。
@@ -28,6 +32,7 @@
 - **纯内存**操作
 - **单线程**操作，避免了频繁的上下文切换
 - 采用了**非阻塞**I/O多路复用机制
+- 基于事件
 
 ## redis的过期策略以及内存淘汰机制 ##
 redis采用的是定期删除+惰性删除策略
@@ -194,4 +199,33 @@ redis采用的是定期删除+惰性删除策略
     activerehashing yes
 30. 指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件
     include /path/to/local.conf
+
+## 集群 ##
+twitter/twemproxy [https://github.com/twitter/twemproxy](https://github.com/twitter/twemproxy)
+CodisLabs/codis [https://github.com/CodisLabs/codis](https://github.com/CodisLabs/codis)
+
+### 方案选择 ###
+
+- redis主从方案
+一个Master可以有多个slave主机，支持链式复制；
+一个master可以拥有多个slave
+多个slave链接同一个master，也可以链接其它slave
+主从复制不会阻塞master,在同步数据时，master可以继续处理client请求.
+slave 配置为slave-read-only on需要升级为主节点或者写入配置文件中, 而不能在默认slave情况下直接设置master与slave断开后会检测心跳, 从新建立连接.
+可以直接copy DUMP文件从新重启master，在Master为空以后，slave同步数据会抹掉全部数据.
+
+
+- 官方cluster方案
+从redis 3.0版本开始支持redis-cluster集群，redis-cluster采用无中心结构，每个节点保存数据和整个集群状态，每个节点都和其他节点连接。redis-cluster是一种服务端分片技术
+![](http://https://upload-images.jianshu.io/upload_images/4720632-4168aef31d694023..png?imageMogr2/auto-orient/strip%7CimageView2/2/w/555/format/webp)
+
+- twemproxy代理方案
+
+- 哨兵模式
+
+- codis
+
+Codis一个比较大的优点是可以不停机动态新增或删除数据节点，旧节点的数据也可以自动恢复到新节点。并且提供图形化的dashboard，方便集群管理
+
+客户端分片
 
