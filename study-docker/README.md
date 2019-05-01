@@ -122,7 +122,9 @@ Docker Pull Command
 
     docker container ls
 
-### 安装配置MySQL ###	
+### 安装配置MySQL ###
+[https://hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)
+	
 下载
 
     docker pull mysql
@@ -145,6 +147,21 @@ Start a mysql server instance
 授权
 
     grant all privileges on mydb.* to 'bage'@'%';
+
+远程无法登陆问题
+[https://blog.csdn.net/gf0515/article/details/80466213](https://blog.csdn.net/gf0515/article/details/80466213)
+
+修改密码规则
+
+    ALTER user 'bage'@'%' IDENTIFIED BY 'bage' PASSWORD EXPIRE NEVER;
+
+更新密码
+
+    ALTER user 'bage'@'%' IDENTIFIED WITH mysql_native_password BY 'bage';
+刷新
+
+    FLUSH PRIVILEGES;
+
 
 ### 安装配置Postgres ###
 参考链接：[https://hub.docker.com/_/postgres/](https://hub.docker.com/_/postgres/ "安装配置Postgres")
