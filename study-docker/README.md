@@ -9,32 +9,35 @@ docker 学习笔记
 
 ### 安装 ###
 Most users set up Docker’s repositories and install from them, for ease of installation and upgrade tasks. This is the recommended approach.
-- 安装依赖包
-> yum install -y yum-utils \
->   device-mapper-persistent-data \
->   lvm2
-   
-- 配置仓库：
-> yum-config-manager \
->     --add-repo \
->     https://download.docker.com/linux/centos/docker-ce.repo
 
-- 安装Docker 
+安装依赖包
+
+      yum install -y yum-utils \
+      device-mapper-persistent-data \
+      lvm2
+   
+配置仓库
+
+      yum-config-manager \
+      --add-repo \
+      https://download.docker.com/linux/centos/docker-ce.repo    
+
+安装Docker 
 > yum install docker-ce
 
-- 启动
+启动
 > systemctl start docker
 
-- 运行hello world
+运行hello world
 > docker run hello-world
 
-- 非root管理docker
+非root管理docker
 > \# usermod -aG docker $USER
 
-- 非root运行hello-world
+非root运行hello-world
 > $ docker run hello-world
 
-- 配置开机启动
+配置开机启动
 > systemctl enable docker 
 
 ## 常用命令 ##
