@@ -251,17 +251,17 @@ Docker Pull Command
     docker pull redis
 start a redis instance
 
-    $ docker run -p 6379:6379 --name some-redis -d redis
+    $ docker run -p 6379:6379 --name bage-redis -d redis
 connect to it from an application
 
-    $ docker run --name some-app --link some-redis:redis -d application-that-uses-redis
+    $ docker run --name some-app --link bage-redis:redis -d application-that-uses-redis
 ... or via redis-cli
 
-    $ docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
+    $ docker run -it --link bage-redis:redis --rm redis redis-cli -h redis -p 6379
 
 设置密码(启动时候)
 
-    docker run -p 6379:6379 --name my-redis -d redis --requirepass "bage"
+    docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
 
 ### 安装配置RabbitMQ ###
 参考链接：[https://hub.docker.com/_/rabbitmq](https://hub.docker.com/_/rabbitmq "安装配置RabbitMQ")
