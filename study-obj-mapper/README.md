@@ -5,4 +5,4 @@
 
 官网网址 [http://mapstruct.org/](http://mapstruct.org/)
 github [https://github.com/mapstruct/mapstruct](https://github.com/mapstruct/mapstruct)
-插件 [https://plugins.jetbrains.com/plugin/10036-mapstruct-support](https://plugins.jetbrains.com/plugin/10036-mapstruct-support)
+插件（不可缺少） [https://plugins.jetbrains.com/plugin/10036-mapstruct-support](https://plugins.jetbrains.com/plugin/10036-mapstruct-support)
