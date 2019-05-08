@@ -131,7 +131,15 @@ Docker Pull Command
 
 Start a mysql server instance
 
-    docker run --name bage-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=mysql -d mysql
+    docker run --name bage-mysql -v /home/bage/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d bage-mysql
+其中
+
+	--name 起名 bage-mysql 
+	-v 挂载目录 /home/bage/data/mysql:/var/lib/mysql 
+	-e 设置root密码 MYSQL_ROOT_PASSWORD=bage 
+	-p 映射端口 3306:3306 
+	-d bage-mysql
+
 进入mysql容器
 
     docker exec -it bage-mysql /bin/bash
@@ -251,7 +259,7 @@ Docker Pull Command
     docker pull redis
 start a redis instance
 
-    $ docker run -p 6379:6379 --name bage-redis -d redis
+    $ docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
 connect to it from an application
 
     $ docker run --name some-app --link bage-redis:redis -d application-that-uses-redis
@@ -270,6 +278,10 @@ Docker Pull Command
 
     docker pull rabbitmq
 
+启动
+
+	docker run -d --hostname my-rabbit --name some-rabbit -p 15672:15672 -e RABBITMQ_DEFAULT_USER=bage -e RABBITMQ_DEFAULT_PASS=bage rabbitmq:3-management
+		
 
 ### 安装配置shipyard ###
 参考链接：[https://hub.docker.com/r/shipyard/shipyard](https://hub.docker.com/r/shipyard/shipyard "安装配置shipyard")
@@ -279,7 +291,17 @@ Docker Pull Command
     docker pull shipyard/shipyard
 
 
+### zookeeper  ###
 
+参考链接：[https://hub.docker.com/_/zookeeper](https://hub.docker.com/_/zookeeper)
+
+Docker Pull Command
+
+    docker pull zookeeper
+
+启动
+
+    docker run --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
 
 
 ### 常见错误 ###
