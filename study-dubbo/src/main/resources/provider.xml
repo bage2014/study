@@ -7,7 +7,7 @@
     <!-- provider's application name, used for tracing dependency relationship -->
     <dubbo:application name="demo-provider"/>
     <!-- use multicast registry center to export service -->
-    <dubbo:registry address="multicast://224.5.6.7:1234"/>
+    <dubbo:registry client="zkclient" address="zookeeper://192.168.146.133:2181/"/>
     <!-- use dubbo protocol to export service on port 20880 -->
     <dubbo:protocol name="dubbo" port="20880"/>
     <!-- service implementation, as same as regular local bean -->
