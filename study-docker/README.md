@@ -280,8 +280,28 @@ Docker Pull Command
 
 启动
 
-	docker run -d --hostname my-rabbit --name some-rabbit -p 15672:15672 -e RABBITMQ_DEFAULT_USER=bage -e RABBITMQ_DEFAULT_PASS=bage rabbitmq:3-management
-		
+	docker run -d --hostname my-rabbit --name bage-rabbit -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=bage -e RABBITMQ_DEFAULT_PASS=bage rabbitmq:3-management
+启动过程中会进行下载 rabbitmq:3-management
+
+    Unable to find image 'rabbitmq:3-management' locally 
+    3-management: Pulling from library/rabbitmq
+	f476d66f5408: Already exists 
+	8882c27f669e: Already exists 
+	d9af21273955: Already exists 
+	f5029279ec12: Already exists 
+	ecb5cfa3e5cd: Already exists 
+	b23d77357b59: Already exists 
+	9cc380c0670a: Already exists 
+	00edb647b0d0: Already exists 
+	7fea86aa9152: Already exists 
+	12f866ac27b1: Already exists 
+	6d288824e924: Pull complete 
+	0a1f754a8a89: Pull complete 
+	
+访问验证(bage/bage)
+
+[http://{ip}:15672/](http://{ip}:15672/)
+
 
 ### 安装配置shipyard ###
 参考链接：[https://hub.docker.com/r/shipyard/shipyard](https://hub.docker.com/r/shipyard/shipyard "安装配置shipyard")
