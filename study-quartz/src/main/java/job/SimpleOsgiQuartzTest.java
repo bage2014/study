@@ -38,7 +38,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class SimpleOsgiQuartzTest implements JobListener {
 	public static final CyclicBarrier barrier = new CyclicBarrier(2);
 
-	
+
 	// note this part of code run in osgi container
 	@Test
 	public void testQuartz() throws Exception {
