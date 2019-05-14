@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  */
 
 
-import org.junit.Test;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -40,7 +39,7 @@ public class SimpleOsgiQuartzTest implements JobListener {
 
 
 	// note this part of code run in osgi container
-	@Test
+//	@Test
 	public void testQuartz() throws Exception {
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler sched = sf.getScheduler();
