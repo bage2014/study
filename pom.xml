@@ -97,5 +97,6 @@
       <module>study-mybatis-generator-maven-plugin</module>
     <module>study-obj-mapper</module>
       <module>study-easyexcel</module>
+      <module>study-springboot-redis</module>
   </modules>
 </project>
