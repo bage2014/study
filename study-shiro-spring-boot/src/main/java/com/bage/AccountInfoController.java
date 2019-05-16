@@ -22,13 +22,34 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 public class AccountInfoController {
+
+    @RequestMapping("/api1/hello")
+    public String api1() {
+        System.out.println("api1");
+        return "api1";
+    }
+    @RequestMapping("/api2/hello")
+    public String api2() {
+        System.out.println("api1");
+        return "api2";
+    }
+    @RequestMapping("/api3/hello")
+    public String api3() {
+        System.out.println("api1");
+        return "api3";
+    }
+    @RequestMapping("/api4/hello")
+    public String api4() {
+        System.out.println("api4");
+        return "api4";
+    }
+
 
     @RequiresRoles("admin")
     @RequestMapping("/admin")

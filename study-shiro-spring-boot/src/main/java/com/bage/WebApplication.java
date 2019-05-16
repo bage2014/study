@@ -81,6 +81,11 @@ public class WebApplication { //NOPMD
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
+
+        chainDefinition.addPathDefinition("/api1/**","authc,roles[admin]");
+        chainDefinition.addPathDefinition("/api2/**","authc,roles[user]");
+        chainDefinition.addPathDefinition("/api3/**","authc,roles[user,admin]");
+
         chainDefinition.addPathDefinition("/login.html", "authc"); // need to accept POSTs from the login form
         chainDefinition.addPathDefinition("/logout", "logout");
         return chainDefinition;
