@@ -98,5 +98,6 @@
     <module>study-obj-mapper</module>
       <module>study-easyexcel</module>
       <module>study-springboot-redis</module>
+      <module>study-shiro-spring-boot</module>
   </modules>
 </project>
