@@ -25,6 +25,7 @@ import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -37,17 +38,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
 @ControllerAdvice
 @SpringBootApplication
-public class WebApplication { //NOPMD
+public class AuthApplication { //NOPMD
 
-    private static Logger log = LoggerFactory.getLogger(WebApplication.class);
+    private static Logger log = LoggerFactory.getLogger(AuthApplication.class);
+
+    @Autowired
+    PathDefinitionMapper pathDefinitionMapper;
 
     public static void main(String[] args) {
-        SpringApplication.run(WebApplication.class, args);
+        SpringApplication.run(AuthApplication.class, args);
     }
 
     @ExceptionHandler(AuthorizationException.class)
@@ -66,30 +71,21 @@ public class WebApplication { //NOPMD
         return "error";
     }
 
-//    @Bean
-//    public Realm realm() {
-//        TextConfigurationRealm realm = new TextConfigurationRealm();
-//        realm.setUserDefinitions("joe.coder=password,user\n" +
-//                "jill.coder=password,admin");
-//
-//        realm.setRoleDefinitions("admin=read,write\n" +
-//                "user=read");
-//        realm.setCachingEnabled(true);
-//        return realm;
-//    }
+@Bean
+public ShiroFilterChainDefinition shiroFilterChainDefinition() {
+    DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
+    List<PathDefinition> list = pathDefinitionMapper.queryAll();
 
-    @Bean
-    public ShiroFilterChainDefinition shiroFilterChainDefinition() {
-        DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-
-        chainDefinition.addPathDefinition("/api1/**","authc,roles[admin]");
-        chainDefinition.addPathDefinition("/api2/**","authc,roles[user]");
-        chainDefinition.addPathDefinition("/api3/**","authc,roles[user,admin]");
-
-        chainDefinition.addPathDefinition("/login.html", "authc"); // need to accept POSTs from the login form
-        chainDefinition.addPathDefinition("/logout", "logout");
-        return chainDefinition;
+    for (PathDefinition item : list) {
+        System.out.println("item::" + item);
+        chainDefinition.addPathDefinition(item.getAntPath(),
+                new StringBuilder().append(item.getFilterNames()).append("[").append(item.getRoleNames()).append("]").toString());
     }
+    chainDefinition.addPathDefinition("/login.html", "authc"); // need to accept POSTs from the login form
+    chainDefinition.addPathDefinition("/logout", "logout");
+    return chainDefinition;
+}
+
 
     @ModelAttribute(name = "subject")
     public Subject subject() {
