@@ -17,6 +17,6 @@
 <mapper namespace="com.bage.PathDefinitionMapper">
 
     <select id="queryAll" resultType="com.bage.PathDefinition">
-        SELECT id, ant_path as antPath, role_names as roleNames, filter_names as filterNames FROM auth_path_definition
+        SELECT id, ant_path as antPath, definition FROM auth_path_definition
     </select>
 </mapper>

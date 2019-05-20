@@ -4,18 +4,16 @@ public class PathDefinition {
 
     int id;
     String antPath;
-    String roleNames;
-    String filterNames;
+    String definition;
 
     public PathDefinition() {
 
     }
 
-    public PathDefinition(int id, String antPath, String roleNames, String filterNames) {
+    public PathDefinition(int id, String antPath, String definition) {
         this.id = id;
         this.antPath = antPath;
-        this.roleNames = roleNames;
-        this.filterNames = filterNames;
+        this.definition = definition;
     }
 
     public int getId() {
@@ -34,20 +32,12 @@ public class PathDefinition {
         this.antPath = antPath;
     }
 
-    public String getRoleNames() {
-        return roleNames;
+    public String getDefinition() {
+        return definition;
     }
 
-    public void setRoleNames(String roleNames) {
-        this.roleNames = roleNames;
-    }
-
-    public String getFilterNames() {
-        return filterNames;
-    }
-
-    public void setFilterNames(String filterNames) {
-        this.filterNames = filterNames;
+    public void setDefinition(String definition) {
+        this.definition = definition;
     }
 
     @Override
@@ -55,8 +45,7 @@ public class PathDefinition {
         return "PathDefinition{" +
                 "id=" + id +
                 ", antPath='" + antPath + '\'' +
-                ", roleNames='" + roleNames + '\'' +
-                ", filterNames='" + filterNames + '\'' +
+                ", definition='" + definition + '\'' +
                 '}';
     }
 }

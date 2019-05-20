@@ -78,8 +78,7 @@ public ShiroFilterChainDefinition shiroFilterChainDefinition() {
 
     for (PathDefinition item : list) {
         System.out.println("item::" + item);
-        chainDefinition.addPathDefinition(item.getAntPath(),
-                new StringBuilder().append(item.getFilterNames()).append("[").append(item.getRoleNames()).append("]").toString());
+        chainDefinition.addPathDefinition(item.getAntPath(),item.getDefinition());
     }
     chainDefinition.addPathDefinition("/login.html", "authc"); // need to accept POSTs from the login form
     chainDefinition.addPathDefinition("/logout", "logout");
