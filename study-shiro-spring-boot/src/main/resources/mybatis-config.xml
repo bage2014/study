@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!--类型处理-->
+
+	<environments default="dev-h2">
+		<environment id="dev-h2">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="org.h2.Driver"/>
+				<property name="url" value="jdbc:h2:~/myDb"/>
+				<property name="username" value="sa" />
+				<property name="password" value="root" />
+			</dataSource>
+		</environment>
+
+	</environments>
+
+	<mappers>
+		<mapper resource="mappers/pathDefinitionMapper.xml"/>
+	</mappers>
+</configuration>
