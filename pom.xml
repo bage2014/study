@@ -100,5 +100,6 @@
       <module>study-springboot-redis</module>
       <module>study-shiro-spring-boot</module>
       <module>study-vue</module>
+      <module>study-spring-boot-actuator</module>
   </modules>
 </project>
