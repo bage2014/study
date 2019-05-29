@@ -61,6 +61,19 @@ public class DefaultUserService implements UserService {
         user.setEmail("sample2@shiro.apache.org");
         user.setRoles(new HashSet<>(Arrays.asList(roleUser)));
         list.add(user);
+
+
+        user = new User();
+        user.setId(3L);
+        user.setUsername("bage");
+        user.setPassword(new Sha256Hash("bage").toHex());
+        user.setEmail("sample2@shiro.apache.org");
+        roleUser = new Role();
+        roleUser.setId(2L);
+        roleUser.setName("bage-role");
+        roleUser.setPermissions(new HashSet<>(Arrays.asList("read")));
+        user.setRoles(new HashSet<>(Arrays.asList(roleUser)));
+        list.add(user);
     }
 
     public User getCurrentUser() {

@@ -54,6 +54,11 @@ public class AccountInfoController {
         System.out.println("api5");
         return "api5";
     }
+    @RequestMapping("/api6/hello")
+    public String api6() {
+        System.out.println("api6");
+        return "api6";
+    }
 
     @RequiresRoles("admin")
     @RequestMapping("/admin")

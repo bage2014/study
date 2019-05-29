@@ -8,4 +8,6 @@ public interface PathDefinitionMapper {
 
     List<PathDefinition> queryAll();
 
+    int insert(PathDefinition pathDefinition);
+
 }

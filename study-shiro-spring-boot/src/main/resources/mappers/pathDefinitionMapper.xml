@@ -19,4 +19,9 @@
     <select id="queryAll" resultType="com.bage.PathDefinition">
         SELECT id, ant_path as antPath, definition FROM auth_path_definition
     </select>
+
+    <insert id="insert" parameterType="com.bage.PathDefinition">
+        insert into auth_path_definition(id, ant_path,definition) values(#{id},#{antPath}, #{definition})
+    </insert>
+
 </mapper>
