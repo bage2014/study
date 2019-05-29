@@ -1,7 +1,8 @@
 # study-quartz  #
 学习 Quartz 的笔记
 
-实现 quartz的简单使用
+quartz的简单使用
++ Spring Boot + Mybatis
 持久化到数据库
 任务的增删改查维护，动态启动暂停关闭等
 
