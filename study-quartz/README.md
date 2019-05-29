@@ -1,6 +1,10 @@
 # study-quartz  #
 学习 Quartz 的笔记
 
+实现 quartz的简单使用
+持久化到数据库
+任务的增删改查维护，动态启动暂停关闭等
+
 ## 参考链接 ##
 
 官网网址 [http://www.quartz-scheduler.org/documentation/quartz-2.1.x/quick-start.html](http://www.quartz-scheduler.org/documentation/quartz-2.1.x/quick-start.html)
