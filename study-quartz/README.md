@@ -15,3 +15,8 @@ QuickStart [https://github.com/quartz-scheduler/quartz/blob/master/docs/quick-st
 Samples [https://github.com/quartz-scheduler/quartz/blob/master/docs/examples/index.adoc](https://github.com/quartz-scheduler/quartz/blob/master/docs/examples/index.adoc)
 
 [https://github.com/ChamithKodikara/quartz-demo](https://github.com/ChamithKodikara/quartz-demo)
+
+
+### 使用 ###
+- 开始一个job [http://localhost:8080/scheduler/start](http://localhost:8080/scheduler/start)
+- 暂停一个job [http://localhost:8080/scheduler/pause](http://localhost:8080/scheduler/pause)
