@@ -18,5 +18,6 @@ Samples [https://github.com/quartz-scheduler/quartz/blob/master/docs/examples/in
 
 
 ### 使用 ###
+- 程序启动类 com.bage.jdbc.springboot.QuartzDemoApplication
 - 开始一个job [http://localhost:8080/scheduler/start](http://localhost:8080/scheduler/start)
 - 暂停一个job [http://localhost:8080/scheduler/pause](http://localhost:8080/scheduler/pause)
