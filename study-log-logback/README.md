@@ -19,9 +19,9 @@ logback 基本使用
 
 导入xml配置文件
 
-logback.xml [logback.xml](https://wiki.base22.com/btg/files/35488048/35618832/1/1261291177000/logback.xml)
+logback.xml [https://github.com/bage2014/study/blob/master/study-log-logback/src/main/resources/logback.xml](https://github.com/bage2014/study/blob/master/study-log-logback/src/main/resources/logback.xml)、[logback.xml](https://wiki.base22.com/btg/files/35488048/35618832/1/1261291177000/logback.xml)
 
-logback-test.xml [https://wiki.base22.com/btg/files/35488048/35618833/1/1261291177000/logback-test.xml](https://wiki.base22.com/btg/files/35488048/35618833/1/1261291177000/logback-test.xml)
+logback-test.xml [https://github.com/bage2014/study/blob/master/study-log-logback/src/main/resources/logback-test.xml](https://github.com/bage2014/study/blob/master/study-log-logback/src/main/resources/logback-test.xml)、[https://wiki.base22.com/btg/files/35488048/35618833/1/1261291177000/logback-test.xml](https://wiki.base22.com/btg/files/35488048/35618833/1/1261291177000/logback-test.xml)
 
 	src
 		main
@@ -62,4 +62,4 @@ logback-test.xml [https://wiki.base22.com/btg/files/35488048/35618833/1/12612911
 运行LogApp类即可
 查看控制台输出
 
-
+## 环境搭建 ##
