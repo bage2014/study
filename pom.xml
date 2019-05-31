@@ -101,5 +101,6 @@
       <module>study-shiro-spring-boot</module>
       <module>study-vue</module>
       <module>study-spring-boot-actuator</module>
+      <module>study-domain-generator</module>
   </modules>
 </project>
