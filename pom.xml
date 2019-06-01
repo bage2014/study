@@ -102,5 +102,6 @@
       <module>study-vue</module>
       <module>study-spring-boot-actuator</module>
       <module>study-domain-generator</module>
+      <module>study-test-restdoc</module>
   </modules>
 </project>
