@@ -2,6 +2,7 @@ package com.bage.study.spring.boot.security;
 
 import java.util.Collection;
 
+import com.bage.study.spring.boot.security.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,8 +31,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 	    if (!password.equals(user.getPassword())) {
 	      throw new BadCredentialsException("Wrong password.");
 	    }
-	 
-	    Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
+
+		Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
+
 	    return new UsernamePasswordAuthenticationToken(user, password, authorities);
 	 
 	}

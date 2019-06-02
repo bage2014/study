@@ -1,6 +1,7 @@
-package com.bage.study.spring.boot.security;
+package com.bage.study.spring.boot.security.domain;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +14,9 @@ public class User implements UserDetails{
 	private static final long serialVersionUID = 1L;
 	
 	String username;
-	String password;	
-	
+	String password;
+	List<? extends GrantedAuthority> authorities;
+
 	public User(String username, String password) {
 		super();
 		this.username = username;
@@ -30,8 +32,7 @@ public class User implements UserDetails{
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		return authorities;
 	}
 
 	public String getPassword() {
@@ -62,4 +63,7 @@ public class User implements UserDetails{
 		return false;
 	}
 
+	public void setAuthorities(List<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
 }

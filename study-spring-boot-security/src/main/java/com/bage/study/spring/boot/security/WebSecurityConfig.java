@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	  @Autowired
-	  private MyAuthenticationProvider provider;//自定义验证
+	  private MyAuthenticationProvider provider;// 自定义验证
 
 
 	  @Autowired
@@ -24,10 +24,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
             .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
-                .anyRequest().authenticated()
+
+				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')")
+
+				.anyRequest().authenticated()
                 .and()
             .formLogin()
                 .loginPage("/login")
@@ -37,16 +42,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//    	
-//    	 UserDetails user = User.withDefaultPasswordEncoder()
-//                    .username("user")
-//                    .password("password")
-//                    .roles("USER")
-//                    .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
 }

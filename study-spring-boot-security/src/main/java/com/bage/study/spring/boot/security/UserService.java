@@ -1,26 +1,47 @@
 package com.bage.study.spring.boot.security;
 
+import com.bage.study.spring.boot.security.domain.Role;
+import com.bage.study.spring.boot.security.domain.User;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 @Service
 public class UserService{
 
+	List<User> users = new ArrayList<>();
+	public UserService(){
+		User user = new User("admin","admin");
+		user.setAuthorities(Arrays.asList(new Role("ROLE_ADMIN")));
+		users.add(user);
+
+		user = new User("user","user");
+		user.setAuthorities(Arrays.asList(new Role("ROLE_USER")));
+		users.add(user);
+
+		user = new User("dba","dba");
+		user.setAuthorities(Arrays.asList(new Role("ROLE_ADMIN"),new Role("ROLE_DBA")));
+		users.add(user);
+	}
+
 	public User loadUserByUsername(String username) {
-		if("zhangsan".equals(username)) {
-			return new User(username,"123");
-		}
-		if("lisi".equals(username)) {
-			return new User(username,"456");
+		for(User u : users){
+			if(u.getUsername().equals(username)){
+				return u;
+			}
 		}
 		return null;
 	}
 	
 	public boolean isUserLoginOk(String username,String password){
-		if("zhangsan".equals(username) && "123".equals(password)) {
-			return true;
-		}
-		if("lisi".equals(username) && "456".equals(password)) {
-			return true;
+		for(User u : users){
+			if(u.getUsername().equals(username)){
+				return u.getPassword().equals(password);
+			}
 		}
 		return false;
 	}
