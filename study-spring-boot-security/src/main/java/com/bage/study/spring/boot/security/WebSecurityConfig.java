@@ -1,7 +1,10 @@
 package com.bage.study.spring.boot.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
 
+				.antMatchers("/user/**").hasRole("USER")
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				.antMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')")
 
@@ -41,5 +45,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
                 .permitAll();
     }
+
+    // 角色继承
+
+    @Bean
+    public RoleHierarchyVoter roleHierarchyVoter(){
+        return new RoleHierarchyVoter(roleHierarchyImpl());
+    }
+
+    @Bean
+    public RoleHierarchyImpl roleHierarchyImpl(){
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return roleHierarchy;
+    }
+
+
+
 
 }
