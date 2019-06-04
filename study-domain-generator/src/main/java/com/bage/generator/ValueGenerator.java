@@ -99,6 +99,82 @@ public abstract class ValueGenerator {
 
     public Object generateFieldValue(Type type) {
         try {
+
+            Class cls = type.getClass();
+            if(type instanceof ParameterizedType){
+                ParameterizedType parameterizedType = ((ParameterizedType) type);
+                parameterizedType.getRawType().getClass();
+            }
+
+            // 基本类型
+            if (int.class == cls) {
+                return generateIntValue();
+            } else if (double.class == cls) {
+                return generateDoubleValue();
+            } else if (float.class == cls) {
+                return generateFloatValue();
+            } else if (long.class == cls) {
+                return generateLongValue();
+            } else if (short.class == cls) {
+                return generateShortValue();
+            } else if (boolean.class == cls) {
+                return generateBooleanValue();
+            } else if (byte.class == cls) {
+                return generateByteValue();
+            } else if (char.class == cls) {
+                return generateCharValue();
+            }
+            // 基本类型包装类
+            else if (cls == Integer.class) {
+                return generateIntValue();
+            } else if (cls == Double.class) {
+                return generateDoubleValue();
+            } else if (cls == Float.class) {
+                return generateFloatValue();
+            } else if (cls == Long.class) {
+                return generateLongValue();
+            } else if (cls == Short.class) {
+                return generateShortValue();
+            } else if (cls == Boolean.class) {
+                return generateBooleanValue();
+            } else if (cls == Byte.class) {
+                return generateByteValue();
+            } else if (cls == Character.class) {
+                return generateCharValue();
+            }
+            // Java 常用包装类型
+            else if (cls == String.class) {
+                return generateStringValue();
+            } else if (cls == Date.class) {
+                return generateDateValue();
+            } else if (cls == List.class) {
+                System.out.println("");
+            } else if (cls == Map.class) {
+                return generateMapValue();
+            } else if (cls == Set.class) {
+                return generateSetValue();
+            } else if (cls == File.class) {
+                return generateFileValue();
+            } else if(cls.isEnum()){
+                return generateEnumValue(cls);
+            }
+            // 泛型
+            else if(cls.isEnum()){
+
+                return generateEnumValue(cls);
+            }
+
+            else {
+                // TODO
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    public Object generateFieldValsssue(Type type) {
+        try {
             String typeName = type.getTypeName();
             // 基本类型
             if (Integer.class.toString().equals(typeName)) {

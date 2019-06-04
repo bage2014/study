@@ -1,6 +1,6 @@
 package com.bage;
 
-import com.bage.domain.User;
+import com.bage.domain.ListList;
 import com.bage.generator.DefaultValueGeneratorImpl;
 import com.bage.generator.ValueGenerator;
 import org.junit.Test;
@@ -11,7 +11,7 @@ public class InstanceBuilderTest {
     public void getInstance(){
 
         InstanceBuilder builder = new InstanceBuilder();
-        builder.setCls(User.class);
+        builder.setCls(ListList.class);
         ValueGenerator valueGenerator = new DefaultValueGeneratorImpl();
 
         valueGenerator.getDefaultData().setIntValue(1002);
