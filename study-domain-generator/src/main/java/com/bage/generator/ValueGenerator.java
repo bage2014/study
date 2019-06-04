@@ -1,10 +1,13 @@
 package com.bage.generator;
 
 import com.bage.config.DefaultConfig;
+import com.bage.parser.GenericParser;
 import com.bage.util.Logger;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +73,9 @@ public abstract class ValueGenerator {
             } else if (cls == Date.class) {
                 field.set(object, generateDateValue());
             } else if (cls == List.class) {
-                field.set(object, generateListValue());
+                Type type = GenericParser.getListTypeClassName(field, 0);
+                List listValue = generateListValue(type);
+                field.set(object, listValue);
             } else if (cls == Map.class) {
                 field.set(object, generateMapValue());
             } else if (cls == Set.class) {
@@ -89,6 +94,51 @@ public abstract class ValueGenerator {
         } catch (Exception e) {
 
         }
+    }
+
+
+    public Object generateFieldValue(Type type) {
+        try {
+            String typeName = type.getTypeName();
+            // 基本类型
+            if (Integer.class.toString().equals(typeName)) {
+                return generateIntValue();
+            } else if (Integer.class.toString().equals(typeName)) {
+                return generateDoubleValue();
+            } else if (Float.class.toString().equals(typeName)) {
+                return generateFloatValue();
+            } else if (Long.class.toString().equals(typeName)) {
+                return generateLongValue();
+            } else if (Short.class.toString().equals(typeName)) {
+                return generateShortValue();
+            } else if (Boolean.class.toString().equals(typeName)) {
+                return generateBooleanValue();
+            } else if (Byte.class.toString().equals(typeName)) {
+                return generateByteValue();
+            } else if (Character.class.toString().equals(typeName)) {
+                return generateCharValue();
+            }
+            // Java 常用包装类型
+            else if (String.class.toString().equals(typeName)) {
+                return generateStringValue();
+            } else if (Date.class.toString().equals(typeName)) {
+                return generateDateValue();
+            } else if (List.class.toString().equals(typeName)) {
+                Type subType = GenericParser.getListTypeClassName(((ParameterizedType) type), 0);
+                return generateListValue(subType);
+            } else if (Map.class.toString().equals(typeName)){
+                return generateMapValue();
+            } else if (Set.class.toString().equals(typeName)) {
+                return generateSetValue();
+            } else if (File.class.toString().equals(typeName)) {
+                return generateFileValue();
+            } else if(Class.forName(typeName).isEnum()){
+                return generateEnumValue(Class.forName(typeName));
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 
     protected abstract Object generateEnumValue(Class cls);
@@ -116,7 +166,7 @@ public abstract class ValueGenerator {
 
     protected abstract Date generateDateValue();
 
-    protected abstract List generateListValue();
+    protected abstract List generateListValue(Type type);
 
     protected abstract Map generateMapValue();
 

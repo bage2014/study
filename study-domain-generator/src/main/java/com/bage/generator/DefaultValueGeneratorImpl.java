@@ -1,6 +1,7 @@
 package com.bage.generator;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -60,8 +61,14 @@ public class DefaultValueGeneratorImpl extends ValueGenerator {
         return getDefaultData().getObjectValue();
     }
 
-    public List generateListValue() {
-        return getDefaultData().getListValue();
+    public List generateListValue(Type type) {
+
+        List listValue = getDefaultData().getListValue();
+
+        Object subValue = generateListValue(type);
+        listValue.add(subValue);
+
+        return listValue;
     }
 
     public Set generateSetValue() {
