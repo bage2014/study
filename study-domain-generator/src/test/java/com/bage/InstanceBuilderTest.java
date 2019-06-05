@@ -12,6 +12,7 @@ public class InstanceBuilderTest {
 
         InstanceBuilder builder = new InstanceBuilder();
         builder.setCls(ListList.class);
+
         ValueGenerator valueGenerator = new DefaultValueGeneratorImpl();
 
         valueGenerator.getDefaultData().setIntValue(1002);

@@ -61,14 +61,8 @@ public class DefaultValueGeneratorImpl extends ValueGenerator {
         return getDefaultData().getObjectValue();
     }
 
-    public List generateListValue(Type type) {
-
-        List listValue = getDefaultData().getListValue();
-
-        Object subValue = generateFieldValue(type);
-        listValue.add(subValue);
-
-        return listValue;
+    public List generateListValue() {
+        return getDefaultData().getListValue();
     }
 
     public Set generateSetValue() {

@@ -8,10 +8,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public abstract class ValueGenerator {
 
@@ -73,8 +70,9 @@ public abstract class ValueGenerator {
             } else if (cls == Date.class) {
                 field.set(object, generateDateValue());
             } else if (cls == List.class) {
+                List listValue = generateListValue();
                 Type type = GenericParser.getListTypeClassName(field, 0);
-                List listValue = generateListValue(type);
+                setGenericValue(type,listValue);
                 field.set(object, listValue);
             } else if (cls == Map.class) {
                 field.set(object, generateMapValue());
@@ -97,15 +95,39 @@ public abstract class ValueGenerator {
     }
 
 
-    public Object generateFieldValue(Type type) {
-        try {
+    private void setGenericValue(Type type,Object parent) throws ClassNotFoundException {
 
-            Class cls = type.getClass();
-            if(type instanceof ParameterizedType){
-                ParameterizedType parameterizedType = ((ParameterizedType) type);
-                parameterizedType.getRawType().getClass();
+        Object value = null;
+        if(type instanceof ParameterizedType ){
+            ParameterizedType subType = (ParameterizedType) type;
+
+            Type rawType = subType.getRawType();
+            if(Class.forName(rawType.getTypeName()) == List.class){ // List
+                Type listTypeClassName = GenericParser.getListTypeClassName(subType, 0);
+                value = generateListValue();
+                setGenericValue(listTypeClassName,value);
+
+            }else if(Class.forName(rawType.getTypeName()) == Map.class){ // Map
+                Type listTypeClassName = GenericParser.getListTypeClassName(subType, 1);
+                value = generateFieldValue(Class.forName(rawType.getTypeName()));
+                setGenericValue(listTypeClassName,value);
             }
+        } else {
+            value = generateFieldValue(Class.forName(type.getTypeName()));
+        }
 
+        if(parent instanceof List){
+            List listParent = ((List) parent);
+            listParent.add(value);
+        } else if(parent instanceof Map){
+            Map mapParent = ((Map) parent);
+            mapParent.put(String.valueOf(new Random().nextInt(1000)),value);
+        }
+
+    }
+
+    public Object generateFieldValue(Class cls) {
+        try {
             // 基本类型
             if (int.class == cls) {
                 return generateIntValue();
@@ -148,7 +170,7 @@ public abstract class ValueGenerator {
             } else if (cls == Date.class) {
                 return generateDateValue();
             } else if (cls == List.class) {
-                System.out.println("");
+                return generateListValue();
             } else if (cls == Map.class) {
                 return generateMapValue();
             } else if (cls == Set.class) {
@@ -166,50 +188,6 @@ public abstract class ValueGenerator {
 
             else {
                 // TODO
-            }
-        } catch (Exception e) {
-
-        }
-        return null;
-    }
-
-    public Object generateFieldValsssue(Type type) {
-        try {
-            String typeName = type.getTypeName();
-            // 基本类型
-            if (Integer.class.toString().equals(typeName)) {
-                return generateIntValue();
-            } else if (Integer.class.toString().equals(typeName)) {
-                return generateDoubleValue();
-            } else if (Float.class.toString().equals(typeName)) {
-                return generateFloatValue();
-            } else if (Long.class.toString().equals(typeName)) {
-                return generateLongValue();
-            } else if (Short.class.toString().equals(typeName)) {
-                return generateShortValue();
-            } else if (Boolean.class.toString().equals(typeName)) {
-                return generateBooleanValue();
-            } else if (Byte.class.toString().equals(typeName)) {
-                return generateByteValue();
-            } else if (Character.class.toString().equals(typeName)) {
-                return generateCharValue();
-            }
-            // Java 常用包装类型
-            else if (String.class.toString().equals(typeName)) {
-                return generateStringValue();
-            } else if (Date.class.toString().equals(typeName)) {
-                return generateDateValue();
-            } else if (List.class.toString().equals(typeName)) {
-                Type subType = GenericParser.getListTypeClassName(((ParameterizedType) type), 0);
-                return generateListValue(subType);
-            } else if (Map.class.toString().equals(typeName)){
-                return generateMapValue();
-            } else if (Set.class.toString().equals(typeName)) {
-                return generateSetValue();
-            } else if (File.class.toString().equals(typeName)) {
-                return generateFileValue();
-            } else if(Class.forName(typeName).isEnum()){
-                return generateEnumValue(Class.forName(typeName));
             }
         } catch (Exception e) {
 
@@ -242,7 +220,7 @@ public abstract class ValueGenerator {
 
     protected abstract Date generateDateValue();
 
-    protected abstract List generateListValue(Type type);
+    protected abstract List generateListValue();
 
     protected abstract Map generateMapValue();
 

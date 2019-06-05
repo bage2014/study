@@ -241,7 +241,14 @@ public class DefaultConfig {
     }
 
     public List getListValue() {
-        return listValue;
+        try {
+            return listValue.getClass().newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setListValue(List listValue) {
