@@ -15,7 +15,7 @@ public class GenericParserTest {
     @Test
     public void test() throws NoSuchFieldException {
         Field field = GenericParserTest.class.getDeclaredField("list");
-        Type listTypeClassName = GenericParser.getListTypeClassName(field, 0);
+        Type listTypeClassName = GenericParser.getGenericTypeClassName(field, 0);
 
 
         System.out.println(listTypeClassName);

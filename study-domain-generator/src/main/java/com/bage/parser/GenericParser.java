@@ -15,13 +15,19 @@ public class GenericParser {
      * @param index
      * @return
      */
-    public static Type getListTypeClassName(Field field, int index) {
-        ParameterizedType listGenericType = (ParameterizedType) field.getGenericType();
-        return getListTypeClassName(listGenericType,index);
+    public static Type getGenericTypeClassName(Field field, int index) {
+        ParameterizedType genericType = (ParameterizedType) field.getGenericType();
+        return getGenericTypeClassName(genericType,index);
     }
 
-    public static Type getListTypeClassName(ParameterizedType listGenericType,int index) {
-        Type[] listActualTypeArguments = listGenericType.getActualTypeArguments();
+    /**
+     * 泛型解析
+     * @param type
+     * @param index
+     * @return
+     */
+    public static Type getGenericTypeClassName(ParameterizedType type, int index) {
+        Type[] listActualTypeArguments = type.getActualTypeArguments();
         return listActualTypeArguments[index];
     }
 

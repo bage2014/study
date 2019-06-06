@@ -13,35 +13,35 @@ public class DefaultConfig {
     /**
      * 默认 int 值
      */
-    private int intValue = 0;
+    private Integer intValue = 0;
     /**
      * 默认 double 值
      */
-    private double doubleValue = 0;
+    private Double doubleValue = 0.0;
     /**
      * 默认 float 值
      */
-    private float floatValue = 0.0f;
+    private Float floatValue = 0.0f;
     /**
      * 默认 long 值
      */
-    private long longValue = 0;
+    private Long longValue = 0L;
     /**
      * 默认 short 值
      */
-    private short shortValue = 0;
+    private Short shortValue = 0;
     /**
      * 默认 boolean 值
      */
-    private boolean booleanValue = false;
+    private Boolean booleanValue = false;
     /**
      * 默认 byte 值
      */
-    private byte byteValue = 0;
+    private Byte byteValue = 0;
     /**
      * 默认 char 值
      */
-    private char charValue = '0';
+    private Character charValue = '0';
 
     private String stringValue = "";
 
@@ -121,11 +121,12 @@ public class DefaultConfig {
     /**
      * 随机情况下的最大值
      */
-    private int randomMaxNumber = 10000;
+    private int maxRandomNumber = 10000;
 
     private boolean isDebug = true;
     ///////////////////////////////     配置     ///////////////////////////////
 
+    private Random random = new Random();
 
     ///////////////////////////////     类单例     ///////////////////////////////
     /**
@@ -160,7 +161,7 @@ public class DefaultConfig {
 
     ///////////////////////////////     setter、getter     ///////////////////////////////
 
-    public int getIntValue() {
+    public Integer getIntValue() {
         return intValue;
     }
 
@@ -168,7 +169,7 @@ public class DefaultConfig {
         this.intValue = intValue;
     }
 
-    public double getDoubleValue() {
+    public Double getDoubleValue() {
         return doubleValue;
     }
 
@@ -176,7 +177,7 @@ public class DefaultConfig {
         this.doubleValue = doubleValue;
     }
 
-    public float getFloatValue() {
+    public Float getFloatValue() {
         return floatValue;
     }
 
@@ -184,7 +185,7 @@ public class DefaultConfig {
         this.floatValue = floatValue;
     }
 
-    public long getLongValue() {
+    public Long getLongValue() {
         return longValue;
     }
 
@@ -192,7 +193,7 @@ public class DefaultConfig {
         this.longValue = longValue;
     }
 
-    public short getShortValue() {
+    public Short getShortValue() {
         return shortValue;
     }
 
@@ -200,7 +201,7 @@ public class DefaultConfig {
         this.shortValue = shortValue;
     }
 
-    public boolean isBooleanValue() {
+    public Boolean isBooleanValue() {
         return booleanValue;
     }
 
@@ -208,7 +209,7 @@ public class DefaultConfig {
         this.booleanValue = booleanValue;
     }
 
-    public byte getByteValue() {
+    public Byte getByteValue() {
         return byteValue;
     }
 
@@ -216,7 +217,7 @@ public class DefaultConfig {
         this.byteValue = byteValue;
     }
 
-    public char getCharValue() {
+    public Character getCharValue() {
         return charValue;
     }
 
@@ -225,7 +226,7 @@ public class DefaultConfig {
     }
 
     public String getStringValue() {
-        return stringValue;
+        return stringValue + random.nextInt(maxRandomNumber);
     }
 
     public void setStringValue(String stringValue) {
@@ -415,12 +416,12 @@ public class DefaultConfig {
         isRandom = random;
     }
 
-    public int getRandomMaxNumber() {
-        return randomMaxNumber;
+    public int getMaxRandomNumber() {
+        return maxRandomNumber;
     }
 
-    public void setRandomMaxNumber(int randomMaxNumber) {
-        this.randomMaxNumber = randomMaxNumber;
+    public void setMaxRandomNumber(int maxRandomNumber) {
+        this.maxRandomNumber = maxRandomNumber;
     }
 
     public boolean isDebug() {

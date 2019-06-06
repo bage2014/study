@@ -48,49 +48,59 @@ public abstract class ValueGenerator {
             }
             // 基本类型包装类
             else if (cls == Integer.class) {
-                field.setInt(object, generateIntValue());
+                field.set(object, generateIntValue());
             } else if (cls == Double.class) {
-                field.setDouble(object, generateDoubleValue());
+                field.set(object, generateDoubleValue());
             } else if (cls == Float.class) {
-                field.setFloat(object, generateFloatValue());
+                field.set(object, generateFloatValue());
             } else if (cls == Long.class) {
-                field.setLong(object, generateLongValue());
+                field.set(object, generateLongValue());
             } else if (cls == Short.class) {
-                field.setShort(object, generateShortValue());
+                field.set(object, generateShortValue());
             } else if (cls == Boolean.class) {
-                field.setBoolean(object, generateBooleanValue());
+                field.set(object, generateBooleanValue());
             } else if (cls == Byte.class) {
-                field.setByte(object, generateByteValue());
+                field.set(object, generateByteValue());
             } else if (cls == Character.class) {
-                field.setChar(object, generateCharValue());
+                field.set(object, generateCharValue());
             }
             // Java 常用包装类型
             else if (cls == String.class) {
                 field.set(object, generateStringValue());
             } else if (cls == Date.class) {
                 field.set(object, generateDateValue());
-            } else if (cls == List.class) {
-                List listValue = generateListValue();
-                Type type = GenericParser.getListTypeClassName(field, 0);
-                setGenericValue(type,listValue);
-                field.set(object, listValue);
+            }
+
+            // 泛型
+            else if (cls == List.class) {
+                List value = generateListValue();
+                Type type = GenericParser.getGenericTypeClassName(field, 0);
+                setGenericValue(type,value);
+                field.set(object, value);
             } else if (cls == Map.class) {
-                field.set(object, generateMapValue());
+                Map value = generateMapValue();
+                Type type = GenericParser.getGenericTypeClassName(field, 1);
+                setGenericValue(type,value);
+                field.set(object, value);
             } else if (cls == Set.class) {
-                field.set(object, generateSetValue());
-            } else if (cls == File.class) {
-                field.set(object, generateFileValue());
-            } else if(cls.isEnum()){
+                Set value = generateSetValue();
+                Type type = GenericParser.getGenericTypeClassName(field, 0);
+                setGenericValue(type,value);
+                field.set(object, value);
+            }
+
+            // 枚举
+            else if(cls.isEnum()){
                 field.set(object, generateEnumValue(cls));
             }
             else {
-                // TODO
+                Logger.debug("不支持的实例化类型 cls={}", cls);
             }
 
-            Logger.debug("字段赋值：field=%s, value=%s ", field, field.get(object));
+            Logger.debug("字段赋值：field={}, value={} ", field, field.get(object));
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -103,25 +113,33 @@ public abstract class ValueGenerator {
 
             Type rawType = subType.getRawType();
             if(Class.forName(rawType.getTypeName()) == List.class){ // List
-                Type listTypeClassName = GenericParser.getListTypeClassName(subType, 0);
+                Type typeClassName = GenericParser.getGenericTypeClassName(subType, 0);
                 value = generateListValue();
-                setGenericValue(listTypeClassName,value);
+                setGenericValue(typeClassName,value);
 
             }else if(Class.forName(rawType.getTypeName()) == Map.class){ // Map
-                Type listTypeClassName = GenericParser.getListTypeClassName(subType, 1);
-                value = generateFieldValue(Class.forName(rawType.getTypeName()));
-                setGenericValue(listTypeClassName,value);
+                Type typeClassName = GenericParser.getGenericTypeClassName(subType, 1);
+                value = generateMapValue();
+                setGenericValue(typeClassName,value);
+            }else if(Class.forName(rawType.getTypeName()) == Set.class){ // Set
+                Type typeClassName = GenericParser.getGenericTypeClassName(subType, 0);
+                value = generateSetValue();
+                setGenericValue(typeClassName,value);
             }
         } else {
             value = generateFieldValue(Class.forName(type.getTypeName()));
         }
 
+        // 值回填
         if(parent instanceof List){
             List listParent = ((List) parent);
             listParent.add(value);
         } else if(parent instanceof Map){
             Map mapParent = ((Map) parent);
             mapParent.put(String.valueOf(new Random().nextInt(1000)),value);
+        } else if(parent instanceof Set){
+            Set setParent = ((Set) parent);
+            setParent.add(value);
         }
 
     }
@@ -169,20 +187,17 @@ public abstract class ValueGenerator {
                 return generateStringValue();
             } else if (cls == Date.class) {
                 return generateDateValue();
-            } else if (cls == List.class) {
+            }
+            // 泛型
+            else if (cls == List.class) {
                 return generateListValue();
             } else if (cls == Map.class) {
                 return generateMapValue();
             } else if (cls == Set.class) {
                 return generateSetValue();
-            } else if (cls == File.class) {
-                return generateFileValue();
-            } else if(cls.isEnum()){
-                return generateEnumValue(cls);
             }
-            // 泛型
+            // 枚举
             else if(cls.isEnum()){
-
                 return generateEnumValue(cls);
             }
 
@@ -219,16 +234,18 @@ public abstract class ValueGenerator {
     protected abstract String generateStringValue();
 
     protected abstract Date generateDateValue();
+    ///////////////////////////////     常用类型赋值     ///////////////////////////////
 
+    ///////////////////////////////     泛型类型赋值     ///////////////////////////////
     protected abstract List generateListValue();
 
     protected abstract Map generateMapValue();
 
     protected abstract Set generateSetValue();
 
-    protected abstract File generateFileValue();
+    ///////////////////////////////     常用类型赋值     ///////////////////////////////
 
     protected abstract Object generateObjectValue();
-    ///////////////////////////////     常用类型赋值     ///////////////////////////////
+
 
 }
