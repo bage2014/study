@@ -311,7 +311,7 @@ Docker Pull Command
     docker pull shipyard/shipyard
 
 
-### zookeeper  ###
+### 安装部署zookeeper  ###
 
 参考链接：[https://hub.docker.com/_/zookeeper](https://hub.docker.com/_/zookeeper)
 
@@ -323,6 +323,16 @@ Docker Pull Command
 
     docker run --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
 
+
+### 安装部署portainer  ###
+参考链接: [https://hub.docker.com/r/portainer/portainer]()、[https://portainer.readthedocs.io/en/latest/deployment.html](https://portainer.readthedocs.io/en/latest/deployment.html)
+
+Docker Pull Command
+    docker pull portainer/portainer
+
+启动(/home/bage/data/portainer 持久化数据目录)
+
+    docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /home/bage/data/portainer:/data portainer/portainer
 
 ### 常见错误 ###
 启动centos镜像报错
