@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 @Configuration
 @EnableWebSecurity
@@ -17,6 +19,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	  @Autowired
 	  private MyAuthenticationProvider provider;// 自定义验证
 
+    @Autowired
+    private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
 
 	  @Autowired
 	  public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception{
@@ -44,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .logout()
                 .permitAll();
+        http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
     }
 
     // 角色继承
@@ -56,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public RoleHierarchyImpl roleHierarchyImpl(){
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-
+        DefaultFilterInvocationSecurityMetadataSource dd;
         roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
         return roleHierarchy;
     }

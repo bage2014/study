@@ -26,6 +26,10 @@ public class UserService{
 		user = new User("dba","dba");
 		user.setAuthorities(Arrays.asList(new Role("ROLE_ADMIN"),new Role("ROLE_DBA")));
 		users.add(user);
+
+		user = new User("bage","bage");
+		user.setAuthorities(Arrays.asList(new Role("ROLE_BAGE")));
+		users.add(user);
 	}
 
 	public User loadUserByUsername(String username) {
