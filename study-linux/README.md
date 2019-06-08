@@ -8,6 +8,26 @@ Linux学习笔记
 
 ## 软件安装 ##
 
+
+### JDK+Maven ###
+
+添加环境变量
+
+    vi .bash_profile
+
+末尾追加如下内容，
+JAVA_HOME、MAVEN_HOME你懂的，需要修改成自己的目录
+
+    export JAVA_HOME=/home/bage/professional/jdk1.8.0_131
+    export MAVEN_HOME=/home/bage/professional/apache-maven-3.6.1
+    export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
+    export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+source 一下，使配置生效
+
+    source .bash_profile
+
+
 ### Maven ###
 - 参考链接 
   - 官网 [http://maven.apache.org/](http://maven.apache.org/ "官网")
