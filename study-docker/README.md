@@ -328,11 +328,24 @@ Docker Pull Command
 参考链接: [https://hub.docker.com/r/portainer/portainer]()、[https://portainer.readthedocs.io/en/latest/deployment.html](https://portainer.readthedocs.io/en/latest/deployment.html)
 
 Docker Pull Command
+
     docker pull portainer/portainer
 
 启动(/home/bage/data/portainer 持久化数据目录)
 
     docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /home/bage/data/portainer:/data portainer/portainer
+
+
+### 安装部署 jenkins  ###
+参考链接 [https://hub.docker.com/_/jenkins](https://hub.docker.com/_/jenkins)
+
+Docker Pull Command
+
+    docker pull jenkins
+
+启动 
+
+    docker run -p 8080:8080 -p 50000:50000 -v /your/home:/var/jenkins_home jenkins
 
 ### 常见错误 ###
 启动centos镜像报错
