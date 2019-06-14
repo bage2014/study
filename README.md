@@ -5,7 +5,7 @@ Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-serv
 
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
 
-多模块项目实践 [https://github.com/bage2014/my-app](https://github.com/bage2014/my-app)
+Spring Cloud 多模块实践 [https://github.com/bage2014/my-app](https://github.com/bage2014/my-app)
 
 ## 模块说明 ##
 按照创建顺序 (不是按照显示顺序) 说明如下
