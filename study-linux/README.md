@@ -97,6 +97,26 @@ Linux下载
     cd ${activemq_install_dir}/bin
     ./activemq start
 
+
+### Nodejs ###
+
+- 环境搭建
+  - 参考链接 [https://github.com/nodejs/help/wiki/Installation](https://github.com/nodejs/help/wiki/Installation)
+  - 下载地址 [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
+
+- 下载安装
+
+Linux下载
+
+    
+加入安装路径
+
+    
+启动
+
+    
+    
+    
 ### Nexus ###
 - 参考链接 
   - 官网 [https://www.sonatype.com/download-oss-sonatype](https://www.sonatype.com/download-oss-sonatype "官网")
