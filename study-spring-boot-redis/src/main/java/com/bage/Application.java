@@ -41,8 +41,8 @@ public class Application implements CommandLineRunner {
 
 	@Bean
 	public JedisConnectionFactory redisConnectionFactory() {
-		RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("192.168.146.133", 6379);
-		config.setPassword(RedisPassword.of("bage"));
+		RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("localhost", 8889);
+		config.setPassword(RedisPassword.of("yourpassword"));
 		return new JedisConnectionFactory(config);
 	}
 	@Bean
