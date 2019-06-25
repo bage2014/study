@@ -1,8 +1,9 @@
 # study-code-generator #
-代码生成学习笔记
+代码生成 学习笔记
 
-## 参考链接 ##
-- 基于mybatis-generator-gui [https://github.com/zouzg/mybatis-generator-gui](https://github.com/zouzg/mybatis-generator-gui "基于此进行改造")
+## demo ##
+
+访问即可生成对应的代码 [http://localhost:8080/code/controller](http://localhost:8080/code/controller)
 
 
 
