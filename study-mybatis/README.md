@@ -121,8 +121,18 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
 	<select id="selectPerson" parameterType="int" resultType="hashmap">
 	  SELECT * FROM PERSON WHERE ID = #{id}
 	</select>
+	
+### SQL ###
 
+    <sql id="userColumns"> ${alias}.id,${alias}.username,${alias}.password </sql>   
+    <select id="selectUsers" resultType="map">
+      select
+        <include refid="userColumns"><property name="alias" value="t1"/></include>
+      from some_table t1
+        cross join some_table t2
+    </select>
 
+### 参数 ###
 
-
+    #{age,javaType=int,jdbcType=NUMERIC,typeHandler=MyTypeHandler}
 

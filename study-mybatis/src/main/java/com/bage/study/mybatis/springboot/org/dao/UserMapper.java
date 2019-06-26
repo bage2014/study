@@ -17,5 +17,6 @@ public interface UserMapper {
     int update(User user);
 
     List<User> queryAll();
+    List<User> queryByDepartmentId(long departmentId);
 
 }

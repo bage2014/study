@@ -72,6 +72,12 @@ public class UserController {
 		return userMapper.update(user);
 	}
 
+	@RequestMapping("/queryByDepartmentId")
+	@ResponseBody
+	public List<User> queryByDepartmentId() {
+	    long departmentId = 1L;
+		return userMapper.queryByDepartmentId(departmentId);
+	}
 	@RequestMapping("/all")
 	@ResponseBody
 	public List<User> getUser() {
