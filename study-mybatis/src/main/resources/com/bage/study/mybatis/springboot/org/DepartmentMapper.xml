@@ -14,8 +14,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bage.study.mybatis.springboot.user.dao.UserMapper">
-    <select id="queryAll" resultType="User">
-        select * from org_user
+<mapper namespace="com.bage.study.mybatis.springboot.org.dao.DepartmentMapper">
+    <!-- 非常复杂的结果映射 -->
+    <resultMap id="DepartmentResultMap" type="Department">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="users" ofType="User">
+            <id property="id" column="department_id"/>
+            <result property="name" column="name"/>
+            <result property="sex" column="sex"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="queryAll" resultMap="DepartmentResultMap" resultType="Department">
+        select * from org_department
     </select>
 </mapper>

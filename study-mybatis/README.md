@@ -68,3 +68,61 @@ MyBatis **默认开启**了一级缓存，一级缓存是在SqlSession 层面进
 根据时间表，比如No Flush Interval，（CNFI，没有刷新间隔），缓存不会以任何时间顺序来刷新
 缓存会存储列表集合或对象（无论查询方法返回什么）的1024个引用
 缓存会被视为是read/write（可读/可写）的缓存，意味着对象检索不是共享的，而且可以很安全的被调用者修改，不干扰其他调用者或县城所作的潜在修改
+
+
+## XML ##
+### 参考链接 ###
+XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html)
+
+### insert ###
+简单插入
+
+	<insert id="insertAuthor">
+	  insert into Author (id,username,password,email,bio)
+	  values (#{id},#{username},#{password},#{email},#{bio})
+	</insert>
+
+
+批量插入
+
+	<insert id="insertAuthor" useGeneratedKeys="true"
+	    keyProperty="id">
+	  insert into Author (username, password, email, bio) values
+	  <foreach item="item" collection="list" separator=",">
+	    (#{item.username}, #{item.password}, #{item.email}, #{item.bio})
+	  </foreach>
+	</insert>
+
+具体实践：
+    com\bage\study\mybatis\springboot\org\UserMapper.xml
+
+        简单插入 insert
+		批量插入 batchInsert
+
+### delete ###
+
+	<delete id="deleteAuthor">
+	  delete from Author where id = #{id}
+	</delete>
+
+### update ###
+
+	<update id="updateAuthor">
+	  update Author set
+	    username = #{username},
+	    password = #{password},
+	    email = #{email},
+	    bio = #{bio}
+	  where id = #{id}
+	</update>
+
+### select ###
+
+	<select id="selectPerson" parameterType="int" resultType="hashmap">
+	  SELECT * FROM PERSON WHERE ID = #{id}
+	</select>
+
+
+
+
+

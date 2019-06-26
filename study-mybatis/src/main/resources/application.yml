@@ -1,0 +1,19 @@
+logging:
+  level:
+    root: info
+spring:
+  h2:
+    console:
+      settings:
+        web-allow-others: true
+        path: h2-console
+        enable: true
+  datasource:
+    url: jdbc:h2:~/myDb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: root
+    schema: classpath:schema.sql
+    data: classpath:data.sql
+mybatis:
+  config-location: classpath:mybatis-config.xml
