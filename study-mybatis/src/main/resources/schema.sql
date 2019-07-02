@@ -13,3 +13,11 @@ CREATE TABLE org_department(
   id SERIAL,
   name VARCHAR(255)
 );
+
+
+drop table if exists org_department_address;
+CREATE TABLE org_department_address(
+  id SERIAL,
+  name VARCHAR(255),
+  department_id BIGINT
+);

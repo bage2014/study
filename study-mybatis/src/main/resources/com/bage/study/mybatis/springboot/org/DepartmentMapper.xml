@@ -15,10 +15,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bage.study.mybatis.springboot.org.dao.DepartmentMapper">
-    <!-- 非常复杂的结果映射 -->
+    <!-- 一对多结果映射 -->
     <resultMap id="DepartmentResultMap" type="Department">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
+
+        <association property="departmentAddress" column="id" select="com.bage.study.mybatis.springboot.org.dao.DepartmentAddressMapper.queryByDepartmentId"/>
 
         <collection property="users" column="id" select="com.bage.study.mybatis.springboot.org.dao.UserMapper.queryByDepartmentId"/>
 

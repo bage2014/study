@@ -21,10 +21,10 @@ public class UserController {
 	@ResponseBody
 	public Integer insert() {
 		User user = new User();
-		user.setId(2);
+		user.setId(2L);
 		user.setName("zhangsan");
 		user.setSex("M");
-		user.setDepartmentId(1);
+		user.setDepartmentId(1L);
 		int res = userMapper.insert(user);
 
 		System.out.println("验证主键回写：：" + user);
@@ -36,16 +36,16 @@ public class UserController {
 	@ResponseBody
 	public Integer batchInsert() {
 		User user2 = new User();
-		user2.setId(3434);
+		user2.setId(3434L);
 		user2.setName("zhangsan33");
 		user2.setSex("M3");
-		user2.setDepartmentId(3);
+		user2.setDepartmentId(3L);
 
 		User user = new User();
-		user.setId(2);
+		user.setId(2L);
 		user.setName("zhangsan");
 		user.setSex("M");
-		user.setDepartmentId(1);
+		user.setDepartmentId(1L);
 
         List<User> users = Arrays.asList(user, user2);
         int res = userMapper.batchInsert(users);
@@ -65,10 +65,10 @@ public class UserController {
 	@ResponseBody
 	public Integer update() {
 		User user = new User();
-		user.setId(2);
+		user.setId(2L);
 		user.setName("zhangsan-new");
 		user.setSex("F");
-		user.setDepartmentId(3);
+		user.setDepartmentId(3L);
 		return userMapper.update(user);
 	}
 

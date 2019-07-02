@@ -118,10 +118,24 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
 
 ### select ###
 
+普通查询
+
 	<select id="selectPerson" parameterType="int" resultType="hashmap">
 	  SELECT * FROM PERSON WHERE ID = #{id}
 	</select>
 	
+一对一 association + 一对多 collection
+	
+    <resultMap id="DepartmentResultMap" type="Department">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+
+        <association property="departmentAddress" column="id" select="com.bage.study.mybatis.springboot.org.dao.DepartmentAddressMapper.queryByDepartmentId"/>
+
+        <collection property="users" column="id" select="com.bage.study.mybatis.springboot.org.dao.UserMapper.queryByDepartmentId"/>
+
+    </resultMap>
+    
 ### SQL ###
 
     <sql id="userColumns"> ${alias}.id,${alias}.username,${alias}.password </sql>   
@@ -131,7 +145,7 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
       from some_table t1
         cross join some_table t2
     </select>
-
+    
 ### 参数 ###
 
     #{age,javaType=int,jdbcType=NUMERIC,typeHandler=MyTypeHandler}
