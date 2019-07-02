@@ -125,7 +125,8 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
 	</select>
 	
 一对一 association + 一对多 collection
-	
+请求用例 [http://localhost:8080/department/all](http://localhost:8080/department/all)	
+  
     <resultMap id="DepartmentResultMap" type="Department">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
