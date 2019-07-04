@@ -60,6 +60,14 @@ logback-test.xml [https://github.com/bage2014/study/blob/master/study-log-logbac
 
 
 运行LogApp类即可
+  <root>
+    <level value="info"/> <!--输出级别 debug、info等-->
+    <appender-ref ref="STDOUT"/> <!--输出到控制台-->
+    <appender-ref ref="FILE"/> <!--输出到文件-->
+  </root>
+  
 查看控制台输出
+
+
 
 ## 环境搭建 ##
