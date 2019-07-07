@@ -112,7 +112,6 @@ public class DefaultConfig {
     ///////////////////////////////     常用对象选值列表     ///////////////////////////////
 
 
-
     ///////////////////////////////     配置     ///////////////////////////////
     /**
      * 是否随机
@@ -433,13 +432,25 @@ public class DefaultConfig {
     }
 
     public Object getEnumValue(Class cls) {
-        Field[] fields = cls.getDeclaredFields();
-        if(fields.length > 0){
+        Field[] fields = getEnumFields(cls);
+        if (fields.length > 0) {
             int index = new Random().nextInt(fields.length);
-            return Enum.valueOf(cls,fields[index].getName());
+            return Enum.valueOf(cls, fields[index].getName());
         }
         return null;
     }
+
+    public Field[] getEnumFields(Class cls) {
+        Field[] fields = cls.getFields();
+        List<Field> fieldList = new ArrayList<>();
+        for (Field field : fields) {
+            if (field.getType() == cls) {
+                fieldList.add(field);
+            }
+        }
+        return fieldList.toArray(new Field[fieldList.size()]);
+    }
+
 ///////////////////////////////     setter、getter     ///////////////////////////////
 
     ///////////////////////////////     others     ///////////////////////////////

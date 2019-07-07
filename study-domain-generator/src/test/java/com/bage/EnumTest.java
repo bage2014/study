@@ -4,7 +4,7 @@ import com.bage.domain.Sex;
 
 public class EnumTest {
 
-    public static void main(String[] args) throws IllegalAccessException, InstantiationException {
+    public static void main3(String[] args) throws IllegalAccessException, InstantiationException {
 
         Object obj = null;
 
@@ -12,8 +12,8 @@ public class EnumTest {
 
         String name = cls.getDeclaredFields()[0].getName();
 
-        if(cls.isEnum()){
-            obj = Enum.valueOf(cls,name);
+        if (cls.isEnum()) {
+            obj = Enum.valueOf(cls, name);
             System.out.println(cls);
 
         }
