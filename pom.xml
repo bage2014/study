@@ -104,5 +104,7 @@
       <module>study-test-restdoc</module>
       <module>study-spring-boot-building</module>
       <module>study-spring-boot-redis</module>
+      <module>study-spring-boot-starter</module>
+      <module>study-spring-boot-starter-test</module>
   </modules>
 </project>
