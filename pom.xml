@@ -106,5 +106,6 @@
       <module>study-spring-boot-redis</module>
       <module>study-spring-boot-starter</module>
       <module>study-spring-boot-starter-test</module>
+      <module>study-spring-boot-jpa</module>
   </modules>
 </project>

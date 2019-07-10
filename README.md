@@ -90,6 +90,7 @@ Spring Cloud 多模块实践 [https://github.com/bage2014/my-app](https://github
 | study-spring-boot-mybatis-oracle  |  spring-boot-mybatis-oracle 学习笔记 |
 | study-jmeter  |  jmeter 学习笔记 |
 | study-mybatis-generator-maven-plugin  |  mybatis-generator-maven-plugin 学习笔记 |
+| study-spring-boot-jpa  |  study-spring-boot-jpa 学习笔记 |
 
 
 
