@@ -4,7 +4,6 @@ import com.bage.config.DefaultConfig;
 import com.bage.parser.GenericParser;
 import com.bage.util.Logger;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -22,7 +21,7 @@ public abstract class ValueGenerator {
         return defaultData;
     }
 
-    public void generateFieldValue(Field field, Object object) {
+    public void generateBasicFieldValue(Field field, Object object) {
         try {
             Class cls = field.getType();
 
@@ -95,14 +94,17 @@ public abstract class ValueGenerator {
             }
             else {
                 Logger.debug("不支持的实例化类型 cls={}", cls);
+                Object o = generateClassFieldValue(cls);
+                field.set(object, o);
             }
-
             Logger.debug("字段赋值：field={}, value={} ", field, field.get(object));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public abstract Object generateClassFieldValue(Class cls);
 
 
     private void setGenericValue(Type type,Object parent) throws ClassNotFoundException {
@@ -127,7 +129,7 @@ public abstract class ValueGenerator {
                 setGenericValue(typeClassName,value);
             }
         } else {
-            value = generateFieldValue(Class.forName(type.getTypeName()));
+            value = generateBasicFieldValue(Class.forName(type.getTypeName()));
         }
 
         // 值回填
@@ -144,7 +146,7 @@ public abstract class ValueGenerator {
 
     }
 
-    public Object generateFieldValue(Class cls) {
+    public Object generateBasicFieldValue(Class cls) {
         try {
             // 基本类型
             if (int.class == cls) {

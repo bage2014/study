@@ -11,6 +11,11 @@ public class ComplexDomain {
     private int id;
     private Integer age;
 
+    /**
+     * 自定义对象
+     */
+    private User user;
+
     // 常用类
     private String name;
     private Date birthday;
@@ -92,6 +97,7 @@ public class ComplexDomain {
         return "ComplexDomain{" +
                 "id=" + id +
                 ", age=" + age +
+                ", user=" + user +
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +
                 ", sex=" + sex +

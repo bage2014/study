@@ -1,7 +1,10 @@
 package com.bage.generator;
 
+import com.bage.parser.FieldParser;
+import com.bage.util.Logger;
+
 import java.io.File;
-import java.lang.reflect.Type;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +14,29 @@ import java.util.Set;
  * 默认值生成
  */
 public class DefaultValueGeneratorImpl extends ValueGenerator {
+
+    @Override
+    public Object generateClassFieldValue(Class cls) {
+        Object obj = null;
+        try {
+            obj = cls.newInstance();
+
+            // 类自身字段和父类字段
+
+            // 获取当前类的字段信息
+            Field[] fields = FieldParser.getDeclaredFields(cls);
+            Logger.debug("当前类字段信息：fields=%s ", fields);
+            for(Field field : fields){
+                generateBasicFieldValue(field,obj);
+            }
+            // 获取父类的
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
 
     @Override
     protected Object generateEnumValue(Class cls) {
