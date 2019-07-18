@@ -76,6 +76,7 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
 
 ### insert ###
 简单插入
+请求用例 [http://localhost:8080/user/insert](http://localhost:8080/user/insert)	
 
 	<insert id="insertAuthor">
 	  insert into Author (id,username,password,email,bio)
@@ -119,6 +120,7 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
 ### select ###
 
 普通查询
+请求用例 [http://localhost:8080/user/all](http://localhost:8080/user/all)	
 
 	<select id="selectPerson" parameterType="int" resultType="hashmap">
 	  SELECT * FROM PERSON WHERE ID = #{id}
@@ -150,4 +152,7 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
 ### 参数 ###
 
     #{age,javaType=int,jdbcType=NUMERIC,typeHandler=MyTypeHandler}
+
+### TypeHandler ###
+目前实现了一个示例，SexTypeHandler
 

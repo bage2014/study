@@ -15,5 +15,6 @@ spring:
     password: root
     schema: classpath:schema.sql
     data: classpath:data.sql
+
 mybatis:
   config-location: classpath:mybatis-config.xml

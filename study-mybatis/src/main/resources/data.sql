@@ -1,12 +1,17 @@
 INSERT INTO org_user
 	(id, name, sex, department_id)
 VALUES
-	(1, 'bage', 'M', 	1);
+	(1, 'bage', 'Unknown', 	1);
 
 INSERT INTO org_user
 	(id, name, sex, department_id)
 VALUES
-	(2, 'bage2', 'F',	2);
+	(2, 'bage2', 'Famale',	2);
+
+INSERT INTO org_user
+	(id, name, sex, department_id)
+VALUES
+	(3, 'bage3', 'Male',	3);
 
 
 

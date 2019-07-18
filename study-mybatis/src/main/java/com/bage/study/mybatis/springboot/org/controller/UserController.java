@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.bage.study.mybatis.springboot.org.dao.UserMapper;
+import com.bage.study.mybatis.springboot.org.domain.Sex;
 import com.bage.study.mybatis.springboot.org.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ public class UserController {
 		User user = new User();
 		user.setId(2L);
 		user.setName("zhangsan");
-		user.setSex("M");
+		user.setSex(Sex.Unknown);
 		user.setDepartmentId(1L);
 		int res = userMapper.insert(user);
 
@@ -38,13 +39,13 @@ public class UserController {
 		User user2 = new User();
 		user2.setId(3434L);
 		user2.setName("zhangsan33");
-		user2.setSex("M3");
+		user2.setSex(Sex.Male);
 		user2.setDepartmentId(3L);
 
 		User user = new User();
 		user.setId(2L);
 		user.setName("zhangsan");
-		user.setSex("M");
+		user.setSex(Sex.Male);
 		user.setDepartmentId(1L);
 
         List<User> users = Arrays.asList(user, user2);
@@ -67,7 +68,7 @@ public class UserController {
 		User user = new User();
 		user.setId(2L);
 		user.setName("zhangsan-new");
-		user.setSex("F");
+		user.setSex(Sex.Famale);
 		user.setDepartmentId(3L);
 		return userMapper.update(user);
 	}
@@ -81,6 +82,8 @@ public class UserController {
 	@RequestMapping("/all")
 	@ResponseBody
 	public List<User> getUser() {
-		return userMapper.queryAll();
+        List<User> users = userMapper.queryAll();
+        System.out.println(users);
+        return users;
 	}
 }
