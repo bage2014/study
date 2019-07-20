@@ -108,5 +108,6 @@
       <module>study-spring-boot-starter-test</module>
       <module>study-spring-boot-jpa</module>
       <module>study-json</module>
+      <module>study-spring-boot-multi-datasource</module>
   </modules>
 </project>
