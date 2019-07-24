@@ -2,6 +2,7 @@
 study-spring-boot-multi-datasource 学习笔记
 
 ## 参考链接 ##
+- mybatis-spring-boot-multi-ds-demo [https://github.com/kazuki43zoo/mybatis-spring-boot-multi-ds-demo](https://github.com/kazuki43zoo/mybatis-spring-boot-multi-ds-demo)
 - Configure Two DataSources [https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-two-datasources](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-two-datasources)
 - Spring Boot Multiple Datasource [https://stackoverflow.com/questions/27614301/spring-boot-multiple-datasource](https://stackoverflow.com/questions/27614301/spring-boot-multiple-datasource)
 - Multi Datasource #78 [https://github.com/mybatis/spring-boot-starter/issues/78](https://github.com/mybatis/spring-boot-starter/issues/78)
