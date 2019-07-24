@@ -1,6 +1,9 @@
 package com.bage;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -9,13 +12,19 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
 @Configuration
+@MapperScan(basePackages = "com.bage.ds1", sqlSessionFactoryRef = AppConfig.ds1)
+@MapperScan(basePackages = "com.bage.ds2", sqlSessionFactoryRef = AppConfig.ds2)
 public class AppConfig {
+
+    public static final String ds1 = "sqlSessionFactory1";
+    public static final String ds2 = "sqlSessionFactory2";
 
     @Bean
     @Primary
@@ -30,6 +39,16 @@ public class AppConfig {
     public HikariDataSource firstDataSource() {
         return firstDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
+    @Bean(ds1)
+    @Primary
+    public SqlSessionFactory sqlSessionFactory1(@Qualifier("firstDataSource") DataSource datasource) throws Exception {
+
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("/mybatis/mybatis-conf.xml"));
+        sqlSessionFactoryBean.setDataSource(datasource);
+        return sqlSessionFactoryBean.getObject();
+    }
+
 
     @Bean
     @ConfigurationProperties("app.datasource.second")
@@ -41,6 +60,15 @@ public class AppConfig {
     @ConfigurationProperties("app.datasource.second.configuration")
     public HikariDataSource secondDataSource() {
         return secondDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+    }
+    @Bean(ds2)
+    @Primary
+    public SqlSessionFactory sqlSessionFactory2(@Qualifier("secondDataSource") DataSource datasource) throws Exception {
+
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("/mybatis/mybatis-conf.xml"));
+        sqlSessionFactoryBean.setDataSource(datasource);
+        return sqlSessionFactoryBean.getObject();
     }
 
     @Bean(name="tm1")
