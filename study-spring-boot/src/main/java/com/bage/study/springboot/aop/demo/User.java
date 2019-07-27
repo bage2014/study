@@ -16,6 +16,9 @@ public class User {
     private Map<String, Cert> certMap;
     private Set<Cert> certSet;
 
+    public User(){
+
+    }
     public User(String id, String name, String sex, List<Cert> certList, Map<String, Cert> certMap, Set<Cert> certSet) {
         this.id = id;
         this.name = name;
