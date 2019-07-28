@@ -10,6 +10,9 @@ public class Cert {
 
     private SubSert subSert;
 
+    public Cert(){
+
+    }
     public Cert(String code, String desc, SubSert subSert) {
         this.code = code;
         this.desc = desc;

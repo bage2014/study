@@ -129,7 +129,7 @@ public abstract class ValueGenerator {
                 setGenericValue(typeClassName,value);
             }
         } else {
-            value = generateBasicFieldValue(Class.forName(type.getTypeName()));
+            value = generateClassFieldValue(Class.forName(type.getTypeName()));
         }
 
         // 值回填

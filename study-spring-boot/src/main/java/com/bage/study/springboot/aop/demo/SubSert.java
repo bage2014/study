@@ -9,6 +9,8 @@ public class SubSert {
 
     private String name;
 
+    public SubSert() {
+    }
     public SubSert(String id, String name) {
         this.id = id;
         this.name = name;
