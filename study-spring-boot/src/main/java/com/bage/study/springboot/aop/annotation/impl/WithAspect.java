@@ -67,10 +67,13 @@ public class WithAspect {
                     // 给具体实现
                     case WithAspect.ACTION_BEFORE:
                         doBefore(target, method, args, annotation, proxy);
+                        break;
                     case WithAspect.ACTION_AFTERRETURNING:
                         doAfterReturning(target, method, args, annotation, proxy, retVal);
+                        break;
                     case WithAspect.ACTION_AFTERTHROWING:
                         doAfterThrowing(target, method, args, annotation, proxy, retVal, throwable);
+                        break;
                     default:
                         break;
                 }
