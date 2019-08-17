@@ -1,4 +1,4 @@
-package com.bage.study.springboot.aop.annotation.impl;
+package com.bage.study.springboot.aop.annotation.crypt.impl;
 
 public interface CryptAction {
 

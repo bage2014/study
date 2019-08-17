@@ -1,6 +1,6 @@
 package com.bage.study.springboot.aop.demo;
 
-import com.bage.study.springboot.aop.annotation.WithMethod;
+import com.bage.study.springboot.aop.annotation.crypt.WithMethod;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
-package com.bage.study.springboot.aop.annotation.impl;
+package com.bage.study.springboot.aop.annotation.crypt.impl;
 
-import com.bage.study.springboot.aop.annotation.WithMethod;
+import com.bage.study.springboot.aop.annotation.BaseAspect;
+import com.bage.study.springboot.aop.annotation.crypt.WithMethod;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -11,7 +12,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class WithAspect {
+public class WithAspect extends BaseAspect {
 
     private static final String ACTION_BEFORE = "before";
     private static final String ACTION_AFTERRETURNING = "afterReturning";
@@ -31,7 +32,7 @@ public class WithAspect {
 
     }
 
-    @Around(value = "@annotation(com.bage.study.springboot.aop.annotation.WithMethod)")
+    @Around(value = "@annotation(com.bage.study.springboot.aop.annotation.crypt.WithMethod)")
     public Object withMethod(ProceedingJoinPoint pjp) {
 
         // start stopwatch
@@ -91,65 +92,6 @@ public class WithAspect {
 
     private void before(ProceedingJoinPoint pjp, Object retVal) {
         doWith(pjp, null, WithAspect.ACTION_BEFORE, retVal);
-    }
-
-    private Object getProxy(ProceedingJoinPoint pjp) {
-        Object proxy = pjp.getThis();
-        if (log.isDebugEnabled()) {
-            log.debug("proxy：{}", proxy);
-        }
-        return proxy;
-    }
-
-    private Method getMethod(ProceedingJoinPoint pjp) {
-        // 当前方法
-        Method method = null;
-        try {
-            Signature signature = pjp.getSignature();
-
-            // 获取参数
-            Object[] args = getArgs(pjp);
-
-            // 目标类
-            Object target = getTarget(pjp);
-
-            Class[] parameterTypes = Arrays.stream(args).map(item -> item.getClass()).collect(Collectors.toList()).toArray(new Class[]{});
-            method = target.getClass().getMethod(signature.getName(), parameterTypes);
-        } catch (NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("method：{}", method);
-        }
-        return method;
-    }
-
-    /**
-     * 目标类
-     *
-     * @param pjp
-     * @return
-     */
-    private Object getTarget(ProceedingJoinPoint pjp) {
-        Object target = pjp.getTarget();
-        if (log.isDebugEnabled()) {
-            log.debug("target：{}", target);
-        }
-        return target;
-    }
-
-    /**
-     * 获取参数
-     *
-     * @param pjp
-     * @return
-     */
-    private Object[] getArgs(ProceedingJoinPoint pjp) {
-        Object[] args = pjp.getArgs();
-        if (log.isDebugEnabled()) {
-            log.debug("args：{}", Arrays.toString(args));
-        }
-        return args;
     }
 
 }

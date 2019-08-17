@@ -1,4 +1,4 @@
-package com.bage.study.springboot.aop.annotation;
+package com.bage.study.springboot.aop.annotation.crypt;
 
 
 import java.lang.annotation.*;
