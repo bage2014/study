@@ -366,6 +366,20 @@ Docker Pull Command
 
     http://{ip}:8892/_cat/health  
 
+
+### 网络连接 ###
+参考链接 [https://blog.csdn.net/subfate/article/details/81396532](https://blog.csdn.net/subfate/article/details/81396532)
+
+自定义 bright 网络，名字为 myapp
+ 
+	docker network create myapp
+
+在运行时候，添加参数，可以通过 myapp-xxx 别名访问
+
+    --network myapp --network-alias myapp-xxx
+
+验证，可以在其他容器中，ping myapp-xxx
+
 ### 常见错误 ###
 启动centos镜像报错
 
