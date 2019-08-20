@@ -368,15 +368,24 @@ Docker Pull Command
 
 
 ### 网络连接 ###
-参考链接 [https://blog.csdn.net/subfate/article/details/81396532](https://blog.csdn.net/subfate/article/details/81396532)
+参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
 
-自定义 bright 网络，名字为 myapp
+自定义 bright 网络，名字为 my-net
  
-	docker network create myapp
+	docker network create my-net
 
 在运行时候，添加参数，可以通过 myapp-xxx 别名访问
 
-    --network myapp --network-alias myapp-xxx
+    --network my-net
+    docker create --name my-nginx \
+      --network my-net \
+      --publish 8080:80 \
+      nginx:latest
+      
+To connect a running container to an existing user-defined bridge,
+      
+    docker network connect my-net my-nginx
+
 
 验证，可以在其他容器中，ping myapp-xxx
 
