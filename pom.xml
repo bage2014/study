@@ -109,5 +109,7 @@
       <module>study-spring-boot-jpa</module>
       <module>study-json</module>
       <module>study-spring-boot-multi-datasource</module>
+      <module>study-spring-boot-env</module>
+    <module>study-java-shell</module>
   </modules>
 </project>
