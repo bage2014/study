@@ -111,5 +111,6 @@
       <module>study-spring-boot-multi-datasource</module>
       <module>study-spring-boot-env</module>
     <module>study-java-shell</module>
+      <module>study-spring-email</module>
   </modules>
 </project>
