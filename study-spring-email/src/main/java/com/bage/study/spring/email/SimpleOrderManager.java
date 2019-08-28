@@ -19,10 +19,8 @@ import java.util.Properties;
 @Component
 public class SimpleOrderManager implements OrderManager {
 
-@Autowired
-        private MailSender mailSender;
     @Autowired
-        private SimpleMailMessage templateMessage;
+    public JavaMailSender emailSender;
 
 
         public void placeOrder(Order order) {
@@ -31,20 +29,15 @@ public class SimpleOrderManager implements OrderManager {
 
             // Call the collaborators to persist the order...
 
-            // Create a thread safe "copy" of the template message and customize it
-            SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
-            msg.setTo(order.getCustomer().getEmailAddress());
-            msg.setText(
-                    "Dear " + order.getCustomer().getFirstName()
-                            + order.getCustomer().getLastName()
-                            + ", thank you for placing order. Your order number is "
-                            + order.getOrderNumber());
-            try{
-                this.mailSender.send(msg);
-            }
-            catch (MailException ex) {
-                // simply log it and go on...
-                System.err.println(ex.getMessage());
+            int n = 1;
+            for (int i = 0; i < n; i++) {
+                // Create a thread safe "copy" of the template message and customize it
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setFrom("893542907@qq.com");
+                message.setTo("1305039488@qq.com");
+                message.setSubject("花花 vs 璐璐");
+                message.setText("测试，花花 + 璐璐: " + i);
+                emailSender.send(message);
             }
         }
 /*
