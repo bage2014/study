@@ -112,5 +112,6 @@
       <module>study-spring-boot-env</module>
     <module>study-java-shell</module>
       <module>study-spring-email</module>
+      <module>study-zipkin</module>
   </modules>
 </project>
