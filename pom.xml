@@ -113,5 +113,6 @@
     <module>study-java-shell</module>
       <module>study-spring-email</module>
       <module>study-zipkin</module>
+      <module>study-es</module>
   </modules>
 </project>
