@@ -18,16 +18,16 @@ public class MyUserDetailsService implements UserDetailsService {
 		try {
 	      user = userService.loadUserByUsername(username);
 	    } catch (Exception e) {
-	      throw new UsernameNotFoundException("user select fail");
+	      throw new UsernameNotFoundException("org select fail");
 	    }
 	    if(user == null){
-	      throw new UsernameNotFoundException("no user found");
+	      throw new UsernameNotFoundException("no org found");
 	    } else {
 	      try {
-	        // String roles = "USER";// userService.getRoleByUser(user); 
+	        // String roles = "USER";// userService.getRoleByUser(org);
 	        return user;
 	      } catch (Exception e) {
-	        throw new UsernameNotFoundException("user role select fail");
+	        throw new UsernameNotFoundException("org role select fail");
 	      }
 	    }
 	}

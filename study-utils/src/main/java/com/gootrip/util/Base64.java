@@ -232,7 +232,7 @@ public class Base64 {
 	public static final String version = "1.2";
 
 	/**
-	 * Locale specific strings displayed to the user.
+	 * Locale specific strings displayed to the org.
 	 *
 	 * @since ostermillerutils 1.00.00
 	 */

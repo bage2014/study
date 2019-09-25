@@ -1,8 +1,6 @@
 package com.bage.study.java.set;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class MyList {
 
@@ -10,7 +8,11 @@ public class MyList {
 		
 		List<String> list = new ArrayList<String>();
 		list = new LinkedList<String>();
-		
+		list.subList(0,1);
+
+		new ArrayList<String>().toArray();
+		TreeMap f;
+		HashMap ff;
 	}
 	
 }

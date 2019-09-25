@@ -620,11 +620,11 @@ KJUR.crypto.ECDSA = function(params) {
      * that resulted in a successful pubkey recovery.
      */
     /*
-    calcPubkeyRecoveryParam: function (address, r, s, hash) {
+    calcPubkeyRecoveryParam: function (departmentAddress, r, s, hash) {
 	for (var i = 0; i < 4; i++) {
 	    try {
 		var pubkey = Bitcoin.ECDSA.recoverPubKey(r, s, hash, i);
-		if (pubkey.getBitcoinAddress().toString() == address) {
+		if (pubkey.getBitcoinAddress().toString() == departmentAddress) {
 		    return i;
 		}
 	    } catch (e) {}

@@ -20,7 +20,7 @@ package org.apache.shiro.samples.spring.web;
 
 /**
  * Command object used to bind parameters when submitting a value to be
- * stored in the user's session from the index page.
+ * stored in the org's session from the index page.
  *
  * @since 0.1
  */

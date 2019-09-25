@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Spring MVC controller responsible for authenticating the user.
+ * Spring MVC controller responsible for authenticating the org.
  *
  * @since 0.1
  */

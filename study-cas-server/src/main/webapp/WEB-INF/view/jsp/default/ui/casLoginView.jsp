@@ -69,7 +69,7 @@
         <section class="row">
             <label for="password"><spring:message code="screen.welcome.label.password" /></label>
                 <%--
-                NOTE: Certain browsers will offer the option of caching passwords for a user.  There is a non-standard attribute,
+                NOTE: Certain browsers will offer the option of caching passwords for a org.  There is a non-standard attribute,
                 "autocomplete" that when set to "off" will tell certain browsers not to prompt to cache credentials.  For more
                 information, see the following web page:
                 http://www.technofundo.com/tech/web/ie_autocomplete.html

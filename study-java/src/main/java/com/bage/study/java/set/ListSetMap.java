@@ -1,13 +1,6 @@
 package com.bage.study.java.set;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 /**
  *  比较List、Map、Set
@@ -42,7 +35,9 @@ public class ListSetMap {
 //	　　     2. 无序容器，你无法保证每个元素的存储顺序，TreeSet通过 Comparator  或者 Comparable 维护了一个排序顺序。
 //       3. 只允许一个 null 元素
 //       4.Set 接口最流行的几个实现类是 HashSet、LinkedHashSet 以及 TreeSet。最流行的是基于 HashMap 实现的 HashSet；TreeSet 还实现了 SortedSet 接口，因此 TreeSet 是一个根据其 compare() 和 compareTo() 的定义进行排序的有序容器。
-		
+
+		new TreeMap<>();
+
 		Map<String,String> map = new HashMap<String,String>();
 		new HashMap<String,String>().put(null, null);
 		// 不允许放null：：new ConcurrentHashMap<>().put(null, null);

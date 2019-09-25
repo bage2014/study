@@ -34,7 +34,7 @@ public class Application implements CommandLineRunner {
 				public void run() {
 					long bf =  System.currentTimeMillis();
 					// String response = 
-							restTemplate.getForObject("http://localhost:8080/user?id=" + ( 209797 + new Random().nextInt(10000)), String.class);
+							restTemplate.getForObject("http://localhost:8080/org?id=" + ( 209797 + new Random().nextInt(10000)), String.class);
 			        System.out.println(index + ":" + (System.currentTimeMillis() - bf));
 				}
 			});

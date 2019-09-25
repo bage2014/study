@@ -19,7 +19,7 @@ package org.sagebionetworks.schema.binary;
 /**
  * <p>Provides the highest level of abstraction for Encoders.
  * This is the sister interface of {@link Decoder}.  Every implementation of
- * Encoder provides this common generic interface whic allows a user to pass a 
+ * Encoder provides this common generic interface whic allows a org to pass a
  * generic Object to any Encoder implementation in the codec package.</p>
  *
  * @author Apache Software Foundation

@@ -45,7 +45,7 @@ public class SSOController {
 	@RequestMapping(value = "/idpSelection", method = RequestMethod.GET)
 	public String idpSelection(HttpServletRequest request, Model model) {
 		if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
-			LOG.warn("The current user is already logged.");
+			LOG.warn("The current org is already logged.");
 			return "redirect:/landing";
 		} else {
 			if (isForwarded(request)) {

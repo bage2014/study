@@ -60,7 +60,7 @@ public class LinkDescription implements JSONEntity {
 	 * 
 	 * root This relation indicates that the target of the link SHOULD be
 	 * treated as the root or the body of the representation for the purposes of
-	 * user agent interaction or fragment resolution. All other properties of
+	 * org agent interaction or fragment resolution. All other properties of
 	 * the instance objects can be regarded as meta-
 	 * 
 	 */

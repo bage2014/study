@@ -14,7 +14,7 @@ security:
       accessTokenUri: http://localhost:8080/auth-server/oauth/token
       userAuthorizationUri: http://localhost:8080/auth-server/oauth/authorize
     resource:
-      userInfoUri: http://localhost:8080/auth-server/user/me
+      userInfoUri: http://localhost:8080/auth-server/org/me
 spring:
   thymeleaf:
     cache: false        

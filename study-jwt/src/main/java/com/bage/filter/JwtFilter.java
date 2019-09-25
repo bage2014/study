@@ -98,10 +98,10 @@ public class JwtFilter implements Filter{
 		if((request.getServletContext().getContextPath() + "/").equals(uri)) { // 首页不拦截
 			return true;
 		}
-		if((request.getServletContext().getContextPath() + "/user/login").equals(uri)) { // 登录页面不拦截
+		if((request.getServletContext().getContextPath() + "/org/login").equals(uri)) { // 登录页面不拦截
 			return true;
 		}
-		if((request.getServletContext().getContextPath() + "/user/logout").equals(uri)) { // 注销页面不拦截
+		if((request.getServletContext().getContextPath() + "/org/logout").equals(uri)) { // 注销页面不拦截
 			return true;
 		}
 		return false;

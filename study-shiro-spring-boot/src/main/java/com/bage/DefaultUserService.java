@@ -43,7 +43,7 @@ public class DefaultUserService implements UserService {
         roleAdmin.setPermissions(new HashSet<>(Arrays.asList("read,write")));
         Role roleUser = new Role();
         roleUser.setId(2L);
-        roleUser.setName("user");
+        roleUser.setName("org");
         roleUser.setPermissions(new HashSet<>(Arrays.asList("read")));
 
         User user = new User();
@@ -56,8 +56,8 @@ public class DefaultUserService implements UserService {
 
         user = new User();
         user.setId(2L);
-        user.setUsername("user");
-        user.setPassword(new Sha256Hash("user").toHex());
+        user.setUsername("org");
+        user.setPassword(new Sha256Hash("org").toHex());
         user.setEmail("sample2@shiro.apache.org");
         user.setRoles(new HashSet<>(Arrays.asList(roleUser)));
         list.add(user);

@@ -48,9 +48,9 @@ public class User  {
     }
 
     /**
-     * Returns the username associated with this user account;
+     * Returns the username associated with this org account;
      *
-     * @return the username associated with this user account;
+     * @return the username associated with this org account;
      */
     public String getUsername() {
         return username;
@@ -69,9 +69,9 @@ public class User  {
     }
 
     /**
-     * Returns the password for this user.
+     * Returns the password for this org.
      *
-     * @return this user's password
+     * @return this org's password
      */
     public String getPassword() {
         return password;

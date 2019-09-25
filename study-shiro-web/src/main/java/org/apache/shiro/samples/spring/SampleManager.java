@@ -30,7 +30,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 public interface SampleManager {
 
     /**
-     * Returns the value stored in the user's session.
+     * Returns the value stored in the org's session.
      *
      * @return the value.
      */
@@ -38,9 +38,9 @@ public interface SampleManager {
 
 
     /**
-     * Sets a value to be stored in the user's session.
+     * Sets a value to be stored in the org's session.
      *
-     * @param newValue the new value to store in the user's session.
+     * @param newValue the new value to store in the org's session.
      */
     void setValue(String newValue);
 

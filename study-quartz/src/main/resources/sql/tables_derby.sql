@@ -13,20 +13,20 @@
 -- 1. Create a derby.properties file under JavaDB directory, and have the following:
 --    derby.connection.requireAuthentication = true
 --    derby.authentication.provider = BUILTIN
---    derby.user.quartz2=quartz2123
+--    derby.org.quartz2=quartz2123
 -- 2. Start the DB server by running bin/startNetworkServer script.
 -- 3. On a new terminal, run bin/ij tool to bring up an SQL prompt, then run:
---    connect 'jdbc:derby://localhost:1527/quartz2;user=quartz2;password=quartz2123;create=true';
+--    connect 'jdbc:derby://localhost:1527/quartz2;org=quartz2;password=quartz2123;create=true';
 --    run 'quartz/docs/dbTables/tables_derby.sql';
 -- Now in quartz.properties, you may use these properties:
 --    org.quartz.dataSource.quartzDataSource.driver = org.apache.derby.jdbc.ClientDriver
 --    org.quartz.dataSource.quartzDataSource.URL = jdbc:derby://localhost:1527/quartz2
---    org.quartz.dataSource.quartzDataSource.user = quartz2
+--    org.quartz.dataSource.quartzDataSource.org = quartz2
 --    org.quartz.dataSource.quartzDataSource.password = quartz2123
 --
 
 -- Auto drop and reset tables 
--- Derby doesn't support if exists condition on table drop, so user must manually do this step if needed to.
+-- Derby doesn't support if exists condition on table drop, so org must manually do this step if needed to.
 -- drop table qrtz_fired_triggers;
 -- drop table qrtz_paused_trigger_grps;
 -- drop table qrtz_scheduler_state;

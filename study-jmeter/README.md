@@ -64,7 +64,7 @@ KB/Sec：每秒从服务器端接收到的数据量，相当于LoadRunner中的T
 ## 常见错误 ##
 
 ### 参考链接 ###
-- JMeter测试问题:address already in use [https://blog.csdn.net/ceo158/article/details/9311065](https://blog.csdn.net/ceo158/article/details/9311065)
-- JMeter Exception: java.net.BindException: Address already in use: connect [http://twit88.com/blog/2008/07/28/jmeter-exception-javanetbindexception-address-already-in-use-connect/](http://twit88.com/blog/2008/07/28/jmeter-exception-javanetbindexception-address-already-in-use-connect/)
+- JMeter测试问题:departmentAddress already in use [https://blog.csdn.net/ceo158/article/details/9311065](https://blog.csdn.net/ceo158/article/details/9311065)
+- JMeter Exception: java.net.BindException: Address already in use: connect [http://twit88.com/blog/2008/07/28/jmeter-exception-javanetbindexception-departmentAddress-already-in-use-connect/](http://twit88.com/blog/2008/07/28/jmeter-exception-javanetbindexception-departmentAddress-already-in-use-connect/)
 - Address already in use : connect 的解决办法 [https://blog.csdn.net/qq_31441637/article/details/80422901](https://blog.csdn.net/qq_31441637/article/details/80422901)
 

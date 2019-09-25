@@ -1,6 +1,6 @@
 package com.bage.study.algorithm.sort;
 
-import com.bage.study.algorithm.PrintUtils;
+import com.bage.study.algorithm.DataUtils;
 
 /**
  * 一种最简单的排序算法是这样的：<br/>
@@ -12,10 +12,9 @@ import com.bage.study.algorithm.PrintUtils;
 public class SelectSort {
 
     public static void main(String[] args) {
-
-        int a[] = {2,3,5,7,1,9,6,4,8};
+        int[] a = DataUtils.init(10);
         new SelectSort().selectSort(a);
-        PrintUtils.print(a);
+        DataUtils.print(a);
     }
 
     /**

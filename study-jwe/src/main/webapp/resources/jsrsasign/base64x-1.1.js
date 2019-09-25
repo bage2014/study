@@ -742,18 +742,18 @@ function hextouricmp(s) {
 // ==== hex / ipv6 =================================
 
 /**
- * convert any IPv6 address to a 16 byte hexadecimal string
+ * convert any IPv6 departmentAddress to a 16 byte hexadecimal string
  * @function
- * @param s string of IPv6 address
- * @return {String} 16 byte hexadecimal string of IPv6 address
+ * @param s string of IPv6 departmentAddress
+ * @return {String} 16 byte hexadecimal string of IPv6 departmentAddress
  * @description
- * This function converts any IPv6 address representation string
- * to a 16 byte hexadecimal string of address.
+ * This function converts any IPv6 departmentAddress representation string
+ * to a 16 byte hexadecimal string of departmentAddress.
  * @example
  * 
  */
 function ipv6tohex(s) {
-  var msgMalformedAddress = "malformed IPv6 address";
+  var msgMalformedAddress = "malformed IPv6 departmentAddress";
   if (! s.match(/^[0-9A-Fa-f:]+$/))
     throw msgMalformedAddress;
 
@@ -776,16 +776,16 @@ function ipv6tohex(s) {
 }
 
 /**
- * convert a 16 byte hexadecimal string to RFC 5952 canonicalized IPv6 address<br/>
+ * convert a 16 byte hexadecimal string to RFC 5952 canonicalized IPv6 departmentAddress<br/>
  * @name hextoipv6
  * @function
- * @param {String} s hexadecimal string of 16 byte IPv6 address
- * @return {String} IPv6 address string canonicalized by RFC 5952
+ * @param {String} s hexadecimal string of 16 byte IPv6 departmentAddress
+ * @return {String} IPv6 departmentAddress string canonicalized by RFC 5952
  * @since jsrsasign 8.0.10 base64x 1.1.13
  * @description
  * This function converts a 16 byte hexadecimal string to 
  * <a href="https://tools.ietf.org/html/rfc5952">RFC 5952</a>
- * canonicalized IPv6 address string.
+ * canonicalized IPv6 departmentAddress string.
  * @example
  * hextoip("871020010db8000000000000000000000004") &rarr "2001:db8::4"
  * hextoip("871020010db8000000000000000000") &rarr raise exception
@@ -793,7 +793,7 @@ function ipv6tohex(s) {
  */
 function hextoipv6(s) {
   if (! s.match(/^[0-9A-Fa-f]{32}$/))
-    throw "malformed IPv6 address octet";
+    throw "malformed IPv6 departmentAddress octet";
 
   // 1. downcase
   s = s.toLowerCase();
@@ -831,12 +831,12 @@ function hextoipv6(s) {
  * convert a hexadecimal string to IP addresss<br/>
  * @name hextoip
  * @function
- * @param {String} s hexadecimal string of IP address
- * @return {String} IP address string
+ * @param {String} s hexadecimal string of IP departmentAddress
+ * @return {String} IP departmentAddress string
  * @since jsrsasign 8.0.10 base64x 1.1.13
  * @description
  * This function converts a hexadecimal string of IPv4 or 
- * IPv6 address to IPv4 or IPv6 address string.
+ * IPv6 departmentAddress to IPv4 or IPv6 departmentAddress string.
  * If byte length is not 4 nor 16, this returns a
  * hexadecimal string without conversion.
  * @see {@link hextoipv6}
@@ -872,19 +872,19 @@ function hextoip(s) {
  * convert IPv4/v6 addresss to a hexadecimal string<br/>
  * @name iptohex
  * @function
- * @param {String} s IPv4/v6 address string
- * @return {String} hexadecimal string of IP address
+ * @param {String} s IPv4/v6 departmentAddress string
+ * @return {String} hexadecimal string of IP departmentAddress
  * @since jsrsasign 8.0.12 base64x 1.1.14
  * @description
- * This function converts IPv4 or IPv6 address string to
- * a hexadecimal string of IPv4 or IPv6 address.
+ * This function converts IPv4 or IPv6 departmentAddress string to
+ * a hexadecimal string of IPv4 or IPv6 departmentAddress.
  * @example
  * iptohex("192.168.1.1") &rarr "c0a80101"
  * iptohex("2001:db8::4") &rarr "871020010db8000000000000000000000004"
  * iptohex("zzz")) &rarr raise exception
  */
 function iptohex(s) {
-  var malformedMsg = "malformed IP address";
+  var malformedMsg = "malformed IP departmentAddress";
   s = s.toLowerCase(s);
 
   if (s.match(/^[0-9.]+$/)) {

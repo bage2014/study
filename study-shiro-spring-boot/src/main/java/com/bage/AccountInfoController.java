@@ -76,7 +76,7 @@ public class AccountInfoController {
 
         return "admin-info" + name;
     }
-    @RequiresRoles("user")
+    @RequiresRoles("org")
     @RequestMapping("/user")
     public String user() {
 
@@ -90,7 +90,7 @@ public class AccountInfoController {
             name = principalCollection.getPrimaryPrincipal().toString();
         }
 
-        return "user-info" + name;
+        return "org-info" + name;
     }
 
 }

@@ -14,7 +14,7 @@ public class UserController {
 	@RequestMapping("remote")
 	public String remote(HttpServletRequest request){
 		String user = request.getRemoteUser();
-		System.out.println("user:" + user);
+		System.out.println("org:" + user);
 		
 		Principal principal = request.getUserPrincipal();
 		System.out.println("principal:" + principal);

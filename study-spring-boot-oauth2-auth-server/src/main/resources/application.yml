@@ -33,7 +33,7 @@ github:
     userAuthorizationUri: https://github.com/login/oauth/authorize
     clientAuthenticationScheme: form
   resource:
-    userInfoUri: https://api.github.com/user
+    userInfoUri: https://api.github.com/org
     
     
 security:

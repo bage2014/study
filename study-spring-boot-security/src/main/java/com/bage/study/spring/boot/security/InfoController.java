@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -30,6 +32,9 @@ public class InfoController {
     @RequestMapping("/config/add")
     public Object add(){
 
+        AuthorizationEndpoint dd;
+        TokenEndpoint ss;
+
         Map<RequestMatcher, Collection<ConfigAttribute>> requestMap = myDefaultFilterInvocationSecurityMetadataSource.getRequestMap();
 
         RequestMatcher key = new AntPathRequestMatcher("/bage/*");
@@ -54,7 +59,7 @@ public class InfoController {
 
     @RequestMapping("/user/hello")
     public String user(){
-        return "user";
+        return "org";
     }
 
     @RequestMapping("/admin/hello")

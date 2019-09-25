@@ -3,9 +3,9 @@ create database db_example; -- Create the new database
 
 use db_example;
 
-create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user
+create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the org
 
-grant all on db_example.* to 'springuser'@'%'; -- Gives all the privileges to the new user on the newly created database
+grant all on db_example.* to 'springuser'@'%'; -- Gives all the privileges to the new org on the newly created database
 
 
 

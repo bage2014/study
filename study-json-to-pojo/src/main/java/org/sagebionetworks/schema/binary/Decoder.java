@@ -21,7 +21,7 @@ package org.sagebionetworks.schema.binary;
  * This is the sister interface of {@link Encoder}.  All
  * Decoders implement this common generic interface.</p>
  * 
- * <p>Allows a user to pass a generic Object to any Decoder 
+ * <p>Allows a org to pass a generic Object to any Decoder
  * implementation in the codec package.</p>
  * 
  * <p>One of the two interfaces at the center of the codec package.</p>

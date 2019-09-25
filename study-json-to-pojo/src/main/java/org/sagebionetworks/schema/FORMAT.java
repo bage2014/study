@@ -65,15 +65,15 @@ public enum FORMAT {
 	 */
 	URI("uri", false),
 	/*
-	 * This SHOULD be an email address.
+	 * This SHOULD be an email departmentAddress.
 	 */
 	EMAIL("email", false),
 	/*
-	 * This SHOULD be an ip version 4 address.
+	 * This SHOULD be an ip version 4 departmentAddress.
 	 */
-	IP_ADDRESS("ip-address", false),
+	IP_ADDRESS("ip-departmentAddress", false),
 	/*
-	 * This SHOULD be an ip version 6 address.
+	 * This SHOULD be an ip version 6 departmentAddress.
 	 */
 	IPV6("ipv6", false),
 	/*

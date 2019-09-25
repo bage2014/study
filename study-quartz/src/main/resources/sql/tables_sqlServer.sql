@@ -7,7 +7,7 @@
 --# you shouse enter your DB instance's name on the next line in place of "enter_db_name_here"
 --#
 --#
---# From a helpful (but anonymous) Quartz user:
+--# From a helpful (but anonymous) Quartz org:
 --#
 --# Regarding this error message:  
 --#
@@ -20,7 +20,7 @@
 --#		example:
 --#		"jdbc:microsoft:sqlserver://dbmachine:1433;SelectMethod=cursor"; 
 --#
---# Another user has pointed out that you will probably need to use the 
+--# Another org has pointed out that you will probably need to use the
 --# JTDS driver
 --#
 

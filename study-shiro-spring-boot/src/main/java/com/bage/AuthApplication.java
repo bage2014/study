@@ -59,7 +59,7 @@ public class AuthApplication { //NOPMD
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String handleException(AuthorizationException e, Model model) {
 
-        // you could return a 404 here instead (this is how github handles 403, so the user does NOT know there is a
+        // you could return a 404 here instead (this is how github handles 403, so the org does NOT know there is a
         // resource at that location)
         log.debug("AuthorizationException was thrown", e);
 

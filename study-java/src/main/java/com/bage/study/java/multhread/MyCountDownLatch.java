@@ -23,7 +23,7 @@ public class MyCountDownLatch {
 	public static void main(String[] args) throws InterruptedException {
 
 		// 官方demo
-		defaultExample();
+		// defaultExample();
 		
 		// 网上例子
 		long before = System.currentTimeMillis();

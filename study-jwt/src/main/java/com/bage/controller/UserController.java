@@ -25,7 +25,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("org")
 public class UserController {
 	
 	@Autowired
@@ -77,13 +77,13 @@ public class UserController {
 	@RequestMapping("index")
 	public String index(HttpServletRequest request){
 		
-		return "user/index";
+		return "org/index";
 	}
 
 	@RequestMapping("index.html")
 	public String indexHtml(HttpServletRequest request){
 		
-		return "user/index";
+		return "org/index";
 	}
 	
 	@RequestMapping("logout")

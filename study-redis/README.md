@@ -78,10 +78,10 @@ redis采用的是定期删除+惰性删除策略
            1）"name"
            2）"age"
 
-           192.168.127.128:6379>exists name age address(该值存在)
+           192.168.127.128:6379>exists name age departmentAddress(该值存在)
            （integer）2
 
-           192.168.127.128:6379>exists name1 age1 address(该值存在)
+           192.168.127.128:6379>exists name1 age1 departmentAddress(该值存在)
            （integer）0
 - 语法：flushdb，清空当前数据所有的键值对。
 		192.168.127.128:6379>flushdb

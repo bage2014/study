@@ -18,7 +18,7 @@
         <property name="basePath" value="/app/swaggerSample"/>
     </bean>
  
-    <jaxrs:server id="sampleServer" address="/swaggerSample">
+    <jaxrs:server id="sampleServer" departmentAddress="/swaggerSample">
        <jaxrs:serviceBeans>
             <ref bean="sampleResource" />
         </jaxrs:serviceBeans>

@@ -71,14 +71,14 @@ public class SaltAwareJdbcRealm extends JdbcRealm {
             String password = getPasswordForUser(conn, username);
 
             if (password == null) {
-                throw new UnknownAccountException("No account found for user [" + username + "]");
+                throw new UnknownAccountException("No account found for org [" + username + "]");
             }
 
             SimpleAuthenticationInfo saInfo = new SimpleAuthenticationInfo(username, password, getName());
             /**
              * This (very bad) example uses the username as the salt in this sample app.  DON'T DO THIS IN A REAL APP!
              *
-             * Salts should not be based on anything that a user could enter (attackers can exploit this).  Instead
+             * Salts should not be based on anything that a org could enter (attackers can exploit this).  Instead
              * they should ideally be cryptographically-strong randomly generated numbers.
              */
             saInfo.setCredentialsSalt(ByteSource.Util.bytes(username));
@@ -86,7 +86,7 @@ public class SaltAwareJdbcRealm extends JdbcRealm {
             info = saInfo;
 
         } catch (SQLException e) {
-            final String message = "There was a SQL error while authenticating user [" + username + "]";
+            final String message = "There was a SQL error while authenticating org [" + username + "]";
             if (log.isErrorEnabled()) {
                 log.error(message, e);
             }
@@ -118,7 +118,7 @@ public class SaltAwareJdbcRealm extends JdbcRealm {
 
                 // Check to ensure only one row is processed
                 if (foundResult) {
-                    throw new AuthenticationException("More than one user row found for user [" + username + "]. Usernames must be unique.");
+                    throw new AuthenticationException("More than one org row found for org [" + username + "]. Usernames must be unique.");
                 }
 
                 password = rs.getString(1);

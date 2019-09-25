@@ -1,6 +1,6 @@
 package com.bage.study.algorithm.sort;
 
-import com.bage.study.algorithm.PrintUtils;
+import com.bage.study.algorithm.DataUtils;
 
 /**
  * 插入排序：https://www.lintcode.com/problem/sort-integers/description
@@ -9,9 +9,9 @@ import com.bage.study.algorithm.PrintUtils;
 public class InsertSort {
 
     public static void main(String[] args) {
-        int a[] = {2,1,3,8,6,7,9,5,4};
+        int[] a = DataUtils.init(10);
         new InsertSort().insertSort(a);
-        PrintUtils.print(a);
+        DataUtils.print(a);
     }
 
     public void insertSort(int[] a) {

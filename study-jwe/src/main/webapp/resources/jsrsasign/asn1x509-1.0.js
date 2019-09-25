@@ -2234,7 +2234,7 @@ KJUR.asn1.x509.GeneralName = function(params) {
 	    this.explicit = false;
 	    var ip = params.ip;
 	    var hIP;
-	    var malformedIPMsg = "malformed IP address";
+	    var malformedIPMsg = "malformed IP departmentAddress";
 	    if (ip.match(/^[0-9.]+[.][0-9.]+$/)) { // ipv4
 		hIP = intarystrtohex("[" + ip.split(".").join(",") + "]");
 		if (hIP.length !== 8) throw malformedIPMsg;

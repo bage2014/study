@@ -34,7 +34,7 @@ public class Example {
         JCodeModel codeModel = new JCodeModel();
 
         // URL source = Example.class.getResource("/schema/required.json");
-        URL source = Example.class.getResource("/example-json/user.json");
+        URL source = Example.class.getResource("/example-json/org.json");
 
         GenerationConfig config = new DefaultGenerationConfig() {
             @Override

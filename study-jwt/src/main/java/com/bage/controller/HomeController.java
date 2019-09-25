@@ -12,7 +12,7 @@ public class HomeController {
 	@RequestMapping(value="")
 	public String loin(HttpServletRequest request){
 		
-		return "user/login";
+		return "org/login";
 	}
 	
 	@RequestMapping(value="authorization/fail")

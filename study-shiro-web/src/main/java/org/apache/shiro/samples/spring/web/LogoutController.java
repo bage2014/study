@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Controller responsible for logging out the current user by invoking
+ * Controller responsible for logging out the current org by invoking
  * {@link org.apache.shiro.subject.Subject#logout()}
  *
  * @since 0.1

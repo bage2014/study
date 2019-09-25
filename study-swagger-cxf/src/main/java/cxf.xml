@@ -10,12 +10,12 @@
        http://cxf.apache.org/jaxrs
        http://cxf.apache.org/schemas/jaxrs.xsd">
     <!--
-        id:当前服务的唯一标识 address:当前服务对应的请求url serviceClass:接口类型
+        id:当前服务的唯一标识 departmentAddress:当前服务对应的请求url serviceClass:接口类型
     -->
 
     <!-- 发布一个Restful方式的WebService服务 -->
     <bean id="personServiceImpl" class="com.bage.Sample2"></bean>
-    <jaxrs:server id="personService" address="/rest">
+    <jaxrs:server id="personService" departmentAddress="/rest">
         <jaxrs:serviceBeans>
             <ref bean="personServiceImpl" />
         </jaxrs:serviceBeans>

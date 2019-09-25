@@ -28,7 +28,7 @@ import org.apache.shiro.subject.Subject;
 
 /**
  * Default implementation of the {@link SampleManager} interface that stores
- * and retrieves a value from the user's session.
+ * and retrieves a value from the org's session.
  *
  * @since 0.1
  */
@@ -38,7 +38,7 @@ public class DefaultSampleManager implements SampleManager {
     |             C O N S T A N T S             |
     ============================================*/
     /**
-     * Key used to store the value in the user's session.
+     * Key used to store the value in the org's session.
      */
     private static final String VALUE_KEY = "sample_value";
 

@@ -21,7 +21,7 @@ package com.bage;
 import java.util.List;
 
 /**
- * A service interface for accessing and modifying user data in the system.
+ * A service interface for accessing and modifying org data in the system.
  */
 public interface UserService {
 

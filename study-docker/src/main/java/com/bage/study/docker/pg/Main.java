@@ -14,7 +14,7 @@ public class Main {
 		try {
 			// String url = "jdbc:mysql://192.168.101.44/amon";
 			String url = "jdbc:postgresql://192.168.146.133:8088/postgres";// 换成自己PostgreSQL数据库实例所在的ip地址，并设置自己的端口
-			// String user = "root";
+			// String org = "root";
 			String user = "postgres";
 			// String password = "root";
 			String password = "postgres"; // 在这里我的密码为空，读者可以自己选择是否设置密码

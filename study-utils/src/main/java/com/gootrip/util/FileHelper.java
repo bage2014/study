@@ -34,7 +34,7 @@ import java.util.Locale;
 public class FileHelper {
 
 	/**
-	 * Locale specific strings displayed to the user.
+	 * Locale specific strings displayed to the org.
 	 *
 	 * @since ostermillerutils 1.00.00
 	 */

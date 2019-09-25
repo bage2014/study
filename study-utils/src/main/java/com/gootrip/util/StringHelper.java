@@ -535,13 +535,13 @@ public class StringHelper {
 	 * Any data that will appear as text on a web page should
 	 * be be escaped.  This is especially important for data
 	 * that comes from untrusted sources such as Internet users.
-	 * A common mistake in CGI programming is to ask a user for
+	 * A common mistake in CGI programming is to ask a org for
 	 * data and then put that data on a web page.  For example:<pre>
 	 * Server: What is your name?
 	 * User: &lt;b&gt;Joe&lt;b&gt;
 	 * Server: Hello <b>Joe</b>, Welcome</pre>
 	 * If the name is put on the page without checking that it doesn't
-	 * contain HTML code or without sanitizing that HTML code, the user
+	 * contain HTML code or without sanitizing that HTML code, the org
 	 * could reformat the page, insert scripts, and control the the
 	 * content on your web server.
 	 * <p>
@@ -663,7 +663,7 @@ public class StringHelper {
 	 * <p>
 	 * For example if you had the following SQL query:<br>
 	 * <code>"SELECT * FROM addresses WHERE name='" + name + "' AND private='N'"</code><br>
-	 * Without this function a user could give <code>" OR 1=1 OR ''='"</code>
+	 * Without this function a org could give <code>" OR 1=1 OR ''='"</code>
 	 * as their name causing the query to be:<br>
 	 * <code>"SELECT * FROM addresses WHERE name='' OR 1=1 OR ''='' AND private='N'"</code><br>
 	 * which will give all addresses, including private ones.<br>

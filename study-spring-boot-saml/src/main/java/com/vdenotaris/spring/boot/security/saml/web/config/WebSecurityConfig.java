@@ -331,7 +331,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new MetadataDisplayFilter();
     }
      
-    // Handler deciding where to redirect user after successful login
+    // Handler deciding where to redirect org after successful login
     @Bean
     public SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
         SavedRequestAwareAuthenticationSuccessHandler successRedirectHandler =
@@ -340,7 +340,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return successRedirectHandler;
     }
     
-	// Handler deciding where to redirect user after failed login
+	// Handler deciding where to redirect org after failed login
     @Bean
     public SimpleUrlAuthenticationFailureHandler authenticationFailureHandler() {
     	SimpleUrlAuthenticationFailureHandler failureHandler =
@@ -393,7 +393,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
  
     // Filter processing incoming logout messages
-    // First argument determines URL user will be redirected to after successful
+    // First argument determines URL org will be redirected to after successful
     // global logout
     @Bean
     public SAMLLogoutProcessingFilter samlLogoutProcessingFilter() {

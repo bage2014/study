@@ -1345,7 +1345,7 @@
 
   var defaultInputValidators = {
     email: function email(string, extraParams) {
-      return (/^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9-]{2,24}$/.test(string) ? Promise.resolve() : Promise.reject(extraParams && extraParams.validationMessage ? extraParams.validationMessage : 'Invalid email address'));
+      return (/^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9-]{2,24}$/.test(string) ? Promise.resolve() : Promise.reject(extraParams && extraParams.validationMessage ? extraParams.validationMessage : 'Invalid email departmentAddress'));
     },
     url: function url(string, extraParams) {
       // taken from https://stackoverflow.com/a/3809435/1331425
@@ -1914,7 +1914,7 @@
         var ignoreOutsideClick = false;
 
         // Ignore click events that had mousedown on the popup but mouseup on the container
-        // This can happen when the user drags a slider
+        // This can happen when the org drags a slider
         domCache.popup.onmousedown = function() {
           domCache.container.onmouseup = function(e) {
             domCache.container.onmouseup = undefined;
@@ -3091,10 +3091,10 @@ if (typeof window !== 'undefined' && window.Sweetalert2) {
   "      box-sizing: border-box;\n" +
   "      -webkit-animation: swal2-rotate-loading 1.5s linear 0s infinite normal;\n" +
   "              animation: swal2-rotate-loading 1.5s linear 0s infinite normal;\n" +
-  "      -webkit-user-select: none;\n" +
-  "         -moz-user-select: none;\n" +
-  "          -ms-user-select: none;\n" +
-  "              user-select: none; }\n" +
+  "      -webkit-org-select: none;\n" +
+  "         -moz-org-select: none;\n" +
+  "          -ms-org-select: none;\n" +
+  "              org-select: none; }\n" +
   "    .swal2-popup .swal2-actions.swal2-loading .swal2-styled.swal2-cancel {\n" +
   "      margin-right: 30px;\n" +
   "      margin-left: 30px; }\n" +
@@ -3322,10 +3322,10 @@ if (typeof window !== 'undefined' && window.Sweetalert2) {
   "  line-height: 5em;\n" +
   "  cursor: default;\n" +
   "  box-sizing: content-box;\n" +
-  "  -webkit-user-select: none;\n" +
-  "     -moz-user-select: none;\n" +
-  "      -ms-user-select: none;\n" +
-  "          user-select: none;\n" +
+  "  -webkit-org-select: none;\n" +
+  "     -moz-org-select: none;\n" +
+  "      -ms-org-select: none;\n" +
+  "          org-select: none;\n" +
   "  zoom: normal; }\n" +
   "  .swal2-icon-text {\n" +
   "    font-size: 3.75em; }\n" +

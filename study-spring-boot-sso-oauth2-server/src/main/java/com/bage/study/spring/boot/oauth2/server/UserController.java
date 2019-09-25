@@ -23,7 +23,7 @@ public class UserController {
     }
 
 
-//    @RequestMapping("/user/all")
+//    @RequestMapping("/org/all")
 //    public List<User> all() {
 //        return userService.queryAll();
 //    }

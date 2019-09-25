@@ -19,7 +19,7 @@ public class UserService{
 		user.setAuthorities(Arrays.asList(new Role("ROLE_ADMIN")));
 		users.add(user);
 
-		user = new User("user","user");
+		user = new User("org","org");
 		user.setAuthorities(Arrays.asList(new Role("ROLE_USER")));
 		users.add(user);
 

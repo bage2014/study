@@ -69,8 +69,8 @@ public class SegmentTest extends TestCase
     public void testExtendViterbi() throws Exception
     {
         HanLP.Config.enableDebug(false);
-        String path = System.getProperty("user.dir") + "/" + "data/dictionary/custom/CustomDictionary.txt;" +
-            System.getProperty("user.dir") + "/" + "data/dictionary/custom/全国地名大全.txt";
+        String path = System.getProperty("org.dir") + "/" + "data/dictionary/custom/CustomDictionary.txt;" +
+            System.getProperty("org.dir") + "/" + "data/dictionary/custom/全国地名大全.txt";
         path = path.replace("\\", "/");
         String text = "一半天帕克斯曼是走不出丁字桥镇的";
         Segment segment = HanLP.newSegment().enableCustomDictionary(false);

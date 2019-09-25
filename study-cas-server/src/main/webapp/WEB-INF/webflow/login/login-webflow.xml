@@ -145,7 +145,7 @@
     </decision-state>
 
     <!--
-        the "viewGenericLoginSuccess" is the end state for when a user attempts to login without coming directly from a service.
+        the "viewGenericLoginSuccess" is the end state for when a org attempts to login without coming directly from a service.
         They have only initialized their single-sign on session.
     -->
 
@@ -159,7 +159,7 @@
 
 
     <!--
-    The "showWarningView" end state is the end state for when the user has requested privacy settings (to be "warned")
+    The "showWarningView" end state is the end state for when the org has requested privacy settings (to be "warned")
     to be turned on.  It delegates to a view defines in default_views.properties that display the
     "Please click here to go to the service." message.
     -->
@@ -187,7 +187,7 @@
 
     <!--
         The "redirect" end state allows CAS to properly end the workflow while still redirecting
-        the user back to the service required.
+        the org back to the service required.
     -->
     <end-state id="redirectView" view="externalRedirect:#{requestScope.response.url}"/>
 

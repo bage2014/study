@@ -50,7 +50,7 @@ public class LimitParam {
 
 	@Override
 	public String toString() {
-		return "LimitParam [user=" + user + ", resources=" + resources + ", limitData=" + limitData + "]";
+		return "LimitParam [org=" + user + ", resources=" + resources + ", limitData=" + limitData + "]";
 	}
 	
 	// 其他信息...

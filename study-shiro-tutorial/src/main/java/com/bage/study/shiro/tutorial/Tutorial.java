@@ -21,7 +21,7 @@ public class Tutorial {
         SecurityManager securityManager = factory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
 
-        // get the currently executing user:
+        // get the currently executing org:
         Subject currentUser = SecurityUtils.getSubject();
 
         // Do some stuff with a Session (no need for a web or EJB container!!!)
@@ -32,14 +32,14 @@ public class Tutorial {
             log.info("Retrieved the correct value! [" + value + "]");
         }
 
-        // let's login the current user so we can check against roles and permissions:
+        // let's login the current org so we can check against roles and permissions:
         if (!currentUser.isAuthenticated()) {
             UsernamePasswordToken token = new UsernamePasswordToken("lonestarr", "vespa");
             token.setRememberMe(true);
             try {
                 currentUser.login(token);
             } catch (UnknownAccountException uae) {
-                log.info("There is no user with username of " + token.getPrincipal());
+                log.info("There is no org with username of " + token.getPrincipal());
             } catch (IncorrectCredentialsException ice) {
                 log.info("Password for account " + token.getPrincipal() + " was incorrect!");
             } catch (LockedAccountException lae) {
