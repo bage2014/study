@@ -114,5 +114,6 @@
       <module>study-spring-email</module>
       <module>study-zipkin</module>
       <module>study-es</module>
+      <module>study-spring-boot-zipkin</module>
   </modules>
 </project>
