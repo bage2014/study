@@ -115,5 +115,6 @@
       <module>study-zipkin</module>
       <module>study-es</module>
       <module>study-spring-boot-zipkin</module>
+      <module>study-itext</module>
   </modules>
 </project>
