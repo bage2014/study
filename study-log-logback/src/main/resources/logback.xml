@@ -5,11 +5,10 @@
   <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
   <!--控制台输出-->
-  <appender name="STDOUT"
-            class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+  <layout class="ch.qos.logback.classic.PatternLayout">
       <pattern>
-        %d{HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n
+        %X{myTag} %d{HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n
       </pattern>
     </layout>
   </appender>
@@ -34,7 +33,7 @@
 
   <root>
     <level value="info"/> <!--输出级别-->
-    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="CONSOLE"/>
     <appender-ref ref="FILE"/>
   </root>
 
