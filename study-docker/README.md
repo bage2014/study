@@ -6,6 +6,7 @@ docker 学习笔记
 ### 参考链接 ###
 - Docker 官网 [https://docs.docker.com/](https://docs.docker.com/ "Docker 官网")
 - CentOS安装 [https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script](https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script "CentOS安装")
+- CentOS安装 [https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script](https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script "CentOS安装")
 
 ### 安装 ###
 Most users set up Docker’s repositories and install from them, for ease of installation and upgrade tasks. This is the recommended approach.
@@ -108,7 +109,11 @@ Docker Pull Command
 启动
 
     $ docker run -it --rm -p 8888:8080 tomcat
+启动带挂载目录
 
+    $ docker run -v /home/bage/mnt-tomcat:/mnt -it --rm -p 8888:8080 tomcat
+    
+    
 ### 安装配置CentOS [未验证] ###
 参考链接：[https://hub.docker.com/_/centos/](https://hub.docker.com/_/centos/ "安装配置CentOS")
 
