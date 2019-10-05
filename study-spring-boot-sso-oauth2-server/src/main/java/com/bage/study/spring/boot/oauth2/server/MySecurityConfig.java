@@ -25,7 +25,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/oauth/**","/login/**", "/logout").permitAll()
+                .antMatchers("/oauth/**","/login/**","/webjars/**",  "/logout").permitAll()
                 .anyRequest().authenticated()   // 其他地址的访问均需验证权限
                 .and()
                 .formLogin()
