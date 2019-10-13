@@ -116,5 +116,6 @@
       <module>study-es</module>
       <module>study-spring-boot-zipkin</module>
       <module>study-itext</module>
+      <module>study-spring-boot-sso-oauth2-server-jwt</module>
   </modules>
 </project>
