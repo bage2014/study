@@ -110,6 +110,19 @@
             <artifactId>webjars-locator-core</artifactId>
         </dependency>
 
+        <dependency>
+            <!-- JSON Web Token Support -->
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+        <dependency>
+            <!-- Model Mapper -->
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
 
     </dependencies>
     <dependencyManagement>
