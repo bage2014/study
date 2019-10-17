@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,20 +25,37 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+
         http.authorizeRequests()
                 .antMatchers("/oauth/**","/login/**","/webjars/**",  "/logout").permitAll()
                 .anyRequest().authenticated()   // 其他地址的访问均需验证权限
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .and()
-                .logout().logoutSuccessUrl("/");
+                //.formLogin()
+//                .loginPage("/login")
+//                .and()
+                .logout().logoutSuccessUrl("/")
+                .and().httpBasic()
+                .and().csrf().disable().exceptionHandling()
+                .authenticationEntryPoint(
+                        (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED));
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/assets/**");
     }
+
+//    @Override
+//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        //@formatter:off
+//        auth.inMemoryAuthentication()
+//                .withUser("john").password(passwordEncoder.encode("123")).authorities("ROLE_USER", "ROLE_ADMIN")
+//                .and()
+//                .withUser("izzy").password(passwordEncoder.encode("password")).authorities("ROLE_USER");
+//        //@formatter:on
+//    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

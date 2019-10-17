@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -29,6 +30,10 @@ public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAd
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Bean
     public TokenStore tokenStore() {
         return new JwtTokenStore(jwtAccessTokenConverter());
@@ -36,8 +41,8 @@ public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAd
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().withClient("client").secret("secret").scopes("read", "write")
-                .authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(20000)
+        clients.inMemory().withClient("client").secret(passwordEncoder.encode("secret")).scopes("read", "write")
+                .authorizedGrantTypes("password", "refresh_token","client_credentials").accessTokenValiditySeconds(20000)
                 .refreshTokenValiditySeconds(20000);
     }
 
@@ -61,7 +66,7 @@ public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAd
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter converter = new OAuth2Configuration.CustomTokenEnhancer();
+        JwtAccessTokenConverter converter = new CustomTokenEnhancer();
         converter.setKeyPair(
                 new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "password".toCharArray()).getKeyPair("jwt"));
         return converter;

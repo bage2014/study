@@ -1,4 +1,4 @@
-import com.bage.study.spring.boot.oauth2.server.v3.SpringBoot2Oauth2JwtApplication;
+import com.bage.study.spring.boot.oauth2.server.v3.AuthorizationServerApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = SpringBoot2Oauth2JwtApplication.class,
+        classes = AuthorizationServerApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class AuthenticationClaimsIntegrationTest {
+
 
     @Autowired
     private JwtTokenStore tokenStore;
@@ -31,7 +32,8 @@ public class AuthenticationClaimsIntegrationTest {
 
     @Test
     public void whenTokenDoesNotContainIssuer_thenSuccess() throws Exception {
-        String tokenValue = obtainAccessToken("client", "john", "123");
+        // curl client:secret@localhost:8080/oauth/token -d grant_type=password -d username=bage -d password=bage
+        String tokenValue = obtainAccessToken("client", "bage", "bage");
         OAuth2Authentication auth = tokenStore.readAuthentication(tokenValue);
 //        Map<String, Object> details = (Map<String, Object>) auth.getDetails();
 
@@ -50,14 +52,8 @@ public class AuthenticationClaimsIntegrationTest {
         params.add("username", username);
         params.add("password", password);
 
-        this.mockMvc.perform(post("http://localhost:8080/oauth/token").params(params)).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(post("/oauth/token").params(params)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string("true"));
         return null;
-//
-//        Response response = RestAssured.given()
-//          .auth().preemptive().basic(clientId, "secret")
-//          .and().with().params(params).when()
-//          .post("http://localhost:8081/spring-security-oauth-server");
-//        return response.jsonPath().getString("access_token");
     }
 }
