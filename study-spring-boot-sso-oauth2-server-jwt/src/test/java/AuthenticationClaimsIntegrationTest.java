@@ -45,14 +45,13 @@ public class AuthenticationClaimsIntegrationTest {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-        AuthorizationEndpoint ss;
         params.add("grant_type", "password");
         params.add("client_id", clientId);
         params.add("client_secret", "secret");
         params.add("username", username);
         params.add("password", password);
 
-        this.mockMvc.perform(post("/oauth/token").params(params)).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(post("http://localhost:8080/oauth/token").params(params)).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string("true"));
         return null;
     }
