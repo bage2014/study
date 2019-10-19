@@ -31,9 +31,9 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/**","/login/**","/webjars/**",  "/logout").permitAll()
                 .anyRequest().authenticated()   // 其他地址的访问均需验证权限
                 .and()
-                //.formLogin()
+                .formLogin()
 //                .loginPage("/login")
-//                .and()
+                .and()
                 .logout().logoutSuccessUrl("/")
                 .and().httpBasic()
                 .and().csrf().disable().exceptionHandling()
