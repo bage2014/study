@@ -372,6 +372,20 @@ Docker Pull Command
     http://{ip}:8892/_cat/health  
 
 
+### 安装部署 FastDFS  ###
+参考链接 [https://hub.docker.com/r/season/fastdfs](https://hub.docker.com/r/season/fastdfs)
+
+Docker Pull Command
+
+    docker pull season/fastdfs
+
+启动 
+
+    docker run -ti --name storage -v ~/storage_data:/fastdfs/storage/data -v ~/store_path:/fastdfs/store_path --net=host -e TRACKER_SERVER:192.168.1.2:22122 season/fastdfs storage
+
+  
+
+
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
 
