@@ -11,6 +11,10 @@ Spring Cloud 多模块实践 [https://github.com/bage2014/my-app](https://github
 ## 模块说明 ##
 按照创建顺序 (不是按照显示顺序) 说明如下
 
+outlook 邮箱操作，监听
+[https://github.com/OfficeDev/ews-java-api](https://github.com/OfficeDev/ews-java-api)
+[https://github.com/OfficeDev/ews-java-api/wiki/Getting-Started-Guide](https://github.com/OfficeDev/ews-java-api/wiki/Getting-Started-Guide)
+
 | 项目模块 | 项目说明 |
 | ------ | ------ | 
 | study-spring-boot  |  spring-boot 学习笔记 |
