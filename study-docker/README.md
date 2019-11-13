@@ -275,6 +275,10 @@ connect to it from an application
 设置密码(启动时候)
 
     docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
+    
+ 自定义配置文件启动
+ 
+	docker run -p 8379:6379 -v /home/bage/conf/redis.conf:/usr/local/etc/redis/redis.conf --name redis redis redis-server /usr/local/etc/redis/redis.conf  --requirepass "bage.redis"
 
 ### 安装配置RabbitMQ ###
 参考链接：[https://hub.docker.com/_/rabbitmq](https://hub.docker.com/_/rabbitmq "安装配置RabbitMQ")
