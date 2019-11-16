@@ -1,6 +1,6 @@
 package com.bage.study.redis.lock;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -14,18 +14,32 @@ public class RedisDistributeLock implements DistributeLock {
         lockConfig.setKey(key);
     }
 
+    /**
+     * 暂未实现
+     */
     public void lock() {
         throw new RuntimeException("not support now");
     }
 
+    /**
+     * 暂未实现
+      * @throws InterruptedException
+     */
     public void lockInterruptibly() throws InterruptedException {
         throw new RuntimeException("not support now");
     }
 
+    /**
+     * 利用原子锁进行上锁
+     * @return
+     */
     public boolean tryLock() {
 
-        List<String> keys = Collections.emptyList();
-        List<String> args = Collections.emptyList();
+        String key = buildLockKey();
+        String value = buildLockValue();
+
+        List<String> keys = Arrays.asList(key);
+        List<String> args = Arrays.asList(value);
 
         return redisTemplete.exvel(LuaScript.LOCK_SCRIPT, keys, args);
     }
@@ -35,8 +49,7 @@ public class RedisDistributeLock implements DistributeLock {
         long now = System.currentTimeMillis();
 
         while (System.currentTimeMillis() > now + timeUnit) {
-            boolean isLocked = tryLock();
-            if (isLocked) {
+            if (tryLock()) {
                 return true;
             }
             sleepSomeTime();
@@ -54,12 +67,41 @@ public class RedisDistributeLock implements DistributeLock {
     }
 
     public void unlock() {
-        List<String> keys = Collections.emptyList();
-        List<String> args = Collections.emptyList();
+        String key = buildLockKey();
+        String value = buildLockValue();
+
+        List<String> keys = Arrays.asList(key);
+        List<String> args = Arrays.asList(value);
+
         redisTemplete.exvel(LuaScript.UNLOCK_SCRIPT, keys, args);
     }
 
     public Condition newCondition() {
         return null;
+    }
+
+
+    private String buildLockValue() {
+        StringBuilder sb = new StringBuilder()
+                .append(lockConfig.getIp())
+                .append(".")
+                .append(lockConfig.getThreadId())
+                .append(".")
+                .append(lockConfig.getKey());
+        return sb.toString();
+    }
+
+    /**
+     * key 组成： ip + 线程ID + key
+     * @return
+     */
+    private String buildLockKey() {
+        StringBuilder sb = new StringBuilder()
+                .append(lockConfig.getIp())
+                .append(".")
+                .append(lockConfig.getThreadId())
+                .append(".")
+                .append(lockConfig.getKey());
+        return sb.toString();
     }
 }
