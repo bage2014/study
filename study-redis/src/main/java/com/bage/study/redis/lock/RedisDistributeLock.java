@@ -38,10 +38,7 @@ public class RedisDistributeLock implements DistributeLock {
         String key = buildLockKey();
         String value = buildLockValue();
 
-        List<String> keys = Arrays.asList(key);
-        List<String> args = Arrays.asList(value);
-
-        return redisTemplete.exvel(LuaScript.LOCK_SCRIPT, keys, args);
+        return redisTemplete.setIfNotExist(key, value, lockConfig.getExpiredSecond());
     }
 
     public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
@@ -60,7 +57,7 @@ public class RedisDistributeLock implements DistributeLock {
 
     private void sleepSomeTime() {
         try {
-            Thread.sleep(lockConfig.getSleepTime());
+            Thread.sleep(lockConfig.getSleepMillis());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

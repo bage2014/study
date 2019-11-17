@@ -5,11 +5,12 @@ public class LockConfig {
      * 锁的key
      */
     private String key;
-    private long sleepTime;
+    private long sleepMillis = 500;
+    private long expiredSecond = 5;
 
-    private String ip; // 机器ip
-    private long timestamp; // 时间戳
-    private String threadId; // 线程ID
+    private String ip = "127.0.0.1"; // 机器ip
+    private long timestamp = System.currentTimeMillis(); // 时间戳
+    private String threadId = String.valueOf(Thread.currentThread().getId()); // 线程ID
 
     public String getKey() {
         return key;
@@ -17,14 +18,6 @@ public class LockConfig {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public long getSleepTime() {
-        return sleepTime;
-    }
-
-    public void setSleepTime(long sleepTime) {
-        this.sleepTime = sleepTime;
     }
 
     public String getIp() {
@@ -49,5 +42,21 @@ public class LockConfig {
 
     public void setThreadId(String threadId) {
         this.threadId = threadId;
+    }
+
+    public long getSleepMillis() {
+        return sleepMillis;
+    }
+
+    public void setSleepMillis(long sleepMillis) {
+        this.sleepMillis = sleepMillis;
+    }
+
+    public long getExpiredSecond() {
+        return expiredSecond;
+    }
+
+    public void setExpiredSecond(long expiredSecond) {
+        this.expiredSecond = expiredSecond;
     }
 }
