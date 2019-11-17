@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class RedisTemplete {
 
-    private String host = "101.132.119.250";
+    private String host = "localhost";
     private int post = 8379;
 
     private Jedis jedis = null;
@@ -15,7 +15,7 @@ public class RedisTemplete {
     private Jedis getJedis(){
         if(Objects.isNull(jedis)){
             Jedis jedis = new Jedis(host,post);
-            jedis.auth("bage.redis"); // 设置密码
+            jedis.auth("redis"); // 设置密码
             this.jedis = jedis;
         }
         return jedis;
