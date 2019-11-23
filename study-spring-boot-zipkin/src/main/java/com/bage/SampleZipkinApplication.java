@@ -16,8 +16,6 @@
 
 package com.bage;
 
-import zipkin2.Span;
-import zipkin2.reporter.Reporter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
