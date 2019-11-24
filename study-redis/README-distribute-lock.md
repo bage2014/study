@@ -89,6 +89,16 @@ java 关键字
 
 ## 基于Redis实现分布式锁 ##
 
+目录结构
+
+    com.bage.study.redis.lock
+     - DistributeLock.java
+     - DistributeLockBuilder.java
+     - LockConfig.java
+     - LuaScript.java
+     - RedisDistributeLock.java
+     - RedisTemplete.java
+
 DistributeLock 接口 
 
 	public interface DistributeLock extends java.util.concurrent.locks.Lock {
@@ -149,11 +159,30 @@ key 的组成
         return sb.toString();
     }
 
+使用demo 
+     
+     @Test
+     public void test() {
+         DistributeLock lock = new DistributeLockBuilder().getLock("com.bage");
+         try {
+             if(lock.tryLock()){
+                 // doSomething();
+             }
+         }catch (Exception e){
+             log.error(e.getMessage(),e);
+         } finally {
+             if(Objects.nonNull(lock)){
+                 lock.unlock();
+             }
+         }
+     }
+
+完整代码Github地址 [https://github.com/bage2014/study/com.bage.study.redis.lock](com.bage.study.redis.lock)
 
 ## redis 分布式锁其他实现 ##
 
 ### 百度 DLock ###
-Github 链接  [https://github.com/baidu/dlock](https://github.com/baidu/dlock)
+Github 链接  [https://github.com/bage2014/study/tree/master/study-redis/src/main/java/com/bage/study/redis/lock](https://github.com/bage2014/study/tree/master/study-redis/src/main/java/com/bage/study/redis/lock)
 
 - 优点（官方说明）
  1.	原子性

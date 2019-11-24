@@ -1,7 +1,11 @@
 package com.bage.study.redis;
 
 import com.bage.study.redis.lock.DistributeLock;
+import com.bage.study.redis.lock.DistributeLockBuilder;
 import com.bage.study.redis.lock.RedisDistributeLock;
+import com.sun.media.jfxmedia.logging.Logger;
+
+import java.util.Objects;
 
 /**
  * Unit test for simple App.
@@ -22,6 +26,22 @@ public class AppTest {
 
 
 
+    }
+
+    @Test
+    public void test() {
+        DistributeLock lock = new DistributeLockBuilder().getLock("com.bage");
+        try {
+            if(lock.tryLock()){
+                // doSomething();
+            }
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+        } finally {
+            if(Objects.nonNull(lock)){
+                lock.unlock();
+            }
+        }
     }
 
 }
