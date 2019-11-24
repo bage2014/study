@@ -81,3 +81,8 @@ Web学习笔记
 - 序列化增加属性不修改 serialVersionUID
 - switch 包含break、default
 - try-catch-finally区分异常、finally释放资源
+
+
+## Copy ##
+howto_js_copy_clipboard [https://www.w3schools.com/howto/howto_js_copy_clipboard.asp](https://www.w3schools.com/howto/howto_js_copy_clipboard.asp)
+

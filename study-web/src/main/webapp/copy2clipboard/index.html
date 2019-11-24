@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<input id = "textarea_code">
+<button onclick="initCopy()">copy</button>
+
+<script>
+
+    initCopy();
+    
+    function initCopy(){
+        let inputElement = document.getElementById("textarea_code");
+        let value = inputElement.value;
+
+        try {
+            if (inputElement) {
+                inputElement.select();
+                document.execCommand("copy");
+                alert("value:" + value);
+            }
+        } catch (e){
+            console.log(e);
+        }
+    }
+
+
+</script>
+</body>
+</html>
+

@@ -12,6 +12,8 @@
 - redis常用集群方案 [https://www.jianshu.com/p/1ecbd1a88924](https://www.jianshu.com/p/1ecbd1a88924)
 - Redis 的主从同步，及两种高可用方式 [https://blog.csdn.net/weixin_42711549/article/details/83061052](https://blog.csdn.net/weixin_42711549/article/details/83061052)
 
+- 分布式锁 [http://www.redis.cn/topics/distlock.html](http://www.redis.cn/topics/distlock.html)
+
 ## 优势 ##
 - Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。
 - Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。

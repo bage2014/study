@@ -6,6 +6,7 @@ import java.util.List;
 import com.bage.study.mybatis.springboot.org.dao.UserMapper;
 import com.bage.study.mybatis.springboot.org.domain.Sex;
 import com.bage.study.mybatis.springboot.org.domain.User;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,7 +83,9 @@ public class UserController {
 	@RequestMapping("/all")
 	@ResponseBody
 	public List<User> getUser() {
-        List<User> users = userMapper.queryAll();
+		// 当前行的下一行分页信息生效
+		PageHelper.startPage(1, 2);
+		List<User> users = userMapper.queryAll();
         System.out.println(users);
         return users;
 	}

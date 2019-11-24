@@ -6,6 +6,7 @@ docker 学习笔记
 ### 参考链接 ###
 - Docker 官网 [https://docs.docker.com/](https://docs.docker.com/ "Docker 官网")
 - CentOS安装 [https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script](https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script "CentOS安装")
+- CentOS安装 [https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script](https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script "CentOS安装")
 
 ### 安装 ###
 Most users set up Docker’s repositories and install from them, for ease of installation and upgrade tasks. This is the recommended approach.
@@ -108,7 +109,11 @@ Docker Pull Command
 启动
 
     $ docker run -it --rm -p 8888:8080 tomcat
+启动带挂载目录
 
+    $ docker run -v /home/bage/mnt-tomcat:/mnt -it --rm -p 8888:8080 tomcat
+    
+    
 ### 安装配置CentOS [未验证] ###
 参考链接：[https://hub.docker.com/_/centos/](https://hub.docker.com/_/centos/ "安装配置CentOS")
 
@@ -270,6 +275,10 @@ connect to it from an application
 设置密码(启动时候)
 
     docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
+    
+ 自定义配置文件启动
+ 
+	docker run -p 8379:6379 -v /home/bage/conf/redis.conf:/usr/local/etc/redis/redis.conf --name redis -d redis redis-server /usr/local/etc/redis/redis.conf  --requirepass "bage.redis"
 
 ### 安装配置RabbitMQ ###
 参考链接：[https://hub.docker.com/_/rabbitmq](https://hub.docker.com/_/rabbitmq "安装配置RabbitMQ")
@@ -365,6 +374,20 @@ Docker Pull Command
 访问
 
     http://{ip}:8892/_cat/health  
+
+
+### 安装部署 FastDFS  ###
+参考链接 [https://hub.docker.com/r/season/fastdfs](https://hub.docker.com/r/season/fastdfs)
+
+Docker Pull Command
+
+    docker pull season/fastdfs
+
+启动 
+
+    docker run -ti --name storage -v ~/storage_data:/fastdfs/storage/data -v ~/store_path:/fastdfs/store_path --net=host -e TRACKER_SERVER:192.168.1.2:22122 season/fastdfs storage
+
+  
 
 
 ### 网络连接 ###

@@ -5,3 +5,4 @@ Spring Boot Oauth2 学习笔记
 - [http://www.baeldung.com/sso-spring-security-oauth2](http://www.baeldung.com/sso-spring-security-oauth2 "")
 - [https://github.com/chengjiansheng/cjs-oauth2-example](https://github.com/chengjiansheng/cjs-oauth2-example "")
 - [https://github.com/Baeldung/spring-security-oauth](hhttps://github.com/Baeldung/spring-security-oauth "")
+
