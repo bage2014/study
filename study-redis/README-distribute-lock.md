@@ -84,7 +84,7 @@ java 关键字
 
 |        | 数据库 | zookeeper | redis  |
 |  ----  |  ---- |    ----    | ----  |
-| 核心思路  | 版本号 或 唯一索引 | SETNX | 时序节点 |
+| 核心思路  | 版本号 或 唯一索引 | 时序节点 | SETNX |
 
 
 ## 基于Redis实现分布式锁 ##
@@ -206,16 +206,6 @@ github地址 [https://github.com/redisson/redisson](https://github.com/redisson/
  5.	读写锁（ReadWriteLock）
 - 不足
  1. 厚重，复杂，有一定学习成本
-
-- 携程 DLock
-Conf 链接  [http://conf.ctripcorp.com/display/ARCH/Distlock](http://conf.ctripcorp.com/display/ARCH/Distlock)
-
-- 优点
- 1. 原子性
- 2. 可重入锁（Reentrant Lock）
-- 不足
- 1. Dlock 对象被回收的时候，取消续期这个锁的过期时间
- 2. 单点故障
 
 ## 注意点 ##
 
