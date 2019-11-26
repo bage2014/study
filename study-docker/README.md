@@ -361,16 +361,20 @@ Docker Pull Command
     http://{ip}:8080  
     
 ### 安装部署 elasticsearch  ###
-参考链接 [https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html](https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html)
-
+参考链接 [https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html](https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html)、[https://hub.docker.com/_/elasticsearch](https://hub.docker.com/_/elasticsearch)
 Docker Pull Command
 
     docker pull docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    
+    docker pull elasticsearch
 
 启动 
 
     docker run -p 8892:9200 -p 8893:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
-  
+    
+    docker run -d --name elasticsearch -p 8892:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch
+
+ 
 访问
 
     http://{ip}:8892/_cat/health  
