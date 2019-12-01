@@ -33,6 +33,31 @@
 
 ## 开源实现 ##
 
+### incubator-shardingsphere ### 
+- 参考链接
+
+github [https://github.com/apache/incubator-shardingsphere](https://github.com/apache/incubator-shardingsphere)
+
+document [https://shardingsphere.apache.org/document/current/cn/overview/](https://shardingsphere.apache.org/document/current/cn/overview/)
+
+quick start [https://shardingsphere.apache.org/document/current/cn/quick-start/sharding-jdbc-quick-start/](https://shardingsphere.apache.org/document/current/cn/quick-start/sharding-jdbc-quick-start/)
+
+demo [https://github.com/sharding-sphere/sharding-sphere-example](https://github.com/sharding-sphere/sharding-sphere-example)
+
+
+- Sharding-JDBC
+	1. 轻量级Java框架
+	2. 在Java的JDBC层提供的额外服务
+	3. 以jar包形式提供服务，无需额外部署和依赖，为增强版的JDBC驱动，完全兼容JDBC和各种ORM框架
+	
+- Sharding-Proxy
+    1. 透明化的数据库代理端，用于对异构语言的支持
+    2. 先提供MySQL/PostgreSQL版本
+    3. 完全透明，可直接当做MySQL/PostgreSQL使用
+    4. 适用于任何兼容MySQL/PostgreSQL协议的的客户端。
+
+- Sharding-Sidecar（计划中）
+
 
 ## 重难点实现思路 ##
 
