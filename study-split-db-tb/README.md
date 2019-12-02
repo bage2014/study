@@ -2,7 +2,7 @@
 分库分表 学习笔记
 
 ## 参考链接 ##
-开源 数据库分库分表 [https://www.aliyun.com/citiao/999897.html](https://www.aliyun.com/citiao/999897.html)]、[https://my.oschina.net/u/2335525/blog/1855103](https://my.oschina.net/u/2335525/blog/1855103)
+开源 数据库分库分表 [https://www.aliyun.com/citiao/999897.html](https://www.aliyun.com/citiao/999897.html)、[https://my.oschina.net/u/2335525/blog/1855103](https://my.oschina.net/u/2335525/blog/1855103)
 
 ## 背景 ##
 单表数据量过大，比如一张表的日增数据量达到10000条，则一年有 3650000条，基于数据库的查询，出现了性能瓶颈
@@ -58,6 +58,27 @@ demo [https://github.com/sharding-sphere/sharding-sphere-example](https://github
 
 - Sharding-Sidecar（计划中）
 
+### tsharding ###
+GitHub [https://github.com/baihui212/tsharding](https://github.com/baihui212/tsharding)
+- 优点
+	1. 很少的资源投入即可开发完成
+	2. 支持交易订单表的Sharding需求，分库又分表
+	3. 支持数据源路由
+	4. 支持事务
+	5. 支持结果集合并
+	6. 支持读写分离
+- 不足 
+	1. 最新更新于4年前。。。
+	2. 文档比较简单
+	
+### DAL ###
+GitHub [https://github.com/ctripcorp/dal](https://github.com/ctripcorp/dal)
+- 优点
+	1. 分库分表
+	2. 读写分离
+	
+- 不足 
+	1. 待验证
 
 ## 重难点实现思路 ##
 
