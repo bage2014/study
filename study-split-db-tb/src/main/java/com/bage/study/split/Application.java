@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -20,8 +21,8 @@ public class Application {
         OrderRepository jdbcOrderRepository = init();
 //        jdbcOrderRepository.createTableIfNotExists();
 //
-//        List<Order> orders = jdbcOrderRepository.selectAll();
-//        System.out.println(orders.size());
+        List<Order> orders = jdbcOrderRepository.queryByPage(null,1,50);
+        System.out.println(orders.size());
 
         insert(jdbcOrderRepository);
 
@@ -36,7 +37,7 @@ public class Application {
             order.setOrderId(i);
             order.setUserId(i);
             order.setStatus("INSERT_TEST");
-            order.setChannel("trip");
+            order.setChannel("android");
             LocalDateTime ldt = LocalDateTime.parse("20" + (i > 5 ? 20 : 19) + "-02-10 16:30", dtf);
             order.setCreateTime(ldt);
             order.setSupplier("kkday");
@@ -60,21 +61,21 @@ public class Application {
         // 配置第一个数据源
         BasicDataSource dataSource1 = new BasicDataSource();
         dataSource1.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource1.setUrl("jdbc:mysql://192.168.96.130:3306/demo_ds0");
+        dataSource1.setUrl("jdbc:mysql://localhost:3306/split_db_1?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource1.setUsername("root");
-        dataSource1.setPassword("bage");
-        dataSourceMap.put("ds0", dataSource1);
+        dataSource1.setPassword("root");
+        dataSourceMap.put("split_db_1", dataSource1);
 
         // 配置第二个数据源
         BasicDataSource dataSource2 = new BasicDataSource();
         dataSource2.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource2.setUrl("jdbc:mysql://192.168.96.130:3306/demo_ds1");
+        dataSource2.setUrl("jdbc:mysql://localhost:3306/split_db_2?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource2.setUsername("root");
-        dataSource2.setPassword("bage");
-        dataSourceMap.put("ds1", dataSource2);
+        dataSource2.setPassword("root");
+        dataSourceMap.put("split_db_2", dataSource2);
 
         // 配置Order表规则
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("t_order", "ds${0..1}.t_order_${2019..2020}");
+        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("tb_order", "split_db_${1..2}.tb_order_${2019..2020}");
 
         // 配置分库 + 分表策略
 //        orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));

@@ -32,6 +32,7 @@
         <maven.compiler.target>1.7</maven.compiler.target>
 
         <shardingsphere.version>4.0.0-RC1</shardingsphere.version>
+        <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
 
     </properties>
 
@@ -47,6 +48,12 @@
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
 
     </dependencies>

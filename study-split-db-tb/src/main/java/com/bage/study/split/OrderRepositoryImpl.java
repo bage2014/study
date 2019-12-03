@@ -35,7 +35,7 @@ public final class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public void createTableIfNotExists() {
-        String sql = "CREATE TABLE IF NOT EXISTS t_order (" +
+        String sql = "CREATE TABLE IF NOT EXISTS tb_order (" +
                 "id BIGINT NOT NULL AUTO_INCREMENT, " +
                 "order_id BIGINT NOT NULL, " +
                 "user_id INT NOT NULL, " +
@@ -55,7 +55,7 @@ public final class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public void dropTable() {
-        String sql = "DROP TABLE t_order";
+        String sql = "DROP TABLE tb_order";
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
@@ -66,7 +66,7 @@ public final class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public void deleteTable() {
-        String sql = "DELETE FROM t_order";
+        String sql = "DELETE FROM tb_order";
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
@@ -77,7 +77,7 @@ public final class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public int insert(Order order) {
-        String sql = "INSERT INTO t_order (order_id,user_id, status,create_time,channel,supplier) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO tb_order (order_id,user_id, status,create_time,channel,supplier) VALUES (?,?,?,?,?,?)";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             buildParam(order, preparedStatement);
@@ -106,7 +106,7 @@ public final class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public int delete(Long orderId) {
-        String sql = "DELETE FROM t_order WHERE order_id=?";
+        String sql = "DELETE FROM tb_order WHERE order_id=?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, orderId);
@@ -119,7 +119,7 @@ public final class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public int update(Order order) {
-        String sql = "update t_order set order_id=?,user_id=?, status=?,create_time=?,channel=?,supplier=?) WHERE id = ?";
+        String sql = "update tb_order set order_id=?,user_id=?, status=?,create_time=?,channel=?,supplier=?) WHERE id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             buildParam(order, preparedStatement);
@@ -139,7 +139,7 @@ public final class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order query(Long orderId) {
-        String sql = "SELECT * FROM t_order WHERE order_id = ?";
+        String sql = "SELECT * FROM tb_order WHERE order_id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, orderId);
@@ -160,7 +160,7 @@ public final class OrderRepositoryImpl implements OrderRepository {
         int startIndex = (targetPage - 1) * pageSize;
         startIndex = startIndex < 0 ? 0 : startIndex;
 
-        String sql = "SELECT * FROM t_order limit ?,?";
+        String sql = "SELECT * FROM tb_order limit ?,?";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
