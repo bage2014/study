@@ -4,8 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <mappers>
-        <mapper resource="mybatis/mappers/AddressMapper.xml"/>
-        <mapper resource="mybatis/mappers/OrderMapper.xml"/>
-        <mapper resource="mybatis/mappers/OrderItemMapper.xml"/>
+        <mapper resource="mybatis/mappers/OrderRepository.xml"/>
     </mappers>
 </configuration>
