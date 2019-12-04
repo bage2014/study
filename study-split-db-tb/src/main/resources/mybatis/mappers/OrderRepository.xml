@@ -26,9 +26,9 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="orderId">
         INSERT INTO tb_order (order_id,user_id, status,create_time,channel,supplier)
          VALUES
-         (?,?,?,?,?,?)
+         (#{orderId},#{userId},#{status},#{createTime},#{channel},#{supplier})
     </insert>
-    
+
     <delete id="delete">
         DELETE FROM tb_order WHERE order_id = #{orderId,jdbcType=INTEGER};
     </delete>
