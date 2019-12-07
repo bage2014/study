@@ -6,6 +6,7 @@
 
 ## 背景 ##
 单表数据量过大，比如一张表的日增数据量达到10000条，则一年有 3650000条，基于数据库的查询，出现了性能瓶颈
+单机数据量瓶颈问题处理
 
 ## 概述 ##
 顾名思义，将数据，分别存储到不同的数据库中
@@ -26,6 +27,8 @@
 - 缺点
  1. join、queryByPage、group by等操作变得难实现或不能实现
  2. 增加程序实现的复杂性
+ 3. 需知道 数据存在于哪个数据库
+ 4. 跨库事务
 
 ## 基本原理 ##
 
@@ -57,6 +60,37 @@ demo [https://github.com/sharding-sphere/sharding-sphere-example](https://github
     4. 适用于任何兼容MySQL/PostgreSQL协议的的客户端。
 
 - Sharding-Sidecar（计划中）
+
+#### 核心功能点 #### 
+- 分片键
+如无分片字段，将执行全路由，性能较差
+支持单字段分片、多字段分片
+
+- 分片算法
+1. 精确分片算法
+对应PreciseShardingAlgorithm，用于处理使用单一键作为分片键的=与IN进行分片的场景。需要配合StandardShardingStrategy使用。
+2. 范围分片算法
+对应RangeShardingAlgorithm，用于处理使用单一键作为分片键的BETWEEN AND、>、<、>=、<=进行分片的场景。需要配合StandardShardingStrategy使用。
+3. 复合分片算法
+对应ComplexKeysShardingAlgorithm，用于处理使用多键作为分片键进行分片的场景，包含多个分片键的逻辑较复杂，需要应用开发者自行处理其中的复杂度。需要配合ComplexShardingStrategy使用。
+4. Hint分片算法
+对应HintShardingAlgorithm，用于处理使用Hint行分片的场景。需要配合HintShardingStrategy使用。
+
+- 分片策略
+1. 标准分片策略
+对应StandardShardingStrategy。提供对SQL语句中的=, >, <, >=, <=, IN和BETWEEN AND的分片操作支持。StandardShardingStrategy只支持单分片键，提供PreciseShardingAlgorithm和RangeShardingAlgorithm两个分片算法。PreciseShardingAlgorithm是必选的，用于处理=和IN的分片。RangeShardingAlgorithm是可选的，用于处理BETWEEN AND, >, <, >=, <=分片，如果不配置RangeShardingAlgorithm，SQL中的BETWEEN AND将按照全库路由处理。
+2. 复合分片策略
+对应ComplexShardingStrategy。复合分片策略。提供对SQL语句中的=, >, <, >=, <=, IN和BETWEEN AND的分片操作支持。ComplexShardingStrategy支持多分片键，由于多分片键之间的关系复杂，因此并未进行过多的封装，而是直接将分片键值组合以及分片操作符透传至分片算法，完全由应用开发者实现，提供最大的灵活度。
+3. 行表达式分片策略
+对应InlineShardingStrategy。使用Groovy的表达式，提供对SQL语句中的=和IN的分片操作支持，只支持单分片键。对于简单的分片算法，可以通过简单的配置使用，从而避免繁琐的Java代码开发，如: t_user_$->{u_id % 8} 表示t_user表根据u_id模8，而分成8张表，表名称为t_user_0到t_user_7。
+4. Hint分片策略
+对应HintShardingStrategy。通过Hint而非SQL解析的方式分片的策略。
+5. 不分片策略
+对应NoneShardingStrategy。不分片的策略。
+#### 内核解析[重要] #### 
+
+#### 不支持项[重要] #### 
+
 
 ### tsharding ###
 GitHub [https://github.com/baihui212/tsharding](https://github.com/baihui212/tsharding)
