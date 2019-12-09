@@ -6,8 +6,6 @@ Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-serv
 
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
 
-Spring Cloud 多模块实践 [https://github.com/bage2014/my-app](https://github.com/bage2014/my-app)
-
 Spring Cloud Gateway Filter
 
 Global Filters [https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html](https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html)
