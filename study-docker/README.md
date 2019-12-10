@@ -393,7 +393,52 @@ Docker Pull Command
 
   
 ### 安装部署 Vue  ###
-todo，，，，
+
+打包 vue 项目
+
+    npm run build
+
+创建 config 配置文件
+在项目根目录下创建nginx文件夹，该文件夹下新建文件default.conf
+
+	server {
+	    listen       80;
+	    server_name  localhost;
+	
+	    access_log  /var/log/nginx/host.access.log  main;
+	    error_log  /var/log/nginx/error.log  error;
+	
+	    location / {
+	        root   /usr/share/nginx/html;
+	        index  index.html index.htm;
+	        try_files $uri $uri/ /index.html;
+	    }
+	
+	    #error_page  404              /404.html;
+	
+	    # redirect server error pages to the static page /50x.html
+	    #
+	    error_page   500 502 503 504  /50x.html;
+	    location = /50x.html {
+	        root   /usr/share/nginx/html;
+	    }
+	}
+
+Dockerfile 文件
+
+
+	FROM nginx
+
+	MAINTAINER lrh
+
+	COPY dist/  /usr/share/nginx/html/
+
+	COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
+构建vue镜像
+
+	docker build -t my-app-ui .
+
 
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
