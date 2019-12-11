@@ -18,4 +18,12 @@
 
     vue run build 
 
+## 问题处理 ##
+index页面打开空白
+
+config 下index.js
+assetsPublicPath：'/' 替换为 assetsPublicPath：'./' 
+
+
+参考链接 [https://www.cnblogs.com/xtjatswc/p/10306567.html](https://www.cnblogs.com/xtjatswc/p/10306567.html)
 
