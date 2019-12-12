@@ -444,6 +444,11 @@ Dockerfile 文件
 	docker run --name my-app-ui -p 8080:80 my-app-ui
 
 
+启动
+
+	docker run -p 8080:8080 my-app-ui .
+
+
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
 
