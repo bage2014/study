@@ -119,6 +119,7 @@
       <module>study-spring-boot-sso-oauth2-server-jwt</module>
       <module>study-split-db-tb</module>
       <module>study-vue-npm</module>
+      <module>study-xxl-job</module>
 
   </modules>
 </project>
