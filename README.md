@@ -6,6 +6,7 @@ Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-serv
 
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
 
+## Others ##
 Spring Cloud Gateway Filter
 
 Global Filters [https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html](https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html)
@@ -19,6 +20,13 @@ demo [https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cl
 改造登录
 改造logo等
 改造页面
+
+## TODO ##
+用户登录-注册
+权限
+菜单
+
+
 
 
 ## 模块说明 ##
