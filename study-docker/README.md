@@ -380,6 +380,19 @@ Docker Pull Command
     http://{ip}:8892/_cat/health  
 
 
+### 安装部署 zipkin  ###
+参考链接 [https://hub.docker.com/r/openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin)
+
+Docker Pull Command
+
+    docker pull openzipkin/zipkin
+
+启动 
+
+    docker run --network myapp -d -p 9411:9411 openzipkin/zipkin
+
+
+
 ### 安装部署 FastDFS  ###
 参考链接 [https://hub.docker.com/r/season/fastdfs](https://hub.docker.com/r/season/fastdfs)
 

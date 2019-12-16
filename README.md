@@ -21,6 +21,13 @@ demo [https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cl
 改造logo等
 改造页面
 
+## 后台 ##
+
+熟悉代码
+改造登录
+改造logo等
+改造页面
+
 ## TODO ##
 用户登录-注册
 权限
