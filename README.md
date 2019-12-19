@@ -29,18 +29,17 @@ demo [https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cl
 改造页面
 
 ## TODO ##
-用户登录-注册
-权限
-菜单
 功能职能
-登录注册
-队列
-监控
-调用链
-日志
-队列
-定时任务
-- 配置中心
+- 登录注册
+ 登录，验证码或邮箱验证码
+ 注册，邮箱验证码
+- 队列，APP
+- 监控，APP
+- 调用链，APP
+- 日志，APP
+- 队列，APP
+- 定时任务，APP
+- 配置中心，APP
 - 注册中心
 - 网关
 - 报警
