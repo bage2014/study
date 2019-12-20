@@ -52,7 +52,7 @@ demo [https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cl
 - 分布式锁、队列、事务
 - 数据库访问
 - 分布式ID
-- 项目脚手架
+- 项目脚手架,模块划分，api层抽取
 
 
 
