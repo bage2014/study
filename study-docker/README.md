@@ -462,6 +462,18 @@ Dockerfile 文件
 	docker run -p 8080:8080 my-app-ui .
 
 
+
+### 安装部署 Ceph[待验证]  ###
+参考链接 [https://hub.docker.com/r/ceph/ceph](https://hub.docker.com/r/ceph/ceph)
+
+Docker Pull Command
+
+    docker pull ceph/ceph:v13.2
+
+启动 
+	docker run -it --name ceph --network myapp -p 9080:80 -v /www/ceph:/etc/ceph ceph/ceph:v13.2
+
+
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
 
