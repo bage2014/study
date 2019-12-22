@@ -464,14 +464,18 @@ Dockerfile 文件
 
 
 ### 安装部署 Ceph[待验证]  ###
-参考链接 [https://hub.docker.com/r/ceph/ceph](https://hub.docker.com/r/ceph/ceph)
+参考链接 [https://hub.docker.com/r/ceph/ceph](https://hub.docker.com/r/ceph/ceph)、[https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)
 
 Docker Pull Command
 
     docker pull ceph/ceph:v13.2
+	docker pull ceph/daemon
 
 启动 
 	docker run -it --name ceph --network myapp -p 9080:80 -v /www/ceph:/etc/ceph ceph/ceph:v13.2
+
+	docker run -d --net=host -e KV_TYPE=etcd -e KV_IP=127.0.0.1 -e KV_PORT=2379 ceph/daemon populate_kvstore
+
 
 
 ### 网络连接 ###
