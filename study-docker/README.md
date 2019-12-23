@@ -464,7 +464,7 @@ Dockerfile 文件
 
 
 ### 安装部署 Ceph[待验证]  ###
-参考链接 [https://hub.docker.com/r/ceph/ceph](https://hub.docker.com/r/ceph/ceph)、[https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)
+参考链接 [https://hub.docker.com/r/ceph/ceph](https://hub.docker.com/r/ceph/ceph)、[https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)、[http://docs.ceph.org.cn/](http://docs.ceph.org.cn/)
 
 Docker Pull Command
 
