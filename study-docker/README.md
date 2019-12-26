@@ -404,6 +404,19 @@ Docker Pull Command
 
     docker run -ti --name storage -v ~/storage_data:/fastdfs/storage/data -v ~/store_path:/fastdfs/store_path --net=host -e TRACKER_SERVER:192.168.1.2:22122 season/fastdfs storage
 
+
+### 安装部署 xxl-job  ###
+参考链接 [https://hub.docker.com/r/xuxueli/xxl-job-admin](https://hub.docker.com/r/xuxueli/xxl-job-admin)
+
+Docker Pull Command
+
+    docker pull xuxueli/xxl-job-admin
+    docker pull xuxueli/xxl-job-admin:2.1.2
+
+启动 
+
+    docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://127.0.0.1:3306/xxl_job?Unicode=true&characterEncoding=UTF-8" -p 8080:8080 -v /tmp:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
+
   
 ### 安装部署 Vue  ###
 
