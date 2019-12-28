@@ -411,13 +411,15 @@ Docker Pull Command
 Docker Pull Command
 
     docker pull xuxueli/xxl-job-admin
-    docker pull xuxueli/xxl-job-admin:2.1.2
 
 启动 
 
-    docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://127.0.0.1:3306/xxl_job?Unicode=true&characterEncoding=UTF-8" -p 8080:8080 -v /tmp:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
+    docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/xxl_job?Unicode=true&characterEncoding=UTF-8" -p 8080:8808 -v /tmp:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
 
-  
+访问
+	
+	http://localhost:8080/xxl-job-admin
+
 ### 安装部署 Vue  ###
 
 打包 vue 项目
@@ -484,11 +486,40 @@ Docker Pull Command
     docker pull ceph/ceph:v13.2
 	docker pull ceph/daemon
 
-启动 
-	docker run -it --name ceph --network myapp -p 9080:80 -v /www/ceph:/etc/ceph ceph/ceph:v13.2
+创建网络
 
-	docker run -d --net=host -e KV_TYPE=etcd -e KV_IP=127.0.0.1 -e KV_PORT=2379 ceph/daemon populate_kvstore
+   docker network create --driver bridge myapp-ceph
 
+
+创建目录
+	
+	mkdir -p /home/bage/data/ceph/etc
+	mkdir -p /home/bage/data/ceph/lib
+
+启动 mon
+	docker run -d --net=myapp-ceph  --name=myapp-ceph -v /home/bage/data/ceph/etc/:/etc/ceph -v /home/bage/data/ceph/lib/:/var/lib/ceph/ -e MON_IP=101.132.119.250 -e CEPH_PUBLIC_NETWORK=101.132.0.0/16 ceph/daemon mon
+
+启动 osd
+	docker run -d --net=myapp-ceph --name=ceph-osd --privileged=true -v /home/bage/data/ceph/etc/:/etc/ceph -v /home/bage/data/ceph/lib/:/var/lib/ceph -v /dev/:/dev/ -e OSD_DEVICE=/dev/sdb ceph/daemon osd_ceph_disk
+
+### 安装配置xxl-job ###
+参考链接：[https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B](https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B)
+Docker Pull Command
+
+	docker pull xuxueli/xxl-job-admin:2.1.2
+
+start a instance
+
+	docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://http://101.132.119.250/:8896/xxl_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=xxl_job --spring.datasource.password=bage.xxl_job" -p 8080:8808 -v /home/bage/data/xxljob:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
+        
+
+设置密码(启动时候)
+
+   
+    
+ 自定义配置文件启动
+ 
+	
 
 
 ### 网络连接 ###
