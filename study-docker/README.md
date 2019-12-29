@@ -483,7 +483,6 @@ Dockerfile 文件
 
 Docker Pull Command
 
-    docker pull ceph/ceph:v13.2
 	docker pull ceph/daemon
 
 创建网络
@@ -497,10 +496,19 @@ Docker Pull Command
 	mkdir -p /home/bage/data/ceph/lib
 
 启动 mon
-	docker run -d --net=myapp-ceph  --name=myapp-ceph -v /home/bage/data/ceph/etc/:/etc/ceph -v /home/bage/data/ceph/lib/:/var/lib/ceph/ -e MON_IP=101.132.119.250 -e CEPH_PUBLIC_NETWORK=101.132.0.0/16 ceph/daemon mon
+	docker run -d --net=myapp-ceph  --name=ceph-mon -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph/ -e MON_IP=101.132.119.250 -e CEPH_PUBLIC_NETWORK=101.132.0.0/16 ceph/daemon mon
 
 启动 osd
-	docker run -d --net=myapp-ceph --name=ceph-osd --privileged=true -v /home/bage/data/ceph/etc/:/etc/ceph -v /home/bage/data/ceph/lib/:/var/lib/ceph -v /dev/:/dev/ -e OSD_DEVICE=/dev/sdb ceph/daemon osd_ceph_disk
+	
+	docker run -d --net=myapp-ceph --name=ceph-osd --privileged=true -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph -v /dev/:/dev/ -e OSD_DEVICE=/dev/vda1 ceph/daemon osd_ceph_disk
+
+启动Gateway 
+
+	docker run -d --net=myapp-ceph --name=ceph-rgw -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph -p 8088:8080 ceph/daemon rgw
+
+
+查看log
+	docker logs -f ceph-osd
 
 ### 安装配置xxl-job ###
 参考链接：[https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B](https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B)
