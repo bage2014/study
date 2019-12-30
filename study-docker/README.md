@@ -527,7 +527,29 @@ start a instance
     
  自定义配置文件启动
  
-	
+### logstash ###
+参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
+
+Docker Pull Command
+
+	docker pull logstash:7.5.1
+
+start a instance
+
+	docker run --name logstash --rm -it -v ~/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
+
+        
+
+### kibana ###
+参考链接：[https://hub.docker.com/_/kibana](https://hub.docker.com/_/kibana)
+Docker Pull Command
+
+	docker pull kibana:7.5.1
+
+start a instance
+
+	docker run -d --name kibana -p 8056:5601 kibana:7.5.1
+        
 
 
 ### 网络连接 ###
