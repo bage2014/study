@@ -370,7 +370,7 @@ Docker Pull Command
 
 启动 
 
-    docker run -p 8892:9200 -p 8893:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
     
     docker run -d --name elasticsearch -p 8892:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch
 
@@ -534,9 +534,9 @@ Docker Pull Command
 
 	docker pull logstash:7.5.1
 
-start a instance
+start a instance[not enough space]
 
-	docker run --name logstash --rm -it -v ~/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
+	docker run --name logstash --rm -it -v /home/bage/data/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
 
         
 
@@ -550,7 +550,9 @@ start a instance
 
 	docker run -d --name kibana -p 8056:5601 kibana:7.5.1
         
-
+Kibana server is not ready yet 处理
+部署ES；
+docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
 
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
