@@ -370,14 +370,14 @@ Docker Pull Command
 
 启动 
 
-    docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    docker run --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
     
-    docker run -d --name elasticsearch -p 8892:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch
+    docker run -d --name elasticsearch -p 9092:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch
 
  
 访问
 
-    http://{ip}:8892/_cat/health  
+    http://{ip}:9092/_cat/health  
 
 
 ### 安装部署 zipkin  ###
@@ -548,7 +548,16 @@ Docker Pull Command
 
 start a instance
 
-	docker run -d --name kibana -p 8056:5601 kibana:7.5.1
+	docker run -d -e ELASTICSEARCH_URL=http://127.0.0.1:9092 --name kibana -p 8056:5601 kibana:7.5.1
+
+	docker run -d -e ELASTICSEARCH_URL=http://127.0.0.1:9092 --name kibana kibana:7.5.1
+
+	docker run -it -d -e ELASTICSEARCH_URL=http://192.168.146.133:9092/ --name kibana -p 5601:5601 kibana:7.5.1
+
+
+visit
+
+	http://192.168.146.133:5601/app/kibana
         
 Kibana server is not ready yet 处理
 部署ES；
