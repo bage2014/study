@@ -362,18 +362,17 @@ Docker Pull Command
     
 ### 安装部署 elasticsearch  ###
 参考链接 [https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html](https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html)、[https://hub.docker.com/_/elasticsearch](https://hub.docker.com/_/elasticsearch)
+版本匹配 [https://www.elastic.co/cn/support/matrix#matrix_compatibility](https://www.elastic.co/cn/support/matrix#matrix_compatibility) 
+
+
 Docker Pull Command
 
-    docker pull docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    docker pull elasticsearch:7.5.1
     
-    docker pull elasticsearch
-
 启动 
 
-    docker run --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.5.1
     
-    docker run -d --name elasticsearch -p 9092:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch
-
  
 访问
 
@@ -528,6 +527,7 @@ start a instance
  自定义配置文件启动
  
 ### logstash ###
+版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
 
 Docker Pull Command
@@ -539,21 +539,21 @@ start a instance[not enough space]
 	docker run --name logstash --rm -it -v /home/bage/data/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
 
         
-
 ### kibana ###
 参考链接：[https://hub.docker.com/_/kibana](https://hub.docker.com/_/kibana)
+版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
+
 Docker Pull Command
 
 	docker pull kibana:7.5.1
 
 start a instance
 
-	docker run -d -e ELASTICSEARCH_URL=http://127.0.0.1:9092 --name kibana -p 8056:5601 kibana:7.5.1
+	docker run --network myapp -it -d -e ELASTICSEARCH_URL=http://elasticsearch:9092/ --name kibana -p 9056:5601 kibana:7.5.1
 
-	docker run -d -e ELASTICSEARCH_URL=http://127.0.0.1:9092 --name kibana kibana:7.5.1
+自定义配置文件
 
-	docker run -it -d -e ELASTICSEARCH_URL=http://192.168.146.133:9092/ --name kibana -p 5601:5601 kibana:7.5.1
-
+    -v /usr/local/es/es.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 
 visit
 
