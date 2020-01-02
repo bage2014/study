@@ -53,6 +53,7 @@ demo [https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cl
 - 数据库访问
 - 分布式ID
 - 项目脚手架,模块划分，api层抽取
+- 验证码 https://github.com/botaruibo/xvcode
 
 
 
