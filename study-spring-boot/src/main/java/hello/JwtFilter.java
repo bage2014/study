@@ -7,8 +7,8 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 import java.util.Objects;
 
-@WebFilter(urlPatterns = "/*")
-@Order(1)
+//@WebFilter(urlPatterns = "/*")
+//@Order(1)
 public class JwtFilter implements Filter {
 
 

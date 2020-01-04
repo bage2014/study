@@ -517,14 +517,13 @@ Docker Pull Command
 
 start a instance
 
-	docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://http://101.132.119.250/:8896/xxl_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=xxl_job --spring.datasource.password=bage.xxl_job" -p 8080:8808 -v /home/bage/data/xxljob:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
+	docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/xxl_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=xxljob --spring.datasource.password=xxljob" -p 8808:8080 -v /home/bage/data/xxljob:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
         
 
-设置密码(启动时候)
+访问
+	
+	http://localhost:8808/xxl-job-admin
 
-   
-    
- 自定义配置文件启动
  
 ### logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 

@@ -4,6 +4,7 @@ xxl-job 使用入门
 ## 参考链接 ##
 官网 [https://github.com/xuxueli/xxl-job/](https://github.com/xuxueli/xxl-job/)
 [https://www.xuxueli.com/xxl-job/](https://www.xuxueli.com/xxl-job/)
+[https://hub.docker.com/r/xuxueli/xxl-job-admin/](https://hub.docker.com/r/xuxueli/xxl-job-admin/)
 
 ## 环境搭建 ##
 初始化脚本
