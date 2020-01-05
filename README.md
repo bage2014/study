@@ -6,10 +6,58 @@ Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-serv
 
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
 
+## Others ##
 Spring Cloud Gateway Filter
 
 Global Filters [https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html](https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html)
 demo [https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cloud-gateway-sample](https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cloud-gateway-sample)
+
+限流算法参考 [https://github.com/shiyujun/syj-ratelimit](https://github.com/shiyujun/syj-ratelimit)
+## Android ##
+基于 [https://github.com/project-travel-mate/Travel-Mate](https://github.com/project-travel-mate/Travel-Mate)
+改造升级打怪
+
+熟悉代码
+改造登录
+改造logo等
+改造页面
+
+## 后台 ##
+
+熟悉代码
+改造登录
+改造logo等
+改造页面
+
+## TODO ##
+功能职能
+- 登录注册
+ 登录，验证码或邮箱验证码
+ 注册，邮箱验证码
+- 队列，APP
+- 监控，APP
+- 调用链，APP
+- 日志，APP
+- 队列，APP
+- 定时任务，APP
+- 配置中心，APP
+- 注册中心
+- 网关
+- 报警
+- 消息中心，短信、邮件
+- 文件系统，附件，图片等
+- 算法
+- 安全
+- 支付
+- 商品
+- 分布式锁、队列、事务
+- 数据库访问
+- 分布式ID
+- 项目脚手架,模块划分，api层抽取
+- 验证码 https://github.com/botaruibo/xvcode
+
+
+
 
 ## 模块说明 ##
 按照创建顺序 (不是按照显示顺序) 说明如下

@@ -362,22 +362,34 @@ Docker Pull Command
     
 ### 安装部署 elasticsearch  ###
 参考链接 [https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html](https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html)、[https://hub.docker.com/_/elasticsearch](https://hub.docker.com/_/elasticsearch)
+版本匹配 [https://www.elastic.co/cn/support/matrix#matrix_compatibility](https://www.elastic.co/cn/support/matrix#matrix_compatibility) 
+
+
 Docker Pull Command
 
-    docker pull docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    docker pull elasticsearch:7.5.1
     
-    docker pull elasticsearch
-
 启动 
 
-    docker run -p 8892:9200 -p 8893:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.5.1
     
-    docker run -d --name elasticsearch -p 8892:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch
-
  
 访问
 
-    http://{ip}:8892/_cat/health  
+    http://{ip}:9092/_cat/health  
+
+
+### 安装部署 zipkin  ###
+参考链接 [https://hub.docker.com/r/openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin)
+
+Docker Pull Command
+
+    docker pull openzipkin/zipkin
+
+启动 
+
+    docker run --network myapp -d -p 9411:9411 openzipkin/zipkin
+
 
 
 ### 安装部署 FastDFS  ###
@@ -391,7 +403,22 @@ Docker Pull Command
 
     docker run -ti --name storage -v ~/storage_data:/fastdfs/storage/data -v ~/store_path:/fastdfs/store_path --net=host -e TRACKER_SERVER:192.168.1.2:22122 season/fastdfs storage
 
-  
+
+### 安装部署 xxl-job  ###
+参考链接 [https://hub.docker.com/r/xuxueli/xxl-job-admin](https://hub.docker.com/r/xuxueli/xxl-job-admin)
+
+Docker Pull Command
+
+    docker pull xuxueli/xxl-job-admin
+
+启动 
+
+    docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/xxl_job?Unicode=true&characterEncoding=UTF-8" -p 8080:8808 -v /tmp:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
+
+访问
+	
+	http://localhost:8080/xxl-job-admin
+
 ### 安装部署 Vue  ###
 
 打包 vue 项目
@@ -448,6 +475,92 @@ Dockerfile 文件
 
 	docker run -p 8080:8080 my-app-ui .
 
+
+
+### 安装部署 Ceph[待验证]  ###
+参考链接 [https://hub.docker.com/r/ceph/ceph](https://hub.docker.com/r/ceph/ceph)、[https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)、[http://docs.ceph.org.cn/](http://docs.ceph.org.cn/)、[http://docs.ceph.org.cn/radosgw/s3/java/](http://docs.ceph.org.cn/radosgw/s3/java/)
+
+Docker Pull Command
+
+	docker pull ceph/daemon
+
+创建网络
+
+   docker network create --driver bridge myapp-ceph
+
+
+创建目录
+	
+	mkdir -p /home/bage/data/ceph/etc
+	mkdir -p /home/bage/data/ceph/lib
+
+启动 mon
+	docker run -d --net=myapp-ceph  --name=ceph-mon -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph/ -e MON_IP=101.132.119.250 -e CEPH_PUBLIC_NETWORK=101.132.0.0/16 ceph/daemon mon
+
+启动 osd
+	
+	docker run -d --net=myapp-ceph --name=ceph-osd --privileged=true -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph -v /dev/:/dev/ -e OSD_DEVICE=/dev/vda1 ceph/daemon osd_ceph_disk
+
+启动Gateway 
+
+	docker run -d --net=myapp-ceph --name=ceph-rgw -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph -p 8088:8080 ceph/daemon rgw
+
+
+查看log
+	docker logs -f ceph-osd
+
+### 安装配置xxl-job ###
+参考链接：[https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B](https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B)
+Docker Pull Command
+
+	docker pull xuxueli/xxl-job-admin:2.1.2
+
+start a instance
+
+	docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/xxl_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=xxljob --spring.datasource.password=xxljob" -p 8808:8080 -v /home/bage/data/xxljob:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
+        
+
+访问
+	
+	http://localhost:8808/xxl-job-admin
+
+ 
+### logstash ###
+版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
+参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
+
+Docker Pull Command
+
+	docker pull logstash:7.5.1
+
+start a instance[not enough space]
+
+	docker run --name logstash --rm -it -v /home/bage/data/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
+
+        
+### kibana ###
+参考链接：[https://hub.docker.com/_/kibana](https://hub.docker.com/_/kibana)
+版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
+
+Docker Pull Command
+
+	docker pull kibana:7.5.1
+
+start a instance
+
+	docker run --network myapp -it -d -e ELASTICSEARCH_URL=http://elasticsearch:9092/ --name kibana -p 9056:5601 kibana:7.5.1
+
+自定义配置文件
+
+    -v /usr/local/es/es.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+
+visit
+
+	http://192.168.146.133:5601/app/kibana
+        
+Kibana server is not ready yet 处理
+部署ES；
+docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
 
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)

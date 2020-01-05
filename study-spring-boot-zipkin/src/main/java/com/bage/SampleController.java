@@ -65,7 +65,6 @@ public class SampleController
 	@RequestMapping("/call")
 	public Callable<String> call() {
 		return new Callable<String>() {
-			@Override
 			public String call() throws Exception {
 				int millis = SampleController.this.random.nextInt(1000);
 				Thread.sleep(millis);
@@ -117,7 +116,6 @@ public class SampleController
 		return "start/" + s;
 	}
 
-	@Override
 	public void onApplicationEvent(ServletWebServerInitializedEvent event) {
 		this.port = event.getSource().getPort();
 	}
