@@ -537,7 +537,12 @@ start a instance[not enough space]
 
 	docker run --name logstash --rm -it -v /home/bage/data/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
 
-        
+### elk ###
+       
+
+https://hub.docker.com/r/sebp/elk
+
+
 ### kibana ###
 参考链接：[https://hub.docker.com/_/kibana](https://hub.docker.com/_/kibana)
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
@@ -583,6 +588,7 @@ To connect a running container to an existing user-defined bridge,
 
 
 验证，可以在其他容器中，ping myapp-xxx
+
 
 ### 常见错误 ###
 启动centos镜像报错
