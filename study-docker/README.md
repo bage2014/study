@@ -539,23 +539,19 @@ start a instance[not enough space]
 
 ### elk ###
        
+参考链接[https://hub.docker.com/r/sebp/elk](https://hub.docker.com/r/sebp/elk)、[https://elk-docker.readthedocs.io/](https://elk-docker.readthedocs.io/)、[https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html#vm-max-map-count](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html#vm-max-map-count)
 
-https://hub.docker.com/r/sebp/elk
+Docker Pull Command
 
-璐漫漫:
-https://elk-docker.readthedocs.io/
+	docker pull sebp/elk:600
 
-璐漫漫:
- docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -it --name elk sebp/elk:600
+start a instance
 
-璐漫漫:
-sudo  sysctl -w vm.max_map_count=262144
+	docker run -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:600
 
-璐漫漫:
-https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html#vm-max-map-count
+设置 max_map_count
 
-璐漫漫:
- docker run -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:600
+	sudo  sysctl -w vm.max_map_count=262144
 
 
 ### kibana ###
