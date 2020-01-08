@@ -120,6 +120,7 @@
       <module>study-split-db-tb</module>
       <module>study-vue-npm</module>
       <module>study-xxl-job</module>
+      <module>study-html2pdf</module>
 
   </modules>
 </project>
