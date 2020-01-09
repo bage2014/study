@@ -28,11 +28,20 @@ IDEA 插件 [https://github.com/mplushnikov/lombok-intellij-plugin](https://gith
 
 - @EqualsAndHashCode
 
+- @NonNull
+非空检查，如果null，抛出NPE
+
+- @Cleanup
+自动调用close，释放资源
+
+- @Builder
+生成builder代码模式
+XXX.builder().xx().build();
 
 - @AllArgsConstructor, @RequiredArgsConstructor and @NoArgsConstructor
 - @Log, @Log4j, @Log4j2, @Slf4j, @XSlf4j, @CommonsLog, @JBossLog, @Flogger
 - @Data
-- @Builder
+
 - @Singular
 - @Delegate
 - @Value
