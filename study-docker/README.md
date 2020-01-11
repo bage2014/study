@@ -552,8 +552,10 @@ start a instance
 设置 max_map_count
 
 	sudo  sysctl -w vm.max_map_count=262144
-
-
+配置logstash
+	docker exec -it elk /bin/bash
+	/opt/logstash/bin/logstash -e 'input { stdin { } } output { elasticsearch { host => localhost } }'
+	this is a dummy entry
 ### kibana ###
 参考链接：[https://hub.docker.com/_/kibana](https://hub.docker.com/_/kibana)
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
