@@ -11,6 +11,8 @@ Spring Cloud Gateway Filter
 
 Global Filters [https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html](https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html)
 demo [https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cloud-gateway-sample](https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cloud-gateway-sample)
+验证码生成 [https://github.com/botaruibo/xvcode](https://github.com/botaruibo/xvcode)
+
 
 限流算法参考 [https://github.com/shiyujun/syj-ratelimit](https://github.com/shiyujun/syj-ratelimit)
 ## Android ##
