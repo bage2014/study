@@ -580,6 +580,25 @@ Kibana server is not ready yet 处理
 部署ES；
 docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
 
+input {    
+    tcp {         
+        port => 5044         
+        codec => json_lines     
+        
+    } 
+    
+} 
+output{  
+    elasticsearch { 
+    hosts => ["localhost:9200"] 
+    
+    } 
+    
+}
+
+docker run -v /home/bage/data/logstash.conf:/usr/share/logstash/pipeline/logstash.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
+
+
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
 
