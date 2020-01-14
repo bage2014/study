@@ -540,7 +540,8 @@ start a instance[not enough space]
 ### elk ###
        
 参考链接[https://hub.docker.com/r/sebp/elk](https://hub.docker.com/r/sebp/elk)、[https://elk-docker.readthedocs.io/](https://elk-docker.readthedocs.io/)、[https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html#vm-max-map-count](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html#vm-max-map-count)
-
+ELK 环境搭建 [https://blog.51cto.com/daisywei/2126523](https://blog.51cto.com/daisywei/2126523)
+[https://segmentfault.com/a/1190000020653301](https://segmentfault.com/a/1190000020653301)
 Docker Pull Command
 
 	docker pull sebp/elk:600
@@ -596,7 +597,9 @@ output{
     
 }
 
-docker run -v /home/bage/data/logstash.conf:/usr/share/logstash/pipeline/logstash.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
+docker run -v /home/bage/data/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
+
+docker run -v /home/bage/data/logstash/logstash.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
 
 
 ### 网络连接 ###
