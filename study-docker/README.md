@@ -544,19 +544,50 @@ ELK 环境搭建 [https://blog.51cto.com/daisywei/2126523](https://blog.51cto.co
 [https://segmentfault.com/a/1190000020653301](https://segmentfault.com/a/1190000020653301)
 Docker Pull Command
 
-	docker pull sebp/elk:600
+	docker pull sebp/elk:700
+
+
+setting max_map_count
+
+	sudo  sysctl -w vm.max_map_count=262144
+
+vi /home/bage/data/logstash/file-beats.conf
+	
+	# 数据输入配置：port -> 端口号；codec -> 输入格式。这里以logback为例。
+	input {
+	  tcp {
+	    port => 5044
+	    codec=>json_lines
+	  }
+	}
+	
+	# 数据输出配置：hosts -> 主机集合；index -> 你将要创建的索引名称。这里es为例。
+	output {
+	  elasticsearch {
+	    hosts => ["127.0.0.1:9200"]
+	    index => "%{[appName]}-%{+YYYY.MM.dd}"
+	  }
+	}
+
 
 start a instance
 
-	docker run -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:600
+	docker run -v /home/bage/data/logstash/file-beats.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
 
-设置 max_map_count
 
-	sudo  sysctl -w vm.max_map_count=262144
-配置logstash
-	docker exec -it elk /bin/bash
-	/opt/logstash/bin/logstash -e 'input { stdin { } } output { elasticsearch { host => localhost } }'
-	this is a dummy entry
+访问
+	
+ES 
+
+	http://192.168.146.133:8092/
+	http://192.168.146.133:8092/_search?pretty
+	
+kibana 
+
+	http://192.168.146.133:8056
+
+项目实践链接 [https://github.com/bage2014/study-micro-services/tree/master/study-micro-services-sleuth](https://github.com/bage2014/study-micro-services/tree/master/study-micro-services-sleuth)
+
 ### kibana ###
 参考链接：[https://hub.docker.com/_/kibana](https://hub.docker.com/_/kibana)
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
@@ -581,25 +612,6 @@ Kibana server is not ready yet 处理
 部署ES；
 docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
 
-input {    
-    tcp {         
-        port => 5044         
-        codec => json_lines     
-        
-    } 
-    
-} 
-output{  
-    elasticsearch { 
-    hosts => ["localhost:9200"] 
-    
-    } 
-    
-}
-
-docker run -v /home/bage/data/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
-
-docker run -v /home/bage/data/logstash/logstash.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
 
 
 ### 网络连接 ###
