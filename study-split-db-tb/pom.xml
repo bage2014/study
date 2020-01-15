@@ -29,7 +29,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <shardingsphere.version>4.0.0-RC1</shardingsphere.version>
+        <shardingsphere.version>4.0.0</shardingsphere.version>
         <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
 
         <spring.boot.base.version>2.0.1.RELEASE</spring.boot.base.version>
