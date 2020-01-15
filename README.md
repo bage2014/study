@@ -7,6 +7,9 @@ Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-serv
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
 
 ## Others ##
+GIT 地址
+https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
+
 Spring Cloud Gateway Filter
 
 Global Filters [https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html](https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html)
