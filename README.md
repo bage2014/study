@@ -28,6 +28,7 @@ UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyx
 改造登录
 改造logo等
 改造页面
+APP更新
 
 ## 后台 ##
 
@@ -63,8 +64,15 @@ UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyx
 - 项目脚手架,模块划分，api层抽取
 - 验证码 https://github.com/botaruibo/xvcode
 
+- idea 
 
-
+		开源教程
+		GitHub项目，APP
+		冷知识科普
+		音乐乐队、歌手
+		注册账号
+		快递
+		天气
 
 ## 模块说明 ##
 按照创建顺序 (不是按照显示顺序) 说明如下
