@@ -24,6 +24,12 @@ UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyx
 基于 [https://github.com/project-travel-mate/Travel-Mate](https://github.com/project-travel-mate/Travel-Mate)
 改造升级打怪
 
+iosched
+[https://github.com/google/iosched/releases](https://github.com/google/iosched/releases)
+
+plaid
+[https://github.com/android/plaid/releases/tag/1.1.0](https://github.com/android/plaid/releases/tag/1.1.0)
+
 熟悉代码
 改造登录
 改造logo等
@@ -64,6 +70,7 @@ APP更新
 - 项目脚手架,模块划分，api层抽取
 - 验证码 https://github.com/botaruibo/xvcode
 
+- 域名
 - idea 
 
 		开源教程
