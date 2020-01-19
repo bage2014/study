@@ -478,7 +478,7 @@ Dockerfile 文件
 
 
 ### 安装部署 Ceph[待验证]  ###
-参考链接 [https://hub.docker.com/r/ceph/ceph](https://hub.docker.com/r/ceph/ceph)、[https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)、[http://docs.ceph.org.cn/](http://docs.ceph.org.cn/)、[http://docs.ceph.org.cn/radosgw/s3/java/](http://docs.ceph.org.cn/radosgw/s3/java/)
+参考链接 [https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)、[http://docs.ceph.org.cn/](http://docs.ceph.org.cn/)、[http://docs.ceph.org.cn/radosgw/s3/java/](http://docs.ceph.org.cn/radosgw/s3/java/)
 
 Docker Pull Command
 
@@ -486,16 +486,23 @@ Docker Pull Command
 
 创建网络
 
-   docker network create --driver bridge myapp-ceph
+   docker network create --driver bridge ceph
 
 
 创建目录
 	
 	mkdir -p /home/bage/data/ceph/etc
 	mkdir -p /home/bage/data/ceph/lib
+	mkdir -p /home/bage/data/ceph/conf
+
+sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/etc
+sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/lib
+
+docker network create ceph
+
 
 启动 mon
-	docker run -d --net=myapp-ceph  --name=ceph-mon -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph/ -e MON_IP=101.132.119.250 -e CEPH_PUBLIC_NETWORK=101.132.0.0/16 ceph/daemon mon
+	docker run -d --net=ceph  --name=ceph-mon -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph/ -e MON_IP=192.168.146.133 -e CEPH_PUBLIC_NETWORK=192.168.146.133/24 ceph/daemon mon
 
 启动 osd
 	
@@ -515,8 +522,8 @@ ip addr 查看 CEPH_PUBLIC_NETWORK
 docker run -d --net=host \
 -v /etc/ceph:/etc/ceph \
 -v /var/lib/ceph/:/var/lib/ceph/ \
--e MON_IP=192.168.96.131 \
--e CEPH_PUBLIC_NETWORK=192.168.96.131/24 \
+-e MON_IP=192.168.146.133 \
+-e CEPH_PUBLIC_NETWORK=192.168.146.133/24 \
 ceph/daemon mon
 
 
