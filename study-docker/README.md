@@ -535,7 +535,7 @@ If SELinux is enabled, run the following commands:
 	--privileged=true \
 	-v /home/bage/data/ceph/etc:/etc/ceph \
 	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
-	-v /home/bage/data/ceph/dev:/dev/ \
+	-v /dev:/dev/ \
 	-e OSD_DEVICE=/dev/sda \
 	ceph/daemon osd
 
