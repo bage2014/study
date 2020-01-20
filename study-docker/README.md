@@ -568,19 +568,46 @@ If SELinux is enabled, run the following commands:
 	ceph auth get client.bootstrap-rgw \
 	-o /var/lib/ceph/bootstrap-rgw/ceph.keyring
 
-	docker run -d --net=host --name=ceph-rgw \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
-	ceph/daemon rgw
-
-
-	docker run -d \
+	docker run -d --name ceph-rgw \
 	-v /home/bage/data/ceph/etc:/etc/ceph \
 	-v /home/bage/data/ceph/lib:/var/lib/ceph \
 	-e CEPH_DAEMON=RGW -e RGW_NAME=myrgw -p 9000:9000 \
 	-e RGW_REMOTE_CGI=1 -e RGW_REMOTE_CGI_HOST=192.168.96.132 \
 	-e RGW_REMOTE_CGI_PORT=9000 ceph/daemon
+	
+查看状态
 
+	docker exec ceph-mon ceph -s
+
+
+
+	
+Deploy a REST API
+
+	docker run -d --net=host \
+	-e KV_TYPE=etcd \
+	-e KV_IP=192.168.96.132 \
+	ceph/daemon restapi
+
+api java 
+
+[https://docs.ceph.com/docs/master/radosgw/s3/java/](https://docs.ceph.com/docs/master/radosgw/s3/java/)
+
+
+https://docs.ceph.com/docs/infernalis/man/8/radosgw-admin/
+
+radosgw-admin user create --display-name="johnny rotten" --uid=johnny \
+{ "user_id": "johnny", \
+  "rados_uid": 0, \
+  "display_name": "johnny rotten", \
+  "email": "", \
+  "suspended": 0, \
+  "subusers": [], \
+  "keys": [ \
+        { "user": "johnny", \
+          "access_key": "TCICW53D9BQ2VGC46I44", \
+          "secret_key": "tfm9aHMI8X76L3UdgE+ZQaJag1vJQmE6HDb5Lbrz"}], \
+  "swift_keys": []} \
 
 
 ### 安装配置xxl-job ###
