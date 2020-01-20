@@ -495,22 +495,19 @@ Docker Pull Command
 	
 	mkdir -p /home/bage/data/ceph/etc
 	mkdir -p /home/bage/data/ceph/lib
-	mkdir -p /home/bage/data/ceph/dev
 
 If SELinux is enabled, run the following commands:
 
 	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/etc
 	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/lib
-	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/dev
-
 
 启动 mon
 
 	docker run -d --net=host --name=ceph-mon \
 	-v /home/bage/data/ceph/etc:/etc/ceph \
 	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
-	-e MON_IP=192.168.96.131 \
-	-e CEPH_PUBLIC_NETWORK=192.168.96.131/24 \
+	-e MON_IP=192.168.96.132 \
+	-e CEPH_PUBLIC_NETWORK=192.168.96.132/24 \
 	ceph/daemon mon
 	
 查看状态
@@ -537,18 +534,29 @@ If SELinux is enabled, run the following commands:
 	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
 	-v /dev:/dev/ \
 	-e OSD_DEVICE=/dev/sda \
-	ceph/daemon osd
-
+	ceph/daemon osd_directory
+	
+	
 	docker run -d --net=host --name=ceph-osd \
-	--privileged=true \
 	--pid=host \
+	--privileged=true \
 	-v /home/bage/data/ceph/etc:/etc/ceph \
 	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
-	-v /home/bage/data/ceph/dev:/dev/ \
+	-v /dev:/dev/ \
 	-e OSD_DEVICE=/dev/sda \
-	-e OSD_TYPE=disk \
 	ceph/daemon osd
-
+ 
+ 
+	docker run -d --net=host --name=ceph-osd \
+	--pid=host \
+	--privileged=true \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v /dev:/dev/ \
+	-e OSD_DEVICE=/dev/sda \
+	ceph/daemon osd_ceph_disk
+	
+	
 报错[待处理]
 
 	docker: Error response from daemon: OCI runtime create failed: container_linux.go:345: starting container process caused "setup user: no such file or directory": unknown.
@@ -556,11 +564,23 @@ If SELinux is enabled, run the following commands:
 
 启动Gateway 
 
+	docker exec ceph-mon \ 
+	ceph auth get client.bootstrap-rgw \
+	-o /var/lib/ceph/bootstrap-rgw/ceph.keyring
+
 	docker run -d --net=host --name=ceph-rgw \
 	-v /home/bage/data/ceph/etc:/etc/ceph \
 	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
-	-p 8088:8080 \
 	ceph/daemon rgw
+
+
+	docker run -d \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph \
+	-e CEPH_DAEMON=RGW -e RGW_NAME=myrgw -p 9000:9000 \
+	-e RGW_REMOTE_CGI=1 -e RGW_REMOTE_CGI_HOST=192.168.96.132 \
+	-e RGW_REMOTE_CGI_PORT=9000 ceph/daemon
+
 
 
 ### 安装配置xxl-job ###
