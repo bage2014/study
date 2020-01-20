@@ -480,66 +480,88 @@ Dockerfile 文件
 ### 安装部署 Ceph[待验证]  ###
 参考链接 [https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)、[http://docs.ceph.org.cn/](http://docs.ceph.org.cn/)、[http://docs.ceph.org.cn/radosgw/s3/java/](http://docs.ceph.org.cn/radosgw/s3/java/)
 
+
+查看CIDR 和 IP 和 设备
+
+	ifconfig
+	ip addr 
+	lsblk
+
 Docker Pull Command
 
 	docker pull ceph/daemon
-
-创建网络
-
-   docker network create --driver bridge ceph
-
 
 创建目录
 	
 	mkdir -p /home/bage/data/ceph/etc
 	mkdir -p /home/bage/data/ceph/lib
-	mkdir -p /home/bage/data/ceph/conf
+	mkdir -p /home/bage/data/ceph/dev
 
-sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/etc
-sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/lib
+If SELinux is enabled, run the following commands:
 
-docker network create ceph
+	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/etc
+	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/lib
+	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/dev
 
 
 启动 mon
-	docker run -d --net=ceph  --name=ceph-mon -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph/ -e MON_IP=192.168.146.133 -e CEPH_PUBLIC_NETWORK=192.168.146.133/24 ceph/daemon mon
+
+	docker run -d --net=host --name=ceph-mon \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-e MON_IP=192.168.96.131 \
+	-e CEPH_PUBLIC_NETWORK=192.168.96.131/24 \
+	ceph/daemon mon
+	
+查看状态
+
+	docker exec ceph-mon ceph -s
+
+启动 mgr
+
+	docker run -d --net=host --name=ceph-mgr \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	ceph/daemon mgr
+
+查看状态
+
+	docker exec ceph-mon ceph -s
 
 启动 osd
 	
-	docker run -d --net=myapp-ceph --name=ceph-osd --privileged=true -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph -v /dev/:/dev/ -e OSD_DEVICE=/dev/vda1 ceph/daemon osd_ceph_disk
+	docker run -d --net=host --name=ceph-osd \
+	--pid=host \
+	--privileged=true \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v /home/bage/data/ceph/dev:/dev/ \
+	-e OSD_DEVICE=/dev/sda \
+	ceph/daemon osd
+
+	docker run -d --net=host --name=ceph-osd \
+	--privileged=true \
+	--pid=host \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v /home/bage/data/ceph/dev:/dev/ \
+	-e OSD_DEVICE=/dev/sda \
+	-e OSD_TYPE=disk \
+	ceph/daemon osd
+
+报错[待处理]
+
+	docker: Error response from daemon: OCI runtime create failed: container_linux.go:345: starting container process caused "setup user: no such file or directory": unknown.
+
 
 启动Gateway 
 
-	docker run -d --net=myapp-ceph --name=ceph-rgw -v /home/bage/data/ceph/etc:/etc/ceph -v /home/bage/data/ceph/lib:/var/lib/ceph -p 8088:8080 ceph/daemon rgw
+	docker run -d --net=host --name=ceph-rgw \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-p 8088:8080 \
+	ceph/daemon rgw
 
-
-查看log
-	docker logs -f ceph-osd
-
-
-ip addr 查看 CEPH_PUBLIC_NETWORK
-
-docker run -d --net=host \
--v /etc/ceph:/etc/ceph \
--v /var/lib/ceph/:/var/lib/ceph/ \
--e MON_IP=192.168.146.133 \
--e CEPH_PUBLIC_NETWORK=192.168.146.133/24 \
-ceph/daemon mon
-
-
-docker run -d --net=host \
--v /home/bage/data/ceph/ceph-mon:/etc/ceph \
--v /home/bage/data/ceph/ceph-lib:/var/lib/ceph/ \
-ceph/daemon mgr
-
-docker run -d --net=host \
---pid=host \
---privileged=true \
--v /home/bage/data/ceph/ceph-mon:/etc/ceph \
--v /home/bage/data/ceph/ceph-lib:/var/lib/ceph/ \
--v /home/bage/data/ceph/ceph-dev:/dev/ \
--e OSD_DEVICE=/dev/vdd \
-ceph/daemon osd
 
 ### 安装配置xxl-job ###
 参考链接：[https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B](https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B)
