@@ -483,9 +483,9 @@ Dockerfile 文件
 
 查看CIDR 和 IP 和 设备
 
-	ifconfig
-	ip addr 
-	lsblk
+	ifconfig ==> got ip == 192.168.96.132
+	ip addr ==> got CEPH_PUBLIC_NETWORK == 192.168.96.132/24
+	lsblk ==> got OSD_DEVICE == /dev/sda
 
 Docker Pull Command
 
@@ -501,7 +501,7 @@ If SELinux is enabled, run the following commands:
 	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/etc
 	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/lib
 
-启动 mon
+Deploy a monitor
 
 	docker run -d --net=host --name=ceph-mon \
 	-v /home/bage/data/ceph/etc:/etc/ceph \
@@ -514,7 +514,7 @@ If SELinux is enabled, run the following commands:
 
 	docker exec ceph-mon ceph -s
 
-启动 mgr
+Deploy a Manager daemon
 
 	docker run -d --net=host --name=ceph-mgr \
 	-v /home/bage/data/ceph/etc:/etc/ceph \
@@ -525,8 +525,16 @@ If SELinux is enabled, run the following commands:
 
 	docker exec ceph-mon ceph -s
 
-启动 osd
 	
+exported keyring for client.bootstrap-osd
+
+	docker exec ceph-mon \
+	ceph auth get client.bootstrap-osd \
+	-o /var/lib/ceph/bootstrap-osd/ceph.keyring
+	
+
+Deploy an OSD
+
 	docker run -d --net=host --name=ceph-osd \
 	--pid=host \
 	--privileged=true \
@@ -536,16 +544,12 @@ If SELinux is enabled, run the following commands:
 	-e OSD_DEVICE=/dev/sda \
 	ceph/daemon osd_directory
 	
+查看状态
+
+	docker exec ceph-mon ceph -s
 	
-	docker run -d --net=host --name=ceph-osd \
-	--pid=host \
-	--privileged=true \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
-	-v /dev:/dev/ \
-	-e OSD_DEVICE=/dev/sda \
-	ceph/daemon osd
- 
+osd_ceph_disk 启动 报错[待处理]
+
  
 	docker run -d --net=host --name=ceph-osd \
 	--pid=host \
@@ -556,17 +560,42 @@ If SELinux is enabled, run the following commands:
 	-e OSD_DEVICE=/dev/sda \
 	ceph/daemon osd_ceph_disk
 	
-	
-报错[待处理]
-
 	docker: Error response from daemon: OCI runtime create failed: container_linux.go:345: starting container process caused "setup user: no such file or directory": unknown.
 
 
-启动Gateway 
+Deploy a MDS
 
-	docker exec ceph-mon \ 
+	docker run -d --net=host --name=ceph-mds \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-e CEPHFS_CREATE=1 \
+	ceph/daemon mds
+
+查看状态
+
+	docker exec ceph-mon ceph -s
+	
+	
+exported keyring for client.bootstrap-rgw
+
+	docker exec ceph-mon \
 	ceph auth get client.bootstrap-rgw \
 	-o /var/lib/ceph/bootstrap-rgw/ceph.keyring
+
+Deploy a Rados Gateway 
+
+	docker run -d --net=host --name=ceph-rgw \
+	-v /home/bage/data/ceph/etc:/etc/ceph \
+	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	ceph/daemon rgw
+
+
+查看状态
+
+	docker exec ceph-mon ceph -s
+	
+
+Administration via radosgw-admin ??
 
 	docker run -d --name ceph-rgw \
 	-v /home/bage/data/ceph/etc:/etc/ceph \
@@ -575,19 +604,20 @@ If SELinux is enabled, run the following commands:
 	-e RGW_REMOTE_CGI=1 -e RGW_REMOTE_CGI_HOST=192.168.96.132 \
 	-e RGW_REMOTE_CGI_PORT=9000 ceph/daemon
 	
-查看状态
-
-	docker exec ceph-mon ceph -s
-
-
-
 	
-Deploy a REST API
+Deploy a REST API [起不来]
 
-	docker run -d --net=host \
+	docker run -d --net=host --name ceph-restapi \
 	-e KV_TYPE=etcd \
 	-e KV_IP=192.168.96.132 \
 	ceph/daemon restapi
+
+Deploy a RBD mirror
+
+	docker run -d --net=host --name ceph-rbd_mirror \
+	-e KV_IP=192.168.96.132 \
+	ceph/daemon rbd_mirror
+
 
 api java 
 
