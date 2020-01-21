@@ -582,6 +582,9 @@ exported keyring for client.bootstrap-rgw
 	ceph auth get client.bootstrap-rgw \
 	-o /var/lib/ceph/bootstrap-rgw/ceph.keyring
 
+修改存储池副本size
+	ceph osd pool set data size 1
+
 Deploy a Rados Gateway 
 
 	docker run -d --net=host --name=ceph-rgw \
