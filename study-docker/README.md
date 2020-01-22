@@ -755,18 +755,23 @@ Docker Pull Command
 
 start a instance
 
-	docker run -d --name mongo --rm mongo \
-        -u mongoadmin \
-        -p bage.mongo \
-        --authenticationDatabase admin \
+	docker run -d \
+	-p 27017:27017 \
 	-v /home/bage/data/mongodb:/data/db \
-	mongo	
-
-
-visit
-
+	--name mongo mongo \
+	--auth
 	
+visit	
 	
+	docker exec -it mongo mongo admin
+
+
+create user 
+
+	db.createUser({ user:'bage',pwd:'lulu1234',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+	
+	db.createUser({ user: 'test', pwd: 'bagetest', roles: [{ role: "readWrite", db: "bagedb" }] });
+
 
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
