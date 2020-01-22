@@ -747,6 +747,26 @@ Kibana server is not ready yet 处理
 docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
 
 
+### mongo[待验证] ###
+参考链接：[https://hub.docker.com/_/mongo](https://hub.docker.com/_/mongo)
+Docker Pull Command
+
+	docker pull mongo
+
+start a instance
+
+	docker run -d --name mongo --rm mongo \
+        -u mongoadmin \
+        -p bage.mongo \
+        --authenticationDatabase admin \
+	-v /home/bage/data/mongodb:/data/db \
+	mongo	
+
+
+visit
+
+	
+	
 
 ### 网络连接 ###
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
