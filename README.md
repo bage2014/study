@@ -30,57 +30,6 @@ iosched
 plaid
 [https://github.com/android/plaid/releases/tag/1.1.0](https://github.com/android/plaid/releases/tag/1.1.0)
 
-熟悉代码
-改造登录
-改造logo等
-改造页面
-APP更新
-
-## 后台 ##
-
-熟悉代码
-改造登录
-改造logo等
-改造页面
-
-## TODO ##
-功能职能
-- 登录注册
- 登录，验证码或邮箱验证码
- 注册，邮箱验证码
-- 队列，APP
-- 监控，APP
-- 调用链，APP
-- 日志，APP
-- 队列，APP
-- 定时任务，APP
-- 配置中心，APP
-- 注册中心
-- 网关
-- 报警
-- 消息中心，短信、邮件
-- 文件系统，附件，图片等
-- 算法
-- 安全
-- 支付
-- 商品
-- 分布式锁、队列、事务
-- 数据库访问
-- 分布式ID
-- 项目脚手架,模块划分，api层抽取
-- 验证码 https://github.com/botaruibo/xvcode
-
-- 域名
-- idea 
-
-		开源教程
-		GitHub项目，APP
-		冷知识科普
-		音乐乐队、歌手
-		注册账号
-		快递
-		天气
-
 ## 模块说明 ##
 按照创建顺序 (不是按照显示顺序) 说明如下
 
