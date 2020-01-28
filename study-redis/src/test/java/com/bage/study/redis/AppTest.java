@@ -4,6 +4,7 @@ import com.bage.study.redis.lock.DistributeLock;
 import com.bage.study.redis.lock.DistributeLockBuilder;
 import com.bage.study.redis.lock.RedisDistributeLock;
 import com.sun.media.jfxmedia.logging.Logger;
+import org.junit.Test;
 
 import java.util.Objects;
 
@@ -36,7 +37,7 @@ public class AppTest {
                 // doSomething();
             }
         }catch (Exception e){
-            log.error(e.getMessage(),e);
+            e.printStackTrace();
         } finally {
             if(Objects.nonNull(lock)){
                 lock.unlock();
