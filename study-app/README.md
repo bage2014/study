@@ -1,29 +1,6 @@
 # study-app #
 应用实践
 
-## 准备工作 ##
-
-准备一些软件环境
-
-### 环境 ###
-基础环境
-- CentOS7 [操作系统]
-可以是云主机，也可以是虚拟机；需要一台机器做主机，也可以在本机
-- Git
-- JDK
-- Maven
-- Vue
-
-软件环境
-- Docker 
-- MySQL
-- Redis
-- RabbitMQ
-- elk
-
-### 应用 ###
-- pass 平台
-
 ## 参考链接 ##
 
 UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyxxjd/UI-Design-Resources)、[https://github.com/material-components/material-components-android](https://github.com/material-components/material-components-android)
@@ -39,6 +16,9 @@ plaid
 [https://github.com/android/plaid/releases/tag/1.1.0](https://github.com/android/plaid/releases/tag/1.1.0)
 
 ## TODO ##
+
+软件环境准备
+APP应用升级，ELK日志等
 
 ### 后台 ###
 功能职能
@@ -89,7 +69,7 @@ plaid
 ## 项目模块 ##
 
 | 项目模块 | 项目说明 |
-| ------ | ------ | 
+| ------ | ------ |
 | app-auth  |  认证中心 |
 | app-getway  |  网关 |
 
