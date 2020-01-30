@@ -40,6 +40,8 @@ plaid
 
 ## TODO ##
 
+gateway -> auth-server 问题
+
 ### 后台 ###
 功能职能
 - 登录注册
