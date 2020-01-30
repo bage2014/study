@@ -123,4 +123,18 @@ Linux下载
   - 文档 [https://help.sonatype.com/repomanager3](https://help.sonatype.com/repomanager3 "文档") 
   - 下载地址 [https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.13.0-01-unix.tar.gz](https://sonatype-download.global.ssl.fastly.net/repository/repositoryManager/3/nexus-3.13.0-01-unix.tar.gz "下载地址")
 
+### lrzsz ###
+
+安装
+    
+    yum install lrzsz 
+    
+上传文件  
+
+    rz
+    
+    rz -be 
+
+
+
 
