@@ -24,6 +24,7 @@ gateway -> auth-server 问题
 APP应用升级，全部切换成新架构
 
 ELK日志集中到ELK 
+与 pagehelper-spring-boot-starter 1.2.10 版本冲突，升级到 1.2.12
 
 demo 集成问题处理
 
