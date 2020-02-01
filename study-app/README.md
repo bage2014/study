@@ -17,6 +17,9 @@ iosched
 plaid
 [https://github.com/android/plaid/releases/tag/1.1.0](https://github.com/android/plaid/releases/tag/1.1.0)
 
+集成库
+[https://github.com/AriesHoo/FastLib](https://github.com/AriesHoo/FastLib)
+
 ## TODO ##
 
 gateway -> auth-server 问题
