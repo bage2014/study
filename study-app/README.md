@@ -17,6 +17,9 @@ iosched
 plaid
 [https://github.com/android/plaid/releases/tag/1.1.0](https://github.com/android/plaid/releases/tag/1.1.0)
 
+集成库
+[https://github.com/AriesHoo/FastLib](https://github.com/AriesHoo/FastLib)
+
 ## TODO ##
 
 gateway -> auth-server 问题
@@ -66,7 +69,6 @@ demo 集成问题处理
 - 域名
 
 - idea 
-
 		
 	
 	| 业务项目  | 概要说明                   | reference |
@@ -80,8 +82,7 @@ demo 集成问题处理
 	|           |                            |           |
 	|           |                            |           |
 	
-	
-		
+
 
 ## 项目模块 ##
 
