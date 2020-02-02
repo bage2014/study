@@ -135,16 +135,16 @@ Linux下载
     
     rz -be 
 
-### 配置 SSH KEY ###
+### SSH KEY ###
 参考链接 [https://help.github.com/articles/generating-an-ssh-key/](https://help.github.com/articles/generating-an-ssh-key/)、[https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
 
 Steps
 
-- Open TerminalTerminalGit Bash.
+Open TerminalTerminalGit Bash.	
+	略
 
-- Generating a new SSH key  
-生成 rsa key 
+Generating a new SSH key  
 
 	ssh-keygen -t rsa -b 4096 -C "893542907@qq.com"
 
