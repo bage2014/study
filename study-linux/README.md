@@ -152,6 +152,16 @@ Generating a new SSH key
 
 	cat /home/bage/.ssh/id_rsa.pub
 
+配置多个(写入到另一个文件)
+
+	/home/bage/.ssh/id_rsa_another_one.pub
+
+添加对应私钥
+
+	ssh-agent bash
+
+	ssh-add ~/.ssh/id_rsa_another_one
+
 
 
 
