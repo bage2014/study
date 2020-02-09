@@ -20,6 +20,11 @@ plaid
 集成库
 [https://github.com/AriesHoo/FastLib](https://github.com/AriesHoo/FastLib)
 
+material-components-android-examples
+[https://github.com/material-components/material-components-android-examples](https://github.com/material-components/material-components-android-examples)
+
+icons
+[https://github.com/google/material-design-icons](https://github.com/google/material-design-icons)
 ## TODO ##
 
 gateway -> auth-server 问题
@@ -30,6 +35,18 @@ ELK日志集中到ELK
 与 pagehelper-spring-boot-starter 1.2.10 版本冲突，升级到 1.2.12
 
 demo 集成问题处理
+
+
+
+APP 
+
+登录页面，画页面完成，功能待完成
+
+主页面，画页面，功能待完成
+
+设置页面，画页面，功能待完成
+
+
 
 ### 后台 ###
 功能职能
