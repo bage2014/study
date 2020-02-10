@@ -162,6 +162,18 @@ Generating a new SSH key
 
 	ssh-add ~/.ssh/id_rsa_another_one
 
+新建文本文件
+
+        vi C:\Users\bage\.ssh\config	
+
+内容
+	# 配置 github.com
+	Host github.com               
+	    HostName github.com
+	    IdentityFile C:\\Users\\bage\\.ssh\\id_rsa_github
+	    PreferredAuthentications publickey
+	    User 893542907@qq.com	
+
 
 
 
