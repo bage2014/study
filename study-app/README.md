@@ -25,6 +25,11 @@ material-components-android-examples
 
 icons
 [https://github.com/google/material-design-icons](https://github.com/google/material-design-icons)
+
+APP Idea [https://www.zhihu.com/question/26876628?sort=created](https://www.zhihu.com/question/26876628?sort=created)
+
+icon [http://fontello.com/](http://fontello.com/)
+
 ## TODO ##
 
 gateway -> auth-server 问题
