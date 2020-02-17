@@ -1,5 +1,4 @@
 # study-template #
-
 ## 参考链接 ##
 
 文档结构参考 [http://www.woshipm.com/pd/787460.html](http://www.woshipm.com/pd/787460.html) 
@@ -113,6 +112,9 @@
 - 原型参考
 
   ![登录页面](https://github.com/bage2014/study/blob/master/study-app/snapshot/login.png)
+  ![登录页面](https://github.com/bage2014/study/blob/master/study-app/snapshot/apb.jpg)
+
+  
 
 - 详细说明
 
