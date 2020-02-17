@@ -112,10 +112,7 @@
 - 原型参考
 
   ![登录页面](https://github.com/bage2014/study/blob/master/study-app/snapshot/login.png)
-  ![登录页面](https://github.com/bage2014/study/blob/master/study-app/snapshot/apb.jpg)
-
   
-
 - 详细说明
 
   根据账号、密码进行登录；
