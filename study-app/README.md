@@ -17,6 +17,19 @@ iosched
 plaid
 [https://github.com/android/plaid/releases/tag/1.1.0](https://github.com/android/plaid/releases/tag/1.1.0)
 
+集成库
+[https://github.com/AriesHoo/FastLib](https://github.com/AriesHoo/FastLib)
+
+material-components-android-examples
+[https://github.com/material-components/material-components-android-examples](https://github.com/material-components/material-components-android-examples)
+
+icons
+[https://github.com/google/material-design-icons](https://github.com/google/material-design-icons)
+
+APP Idea [https://www.zhihu.com/question/26876628?sort=created](https://www.zhihu.com/question/26876628?sort=created)
+
+icon [http://fontello.com/](http://fontello.com/)
+
 ## TODO ##
 
 gateway -> auth-server 问题
@@ -27,6 +40,18 @@ ELK日志集中到ELK
 与 pagehelper-spring-boot-starter 1.2.10 版本冲突，升级到 1.2.12
 
 demo 集成问题处理
+
+
+
+APP 
+
+登录页面，画页面完成，功能待完成
+
+主页面，画页面，功能待完成
+
+设置页面，画页面，功能待完成
+
+
 
 ### 后台 ###
 功能职能
@@ -64,22 +89,29 @@ demo 集成问题处理
 
 
 - 域名
-- idea 
 
-		开源教程
-		GitHub项目，APP
-		冷知识科普
-		音乐乐队、歌手
-		注册账号
-		快递
-		天气
+- idea 
+		
+	
+	| 业务项目  | 概要说明                   | reference |
+	| --------- | -------------------------- | --------- |
+	| 开源      | 受欢迎，趋势，top，开发者  |           |
+	| 冷        | 冷知识的科普               |           |
+	| 兴趣-音乐 | 音乐人，音乐菜单，音乐分享 |           |
+	| 账号      | 已注册账号、账号密码       |           |
+	| 快递      | 个人快递                   |           |
+	| 天气      | 当天天气，近一周天气情况   |           |
+	| 插件      | 比如Chrome、IDE插件        |           [天气APP](https://github.com/bage2014/study/blob/master/study-app/README-weather.md)|
+	|           |                            |           |
+	
+
 
 ## 项目模块 ##
 
-| 项目模块 | 项目说明 |
-| ------ | ------ |
-| app-auth  |  认证中心 |
-| app-getway  |  网关 |
+| 项目模块 | 项目说明 |  |
+| ------ | ------ | ------ |
+| app-auth  |  认证中心 |  |
+| app-getway  |  网关 |  |
 
 
 

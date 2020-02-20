@@ -46,7 +46,7 @@ source 一下，使配置生效
     option, or install the PCRE library into the system, or build the PCRE library
     statically from the source with nginx by using --with-pcre=<path> option.
 处理方式
- 
+
     yum install pcre-devel
 
 `./configure` 缺少依赖zlib
@@ -108,15 +108,15 @@ Linux下载
 
 Linux下载
 
-    
+
 加入安装路径
 
-    
+
 启动
 
-    
-    
-    
+
+​    
+​    
 ### Nexus ###
 - 参考链接 
   - 官网 [https://www.sonatype.com/download-oss-sonatype](https://www.sonatype.com/download-oss-sonatype "官网")
@@ -128,12 +128,52 @@ Linux下载
 安装
     
     yum install lrzsz 
-    
+
 上传文件  
 
     rz
     
     rz -be 
+
+### SSH KEY ###
+参考链接 [https://help.github.com/articles/generating-an-ssh-key/](https://help.github.com/articles/generating-an-ssh-key/)、[https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+
+Steps
+
+Open TerminalTerminalGit Bash.	
+	略
+
+Generating a new SSH key  
+
+	ssh-keygen -t rsa -b 4096 -C "893542907@qq.com"
+
+拷贝公钥
+
+	cat /home/bage/.ssh/id_rsa.pub
+
+配置多个(写入到另一个文件)
+
+	/home/bage/.ssh/id_rsa_another_one.pub
+
+添加对应私钥
+
+	ssh-agent bash
+
+	ssh-add ~/.ssh/id_rsa_another_one
+
+新建文本文件
+
+        vi C:\Users\bage\.ssh\config	
+
+内容
+	# 配置 github.com
+	Host github.com               
+	    HostName github.com
+	    IdentityFile C:\\Users\\bage\\.ssh\\id_rsa_github
+	    PreferredAuthentications publickey
+	    User 893542907@qq.com	
+
 
 
 
