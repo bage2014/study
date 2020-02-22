@@ -747,11 +747,16 @@ Kibana server is not ready yet 处理
 docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
 
 
-### mongo[待验证] ###
+### mongo ###
 参考链接：[https://hub.docker.com/_/mongo](https://hub.docker.com/_/mongo)
 Docker Pull Command
 
 	docker pull mongo
+
+
+mkdir
+
+    mkdir -p /home/bage/data/mongodb
 
 start a instance
 

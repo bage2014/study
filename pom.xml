@@ -121,6 +121,7 @@
       <module>study-vue-npm</module>
       <module>study-xxl-job</module>
       <module>study-html2pdf</module>
+      <module>study-mongodb</module>
 
   </modules>
 </project>
