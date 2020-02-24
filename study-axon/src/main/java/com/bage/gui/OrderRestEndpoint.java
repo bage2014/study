@@ -13,6 +13,7 @@ import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -27,7 +28,7 @@ public class OrderRestEndpoint {
         this.queryGateway = queryGateway;
     }
 
-    @PostMapping("/ship-order")
+    @RequestMapping("/ship-order")
     public void shipOrder() {
         String orderId = UUID.randomUUID().toString();
         commandGateway.send(new PlaceOrderCommand(orderId, "Deluxe Chair"));
@@ -35,7 +36,7 @@ public class OrderRestEndpoint {
         commandGateway.send(new ShipOrderCommand(orderId));
     }
 
-    @PostMapping("/ship-unconfirmed-order")
+    @RequestMapping("/ship-unconfirmed-order")
     public void shipUnconfirmedOrder() {
         String orderId = UUID.randomUUID().toString();
         commandGateway.send(new PlaceOrderCommand(orderId, "Deluxe Chair"));
