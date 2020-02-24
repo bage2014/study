@@ -122,6 +122,7 @@
       <module>study-xxl-job</module>
       <module>study-html2pdf</module>
       <module>study-mongodb</module>
+      <module>study-axon</module>
 
   </modules>
 </project>
