@@ -7,6 +7,12 @@ UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyx
 
 [https://www.creative-tim.com/templates/free](https://www.creative-tim.com/templates/free)
 
+UI APP Kit [https://www.uistore.design/categories/apps/](https://www.uistore.design/categories/apps/)
+[https://freebiesbug.com/psd-freebies/ui-kits/](https://freebiesbug.com/psd-freebies/ui-kits/)
+[https://www.invisionapp.com/inside-design/design-resources/](https://www.invisionapp.com/inside-design/design-resources/)
+[https://medium.muz.li/50-user-profile-page-design-inspiration-5c45aeeda400](https://medium.muz.li/50-user-profile-page-design-inspiration-5c45aeeda400)
+[https://www.appcues.com/blog/30-awesome-free-ui-vector-kits-for-your-mockups-and-wireframes](https://www.appcues.com/blog/30-awesome-free-ui-vector-kits-for-your-mockups-and-wireframes)
+[https://dribbble.com/tags/free_ui_kit](https://dribbble.com/tags/free_ui_kit)
 
 
 ## App ##
