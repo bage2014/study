@@ -757,9 +757,9 @@ Docker Pull Command
 mkdir
 
     mkdir -p /home/bage/data/mongodb
-    mkdir -p /home/bage/conf/mongdb
+    mkdir -p /home/bage/conf/mongodb
  
-vi /home/bage/conf/mongdb/mongodb.conf
+vi /home/bage/conf/mongodb/mongodb.conf
 	
 	# mongod.conf
 
@@ -808,7 +808,11 @@ vi /home/bage/conf/mongdb/mongodb.conf
 
 start a instance
 		
-	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config /home/bage/conf/mongdb/mongodb.conf --auth
+	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --auth
+		
+	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/etc/mongo -d mongo --config /home/bage/conf/mongodb/mongodb.conf --auth
+	
+	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
 	
 visit	
 	
