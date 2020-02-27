@@ -820,6 +820,10 @@ visit
 
 
 create user 
+       -- 初始化admin密码
+        db.createUser({ user:'admin',pwd:'bage.mongodb',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+	
+	db.auth('admin', 'bage.mongodb')
 
 	db.createUser({ user:'bage',pwd:'lulu1234',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 	
