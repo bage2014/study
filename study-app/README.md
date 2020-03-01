@@ -63,7 +63,7 @@ APP
 
 设置页面，画页面，功能待完成
 
-
+参数传递给下游问题 [https://blog.csdn.net/Crystalqy/article/details/79083857](https://blog.csdn.net/Crystalqy/article/details/79083857)
 
 ### 后台 ###
 功能职能
