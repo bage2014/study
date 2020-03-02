@@ -92,6 +92,13 @@
 
 ## 详细设计 ##
 ### 注册登录 ###
+
+用户登录后，在header中，
+
+`com.bage.common.constant.Constants.REQUEST_HEADER_USER_KEY= "request_header_user_key"`
+
+ 存用户信息
+
 #### 用户注册 ####
 
 ##### 邮箱注册 #####
@@ -187,14 +194,6 @@
 - 原型参考
 - 详细说明
 - 注意事项
-
-
-
-### 父模块 ###
-
-#### 子模块1 ####
-
-#### 子模块2 ####
 
 ## 权限 ##
 

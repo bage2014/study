@@ -122,8 +122,13 @@ APP
 
 | 项目模块 | 项目说明 |  |
 | ------ | ------ | ------ |
-| app-auth  |  认证中心 |  |
-| app-getway  |  网关 |  |
+| app-auth  |  认证中心 | 管理所有用户，用户登录退出等 |
+| app-getway  |  网关 | 请求入口，鉴权，路由 |
+| app-file-storage | 文件系统 | 管理文件 |
+
+
+
+### 文件管理 ###
 
 免费API接口 参考链接 https://mp.weixin.qq.com/s/ihUqgErhrKAtew9bQHiQSg
 
