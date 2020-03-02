@@ -63,7 +63,9 @@ APP
 
 设置页面，画页面，功能待完成
 
-参数传递给下游问题 [https://blog.csdn.net/Crystalqy/article/details/79083857](https://blog.csdn.net/Crystalqy/article/details/79083857)
+参数传递给下游问题 [https://blog.csdn.net/Crystalqy/article/details/79083857](https://blog.csdn.net/Crystalqy/article/details/79083857) DONE
+
+admin配置每一个表的配置，包名，类请求路径，testcase等
 
 ### 后台 ###
 功能职能
