@@ -123,6 +123,7 @@
       <module>study-html2pdf</module>
       <module>study-mongodb</module>
       <module>study-axon</module>
+      <module>study-spring-boot-dynamic-datasource</module>
 
   </modules>
 </project>

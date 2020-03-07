@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>study-spring-boot-multi-datasource</artifactId>
+    <artifactId>study-spring-boot-dynamic-datasource</artifactId>
 
-    <name>study-spring-boot-multi-datasource</name>
+    <name>study-spring-boot-dynamic-datasource</name>
     <url>http://www.example.com</url>
 
     <properties>
@@ -78,5 +78,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 </project>
