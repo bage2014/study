@@ -757,14 +757,62 @@ Docker Pull Command
 mkdir
 
     mkdir -p /home/bage/data/mongodb
+    mkdir -p /home/bage/conf/mongodb
+ 
+vi /home/bage/conf/mongodb/mongodb.conf
+	
+	# mongod.conf
+
+	# for documentation of all options, see:
+	#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+	# Where and how to store data.
+	storage:
+	  dbPath: /var/lib/mongodb
+	  journal:
+	    enabled: true
+	#  engine:
+	#  mmapv1:
+	#  wiredTiger:
+
+	# where to write logging data.
+	systemLog:
+	  destination: file
+	  logAppend: true
+	  path: /var/log/mongodb/mongod.log
+
+	# network interfaces
+	net:
+	  port: 27017
+	  bindIp: 0.0.0.0
+
+
+	# how the process runs
+	processManagement:
+	  timeZoneInfo: /usr/share/zoneinfo
+
+	#security:
+
+	#operationProfiling:
+
+	#replication:
+
+	#sharding:
+
+	## Enterprise-Only Options:
+
+	#auditLog:
+
+	#snmp:
+
 
 start a instance
-
-	docker run -d \
-	-p 27017:27017 \
-	-v /home/bage/data/mongodb:/data/db \
-	--name mongo mongo \
-	--auth
+		
+	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --auth
+		
+	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/etc/mongo -d mongo --config /home/bage/conf/mongodb/mongodb.conf --auth
+	
+	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
 	
 visit	
 	
@@ -772,6 +820,10 @@ visit
 
 
 create user 
+       -- 初始化admin密码
+        db.createUser({ user:'admin',pwd:'bage.mongodb',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+	
+	db.auth('admin', 'bage.mongodb')
 
 	db.createUser({ user:'bage',pwd:'lulu1234',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 	

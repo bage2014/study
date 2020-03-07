@@ -63,7 +63,9 @@ APP
 
 设置页面，画页面，功能待完成
 
+参数传递给下游问题 [https://blog.csdn.net/Crystalqy/article/details/79083857](https://blog.csdn.net/Crystalqy/article/details/79083857) DONE
 
+admin配置每一个表的配置，包名，类请求路径，testcase等
 
 ### 后台 ###
 功能职能
@@ -105,16 +107,16 @@ APP
 - idea 
 		
 	
-	| 业务项目  | 概要说明                   | reference |
-	| --------- | -------------------------- | --------- |
-	| 开源      | 受欢迎，趋势，top，开发者  |           |
-	| 冷        | 冷知识的科普               |           |
-	| 兴趣-音乐 | 音乐人，音乐菜单，音乐分享 |           |
-	| 账号      | 已注册账号、账号密码       |           |
-	| 快递      | 个人快递                   |           |
-	| 天气      | 当天天气，近一周天气情况   |           |
-	| 插件      | 比如Chrome、IDE插件        |           [天气APP](https://github.com/bage2014/study/blob/master/study-app/README-weather.md)|
-	|           |                            |           |
+	| 业务项目  | 概要说明                     | reference                                                    |
+	| --------- | ---------------------------- | ------------------------------------------------------------ |
+	| 开源      | 受欢迎，趋势，top，开发者    |                                                              |
+	| 冷        | 冷知识的科普                 |                                                              |
+	| 兴趣-音乐 | 音乐人，音乐菜单，音乐分享   |                                                              |
+	| 账号      | 已注册账号、账号密码         |                                                              |
+	| 快递      | 个人快递                     | [快递开放API](https://www.baidu.com/s?ie=UTF-8&wd=%E5%BF%AB%E9%80%92%E5%BC%80%E6%94%BEAPI) |
+	| 天气      | 当天天气，近一周天气情况     |                                                              |
+	| 插件      | 比如Chrome、IDE插件          | [天气APP](https://github.com/bage2014/study/blob/master/study-app/README-weather.md) |
+	| 家        | 家里的成员情况（地理，状态） |                                                              |
 	
 
 
@@ -122,8 +124,13 @@ APP
 
 | 项目模块 | 项目说明 |  |
 | ------ | ------ | ------ |
-| app-auth  |  认证中心 |  |
-| app-getway  |  网关 |  |
+| app-auth  |  认证中心 | 管理所有用户，用户登录退出等；用户头像上传到单独的文件服务 |
+| app-getway  |  网关 | 请求入口，鉴权，全程使用jwt，动态路由 |
+| app-file-storage | 文件系统 | 管理文件，文件暂时上传到项目根目录uploadDir下；抽取API模块，增加mapping和DTO |
+
+
+
+### 文件管理 ###
 
 免费API接口 参考链接 https://mp.weixin.qq.com/s/ihUqgErhrKAtew9bQHiQSg
 
