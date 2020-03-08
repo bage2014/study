@@ -24,9 +24,9 @@ public class ComplexDomain extends BaseDomain{
     private Sex sex;
 
     // 泛型
-    private List<String> list;
+    private List<Seller> list;
     private Map<String, MapAttr> map;
-    private Set<MapAttr> set;
+    private Set<String> set;
 
     public int getId() {
         return id;
@@ -76,11 +76,11 @@ public class ComplexDomain extends BaseDomain{
         this.sex = sex;
     }
 
-    public List<String> getList() {
+    public List<Seller> getList() {
         return list;
     }
 
-    public void setList(List<String> list) {
+    public void setList(List<Seller> list) {
         this.list = list;
     }
 
@@ -92,11 +92,11 @@ public class ComplexDomain extends BaseDomain{
         this.map = map;
     }
 
-    public Set<MapAttr> getSet() {
+    public Set<String> getSet() {
         return set;
     }
 
-    public void setSet(Set<MapAttr> set) {
+    public void setSet(Set<String> set) {
         this.set = set;
     }
 

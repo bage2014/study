@@ -15,6 +15,7 @@ import java.util.*;
  */
 public class ClassStructureGenerator {
 
+
     public ClassAttribute getClassAttribute(Class cls) {
         ClassAttribute classAttribute = new ClassAttribute();
 
@@ -184,4 +185,69 @@ public class ClassStructureGenerator {
         return fieldAttributes;
     }
 
+
+    public List<List<FieldAttribute>> toList(ClassAttribute classAttribute) {
+        List<List<FieldAttribute>> listlist = new ArrayList<>();
+        // root ，第一层子节点
+        List<FieldAttribute> fields = classAttribute.getFields();
+        if(Objects.nonNull(fields)){
+            List<FieldAttribute> list = new ArrayList<>();
+            for (int i = 0; i < fields.size(); i++) { // 初始，1 个，只有根节点
+                list.add(fields.get(i));
+            }
+            listlist.add(list);
+        }
+
+        // 开始从第二层开始便利
+        for (int i = 0; i < listlist.size(); i++) { // 初始，1 个，只有根节点
+            List<FieldAttribute> fieldAttributes = listlist.get(i);
+            for (int j = 0; j < fieldAttributes.size(); j++) {
+                FieldAttribute fieldAttribute = fieldAttributes.get(j);
+                ClassAttribute attribute = fieldAttribute.getClassAttribute();
+                if(Objects.nonNull(attribute)){
+                    List<FieldAttribute> fieldAttributeList = attribute.getFields();
+                    if(Objects.nonNull(fieldAttributeList)){
+                        List<FieldAttribute> newList = new ArrayList<>();
+                        for (FieldAttribute item : fieldAttributeList) {
+                            newList.add(item);
+                        }
+                        if(newList.size() > 0){
+                            listlist.add(newList);
+                        }
+                    }
+                }
+            }
+        }
+        return listlist;
+    }
+    public Map<String, List<FieldAttribute>> toMap(ClassAttribute classAttribute) {
+        Map<String, List<FieldAttribute>> map = new HashMap<>();
+        // 第一层
+        List<FieldAttribute> subList = classAttribute.getFields();
+        map.put(classAttribute.getClassOf(),cloneList(subList));
+
+        // 便利子节点
+        while (subList.size() > 0) {
+            FieldAttribute attribute = subList.remove(0);
+            ClassAttribute subClassAttribute = attribute.getClassAttribute();
+            if(Objects.nonNull(subClassAttribute) && !map.containsKey(subClassAttribute.getClassOf())){
+                List<FieldAttribute> fields = subClassAttribute.getFields();
+                if(Objects.nonNull(fields) && fields.size() > 0){
+                    subList.addAll(fields);
+                    map.put(subClassAttribute.getClassOf(),cloneList(fields));
+                }
+            }
+        }
+        return map;
+    }
+
+    private List<FieldAttribute> cloneList(List<FieldAttribute> subList) {
+        List<FieldAttribute> list = new ArrayList<>();
+        if(Objects.nonNull(subList)){
+            for (FieldAttribute fieldAttribute : subList) {
+                list.add(fieldAttribute);
+            }
+        }
+        return list;
+    }
 }
