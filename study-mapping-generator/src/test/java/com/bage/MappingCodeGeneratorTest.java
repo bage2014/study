@@ -3,22 +3,18 @@ package com.bage;
 import com.bage.domain.ClassAttribute;
 import com.bage.domain.ComplexDomain;
 import com.bage.domain.FieldAttribute;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MappingCodeGeneratorTest {
 
     @Test
     public void getInstance(){
-        Gson gson = new GsonBuilder().addSerializationExclusionStrategy(new MyExclusionStrategy()).create();
-
         ClassStructureGenerator mappingCodeGenerator = new ClassStructureGenerator();
         ClassAttribute classAttribute = mappingCodeGenerator.getClassAttribute(ComplexDomain.class);
 //        System.out.println(gson.toJson(classAttribute));
@@ -32,7 +28,7 @@ public class MappingCodeGeneratorTest {
         prints(map);
 
 
-//        System.out.println(codeGenerator.getCode(classAttribute));
+        System.out.println(codeGenerator.getCode(classAttribute,map,classAttribute,map));
     }
 
     private void prints(Map<String, List<FieldAttribute>> map) {
@@ -55,26 +51,4 @@ public class MappingCodeGeneratorTest {
         }
     }
 
-
-    static class MyExclusionStrategy implements ExclusionStrategy {
-
-        public MyExclusionStrategy() {
-        }
-
-        @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            if (f.getDeclaredClass() == Class.class) {
-                return true; //过滤掉name字段
-            }
-            if (f.getDeclaredClass() == Field.class) {
-                return true; //过滤掉name字段
-            }
-            return false;
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
-    }
 }

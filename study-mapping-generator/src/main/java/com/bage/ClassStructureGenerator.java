@@ -5,6 +5,8 @@ import com.bage.domain.FieldAttribute;
 import com.bage.parser.ClassParser;
 import com.bage.parser.FieldParser;
 import com.bage.parser.GenericParser;
+import com.bage.util.JsonUtils;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -224,7 +226,7 @@ public class ClassStructureGenerator {
         Map<String, List<FieldAttribute>> map = new HashMap<>();
         // 第一层
         List<FieldAttribute> subList = classAttribute.getFields();
-        map.put(classAttribute.getClassOf(),cloneList(subList));
+        map.put(KeyUtils.getMapKey(classAttribute),cloneList(subList));
 
         // 便利子节点
         while (subList.size() > 0) {
@@ -234,7 +236,7 @@ public class ClassStructureGenerator {
                 List<FieldAttribute> fields = subClassAttribute.getFields();
                 if(Objects.nonNull(fields) && fields.size() > 0){
                     subList.addAll(fields);
-                    map.put(subClassAttribute.getClassOf(),cloneList(fields));
+                    map.put(KeyUtils.getMapKey(classAttribute),cloneList(fields));
                 }
             }
         }
@@ -242,12 +244,7 @@ public class ClassStructureGenerator {
     }
 
     private List<FieldAttribute> cloneList(List<FieldAttribute> subList) {
-        List<FieldAttribute> list = new ArrayList<>();
-        if(Objects.nonNull(subList)){
-            for (FieldAttribute fieldAttribute : subList) {
-                list.add(fieldAttribute);
-            }
-        }
-        return list;
+        String json = JsonUtils.toJson(subList);
+        return JsonUtils.fromJson(json, new TypeToken<List<FieldAttribute>>() {}.getType());
     }
 }
