@@ -124,6 +124,7 @@
       <module>study-mongodb</module>
       <module>study-axon</module>
       <module>study-spring-boot-dynamic-datasource</module>
+    <module>study-mapping-generator</module>
 
   </modules>
 </project>
