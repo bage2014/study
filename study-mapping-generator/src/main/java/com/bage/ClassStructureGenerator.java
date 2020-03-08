@@ -11,9 +11,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 /**
- * 默认值生成
+ *
  */
-public class MappingCodeGenerator {
+public class ClassStructureGenerator {
 
     public ClassAttribute getClassAttribute(Class cls) {
         ClassAttribute classAttribute = new ClassAttribute();
