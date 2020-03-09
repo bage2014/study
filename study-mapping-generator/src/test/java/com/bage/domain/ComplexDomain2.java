@@ -1,16 +1,15 @@
 package com.bage.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ComplexDomain extends BaseDomain implements Serializable {
+public class ComplexDomain2 extends BaseDomain{
 
     // 基本类型
     private int id;
-    private Integer age;
+    private Integer age2;
 
     /**
      * 自定义对象
@@ -37,12 +36,12 @@ public class ComplexDomain extends BaseDomain implements Serializable {
         this.id = id;
     }
 
-    public Integer getAge() {
-        return age;
+    public Integer getAge2() {
+        return age2;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setAge2(Integer age2) {
+        this.age2 = age2;
     }
 
     public User getUser() {
@@ -105,7 +104,7 @@ public class ComplexDomain extends BaseDomain implements Serializable {
     public String toString() {
         return "ComplexDomain{" +
                 "id=" + id +
-                ", age=" + age +
+                ", age2=" + age2 +
                 ", user=" + user +
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +

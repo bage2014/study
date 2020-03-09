@@ -9,6 +9,7 @@ import com.bage.util.JsonUtils;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -43,8 +44,8 @@ public class ClassStructureGenerator {
     }
 
     private void recursiveFieldAttribute(List<FieldAttribute> fieldAttributes) {
-        if(Objects.isNull(fieldAttributes) || fieldAttributes.isEmpty()){
-            return ;
+        if (Objects.isNull(fieldAttributes) || fieldAttributes.isEmpty()) {
+            return;
         }
 
         for (FieldAttribute fieldAttribute : fieldAttributes) {
@@ -54,29 +55,32 @@ public class ClassStructureGenerator {
     }
 
     private ClassAttribute recursiveFieldAttribute(FieldAttribute fieldAttribute) {
-        if(Objects.isNull(fieldAttribute)){
+        if (Objects.isNull(fieldAttribute)) {
             return null;
         }
         try {
             Class cls = fieldAttribute.getCls();
-            if(!isRecusiveClass(cls)){
+            if (!ClassParser.isRecusiveClass(cls)) {
                 return null;
             }
 
             // 泛型
-            if (cls == List.class) {
+            if (cls == List.class || cls.isAssignableFrom(List.class)) {
                 Type type = GenericParser.getGenericTypeClassName(fieldAttribute.getField(), 0);
-                return getGenericTypeClassAttribute(fieldAttribute, cls, type);
+                return getGenericTypeClassAttribute(fieldAttribute, type);
             }
-            if (cls == Map.class) {
+            if (cls == Map.class || cls.isAssignableFrom(Map.class)) {
                 Type type = GenericParser.getGenericTypeClassName(fieldAttribute.getField(), 1);
-                return getGenericTypeClassAttribute(fieldAttribute, cls, type);
+                return getGenericTypeClassAttribute(fieldAttribute, type);
             }
-            if (cls == Set.class) {
+            if (cls == Set.class || cls.isAssignableFrom(Set.class)) {
                 Type type = GenericParser.getGenericTypeClassName(fieldAttribute.getField(), 0);
-                return getGenericTypeClassAttribute(fieldAttribute, cls, type);
+                return getGenericTypeClassAttribute(fieldAttribute, type);
             }
 
+            if (cls.getName().startsWith("java")) {
+                return null;
+            }
             // 当成自定义对象,需要递归获取操作
             return getCustomClassAttribute(fieldAttribute, cls);
         } catch (Exception e) {
@@ -89,14 +93,16 @@ public class ClassStructureGenerator {
         ClassAttribute classAttribute = new ClassAttribute();
         classAttribute.setName(cls.getSimpleName());
         classAttribute.setClassOf(cls.getName());
-        classAttribute.setFields(getFieldAttribute(cls));
-        fieldAttribute.setClassAttribute(getClassAttribute(cls));
+        List<FieldAttribute> fieldAttribute1 = getFieldAttribute(cls);
+        classAttribute.setFields(fieldAttribute1);
+        ClassAttribute classAttribute1 = getClassAttribute(cls);
+        fieldAttribute.setClassAttribute(classAttribute1);
         return classAttribute;
     }
 
-    private ClassAttribute getGenericTypeClassAttribute(FieldAttribute fieldAttribute, Class cls, Type type) throws ClassNotFoundException {
+    private ClassAttribute getGenericTypeClassAttribute(FieldAttribute fieldAttribute, Type type) throws ClassNotFoundException {
         Class clsType = Class.forName(type.getTypeName());
-        if (!isRecusiveClass(clsType)) {
+        if (!ClassParser.isRecusiveClass(clsType)) {
             return null;
         }
         ClassAttribute classAttribute = new ClassAttribute();
@@ -107,76 +113,14 @@ public class ClassStructureGenerator {
         return classAttribute;
     }
 
-    private boolean isRecusiveClass(Class cls) {
-        // 基本类型
-        if (int.class == cls) {
-            return false;
-        }
-        if (double.class == cls) {
-            return false;
-        }
-        if (float.class == cls) {
-            return false;
-        }
-        if (long.class == cls) {
-            return false;
-        }
-        if (short.class == cls) {
-            return false;
-        }
-        if (boolean.class == cls) {
-            return false;
-        }
-        if (byte.class == cls) {
-            return false;
-        }
-        if (char.class == cls) {
-            return false;
-        }
-        // 基本类型包装类
-        if (cls == Integer.class) {
-            return false;
-        }
-        if (cls == Double.class) {
-            return false;
-        }
-        if (cls == Float.class) {
-            return false;
-        }
-        if (cls == Long.class) {
-            return false;
-        }
-        if (cls == Short.class) {
-            return false;
-        }
-        if (cls == Boolean.class) {
-            return false;
-        }
-        if (cls == Byte.class) {
-            return false;
-        }
-        if (cls == Character.class) {
-            return false;
-        }
-        // Java 常用包装类型
-        if (cls == String.class) {
-            return false;
-        }
-        if (cls == Date.class) {
-            return false;
-        }
-        // 枚举
-        if(cls.isEnum()){
-            return false;
-        }
-        return true;
-    }
-
     private List<FieldAttribute> getFieldAttribute(Class cls) {
         // 获取当前类的字段信息
         List<FieldAttribute> fieldAttributes = new ArrayList<>();
         Field[] fields = FieldParser.getDeclaredFields(cls);
-        for(Field field : fields){
+        for (Field field : fields) {
+            if (Modifier.isFinal(field.getModifiers())) {
+                continue;
+            }
             FieldAttribute item = new FieldAttribute();
             item.setName(field.getName());
             item.setClassOf(field.getType().getName());
@@ -192,7 +136,7 @@ public class ClassStructureGenerator {
         List<List<FieldAttribute>> listlist = new ArrayList<>();
         // root ，第一层子节点
         List<FieldAttribute> fields = classAttribute.getFields();
-        if(Objects.nonNull(fields)){
+        if (Objects.nonNull(fields)) {
             List<FieldAttribute> list = new ArrayList<>();
             for (int i = 0; i < fields.size(); i++) { // 初始，1 个，只有根节点
                 list.add(fields.get(i));
@@ -206,14 +150,14 @@ public class ClassStructureGenerator {
             for (int j = 0; j < fieldAttributes.size(); j++) {
                 FieldAttribute fieldAttribute = fieldAttributes.get(j);
                 ClassAttribute attribute = fieldAttribute.getClassAttribute();
-                if(Objects.nonNull(attribute)){
+                if (Objects.nonNull(attribute)) {
                     List<FieldAttribute> fieldAttributeList = attribute.getFields();
-                    if(Objects.nonNull(fieldAttributeList)){
+                    if (Objects.nonNull(fieldAttributeList)) {
                         List<FieldAttribute> newList = new ArrayList<>();
                         for (FieldAttribute item : fieldAttributeList) {
                             newList.add(item);
                         }
-                        if(newList.size() > 0){
+                        if (newList.size() > 0) {
                             listlist.add(newList);
                         }
                     }
@@ -222,21 +166,25 @@ public class ClassStructureGenerator {
         }
         return listlist;
     }
-    public Map<String, List<FieldAttribute>> toMap(ClassAttribute classAttribute) {
+
+    public Map<String, List<FieldAttribute>> toMap(ClassAttribute param) {
+        // clone
+        ClassAttribute classAttribute = JsonUtils.fromJson(JsonUtils.toJson(param), ClassAttribute.class);
+
         Map<String, List<FieldAttribute>> map = new HashMap<>();
         // 第一层
         List<FieldAttribute> subList = classAttribute.getFields();
-        map.put(KeyUtils.getMapKey(classAttribute),cloneList(subList));
+        map.put(KeyUtils.getMapKey(classAttribute), cloneList(subList));
 
         // 便利子节点
         while (subList.size() > 0) {
             FieldAttribute attribute = subList.remove(0);
             ClassAttribute subClassAttribute = attribute.getClassAttribute();
-            if(Objects.nonNull(subClassAttribute) && !map.containsKey(subClassAttribute.getClassOf())){
+            if (Objects.nonNull(subClassAttribute) && !map.containsKey(subClassAttribute.getClassOf())) {
                 List<FieldAttribute> fields = subClassAttribute.getFields();
-                if(Objects.nonNull(fields) && fields.size() > 0){
+                if (Objects.nonNull(fields) && fields.size() > 0) {
                     subList.addAll(fields);
-                    map.put(KeyUtils.getMapKey(classAttribute),cloneList(fields));
+                    map.put(KeyUtils.getMapKey(classAttribute), cloneList(fields));
                 }
             }
         }
@@ -245,6 +193,7 @@ public class ClassStructureGenerator {
 
     private List<FieldAttribute> cloneList(List<FieldAttribute> subList) {
         String json = JsonUtils.toJson(subList);
-        return JsonUtils.fromJson(json, new TypeToken<List<FieldAttribute>>() {}.getType());
+        return JsonUtils.fromJson(json, new TypeToken<List<FieldAttribute>>() {
+        }.getType());
     }
 }
