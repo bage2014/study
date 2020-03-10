@@ -49,68 +49,63 @@ public class ClassStructureGenerator {
         }
 
         for (FieldAttribute fieldAttribute : fieldAttributes) {
-            ClassAttribute classAttribute = recursiveFieldAttribute(fieldAttribute);
-            fieldAttribute.setClassAttribute(classAttribute);
+            recursiveFieldAttribute(fieldAttribute);
         }
     }
 
-    private ClassAttribute recursiveFieldAttribute(FieldAttribute fieldAttribute) {
+    private void recursiveFieldAttribute(FieldAttribute fieldAttribute) {
         if (Objects.isNull(fieldAttribute)) {
-            return null;
+            return ;
         }
         try {
             Class cls = fieldAttribute.getCls();
             if (!ClassParser.isRecusiveClass(cls)) {
-                return null;
+                return ;
             }
 
             // 泛型
             if (cls == List.class || cls.isAssignableFrom(List.class)) {
                 Type type = GenericParser.getGenericTypeClassName(fieldAttribute.getField(), 0);
-                return getGenericTypeClassAttribute(fieldAttribute, type);
+                getGenericTypeClassAttribute(fieldAttribute, type);
             }
             if (cls == Map.class || cls.isAssignableFrom(Map.class)) {
                 Type type = GenericParser.getGenericTypeClassName(fieldAttribute.getField(), 1);
-                return getGenericTypeClassAttribute(fieldAttribute, type);
+                getGenericTypeClassAttribute(fieldAttribute, type);
             }
             if (cls == Set.class || cls.isAssignableFrom(Set.class)) {
                 Type type = GenericParser.getGenericTypeClassName(fieldAttribute.getField(), 0);
-                return getGenericTypeClassAttribute(fieldAttribute, type);
+                getGenericTypeClassAttribute(fieldAttribute, type);
             }
 
-            if (cls.getName().startsWith("java")) {
-                return null;
+            if (cls.getName().startsWith("java")) { // 忽略 java 定义的类
+                return ;
             }
             // 当成自定义对象,需要递归获取操作
-            return getCustomClassAttribute(fieldAttribute, cls);
+            getCustomClassAttribute(fieldAttribute);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
-    private ClassAttribute getCustomClassAttribute(FieldAttribute fieldAttribute, Class cls) {
+    private void getCustomClassAttribute(FieldAttribute fieldAttribute) {
+        Class cls = fieldAttribute.getCls();
         ClassAttribute classAttribute = new ClassAttribute();
         classAttribute.setName(cls.getSimpleName());
         classAttribute.setClassOf(cls.getName());
-        List<FieldAttribute> fieldAttribute1 = getFieldAttribute(cls);
-        classAttribute.setFields(fieldAttribute1);
-        ClassAttribute classAttribute1 = getClassAttribute(cls);
-        fieldAttribute.setClassAttribute(classAttribute1);
-        return classAttribute;
+        classAttribute.setFields(getFieldAttribute(cls));
+        fieldAttribute.setClassAttribute(getClassAttribute(cls));
     }
 
-    private ClassAttribute getGenericTypeClassAttribute(FieldAttribute fieldAttribute, Type type) throws ClassNotFoundException {
+    private void getGenericTypeClassAttribute(FieldAttribute fieldAttribute, Type type) throws ClassNotFoundException {
         Class clsType = Class.forName(type.getTypeName());
         if (!ClassParser.isRecusiveClass(clsType)) {
-            return null;
+            return ;
         }
         ClassAttribute classAttribute = new ClassAttribute();
         classAttribute.setName(clsType.getSimpleName());
         classAttribute.setClassOf(clsType.getName());
         classAttribute.setFields(getFieldAttribute(clsType));
         fieldAttribute.setClassAttribute(getClassAttribute(clsType));
-        return classAttribute;
     }
 
     private List<FieldAttribute> getFieldAttribute(Class cls) {
