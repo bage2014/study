@@ -1,6 +1,7 @@
 package com.bage.study.java.multhread;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class CompleteFutureTest {
 
@@ -60,12 +61,28 @@ public class CompleteFutureTest {
         CompletableFuture<Object> objectCompletableFuture = CompletableFuture.anyOf(cf1, cf2).whenComplete((item, e) -> {
             System.out.println("anyOf:" + item);
         });
+
+        // 合并
+        CompletableFuture.supplyAsync(()->{
+            return "hello ";
+        }).thenApplyAsync(item -> {return item + ",world";})
+        .whenComplete((res,e) -> {
+            System.out.println("res::" + res);
+        });
+
+
         // 等待结束
         try {
             Thread.sleep(6000L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+//        Runnable run = () -> {};
+//        CompletableFuture.runAsync(run);
+//        Supplier<String> supplier = () -> "";
+//        CompletableFuture.supplyAsync(supplier);
+
     }
 
 }
