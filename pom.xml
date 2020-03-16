@@ -125,6 +125,7 @@
       <module>study-axon</module>
       <module>study-spring-boot-dynamic-datasource</module>
     <module>study-mapping-generator</module>
+      <module>bage-spring-boot-starter-ping</module>
 
   </modules>
 </project>
