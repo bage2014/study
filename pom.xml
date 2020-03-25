@@ -128,6 +128,7 @@
       <module>bage-spring-boot-starter-ping</module>
       <module>bage-spring-boot-starter-ping-test</module>
       <module>study-tencent-share</module>
+      <module>study-regex</module>
 
   </modules>
 </project>
