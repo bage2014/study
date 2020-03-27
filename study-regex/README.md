@@ -23,6 +23,88 @@
 | ^      | 从开始行开始匹配.                                            |
 | $      | 从末端开始匹配.                                              |
 
+### 点运算符 . 
+
+`.`匹配任意单个字符，但不匹配换行符。
+例如，表达式`.ar`匹配一个任意字符后面跟着是`a`和`r`的字符串。
+
+<pre>
+".ar" => The <a href="#learn-regex"><strong>car</strong></a> <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+
+### 字符集 []
+
+表达式 `ar[.]` 匹配 `ar.`字符串
+
+<pre>
+"ar[.]" => A garage is a good place to park a c<a href="#learn-regex"><strong>ar.</strong></a>
+</pre>
+
+### 否定字符集 ^
+
+一般来说 `^` 表示一个字符串的开头，但它用在一个方括号的开头的时候，它表示这个字符集是否定的。
+例如，表达式`[^c]ar` 匹配一个后面跟着`ar`的除了`c`的任意字符。
+
+<pre>
+"[^c]ar" => The car <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+
+### 重复次数 + * ?
+
+后面跟着元字符 `+`，`*` or `?` 的，用来指定匹配子模式的次数。
+这些元字符在不同的情况下有着不同的意思。
+
+<pre>
+"(at)+" => The f<a href="#learn-regex"><strong>at</strong></a> <a href="#learn-regex"><strong>catat</strong></a> on the mt.
+</pre>
+
+### 重复次数{} 
+
+在正则表达式中 `{}` 是一个量词，常用来一个或一组字符可以重复出现的次数。
+例如， 表达式 `[0-9]{2,3}` 匹配最少 2 位最多 3 位 0~9 的数字。
+
+<pre>
+"[0-9]{2,3}" => The number was 9.<a href="#learn-regex"><strong>999</strong></a>7 but we rounded it off to <a href="#learn-regex"><strong>10</strong></a>.0.
+</pre>
+
+### 特征标群(...) 
+
+特征标群是一组写在 `(...)` 中的子模式。例如之前说的 `{}` 是用来表示前面一个字符出现指定次数。但如果在 `{}` 前加入特征标群则表示整个标群内的字符重复 N 次。例如，表达式 `(ab)*` 匹配连续出现 0 或更多个 `ab`。
+
+我们还可以在 `()` 中用或字符 `|` 表示或。例如，`(c|g|p)ar` 匹配 `car` 或 `gar` 或 `par`.
+
+<pre>
+"(c|g|p)ar" => The <a href="#learn-regex"><strong>car</strong></a> is <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+
+###  或运算符|
+
+或运算符就表示或，用作判断条件。
+
+例如 `(T|t)he|car` 匹配 `(T|t)he` 或 `car`。
+
+<pre>
+"(T|t)he|car" => <a href="#learn-regex"><strong>The</strong></a> <a href="#learn-regex"><strong>car</strong></a> is parked in <a href="#learn-regex"><strong>the</strong></a> garage.
+</pre>
+
+### 转码特殊字符\
+
+反斜线 `\` 在表达式中用于转码紧跟其后的字符。用于指定 `{ } [ ] / \ + * . $ ^ | ?` 这些特殊字符。如果想要匹配这些特殊字符则要在其前面加上反斜线 `\`。
+
+例如 `.` 是用来匹配除换行符外的所有字符的。如果想要匹配句子中的 `.` 则要写成 `\.` 以下这个例子 `\.?`是选择性匹配`.`
+
+<pre>
+"(f|c|m)at\.?" => The <a href="#learn-regex"><strong>fat</strong></a> <a href="#learn-regex"><strong>cat</strong></a> sat on the <a href="#learn-regex"><strong>mat.</strong></a>
+</pre>
+
+### 锚点 ^ $
+
+在正则表达式中，想要匹配指定开头或结尾的字符串就要使用到锚点。`^` 指定开头，`$` 指定结尾。
+
+<pre>
+"(at)+.$" => The fat catat on the m<a href="#learn-regex"><strong>at.</strong></a>
+</pre>
+
 ## 简写字符集
 
 | 简写 | 描述                                               |
