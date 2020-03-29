@@ -224,7 +224,24 @@
                   on the <a href="#learn-regex"><strong>mat.</strong></a>
 </pre>
 
-## 贪婪匹配与惰性匹配（Greedy vs lazy matching）
+## 贪婪匹配与惰性匹配 ?
 
 正则表达式默认采用贪婪匹配模式，在该模式下意味着会匹配尽可能长的子串。我们可以使用 `?` 将贪婪匹配模式转化为惰性匹配模式。
 
+<pre>
+"/(.*at)/" => <a href="#learn-regex"><strong>The fat cat sat on the mat</strong></a>. </pre>
+
+<pre>
+"/(.*?at)/" => <a href="#learn-regex"><strong>The fat</strong></a> cat sat on the mat. </pre>
+
+## 子组 
+
+\1表示第一个子组。
+
+<pre>
+"/(at+)\1/" => The fat c<a href="#learn-regex"><strong>atat</strong></a> sat on the mat.
+
+替换
+
+<pre>
+"/\1/" => The fat c<a href="#learn-regex"><strong>at</strong></a> sat on the mat. </pre>
