@@ -129,6 +129,7 @@
       <module>bage-spring-boot-starter-ping-test</module>
       <module>study-tencent-share</module>
       <module>study-regex</module>
+      <module>study-hashids-java</module>
 
   </modules>
 </project>
