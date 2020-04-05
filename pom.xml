@@ -130,6 +130,7 @@
       <module>study-tencent-share</module>
       <module>study-regex</module>
       <module>study-hashids-java</module>
+      <module>study-spring-boot-metrics</module>
 
   </modules>
 </project>
