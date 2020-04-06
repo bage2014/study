@@ -16,7 +16,7 @@ Most users set up Docker’s repositories and install from them, for ease of ins
       yum install -y yum-utils \
       device-mapper-persistent-data \
       lvm2
-   
+
 配置仓库
 
       yum-config-manager \
@@ -112,8 +112,9 @@ Docker Pull Command
 启动带挂载目录
 
     $ docker run -v /home/bage/mnt-tomcat:/mnt -it --rm -p 8888:8080 tomcat
-    
-    
+
+
+​    
 ### 安装配置CentOS [未验证] ###
 参考链接：[https://hub.docker.com/_/centos/](https://hub.docker.com/_/centos/ "安装配置CentOS")
 
@@ -275,9 +276,9 @@ connect to it from an application
 设置密码(启动时候)
 
     docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
-    
+
  自定义配置文件启动
- 
+
 	docker run -p 8379:6379 -v /home/bage/conf/redis.conf:/usr/local/etc/redis/redis.conf --name redis -d redis redis-server /usr/local/etc/redis/redis.conf  --requirepass "bage.redis"
 
 ### 安装配置RabbitMQ ###
@@ -294,19 +295,19 @@ Docker Pull Command
 
     Unable to find image 'rabbitmq:3-management' locally 
     3-management: Pulling from library/rabbitmq
-	f476d66f5408: Already exists 
-	8882c27f669e: Already exists 
-	d9af21273955: Already exists 
-	f5029279ec12: Already exists 
-	ecb5cfa3e5cd: Already exists 
-	b23d77357b59: Already exists 
-	9cc380c0670a: Already exists 
-	00edb647b0d0: Already exists 
-	7fea86aa9152: Already exists 
-	12f866ac27b1: Already exists 
-	6d288824e924: Pull complete 
-	0a1f754a8a89: Pull complete 
-	
+    f476d66f5408: Already exists 
+    8882c27f669e: Already exists 
+    d9af21273955: Already exists 
+    f5029279ec12: Already exists 
+    ecb5cfa3e5cd: Already exists 
+    b23d77357b59: Already exists 
+    9cc380c0670a: Already exists 
+    00edb647b0d0: Already exists 
+    7fea86aa9152: Already exists 
+    12f866ac27b1: Already exists 
+    6d288824e924: Pull complete 
+    0a1f754a8a89: Pull complete 
+
 访问验证(bage/bage)
 
 [http://{ip}:15672/](http://{ip}:15672/)
@@ -355,11 +356,11 @@ Docker Pull Command
 启动 
 
     docker run -p 8080:8080 -p 50000:50000 -v /your/home:/var/jenkins_home jenkins
-  
+
 访问
 
     http://{ip}:8080  
-    
+
 ### 安装部署 elasticsearch  ###
 参考链接 [https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html](https://www.elastic.co/guide/en/elasticsearch/reference/6.7/docker.html)、[https://hub.docker.com/_/elasticsearch](https://hub.docker.com/_/elasticsearch)
 版本匹配 [https://www.elastic.co/cn/support/matrix#matrix_compatibility](https://www.elastic.co/cn/support/matrix#matrix_compatibility) 
@@ -368,12 +369,13 @@ Docker Pull Command
 Docker Pull Command
 
     docker pull elasticsearch:7.5.1
-    
+
 启动 
 
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.5.1
-    
+
  
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -455,11 +457,11 @@ Dockerfile 文件
 
 
 	FROM nginx
-
+	
 	MAINTAINER lrh
-
+	
 	COPY dist/  /usr/share/nginx/html/
-
+	
 	COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 构建vue镜像
@@ -509,7 +511,7 @@ Deploy a monitor
 	-e MON_IP=192.168.96.132 \
 	-e CEPH_PUBLIC_NETWORK=192.168.96.132/24 \
 	ceph/daemon mon
-	
+
 查看状态
 
 	docker exec ceph-mon ceph -s
@@ -525,13 +527,14 @@ Deploy a Manager daemon
 
 	docker exec ceph-mon ceph -s
 
-	
+
+​	
 exported keyring for client.bootstrap-osd
 
 	docker exec ceph-mon \
 	ceph auth get client.bootstrap-osd \
 	-o /var/lib/ceph/bootstrap-osd/ceph.keyring
-	
+
 
 Deploy an OSD
 
@@ -543,14 +546,14 @@ Deploy an OSD
 	-v /dev:/dev/ \
 	-e OSD_DEVICE=/dev/sda \
 	ceph/daemon osd_directory
-	
+
 查看状态
 
 	docker exec ceph-mon ceph -s
-	
+
 osd_ceph_disk 启动 报错[待处理]
 
- 
+
 	docker run -d --net=host --name=ceph-osd \
 	--pid=host \
 	--privileged=true \
@@ -574,8 +577,9 @@ Deploy a MDS
 查看状态
 
 	docker exec ceph-mon ceph -s
-	
-	
+
+
+​	
 exported keyring for client.bootstrap-rgw
 
 	docker exec ceph-mon \
@@ -596,7 +600,7 @@ Deploy a Rados Gateway
 查看状态
 
 	docker exec ceph-mon ceph -s
-	
+
 
 Administration via radosgw-admin ??
 
@@ -606,8 +610,9 @@ Administration via radosgw-admin ??
 	-e CEPH_DAEMON=RGW -e RGW_NAME=myrgw -p 9000:9000 \
 	-e RGW_REMOTE_CGI=1 -e RGW_REMOTE_CGI_HOST=192.168.96.132 \
 	-e RGW_REMOTE_CGI_PORT=9000 ceph/daemon
-	
-	
+
+
+​	
 Deploy a REST API [起不来]
 
 	docker run -d --net=host --name ceph-restapi \
@@ -652,14 +657,15 @@ Docker Pull Command
 start a instance
 
 	docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/xxl_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=xxljob --spring.datasource.password=xxljob" -p 8808:8080 -v /home/bage/data/xxljob:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
-        
+
 
 访问
 	
 	http://localhost:8808/xxl-job-admin
 
  
-### logstash ###
+
+### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
             https://www.elastic.co/guide/en/logstash/current/docker.html
@@ -671,8 +677,8 @@ start a instance[not enough space]
 
 	docker run --name logstash --rm -it -v /home/bage/data/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
 
-### elk ###
-       
+### 安装配置 elk ###
+
 参考链接[https://hub.docker.com/r/sebp/elk](https://hub.docker.com/r/sebp/elk)、[https://elk-docker.readthedocs.io/](https://elk-docker.readthedocs.io/)、[https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html#vm-max-map-count](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/vm-max-map-count.html#vm-max-map-count)
 ELK 环境搭建 [https://blog.51cto.com/daisywei/2126523](https://blog.51cto.com/daisywei/2126523)
 [https://segmentfault.com/a/1190000020653301](https://segmentfault.com/a/1190000020653301)
@@ -715,14 +721,14 @@ ES
 
 	http://192.168.146.133:8092/
 	http://192.168.146.133:8092/_search?pretty
-	
+
 kibana 
 
 	http://192.168.146.133:8056
 
 项目实践链接 [https://github.com/bage2014/study-micro-services/tree/master/study-micro-services-sleuth](https://github.com/bage2014/study-micro-services/tree/master/study-micro-services-sleuth)
 
-### kibana ###
+### 安装配置 kibana ###
 参考链接：[https://hub.docker.com/_/kibana](https://hub.docker.com/_/kibana)
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 
@@ -741,13 +747,13 @@ start a instance
 visit
 
 	http://192.168.146.133:5601/app/kibana
-        
+
 Kibana server is not ready yet 处理
 部署ES；
 docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.7.2
 
 
-### mongo ###
+### 安装配置 mongo ###
 参考链接：[https://hub.docker.com/_/mongo](https://hub.docker.com/_/mongo)
 Docker Pull Command
 
@@ -758,14 +764,14 @@ mkdir
 
     mkdir -p /home/bage/data/mongodb
     mkdir -p /home/bage/conf/mongodb
- 
+
 vi /home/bage/conf/mongodb/mongodb.conf
 	
 	# mongod.conf
-
+	
 	# for documentation of all options, see:
 	#   http://docs.mongodb.org/manual/reference/configuration-options/
-
+	
 	# Where and how to store data.
 	storage:
 	  dbPath: /var/lib/mongodb
@@ -774,13 +780,13 @@ vi /home/bage/conf/mongodb/mongodb.conf
 	#  engine:
 	#  mmapv1:
 	#  wiredTiger:
-
+	
 	# where to write logging data.
 	systemLog:
 	  destination: file
 	  logAppend: true
 	  path: /var/log/mongodb/mongod.log
-
+	
 	# network interfaces
 	net:
 	  port: 27017
@@ -790,19 +796,19 @@ vi /home/bage/conf/mongodb/mongodb.conf
 	# how the process runs
 	processManagement:
 	  timeZoneInfo: /usr/share/zoneinfo
-
+	
 	#security:
-
+	
 	#operationProfiling:
-
+	
 	#replication:
-
+	
 	#sharding:
-
+	
 	## Enterprise-Only Options:
-
+	
 	#auditLog:
-
+	
 	#snmp:
 
 
@@ -813,7 +819,7 @@ start a instance
 	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/etc/mongo -d mongo --config /home/bage/conf/mongodb/mongodb.conf --auth
 	
 	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
-	
+
 visit	
 	
 	docker exec -it mongo mongo admin
@@ -824,17 +830,57 @@ create user
         db.createUser({ user:'admin',pwd:'bage.mongodb',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 	
 	db.auth('admin', 'bage.mongodb')
-
+	
 	db.createUser({ user:'bage',pwd:'lulu1234',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 	
 	db.createUser({ user: 'test', pwd: 'bagetest', roles: [{ role: "readWrite", db: "bagedb" }] });
 
+### 安装配置 prometheus ###
+
+参考链接：https://hub.docker.com/r/prom/prometheus
+
+https://prometheus.io/docs/introduction/overview/
+
+https://prometheus.io/download/
+
+Docker Pull Command
+
+	docker pull prom/prometheus
+
+start a instance
+
+	docker run --name prometheus -p 9090:9090 prom/prometheus
+
+visit
+
+	http://192.168.146.139:9090/metrics
+
+https://hub.docker.com/r/grafana/grafana
+
+### 安装配置 grafana ###
+
+参考链接：https://hub.docker.com/r/grafana/grafana
+
+Docker Pull Command
+
+	docker pull grafana/grafana
+
+start a instance
+
+	docker run -d --name=grafana -p 3000:3000 grafana/grafana
+
+visit
+
+	http://192.168.146.139:3000/
+
+Try it out, default admin user is admin/admin.
 
 ### 网络连接 ###
+
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
 
 自定义 bright 网络，名字为 my-net
- 
+
 	docker network create my-net
 
 在运行时候，添加参数，可以通过 myapp-xxx 别名访问
@@ -844,7 +890,7 @@ create user
       --network my-net \
       --publish 8080:80 \
       nginx:latest
-      
+
 To connect a running container to an existing user-defined bridge,
       
     docker network connect my-net my-nginx
