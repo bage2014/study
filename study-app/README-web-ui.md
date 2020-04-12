@@ -1,6 +1,21 @@
 # study-web-ui #
 
 应用APP Web端
+
+
+
+todo 
+
+NavMenu 显示问题
+
+
+
+用户注册登录
+
+密码找回等
+
+（也可以不做）
+
 ## 参考链接 ##
 
 https://vuetifyjs.com/zh-Hans/
