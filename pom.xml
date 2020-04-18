@@ -132,6 +132,7 @@
       <module>study-hashids-java</module>
       <module>study-spring-boot-metrics</module>
       <module>study-arthas</module>
+      <module>study-summary</module>
 
   </modules>
 </project>
