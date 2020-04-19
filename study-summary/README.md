@@ -218,6 +218,8 @@ request、response；
 - 分布式事务
 - 一致性Hash
 - 幂等性
+- 日志
+- 监控
 
 ## Spring Cloud ##
 - 注册中心
