@@ -20,6 +20,10 @@ Atlas - httpServerRequests。
 Graphite - http.server.requests。
 InfluxDB - http_server_requests。
 
+http://localhost:8080/actuator/prometheus
+http://localhost:8080/timer/cost
+http://localhost:8080/counter/incr
+
 ## 常用指标 ##
 
 ### Timer ###
