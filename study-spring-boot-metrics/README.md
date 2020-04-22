@@ -9,3 +9,32 @@ Micrometer + Prometheus + Grafana
 micrometer [http://micrometer.io/](http://micrometer.io/)
 github [https://github.com/micrometer-metrics/micrometer](https://github.com/micrometer-metrics/micrometer)
 spring boot metrics [https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics)
+指标和标签命名
+http://www.coderdocument.com/docs/prometheus/v2.14/best_practices/metric_and_label_naming.html
+
+## 命名转换 ##
+http.server.requests
+
+Prometheus - http_server_requests_duration_seconds。
+Atlas - httpServerRequests。
+Graphite - http.server.requests。
+InfluxDB - http_server_requests。
+
+## 常用指标 ##
+
+### Timer ###
+
+
+### Counter ###
+
+Gauge
+
+DistributionSummary
+
+LongTaskTimer
+
+FunctionCounter
+
+FunctionTimer
+
+TimeGauge
