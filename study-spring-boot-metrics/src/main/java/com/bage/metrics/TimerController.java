@@ -23,7 +23,7 @@ public class TimerController {
 
     @PostConstruct
     public void init() {
-        myTimer = registry.timer("requests_timer", "timer","bage-time");
+        myTimer = registry.timer("bage_timer", "timer","bage-time");
     }
 
 
@@ -32,7 +32,7 @@ public class TimerController {
 
         myTimer.record(()->{
             try {
-                int timeCost = random.nextInt(10000);
+                int timeCost = random.nextInt(1000);
                 Thread.sleep(timeCost);
                 System.out.println("timeCost : " + timeCost);
             } catch (InterruptedException e) {

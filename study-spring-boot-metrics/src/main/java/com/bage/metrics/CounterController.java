@@ -20,7 +20,7 @@ public class CounterController {
 
     @PostConstruct
     public void init() {
-        myCounter = registry.counter("requests_counter", "counter","bage-time");
+        myCounter = registry.counter("bage_counter", "counter","bage-time");
     }
 
 
