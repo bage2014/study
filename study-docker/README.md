@@ -851,6 +851,11 @@ start a instance
 
 	docker run --name prometheus -p 9090:9090 prom/prometheus
 
+start a instance
+
+	docker run --name prometheus -p 9090:9090 -v /home/bage/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
+
 visit
 
 	http://192.168.146.139:9090/metrics
