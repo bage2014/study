@@ -12,6 +12,10 @@ spring boot metrics [https://docs.spring.io/spring-boot/docs/current/reference/h
 指标和标签命名
 http://www.coderdocument.com/docs/prometheus/v2.14/best_practices/metric_and_label_naming.html
 
+https://docs.spring.io/spring-boot/docs/2.1.1.RELEASE/reference/htmlsingle/#production-ready-metrics-export-prometheus
+
+https://micrometer.io/docs/concepts
+
 ## 命名转换 ##
 http.server.requests
 

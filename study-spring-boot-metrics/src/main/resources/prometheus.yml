@@ -1,4 +1,8 @@
 
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
 - job_name: 'study-metrics'
   # metrics_path defaults to '/metrics'
   # scheme defaults to 'http'.
