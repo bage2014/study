@@ -1,11 +1,18 @@
-
+# my global config
 global:
+  # 设置抓取数据的时间间隔，间隔设置为每15秒一次。默认为每1分钟。
   scrape_interval:     15s
+  # 设定抓取数据的超时时间，默认为10s
+  scrape_timeout: 15s
+  # 设置规则刷新，每15秒刷新一次规则。默认值为每1分钟。
   evaluation_interval: 15s
 
-- job_name: 'study-metrics'
-  # metrics_path defaults to '/metrics'
-  # scheme defaults to 'http'.
-  metrics_path: '/actuator/prometheus'
-  static_configs:
-    - targets: ['182.61.25.135:9090']
+# 普罗米修斯与抓取模块交互的接口配置
+scrape_configs:
+  # 一定要全局唯一, 采集 Prometheus 自身的 metrics
+  - job_name: 'study-spring-boot-metrics'
+    # metrics_path defaults to '/metrics'
+    metrics_path: '/actuator/prometheus'
+    # scheme defaults to 'http'.
+    static_configs:
+      - targets: ['192.168.1.4:8080']
