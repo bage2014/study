@@ -1,16 +1,25 @@
- package com.bage.study.java.jvm;
+package com.bage.study.java.jvm;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
 
-        String str1 = new StringBuilder().append("ja").append("va").toString();
-        System.out.println(str1.intern() == str1); // false
+    public static void main(String[] args) throws InterruptedException {
+        Runtime runtime = Runtime.getRuntime();
 
-        String str2 = new StringBuilder("ja").append("va").toString();
-        System.out.println(str2.intern() == str2); //false
+        System.out.println("maxMemory:" + runtime.maxMemory() / 1024 / 1024 + " MB");
+        System.out.println("freeMemory:" + runtime.freeMemory() / 1024 / 1024 + " MB");
+        System.out.println("totalMemory:" + runtime.totalMemory() / 1024 / 1024 + " MB");
 
-        String str3 = new StringBuilder("计算机").append("软件").toString();
-        System.out.println(str3.intern() == str3); // true
+//        List<Object> listObject = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            byte[] b = new byte[1024 * 1024];
+            System.out.println(i + "-----------------");
+            Thread.sleep(1000);
+//            listObject.add(b);
+        }
 
     }
+
 }
