@@ -4,6 +4,8 @@
 ## 参考链接 ##
 开源 数据库分库分表 [https://www.aliyun.com/citiao/999897.html](https://www.aliyun.com/citiao/999897.html)、[https://my.oschina.net/u/2335525/blog/1855103](https://my.oschina.net/u/2335525/blog/1855103)
 
+shadring-jdbc 解析 https://www.shared-code.com/type/9/2 
+
 ## 背景 ##
 单表数据量过大，比如一张表的日增数据量达到10000条，则一年有 3650000条，基于数据库的查询，出现了性能瓶颈
 单机数据量瓶颈问题处理
@@ -58,7 +60,9 @@ SQL解析 => 执行器优化 => SQL路由 => SQL改写 => SQL执行 => 结果归
 
 
 
+入口
 
+SQLParsingEngine的parse方法
 
 
 
@@ -72,16 +76,32 @@ SQL解析 => 执行器优化 => SQL路由 => SQL改写 => SQL执行 => 结果归
 ### SQL路由 ###
 根据解析上下文匹配用户配置的分片策略，并生成路由路径。目前支持分片路由和广播路由。
 
+代码入口
+
+com.dangdang.ddframe.rdb.sharding.jdbc.core.statement.ShardingPreparedStatement
+
+分片入口
+
+ShardingStrategy
+
 
 
 ### SQL改写 ###
 
 将SQL改写为在真实数据库中可以正确执行的语句。SQL改写分为正确性改写和优化改写。
 
+代码入口
+
+com.dangdang.ddframe.rdb.sharding.routing.router.ParsingSQLRouter
+
 
 
 ### SQL执行 ###
 通过多线程执行器异步执行。
+
+代码入口
+
+com.dangdang.ddframe.rdb.sharding.jdbc.core.statement.ShardingPreparedStatement
 
 
 
