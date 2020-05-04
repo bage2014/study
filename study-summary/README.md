@@ -3,6 +3,8 @@
 ## [Java 基础](https://github.com/bage2014/interview/blob/master/README-Java.md) ##
 面向对象理论，基础知识；
 
+final、finally、finalize
+
 char、int、boolean、double、byte、long等基础数据类型；
 
 Integer、String等包装类型；
