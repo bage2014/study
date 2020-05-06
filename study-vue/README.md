@@ -1,7 +1,7 @@
 # study-vue #
 Vue 学习笔记
 vue 显示 markdown 内容 [https://github.com/miaolz123/vue-markdown](https://github.com/miaolz123/vue-markdown)
-
+代码高亮 [https://github.com/highlightjs/highlight.js](https://github.com/highlightjs/highlight.js)
 ## 环境搭建 ##
 
 ### 安装nodejs  ###
