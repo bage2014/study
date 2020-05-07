@@ -96,6 +96,16 @@ CompletableFuture；
 
 JVM内存划分；
 
+- 程序计数器
+- 虚拟机栈
+- 本地方法栈
+- 方法区
+- 堆
+
+hotspot 对象创建
+
+
+
 JMM；
 
 对象存活判断；
