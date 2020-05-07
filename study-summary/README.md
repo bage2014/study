@@ -94,13 +94,13 @@ CompletableFuture；
 ## [JVM](https://github.com/bage2014/interview/blob/master/README-Jvm.md) ##
 常用理论知识，前世今生，开源组件；
 
-JVM内存划分；
+内存划分；
 
 - 程序计数器
-- 虚拟机栈
+- Java虚拟机栈
 - 本地方法栈
-- 方法区
 - 堆
+- 方法区
 
 hotspot 对象创建
 
