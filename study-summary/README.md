@@ -3,6 +3,8 @@
 ## [Java 基础](https://github.com/bage2014/interview/blob/master/README-Java.md) ##
 面向对象理论，基础知识；
 
+Java基础数据类型以及所占用空间大小
+
 final、finally、finalize
 
 char、int、boolean、double、byte、long等基础数据类型；
@@ -94,6 +96,8 @@ CompletableFuture；
 ## [JVM](https://github.com/bage2014/interview/blob/master/README-Jvm.md) ##
 常用理论知识，前世今生，开源组件；
 
+### 内存划分 ###
+
 内存划分；
 
 - 程序计数器
@@ -102,7 +106,13 @@ CompletableFuture；
 - 堆
 - 方法区
 
-hotspot 对象创建
+### java对象 ###
+
+hotspot  虚拟机为例
+
+- 对象创建过程
+- 内存组成结构
+- 对象访问方式
 
 
 
