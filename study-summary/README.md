@@ -258,3 +258,24 @@ request、response；
 
 
 
+## IDEA 插件 ##
+
+- Grep Console:控制台输出处理
+- Rainbow Brackets:彩虹🌈括号
+- Save Actions:优化保存操作
+- SequenceDiagram:一键生成时序图
+- Maven Helper:分析Maven项目的相关依赖
+- EasyCode:一键帮你生成所需代码
+- CheckStyle:代码格式检查
+- SonarLint:帮你优化代码
+- Lombok:帮你简化代码
+- CodeGlance:代码微型地图
+- Java Stream Debugger:Java8 Stream调试器
+- Git Commit Template:使用模板创建commit信息
+- 其他常用插件推荐
+
+## Chrome 插件 ##
+- JSON Viewer
+- Octotree
+- Enhanced Github
+
