@@ -376,6 +376,8 @@ Docker Pull Command
 
  
 
+
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -480,7 +482,9 @@ Dockerfile 文件
 
 
 ### 安装部署 Ceph[待验证]  ###
-参考链接 [https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)、[http://docs.ceph.org.cn/](http://docs.ceph.org.cn/)、[http://docs.ceph.org.cn/radosgw/s3/java/](http://docs.ceph.org.cn/radosgw/s3/java/)
+参考链接 [https://hub.docker.com/r/ceph/daemon](https://hub.docker.com/r/ceph/daemon)、[http://docs.ceph.org.cn/](http://docs.ceph.org.cn/)、[http://docs.ceph.org.cn/radosgw/s3/java/](http://docs.ceph.org.cn/radosgw/s3/java/)、
+
+[https://blog.csdn.net/don_chiang709/article/details/91511828](https://blog.csdn.net/don_chiang709/article/details/91511828)
 
 
 查看CIDR 和 IP 和 设备
@@ -528,12 +532,17 @@ Deploy a Manager daemon
 	docker exec ceph-mon ceph -s
 
 
-​	
 exported keyring for client.bootstrap-osd
 
 	docker exec ceph-mon \
 	ceph auth get client.bootstrap-osd \
 	-o /var/lib/ceph/bootstrap-osd/ceph.keyring
+
+
+chmod ceph.client.admin.keyring
+
+	chmod +r /home/bage/data/ceph/etc/ceph.client.admin.keyring
+
 
 
 Deploy an OSD
@@ -664,6 +673,8 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
+
 
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
