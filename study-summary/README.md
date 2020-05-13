@@ -127,6 +127,27 @@ hotspot  虚拟机为例
 - 软引用
 - 虚引用
 
+#### 垃圾回收算法 ####
+
+- 标记清除算法
+
+- 复制算法
+- 标记整理算法
+- 分代整理算法
+
+#### 垃圾收集器 ####
+
+- Serial
+
+- Parnew
+- Parallel Scavenge
+- Serial Old 
+- Parallel Old
+- CMS
+- G1
+
+
+
 hotspot  虚拟机为例
 
 todo jvm 常见异常实战
