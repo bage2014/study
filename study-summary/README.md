@@ -146,6 +146,9 @@ hotspot  虚拟机为例
 - CMS
 - G1
 
+常用jvm参数
+
+对象分配策略
 
 
 hotspot  虚拟机为例
