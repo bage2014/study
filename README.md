@@ -8,6 +8,16 @@ Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.co
 
 Java体系知识点汇总：https://github.com/bage2014/interview
 
+android m3u 播放器： https://github.com/AlexanderSofronov/iptv.example
+
+https://github.com/gsantner/opoc/blob/master/java/java/net/gsantner/opoc/format/SimpleM3UParser.java
+
+https://github.com/topics/m3u-parser
+
+https://github.com/crazyks/M3UPlayer
+
+https://code.videolan.org/videolan/libvlc-android-samples
+
 ## Others ##
 GIT 地址
 https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
