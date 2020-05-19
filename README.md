@@ -16,7 +16,9 @@ https://github.com/topics/m3u-parser
 
 https://github.com/crazyks/M3UPlayer
 
-https://code.videolan.org/videolan/libvlc-android-samples
+https://code.videolan.org/videolan/libvlc-android-samples  
+
+web资源链接
 
 ## Others ##
 GIT 地址
