@@ -19,6 +19,8 @@ https://github.com/crazyks/M3UPlayer
 https://code.videolan.org/videolan/libvlc-android-samples  
 
 web资源链接
+https://github.com/tvly/tvly-web
+
 
 ## Others ##
 GIT 地址
