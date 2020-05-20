@@ -18,6 +18,11 @@ https://code.videolan.org/videolan/vlc-android/
 
 
 
+常用类：：
 
-
-
+```
+import org.videolan.libvlc.LibVLC;
+import org.videolan.libvlc.Media;
+import org.videolan.libvlc.MediaPlayer;
+import org.videolan.libvlc.util.VLCVideoLayout;
+```
