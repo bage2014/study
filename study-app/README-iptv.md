@@ -26,3 +26,13 @@ import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 import org.videolan.libvlc.util.VLCVideoLayout;
 ```
+
+
+
+
+
+Web 端显示
+
+https://github.com/Chimeejs/chimee-kernel-hls
+https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/README.md
+
