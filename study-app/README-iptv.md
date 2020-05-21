@@ -36,3 +36,4 @@ Web 端显示
 https://github.com/Chimeejs/chimee-kernel-hls
 https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/README.md
 
+https://player.alicdn.com/aliplayer/index.html
