@@ -37,3 +37,14 @@ https://github.com/Chimeejs/chimee-kernel-hls
 https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/README.md
 
 https://player.alicdn.com/aliplayer/index.html
+
+### 功能概要 ###
+
+| 父模块 | 子模块   | 功能项说明               | 重要、紧急  | 进度 |
+| ------ | -------- | ------------------------ | ----------- | ---- |
+| TV     | 播放列表 | 加载所有可播放的电视频道 | 重要 + 紧急 | 80%  |
+|        | 播放页面 | 根据选择的频道进行播放   | 重要 + 紧急 | 0%   |
+
+
+
+
