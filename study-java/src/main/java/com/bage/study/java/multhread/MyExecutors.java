@@ -25,6 +25,7 @@ public class MyExecutors {
 		executors = Executors.newFixedThreadPool(n);
 		executors = Executors.newSingleThreadExecutor();
 		executors = Executors.newScheduledThreadPool(n);
+		executors = Executors.newCachedThreadPool();
 
 		
 		for (int i = 0; i < 5; i++) {

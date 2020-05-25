@@ -91,6 +91,8 @@ AQS抽象队列同步器；
 
 线程池；
 
+赋值线程名字，方便排查问题
+
 CompletableFuture；
 
 ## [JVM](https://github.com/bage2014/interview/blob/master/README-Jvm.md) ##
