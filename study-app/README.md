@@ -47,6 +47,10 @@ icon [http://fontello.com/](http://fontello.com/)
 
 ## TODO ##
 
+服务实例单元支持 微服务部署或单机部署
+
+
+
 gateway -> auth-server 问题
 软件环境准备
 APP应用升级，全部切换成新架构
