@@ -21,6 +21,8 @@ https://github.com/huangyanbin/SmartChart
 
 vue 前端框架 https://vuetifyjs.com/zh-Hans/components/navigation-drawers/
 
+app 更新 https://github.com/WVector/AppUpdate
+
 
 ## App ##
 基于 [https://github.com/project-travel-mate/Travel-Mate](https://github.com/project-travel-mate/Travel-Mate)
