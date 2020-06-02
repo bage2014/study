@@ -22,6 +22,14 @@ web资源链接
 https://github.com/tvly/tvly-web
 
 
+
+数据库隔离级别验证
+
+常用JVM命令验证
+
+AOP实用技巧；比如打日志等
+
+
 ## Others ##
 GIT 地址
 https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
