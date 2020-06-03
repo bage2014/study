@@ -25,6 +25,8 @@ app 更新 https://github.com/jenly1314/AppUpdater
 
 APP 更新后台实现
 
+html + vue
+
 
 ## App ##
 基于 [https://github.com/project-travel-mate/Travel-Mate](https://github.com/project-travel-mate/Travel-Mate)
