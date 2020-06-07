@@ -25,6 +25,10 @@ app 更新 https://github.com/jenly1314/AppUpdater
 
 APP 更新后台实现
 
+APP 版本增删改查 done 
+
+APP 版本的APP端接入 todo
+
 html + vue
 
 
