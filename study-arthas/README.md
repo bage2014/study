@@ -1,6 +1,16 @@
 # study-arthas #
 阿里巴巴 Arthas 使用
 
+当你遇到以下类似问题而束手无策时，`Arthas`可以帮助你解决：
+
+1. 这个类从哪个 jar 包加载的？为什么会报各种类相关的 Exception？
+2. 我改的代码为什么没有执行到？难道是我没 commit？分支搞错了？
+3. 遇到问题无法在线上 debug，难道只能通过加日志再重新发布吗？
+4. 线上遇到某个用户的数据处理有问题，但线上同样无法 debug，线下无法重现！
+5. 是否有一个全局视角来查看系统的运行状况？
+6. 有什么办法可以监控到JVM的实时运行状态？
+7. 怎么快速定位应用的热点，生成火焰图？
+
 ## 参考链接 ##
 
 - github [https://github.com/alibaba/arthas](https://github.com/alibaba/arthas)
@@ -16,14 +26,15 @@
 
     curl -O https://alibaba.github.io/arthas/arthas-demo.jar
     java -jar arthas-demo.jar
-    
-    
+
+
+​    
 ## Attach 
 在命令行下面执行（使用和目标进程一致的用户启动，否则可能attach失败）：
 
     curl -O https://alibaba.github.io/arthas/arthas-boot.jar
     java -jar arthas-boot.jar
-      
+
 
 ## dashboard  
 输入dashboard，按回车/enter，会展示当前进程的信息，按ctrl+c可以中断执行。
@@ -59,7 +70,7 @@
                                  tualMachines/jdk1.8.0
                                  _162.jdk/Contents/Hom
                                  e/jre
-                                 
+
 ## thread
 thread {threadId} 会打印线程的栈
          
@@ -79,8 +90,9 @@ thread {threadId} 会打印线程的栈
         @Integer[47],
         @Integer[2675531],
     ]
-    
-    
+
+
+​    
 ## 退出
 如果只是退出当前的连接，可以用quit或者exit命令。Attach到目标进程上的arthas还会继续运行，端口会保持开放，下次连接时可以直接连接上。
 如果想完全退出arthas，可以执行stop命令。  
