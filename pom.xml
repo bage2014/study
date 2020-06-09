@@ -133,6 +133,7 @@
       <module>study-spring-boot-metrics</module>
       <module>study-arthas</module>
       <module>study-summary</module>
+      <module>study-id-generator</module>
 
   </modules>
 </project>
