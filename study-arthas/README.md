@@ -1,4 +1,18 @@
 # study-arthas #
+原理分析
+
+https://zhuanlan.zhihu.com/p/115127052
+
+https://www.cnblogs.com/goodAndyxublog/p/11880314.html
+
+https://www.jb51.net/article/163115.htm
+
+https://www.bbsmax.com/A/mo5k8o1Edw/
+
+
+
+
+
 阿里巴巴 Arthas 使用
 
 当你遇到以下类似问题而束手无策时，`Arthas`可以帮助你解决：
