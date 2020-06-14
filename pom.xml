@@ -134,6 +134,7 @@
       <module>study-arthas</module>
       <module>study-summary</module>
       <module>study-id-generator</module>
+      <module>study-stream-m3u8</module>
 
   </modules>
 </project>

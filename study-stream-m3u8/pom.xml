@@ -1,17 +1,18 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="UTF-8"?>
 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.bage</groupId>
         <artifactId>study</artifactId>
+        <groupId>com.bage</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>study-spring-boot</artifactId>
-    <name>study-spring-boot</name>
-    <url>http://maven.apache.org</url>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>study-stream-m3u8</artifactId>
+
+    <name>study-stream-m3u8</name>
+    <url>http://www.example.com</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -53,18 +54,12 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
-            <groupId>com.bage</groupId>
-            <artifactId>study-domain-generator</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.github.botaruibo</groupId>
-            <artifactId>xvcode</artifactId>
-            <version>1.0</version>
-        </dependency>
-
 
     </dependencies>
     <dependencyManagement>

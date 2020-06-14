@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <title>用户测试用例</title>
+    <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css"/>
+    <script charset="utf-8" type="text/javascript"
+            src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"></script>
+</head>
+<body>
+<div class="prism-player" id="J_prismPlayer"></div>
+<script>
+
+	var player = new Aliplayer({
+
+id: "J_prismPlayer",
+source: "http://localhost:8080/stream/m3u8",
+width: "100%",
+height: "500px",
+autoplay: true,
+isLive: true,
+}, function (player) {
+
+console.log("播放器创建成功");
+});
+
+
+
+
+</script>
+</body>
+</html>
