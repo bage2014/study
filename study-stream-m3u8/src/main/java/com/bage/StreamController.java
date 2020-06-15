@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.security.Principal;
 
 @RestController
 public class StreamController {
@@ -24,7 +23,7 @@ public class StreamController {
         System.out.println("play1 /video/oculus...");
         final HttpHeaders headers = new HttpHeaders();
         response.setHeader("Content-Disposition", "attachment; filename=playlist.m3u8");
-        byte[] byts = IOUtils.toByteArray(URI.create("https://eco.streams.ovh:443/BarazaTV/BarazaTV/playlist.m3u8"));
+        byte[] byts = IOUtils.toByteArray(URI.create("http://117.169.120.140:8080/live/cctv-1/.m3u8"));
         return new ResponseEntity<ByteArrayResource>(new ByteArrayResource(byts), headers, HttpStatus.OK);
     }
 
