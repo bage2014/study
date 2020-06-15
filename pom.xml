@@ -135,6 +135,7 @@
       <module>study-summary</module>
       <module>study-id-generator</module>
       <module>study-stream-m3u8</module>
+      <module>study-jvm</module>
 
   </modules>
 </project>
