@@ -69,9 +69,60 @@ IntelliJ IDEA Community Edition 2020.1\plugins\maven\lib\maven-event-listener.ja
 ```
 
 
-$$
 
-$$
+### Jstat  ###
+
+reference link : https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstat.html
+
+Java Virtual Machine statistics monitoring tool
+
+Jvm 实时信息
+
+
+
+- jstat--help 帮助
+
+```
+>jstat --help
+invalid argument count
+Usage: jstat -help|-options
+       jstat -<option> [-t] [-h<lines>] <vmid> [<interval> [<count>]]
+
+Definitions:
+  <option>      An option reported by the -options option
+  <vmid>        Virtual Machine Identifier. A vmid takes the following form:
+                     <lvmid>[@<hostname>[:<port>]]
+                Where <lvmid> is the local vm identifier for the target
+                Java virtual machine, typically a process id; <hostname> is
+                the name of the host running the target Java virtual machine;
+                and <port> is the port number for the rmiregistry on the
+                target host. See the jvmstat documentation for a more complete
+                description of the Virtual Machine Identifier.
+  <lines>       Number of samples between header lines.
+  <interval>    Sampling interval. The following forms are allowed:
+                    <n>["ms"|"s"]
+                Where <n> is an integer and the suffix specifies the units as
+                milliseconds("ms") or seconds("s"). The default units are "ms".
+  <count>       Number of samples to take before terminating.
+  -J<flag>      Pass <flag> directly to the runtime system.
+
+```
+
+参数解析
+
+- option jstat 选项，比如 gc、class、compiler 等；可以通过  查看
+- -t 显示时间戳
+- -h 可以在周期性数据数据的时候，可以在指定输出多少行以后输出一次表头
+- vmid 必填，Jps 的Java进程号
+- interval 周期间隔时间
+- count 统计次数，默认一直打印
+
+
+
+
+
+
+
 
 
 ## Arthas ##
