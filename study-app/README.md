@@ -1,6 +1,63 @@
 # study-app #
 应用实践
 
+## 目录结构 ##
+
+### api 项目结构 ###
+
+
+
+    com.bage.demo.api
+    
+     	-constant // 常量
+    	-model // 模型
+        DemoService // 服务接口
+        
+
+
+### core 项目结构 ###
+
+```
+com.bage.demo
+
+        -adapter // 适配、代理
+        
+        -config // 配置
+        
+            - ds // 数据源
+            - prop // 属性
+            - bean // bean注册
+
+        -constant // 常量
+        
+        -mapping // 模型转化
+
+        -gateway // 网关，程序入口
+        
+            - controller // 控制器 
+            - mapping // 映射
+            - server // 服务实现
+            - job // 定时任务
+            - mq // 消息中间件
+            
+        -model // 模型
+
+        -repo // 数据库仓储
+
+        -service // 业务逻辑
+                
+        -utils // 工具
+
+```
+
+
+
+举例
+
+### provider 项目结构 ###
+
+
+
 ## 参考链接 ##
 
 UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyxxjd/UI-Design-Resources)、[https://github.com/material-components/material-components-android](https://github.com/material-components/material-components-android)
