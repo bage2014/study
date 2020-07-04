@@ -14,6 +14,17 @@
 <script src="http.js"></script>
 
 <script>
+
+var url = 'http://localhost:8765/app-admin/table/query/page';
+var paramPairs = [
+{'keyword':'abc'},
+{'pageSize':'2'},
+];
+var callback = function (text){
+	console.log(text);
+};
+var headers = null;
+Http.get(url,paramPairs,callback,headers)
   
     
 </script>
