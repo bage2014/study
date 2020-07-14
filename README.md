@@ -24,13 +24,6 @@ AOP实用技巧；比如打日志等
 GIT 地址
 https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
 
-Spring Cloud Gateway Filter
-
-Global Filters [https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html](https://cloud.spring.io/spring-cloud-gateway/multi/multi__global_filters.html)
-demo [https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cloud-gateway-sample](https://github.com/spring-cloud/spring-cloud-gateway/blob/master/spring-cloud-gateway-sample)
-验证码生成 [https://github.com/botaruibo/xvcode](https://github.com/botaruibo/xvcode)
-
-
 UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyxxjd/UI-Design-Resources)、[https://github.com/material-components/material-components-android](https://github.com/material-components/material-components-android)
 
 限流算法参考 [https://github.com/shiyujun/syj-ratelimit](https://github.com/shiyujun/syj-ratelimit)
