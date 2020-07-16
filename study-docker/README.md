@@ -378,6 +378,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -676,6 +677,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -890,6 +892,52 @@ visit
 	http://192.168.146.139:3000/
 
 Try it out, default admin user is admin/admin.
+
+
+
+### 安装配置 gluster[待验证] ###
+
+参考链接：https://github.com/gluster/gluster-containers
+
+Docker Pull Command
+
+	docker pull gluster/gluster-centos
+	
+
+prepare 
+
+	mkdir -p /home/bage/gluster/etc/glusterfs 
+	mkdir -p /home/bage/gluster/lib/glusterd 
+	mkdir -p /home/bage/gluster/log/glusterfs
+	mkdir -p /home/bage/gluster/fs/cgroup
+	mkdir -p /home/bage/gluster/lib/glusterd
+	mkdir -p /home/bage/gluster/dev
+
+start a instance
+
+	docker run -v /home/bage/gluster/etc/glusterfs:/etc/glusterfs:z -v /home/bage/gluster/lib/glusterd:/var/lib/glusterd:z -v /home/bage/gluster/log/glusterfs:/var/log/glusterfs:z -v /home/bage/gluster/fs/cgroup:/sys/fs/cgroup:ro -d --privileged=true --net=host -v /home/bage/gluster/dev/:/dev gluster/gluster-centos
+	
+
+Docker Pull Command
+
+```
+docker pull gluster/gluster-s3
+```
+
+prepare 
+
+	mkdir -p /home/bage/gluster/mnt/gluster-object
+
+start a instance
+
+	$ docker run -d --privileged  -v /home/bage/gluster/fs/cgroup:/sys/fs/cgroup/:ro -p 8080:8080 -v /home/bage/gluster/mnt/gluster-object:/mnt/gluster-object -e S3_ACCOUNT="tv1" -e S3_USER="admin" -e S3_PASSWORD="redhat" gluster/gluster-s3
+	
+
+
+
+
+
+
 
 ### 网络连接 ###
 
