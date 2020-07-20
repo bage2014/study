@@ -127,6 +127,14 @@ Definitions:
 
 
 
+### Jinfo  ###
+
+reference link : https://docs.oracle.com/javase/7/docs/technotes/tools/share/jinfo.html
+
+Configuration Info
+
+实时查看JVM虚拟机的参数并进行调整
+
 
 
 
