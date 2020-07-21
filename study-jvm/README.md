@@ -168,7 +168,6 @@ Loaded  Bytes  Unloaded  Bytes     Time
 
 
 - jstat -compiler {vmid}  编译情况
-- 
 
 ```
 >jstat -compiler 7476
@@ -218,6 +217,37 @@ Compiled Failed Invalid   Time   FailedType FailedMethod
 - FGC  老年代垃圾回收次数
 - FGCT  老年代垃圾回收消耗时间
 - GCT  垃圾回收消耗总时间
+
+
+
+- jstat -gcutil {vmid} 垃圾回收统计情况
+
+```
+>jstat -gcutil 1936
+  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT
+  0.00   0.00  73.10  30.66  96.67  95.45     24    0.280     3    0.427    0.707
+
+```
+
+参数解析
+
+
+
+- jstat -printcompilation {vmid} 方法编译？
+
+```
+>jstat -printcompilation 1936
+Compiled  Size  Type Method
+    6616      5    1 org/springframework/aop/target/AbstractBeanFactoryBasedTargetSource getBeanFactory
+```
+
+参数解析
+
+
+
+
+
+
 
 
 
