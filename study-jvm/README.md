@@ -82,7 +82,7 @@ reference link : https://docs.oracle.com/javase/7/docs/technotes/tools/share/jst
 
 Java Virtual Machine statistics monitoring tool
 
-Jvm 实时信息
+Jvm 虚拟机实时信息，内存，垃圾回收等
 
 
 
@@ -131,11 +131,11 @@ Definitions:
 
 ```
 >jstat -options
--class
--compiler
--gc
+-class // 类的装载、卸载、空间、耗时情况
+-compiler // JIT 编译过的方法、耗时情况
+-gc // 堆情况，包括 Survivor区、Eden区、老年区等
 -gccapacity
--gccause
+-gccause // 额外输出上次 GC 原因
 -gcmetacapacity
 -gcnew
 -gcnewcapacity
