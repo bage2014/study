@@ -40,7 +40,7 @@ SQL解析 => 执行器优化 => SQL路由 => SQL改写 => SQL执行 => 结果归
 
 如下图
 
-![基本过程](https://shardingsphere.apache.org/document/current/img/sharding/sharding_architecture_cn.png)
+![基本过程](C:\Users\89354\Desktop\sharding_architecture_cn.png)
 
 ### SQL解析 ###
 
@@ -107,6 +107,10 @@ com.dangdang.ddframe.rdb.sharding.jdbc.core.statement.ShardingPreparedStatement
 
 ### 结果归并 ###
 将多个执行结果集归并以便于通过统一的JDBC接口输出。结果归并包括流式归并、内存归并和使用装饰者模式的追加归并这几种方式。
+
+
+
+实现link [https://github.com/bage2014/study/tree/master/study-split-db-tb](https://github.com/bage2014/study/tree/master/study-split-db-tb)
 
 
 
