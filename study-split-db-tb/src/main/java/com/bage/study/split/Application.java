@@ -74,7 +74,8 @@ public class Application {
         dataSourceMap.put("split_db_2", dataSource2);
 
         // 配置Order表规则
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("tb_order", "split_db_${1..2}.tb_order_${2019..2020}");
+        TableRuleConfiguration orderTableRuleConfig =
+                new TableRuleConfiguration("tb_order", "split_db_${1..2}.tb_order_${2019..2020}");
 
         // 配置分库 + 分表策略
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
@@ -84,6 +85,8 @@ public class Application {
         shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new ComplexShardingStrategyConfiguration(
                 StringUtils.collectionToDelimitedString(Arrays.asList("order_id","create_time"), ","),
                 new MyDBComplexKeysShardingAlgorithm()));
+
+
         shardingRuleConfig.setDefaultTableShardingStrategyConfig(new ComplexShardingStrategyConfiguration(
                 StringUtils.collectionToDelimitedString(Arrays.asList("order_id","create_time"), ","),
                 new MyTBComplexKeysShardingAlgorithm()));
@@ -110,7 +113,6 @@ public class Application {
         dataSource1.setUrl("jdbc:mysql://localhost:3306/split_db_1?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource1.setUsername("root");
         dataSource1.setPassword("root");
-        dataSourceMap.put("split_db_1", dataSource1);
 
         // 配置第二个数据源
         BasicDataSource dataSource2 = new BasicDataSource();
@@ -118,19 +120,20 @@ public class Application {
         dataSource2.setUrl("jdbc:mysql://localhost:3306/split_db_2?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource2.setUsername("root");
         dataSource2.setPassword("root");
+
+        dataSourceMap.put("split_db_1", dataSource1);
         dataSourceMap.put("split_db_2", dataSource2);
 
         // 配置Order表规则
-        TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("tb_order", "split_db_${1..2}.tb_order_${2019..2020}");
-
-        // 配置分库 + 分表策略
-//        orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));
-//        orderTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "t_order${user_id % 2}"));
+        TableRuleConfiguration orderTableRuleConfig
+                = new TableRuleConfiguration("tb_order", "split_db_${1..2}.tb_order_${2019..2020}");
 
         // 配置分库 + 分表策略
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("order_id", new PreciseModuloShardingDatabaseAlgorithm()));
-        shardingRuleConfig.setDefaultTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("create_time", new PreciseModuloShardingTableAlgorithm()));
+        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(
+                new StandardShardingStrategyConfiguration("order_id", new PreciseModuloShardingDatabaseAlgorithm()));
+        shardingRuleConfig.setDefaultTableShardingStrategyConfig(
+                new StandardShardingStrategyConfiguration("create_time", new PreciseModuloShardingTableAlgorithm()));
 
 
         // 配置分片规则

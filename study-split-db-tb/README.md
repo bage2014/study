@@ -6,6 +6,8 @@
 
 shadring-jdbc 解析 https://www.shared-code.com/type/9/2 
 
+二次查询法[https://blog.csdn.net/uiuan00/article/details/102716457#3%E3%80%81%E7%BB%88%E6%9E%81%E6%AD%A6%E5%99%A8-%E4%BA%8C%E6%AC%A1%E6%9F%A5%E8%AF%A2%E6%B3%95](https://blog.csdn.net/uiuan00/article/details/102716457#3、终极武器-二次查询法)
+
 ## 背景 ##
 单表数据量过大，比如一张表的日增数据量达到10000条，则一年有 3650000条，基于数据库的查询，出现了性能瓶颈
 单机数据量瓶颈问题处理
@@ -112,7 +114,7 @@ com.dangdang.ddframe.rdb.sharding.jdbc.core.statement.ShardingPreparedStatement
 
 实现link [https://github.com/bage2014/study/tree/master/study-split-db-tb](https://github.com/bage2014/study/tree/master/study-split-db-tb)
 
-
+[https://github.com/apache/shardingsphere-example](https://github.com/apache/shardingsphere-example)
 
 
 ## 开源实现 ##
