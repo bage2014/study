@@ -12,13 +12,13 @@
      	-constant // 常量
     	-model // 模型
         DemoService // 服务接口
-        
+
 
 
 ### core 项目结构 ###
 
 ```
-com.bage.demo
+com.bage.demo.core
 
         -adapter // 适配、代理
         
@@ -36,7 +36,7 @@ com.bage.demo
         
             - controller // 控制器 
             - mapping // 映射
-            - server // 服务实现
+            - service // 服务实现
             - job // 定时任务
             - mq // 消息中间件
             
@@ -44,7 +44,7 @@ com.bage.demo
 
         -repo // 数据库仓储
 
-        -service // 业务逻辑
+        -logic // 业务逻辑
                 
         -utils // 工具
 
@@ -55,6 +55,28 @@ com.bage.demo
 举例
 
 ### provider 项目结构 ###
+
+
+
+
+
+code generate order
+
+
+
+--------- api ---------
+
+1. constant
+2. model
+3. service
+
+--------- core ---------
+
+1. controller
+2. constant
+3. model
+4. mapping
+5. service-impl
 
 
 
