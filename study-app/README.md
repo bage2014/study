@@ -66,17 +66,25 @@ code generate order
 
 --------- api ---------
 
-1. constant
-2. model
-3. service
+1. api-constant
+2. api-model
+3. api-service
 
 --------- core ---------
 
-1. controller
-2. constant
-3. model
-4. mapping
-5. service-impl
+1. core-model
+2. core-constant
+3. core-repo-impl-mybatis-entity
+4. core-repo-impl-mybatis-mapper
+5. core-repo-impl-mybatis-mapping
+6. core-repo-impl-mybatis-xmlMapper
+7. core-repo
+8. core-repo-impl
+9. controller
+10. constant
+11. model
+12. mapping
+13. service-impl
 
 
 
