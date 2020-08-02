@@ -44,7 +44,7 @@ com.bage.demo.core
 
         -repo // 数据库仓储
 
-        -logic // 业务逻辑
+        -logic // 最小业务单元逻辑
                 
         -utils // 工具
 
@@ -74,17 +74,16 @@ code generate order
 
 1. core-model
 2. core-constant
-3. core-repo-impl-mybatis-entity
-4. core-repo-impl-mybatis-mapper
-5. core-repo-impl-mybatis-mapping
-6. core-repo-impl-mybatis-xmlMapper
-7. core-repo
-8. core-repo-impl
-9. controller
-10. constant
-11. model
-12. mapping
-13. service-impl
+3. core-repo
+4. core-repo-impl-mybatis-entity
+5. core-repo-impl-mybatis-mapper
+6. core-repo-impl-mybatis-mapping
+7. core-repo-impl-mybatis-xmlMapper
+8. core-repo-impl-mybatis
+9. core-logic
+10. core-gateway-mapping
+11. core-gateway-controller
+12. core-gateway-service-impl
 
 
 
