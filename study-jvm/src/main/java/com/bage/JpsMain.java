@@ -7,7 +7,7 @@ public class JpsMain {
         System.out.println("java.io.tmpdir = " + System.getProperty("java.io.tmpdir"));
         int n = 0;
 
-        while (n < 100){
+        while (n < 10000){
 
             n ++;
 

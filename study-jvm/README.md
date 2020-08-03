@@ -84,8 +84,6 @@ Java Virtual Machine statistics monitoring tool
 
 Jvm 虚拟机实时信息，内存，垃圾回收等
 
-
-
 - jstat--help 帮助
 
 ```
@@ -120,10 +118,10 @@ Definitions:
 
 - option jstat 选项，比如 gc、class、compiler 等；可以通过  jstat -options 查看
 - -t 显示时间戳
-- -h 可以在周期性数据数据的时候，可以在指定输出多少行以后输出一次表头
+- -h 可以在周期性数据数据的时候，可以在指定输出多少行以后输出一次表头，-h3 或者 -h 3 都可以，每三行显示一次表头
 - vmid 必填，Jps 的Java进程号，通过 Jps 命令可以得到
-- interval 周期间隔时间
-- count 统计次数，默认一直打印
+- interval 周期间隔时间，默认毫秒，也可以直接指定，3000ms 或3s
+- count 统计次数，默认打印一次？
 
 
 
@@ -150,20 +148,29 @@ Definitions:
 
 - jstat -class {vmid} 类加载情况
 
+每 3000 毫秒查询一次，一共查询 4 次 
+
 ```
->jstat -class 7476
+>jstat -class 5532 3000ms 4
 Loaded  Bytes  Unloaded  Bytes     Time
- 12913 22951.1        0     0.0      17.40
+   667  1330.4        0     0.0       0.25
+   667  1330.4        0     0.0       0.25
+   667  1330.4        0     0.0       0.25
+   667  1330.4        0     0.0       0.25
 
 ```
 
 参数解析
 
-- Loaded 数量
-- Bytes 大小
-- Unloaded 未加载数量
-- Bytes 未加载大小
-- Time 加载时间
+| Column   | Description                                             |
+| -------- | ------------------------------------------------------- |
+| Loaded   | Number of classes loaded.                               |
+| Bytes    | Number of Kbytes loaded.                                |
+| Unloaded | Number of classes unloaded.                             |
+| Bytes    | Number of Kbytes unloaded.                              |
+| Time     | Time spent performing class load and unload operations. |
+
+Time 加载执行时间
 
 
 
@@ -178,14 +185,18 @@ Compiled Failed Invalid   Time   FailedType FailedMethod
 
 参数解析
 
-- Compiled 数量
-- Failed 数量
-- Invalid 不可用数量
-- Time 时间
-- FailedType 失败类型
-- FailedMethod 失败的方法
+| Column       | Description                                            |
+| ------------ | ------------------------------------------------------ |
+| Compiled     | Number of compilation tasks performed.                 |
+| Failed       | Number of compilation tasks that failed.               |
+| Invalid      | Number of compilation tasks that were invalidated.     |
+| Time         | Time spent performing compilation tasks.               |
+| FailedType   | Compile type of the last failed compilation.           |
+| FailedMethod | Class name and method for the last failed compilation. |
 
+FailedType 失败类型
 
+FailedMethod 失败的方法
 
 
 
@@ -199,6 +210,24 @@ Compiled Failed Invalid   Time   FailedType FailedMethod
 ```
 
 参数解析
+
+| Column | Description                               |
+| ------ | ----------------------------------------- |
+| S0C    | Current survivor space 0 capacity (KB).   |
+| S1C    | Current survivor space 1 capacity (KB).   |
+| S0U    | Survivor space 0 utilization (KB).        |
+| S1U    | Survivor space 1 utilization (KB).        |
+| EC     | Current eden space capacity (KB).         |
+| EU     | Eden space utilization (KB).              |
+| OC     | Current old space capacity (KB).          |
+| OU     | Old space utilization (KB).               |
+| PC     | Current permanent space capacity (KB).    |
+| PU     | Permanent space utilization (KB).         |
+| YGC    | Number of young generation GC Events.     |
+| YGCT   | Young generation garbage collection time. |
+| FGC    | Number of full GC events.                 |
+| FGCT   | Full garbage collection time.             |
+| GCT    | Total garbage collection time.            |
 
 - S0C 第一个幸存区的大小
 - S1C 第二个幸存区的大小
@@ -252,6 +281,145 @@ reference link : https://docs.oracle.com/javase/7/docs/technotes/tools/share/jin
 Configuration Info
 
 实时查看JVM虚拟机的参数并进行调整
+
+Jvm 虚拟机实时信息，内存，垃圾回收等
+
+- jinfo --help 帮助
+
+```
+>jinfo -help
+Usage:
+    jinfo [option] <pid>
+        (to connect to running process)
+    jinfo [option] <executable <core>
+        (to connect to a core file)
+    jinfo [option] [server_id@]<remote server IP or hostname>
+        (to connect to remote debug server)
+
+where <option> is one of:
+    -flag <name>         to print the value of the named VM flag
+    -flag [+|-]<name>    to enable or disable the named VM flag
+    -flag <name>=<value> to set the named VM flag to the given value
+    -flags               to print VM flags
+    -sysprops            to print Java system properties
+    <no option>          to print both of the above
+    -h | -help           to print this help message
+
+```
+
+- jinfo {vmid} 打印所有配置信息
+
+```
+>jinfo 5532
+Attaching to process ID 5532, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.131-b11
+Java System Properties:
+
+java.runtime.name = Java(TM) SE Runtime Environment
+java.vm.version = 25.131-b11
+sun.boot.library.path = D:\professional\jdk1.8.0_131\jre\bin
+java.vendor.url = http://java.oracle.com/
+java.vm.vendor = Oracle Corporation
+path.separator = ;
+file.encoding.pkg = sun.io
+java.vm.name = Java HotSpot(TM) 64-Bit Server VM
+sun.os.patch.level =
+sun.java.launcher = SUN_STANDARD
+user.script =
+user.country = CN
+user.dir = E:\GitHubDesktop\study
+java.vm.specification.name = Java Virtual Machine Specification
+java.runtime.version = 1.8.0_131-b11
+java.awt.graphicsenv = sun.awt.Win32GraphicsEnvironment
+os.arch = amd64
+java.endorsed.dirs = D:\professional\jdk1.8.0_131\jre\lib\endorsed
+line.separator =
+
+java.io.tmpdir = C:\Users\89354\AppData\Local\Temp\
+java.vm.specification.vendor = Oracle Corporation
+user.variant =
+os.name = Windows 10
+sun.jnu.encoding = GBK
+java.library.path = D:\professional\jdk1.8.0_131\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
+;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;D:\professional\Git\cmd;D:\professional\jdk1.8.0_131\bin;D:\professional\apache-maven-3.6
+.3\bin;D:\professional\PuTTY\;D:\professional\nodejs\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\89354\AppData\
+Local\Microsoft\WindowsApps;D:\professional\IntelliJ IDEA\IntelliJ IDEA 2020.1\bin;C:\Users\89354\AppData\Local\GitHubDesktop\bin;C:\Users\89354\AppData\Roaming\np
+m;.
+java.specification.name = Java Platform API Specification
+java.class.version = 52.0
+sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+os.version = 10.0
+user.home = C:\Users\89354
+user.timezone = Asia/Shanghai
+java.awt.printerjob = sun.awt.windows.WPrinterJob
+file.encoding = UTF-8
+java.specification.version = 1.8
+user.name = 89354
+java.class.path = D:\professional\jdk1.8.0_131\jre\lib\charsets.jar;D:\professional\jdk1.8.0_131\jre\lib\deploy.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\access
+-bridge-64.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\cldrdata.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\dnsns.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\ja
+ccess.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\jfxrt.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\localedata.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\nasho
+rn.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\sunec.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\sunjce_provider.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\sun
+mscapi.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\sunpkcs11.jar;D:\professional\jdk1.8.0_131\jre\lib\ext\zipfs.jar;D:\professional\jdk1.8.0_131\jre\lib\javaws.ja
+r;D:\professional\jdk1.8.0_131\jre\lib\jce.jar;D:\professional\jdk1.8.0_131\jre\lib\jfr.jar;D:\professional\jdk1.8.0_131\jre\lib\jfxswt.jar;D:\professional\jdk1.8.
+0_131\jre\lib\jsse.jar;D:\professional\jdk1.8.0_131\jre\lib\management-agent.jar;D:\professional\jdk1.8.0_131\jre\lib\plugin.jar;D:\professional\jdk1.8.0_131\jre\l
+ib\resources.jar;D:\professional\jdk1.8.0_131\jre\lib\rt.jar;E:\GitHubDesktop\study\study-jvm\target\classes;D:\professional\IntelliJ IDEA\IntelliJ IDEA Community
+Edition 2020.1\lib\idea_rt.jar
+java.vm.specification.version = 1.8
+sun.arch.data.model = 64
+sun.java.command = com.bage.JpsMain
+java.home = D:\professional\jdk1.8.0_131\jre
+user.language = zh
+java.specification.vendor = Oracle Corporation
+awt.toolkit = sun.awt.windows.WToolkit
+java.vm.info = mixed mode
+java.version = 1.8.0_131
+java.ext.dirs = D:\professional\jdk1.8.0_131\jre\lib\ext;C:\Windows\Sun\Java\lib\ext
+sun.boot.class.path = D:\professional\jdk1.8.0_131\jre\lib\resources.jar;D:\professional\jdk1.8.0_131\jre\lib\rt.jar;D:\professional\jdk1.8.0_131\jre\lib\sunrsasig
+n.jar;D:\professional\jdk1.8.0_131\jre\lib\jsse.jar;D:\professional\jdk1.8.0_131\jre\lib\jce.jar;D:\professional\jdk1.8.0_131\jre\lib\charsets.jar;D:\professional\
+jdk1.8.0_131\jre\lib\jfr.jar;D:\professional\jdk1.8.0_131\jre\classes
+java.vendor = Oracle Corporation
+file.separator = \
+java.vendor.url.bug = http://bugreport.sun.com/bugreport/
+sun.io.unicode.encoding = UnicodeLittle
+sun.cpu.endian = little
+sun.desktop = windows
+sun.cpu.isalist = amd64
+
+VM Flags:
+Non-default VM flags: -XX:CICompilerCount=3 -XX:InitialHeapSize=134217728 -XX:MaxHeapSize=2118123520 -XX:MaxNewSize=705691648 -XX:MinHeapDeltaBytes=524288 -XX:NewS
+ize=44564480 -XX:OldSize=89653248 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseFastUnorderedTimeStamps -XX:-UseLargePagesIndividualAllocation -XX
+:+UseParallelGC
+Command line:  -javaagent:D:\professional\IntelliJ IDEA\IntelliJ IDEA Community Edition 2020.1\lib\idea_rt.jar=63157:D:\professional\IntelliJ IDEA\IntelliJ IDEA Co
+mmunity Edition 2020.1\bin -Dfile.encoding=UTF-8
+
+
+```
+
+- jinfo -flag {XXX} {vmid} 打印当前 flag 配置信息
+
+```
+>jinfo -flag PrintGC 5532
+-XX:-PrintGC
+
+```
+
+- jinfo -flag {XXX}=XXX {vmid} 修改配置 或 jinfo -flag +{XXX} {vmid}
+
+```
+>jinfo -flag -PrintGC 5532
+
+>jinfo -flag PrintGC 5532
+-XX:-PrintGC
+
+>jinfo -flag +PrintGC 5532
+
+>jinfo -flag PrintGC 5532
+-XX:+PrintGC
+
+
+```
 
 
 
