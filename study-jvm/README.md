@@ -6,6 +6,8 @@ ref [https://www.cnblogs.com/redcreen/](https://www.cnblogs.com/redcreen/)
 
 [https://www.cnblogs.com/snowwhite/p/9569443.html](https://www.cnblogs.com/snowwhite/p/9569443.html)
 
+【你假笨@JVM】 http://lovestblog.cn/blog/2016/07/20/jstat/
+
 
 
 ## jvm 参数 ##
@@ -80,9 +82,25 @@ IntelliJ IDEA Community Edition 2020.1\plugins\maven\lib\maven-event-listener.ja
 
 reference link : https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstat.html
 
+解析说明 https://www.cnblogs.com/perfma/p/12456056.html
+
 Java Virtual Machine statistics monitoring tool
 
 Jvm 虚拟机实时信息，内存，垃圾回收等
+
+数据来源于目标程序，一个共享文件中 PerfData；指 指的是/tmp/hsperfdata_{user}/{pid}这个文件
+
+参数指定： -XX:+PerfDisableSharedMem或者-XX:-UsePerfData，此时，这个文件是不会存在；一个是是否共享，一个是是否创建存储这些指标
+
+- PerfDisableSharedMem：决定了存储PerfData的内存是不是可以被共享，如果设置了这个参数，说明不能被共享，此时其他进程将访问不了该内存，这样一来，譬如我们jps，jstat等都无法工作。默认这个参数是关闭的，也就是默认支持共享的方式
+
+- UsePerfData：如果关闭了UsePerfData这个参数，那么jvm启动过程中perf memory都不会被创建，jvm运行过程中自然不会再将这些性能数据保存起来，默认情况是是打开的
+
+文件更新策略，这个文件是通过mmap的方式映射到了内存里，而jstat是直接通过DirectByteBuffer的方式从PerfData里读取的，所以只要内存里的值变了，那我们从jstat看到的值就会发生变化，内存里的值什么时候变，取决于-XX:PerfDataSamplingInterval这个参数，默认是50ms，也就是说50ms更新一次值，基本上可以认为是实时的了。
+
+
+
+
 
 - jstat--help 帮助
 
@@ -429,11 +447,51 @@ mmunity Edition 2020.1\bin -Dfile.encoding=UTF-8
 
 reference link : https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html
 
+https://www.jianshu.com/p/cf118e8f929a
+
 Memory Map for Java 
 
 生成堆存储快照，heapdump；查询finalize执行队列；空间使用率等等
 
 **jmap** prints shared object memory maps or heap memory details of a given process or core file or a remote debug server. If the given process is running on a 64-bit VM, you may need to specify the *-J-d64* option, e.g.:
+
+实现原理
+
+通过jmap和jvm之间进行通信，有两种实现方式：attach 和 SA。
+
+attach方式，
+
+客户端和服务端通信模式，客户端发送请求，逻辑在服务端执行，jmap相当于客户端，JVM相当于服务端。
+
+在JVM中，有一个叫"Attach Listener"的线程，专门负责监听attach的请求，并执行对应的操作。
+
+
+
+比如现在执行"jmap -histo:live 5409"，一步一步的实现如下：
+ 1、在Jmap.java类的main函数中，对参数进行解析。
+ 2、解析出来参数中有“-histo:live”，则执行histo方法：
+
+attach方法建立了jmap进程和JVM之间的socket连接，然后进行通信。
+
+socket连接向JVM发送命令 + 参数。
+
+虚拟机的"Attach Listener"线程处理，并将结果以字符串返回。
+
+jmap 进行显示
+
+
+
+假如执行"jmap -heap 5409"，就不会使用attach方式实现了。
+
+在参数解析中，如果参数是"-heap|-heap:format=b|-permstat|-finalizerinfo"中的一种，或者添加了"-F"，比如"jmap -histo -F 5409"，则使用SA的方式。
+
+SA方式，和attach方式不同的是，相关的主要逻辑都在SA中实现，从JVM中获取数据即可。
+
+可以大概看下"jmap -heap"的实现，对应的实现类是"HeapSummary"，内部通过BugSpotAgent工具类attach到目标VM，更具体的底层细节，可以参考[HotSpot Serviceability Agent 实现浅析](https://link.jianshu.com?t=https%3A%2F%2Fyq.aliyun.com%2Farticles%2F20231)
+
+执行jmap -heap有些时候可能会导致进程变T，一般是有一个线程在等信号量，这时会block住其它所有线程，可以执行kill -CONT <pid>进行恢复，不过还是强烈建议别执行这个命令。
+
+
 
 
 
