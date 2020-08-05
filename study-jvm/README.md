@@ -437,7 +437,7 @@ Memory Map for Java
 
 
 
-- jmap--help 帮助
+- jmap -help 帮助
 
 ```
 >jmap --help
@@ -505,7 +505,435 @@ where <option> is one of:
 
 
 
+- jmap -heap {vmid} 打印当前进程的堆栈信息
 
+```
+>jmap -heap 13716
+Attaching to process ID 13716, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.131-b11
+
+using thread-local object allocation.
+Parallel GC with 4 thread(s)
+
+Heap Configuration:
+   MinHeapFreeRatio         = 0
+   MaxHeapFreeRatio         = 100
+   MaxHeapSize              = 2118123520 (2020.0MB)
+   NewSize                  = 44564480 (42.5MB)
+   MaxNewSize               = 705691648 (673.0MB)
+   OldSize                  = 89653248 (85.5MB)
+   NewRatio                 = 2
+   SurvivorRatio            = 8
+   MetaspaceSize            = 21807104 (20.796875MB)
+   CompressedClassSpaceSize = 1073741824 (1024.0MB)
+   MaxMetaspaceSize         = 17592186044415 MB
+   G1HeapRegionSize         = 0 (0.0MB)
+
+Heap Usage:
+PS Young Generation
+Eden Space:
+   capacity = 34078720 (32.5MB)
+   used     = 4776896 (4.55560302734375MB)
+   free     = 29301824 (27.94439697265625MB)
+   14.017240084134615% used
+From Space:
+   capacity = 5242880 (5.0MB)
+   used     = 0 (0.0MB)
+   free     = 5242880 (5.0MB)
+   0.0% used
+To Space:
+   capacity = 5242880 (5.0MB)
+   used     = 0 (0.0MB)
+   free     = 5242880 (5.0MB)
+   0.0% used
+PS Old Generation
+   capacity = 89653248 (85.5MB)
+   used     = 0 (0.0MB)
+   free     = 89653248 (85.5MB)
+   0.0% used
+
+3178 interned Strings occupying 260408 bytes.
+
+```
+
+参数解析
+
+
+
+- jmap -histo:live {vmid} 打印存活的类信息
+
+```
+>>jmap -histo:live 13716
+
+ num     #instances         #bytes  class name
+----------------------------------------------
+   1:          4702         447336  [C
+   2:           417         133488  [B
+   3:          4552         109248  java.lang.String
+   4:           753          85792  java.lang.Class
+   5:           644          42320  [Ljava.lang.Object;
+   6:           836          33440  java.util.TreeMap$Entry
+   7:           629          25160  java.util.LinkedHashMap$Entry
+   8:           427          18992  [Ljava.lang.String;
+   9:           415          13280  java.util.HashMap$Node
+  10:           150           9136  [I
+  11:            26           8992  [Ljava.util.HashMap$Node;
+  12:           113           8136  java.lang.reflect.Field
+  13:            87           5568  java.net.URL
+  14:           153           4896  java.util.Hashtable$Entry
+  15:           111           4440  java.lang.ref.SoftReference
+  16:           256           4096  java.lang.Integer
+  17:           111           3552  java.util.concurrent.ConcurrentHashMap$Node
+  18:             7           2632  java.lang.Thread
+  19:            42           2352  sun.misc.URLClassPath$JarLoader
+  20:            26           2080  java.lang.reflect.Constructor
+  21:            16           2048  [Ljava.util.concurrent.ConcurrentHashMap$Node;
+  22:            39           1872  sun.util.locale.LocaleObjectCache$CacheEntry
+  23:            45           1800  java.lang.ref.Finalizer
+  24:            35           1680  java.util.HashMap
+  25:             1           1560  [[B
+  26:            95           1520  java.lang.Object
+  27:            27           1512  java.lang.Class$ReflectionData
+  28:            37           1480  java.io.ObjectStreamField
+  29:            10           1392  [Ljava.util.Hashtable$Entry;
+  30:            21           1344  java.util.concurrent.ConcurrentHashMap
+  31:            15           1200  [Ljava.util.WeakHashMap$Entry;
+  32:             2           1064  [Ljava.lang.invoke.MethodHandle;
+  33:             1           1040  [Ljava.lang.Integer;
+  34:             1           1040  [[C
+  35:            41            984  java.io.ExpiringCache$Entry
+  36:            15            840  sun.nio.cs.UTF_8$Encoder
+  37:            12            768  java.util.jar.JarFile
+  38:            19            760  sun.util.locale.BaseLocale$Key
+  39:            13            728  java.util.zip.ZipFile$ZipFileInputStream
+  40:            15            720  java.util.WeakHashMap
+  41:            22            704  java.lang.ref.ReferenceQueue
+  42:             7            672  java.util.jar.JarFile$JarFileEntry
+  43:            11            648  [Ljava.lang.reflect.Field;
+  44:             8            640  [S
+  45:            19            608  java.io.File
+  46:            19            608  java.util.Locale
+  47:            19            608  sun.util.locale.BaseLocale
+  48:             6            528  java.lang.reflect.Method
+  49:            21            504  java.util.jar.Attributes$Name
+  50:            12            480  java.security.AccessControlContext
+  51:            19            456  java.util.Locale$LocaleKey
+  52:            11            440  java.io.FileDescriptor
+  53:            18            432  sun.misc.MetaIndex
+  54:            13            392  [Ljava.io.ObjectStreamField;
+  55:            20            392  [Ljava.lang.Class;
+  56:             1            384  com.intellij.rt.execution.application.AppMainV2$1
+  57:             1            384  java.lang.ref.Finalizer$FinalizerThread
+  58:            24            384  java.lang.ref.ReferenceQueue$Lock
+  59:             6            384  java.nio.DirectByteBuffer
+  60:            12            384  java.util.zip.ZipCoder
+  61:             1            376  java.lang.ref.Reference$ReferenceHandler
+  62:             6            336  java.nio.DirectLongBufferU
+  63:            10            320  java.lang.OutOfMemoryError
+  64:             3            312  [D
+  65:            13            312  [Ljava.lang.reflect.Constructor;
+  66:            13            312  sun.reflect.NativeConstructorAccessorImpl
+  67:            12            288  java.util.ArrayDeque
+  68:             5            280  sun.util.calendar.ZoneInfo
+  69:            11            264  java.util.ArrayList
+  70:             8            256  java.util.Vector
+  71:             3            240  [Ljava.lang.ThreadLocal$ThreadLocalMap$Entry;
+  72:            10            240  java.security.CryptoPrimitive
+  73:             5            240  java.util.Hashtable
+  74:             5            240  java.util.Properties
+  75:             5            240  java.util.TreeMap
+  76:             6            240  java.util.WeakHashMap$Entry
+  77:             7            224  java.io.FileInputStream
+  78:             4            224  java.util.LinkedHashMap
+  79:             2            216  [J
+  80:             9            216  java.util.LinkedList$Node
+  81:             3            216  java.util.regex.Pattern
+  82:            13            208  sun.reflect.DelegatingConstructorAccessorImpl
+  83:             5            200  java.security.ProtectionDomain
+  84:             6            192  java.lang.ThreadLocal$ThreadLocalMap$Entry
+  85:             2            160  [[Ljava.lang.String;
+  86:             4            160  java.lang.ClassLoader$NativeLibrary
+  87:             5            160  java.security.CodeSource
+  88:             5            160  java.util.LinkedList
+  89:             5            160  sun.util.locale.provider.LocaleProviderAdapter$Type
+  90:             3            144  java.nio.HeapByteBuffer
+  91:             6            144  sun.misc.PerfCounter
+  92:             3            144  sun.misc.URLClassPath
+  93:             6            144  sun.security.util.DisabledAlgorithmConstraints$Constraint$Operator
+  94:             2            128  java.io.ExpiringCache$1
+  95:             4            128  java.util.Stack
+  96:             2            128  sun.nio.cs.ext.DoubleByte$Encoder
+  97:             1            120  java.net.SocksSocketImpl
+  98:             5            120  java.util.Collections$UnmodifiableRandomAccessList
+  99:             5            120  java.util.regex.Pattern$Slice
+ 100:             5            120  sun.misc.FloatingDecimal$PreparedASCIIToBinaryBuffer
+ 101:             2            112  [Ljava.security.CryptoPrimitive;
+ 102:             2            112  java.lang.Package
+ 103:             7            112  java.util.HashSet
+ 104:             2            112  java.util.ResourceBundle$CacheKey
+ 105:             2            112  java.util.zip.ZipFile$ZipFileInflaterInputStream
+ 106:             2            112  sun.nio.cs.ext.DoubleByte$Decoder
+ 107:             3             96  java.io.FileOutputStream
+ 108:             4             96  java.lang.RuntimePermission
+ 109:             3             96  java.lang.StringCoding$StringEncoder
+ 110:             2             96  java.lang.ThreadGroup
+ 111:             2             96  java.util.ResourceBundle$BundleReference
+ 112:             3             96  java.util.regex.Pattern$Curly
+ 113:             2             96  java.util.zip.Inflater
+ 114:             1             96  sun.misc.Launcher$AppClassLoader
+ 115:             3             96  sun.net.spi.DefaultProxySelector$NonProxyInfo
+ 116:             2             96  sun.nio.cs.StreamEncoder
+ 117:             1             88  java.net.DualStackPlainSocketImpl
+ 118:             1             88  sun.misc.Launcher$ExtClassLoader
+ 119:             5             80  [Ljava.security.Principal;
+ 120:             2             80  java.io.BufferedWriter
+ 121:             2             80  java.io.ExpiringCache
+ 122:             5             80  java.lang.ThreadLocal
+ 123:             5             80  java.security.ProtectionDomain$Key
+ 124:             2             80  sun.misc.FloatingDecimal$BinaryToASCIIBuffer
+ 125:             3             72  [Ljava.lang.reflect.Method;
+ 126:             2             72  [Ljava.util.regex.Pattern$Node;
+ 127:             3             72  java.lang.ThreadLocal$ThreadLocalMap
+ 128:             3             72  java.net.Proxy$Type
+ 129:             3             72  java.util.Arrays$ArrayList
+ 130:             3             72  java.util.Collections$SynchronizedSet
+ 131:             1             72  java.util.ResourceBundle$RBClassLoader
+ 132:             3             72  java.util.concurrent.atomic.AtomicLong
+ 133:             3             72  java.util.regex.Pattern$Ctype
+ 134:             3             72  java.util.regex.Pattern$Single
+ 135:             3             72  sun.misc.FloatingDecimal$ExceptionalBinaryToASCIIBuffer
+ 136:             1             72  sun.util.locale.provider.JRELocaleProviderAdapter
+ 137:             1             64  [F
+ 138:             2             64  [Ljava.lang.Thread;
+ 139:             2             64  java.io.FilePermission
+ 140:             2             64  java.io.PrintStream
+ 141:             2             64  java.lang.ClassValue$Entry
+ 142:             2             64  java.lang.StringCoding$StringDecoder
+ 143:             2             64  java.lang.VirtualMachineError
+ 144:             2             64  java.lang.ref.ReferenceQueue$Null
+ 145:             2             64  java.lang.ref.WeakReference
+ 146:             2             64  java.security.BasicPermissionCollection
+ 147:             2             64  java.security.Permissions
+ 148:             2             64  java.util.ResourceBundle$LoaderReference
+ 149:             2             64  java.util.regex.Pattern$Branch
+ 150:             2             48  java.io.BufferedOutputStream
+ 151:             1             48  java.io.BufferedReader
+ 152:             2             48  java.io.File$PathStatus
+ 153:             2             48  java.io.FilePermissionCollection
+ 154:             2             48  java.io.OutputStreamWriter
+ 155:             1             48  java.lang.ProcessEnvironment
+ 156:             2             48  java.net.InetAddress$Cache
+ 157:             2             48  java.net.InetAddress$Cache$Type
+ 158:             1             48  java.net.SocketInputStream
+ 159:             1             48  java.nio.HeapCharBuffer
+ 160:             2             48  java.nio.charset.CoderResult
+ 161:             3             48  java.nio.charset.CodingErrorAction
+ 162:             2             48  java.util.regex.Pattern$GroupHead
+ 163:             2             48  java.util.regex.Pattern$GroupTail
+ 164:             2             48  java.util.regex.Pattern$SliceI
+ 165:             2             48  java.util.regex.Pattern$Start
+ 166:             2             48  java.util.zip.ZStreamRef
+ 167:             2             48  sun.misc.NativeSignalHandler
+ 168:             2             48  sun.misc.Signal
+ 169:             3             48  sun.net.www.protocol.jar.Handler
+ 170:             1             48  sun.nio.cs.StreamDecoder
+ 171:             1             48  sun.nio.cs.US_ASCII$Decoder
+ 172:             2             48  sun.reflect.NativeMethodAccessorImpl
+ 173:             1             48  sun.util.locale.provider.LocaleResources$ResourceReference
+ 174:             1             48  sun.util.resources.TimeZoneNames
+ 175:             1             48  sun.util.resources.en.TimeZoneNames_en
+ 176:             1             40  [Lsun.security.util.DisabledAlgorithmConstraints$Constraint$Operator;
+ 177:             1             40  [Lsun.util.locale.provider.LocaleProviderAdapter$Type;
+ 178:             1             40  java.io.BufferedInputStream
+ 179:             1             40  java.util.ResourceBundle$1
+ 180:             1             40  sun.nio.cs.StandardCharsets$Aliases
+ 181:             1             40  sun.nio.cs.StandardCharsets$Cache
+ 182:             1             40  sun.nio.cs.StandardCharsets$Classes
+ 183:             1             40  sun.nio.cs.UTF_8$Decoder
+ 184:             1             40  sun.nio.cs.ext.ExtendedCharsets
+ 185:             1             32  [Ljava.lang.OutOfMemoryError;
+ 186:             2             32  [Ljava.lang.StackTraceElement;
+ 187:             1             32  [Ljava.lang.ThreadGroup;
+ 188:             1             32  [Ljava.net.Proxy$Type;
+ 189:             1             32  java.io.WinNTFileSystem
+ 190:             1             32  java.lang.ArithmeticException
+ 191:             2             32  java.lang.Boolean
+ 192:             1             32  java.lang.NullPointerException
+ 193:             1             32  java.net.InetAddress$InetAddressHolder
+ 194:             1             32  java.net.Socket
+ 195:             2             32  java.nio.ByteOrder
+ 196:             1             32  java.util.Collections$UnmodifiableMap
+ 197:             2             32  java.util.LinkedHashMap$LinkedKeySet
+ 198:             1             32  java.util.RegularEnumSet
+ 199:             2             32  java.util.concurrent.atomic.AtomicInteger
+ 200:             1             32  java.util.concurrent.atomic.AtomicReferenceFieldUpdater$AtomicReferenceFieldUpdaterImpl
+ 201:             1             32  java.util.regex.Pattern$BnM
+ 202:             2             32  java.util.regex.Pattern$BranchConn
+ 203:             1             32  sun.instrument.InstrumentationImpl
+ 204:             1             32  sun.nio.cs.StandardCharsets
+ 205:             2             32  sun.reflect.DelegatingMethodAccessorImpl
+ 206:             1             32  sun.security.util.DisabledAlgorithmConstraints$KeySizeConstraint
+ 207:             1             32  sun.util.locale.provider.LocaleResources
+ 208:             1             32  sun.util.locale.provider.LocaleServiceProviderPool
+ 209:             1             24  [Ljava.io.File$PathStatus;
+ 210:             1             24  [Ljava.lang.ClassValue$Entry;
+ 211:             1             24  [Ljava.net.InetAddress$Cache$Type;
+ 212:             1             24  [Ljava.security.ProtectionDomain;
+ 213:             1             24  [Lsun.launcher.LauncherHelper;
+ 214:             1             24  java.io.InputStreamReader
+ 215:             1             24  java.lang.ClassValue$Version
+ 216:             1             24  java.lang.StringBuilder
+ 217:             1             24  java.lang.invoke.MethodHandleImpl$4
+ 218:             1             24  java.lang.reflect.ReflectPermission
+ 219:             1             24  java.net.Inet4Address
+ 220:             1             24  java.net.Inet6AddressImpl
+ 221:             1             24  java.net.Proxy
+ 222:             1             24  java.util.BitSet
+ 223:             1             24  java.util.Collections$EmptyMap
+ 224:             1             24  java.util.Collections$SetFromMap
+ 225:             1             24  java.util.Locale$Cache
+ 226:             1             24  java.util.ResourceBundle$Control$CandidateListCache
+ 227:             1             24  java.util.jar.Manifest
+ 228:             1             24  sun.instrument.TransformerManager
+ 229:             1             24  sun.launcher.LauncherHelper
+ 230:             1             24  sun.misc.JarIndex
+ 231:             1             24  sun.misc.URLClassPath$FileLoader
+ 232:             1             24  sun.nio.cs.ISO_8859_1
+ 233:             1             24  sun.nio.cs.ThreadLocalCoders$1
+ 234:             1             24  sun.nio.cs.ThreadLocalCoders$2
+ 235:             1             24  sun.nio.cs.US_ASCII
+ 236:             1             24  sun.nio.cs.UTF_16
+ 237:             1             24  sun.nio.cs.UTF_16BE
+ 238:             1             24  sun.nio.cs.UTF_16LE
+ 239:             1             24  sun.nio.cs.UTF_8
+ 240:             1             24  sun.nio.cs.ext.GBK
+ 241:             1             24  sun.security.util.DisabledAlgorithmConstraints
+ 242:             1             24  sun.util.locale.BaseLocale$Cache
+ 243:             1             24  sun.util.locale.provider.TimeZoneNameProviderImpl
+ 244:             1             16  [Ljava.lang.Enum;
+ 245:             1             16  [Ljava.lang.Throwable;
+ 246:             1             16  [Ljava.security.cert.Certificate;
+ 247:             1             16  [Lsun.instrument.TransformerManager$TransformerInfo;
+ 248:             1             16  java.io.FileDescriptor$1
+ 249:             1             16  java.lang.CharacterDataLatin1
+ 250:             1             16  java.lang.ClassValue$Identity
+ 251:             1             16  java.lang.ProcessEnvironment$EntryComparator
+ 252:             1             16  java.lang.ProcessEnvironment$NameComparator
+ 253:             1             16  java.lang.Runtime
+ 254:             1             16  java.lang.String$CaseInsensitiveComparator
+ 255:             1             16  java.lang.System$2
+ 256:             1             16  java.lang.Terminator$1
+ 257:             1             16  java.lang.invoke.MemberName$Factory
+ 258:             1             16  java.lang.invoke.MethodHandleImpl$2
+ 259:             1             16  java.lang.invoke.MethodHandleImpl$3
+ 260:             1             16  java.lang.ref.Reference$1
+ 261:             1             16  java.lang.ref.Reference$Lock
+ 262:             1             16  java.lang.reflect.ReflectAccess
+ 263:             1             16  java.net.InetAddress$2
+ 264:             1             16  java.net.URLClassLoader$7
+ 265:             1             16  java.nio.Bits$1
+ 266:             1             16  java.nio.charset.CoderResult$1
+ 267:             1             16  java.nio.charset.CoderResult$2
+ 268:             1             16  java.security.ProtectionDomain$2
+ 269:             1             16  java.security.ProtectionDomain$JavaSecurityAccessImpl
+ 270:             1             16  java.util.Collections$EmptyIterator
+ 271:             1             16  java.util.Collections$EmptyList
+ 272:             1             16  java.util.Collections$EmptySet
+ 273:             1             16  java.util.Collections$UnmodifiableSet
+ 274:             1             16  java.util.HashMap$EntrySet
+ 275:             1             16  java.util.Hashtable$EntrySet
+ 276:             1             16  java.util.ResourceBundle$Control
+ 277:             1             16  java.util.WeakHashMap$KeySet
+ 278:             1             16  java.util.concurrent.atomic.AtomicBoolean
+ 279:             1             16  java.util.jar.Attributes
+ 280:             1             16  java.util.jar.JavaUtilJarAccessImpl
+ 281:             1             16  java.util.regex.Pattern$4
+ 282:             1             16  java.util.regex.Pattern$LastNode
+ 283:             1             16  java.util.regex.Pattern$Node
+ 284:             1             16  java.util.zip.ZipFile$1
+ 285:             1             16  sun.misc.ASCIICaseInsensitiveComparator
+ 286:             1             16  sun.misc.FloatingDecimal$1
+ 287:             1             16  sun.misc.Launcher
+ 288:             1             16  sun.misc.Launcher$Factory
+ 289:             1             16  sun.misc.Perf
+ 290:             1             16  sun.misc.Unsafe
+ 291:             1             16  sun.net.spi.DefaultProxySelector
+ 292:             1             16  sun.net.www.protocol.file.Handler
+ 293:             1             16  sun.reflect.ReflectionFactory
+ 294:             1             16  sun.security.util.AlgorithmDecomposer
+ 295:             1             16  sun.security.util.DisabledAlgorithmConstraints$Constraints
+ 296:             1             16  sun.util.calendar.Gregorian
+ 297:             1             16  sun.util.locale.provider.AuxLocaleProviderAdapter$NullProvider
+ 298:             1             16  sun.util.locale.provider.SPILocaleProviderAdapter
+ 299:             1             16  sun.util.locale.provider.TimeZoneNameUtility$TimeZoneNameGetter
+ 300:             1             16  sun.util.resources.LocaleData
+ 301:             1             16  sun.util.resources.LocaleData$LocaleDataResourceBundleControl
+Total         15713        1016880
+
+```
+
+参数说明
+
+
+
+- jmap -clstats {vmid} 查看类加载器情况
+
+```
+>jmap -clstats 13716
+
+Attaching to process ID 13716, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.131-b11
+finding class loader instances ..done.
+computing per loader stat ..done.
+please wait.. computing liveness...............................................done.
+class_loader    classes bytes   parent_loader   alive?  type
+
+<bootstrap>     663     1228703   null          live    <internal>
+0x0000000081ceeaa8      0       0       0x0000000081c09288      live    java/util/ResourceBundle$RBClassLoader@0x000000010006dd08
+0x0000000081c09288      26      78403   0x0000000081c092f8      live    sun/misc/Launcher$AppClassLoader@0x000000010000f6a0
+0x0000000081c092f8      0       0         null          live    sun/misc/Launcher$ExtClassLoader@0x000000010000fa48
+
+total = 4       689     1307106     N/A         alive=4, dead=0     N/A
+
+
+```
+
+参数解析
+
+
+
+- jmap -finalizerinfo{vmid} 查看回收队列情况
+
+```
+>jmap -finalizerinfo 13716
+
+Attaching to process ID 13716, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.131-b11
+Number of objects pending for finalization: 0
+
+```
+
+参数解析
+
+
+
+- jmap -dump {vmid} 生成dump 文件
+
+```
+>jmap -dump:format=b,file=dump.hprof 13716
+
+Dumping heap to E:\GitHubDesktop\study\dump.hprof ...
+Heap dump file created
+
+```
+
+参数解析
 
 
 
