@@ -42,7 +42,13 @@ com.bage.demo.core
             
         -model // 模型
 
-        -repo // 数据库仓储
+        -repo // 数据库仓储实现
+        
+            - mybatis
+                - entity
+                - mapper
+                - mapping
+            
 
         -logic // 最小业务单元逻辑
                 
