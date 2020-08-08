@@ -1,6 +1,10 @@
 # study-app #
 应用实践
 
+todo vue code generator 
+
+
+
 ## 目录结构 ##
 
 ### api 项目结构 ###
