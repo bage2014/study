@@ -8,6 +8,7 @@ ref [https://www.cnblogs.com/redcreen/](https://www.cnblogs.com/redcreen/)
 
 【你假笨@JVM】 http://lovestblog.cn/blog/2016/07/20/jstat/
 
+http://www.jintiankansha.me/column/VEAxWixHBx
 
 
 ## jvm 参数 ##
