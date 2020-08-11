@@ -22,12 +22,12 @@ Linux学习笔记
 修改/etc/hosts文件
 
     vi /etc/hosts
-    
+
 
 末尾追加如下内容，
 
     127.0.0.1	localhost.localdomain	localhost 
-    
+
 
 hosts文件格式是一行一条记录，分别是IP地址 hostname aliases，三者用空白字符分隔，aliases可选。
 
@@ -45,14 +45,14 @@ hosts文件格式是一行一条记录，分别是IP地址 hostname aliases，�
 监听 1234端口
 
     nc -l 1234
-    
+
 
 
 
 请求 本地的 1234 端口
 
     nc localhost 1234 
-    
+
 
 
 
@@ -63,3 +63,54 @@ hosts文件格式是一行一条记录，分别是IP地址 hostname aliases，�
 说明，扫描 8000-9000的端口
 
 nc -v ip -z startPort-endPort
+
+
+
+
+
+### vi 编辑器 ###
+
+
+
+编辑模式 -> 命令模式
+
+    Esc 
+
+
+
+命令模式 -> 编辑模式
+
+    a // 当前字符后添加
+    
+    A // 行末添加
+    
+    i // 当前字符前插入
+    
+    I // 行首插入
+    
+    o // 当前行下面插入一空行
+    
+    O // 当前行前面插入一空行
+    
+
+
+
+查看模式
+
+    dd // 删除光标坐在行
+    ZZ // 保存文件内容
+    x // 将光标处的字符删除  
+
+
+
+监听 1234端口
+
+    nc -l 1234
+
+
+
+
+请求 本地的 1234 端口
+
+    nc localhost 1234 
+
