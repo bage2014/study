@@ -57,3 +57,8 @@ res.eventChannel.emit('nextPageEvent', { user: 'bage' })
   },
 ```
 
+
+
+
+
+支持直接使用IP ？？？明天进行配置下看看
