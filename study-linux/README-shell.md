@@ -120,7 +120,7 @@ nc -v ip -z startPort-endPort
     /xyz // 光标开始，向下查找 xyz 字符串,按 n 查找下一个 
     ?xyz // 光标开始，向上查找 xyz 字符串 
     :s/F/R // 替换文本操作，将F字符串换成T字符
-    
+
 
 
 
@@ -138,4 +138,64 @@ nc -v ip -z startPort-endPort
 请求 本地的 1234 端口
 
     nc localhost 1234 
+
+
+
+## 主机名 ##
+
+查看主机名
+
+    hostname
+
+暂时更改主机名
+
+    # hostname <host-name> 
+
+永久修改主机名
+
+    $ sudo hostnamectl --static set-hostname <host-name>
+    $ sudo hostnamectl --transient set-hostname <host-name>
+    $ sudo hostnamectl --pretty set-hostname <host-name>
+
+## tar压缩解压 ##
+
+压缩，将 hello 文件夹压缩到 hello.tar.gz 
+
+    tar -cvzf hello.tar.gz hello/
+
+解压，将 hello.tar.gz 压缩文件解压到 hello文件夹
+
+    tar -xvf hello.tar.gz hello/
+
+## 防火墙 ##
+
+查看防火墙状态
+
+    # service iptable status
+    # systemctl status firewalld.service // centos7
+
+关闭防火墙
+
+    # service iptable stop
+    # systemctl stop firewalld.service // centos7
+
+打开防火墙
+
+    # service iptable start
+    # systemctl start firewalld.service // centos7
+
+禁用防火墙
+
+    # service iptable disable 
+    # systemctl disable firewalld.service // centos7
+
+启用防火墙
+
+    # service iptable enable 
+    # systemctl enable firewalld.service // centos7
+
+永久关闭|开启防火墙
+
+    # chkconfig httpd on | off
+    # chkconfig iptable on | off	
 
