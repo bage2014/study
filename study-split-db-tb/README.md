@@ -1,6 +1,14 @@
 # study-split-db-tb #
 分库分表 学习笔记
 
+
+
+注意事项
+
+在路由过程中，不能查询数据库？？
+
+
+
 ## 参考链接 ##
 开源 数据库分库分表 [https://www.aliyun.com/citiao/999897.html](https://www.aliyun.com/citiao/999897.html)、[https://my.oschina.net/u/2335525/blog/1855103](https://my.oschina.net/u/2335525/blog/1855103)
 
