@@ -199,3 +199,44 @@ nc -v ip -z startPort-endPort
     # chkconfig httpd on | off
     # chkconfig iptable on | off	
 
+
+
+
+
+其他
+
+
+
+设置普通用户的超级用户权限
+
+    # vi /etc/sudoers
+    # username ALL=(root)NOPASSWD:ALL	
+
+
+
+查看在线
+
+    who	
+
+
+
+crontab 
+
+查看
+
+    crontab -l	
+
+查看
+
+    crontab -e
+
+查看
+
+    crontab -root
+
+说明
+
+| *        | *        | *        | *        | *         |
+| -------- | -------- | -------- | -------- | --------- |
+| 分：1-59 | 时：0-23 | 日：1-31 | 月：1-12 | 星期：0-6 |
+
