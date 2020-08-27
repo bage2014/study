@@ -3,7 +3,7 @@ Linux学习笔记
 
 ## 常用命令 ##
 
-
+linux 在线： https://copy.sh/v86/?profile=linux26
 
 
 
