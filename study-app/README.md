@@ -47,7 +47,7 @@ com.bage.demo.core
         -model // 模型
 
         -repo // 数据库仓储实现
-        
+         - impl
             - mybatis
                 - entity
                 - mapper

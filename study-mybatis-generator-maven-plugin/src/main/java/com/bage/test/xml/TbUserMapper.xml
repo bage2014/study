@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bage.test.mapper.TbUserMapper">
+  <resultMap id="BaseResultMap" type="com.bage.test.entity.TbUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="icon_id" jdbcType="BIGINT" property="iconId" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_staff_id" jdbcType="VARCHAR" property="createStaffId" />
+    <result column="update_staff_id" jdbcType="VARCHAR" property="updateStaffId" />
+    <result column="delete_state" jdbcType="VARCHAR" property="deleteState" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.bage.test.entity.TbUser" useGeneratedKeys="true">
+    insert into tb_user (username, phone, mail, 
+      password, sex, birthday, 
+      icon_id, icon_url, create_time, 
+      update_time, create_staff_id, update_staff_id, 
+      delete_state)
+    values (#{username,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{iconId,jdbcType=BIGINT}, #{iconUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createStaffId,jdbcType=VARCHAR}, #{updateStaffId,jdbcType=VARCHAR}, 
+      #{deleteState,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.bage.test.entity.TbUser">
+    update tb_user
+    set username = #{username,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      mail = #{mail,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      icon_id = #{iconId,jdbcType=BIGINT},
+      icon_url = #{iconUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_staff_id = #{createStaffId,jdbcType=VARCHAR},
+      update_staff_id = #{updateStaffId,jdbcType=VARCHAR},
+      delete_state = #{deleteState,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, username, phone, mail, password, sex, birthday, icon_id, icon_url, create_time, 
+    update_time, create_staff_id, update_staff_id, delete_state
+    from tb_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, phone, mail, password, sex, birthday, icon_id, icon_url, create_time, 
+    update_time, create_staff_id, update_staff_id, delete_state
+    from tb_user
+  </select>
+</mapper>
