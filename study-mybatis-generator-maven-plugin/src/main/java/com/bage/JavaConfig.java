@@ -1,11 +1,11 @@
 package com.bage;
 
 import org.mybatis.generator.api.MyBatisGenerator;
+import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class JavaConfig {
 
@@ -16,12 +16,24 @@ public class JavaConfig {
             //使用纯Java代码配置的方式
             config = getGeneratorConfig();
             DefaultShellCallback callback = new DefaultShellCallback(true);
-            MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+            MyMyBatisGenerator myBatisGenerator = new MyMyBatisGenerator(config, callback, warnings);
+            Set<String> contextIds = new HashSet<>();
+            contextIds.add("simple");
+            Set<String> tableNames = new HashSet<>();
+            tableNames.add("tb_user");
             myBatisGenerator.generate(null);
 
             for (String warning : warnings) {
                 System.out.println(warning);
             }
+
+            Map<String, String> contents = myBatisGenerator.getContents();
+            contents.forEach((key,value)->{
+                System.out.println("------------------------------------");
+                System.out.println(key);
+                System.out.println(value);
+            });
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -36,7 +48,7 @@ public class JavaConfig {
         /*添加属性*/
         context.addProperty("javaFileEncoding", "UTF-8");
 
-        /*插件配置，这个是我自己的插件，没有自定义插件的同学可以不配这一节，删除即可*/
+//        /*插件配置，这个是我自己的插件，没有自定义插件的同学可以不配这一节，删除即可*/
 //        PluginConfiguration pluginConfig = new PluginConfiguration();
 //        pluginConfig.setConfigurationType("com.xgclassroom.generator.GeneratorPlugin");
 //        context.addPluginConfiguration(pluginConfig);
