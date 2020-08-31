@@ -259,3 +259,45 @@ mv: 移动文件与目录，或修改文件与目录的名称
 -A	同 -a ，但不列出 “.” (当前目录) 及 “..” (父目录)
 -S	根据文件大小排序
 -R	递归列出所有子目录
+
+## 文件属性 ##
+
+
+
+
+
+## 磁盘管理 ##
+
+- df：列出文件系统的整体磁盘使用量
+- du：检查磁盘空间使用量
+- fdisk：用于磁盘分区
+
+
+
+
+
+
+
+## yum 命令 ##
+
+Yellow dog Updater, Modified
+
+基于 RPM包 管理
+
+
+
+安装软件 <package_name>
+
+    yum install <package_name>
+
+
+
+移除软件 <package_name>
+
+    yum remove <package_name>
+
+
+
+查找软件 <keyword>
+
+    yum search <keyword>
