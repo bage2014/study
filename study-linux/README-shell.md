@@ -1,6 +1,18 @@
 # study-linux #
 Linux学习笔记
 
+
+
+启动过程
+
+- 内核的引导。
+- 运行 init。
+- 系统初始化。
+- 建立终端 。
+- 用户登录系统。
+
+
+
 ## 常用命令 ##
 
 linux 在线： https://copy.sh/v86/?profile=linux26
@@ -311,3 +323,16 @@ Yellow dog Updater, Modified
 查找软件 <keyword>
 
     yum search <keyword>
+
+
+
+## 关机 ##
+
+正确的关机流程为：sync > shutdown > reboot > halt
+
+关机指令为：shutdown ，你可以man shutdown 来看一下帮助文档。
+
+最后总结一下，不管是重启系统还是关闭系统，首先要运行 **sync** 命令，把内存中的数据写到磁盘中
+
+
+
