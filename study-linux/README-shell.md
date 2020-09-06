@@ -1,9 +1,31 @@
 # study-linux #
-Linux学习笔记
+## 参考链接
+
+linux 在线： https://copy.sh/v86/?profile=linux26
+
+https://linuxtools-rst.readthedocs.io/zh_CN/latest/index.html
+
+http://cn.linux.vbird.org/
 
 
 
-启动过程
+## 优缺点 ## 
+
+### 优点 ###
+
+操作系统，并肩 windows、MacOS
+开源
+稳定
+省资源
+服务器
+
+### 缺点 ###
+
+无特定厂商
+部分软件、游戏不支持
+用户友好特性欠缺
+
+## 启动过程
 
 - 内核的引导。
 - 运行 init。
@@ -13,15 +35,9 @@ Linux学习笔记
 
 
 
-## 常用命令 ##
+## 查找命令 ##
 
-linux 在线： https://copy.sh/v86/?profile=linux26
-
-https://linuxtools-rst.readthedocs.io/zh_CN/latest/index.html
-
-http://cn.linux.vbird.org/
-
-### grep命令基本用法 ###
+### grep  ###
 - 参考链接 [https://mp.weixin.qq.com/s?__biz=MzIwNTc4NTEwOQ==&mid=2247483656&idx=1&sn=17ad20cce3d6d4d587a905a706f488ed&chksm=972ad072a05d5964f28bb4c136572dbb1f75ad63d65d43d2e4b4bbf631f94fe5abe41e1cb40b&mpshare=1&scene=21&srcid=10073g3SoldEq4Vth1QQd6Z3#wechat_redirect](https://mp.weixin.qq.com/s?__biz=MzIwNTc4NTEwOQ==&mid=2247483656&idx=1&sn=17ad20cce3d6d4d587a905a706f488ed&chksm=972ad072a05d5964f28bb4c136572dbb1f75ad63d65d43d2e4b4bbf631f94fe5abe41e1cb40b&mpshare=1&scene=21&srcid=10073g3SoldEq4Vth1QQd6Z3#wechat_redirect "微信链接")
 
 ## 软件安装 ##
@@ -171,7 +187,9 @@ nc -v ip -z startPort-endPort
     $ sudo hostnamectl --transient set-hostname <host-name>
     $ sudo hostnamectl --pretty set-hostname <host-name>
 
-## tar压缩解压 ##
+## 压缩解压 ##
+
+### tar 类
 
 压缩，将 hello 文件夹压缩到 hello.tar.gz 
 
@@ -180,6 +198,18 @@ nc -v ip -z startPort-endPort
 解压，将 hello.tar.gz 压缩文件解压到 hello文件夹
 
     tar -xvf hello.tar.gz hello/
+
+### zip 类
+
+压缩，将 hello 文件夹压缩到 hello.zip
+
+    zip hello.zip hello/
+
+解压，将 hello.zip 压缩文件解压到 hello文件夹
+
+    zip hello.zip hello/
+
+
 
 ## 防火墙 ##
 
@@ -214,6 +244,12 @@ nc -v ip -z startPort-endPort
     # chkconfig iptable on | off	
 
 
+
+## 网络
+
+## 磁盘
+
+## 用户和组
 
 
 
@@ -254,8 +290,11 @@ crontab
 | -------- | -------- | -------- | -------- | --------- |
 | 分：1-59 | 时：0-23 | 日：1-31 | 月：1-12 | 星期：0-6 |
 
-
 ## 文件与目录 ##
+
+Linux 中一切都是文件；
+目录、文件名称长度限制  <= 255 
+大小写敏感，无拓展名概念
 
 | 硬件设备      | 文件名称                                                     |
 | ------------- | ------------------------------------------------------------ |
@@ -267,26 +306,83 @@ crontab
 | 鼠标          | /dev/mouse                                                   |
 | 磁带机        | /dev/st0 或 /dev/ht0                                         |
 
-ls: 列出目录及文件名
-cd：切换目录
-pwd：显示目前的目录
-mkdir：创建一个新的目录
-rmdir：删除一个空的目录
-cp: 复制文件或目录
-rm: 移除文件或目录
-mv: 移动文件与目录，或修改文件与目录的名称
+### 基本操作
 
--a	显示所有文件及目录 (包括以“.”开头的隐藏文件)
--l	使用长格式列出文件及目录信息
--r	将文件以相反次序显示(默认依英文字母次序)
--t	根据最后的修改时间排序
--A	同 -a ，但不列出 “.” (当前目录) 及 “..” (父目录)
--S	根据文件大小排序
--R	递归列出所有子目录
+切换目录
 
-## 文件属性 ##
+    cd
+
+显示当前目录
+
+```
+pwd 
+```
+
+查看当前目录下的文件和文件夹
+
+    ls 
+
+创建文件夹 xxx
+
+    mkdir xxx
+
+删除空文件夹
+
+    rmdir xxx
+
+创建文件
+
+    touch xxx.txt
+
+删除文件
+
+    rm xxx.txt
+
+移动
+
+    mv ./old-dir/abc.txt ./new-dir/ 
+
+重命名
+
+    mv ./abc.txt ./abcdefg.txt 
+
+拷贝 -r 递归拷贝
+
+    cp -r ./old-dir/* ./new-dir 
 
 
+
+### 内容查看 ###
+
+翻页查看内容
+
+    more ./hello.txt
+
+从文件尾部查看
+
+    tail ./hello.txt
+
+从文件开头查看
+
+    head ./hello.txt 
+
+查看文件所有内容 
+
+    cat ./hello.txt 
+
+### 属性查看
+
+查看文件最新更新等属性
+
+    stat ./hello.txt 
+
+文件字数、行数统计
+
+    wc ./hello.txt
+
+查看文件编码
+
+    file ./hello.txt
 
 
 
