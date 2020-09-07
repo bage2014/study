@@ -434,3 +434,56 @@ Yellow dog Updater, Modified
 
 
 
+## 进程
+
+### ps
+
+关机
+
+```
+ps
+```
+
+### lsof
+
+端口查询
+
+```
+lsof -i:3306
+```
+
+### kill
+
+关机
+
+```
+lsof -i:3306
+```
+
+
+
+### top
+
+### pmap
+
+### sar
+
+### free
+
+
+
+```
+free -m
+```
+
+
+
+### watch
+
+### netstat 
+
+### iostat
+
+### pstack
+
+### pstrace
