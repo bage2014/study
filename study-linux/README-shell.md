@@ -438,11 +438,25 @@ Yellow dog Updater, Modified
 
 ### ps
 
-关机
+基本用法
 
 ```
 ps
 ```
+
+显示 用户 bage 的进程
+
+```
+ps -u bage
+```
+
+基本用法
+
+```
+ps
+```
+
+
 
 ### lsof
 
