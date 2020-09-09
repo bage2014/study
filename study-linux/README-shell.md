@@ -533,3 +533,7 @@ free -m
 ### pstack
 
 ### pstrace
+
+## 查找类 ##
+### grep
+### find
