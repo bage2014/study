@@ -555,3 +555,7 @@ watch -n 3 -d date
 ### pstack
 
 ### pstrace
+
+## 查找类 ##
+### grep
+### find
