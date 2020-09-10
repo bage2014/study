@@ -516,7 +516,7 @@ lsof -i:3306
 
 ### free
 
-
+换行
 
 ```
 free -m
@@ -525,6 +525,28 @@ free -m
 
 
 ### watch
+
+周期性执行指定命令；全屏显示
+
+每三秒执行一次 date 命令
+
+```
+watch -n 3 date
+```
+
+高亮显示差异内容
+
+```
+watch -n 3 -d date
+```
+
+当呆执行的命令存在空格换行或参数时，可以使用 ' '
+
+```
+ watch -n 3 'ls | grep txt'
+```
+
+
 
 ### netstat 
 
