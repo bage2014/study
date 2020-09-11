@@ -558,4 +558,28 @@ watch -n 3 -d date
 
 ## 查找类 ##
 ### grep
+用户在文本内容中匹配字符，并输出
+
+基本用法，从hello.txt 中查找bage字符串
+```
+ grep bage hello.txt
+```
+
+忽略大小写，从hello.txt 中查找bage字符串
+```
+ grep -i bage hello.txt
+```
+
+
+正则表达式，从 hello.txt 中查找匹配 bage 或 cage的行
+```
+ grep -e '[bc]age' hello.txt
+```
+
+正则表达式，从 hello.txt 中查找不匹配 bage 或 cage的行;并显示行号
+```
+ grep -n -v  -e '[bc]age' hello.txt
+```
+
+
 ### find
