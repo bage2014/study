@@ -583,3 +583,21 @@ watch -n 3 -d date
 
 
 ### find
+在目录中查找匹配的文件
+
+从当前目录以及子目录中查找文件名是hello.txt的文件
+```
+ find ./ -name hello.txt
+```
+
+
+从当前目录以及子目录中查找文件名是hello.txt的文件，忽略大小写
+```
+ find ./ -iname hello.txt
+```
+
+从当前目录以及子目录中查找文件是*.txt的文件，正则表达式
+```
+ find ./ -iregex ".*\(\.txt\)$"
+```
+
