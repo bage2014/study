@@ -7,6 +7,13 @@ https://linuxtools-rst.readthedocs.io/zh_CN/latest/index.html
 
 http://cn.linux.vbird.org/
 
+## 参数风格
+
+-： 一横说明参数是 字符 形式
+--：两横说明参数是单词形式
+-：参数前有横的是 System V风格
+空：参数前没有横的是 BSD风格
+
 
 
 ## 优缺点 ## 
@@ -35,10 +42,7 @@ http://cn.linux.vbird.org/
 
 
 
-## 查找命令 ##
 
-### grep  ###
-- 参考链接 [https://mp.weixin.qq.com/s?__biz=MzIwNTc4NTEwOQ==&mid=2247483656&idx=1&sn=17ad20cce3d6d4d587a905a706f488ed&chksm=972ad072a05d5964f28bb4c136572dbb1f75ad63d65d43d2e4b4bbf631f94fe5abe41e1cb40b&mpshare=1&scene=21&srcid=10073g3SoldEq4Vth1QQd6Z3#wechat_redirect](https://mp.weixin.qq.com/s?__biz=MzIwNTc4NTEwOQ==&mid=2247483656&idx=1&sn=17ad20cce3d6d4d587a905a706f488ed&chksm=972ad072a05d5964f28bb4c136572dbb1f75ad63d65d43d2e4b4bbf631f94fe5abe41e1cb40b&mpshare=1&scene=21&srcid=10073g3SoldEq4Vth1QQd6Z3#wechat_redirect "微信链接")
 
 ## 软件安装 ##
 
@@ -246,8 +250,6 @@ nc -v ip -z startPort-endPort
 
 
 ## 网络
-
-## 磁盘
 
 ## 用户和组
 
@@ -500,15 +502,35 @@ lsof -i:3306
 
 ### kill
 
-关机
+列出所有信号
 
 ```
-lsof -i:3306
+kill -l
+```
+
+列出所有信号
+
+```
+kill -9 xxx
+```
+
+java 程序生成 dump 文件
+
+```
+kill -3 xxx
 ```
 
 
 
 ### top
+
+实时显示进程信息
+
+```
+top
+```
+
+
 
 ### pmap
 
@@ -516,10 +538,18 @@ lsof -i:3306
 
 ### free
 
-换行
+内存使用情况
+
+无任何参数
 
 ```
-free -m
+free
+```
+
+人性化每 5s 显示一次
+
+```
+free -h -s 5
 ```
 
 
@@ -550,6 +580,8 @@ watch -n 3 -d date
 
 ### netstat 
 
+
+
 ### iostat
 
 ### pstack
@@ -565,9 +597,22 @@ watch -n 3 -d date
  grep bage hello.txt
 ```
 
-忽略大小写，从hello.txt 中查找bage字符串
+从hello.txt 中查找bage字符串，不显示整行
+
 ```
- grep -i bage hello.txt
+ grep -o bage hello.txt
+```
+
+从hello.txt 中反向查找 bage 字符串，并显示前后各5行
+
+```
+ grep -v -A 5 -B 5 bage hello.txt
+```
+
+忽略大小写，从hello.txt 中查找bage字符串，并高亮颜色
+
+```
+ grep -i --color bage hello.txt
 ```
 
 
