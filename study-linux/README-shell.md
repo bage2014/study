@@ -396,7 +396,23 @@ pwd
 
 
 
+## rpm 软件安装 ##
 
+查询软件 <package_name> 是否安装
+
+    rpm -qa | grep <package_name>
+
+安装软件 <package_name> 
+
+    rpm - ivh <package_name>
+
+升级软件 <package_name> 
+
+    rpm -Uvh <package_name>
+
+卸载软件 <package_name> 
+
+    rpm -e <package_name>
 
 
 
