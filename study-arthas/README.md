@@ -14,6 +14,38 @@ https://www.cnkirito.moe/instrument/
 
 
 
+## 使用
+
+### 下载
+
+官网下载
+
+    curl -O https://alibaba.github.io/arthas/arthas-demo.jar
+
+### 启动、Attach
+
+    java -jar arthas-boot.jar
+
+选择attach的Java进程，输入对应的序号    
+
+```
+$ java -jar arthas-boot.jar
+* [1]: 35542
+  [2]: 71560 arthas-demo.jar
+```
+
+## dashboard
+
+    dashboard
+
+选择attach的Java进程，输入对应的序号    
+
+
+
+
+
+
+
 阿里巴巴 Arthas 使用
 
 当你遇到以下类似问题而束手无策时，`Arthas`可以帮助你解决：
@@ -28,9 +60,9 @@ https://www.cnkirito.moe/instrument/
 
 ## 参考链接 ##
 
-- github [https://github.com/alibaba/arthas](https://github.com/alibaba/arthas)
-- Arthas [https://alibaba.github.io/arthas/](https://alibaba.github.io/arthas/)
-- 在线操作验证 [https://alibaba.github.io/arthas/arthas-tutorials?language=cn](https://alibaba.github.io/arthas/arthas-tutorials?language=cn)
+- github https://github.com/alibaba/arthas
+- Arthas https://alibaba.github.io/arthas/
+- 在线操作验证 https://alibaba.github.io/arthas/arthas-tutorials?language=cn
 
 ## 快速安装
 
