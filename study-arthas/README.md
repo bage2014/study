@@ -12,6 +12,12 @@ https://www.bbsmax.com/A/mo5k8o1Edw/
 jvm 热更新类解析
 https://www.cnkirito.moe/instrument/
 
+## 参考链接 ##
+
+- github https://github.com/alibaba/arthas
+- Arthas https://alibaba.github.io/arthas/
+- doc https://arthas.aliyun.com/doc/
+- 在线操作验证 https://alibaba.github.io/arthas/arthas-tutorials?language=cn
 
 
 ## 使用
@@ -35,15 +41,49 @@ $ java -jar arthas-boot.jar
 ```
 
 ## dashboard
+查看概况，jvm内存使用情况等
 
     dashboard
 
-选择attach的Java进程，输入对应的序号    
+## thread
+查看线程信息，查看线程的堆栈
 
+查看所有线程
 
+    thread  
+    
+查看id=12345线程的情况
 
+    thread 12345 
+    
+查看繁忙前5 线程 
 
+    thread -n 5 
+    
+查看所有的阻塞线程
 
+    thread -b
+    
+        
+每1秒 查看
+
+    thread -i 1000
+   
+   
+## jvm
+查看当前JVM信息
+
+基本使用
+
+    jvm  
+    
+    
+## sysprop
+查看当前JVM的系统属性
+
+基本使用
+
+    sysprop 
 
 
 阿里巴巴 Arthas 使用
@@ -58,11 +98,7 @@ $ java -jar arthas-boot.jar
 6. 有什么办法可以监控到JVM的实时运行状态？
 7. 怎么快速定位应用的热点，生成火焰图？
 
-## 参考链接 ##
 
-- github https://github.com/alibaba/arthas
-- Arthas https://alibaba.github.io/arthas/
-- 在线操作验证 https://alibaba.github.io/arthas/arthas-tutorials?language=cn
 
 ## 快速安装
 
