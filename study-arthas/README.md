@@ -69,6 +69,21 @@ $ java -jar arthas-boot.jar
 
     thread -i 1000
    
+   
+## jvm
+查看当前JVM信息
+
+基本使用
+
+    jvm  
+    
+    
+## sysprop
+查看当前JVM的系统属性
+
+基本使用
+
+    sysprop 
 
 
 阿里巴巴 Arthas 使用
