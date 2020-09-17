@@ -155,6 +155,8 @@ icon [http://fontello.com/](http://fontello.com/)
 
 服务实例单元支持 微服务部署或单机部署
 
+后端服务上线！支持TV 功能上线一个小APP
+
 
 
 gateway -> auth-server 问题
@@ -198,6 +200,8 @@ API 整理
 更新说明
 
 vue 页面生成
+
+单表页面、从表页面！
 
 
 
