@@ -51,39 +51,64 @@ $ java -jar arthas-boot.jar
 查看所有线程
 
     thread  
-    
+
 查看id=12345线程的情况
 
     thread 12345 
-    
+
 查看繁忙前5 线程 
 
     thread -n 5 
-    
+
 查看所有的阻塞线程
 
     thread -b
-    
-        
+
+
 每1秒 查看
 
     thread -i 1000
+
    
-   
+
 ## jvm
 查看当前JVM信息
 
 基本使用
 
     jvm  
-    
-    
+
+
+​    
 ## sysprop
 查看当前JVM的系统属性
 
 基本使用
 
     sysprop 
+
+# sysenv
+
+查看当前JVM的环境
+
+基本使用
+
+    sysenv
+
+# ognl
+
+执行ognl表达式
+
+函数使用
+
+    ognl '@java.lang.System@out.println("hello")'
+
+属性查看
+
+    ognl '@demo.MathGame@random'
+
+
+
 
 
 阿里巴巴 Arthas 使用
