@@ -128,6 +128,7 @@ APP 版本的APP端接入 todo
 html + vue
 
 
+
 ## App ##
 基于 [https://github.com/project-travel-mate/Travel-Mate](https://github.com/project-travel-mate/Travel-Mate)
 改造升级打怪
@@ -171,6 +172,13 @@ demo 集成问题处理
 Android HTTPS问题
 
 github.io 做域名，放前台页面
+
+
+todo 
+
+vue 页面
+域名申请
+第一个APP！！！！！！！！
 
 
 
