@@ -96,6 +96,16 @@ code generate order
 12. core-gateway-service-impl
 
 
+## TODO ##
+
+模板页面-vue
+
+部署
+
+APP实践-TV直播
+
+微信小程序
+
 
 ## 参考链接 ##
 
@@ -118,14 +128,6 @@ https://github.com/huangyanbin/SmartChart
 vue 前端框架 https://vuetifyjs.com/zh-Hans/components/navigation-drawers/
 
 app 更新 https://github.com/jenly1314/AppUpdater
-
-APP 更新后台实现 done 
-
-APP 版本增删改查 done 
-
-APP 版本的APP端接入 todo
-
-html + vue
 
 
 
