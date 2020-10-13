@@ -20,6 +20,32 @@ https://www.baeldung.com/aws-s3-java S3 基本使用事件
 AOP实用技巧；比如打日志等
 
 
+
+知识汇总：：：：
+
+https://github.com/CyC2018/CS-Notes
+
+https://github.com/xingshaocheng/architect-awesome
+
+https://github.com/DeppWang/Java-Books
+
+https://github.com/justjavac/free-programming-books-zh_CN
+
+https://github.com/singgel/JAVA_LINE
+
+https://github.com/PansonPanson/Java-Notes
+
+https://github.com/Snailclimb/JavaGuide
+
+https://github.com/doocs/advanced-java
+
+https://github.com/xbox1994/Java-Interview
+
+https://github.com/jobbole/awesome-java-cn
+
+
+
+
 ## Others ##
 GIT 地址
 https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
