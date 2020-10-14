@@ -5,6 +5,12 @@ todo vue code generator
 
 
 
+demo CRUD URL
+
+http://localhost:8088/tutorials/ignore/demo
+
+
+
 ## 目录结构 ##
 
 ### api 项目结构 ###
