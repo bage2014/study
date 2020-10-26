@@ -11,6 +11,27 @@ http://localhost:8088/tutorials/ignore/demo
 
 
 
+## 分支管理 ##
+
+### 开发分支 ###
+
+主要为 master 和一些创建的开发分支
+
+- master
+
+- devp/20201025xxxx
+
+### 测试分支 ###
+
+- test/feature1xxx
+- test/feature2xxx
+
+### 发布分支 ###
+
+- release/xxx
+
+
+
 ## 目录结构 ##
 
 ### api 项目结构 ###
