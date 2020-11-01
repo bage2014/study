@@ -11,6 +11,18 @@ http://localhost:8088/tutorials/ignore/demo
 
 
 
+## 设计理念
+
+APP特质
+吸引人
+实用
+分享
+互动
+
+产品思维
+
+
+
 ## 分支管理 ##
 
 ### 开发分支 ###
