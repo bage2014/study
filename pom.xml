@@ -139,6 +139,7 @@
       <module>study-hystrix</module>
       <module>study-resilience4j</module>
     <module>study-ews-java-api</module>
+    <module>study-netty</module>
 
   </modules>
 </project>
