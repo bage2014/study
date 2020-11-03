@@ -10,4 +10,8 @@ public class HelloAopOrderService {
 //        return "hello," + msg;
     }
 
+    public String hello2(String msg) {
+        return "hello," + msg;
+    }
+
 }
