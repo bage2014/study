@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 public class HelloAopOrderService {
 
     public String hello(String msg) throws Exception {
-        throw new Exception("hello");
-//        return "hello," + msg;
+//        throw new Exception("hello");
+        return "hello," + msg;
     }
 
     public String hello2(String msg) {

@@ -19,7 +19,7 @@ public class AopOrderApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        helloAopOrderService.hello("world");
+        helloAopOrderService.hello("world");
         helloAopOrderService.hello2("world");
     }
 
