@@ -1,15 +1,14 @@
 package com.bage.study.algorithm.string;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Solution {
 
     public static void main(String[] args){
         Solution solution = new Solution();
-        System.out.println(solution.isIsomorphic("ab", "aa"));
+//        System.out.println(solution.isIsomorphic("ab", "aa"));
+
+        System.out.println(solution.firstUniqChar("loveleetcode"));
     }
 
 
@@ -62,5 +61,73 @@ public class Solution {
 
         return false;
 
+    }
+
+    /**
+     * 给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
+     * s = "leetcode"
+     * 返回 0
+     *
+     * s = "loveleetcode"
+     * 返回 2
+     *
+     * 提示：你可以假定该字符串只包含小写字母。
+     *
+     * @param s
+     * @return
+     */
+    public int firstUniqChar(String s) {
+
+        //方法一：笨方法，一个用来存储出现次数
+        Map<Character, Integer> map = new HashMap<>();
+        for(int i=0; i <s.length(); ++i){
+            char c= s.charAt(i);
+            Integer n = map.get(c);
+            if(n == null){
+                map.put(c, 1);
+            }else{
+                map.put(c,++n);
+            }
+        }
+
+        for(int i=0; i<s.length(); ++i){
+            if(map.get(s.charAt(i)) == 1){
+                return i;
+            }
+        }
+
+        return -1;
+
+        //方法二，因为只有26个小写字母，所以可以用两个数组来当做字典，一个用来记录出现的位置，另外一个记录出现的次数
+
+//        int [] n1 = new int[26];
+//
+//        int[] n2 = new int[26];
+//
+//
+//        for(int i=0; i <s.length(); ++i){
+//            char c= s.charAt(i);
+//            int index = c - 'a';
+//
+//            n1[index] = i;
+//            n2[index]++;
+//        }
+//
+//        int min = -1;
+//
+//        for(int i=0; i<26; ++i){
+//            if(n2[i] == 1){
+//                if(min == -1){
+//                    min = n1[i];
+//                }else{
+//                    if(n1[i]<min){
+//                        min = n1[i];
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        return min;
     }
 }
