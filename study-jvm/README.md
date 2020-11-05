@@ -10,6 +10,10 @@ ref [https://www.cnblogs.com/redcreen/](https://www.cnblogs.com/redcreen/)
 
 http://www.jintiankansha.me/column/VEAxWixHBx
 
+redcreen的专栏
+
+https://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
+
 
 
 
@@ -995,6 +999,10 @@ Heap dump file created
 ```
 
 参数解析
+
+Jvm 对象分配过程
+
+https://github.com/bage2014/interview/blob/master/README-Jvm.md
 
 
 
