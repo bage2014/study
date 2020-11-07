@@ -9,7 +9,7 @@ demo CRUD URL
 
 http://localhost:8088/tutorials/ignore/demo
 
-
+大道至简的UI Admin https://codetrial.github.io/element-admin/
 
 ## 设计理念
 
