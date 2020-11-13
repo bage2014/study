@@ -15,6 +15,22 @@ redcreen的专栏
 https://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
 
 
+## 分类 ##
+内存模型
+程序计数器
+堆
+方法取
+jvm站
+本地房发展
+垃圾回收
+回收算法
+垃圾收集器
+对象存货判断
+
+常用jdk 工具
+
+类加载过程
+及时编译、jit
 
 
 ## jvm 参数 ##
@@ -1008,5 +1024,66 @@ https://github.com/bage2014/interview/blob/master/README-Jvm.md
 
 ## Arthas ##
 
+## Debug ##
+
+
+参考链接：http://blog.kail.xyz/post/2017-02-17/java/java-use-jpda-remote-debug.html
+
+Debug参数说明：
+ -Xrunjdwp                   # 启用JDWP实现，它包含若干子选项：
+    transport=dt_socket     # JPDA front-end和back-end之间的传输方法。dt_socket表示使用套接字传输。
+    address=8000            # JVM在8000端口上监听请求。
+    server=y                # y表示启动的JVM是被调试者。如果为n，则表示启动的JVM是调试器。
+    suspend=n               # y表示启动的JVM会暂停等待，直到调试器连接上，n表示不暂停等待 
+	
+	
+ Java IDE，比如 Netbeans 和 IntelliJ 等等也都提供了类似的功能，您甚至能不用 IDE 提供的图形界面，使用 JDK 自带的 jdb 工具，以文本命令的形式来调试您的 Java 程序
+
+ Java 平台调试体系结构（JPDA）工具集
+
+
+图JPDA 模块层次：
+https://developer.ibm.com/developer/default/articles/j-lo-jpda1/images/jdwp.jpg
+
+
+Java 的 JPDA 就是一套为调试和优化服务的虚拟机的操作工具，其中，JVMTI 是整合在虚拟机中的接口，JDWP 是一个通讯层，而 JDI 是前端为开发人员准备好的工具和运行库
+
+
+Java 虚拟机工具接口（JVMTI）
+
+
+JVMTI（Java Virtual Machine Tool Interface）
+
+
+它是一套由虚拟机直接提供的 native 接口，它处于整个 JPDA 体系的最底层，所有调试功能本质上都需要通过 JVMTI 来提供。通过这些接口，开发人员不仅调试在该虚拟机上运行的 Java 程序，还能查看它们运行的状态，设置回调函数，控制某些环境变量，从而优化程序性能。我们知道，JVMTI 的前身是 JVMDI 和 JVMPI，它们原来分别被用于提供调试 Java 程序以及 Java 程序调节性能的功能。
+
+
+
+Java 调试线协议（JDWP）
+JDWP（Java Debug Wire Protocol）是一个为 Java 调试而设计的一个通讯交互协议，它定义了调试器和被调试程序之间传递的信息的格式
+详细完整地定义了请求命令、回应数据和错误代码，保证了前端和后端的 JVMTI 和 JDI 的通信通畅
+
+
+Java 调试接口（JDI）
+JDI（Java Debug Interface）由 Java 语言实现的。 JDI 由针对前端定义的接口组成，通过它，调试工具开发人员就能通过前端虚拟机上的调试器来远程操控后端虚拟机上被调试程序的运行，JDI 不仅能帮助开发人员格式化 JDWP 数据，而且还能为 JDWP 数据传输提供队列、缓存等优化服务。从理论上说，开发人员只需使用 JDWP 和 JVMTI 即可支持跨平台的远程调试，但是直接编写 JDWP 程序费时费力，而且效率不高。因此基于 Java 的 JDI 层的引入，简化了操作，提高了开发人员开发调试程序的效率。
+
+
+模块	层次	编程语言	作用
+JVMTI	底层	C	获取及控制当前虚拟机状态
+JDWP	中介层	C	定义 JVMTI 和 JDI 交互的数据格式
+JDI	高层	Java	提供 Java API 来远程控制被调试虚拟机
+
+
+
+
+JVMTI 基本功能
+JVMTI 的功能非常丰富，包含了虚拟机中线程、内存 / 堆 / 栈，类 / 方法 / 变量，事件 / 定时器处理等等 20 多类功能，下面我们介绍一下，并举一些简单列子
+
+
+
+设置回调函数的时候，开发者需要注意以下几点：
+
+如同 Java 异常机制一样，如果在回调函数中自己抛出一个异常（Exception），或者在调用 JNI 函数的时候制造了一些麻烦，让 JNI 丢出了一个异常，那么任何在回调之前发生的异常就会丢失，这就要求开发人员要在处理错误的时候需要当心。
+虚拟机不保证回调函数会被同步，换句话说，程序有可能同时运行同一个回调函数（比如，好几个线程同时开始运行了，这个 HandleThreadStart 就会被同时调用几次），那么开发人员在开发回调函数时需要处理同步的问题。
 
 
