@@ -1026,6 +1026,21 @@ https://github.com/bage2014/interview/blob/master/README-Jvm.md
 
 ## Debug ##
 
+debug 功能概述：
+
+断点
+
+查看变量的当前值
+
+跳转下一个断点等等
+
+
+
+Debug 过程
+
+
+
+如何实现
 
 参考链接：http://blog.kail.xyz/post/2017-02-17/java/java-use-jpda-remote-debug.html
 
@@ -1040,7 +1055,6 @@ Debug参数说明：
  Java IDE，比如 Netbeans 和 IntelliJ 等等也都提供了类似的功能，您甚至能不用 IDE 提供的图形界面，使用 JDK 自带的 jdb 工具，以文本命令的形式来调试您的 Java 程序
 
  Java 平台调试体系结构（JPDA）工具集
-
 
 图JPDA 模块层次：
 https://developer.ibm.com/developer/default/articles/j-lo-jpda1/images/jdwp.jpg
@@ -1062,7 +1076,6 @@ JVMTI（Java Virtual Machine Tool Interface）
 Java 调试线协议（JDWP）
 JDWP（Java Debug Wire Protocol）是一个为 Java 调试而设计的一个通讯交互协议，它定义了调试器和被调试程序之间传递的信息的格式
 详细完整地定义了请求命令、回应数据和错误代码，保证了前端和后端的 JVMTI 和 JDI 的通信通畅
-
 
 Java 调试接口（JDI）
 JDI（Java Debug Interface）由 Java 语言实现的。 JDI 由针对前端定义的接口组成，通过它，调试工具开发人员就能通过前端虚拟机上的调试器来远程操控后端虚拟机上被调试程序的运行，JDI 不仅能帮助开发人员格式化 JDWP 数据，而且还能为 JDWP 数据传输提供队列、缓存等优化服务。从理论上说，开发人员只需使用 JDWP 和 JVMTI 即可支持跨平台的远程调试，但是直接编写 JDWP 程序费时费力，而且效率不高。因此基于 Java 的 JDI 层的引入，简化了操作，提高了开发人员开发调试程序的效率。
