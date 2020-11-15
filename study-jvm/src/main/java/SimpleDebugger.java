@@ -27,8 +27,9 @@ public class SimpleDebugger {
         Connector.Argument mainArg = defaultArguments.get("main");
         Connector.Argument suspendArg = defaultArguments.get("suspend");
         // Set class of main method
-        mainArg.setValue("HelloJdi");
+        mainArg.setValue("HelloJdi2");
         suspendArg.setValue("true");
+
         vm = launchingConnector.launch(defaultArguments);
 
         process = vm.process();
@@ -37,7 +38,7 @@ public class SimpleDebugger {
         eventRequestManager = vm.eventRequestManager();
         ClassPrepareRequest classPrepareRequest
                 = eventRequestManager.createClassPrepareRequest();
-        classPrepareRequest.addClassFilter("HelloJdi");
+        classPrepareRequest.addClassFilter("HelloJdi2");
         classPrepareRequest.addCountFilter(1);
         classPrepareRequest.setSuspendPolicy(EventRequest.SUSPEND_ALL);
         classPrepareRequest.enable();
@@ -70,14 +71,14 @@ public class SimpleDebugger {
         } else if (event instanceof ClassPrepareEvent) {
             ClassPrepareEvent classPrepareEvent = (ClassPrepareEvent) event;
             String mainClassName = classPrepareEvent.referenceType().name();
-            if (mainClassName.equals("HelloJdi")) {
+            if (mainClassName.equals("HelloJdi2")) {
                 System.out.println("Class " + mainClassName
                         + " is already prepared");
             }
             if (true) {
                 // Get location
                 ReferenceType referenceType = classPrepareEvent.referenceType();
-                List locations = referenceType.locationsOfLine(6);
+                List locations = referenceType.locationsOfLine(10);
                 Location location = (Location) locations.get(0);
 
                 // Create BreakpointEvent
@@ -88,7 +89,7 @@ public class SimpleDebugger {
             }
             eventSet.resume();
         } else if (event instanceof BreakpointEvent) {
-            System.out.println("Reach line 10 of HelloJdi");
+            System.out.println("Reach line 10 of Test");
             BreakpointEvent breakpointEvent = (BreakpointEvent) event;
             ThreadReference threadReference = breakpointEvent.thread();
             StackFrame stackFrame = threadReference.frame(0);
