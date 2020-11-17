@@ -138,4 +138,64 @@ public class Solution {
         }
     }
 
+
+    /**
+     * 求二叉树的最小深度
+     * @param root
+     * @return
+     */
+    public int minDepth(TreeNode root) {
+
+        //递归方法很简单，但是效率很低，所以采用广度优先的算法
+        if(root == null){
+            return 0;
+        }
+
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+
+        if(root.left == null){
+            return minDepth(root.right) + 1;
+        }
+
+        if(root.right == null){
+            return minDepth(root.left) + 1;
+        }
+
+        
+        //这边与分层遍历二叉树代码类似，都是用广度优先的算法
+        int minDepth = 2;
+
+        //当根节点的两个子节点都存在时，找出两个子节点的第一个叶节点的深度，就是二叉树的最小深度
+        List<TreeNode> treeNodes = new ArrayList<>();
+
+        treeNodes.add(root.left);
+        treeNodes.add(root.right);
+
+        int index = 0,last;
+
+        while (index < treeNodes.size()){
+            last = treeNodes.size();
+            while (index<last){
+                TreeNode current = treeNodes.get(index++);
+
+                //左右孩子节点都不存在，就是第一个出现的叶节点，在这个时候返回
+                if(current.left == null && current.right == null){
+                    return minDepth;
+                }
+
+                if(current.left != null){
+                    treeNodes.add(current.left);
+                }
+
+                if(current.right != null){
+                    treeNodes.add(current.right);
+                }
+            }
+            minDepth++;
+        }
+
+        return minDepth;
+    }
 }
