@@ -14,8 +14,9 @@ redcreen的专栏
 
 https://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
 
-Java Agent Instrumentation IBM 文章
+Java Agent 
 https://www.ibm.com/developerworks/cn/java/j-lo-jse61/index.html
+http://lovestblog.cn/blog/2015/09/14/javaagent/
 
 
 ## 分类 ##
