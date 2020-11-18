@@ -14,6 +14,9 @@ redcreen的专栏
 
 https://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html
 
+Java Agent Instrumentation IBM 文章
+https://www.ibm.com/developerworks/cn/java/j-lo-jse61/index.html
+
 
 ## 分类 ##
 内存模型
