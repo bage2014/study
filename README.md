@@ -1,4 +1,4 @@
-https://github-readme-stats.vercel.app/api?username=bage2014&show_icons=true&theme=radical
+[![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=bage2014&show_icons=true)](https://github.com/bage2014)
 
 # study #
 
