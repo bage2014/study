@@ -22,6 +22,7 @@ https://www.baeldung.com/aws-s3-java S3 基本使用事件
 
 AOP实用技巧；比如打日志等
 
+m3u parser https://github.com/BjoernPetersen/m3u-parser
 
 
 知识汇总：：：：

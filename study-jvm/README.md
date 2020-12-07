@@ -18,6 +18,7 @@ Java Agent
 https://www.ibm.com/developerworks/cn/java/j-lo-jse61/index.html
 http://lovestblog.cn/blog/2015/09/14/javaagent/
 
+https://tech.meituan.com/2019/11/07/java-dynamic-debugging-technology.html
 
 ## 分类 ##
 内存模型
