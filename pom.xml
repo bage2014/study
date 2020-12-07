@@ -140,6 +140,7 @@
       <module>study-resilience4j</module>
     <module>study-ews-java-api</module>
     <module>study-netty</module>
+      <module>study-m3u</module>
 
   </modules>
 </project>
