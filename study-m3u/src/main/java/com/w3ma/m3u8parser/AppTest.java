@@ -37,6 +37,7 @@ import java.util.*;
  * }, ]
  */
 public class AppTest {
+
     public static void main(String[] args) throws Exception {
         // Serialization
         Gson gson = new Gson();
@@ -44,6 +45,8 @@ public class AppTest {
         final M3U8Parser m3U8Parser = new M3U8Parser(workingPlaylist, M3U8ItemScanner.Encoding.UTF_8);
         try {
             final Playlist playlist = m3U8Parser.parse();
+            System.out.println(gson.toJson(playlist));
+
             Map<String, Set<Track>> trackSetMap = playlist.getTrackSetMap();
             Set<Track> tracks = trackSetMap.get("");
 
@@ -60,13 +63,22 @@ public class AppTest {
                 }
             });
 
-            System.out.println(gson.toJson(groups));
+            System.out.println(gson.toJson(toList(groups)));
         } catch (Exception e) {
         } finally {
             IOUtils.closeQuietly(workingPlaylist);
         }
 
 
+    }
+
+    private static Object toList(Map<String, M3uItem> groups) {
+        List<M3uItem> list = new ArrayList();
+        groups.forEach((key,value)->{
+            list.add(value);
+        });
+        list.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+        return list;
     }
 
     private static List<ChannelUrl> newArraylist(String append, String url) {
