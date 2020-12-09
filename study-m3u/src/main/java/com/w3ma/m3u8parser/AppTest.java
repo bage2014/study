@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * "Weather": [{
@@ -37,15 +38,16 @@ import java.util.*;
  * }, ]
  */
 public class AppTest {
+    // Serialization
+    static Gson gson = new Gson();
 
     public static void main(String[] args) throws Exception {
-        // Serialization
-        Gson gson = new Gson();
+
         final InputStream workingPlaylist = new FileInputStream("E:\\Data\\Chrome Download\\cn.m3u");
         final M3U8Parser m3U8Parser = new M3U8Parser(workingPlaylist, M3U8ItemScanner.Encoding.UTF_8);
         try {
             final Playlist playlist = m3U8Parser.parse();
-            System.out.println(gson.toJson(playlist));
+//            System.out.println(gson.toJson(playlist));
 
             Map<String, Set<Track>> trackSetMap = playlist.getTrackSetMap();
             Set<Track> tracks = trackSetMap.get("");
@@ -63,7 +65,7 @@ public class AppTest {
                 }
             });
 
-            System.out.println(gson.toJson(toList(groups)));
+            toList(groups);
         } catch (Exception e) {
         } finally {
             IOUtils.closeQuietly(workingPlaylist);
@@ -73,12 +75,25 @@ public class AppTest {
     }
 
     private static Object toList(Map<String, M3uItem> groups) {
-        List<M3uItem> list = new ArrayList();
-        groups.forEach((key,value)->{
+        final List<M3uItem> list = new ArrayList();
+        groups.forEach((key, value) -> {
             list.add(value);
         });
-        list.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
-        return list;
+
+        List<M3uItem> list2 = list.stream().filter(item ->
+                item.getTitle().contains("卫视")
+        ).collect(Collectors.toList());
+        list2.sort(Comparator.comparing(M3uItem::getTitle));
+        System.out.println(gson.toJson(list2));
+
+
+        list2 = list.stream().filter(item ->
+                item.getTitle().contains("中央") || item.getTitle().contains("CCTV")
+        ).collect(Collectors.toList());
+        list2.sort(Comparator.comparing(M3uItem::getTitle));
+        System.out.println(gson.toJson(list2));
+
+        return list2;
     }
 
     private static List<ChannelUrl> newArraylist(String append, String url) {

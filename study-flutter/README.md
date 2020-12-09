@@ -10,6 +10,14 @@ https://flutter.dev/docs/get-started/install/windows
 
 
 
+开源APP 汇总
+
+https://blog.csdn.net/weixin_38627381/article/details/79037500
+
+https://www.jianshu.com/p/d92258d76f7e
+
+Froid APP爬虫
+
 ### 环境搭建
 
 下载
