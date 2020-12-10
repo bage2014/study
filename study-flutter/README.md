@@ -48,4 +48,10 @@ flutter config --android-sdk D:\professional\sdk
 
 
 
+flutter pub get
+
+FLutter 入门
+
+https://flutterchina.club/get-started/learn-more/
+
 
