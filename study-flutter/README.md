@@ -24,6 +24,10 @@ https://github.com/mitesh77/Best-Flutter-UI-Templates
 
 https://github.com/iampawan/Flutter-UI-Kit
 
+https://github.com/flutter/gallery/tree/master/lib
+
+
+
 
 
 ### 环境搭建
@@ -44,7 +48,17 @@ Android studio 配置flutter 出现“no devices”
 
 flutter config --android-sdk D:\professional\sdk
 
+```
+#distributionUrl=https\://services.gradle.org/distributions/gradle-5.6.2-all.zip
+distributionUrl=https\://services.gradle.org/distributions/gradle-6.1.1-all.zip
+```
 
+
+
+```
+//        jcenter()
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+```
 
 
 
