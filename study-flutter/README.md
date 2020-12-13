@@ -85,3 +85,5 @@ JSON
 资源
 
 布局
+
+多语言 Flutter Intl

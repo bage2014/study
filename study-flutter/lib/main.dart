@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_study/locale/translations.dart';
 import 'package:flutter_study/route/route.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 
@@ -11,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'hello',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -30,7 +32,21 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Home Page'),
       // routes: RouteConfiguration.routes,
+
+      // 路由
       onGenerateRoute: RouteConfiguration.onGenerateRoute,
+
+      localizationsDelegates: [
+        const TranslationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // 美国英语
+        const Locale('zh', 'CN'), // 中文简体
+        //其它Locales
+      ],
+
     );
   }
 }
@@ -55,7 +71,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void toHome() {
-    Navigator.of(context).pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
+    setState(() {
+      var currentLanguage = Translations.of(context).currentLanguage;
+      Translations.load(currentLanguage.endsWith("en") ? Locale("zh","CN") : Locale("en"));
+    });
+    // Navigator.of(context).pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
   }
 
   @override
@@ -93,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Main page',
+              Translations.of(context).text("main.title"),
             ),
           ],
         ),
