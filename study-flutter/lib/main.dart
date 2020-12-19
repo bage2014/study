@@ -71,11 +71,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void toHome() {
-    setState(() {
-      var currentLanguage = Translations.of(context).currentLanguage;
-      Translations.load(currentLanguage.endsWith("en") ? Locale("zh","CN") : Locale("en"));
-    });
-    // Navigator.of(context).pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
+//    setState(() {
+//      var currentLanguage = Translations.of(context).currentLanguage;
+//      Translations.load(currentLanguage.endsWith("en") ? Locale("zh","CN") : Locale("en"));
+//    });
+    Navigator.of(context).pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
   }
 
   @override

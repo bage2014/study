@@ -8,7 +8,7 @@
 
 https://flutter.dev/docs/get-started/install/windows
 
-
+https://github.com/befovy/fijkplayer/ 开源的视频播放器
 
 开源APP 汇总
 
