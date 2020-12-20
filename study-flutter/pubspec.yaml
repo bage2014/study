@@ -31,7 +31,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
 
-  fijkplayer: ^0.1.5
+  # fijkplayer: ^0.1.5
 
 
 dev_dependencies:
