@@ -25,5 +25,5 @@ config 下index.js
 assetsPublicPath：'/' 替换为 assetsPublicPath：'./' 
 
 
-参考链接 [https://www.cnblogs.com/xtjatswc/p/10306567.html](https://www.cnblogs.com/xtjatswc/p/10306567.html)
+参考链接 https://www.cnblogs.com/mengyouyouyou/p/10912378.html
 
