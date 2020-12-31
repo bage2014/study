@@ -31,7 +31,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
 
-  # fijkplayer: ^0.1.5
+  fijkplayer:
+    git:
+      url: https://github.com/befovy/fijkplayer.git
+      ref: develop # can be replaced to branch or tag name
 
 
 dev_dependencies:
