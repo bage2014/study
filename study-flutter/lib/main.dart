@@ -75,8 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
 //      var currentLanguage = Translations.of(context).currentLanguage;
 //      Translations.load(currentLanguage.endsWith("en") ? Locale("zh","CN") : Locale("en"));
 //    });
-//      Navigator.of(context).pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
-      Navigator.of(context).pushNamed(RouteNameConstant.route_name_tv_player, arguments: "hi");
+      Navigator.of(context).pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
+
   }
 
   @override

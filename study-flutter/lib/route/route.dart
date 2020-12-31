@@ -4,6 +4,7 @@ import 'package:flutter_study/Home.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/model/RoutPath.dart';
 import 'package:flutter_study/tv/TvPlayer.dart';
+import 'package:flutter_study/tv/TvList.dart';
 
 
 class RouteConfiguration {
@@ -11,6 +12,7 @@ class RouteConfiguration {
   static List<RoutPath> paths = [
     RoutPath(RouteNameConstant.route_name_home, (context, match) => Home(),),
     RoutPath(RouteNameConstant.route_name_tv_player, (context, match) => TvPlayer(),),
+    RoutPath(RouteNameConstant.route_name_tv_list, (context, match) => TvList(),),
   ];
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
