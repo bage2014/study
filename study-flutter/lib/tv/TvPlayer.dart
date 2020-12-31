@@ -1,7 +1,7 @@
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 
-import 'TvPlayerView.dart';
+import 'CustomFijkPanel.dart';
 
 class TvPlayer extends StatefulWidget {
   final String url="https://cctvakhwh5ca-cntv.akamaized.net/clive/cctv1_2/index.m3u8";
@@ -19,12 +19,12 @@ class _VideoScreenState extends State<TvPlayer> {
   void initState() {
     super.initState();
     player.setDataSource(widget.url, autoPlay: true);
+    player.enterFullScreen();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Fijkplayer Example")),
         body: Container(
           alignment: Alignment.center,
           child: FijkView(
