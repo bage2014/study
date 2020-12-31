@@ -1,16 +1,16 @@
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 
-class VideoScreen extends StatefulWidget {
-  final String url;
+import 'TvPlayerView.dart';
 
-  VideoScreen({@required this.url});
+class TvPlayer extends StatefulWidget {
+  final String url="https://cctvakhwh5ca-cntv.akamaized.net/clive/cctv1_2/index.m3u8";
 
   @override
   _VideoScreenState createState() => _VideoScreenState();
 }
 
-class _VideoScreenState extends State<VideoScreen> {
+class _VideoScreenState extends State<TvPlayer> {
   final FijkPlayer player = FijkPlayer();
 
   _VideoScreenState();
@@ -29,6 +29,13 @@ class _VideoScreenState extends State<VideoScreen> {
           alignment: Alignment.center,
           child: FijkView(
             player: player,
+            panelBuilder: (FijkPlayer player, FijkData data, BuildContext context, Size viewSize, Rect texturePos) {
+              return CustomFijkPanel(
+                  player: player,
+                  buildContext: context,
+                  viewSize: viewSize,
+                  texturePos: texturePos);
+            },
           ),
         ));
   }
