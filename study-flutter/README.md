@@ -65,6 +65,57 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-6.1.1-all.zip
 
 flutter pub get
 
+打包
+
+生成签名
+
+```csharp
+keytool -genkey -v -keystore ./sign.jks -keyalg RSA -keysize 2048 -validity 10000 -alias sign
+```
+
+导入签名
+
+/android/sign.jks
+
+
+
+build.gradle 添加
+
+```csharp
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    signingConfigs {
+        release {
+            keyAlias 'sign'
+            keyPassword 'android'
+            storeFile file('key/sign.jks')
+            storePassword 'android'
+        }
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
+        }
+    }
+}
+```
+
+
+
+运行命令生成APK
+
+```ruby
+flutter build apk
+```
+
+
+
 FLutter 入门
 
 https://flutterchina.club/get-started/learn-more/
