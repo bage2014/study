@@ -101,6 +101,11 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
+                
+            ndk {
+                //选择要添加的so库。
+                abiFilters "armeabi", "armeabi-v7a" , "x86", "mips"//, "x86", "mips"
+            }
         }
     }
 }
@@ -110,8 +115,14 @@ android {
 
 运行命令生成APK
 
+https://www.codercto.com/a/91681.html
+
+
+
 ```ruby
 flutter build apk
+
+flutter build apk --no-shrink
 ```
 
 

@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              Translations.of(context).text("main.title"),
+        Translations.of(context) == null ? "default": Translations.of(context).text("main.title"),
             ),
           ],
         ),
