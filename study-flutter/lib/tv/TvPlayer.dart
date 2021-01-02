@@ -25,10 +25,7 @@ class _VideoScreenState extends State<TvPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      alignment: Alignment.center,
-      child: FijkView(
+    return FijkView(
         player: player,
         panelBuilder: (FijkPlayer player, FijkData data, BuildContext context,
             Size viewSize, Rect texturePos) {
@@ -38,8 +35,7 @@ class _VideoScreenState extends State<TvPlayer> {
               viewSize: viewSize,
               texturePos: texturePos);
         },
-      ),
-    ));
+      );
   }
 
   @override
