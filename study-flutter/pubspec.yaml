@@ -31,11 +31,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
 
-  fijkplayer:
-    git:
-      url: https://github.com/befovy/fijkplayer.git
-      ref: develop # can be replaced to branch or tag name
+  # https://github.com/befovy/fijkplayer
+  fijkplayer: ^0.8.7
 
+  # https://github.com/LaoMengFlutter/flutter-do/tree/master/flutter_app_upgrade
+  flutter_app_upgrade: ^1.1.0
 
 dev_dependencies:
   flutter_test:
