@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_study/Home.dart';
+import 'file:///E:/GitHubDesktop/study/study-flutter/lib/home/Home.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/model/RoutPath.dart';
 import 'package:flutter_study/tv/TvPlayer.dart';

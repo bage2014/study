@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/MyDrawer.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 
 class TvList extends StatefulWidget {

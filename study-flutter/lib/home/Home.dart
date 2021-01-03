@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/MyDrawer.dart';
+import 'file:///E:/GitHubDesktop/study/study-flutter/lib/home/HomeDrawer.dart';
 
-import 'constant/RouteNameConstant.dart';
+import '../constant/RouteNameConstant.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -27,7 +27,7 @@ class _ScaffoldRouteState extends State<Home> {
     return Scaffold(
         appBar: AppBar(
           //导航栏
-          title: Text("App Name"),
+          title: Text("Tutorials"),
           actions: <Widget>[
             //导航栏右侧菜单
             IconButton(icon: Icon(Icons.share), onPressed: () {}),

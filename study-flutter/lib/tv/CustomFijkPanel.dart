@@ -22,33 +22,21 @@ class CustomFijkPanel extends StatefulWidget {
 class _CustomFijkPanel extends State<CustomFijkPanel> {
   FijkPlayer get player => widget.player;
 
-  /// 播放状态
-  bool _playing = false;
-  bool _full_screen = true;
-
   /// 是否显示状态栏+菜单栏
   bool isPlayShowCont = true;
+  bool _playing = true;
 
   @override
   void initState() {
-    /// 提前加载
-    /// 进行监听
-    widget.player.addListener(_playerValueChanged);
-
     /// 初始化
     super.initState();
-  }
 
-  /// 监听器
-  void _playerValueChanged() {
-    FijkValue value = player.value;
+    setState(() {
+      /// 显示 、隐藏  进度条+标题栏
+      _playing = player.value.state == FijkState.started;
+    });
+    widget.player.addListener(_playerValueChanged);
 
-    /// 播放状态
-    bool playing = (value.state == FijkState.started);
-    if (playing != _playing) setState(() => _playing = playing);
-
-    // 全屏
-    setState(() => _full_screen = value.fullScreen);
   }
 
   @override
@@ -111,9 +99,7 @@ class _CustomFijkPanel extends State<CustomFijkPanel> {
                                 _playing ? Icons.pause : Icons.play_arrow,
                                 color: Colors.white,
                               ),
-                              onPressed: () => _playing
-                                  ? widget.player.pause()
-                                  : widget.player.start(),
+                              onPressed: () => toggle(widget.player.state == FijkState.started),
                             ),
                             IconButton(
                               alignment: Alignment.bottomRight,
@@ -137,10 +123,32 @@ class _CustomFijkPanel extends State<CustomFijkPanel> {
 
   @override
   void dispose() {
-    /// 关闭监听
     player.removeListener(_playerValueChanged);
 
     /// 关闭流回调
     super.dispose();
+
   }
+
+  void _playerValueChanged() {
+    bool playing = player.value.state == FijkState.started;
+    if (playing != _playing) {
+      setState(() {
+        _playing = playing;
+      });
+    }
+  }
+
+  toggle(bool started) {
+    setState(() {
+      /// 显示 、隐藏  进度条+标题栏
+      _playing = started;
+    });
+    if(started){
+      widget.player.pause();
+      return ;
+    }
+    widget.player.start();
+  }
+
 }
