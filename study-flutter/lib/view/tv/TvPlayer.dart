@@ -1,6 +1,6 @@
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
-import 'CustomFijkPanel.dart';
+import 'CustomPanel.dart';
 
 class TvPlayer extends StatefulWidget {
   final String url =
@@ -22,7 +22,7 @@ class _VideoScreenState extends State<TvPlayer> {
     player.setOption(FijkOption.hostCategory, "request-screen-on", 1);
     player.setOption(FijkOption.hostCategory, "request-audio-focus", 1);
     player.setDataSource(widget.url, autoPlay: true);
-    player.enterFullScreen();
+//    player.enterFullScreen();
   }
 
   @override
@@ -34,7 +34,7 @@ class _VideoScreenState extends State<TvPlayer> {
             player: player,
             panelBuilder: (FijkPlayer player, FijkData data, BuildContext context,
                 Size viewSize, Rect texturePos) {
-              return CustomFijkPanel(
+              return CustomPanel(
                   player: player,
                   buildContext: context,
                   viewSize: viewSize,

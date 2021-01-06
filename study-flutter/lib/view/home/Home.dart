@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'file:///E:/GitHubDesktop/study/study-flutter/lib/home/HomeDrawer.dart';
-
-import '../constant/RouteNameConstant.dart';
+import 'package:flutter_study/view/home/HomeDrawer.dart';
+import 'package:flutter_study/constant/RouteNameConstant.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -33,7 +32,7 @@ class _ScaffoldRouteState extends State<Home> {
             IconButton(icon: Icon(Icons.share), onPressed: () {}),
           ],
         ),
-        drawer: new MyDrawer(), //抽屉
+        drawer: new HomeDrawer(), //抽屉
         floatingActionButton: FloatingActionButton(
             //悬浮按钮
             child: Icon(Icons.add),

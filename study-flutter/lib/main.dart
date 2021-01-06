@@ -77,8 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
 
-    // toHome();
-
+    Future.delayed(Duration(seconds: 1)).then((e) {
+      toHome();
+    });
   }
   void toHome() {
 //    setState(() {
@@ -124,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-        Translations.of(context) == null ? "default": Translations.of(context).text("main.title"),
+        Translations.of(context) == null ? "Welcome": Translations.of(context).text("main.title"),
             ),
           ],
         ),
@@ -132,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: toHome,
         tooltip: 'Main',
-        child: Icon(Icons.add),
+        child: Icon(Icons.arrow_forward_rounded),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

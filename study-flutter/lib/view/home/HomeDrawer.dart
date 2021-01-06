@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_upgrade/flutter_app_upgrade.dart';
 
 
-class MyDrawer extends StatelessWidget {
-  const MyDrawer({
+class HomeDrawer extends StatelessWidget {
+  const HomeDrawer({
     Key key,
   }) : super(key: key);
 

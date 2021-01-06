@@ -2,13 +2,13 @@ import 'dart:math';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 
-class CustomFijkPanel extends StatefulWidget {
+class CustomPanel extends StatefulWidget {
   final FijkPlayer player;
   final BuildContext buildContext;
   final Size viewSize;
   final Rect texturePos;
 
-  const CustomFijkPanel({
+  const CustomPanel({
     @required this.player,
     this.buildContext,
     this.viewSize,
@@ -19,7 +19,7 @@ class CustomFijkPanel extends StatefulWidget {
   _CustomFijkPanel createState() => _CustomFijkPanel();
 }
 
-class _CustomFijkPanel extends State<CustomFijkPanel> {
+class _CustomFijkPanel extends State<CustomPanel> {
   FijkPlayer get player => widget.player;
 
   /// 是否显示状态栏+菜单栏

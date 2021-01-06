@@ -37,6 +37,9 @@ dependencies:
   # https://github.com/LaoMengFlutter/flutter-do/tree/master/flutter_app_upgrade
   flutter_app_upgrade: ^1.1.0
 
+  # https://github.com/flutterchina/dio
+  dio: 3.0.10
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

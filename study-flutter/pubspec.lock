@@ -51,7 +51,7 @@ packages:
     source: hosted
     version: "1.0.0"
   dio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio
       url: "https://pub.flutter-io.cn"
