@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/component/http/HttpRequests.dart';
+import 'package:flutter_study/component/http/HttpResult.dart';
+import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 
 class TvList extends StatefulWidget {
@@ -62,6 +65,10 @@ class _ScaffoldRouteState extends State<TvList> {
   }
 
   void _retrieveData() {
+    HttpRequests.get("/tv/query/all", null, null).then((result){
+      Logs.info('responseBody=' + result?.responseBody);
+    });
+
     Future.delayed(Duration(seconds: 2)).then((e) {
       setState(() {
         //重新构建列表
