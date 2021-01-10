@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_study/component/http/HttpRequests.dart';
-import 'package:flutter_study/component/http/HttpResult.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/model/QueryTvResult.dart';
 
 class TvList extends StatefulWidget {
   @override
@@ -11,53 +13,57 @@ class TvList extends StatefulWidget {
 
 class _ScaffoldRouteState extends State<TvList> {
   int _selectedIndex = 1;
-  static const loadingTag = "##loading##"; //表尾标记
-  var _words = <String>[loadingTag];
+  List<TvItem> list;
 
   @override
   void initState() {
     super.initState();
+    list = [];
     _retrieveData();
   }
 
   @override
   Widget build(BuildContext context) {
     //获取路由参数
-    var args=ModalRoute.of(context).settings.arguments;
+    var args = ModalRoute.of(context).settings.arguments;
     print('args=' + args);
 
     return Scaffold(
       appBar: AppBar(
         title: Text("TV List"),
       ),
-      bottomNavigationBar: BottomNavigationBar( // 底部导航
+      bottomNavigationBar: BottomNavigationBar(
+        // 底部导航
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'All'),
-          BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Favorite'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.business), label: 'Favorite'),
         ],
         currentIndex: _selectedIndex,
         fixedColor: Colors.blue,
         onTap: _onItemTapped,
       ),
-        body: new Center(
-          child: ListView.separated(
-            itemCount: _words.length,
-            itemBuilder: (context, index) {
-              return new GestureDetector(
-                onTap: () {
-                  //处理点击事件
-                  print("index--" + index.toString());
-                  Navigator.of(context).pushNamed(RouteNameConstant.route_name_tv_player, arguments: "hi");
-                },
-                child: ListTile(title: Text(_words[index])),
-              );
-              //显示单词列表项
-            },
-            separatorBuilder: (context, index) => Divider(height: .0),
-          ),
+      body: new Center(
+        child: ListView.separated(
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            return new GestureDetector(
+              onTap: () {
+                //处理点击事件
+                Navigator.of(context).pushNamed(
+                    RouteNameConstant.route_name_tv_player,
+                    arguments: list[index]);
+              },
+              child: ListTile(title: Text(list[index].name)),
+            );
+            //显示单词列表项
+          },
+          separatorBuilder: (context, index) => Divider(height: .0),
         ),
+      ),
     );
   }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -65,18 +71,15 @@ class _ScaffoldRouteState extends State<TvList> {
   }
 
   void _retrieveData() {
-    HttpRequests.get("/tv/query/all", null, null).then((result){
+    HttpRequests.get("/tv/query/all", null, null).then((result) {
       Logs.info('responseBody=' + result?.responseBody);
-    });
-
-    Future.delayed(Duration(seconds: 2)).then((e) {
       setState(() {
-        //重新构建列表
-        for(var i = 0; i< 10; i++){
-          _words.add("hello-" + i.toString());
+        QueryTvResult tvResult =
+            QueryTvResult.fromJson(json.decode(result?.responseBody));
+        if (tvResult.code == 200) {
+          list = tvResult.data;
         }
       });
     });
   }
-
 }
