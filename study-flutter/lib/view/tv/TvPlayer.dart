@@ -26,27 +26,31 @@ class _VideoScreenState extends State<TvPlayer> {
   @override
   Widget build(BuildContext context) {
     //获取路由参数
-    TvItem arguments = ModalRoute.of(context).settings.arguments;
-    if(player.dataSource == null) {
+    TvItem arguments = ModalRoute
+        .of(context)
+        .settings
+        .arguments;
+
+    if (player.dataSource == null) {
       player.setDataSource(arguments.url, autoPlay: true);
     }
 
-      return Scaffold(
-          body: Container(
-            alignment: Alignment.center,
-            child: FijkView(
-              player: player,
-              panelBuilder: (FijkPlayer player, FijkData data, BuildContext context,
-                  Size viewSize, Rect texturePos) {
-                return CustomPanel(
-                    player: player,
-                    buildContext: context,
-                    viewSize: viewSize,
-                    texturePos: texturePos);
-              },
-            ),
-          ));
-    }
+    return Scaffold(
+        body: Container(
+          alignment: Alignment.center,
+          child: FijkView(
+            player: player,
+            panelBuilder: (FijkPlayer player, FijkData data,
+                BuildContext context,
+                Size viewSize, Rect texturePos) {
+              return CustomPanel(
+                  player: player,
+                  buildContext: context,
+                  viewSize: viewSize,
+                  texturePos: texturePos);
+            },
+          ),
+        ));
   }
 
   @override
