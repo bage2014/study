@@ -33,7 +33,7 @@ class HomeDrawer extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Wendux",
+                    "bage",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],

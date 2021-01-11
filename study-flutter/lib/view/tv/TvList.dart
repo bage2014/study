@@ -19,7 +19,7 @@ class _ScaffoldRouteState extends State<TvList> {
   void initState() {
     super.initState();
     list = [];
-    _retrieveData();
+    _onRefresh();
   }
 
   @override
@@ -43,7 +43,8 @@ class _ScaffoldRouteState extends State<TvList> {
         fixedColor: Colors.blue,
         onTap: _onItemTapped,
       ),
-      body: new Center(
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
         child: ListView.separated(
           itemCount: list.length,
           itemBuilder: (context, index) {
@@ -61,6 +62,7 @@ class _ScaffoldRouteState extends State<TvList> {
           separatorBuilder: (context, index) => Divider(height: .0),
         ),
       ),
+
     );
   }
 
@@ -70,7 +72,7 @@ class _ScaffoldRouteState extends State<TvList> {
     });
   }
 
-  void _retrieveData() {
+  Future<Null> _onRefresh() async {
     HttpRequests.get("/tv/query/all", null, null).then((result) {
       Logs.info('responseBody=' + result?.responseBody);
       setState(() {

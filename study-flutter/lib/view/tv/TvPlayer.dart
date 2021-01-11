@@ -12,6 +12,7 @@ class TvPlayer extends StatefulWidget {
 
 class _VideoScreenState extends State<TvPlayer> {
   final FijkPlayer player = FijkPlayer();
+  bool _loading = true;
 
   _VideoScreenState();
 
@@ -32,25 +33,30 @@ class _VideoScreenState extends State<TvPlayer> {
         .arguments;
 
     if (player.dataSource == null) {
-      player.setDataSource(arguments.url, autoPlay: true);
+      player.setDataSource(arguments.url, autoPlay: true,showCover: true);
+//      player.set
     }
 
     return Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          child: FijkView(
-            player: player,
-            panelBuilder: (FijkPlayer player, FijkData data,
-                BuildContext context,
-                Size viewSize, Rect texturePos) {
-              return CustomPanel(
-                  player: player,
-                  buildContext: context,
-                  viewSize: viewSize,
-                  texturePos: texturePos);
-            },
+        body: new Offstage(
+          offstage: _loading, //这里控制
+          child: Container(
+            alignment: Alignment.center,
+            child: FijkView(
+              player: player,
+              panelBuilder: (FijkPlayer player, FijkData data,
+                  BuildContext context,
+                  Size viewSize, Rect texturePos) {
+                return CustomPanel(
+                    player: player,
+                    buildContext: context,
+                    viewSize: viewSize,
+                    texturePos: texturePos);
+              },
+            ),
           ),
-        ));
+        ),
+        );
   }
 
   @override
