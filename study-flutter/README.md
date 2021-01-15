@@ -29,6 +29,13 @@ https://github.com/flutter/gallery/tree/master/lib
 
 https://f-droid.org/
 
+app 列表抓取
+
+个人设置
+
+游客身份
+
+
 
 
 ### 环境搭建
