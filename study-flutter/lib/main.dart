@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'file:///E:/GitHubDesktop/study/study-flutter/lib/startup/Application.dart';
+import 'package:flutter_study/startup/Application.dart';
 import 'package:flutter_study/locale/translations.dart';
 import 'package:flutter_study/route/route.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';

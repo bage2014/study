@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_upgrade/flutter_app_upgrade.dart';
-
+import 'package:flutter_study/constant/RouteNameConstant.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({
@@ -43,19 +43,24 @@ class HomeDrawer extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                    leading: const Icon(Icons.add),
-                    title: const Text('Add account'),
-                    onTap: (){
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Settings'),
+                    onTap: () {
+                      //处理点击事件
+                      Navigator.of(context)
+                          .pushNamed(RouteNameConstant.route_name_settings);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.info),
+                    title: const Text('About'),
+                    onTap: () {
                       AppUpgrade.appUpgrade(
                         context,
                         _checkAppInfo(),
                         iosAppId: 'id1345678',
                       );
                     },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('Manage accounts'),
                   ),
                 ],
               ),
@@ -65,7 +70,6 @@ class HomeDrawer extends StatelessWidget {
       ),
     );
   }
-
 
   Future<AppUpgradeInfo> _checkAppInfo() async {
     //这里一般访问网络接口，将返回的数据解析成如下格式
@@ -83,5 +87,4 @@ class HomeDrawer extends StatelessWidget {
       );
     });
   }
-
 }
