@@ -1,20 +1,34 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/model/RoutPath.dart';
+import 'package:flutter_study/view/about/About.dart';
 import 'package:flutter_study/view/home/Home.dart';
 import 'package:flutter_study/view/settings/Settings.dart';
-import 'package:flutter_study/view/tv/TvPlayer.dart';
 import 'package:flutter_study/view/tv/TvList.dart';
-
+import 'package:flutter_study/view/tv/TvPlayer.dart';
 
 class RouteConfiguration {
-
   static List<RoutPath> paths = [
-    RoutPath(RouteNameConstant.route_name_home, (context, match) => Home(),),
-    RoutPath(RouteNameConstant.route_name_tv_player, (context, match) => TvPlayer(),),
-    RoutPath(RouteNameConstant.route_name_tv_list, (context, match) => TvList(),),
-    RoutPath(RouteNameConstant.route_name_settings, (context, match) => Settings(),),
+    RoutPath(
+      RouteNameConstant.route_name_home,
+      (context, match) => Home(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_tv_player,
+      (context, match) => TvPlayer(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_tv_list,
+      (context, match) => TvList(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_settings,
+      (context, match) => Settings(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_about,
+      (context, match) => About(),
+    ),
   ];
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {

@@ -35,9 +35,10 @@ class _ScaffoldRouteState extends State<TvList> {
       bottomNavigationBar: BottomNavigationBar(
         // 底部导航
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'All'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.business), label: 'Favorite'),
+              icon: Icon(Icons.favorite_border), label: 'All'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Favorite'),
         ],
         currentIndex: _selectedIndex,
         fixedColor: Colors.blue,
@@ -49,20 +50,25 @@ class _ScaffoldRouteState extends State<TvList> {
           itemCount: list.length,
           itemBuilder: (context, index) {
             return new GestureDetector(
-              onTap: () {
-                //处理点击事件
-                Navigator.of(context).pushNamed(
-                    RouteNameConstant.route_name_tv_player,
-                    arguments: list[index]);
-              },
-              child: ListTile(title: Text(list[index].name)),
-            );
-            //显示单词列表项
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                      RouteNameConstant.route_name_tv_player,
+                      arguments: list[index]);
+                },
+                child: ListTile(
+                    title: Text(list[index].name),
+                    trailing: new GestureDetector(
+                        onTap: () {},
+                        child: index % 3 == 0
+                            ? Icon(Icons.favorite_border)
+                            : Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              ))));
           },
           separatorBuilder: (context, index) => Divider(height: .0),
         ),
       ),
-
     );
   }
 

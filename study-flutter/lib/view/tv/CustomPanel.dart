@@ -34,6 +34,7 @@ class _CustomFijkPanel extends State<CustomPanel> {
     /// 初始化
     super.initState();
     widget.player.addListener(_playerValueChanged);
+    _playing = true;
   }
 
   @override
@@ -149,7 +150,7 @@ class _CustomFijkPanel extends State<CustomPanel> {
     }
   }
 
-  toggle(bool started) {
+  void toggle(bool started) {
     setState(() {
       /// 显示 、隐藏  进度条+标题栏
       _playing = started;
