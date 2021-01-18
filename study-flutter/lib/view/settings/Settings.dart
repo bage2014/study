@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_upgrade/flutter_app_upgrade.dart';
+import 'package:flutter_study/constant/RouteNameConstant.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -51,7 +52,10 @@ class _Settings extends State<Settings> {
             child: ListTile(
               title: Text("开发者工具"),
               trailing: Icon(Icons.chevron_right),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                    RouteNameConstant.route_name_setting_develop);
+              },
             ),
           ),
         ]),

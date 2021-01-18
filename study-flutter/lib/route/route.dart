@@ -3,6 +3,7 @@ import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/model/RoutPath.dart';
 import 'package:flutter_study/view/about/About.dart';
 import 'package:flutter_study/view/home/Home.dart';
+import 'package:flutter_study/view/settings/DevelopSetting.dart';
 import 'package:flutter_study/view/settings/Settings.dart';
 import 'package:flutter_study/view/tv/TvList.dart';
 import 'package:flutter_study/view/tv/TvPlayer.dart';
@@ -29,11 +30,21 @@ class RouteConfiguration {
       RouteNameConstant.route_name_about,
       (context, match) => About(),
     ),
+    RoutPath(
+      RouteNameConstant.route_name_setting_develop,
+          (context, match) => DevelopSetting(),
+    ),
   ];
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     print('routeName = ' + settings.name);
     for (final path in paths) {
+      if(settings.name.compareTo(path.pattern) == 0){
+        return MaterialPageRoute<void>(
+          builder: (context) => path.builder(context, path.pattern),
+          settings: settings,
+        );
+      }
       final regExpPattern = RegExp(path.pattern);
       if (regExpPattern.hasMatch(settings.name)) {
         final firstMatch = regExpPattern.firstMatch(settings.name);
