@@ -38,6 +38,7 @@ class RouteConfiguration {
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     print('routeName = ' + settings.name);
+    // 有限匹配相等的
     for (final path in paths) {
       if(settings.name.compareTo(path.pattern) == 0){
         return MaterialPageRoute<void>(
@@ -45,6 +46,9 @@ class RouteConfiguration {
           settings: settings,
         );
       }
+    }
+    // 在匹配正则的
+    for (final path in paths) {
       final regExpPattern = RegExp(path.pattern);
       if (regExpPattern.hasMatch(settings.name)) {
         final firstMatch = regExpPattern.firstMatch(settings.name);

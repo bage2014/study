@@ -1,8 +1,11 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_study/component/cache/Caches.dart';
 import 'package:flutter_study/component/http/HttpRequests.dart';
 import 'package:flutter_study/component/log/Logs.dart';
+import 'package:flutter_study/constant/HttpConstant.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/model/QueryTvResult.dart';
 
@@ -12,8 +15,9 @@ class TvList extends StatefulWidget {
 }
 
 class _ScaffoldRouteState extends State<TvList> {
-  int _selectedIndex = 1;
   List<TvItem> list;
+  bool isOnlyFavorite = false;
+  int _currentIndex = 1;
 
   @override
   void initState() {
@@ -40,7 +44,7 @@ class _ScaffoldRouteState extends State<TvList> {
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite), label: 'Favorite'),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: _currentIndex,
         fixedColor: Colors.blue,
         onTap: _onItemTapped,
       ),
@@ -58,7 +62,9 @@ class _ScaffoldRouteState extends State<TvList> {
                 child: ListTile(
                     title: Text(list[index].name),
                     trailing: new GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          _setFavorite(list[index]);
+                        },
                         child: index % 3 == 0
                             ? Icon(Icons.favorite_border)
                             : Icon(
@@ -74,13 +80,23 @@ class _ScaffoldRouteState extends State<TvList> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _currentIndex = index;
+      isOnlyFavorite = index > 0;
     });
   }
 
   Future<Null> _onRefresh() async {
-    HttpRequests.get("/tv/query/all", null, null).then((result) {
-      Logs.info('responseBody=' + result?.responseBody);
+    Map<String, dynamic> paramJson = new HashMap();
+    paramJson.putIfAbsent("favoriteUserId", () => Caches.getUserId());
+    paramJson.putIfAbsent("isOnlyFavorite", () => isOnlyFavorite);
+    paramJson.putIfAbsent("targetPage", () => 1);
+    paramJson.putIfAbsent("pageSize", () => 10);
+    Map<String, String> param = new HashMap();
+    param.putIfAbsent("param", () => json.encode(paramJson));
+    print(json.encode(paramJson));
+    HttpRequests.get(HttpConstant.url_tv_query_page, param, null)
+        .then((result) {
+      Logs.info('_onRefresh responseBody=' + result?.responseBody);
       setState(() {
         QueryTvResult tvResult =
             QueryTvResult.fromJson(json.decode(result?.responseBody));
@@ -88,6 +104,18 @@ class _ScaffoldRouteState extends State<TvList> {
           list = tvResult.data;
         }
       });
+    });
+  }
+
+
+  Future<Null> _setFavorite(TvItem item) async {
+    item.isFavorite = !item.isFavorite;
+    Map<String, String> param = new HashMap();
+    param.putIfAbsent("param", () => json.encode(item.toJson()));
+    HttpRequests.post(HttpConstant.url_tv_set_favorite, param, null)
+        .then((result) {
+      Logs.info('_setFavorite responseBody=' + result?.responseBody);
+      _onRefresh();
     });
   }
 }

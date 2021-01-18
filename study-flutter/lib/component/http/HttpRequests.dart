@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter_study/component/http/HttpResult.dart';
 import 'package:flutter_study/component/log/Logs.dart';
@@ -62,9 +61,9 @@ class HttpRequests {
           _buildOption(parameters, data, headers, timeoutMilliseconds);
       Response response;
       if ("get".compareTo(method) == 0) {
-        response = await dio.get(path);
+        response = await dio.get(path, queryParameters: parameters);
       } else {
-        response = await dio.post(path);
+        response = await dio.post(path, data: data);
       }
       result.responseBody = response.data;
       result.statusCode = response.statusCode;

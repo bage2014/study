@@ -27,7 +27,7 @@ class _VideoScreenState extends State<TvPlayer> {
     TvItem arguments = ModalRoute.of(context).settings.arguments;
 
     if (player.dataSource == null) {
-      player.setDataSource(arguments.url, autoPlay: true);
+      player.setDataSource(arguments.urls[0], autoPlay: true);
     }
 
     return Scaffold(
