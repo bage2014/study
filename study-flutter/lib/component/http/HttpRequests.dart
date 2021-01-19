@@ -63,7 +63,7 @@ class HttpRequests {
       if ("get".compareTo(method) == 0) {
         response = await dio.get(path, queryParameters: parameters);
       } else {
-        response = await dio.post(path, data: data);
+        response = await dio.post(path, queryParameters: parameters, data: data);
       }
       result.responseBody = response.data;
       result.statusCode = response.statusCode;
