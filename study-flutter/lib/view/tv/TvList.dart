@@ -65,12 +65,12 @@ class _ScaffoldRouteState extends State<TvList> {
                         onTap: () {
                           _setFavorite(list[index]);
                         },
-                        child: index % 3 == 0
-                            ? Icon(Icons.favorite_border)
-                            : Icon(
+                        child: list[index].isFavorite
+                            ? Icon(
                                 Icons.favorite,
                                 color: Colors.red,
-                              ))));
+                              )
+                            : Icon(Icons.favorite_border))));
           },
           separatorBuilder: (context, index) => Divider(height: .0),
         ),
@@ -90,7 +90,7 @@ class _ScaffoldRouteState extends State<TvList> {
     paramJson.putIfAbsent("favoriteUserId", () => Caches.getUserId());
     paramJson.putIfAbsent("isOnlyFavorite", () => isOnlyFavorite);
     paramJson.putIfAbsent("targetPage", () => 1);
-    paramJson.putIfAbsent("pageSize", () => 10);
+    paramJson.putIfAbsent("pageSize", () => 100);
     Map<String, String> param = new HashMap();
     param.putIfAbsent("param", () => json.encode(paramJson));
     print(json.encode(paramJson));
@@ -107,11 +107,12 @@ class _ScaffoldRouteState extends State<TvList> {
     });
   }
 
-
   Future<Null> _setFavorite(TvItem item) async {
     item.isFavorite = !item.isFavorite;
+    item.userId = Caches.getUserId();
     Map<String, String> param = new HashMap();
     param.putIfAbsent("param", () => json.encode(item.toJson()));
+    print(json.encode(item.toJson()));
     HttpRequests.post(HttpConstant.url_tv_set_favorite, param, null)
         .then((result) {
       Logs.info('_setFavorite responseBody=' + result?.responseBody);
