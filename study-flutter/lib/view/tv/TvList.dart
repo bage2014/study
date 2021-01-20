@@ -82,6 +82,7 @@ class _ScaffoldRouteState extends State<TvList> {
     setState(() {
       _currentIndex = index;
       isOnlyFavorite = index > 0;
+      _onRefresh();
     });
   }
 
