@@ -51,17 +51,25 @@ class TvItem {
   String name;
   String logo;
   bool isFavorite;
+  int favoriteId;
   int userId;
   List<String> urls;
 
   TvItem(
-      {this.id, this.name, this.logo, this.isFavorite, this.userId, this.urls});
+      {this.id,
+        this.name,
+        this.logo,
+        this.isFavorite,
+        this.favoriteId,
+        this.userId,
+        this.urls});
 
   TvItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     logo = json['logo'];
     isFavorite = json['isFavorite'];
+    favoriteId = json['favoriteId'];
     userId = json['userId'];
     urls = json['urls'].cast<String>();
   }
@@ -72,6 +80,7 @@ class TvItem {
     data['name'] = this.name;
     data['logo'] = this.logo;
     data['isFavorite'] = this.isFavorite;
+    data['favoriteId'] = this.favoriteId;
     data['userId'] = this.userId;
     data['urls'] = this.urls;
     return data;
