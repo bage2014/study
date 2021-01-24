@@ -34,6 +34,7 @@ class _VideoScreenState extends State<TvPlayer> {
         body: Center(
             child: FijkView(
       player: player,
+      color: Colors.black,
       panelBuilder: (FijkPlayer player, FijkData data, BuildContext context,
           Size viewSize, Rect texturePos) {
         return CustomPanel(

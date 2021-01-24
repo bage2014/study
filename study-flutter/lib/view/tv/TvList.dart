@@ -16,7 +16,6 @@ class TvList extends StatefulWidget {
 
 class _ScaffoldRouteState extends State<TvList> {
   List<TvItem> list;
-  bool isOnlyFavorite = false;
   int _currentIndex = 1;
 
   @override
@@ -81,7 +80,6 @@ class _ScaffoldRouteState extends State<TvList> {
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
-      isOnlyFavorite = index > 0;
       _onRefresh();
     });
   }
@@ -89,7 +87,7 @@ class _ScaffoldRouteState extends State<TvList> {
   Future<Null> _onRefresh() async {
     Map<String, dynamic> paramJson = new HashMap();
     paramJson.putIfAbsent("favoriteUserId", () => Caches.getUserId());
-    paramJson.putIfAbsent("isOnlyFavorite", () => isOnlyFavorite);
+    paramJson.putIfAbsent("isOnlyFavorite", () => _currentIndex == 1);
     paramJson.putIfAbsent("targetPage", () => 1);
     paramJson.putIfAbsent("pageSize", () => 100);
     Map<String, String> param = new HashMap();
