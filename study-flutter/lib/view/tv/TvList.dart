@@ -103,6 +103,8 @@ class _ScaffoldRouteState extends State<TvList> {
           list = tvResult.data;
         }
       });
+    }).catchError((error){
+      print(error.toString());
     });
   }
 

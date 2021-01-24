@@ -8,8 +8,8 @@ class HttpProp {
   static String contentType;
 
   static void init() {
-    baseUrl = "http://101.132.119.250:8088/tutorials/ignore/";
-//    baseUrl = "http://10.0.2.2:8088/tutorials/ignore/";
+    baseUrl = "http://101.132.119.250:8088/tutorials";
+//    baseUrl = "http://192.168.1.104:8088/tutorials";
     timeout = 5000;
     contentType = "application/json; charset=utf-8";
   }

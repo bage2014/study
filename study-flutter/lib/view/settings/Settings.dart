@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_upgrade/flutter_app_upgrade.dart';
+import 'package:flutter_study/component/http/HttpRequests.dart';
+import 'package:flutter_study/component/log/Logs.dart';
+import 'package:flutter_study/constant/HttpConstant.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/model/AppVersionResult.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -53,8 +59,8 @@ class _Settings extends State<Settings> {
               title: Text("开发者工具"),
               trailing: Icon(Icons.chevron_right),
               onTap: () {
-                Navigator.of(context).pushNamed(
-                    RouteNameConstant.route_name_setting_develop);
+                Navigator.of(context)
+                    .pushNamed(RouteNameConstant.route_name_setting_develop);
               },
             ),
           ),
@@ -64,19 +70,32 @@ class _Settings extends State<Settings> {
   }
 
   Future<AppUpgradeInfo> _checkAppInfo() async {
-    //这里一般访问网络接口，将返回的数据解析成如下格式
-    return Future.delayed(Duration(milliseconds: 500), () {
+    int version = 0;
+    String url = HttpConstant.url_tv_version_check
+        .replaceAll("{version}", version.toString());
+    Logs.info('_checkAppInfo url=' + url);
+    return await HttpRequests
+        .get(url, null, null)
+        .then((restResult) {
+      Logs.info('_onRefresh responseBody=' + restResult?.responseBody);
+      if (restResult.responseBody.isNotEmpty) {
+        AppVersionResult result =
+        AppVersionResult.fromJson(json.decode(restResult?.responseBody));
+        if (result?.code == 200) {
+          return AppUpgradeInfo(
+            title: result.data.versionName,
+            contents: result.data.description.split("|"),
+            force: false,
+            apkDownloadUrl: HttpRequests.rebuildUrl(result.data.fileUrl),
+          );
+        }
+      }
       return AppUpgradeInfo(
-        title: '新版本V1.1.1',
-        contents: [
-          '1、支持立体声蓝牙耳机，同时改善配对性能',
-          '2、提供屏幕虚拟键盘',
-          '3、更简洁更流畅，使用起来更快',
-          '4、修复一些软件在使用时自动退出bug',
-          '5、新增加了分类查看功能'
-        ],
+        title: '检查更新',
+        contents: ['此版本已是最新版本'],
         force: false,
       );
     });
   }
+
 }
