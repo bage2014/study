@@ -3,6 +3,42 @@
 
 ## Java 基础
 
+
+- Java序列化和反序列化
+
+
+
+本文将逐一的介绍几个情境，顺序如下面的列表。
+
+- 序列化 ID 的问题
+- 静态变量序列化
+- 父类的序列化与 Transient 关键字
+- 对敏感字段加密
+- 序列化存储规则
+
+
+
+怎么实现Java的序列化 
+
+为什么实现了java.io.Serializable接口才能被序列化 
+
+transient的作用是什么 
+
+怎么自定义序列化策略 
+
+自定义的序列化策略是如何被调用的 
+
+ArrayList对序列化的实现有什么好处
+
+
+
+https://developer.ibm.com/zh/articles/j-lo-serial/
+
+https://cloud.tencent.com/developer/article/1341385
+
+
+
+
 ## volatile
 
 
