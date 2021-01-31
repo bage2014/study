@@ -150,6 +150,12 @@ https://book.flutterchina.club/
 
 
 
+flutter_app_upgrade 插件使用问题
+
+ServiceSpecificException: (code -22)
+
+新建文件 \android\app\src\main\res\xml\file_paths.xml
+
 
 
 Flutter 基本概念
