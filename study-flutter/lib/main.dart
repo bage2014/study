@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_study/startup/Application.dart';
+import 'package:flutter_study/component/log/Logs.dart';
+import 'package:flutter_study/component/permission/PermissionHelper.dart';
+import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/locale/translations.dart';
 import 'package:flutter_study/route/route.dart';
-import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/startup/Application.dart';
+import 'package:flutter_study/utils/AppUtils.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,6 @@ class MyApp extends StatelessWidget {
         const Locale('zh', 'CN'), // 中文简体
         //其它Locales
       ],
-
     );
   }
 }
@@ -72,24 +73,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(Duration(seconds: 1)).then((e) {
+    Application.init();
+
+    checkPermission();
+  }
+
+  void checkPermission() async {
+    bool isGranted = await PermissionHelper.requestPermission();
+    Logs.info('isGranted0 = ' + isGranted.toString());
+
+    if (isGranted) {
       Application.init();
       toHome();
-    });
+    } else {
+      bool isOpen = await AppUtils.openSettings();
+      Logs.info('isOpen = ' + isOpen.toString());
+      isGranted = await PermissionHelper.requestPermission();
+      Logs.info('isGranted1 = ' + isGranted.toString());
+      if(!isGranted){
+        Navigator.of(context).pop(1);
+      }
+    }
   }
+
   void toHome() {
 //    setState(() {
 //      var currentLanguage = Translations.of(context).currentLanguage;
 //      Translations.load(currentLanguage.endsWith("en") ? Locale("zh","CN") : Locale("en"));
 //    });
-      Navigator.of(context).pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
-
+    Navigator.of(context)
+        .pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
   }
 
   @override
@@ -127,7 +145,9 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-        Translations.of(context) == null ? "Welcome": Translations.of(context).text("main.title"),
+              Translations.of(context) == null
+                  ? "Welcome"
+                  : Translations.of(context).text("main.title"),
             ),
           ],
         ),

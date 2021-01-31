@@ -40,6 +40,16 @@ dependencies:
   # https://github.com/flutterchina/dio
   dio: 3.0.10
 
+  # https://pub.flutter-io.cn/packages/permission_handler/install
+  permission_handler: ^5.0.1+1
+
+  # https://pub.flutter-io.cn/packages/path_provider
+  path_provider: ^0.4.1
+
+  # https://pub.flutter-io.cn/packages/install_plugin
+  install_plugin: ^2.0.1
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
