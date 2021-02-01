@@ -78,24 +78,25 @@ class _Settings extends State<Settings> {
 
   Future<AppUpgradeInfo> _checkAppInfo() async {
     try {
-      Response response = await HttpRequests.dio.get(
-        HttpRequests.rebuildUrl('/ignore/file/download/1611493605906'),
-        //Received data with List<int>
-        options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-            validateStatus: (status) { return status < 500; }
-        ),
-      );
-      print(response.headers);
+//      Response response = await HttpRequests.dio.get(
+////        HttpRequests.rebuildUrl('/ignore/file/download/1611493605906'),
+//      'https://f-droid.org/F-Droid.apk',
+//        //Received data with List<int>
+//        options: Options(
+//            responseType: ResponseType.bytes,
+//            followRedirects: false,
+//            validateStatus: (status) { return status < 500; }
+//        ),
+//      );
+//      print(response.headers);
 
       Directory dir = await getTemporaryDirectory();
       File file = File('${dir.path}/12345.apk');
 //      File file = File('/sdcard/download/12345.apk');
-      var raf = file.openSync(mode: FileMode.write);
+//      var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
-      raf.writeFromSync(response.data);
-      await raf.close();
+//      raf.writeFromSync(response.data);
+//      await raf.close();
 
       print('donwload apk finished...');
 
@@ -104,7 +105,10 @@ class _Settings extends State<Settings> {
 //        print('install apk $result');
 //      });
 
-      OpenFile.open('${dir.path}/12345.apk');
+      String path = '${dir.path}/12345.apk';
+      print('donwload path= ${path}');
+
+      OpenFile.open(path).then((value) => print('value is ${value.message}')).catchError((error)=>{print('error is $error')});
 
     } catch (e) {
       print(e);

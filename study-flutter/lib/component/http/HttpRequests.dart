@@ -88,7 +88,7 @@ class HttpRequests {
   }
 
   static String rebuildUrl(String url) {
-    if(url?.startsWith("/") && HttpProp.baseUrl.endsWith("/")){
+    if(url.startsWith("/") && HttpProp.baseUrl?.endsWith("/")){
       return HttpProp.baseUrl + url.substring(1);
     }
     return HttpProp.baseUrl + url;
