@@ -51,8 +51,9 @@
             android:value="2" />
 
         <provider
+            tools:replace="android:authorities"
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.bage.flutter.flutter_study.fileprovider"
+            android:authorities="com.bage.flutter.flutter_study.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

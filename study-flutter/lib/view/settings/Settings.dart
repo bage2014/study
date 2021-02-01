@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app_upgrade/flutter_app_upgrade.dart';
 import 'package:flutter_study/component/http/HttpRequests.dart';
 import 'package:flutter_study/component/log/Logs.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/model/AppVersionResult.dart';
 import 'package:flutter_study/utils/AppUtils.dart';
 import 'package:install_plugin/install_plugin.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -76,7 +79,7 @@ class _Settings extends State<Settings> {
   Future<AppUpgradeInfo> _checkAppInfo() async {
     try {
       Response response = await HttpRequests.dio.get(
-        HttpRequests.rebuildUrl('/fileStorage/api/fileItem/download/1611493605906'),
+        HttpRequests.rebuildUrl('/ignore/file/download/1611493605906'),
         //Received data with List<int>
         options: Options(
             responseType: ResponseType.bytes,
@@ -85,7 +88,10 @@ class _Settings extends State<Settings> {
         ),
       );
       print(response.headers);
-      File file = File('12345.apk');
+
+      Directory dir = await getTemporaryDirectory();
+      File file = File('${dir.path}/12345.apk');
+//      File file = File('/sdcard/download/12345.apk');
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
       raf.writeFromSync(response.data);
@@ -93,13 +99,18 @@ class _Settings extends State<Settings> {
 
       print('donwload apk finished...');
 
-      InstallPlugin.installApk(file.path, AppUtils.getAppId())
-          .then((result) {
-        print('install apk $result');
-      });
+//      InstallPlugin.installApk(file.path, AppUtils.getPackageId())
+//          .then((result) {
+//        print('install apk $result');
+//      });
+
+      OpenFile.open('${dir.path}/12345.apk');
+
     } catch (e) {
       print(e);
     }
+
+
 //    int version = 0;
 //    String url = HttpConstant.url_tv_version_check
 //        .replaceAll("{version}", version.toString());

@@ -9,8 +9,8 @@ class AppUtils {
     return "";
   }
 
-  static String getAppId() {
-    return "com.bage.flutter";
+  static String getPackageId() {
+    return "com.bage.flutter.flutter_study";
   }
 
 }
