@@ -3,7 +3,7 @@ class AppVersionResult {
   int originCode;
   String msg;
   Null originMsg;
-  Data data;
+  AppVersion data;
 
   AppVersionResult(
       {this.code, this.originCode, this.msg, this.originMsg, this.data});
@@ -13,7 +13,7 @@ class AppVersionResult {
     originCode = json['originCode'];
     msg = json['msg'];
     originMsg = json['originMsg'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new AppVersion.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,7 +29,7 @@ class AppVersionResult {
   }
 }
 
-class Data {
+class AppVersion {
   int id;
   int versionCode;
   String description;
@@ -44,7 +44,7 @@ class Data {
   Null updateStaffId;
   Null deleteState;
 
-  Data(
+  AppVersion(
       {this.id,
       this.versionCode,
       this.description,
@@ -59,7 +59,7 @@ class Data {
       this.updateStaffId,
       this.deleteState});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  AppVersion.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     versionCode = json['versionCode'];
     description = json['description'];

@@ -1,16 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_upgrade/flutter_app_upgrade.dart';
+import 'package:flutter_study/component/http/HttpByteResult.dart';
 import 'package:flutter_study/component/http/HttpRequests.dart';
 import 'package:flutter_study/component/http/HttpResult.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/constant/HttpConstant.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/model/AppVersionResult.dart';
 import 'package:flutter_study/utils/AppUtils.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_study/utils/FileUtils.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -48,13 +48,7 @@ class _Settings extends State<Settings> {
             child: ListTile(
               title: Text("检查更新"),
               trailing: Icon(Icons.chevron_right),
-              onTap: () {
-                AppUpgrade.appUpgrade(
-                  context,
-                  _checkAppInfo(),
-                  iosAppId: 'id1345678',
-                );
-              },
+              onTap: _checkAppInfo,
             ),
           ),
           Container(
@@ -73,32 +67,35 @@ class _Settings extends State<Settings> {
     );
   }
 
-  Future<AppUpgradeInfo> _checkAppInfo() async {
+  void _checkAppInfo() async {
     try {
       // 版本校验
-      HttpResult httpResult = await HttpRequests.get(HttpConstant.url_settings_version_check, null, null);
-      // 下载
-      HttpRequests.bytes(httpResult.responseBody, null, null)
-          .then((result) {
-
-      }).catchError((error){
-        print(error.toString());
-      });
-
-      Directory dir = await getTemporaryDirectory();
-//      Directory dir = await getExternalStorageDirectory();
-      File file = File('${dir.path}/abcde.apk');
-      var raf = file.openSync(mode: FileMode.write);
-      var data = response.data;
-      raf.writeFromSync(data);
-      await raf.close();
-
-      print('donwload apk finished... ${file.path}');
-
-      AppUtils.openFile(file);
+      String url = HttpConstant.url_settings_version_check
+          .replaceAll("{version}", AppUtils.getCurrentVersion().toString());
+      HttpResult httpResult = await HttpRequests.get(url, null, null);
+      Logs.info("responseBody = ${httpResult.responseBody}");
+      // ignore: null_aware_in_condition
+      if (httpResult?.responseBody?.isEmpty) {
+        return ;
+      }
+      AppVersionResult appVersionResult =
+          AppVersionResult.fromJson(json.decode(httpResult?.responseBody));
+      if (appVersionResult?.code == 200) {
+        // 下载
+        HttpByteResult httpByteResult =
+            await HttpRequests.bytes(appVersionResult.data.fileUrl, null, null);
+        print('donwload apk finished...');
+        // 保存
+        Directory downloadDir = await FileUtils.getDownloadDir();
+        File file = File('${downloadDir.path}/latest-app.apk');
+        FileUtils.write(file, httpByteResult.responseBytes);
+        print('save file to ${file.path}');
+        // 打开文件
+        FileUtils.openFile(file);
+        print('open file ${file.path}');
+      }
     } catch (e) {
       print(e);
     }
-
   }
 }
