@@ -33,9 +33,9 @@ dependencies:
 
   # https://github.com/befovy/fijkplayer
   fijkplayer: ^0.8.7
-
-  # https://github.com/LaoMengFlutter/flutter-do/tree/master/flutter_app_upgrade
-  flutter_app_upgrade: ^1.1.0
+#
+#  # https://github.com/LaoMengFlutter/flutter-do/tree/master/flutter_app_upgrade
+#  flutter_app_upgrade: ^1.1.0
 
   # https://github.com/flutterchina/dio
   dio: 3.0.10
@@ -47,7 +47,7 @@ dependencies:
   path_provider: ^0.4.1
 
   # https://pub.flutter-io.cn/packages/install_plugin
-  install_plugin: ^2.0.1
+#  install_plugin: ^2.0.1
 
   # https://pub.flutter-io.cn/packages/open_file
   open_file: ^3.0.3
