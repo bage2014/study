@@ -2,7 +2,7 @@
 
 ## Flutter 入门
 
-
+http://olive.ren/flutter-build-apk-fail/
 
 ### 参考链接
 
@@ -156,7 +156,8 @@ ServiceSpecificException: (code -22)
 
 新建文件 \android\app\src\main\res\xml\file_paths.xml
 
-
+flutter build apk 报错：
+http://olive.ren/flutter-build-apk-fail/
 
 Flutter 基本概念
 

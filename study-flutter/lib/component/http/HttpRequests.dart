@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_study/component/http/HttpByteResult.dart';
+import 'package:flutter_study/component/http/HttpProgressCallback.dart';
 import 'package:flutter_study/component/http/HttpResult.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/prop/HttpProp.dart';
@@ -11,9 +12,14 @@ class HttpRequests {
     _dio = Dio();
   }
 
-  static Future<HttpByteResult> bytes(String path,
+  static Future<HttpByteResult> getBytes(String path,
       Map<String, dynamic> parameters, Map<String, String> headers) async {
     return _doDownloadRequest(path, parameters, null, headers, "get", null);
+  }
+
+  static Future<HttpByteResult> postBytes(String path,
+      Map<String, dynamic> parameters, Map<String, String> headers) async {
+    return _doDownloadRequest(path, parameters, null, headers, "post", null);
   }
 
   static Future<HttpResult> get(String path, Map<String, dynamic> parameters,
@@ -61,24 +67,31 @@ class HttpRequests {
       dynamic data,
       Map<String, String> headers,
       String method,
-      int timeoutMilliseconds) async {
+      HttpProgressCallback onReceiveProgress) async {
     HttpByteResult result = HttpByteResult();
     try {
-      _dio.options =
-          _buildDownloadOption(parameters, data, headers, timeoutMilliseconds);
+      path = rebuildUrl(path);
+      Logs.info('_doDownloadRequest path = ${path}');
+      _dio.options = _buildDownloadOption(parameters, data, headers);
       Response response;
       if ("get".compareTo(method) == 0) {
-        response = await _dio.get(path, queryParameters: parameters);
+        response = await _dio.get(path, queryParameters: parameters,
+            onReceiveProgress: (int sent, int total) {
+          double percent = sent / total;
+          print("_doDownloadRequest onReceiveProgress ${percent}%");
+          onReceiveProgress?.call(sent, total);
+        });
       } else {
         response =
             await _dio.post(path, queryParameters: parameters, data: data);
       }
+      Logs.info('_doDownloadRequest statusCode = ${response.statusCode}');
       result.responseBytes = response.data;
       result.statusCode = response.statusCode;
       result.headers = response.headers?.map;
       return result;
     } catch (e) {
-      Logs.info('error' + e.toString());
+      Logs.info('_doDownloadRequest error' + e.toString());
     }
     return result;
   }
@@ -92,6 +105,8 @@ class HttpRequests {
       int timeoutMilliseconds) async {
     HttpResult result = HttpResult();
     try {
+      path = rebuildUrl(path);
+      Logs.info('_doBaseRequest path = ${path}');
       _dio.options =
           _buildOption(parameters, data, headers, timeoutMilliseconds);
       Response response;
@@ -101,50 +116,22 @@ class HttpRequests {
         response =
             await _dio.post(path, queryParameters: parameters, data: data);
       }
+      Logs.info('_doBaseRequest statusCode = ${response.statusCode}');
       result.responseBody = response.data;
       result.statusCode = response.statusCode;
       result.headers = response.headers?.map;
       return result;
     } catch (e) {
-      Logs.info('error' + e.toString());
-    }
-    return result;
-  }
-
-  static Future<HttpResult> _doRequest(
-      String path,
-      Map<String, dynamic> parameters,
-      dynamic data,
-      Map<String, String> headers,
-      String method,
-      int timeoutMilliseconds) async {
-    HttpResult result = HttpResult();
-    try {
-      _dio.options =
-          _buildOption(parameters, data, headers, timeoutMilliseconds);
-      Response response;
-      if ("get".compareTo(method) == 0) {
-        response = await _dio.get(path, queryParameters: parameters);
-      } else {
-        response =
-            await _dio.post(path, queryParameters: parameters, data: data);
-      }
-      result.responseBody = response.data;
-      result.statusCode = response.statusCode;
-      result.headers = response.headers?.map;
-      return result;
-    } catch (e) {
-      Logs.info('error' + e.toString());
+      Logs.info('_doBaseRequest error' + e.toString());
     }
     return result;
   }
 
   static BaseOptions _buildDownloadOption(Map<String, dynamic> parameters,
-      dynamic data, Map<String, String> headers, int timeoutMilliseconds) {
+      dynamic data, Map<String, String> headers) {
     return BaseOptions(
         baseUrl: HttpProp.baseUrl,
-        connectTimeout: HttpProp.timeout,
-        receiveTimeout: HttpProp.timeout,
+//        receiveTimeout: HttpProp.timeout, // 不需要指定超时时间
         headers: headers,
         contentType: HttpProp.contentType,
         responseType: ResponseType.bytes,
@@ -167,9 +154,9 @@ class HttpRequests {
   }
 
   static String rebuildUrl(String url) {
-    if (url.startsWith("/") && HttpProp.baseUrl?.endsWith("/")) {
-      return HttpProp.baseUrl + url.substring(1);
+    if (url.startsWith("/") && HttpProp.baseUrl.endsWith("/")) {
+      url = url.substring(1);
     }
-    return HttpProp.baseUrl + url;
+    return url.startsWith("http") ? url : HttpProp.baseUrl + url;
   }
 }

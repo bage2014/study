@@ -83,16 +83,20 @@ class _Settings extends State<Settings> {
       if (appVersionResult?.code == 200) {
         // 下载
         HttpByteResult httpByteResult =
-            await HttpRequests.bytes(appVersionResult.data.fileUrl, null, null);
+            await HttpRequests.getBytes('https://f-droid.org/F-Droid.apk', null, null);
+//        HttpByteResult httpByteResult =
+//            await HttpRequests.bytes(appVersionResult.data.fileUrl, null, null);
         print('donwload apk finished...');
         // 保存
         Directory downloadDir = await FileUtils.getDownloadDir();
         File file = File('${downloadDir.path}/latest-app.apk');
-        FileUtils.write(file, httpByteResult.responseBytes);
-        print('save file to ${file.path}');
+        bool isSuccess = await FileUtils.write(file, httpByteResult.responseBytes);
+        print('save file isSuccess = ${isSuccess} to ${file.path}');
         // 打开文件
-        FileUtils.openFile(file);
-        print('open file ${file.path}');
+        if(isSuccess){
+          FileUtils.openFile(file);
+          print('open file ${file.path}');
+        }
       }
     } catch (e) {
       print(e);
