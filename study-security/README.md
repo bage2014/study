@@ -70,3 +70,10 @@ xss跨站攻击即跨站脚本攻击，百度百科中介绍如下：用户在�
 
 ### SQL 注入 ###
 所谓SQL注入，就是通过把SQL命令插入到Web表单提交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令。
+
+
+### XXE 攻击 ###
+外部实体攻击，利用XML反序列化对象
+https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
+
+
