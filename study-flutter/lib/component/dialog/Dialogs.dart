@@ -1,15 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-
 
 class Dialogs {
-
-  static Future<void> showProgress(double value,String status) {
-    EasyLoading.showProgress(value, status: status);
+  static Future<void> showProgress(BuildContext context, String title) {
+    return showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Container(
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation(Colors.blue),
+              )
+          );
+        });
   }
 
-  static Future<void> dismiss() {
-    EasyLoading.dismiss();
+  static Future<void> dismiss(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
+  static Future<String> showInfoDialog(BuildContext context, String title) {
+    TextEditingController _controller = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("确定"),
+              onPressed: () {
+                Navigator.of(context).pop(_controller.text.toString());
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Future<String> showConfirmDialog(BuildContext context, String title) {
+    TextEditingController _controller = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("取消"),
+              onPressed: () => Navigator.of(context).pop(), // 关闭对话框
+            ),
+            FlatButton(
+              child: Text("确定"),
+              onPressed: () {
+                Navigator.of(context).pop(_controller.text.toString());
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   static Future<String> showInputDialog(BuildContext context, String title) {

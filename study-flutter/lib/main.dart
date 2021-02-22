@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_study/component/dialog/Dialogs.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/component/permission/PermissionHelper.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_study/locale/translations.dart';
 import 'package:flutter_study/route/route.dart';
 import 'package:flutter_study/startup/Application.dart';
 import 'package:flutter_study/utils/AppUtils.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MyApp());
@@ -78,26 +80,18 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
 
-    Application.init();
-
     checkPermission();
   }
 
   void checkPermission() async {
-    bool isGranted = await PermissionHelper.requestPermission();
+    bool isGranted = await PermissionHelper.requestPermissions();
     Logs.info('isGranted0 = ' + isGranted.toString());
 
     if (isGranted) {
       Application.init();
       toHome();
     } else {
-      bool isOpen = await AppUtils.openSettings();
-      Logs.info('isOpen = ' + isOpen.toString());
-      isGranted = await PermissionHelper.requestPermission();
-      Logs.info('isGranted1 = ' + isGranted.toString());
-      if(!isGranted){
-        Navigator.of(context).pop(1);
-      }
+      Navigator.of(context).pop(1);
     }
   }
 

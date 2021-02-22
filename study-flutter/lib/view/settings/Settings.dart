@@ -19,8 +19,10 @@ class Settings extends StatefulWidget {
 }
 
 class _Settings extends State<Settings> {
+  BuildContext _context = null;
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -77,30 +79,36 @@ class _Settings extends State<Settings> {
       Logs.info("responseBody = ${httpResult.responseBody}");
       // ignore: null_aware_in_condition
       if (httpResult?.responseBody?.isEmpty) {
+        Dialogs.showInfoDialog(_context, '当前版本已经是最新版本！');
         return ;
       }
       AppVersionResult appVersionResult =
           AppVersionResult.fromJson(json.decode(httpResult?.responseBody));
       if (appVersionResult?.code == 200) {
-        Dialogs.showProgress(0, 'Downloading...');
+        Dialogs.showProgress(_context,'Downloading...');
         // 下载
         HttpByteResult httpByteResult =
             await HttpRequests.getBytes('https://f-droid.org/F-Droid.apk', null, null,(int sent, int total) {
               double percent = sent / total;
               print("_doDownloadRequest onReceiveProgress ${percent}%");
-              Dialogs.showProgress(percent, 'Downloading...');
-              if(sent >= total ){
-                Dialogs.dismiss();
-              }
             });
 //        HttpByteResult httpByteResult =
 //            await HttpRequests.bytes(appVersionResult.data.fileUrl, null, null);
         print('donwload apk finished...');
         // 保存
+        if (httpByteResult.responseBytes.isEmpty) {
+          Dialogs.dismiss(_context);
+          Dialogs.showInfoDialog(_context, '当前版本已经是最新版本！');
+          return ;
+        }
+
         Directory downloadDir = await FileUtils.getDownloadDir();
         File file = File('${downloadDir.path}/latest-app.apk');
         bool isSuccess = await FileUtils.write(file, httpByteResult.responseBytes);
         print('save file isSuccess = ${isSuccess} to ${file.path}');
+
+        Dialogs.dismiss(_context);
+
         // 打开文件
         if(isSuccess){
           FileUtils.openFile(file);
@@ -109,6 +117,8 @@ class _Settings extends State<Settings> {
       }
     } catch (e) {
       print(e);
+      Dialogs.dismiss(_context);
+      Dialogs.showInfoDialog(_context, '当前版本已经是最新版本！');
     }
   }
 }
