@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 
 class Dialogs {
+
+  static Future<void> showProgress(double value,String status) {
+    EasyLoading.showProgress(value, status: status);
+  }
+
+  static Future<void> dismiss() {
+    EasyLoading.dismiss();
+  }
+
   static Future<String> showInputDialog(BuildContext context, String title) {
     TextEditingController _controller = TextEditingController();
     return showDialog<String>(

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_study/component/dialog/Dialogs.dart';
 import 'package:flutter_study/component/http/HttpByteResult.dart';
 import 'package:flutter_study/component/http/HttpRequests.dart';
 import 'package:flutter_study/component/http/HttpResult.dart';
@@ -81,9 +82,17 @@ class _Settings extends State<Settings> {
       AppVersionResult appVersionResult =
           AppVersionResult.fromJson(json.decode(httpResult?.responseBody));
       if (appVersionResult?.code == 200) {
+        Dialogs.showProgress(0, 'Downloading...');
         // 下载
         HttpByteResult httpByteResult =
-            await HttpRequests.getBytes('https://f-droid.org/F-Droid.apk', null, null);
+            await HttpRequests.getBytes('https://f-droid.org/F-Droid.apk', null, null,(int sent, int total) {
+              double percent = sent / total;
+              print("_doDownloadRequest onReceiveProgress ${percent}%");
+              Dialogs.showProgress(percent, 'Downloading...');
+              if(sent >= total ){
+                Dialogs.dismiss();
+              }
+            });
 //        HttpByteResult httpByteResult =
 //            await HttpRequests.bytes(appVersionResult.data.fileUrl, null, null);
         print('donwload apk finished...');

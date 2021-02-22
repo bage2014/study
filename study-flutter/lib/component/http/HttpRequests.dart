@@ -13,13 +13,15 @@ class HttpRequests {
   }
 
   static Future<HttpByteResult> getBytes(String path,
-      Map<String, dynamic> parameters, Map<String, String> headers) async {
-    return _doDownloadRequest(path, parameters, null, headers, "get", null);
+      Map<String, dynamic> parameters, Map<String, String> headers,
+      HttpProgressCallback onProgress) async {
+    return _doDownloadRequest(path, parameters, null, headers, "get", onProgress);
   }
 
   static Future<HttpByteResult> postBytes(String path,
-      Map<String, dynamic> parameters, Map<String, String> headers) async {
-    return _doDownloadRequest(path, parameters, null, headers, "post", null);
+      Map<String, dynamic> parameters, Map<String, String> headers,
+      HttpProgressCallback onProgress) async {
+    return _doDownloadRequest(path, parameters, null, headers, "post", onProgress);
   }
 
   static Future<HttpResult> get(String path, Map<String, dynamic> parameters,
@@ -67,7 +69,7 @@ class HttpRequests {
       dynamic data,
       Map<String, String> headers,
       String method,
-      HttpProgressCallback onReceiveProgress) async {
+      HttpProgressCallback onProgress) async {
     HttpByteResult result = HttpByteResult();
     try {
       path = rebuildUrl(path);
@@ -79,7 +81,7 @@ class HttpRequests {
             onReceiveProgress: (int sent, int total) {
           double percent = sent / total;
           print("_doDownloadRequest onReceiveProgress ${percent}%");
-          onReceiveProgress?.call(sent, total);
+          onProgress?.call(sent, total);
         });
       } else {
         response =
