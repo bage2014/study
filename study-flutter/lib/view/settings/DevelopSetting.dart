@@ -44,7 +44,7 @@ class _DevelopSetting extends State<DevelopSetting> {
           Container(
             child: new GestureDetector(
               onTap: () {
-                Dialogs.showInputDialog(context, "域名")
+                Dialogs.showInputDialog(context, "域名", '101.132.119.250')
                     .then((value) => {print(value)});
               },
               child: Row(
@@ -66,7 +66,7 @@ class _DevelopSetting extends State<DevelopSetting> {
           Container(
             child: new GestureDetector(
               onTap: () {
-                Dialogs.showInputDialog(context, "端口")
+                Dialogs.showInputDialog(context, "端口", '8088')
                     .then((value) => {print(value)});
               },
               child: Row(

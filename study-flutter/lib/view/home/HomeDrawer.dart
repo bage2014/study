@@ -22,11 +22,13 @@ class HomeDrawer extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: ClipOval(
                       child: Image(
-                          image: AssetImage("assets/images/user_null.png")),
+//                          image: AssetImage("assets/images/user_null.png")),
+                          image: AssetImage("assets/images/logo128.png")),
                     ),
                   ),
                   Text(
-                    "[未登录]",
+//                    "[未登录]",
+                    "Tutorials",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],

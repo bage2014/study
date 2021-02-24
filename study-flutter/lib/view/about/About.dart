@@ -28,7 +28,7 @@ class _About extends State<About> {
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[Text("Tutorials v1.0.0")],
+              children: <Widget>[Text("v1.0.0 beta")],
             ),
           ),
           Container(

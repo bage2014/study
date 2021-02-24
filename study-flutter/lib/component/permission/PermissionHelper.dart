@@ -4,7 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 class PermissionHelper {
   static Future<bool> requestPermissions() async {
     Map<Permission, PermissionStatus> statuses =
-        await [Permission.storage].request();
+        await [Permission.storage,Permission.activityRecognition].request();
     statuses.forEach((key, value) {
       if (!value.isGranted) {
         Logs.info('${key} is not Granted!!');

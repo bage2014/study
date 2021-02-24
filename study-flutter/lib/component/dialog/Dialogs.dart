@@ -3,17 +3,34 @@ import 'package:flutter/material.dart';
 class Dialogs {
   static Future<void> showProgress(BuildContext context, String title) {
     return showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return Container(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation(Colors.blue),
+      context: context,
+      barrierDismissible: false, //点击遮罩不关闭对话框
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.only(top: 26.0),
+                child: Text(title),
               )
-          );
-        });
+            ],
+          ),
+        );
+      });
+//    return showDialog<String>(
+//        context: context,
+//        barrierDismissible: false,
+//        builder: (context) {
+//          return Container(
+//              alignment: Alignment.center,
+//              child: CircularProgressIndicator(
+//                strokeWidth: 2,
+//                valueColor: AlwaysStoppedAnimation(Colors.blue),
+//              )
+//          );
+//        });
   }
 
   static Future<void> dismiss(BuildContext context) {
@@ -64,8 +81,12 @@ class Dialogs {
     );
   }
 
-  static Future<String> showInputDialog(BuildContext context, String title) {
-    TextEditingController _controller = TextEditingController();
+  static Future<String> showInputDialog(BuildContext context, String title, String defaultValue) {
+    TextEditingController _controller = TextEditingController.fromValue(TextEditingValue(
+        text: defaultValue,
+        selection: TextSelection.fromPosition(TextPosition(
+            affinity: TextAffinity.downstream,
+            offset: defaultValue.length))));
     return showDialog<String>(
       context: context,
       builder: (context) {
@@ -76,7 +97,7 @@ class Dialogs {
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(10.0), //内容内边距
             ),
-            autofocus: false, //自动获取焦点，设置false
+            autofocus: true, //自动获取焦点，设置false
           ),
           actions: <Widget>[
             FlatButton(

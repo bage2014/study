@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/view/home/HomeDrawer.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/view/home/MenuItem.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -8,7 +9,7 @@ class Home extends StatefulWidget {
 }
 
 class _ScaffoldRouteState extends State<Home> {
-  List<IconData> _icons = []; //保存Icon数据
+  List<MenuItem> menuItems = []; //保存Icon数据
 
   // 初始化数据
   @override
@@ -43,28 +44,35 @@ class _ScaffoldRouteState extends State<Home> {
                 crossAxisCount: 3, //每行三列
                 childAspectRatio: 1.0 //显示区域宽高相等
                 ),
-            itemCount: _icons.length,
+            itemCount: menuItems.length,
             itemBuilder: (context, index) {
               return new GestureDetector(
-                onTap: () {
-                  //处理点击事件
-                  print(index);
-                  Navigator.of(context).pushNamed(RouteNameConstant.route_name_tv_list, arguments: "hi");
-                },
-                child: Icon(_icons[index]),
-              );
+                  onTap: () {
+                    //处理点击事件
+                    print(index);
+                    Navigator.of(context).pushNamed(
+                        RouteNameConstant.route_name_tv_list,
+                        arguments: "hi");
+                  },
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 16.0, 0, 0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(menuItems[index].icon),
+                            Text(menuItems[index].text)
+                          ])));
             },
           ),
-        )
-    );
+        ));
   }
 
-//模拟异步获取数据
+  //模拟异步获取数据
   void _retrieveIcons() {
     Future.delayed(Duration(milliseconds: 200)).then((e) {
       setState(() {
-        _icons.addAll([
-          Icons.tv,
+        menuItems.addAll([
+          new MenuItem(Icons.tv, 'TV'),
         ]);
       });
     });
