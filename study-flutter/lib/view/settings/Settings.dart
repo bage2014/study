@@ -9,6 +9,7 @@ import 'package:flutter_study/component/http/HttpResult.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/constant/HttpConstant.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/locale/translations.dart';
 import 'package:flutter_study/model/AppVersionResult.dart';
 import 'package:flutter_study/utils/AppUtils.dart';
 import 'package:flutter_study/utils/FileUtils.dart';
@@ -20,6 +21,7 @@ class Settings extends StatefulWidget {
 
 class _Settings extends State<Settings> {
   BuildContext _context = null;
+
   @override
   Widget build(BuildContext context) {
     _context = context;
@@ -45,13 +47,16 @@ class _Settings extends State<Settings> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
 //              children: <Widget>[Text("[未登录]")],
-              children: <Widget>[Text("Tutorials")],
+              children: <Widget>[
+                Text(Translations.textOf(context, "settings.title"))
+              ],
             ),
           ),
           Container(
             alignment: Alignment.center,
             child: ListTile(
-              title: Text("检查更新"),
+              title:
+                  Text(Translations.textOf(context, "settings.checkForUpdate")),
               trailing: Icon(Icons.chevron_right),
               onTap: _checkAppInfo,
             ),
@@ -59,7 +64,7 @@ class _Settings extends State<Settings> {
           Container(
             alignment: Alignment.center,
             child: ListTile(
-              title: Text("开发者工具"),
+              title: Text(Translations.textOf(context, "settings.devTool")),
               trailing: Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.of(context)
@@ -81,38 +86,43 @@ class _Settings extends State<Settings> {
       Logs.info("responseBody = ${httpResult.responseBody}");
       // ignore: null_aware_in_condition
       if (httpResult?.responseBody?.isEmpty) {
-        Dialogs.showInfoDialog(_context, '当前版本已经是最新版本！');
-        return ;
+        Dialogs.showInfoDialog(_context,
+            Translations.textOf(context, "settings.alreadyLatestVersion"));
+        return;
       }
       AppVersionResult appVersionResult =
           AppVersionResult.fromJson(json.decode(httpResult?.responseBody));
       if (appVersionResult?.code == 200) {
-        Dialogs.showProgress(_context,'Downloading...');
+        Dialogs.showProgress(
+            _context, Translations.textOf(context, "settings.downloading"));
         // 下载
-        HttpByteResult httpByteResult =
-            await HttpRequests.getBytes('https://f-droid.org/F-Droid.apk', null, null,(int sent, int total) {
-              double percent = sent / total;
-              print("_doDownloadRequest onReceiveProgress ${percent}%");
-            });
+        HttpByteResult httpByteResult = await HttpRequests.getBytes(
+            'https://f-droid.org/F-Droid.apk', null, null,
+            (int sent, int total) {
+          double percent = sent / total;
+          print("_doDownloadRequest onReceiveProgress ${percent}%");
+        });
 //        HttpByteResult httpByteResult =
 //            await HttpRequests.bytes(appVersionResult.data.fileUrl, null, null);
         print('donwload apk finished...');
         // 保存
         if (httpByteResult.responseBytes.isEmpty) {
           Dialogs.dismiss(_context);
-          Dialogs.showInfoDialog(_context, '当前版本已经是最新版本！');
-          return ;
+          Dialogs.showInfoDialog(_context,
+              Translations.textOf(context, "settings.alreadyLatestVersion"));
+          return;
         }
 
         Directory downloadDir = await FileUtils.getDownloadDir();
         File file = File('${downloadDir.path}/latest-app.apk');
-        bool isSuccess = await FileUtils.write(file, httpByteResult.responseBytes);
+        bool isSuccess =
+            await FileUtils.write(file, httpByteResult.responseBytes);
         print('save file isSuccess = ${isSuccess} to ${file.path}');
 
         Dialogs.dismiss(_context);
 
         // 打开文件
-        if(isSuccess){
+        if (isSuccess) {
           FileUtils.openFile(file);
           print('open file ${file.path}');
         }
@@ -120,7 +130,8 @@ class _Settings extends State<Settings> {
     } catch (e) {
       print(e);
       Dialogs.dismiss(_context);
-      Dialogs.showInfoDialog(_context, '当前版本已经是最新版本！');
+      Dialogs.showInfoDialog(_context,
+          Translations.textOf(context, "settings.alreadyLatestVersion"));
     }
   }
 }

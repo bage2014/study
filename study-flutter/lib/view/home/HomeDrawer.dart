@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/locale/translations.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({
@@ -27,8 +28,7 @@ class HomeDrawer extends StatelessWidget {
                     ),
                   ),
                   Text(
-//                    "[未登录]",
-                    "Tutorials",
+                    Translations.textOf(context, "home.drawer.title"),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
@@ -39,7 +39,7 @@ class HomeDrawer extends StatelessWidget {
                 children: <Widget>[
                   ListTile(
                     leading: const Icon(Icons.settings),
-                    title: const Text('Settings'),
+                    title: Text (Translations.textOf(context, "home.drawer.settings")),
                     onTap: () {
                       Navigator.of(context)
                           .pushNamed(RouteNameConstant.route_name_settings);
@@ -47,7 +47,7 @@ class HomeDrawer extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.info),
-                    title: const Text('About'),
+                    title: Text(Translations.textOf(context, "home.drawer.about")),
                     onTap: () {
                       Navigator.of(context)
                           .pushNamed(RouteNameConstant.route_name_about);

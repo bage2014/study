@@ -13,6 +13,10 @@ class Translations {
   Locale locale;
   static Map<dynamic, dynamic> _localizedValues;
 
+  static String textOf(BuildContext context,String key) {
+    return of(context).text(key);
+  }
+
   static Translations of(BuildContext context) {
     return Localizations.of<Translations>(context, Translations);
   }

@@ -1,3 +1,18 @@
 {
-  "main.title":"欢迎使用 "
+  "main.title":"欢迎使用 ",
+
+  "home.title":"Tutorials ",
+
+  "home.drawer.title":"小陆 ",
+  "home.drawer.settings":"设置 ",
+  "home.drawer.about":"关于 ",
+
+  "settings.title":"小陆 ",
+  "settings.checkForUpdate":"检查更新",
+  "settings.devTool":"开发者工具",
+  "settings.alreadyLatestVersion":"当前版本已经是最新版本！",
+  "settings.downloading":"正在下载...",
+
+
+  "": ""
 }

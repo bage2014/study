@@ -1,3 +1,18 @@
 {
-"main.title":"Welcome "
+  "main.title":"Welcome ",
+
+  "home.title":"Tutorials ",
+
+  "home.drawer.title":"Tutorials ",
+  "home.drawer.settings":"settings ",
+  "home.drawer.about":"About ",
+
+  "settings.title":"Tutorials ",
+  "settings.checkForUpdate":"Check For Update",
+  "settings.devTool":"Developer Tool",
+  "settings.alreadyLatestVersion":"This is already the latest version! ",
+  "settings.downloading":"Downloading...",
+
+
+  "":""
 }
