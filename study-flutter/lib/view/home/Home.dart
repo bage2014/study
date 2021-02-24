@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/locale/translations.dart';
+import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/view/home/HomeDrawer.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/view/home/MenuItem.dart';
@@ -28,7 +28,7 @@ class _ScaffoldRouteState extends State<Home> {
     return Scaffold(
         appBar: AppBar(
           //导航栏
-          title: Text(Translations.textOf(context, "home.title")),
+          title: Text(Translations.textOf(context, "app.name")),
           actions: <Widget>[
             //导航栏右侧菜单
             IconButton(icon: Icon(Icons.share), onPressed: () {}),

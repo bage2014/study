@@ -1,18 +1,24 @@
 {
   "main.title":"Welcome ",
 
-  "home.title":"Tutorials ",
+  "app.name":"Tutorials ",
 
   "home.drawer.title":"Tutorials ",
-  "home.drawer.settings":"settings ",
+  "home.drawer.settings":"Settings ",
   "home.drawer.about":"About ",
 
-  "settings.title":"Tutorials ",
+  "settings.title":"Settings ",
   "settings.checkForUpdate":"Check For Update",
   "settings.devTool":"Developer Tool",
   "settings.alreadyLatestVersion":"This is already the latest version! ",
   "settings.downloading":"Downloading...",
 
+  "tv.list.title":"TV List",
+  "tv.list.bottomAll":"All",
+  "tv.list.bottomFavorite":"Favorite",
 
-  "":""
+  "about.title":"About",
+  "about.author":"About Author",
+
+  "unknown": ""
 }

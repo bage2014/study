@@ -9,7 +9,7 @@ import 'package:flutter_study/component/http/HttpResult.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/constant/HttpConstant.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
-import 'package:flutter_study/locale/translations.dart';
+import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/model/AppVersionResult.dart';
 import 'package:flutter_study/utils/AppUtils.dart';
 import 'package:flutter_study/utils/FileUtils.dart';
@@ -27,7 +27,7 @@ class _Settings extends State<Settings> {
     _context = context;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: Text(Translations.textOf(context, "settings.title")),
       ),
       body: Container(
         alignment: Alignment.center,
@@ -48,7 +48,7 @@ class _Settings extends State<Settings> {
               mainAxisAlignment: MainAxisAlignment.center,
 //              children: <Widget>[Text("[未登录]")],
               children: <Widget>[
-                Text(Translations.textOf(context, "settings.title"))
+                Text(Translations.textOf(context, "app.name"))
               ],
             ),
           ),

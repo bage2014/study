@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/locale/Translations.dart';
 
 class About extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class _About extends State<About> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("About"),
+        title: Text(Translations.textOf(context, "about.title")),
       ),
       body: Container(
         alignment: Alignment.center,
@@ -34,7 +35,7 @@ class _About extends State<About> {
           Container(
             alignment: Alignment.center,
             child: ListTile(
-              title: Text("关于作者"),
+              title: Text(Translations.textOf(context, "about.author")),
               trailing: Icon(Icons.chevron_right),
               onTap: () {},
             ),

@@ -7,6 +7,7 @@ import 'package:flutter_study/component/http/HttpRequests.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/constant/HttpConstant.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/model/QueryTvResult.dart';
 
 class TvList extends StatefulWidget {
@@ -33,15 +34,15 @@ class _ScaffoldRouteState extends State<TvList> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("TV List"),
+        title: Text(Translations.textOf(context, "tv.list.title")),
       ),
       bottomNavigationBar: BottomNavigationBar(
         // 底部导航
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border), label: 'All'),
+              icon: Icon(Icons.favorite_border), label: Translations.textOf(context, "tv.list.bottomAll")),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: 'Favorite'),
+              icon: Icon(Icons.favorite), label: Translations.textOf(context, "tv.list.bottomFavorite")),
         ],
         currentIndex: _currentIndex,
         fixedColor: Colors.blue,

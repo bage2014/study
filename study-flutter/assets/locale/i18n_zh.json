@@ -1,18 +1,24 @@
 {
   "main.title":"欢迎使用 ",
 
-  "home.title":"Tutorials ",
+  "app.name":"小陆 ",
 
   "home.drawer.title":"小陆 ",
   "home.drawer.settings":"设置 ",
   "home.drawer.about":"关于 ",
 
-  "settings.title":"小陆 ",
+  "settings.title":"设置 ",
   "settings.checkForUpdate":"检查更新",
   "settings.devTool":"开发者工具",
   "settings.alreadyLatestVersion":"当前版本已经是最新版本！",
   "settings.downloading":"正在下载...",
 
+  "tv.list.title":"列表",
+  "tv.list.bottomAll":"全部",
+  "tv.list.bottomFavorite":"喜欢",
 
-  "": ""
+  "about.title":"关于",
+  "about.author":"关于作者",
+
+  "unknown": ""
 }

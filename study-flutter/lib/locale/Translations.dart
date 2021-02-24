@@ -47,4 +47,7 @@ class TranslationsDelegate extends LocalizationsDelegate<Translations> {
 
   @override
   bool shouldReload(TranslationsDelegate old) => false;
+
+  static  TranslationsDelegate delegate = const TranslationsDelegate();
+
 }

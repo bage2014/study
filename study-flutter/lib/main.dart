@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_study/component/dialog/Dialogs.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/component/permission/PermissionHelper.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
-import 'package:flutter_study/locale/translations.dart';
+import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/route/route.dart';
 import 'package:flutter_study/startup/Application.dart';
-import 'package:flutter_study/utils/AppUtils.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,10 +39,12 @@ class MyApp extends StatelessWidget {
       // 路由
       onGenerateRoute: RouteConfiguration.onGenerateRoute,
 
+      locale: Locale('zh', 'CH'), // 默认中文
+
       localizationsDelegates: [
-        const TranslationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        TranslationsDelegate.delegate,
       ],
       supportedLocales: [
         const Locale('en', 'US'), // 美国英语
@@ -79,7 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     checkPermission();
   }
 
@@ -88,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Logs.info('isGranted0 = ' + isGranted.toString());
 
     if (isGranted) {
-      Application.init();
+      Application.init(context);
       toHome();
     } else {
       Navigator.of(context).pop(1);
@@ -96,10 +94,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void toHome() {
-//    setState(() {
-//      var currentLanguage = Translations.of(context).currentLanguage;
-//      Translations.load(currentLanguage.endsWith("en") ? Locale("zh","CN") : Locale("en"));
-//    });
     Navigator.of(context)
         .pushNamed(RouteNameConstant.route_name_home, arguments: "hi");
   }
@@ -140,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               Translations.of(context) == null
-                  ? "Welcome"
+                  ? "Welcome2"
                   : Translations.of(context).text("main.title"),
             ),
           ],
