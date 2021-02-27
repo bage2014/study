@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_study/component/log/Logs.dart';
+import 'package:flutter_study/locale/SupportedLocales.dart';
 
 class Translations {
   Translations(Locale locale) {
@@ -13,11 +15,15 @@ class Translations {
   Locale locale;
   static Map<dynamic, dynamic> _localizedValues;
 
-  static String textOf(BuildContext context,String key) {
-    return of(context).text(key);
+  static String textOf(BuildContext context, String key) {
+    Locale myLocale = Localizations.localeOf(context);
+
+    Logs.info(
+        "textOf is called...${myLocale.countryCode} ${myLocale.languageCode}");
+    return _of(context).text(key);
   }
 
-  static Translations of(BuildContext context) {
+  static Translations _of(BuildContext context) {
     return Localizations.of<Translations>(context, Translations);
   }
 
@@ -26,9 +32,11 @@ class Translations {
   }
 
   static Future<Translations> load(Locale locale) async {
+    Logs.info("load is called...");
     Translations translations = new Translations(locale);
     String jsonContent =
-        await rootBundle.loadString("assets/locale/i18n_${locale.languageCode}.json");
+    await rootBundle.loadString(
+        "assets/locale/i18n_${locale.languageCode}.json");
     _localizedValues = json.decode(jsonContent);
     return translations;
   }
@@ -40,7 +48,15 @@ class TranslationsDelegate extends LocalizationsDelegate<Translations> {
   const TranslationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => ['en', 'CN'].contains(locale.languageCode);
+  bool isSupported(Locale locale) {
+    List<Locale> locales = SupportedLocales.locales;
+    for (Locale locale in locales) {
+      if (locale.languageCode == locale.languageCode) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   @override
   Future<Translations> load(Locale locale) => Translations.load(locale);
@@ -48,6 +64,6 @@ class TranslationsDelegate extends LocalizationsDelegate<Translations> {
   @override
   bool shouldReload(TranslationsDelegate old) => false;
 
-  static  TranslationsDelegate delegate = const TranslationsDelegate();
+  static TranslationsDelegate delegate = const TranslationsDelegate();
 
 }

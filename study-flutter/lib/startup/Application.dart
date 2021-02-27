@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_study/component/http/HttpRequests.dart';
-import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/prop/HttpProp.dart';
 
 class Application {

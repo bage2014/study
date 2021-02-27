@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/component/permission/PermissionHelper.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
+import 'package:flutter_study/locale/SupportedLocales.dart';
 import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/route/route.dart';
 import 'package:flutter_study/startup/Application.dart';
@@ -39,18 +40,14 @@ class MyApp extends StatelessWidget {
       // 路由
       onGenerateRoute: RouteConfiguration.onGenerateRoute,
 
-      locale: Locale('zh', 'CH'), // 默认中文
+      locale: SupportedLocales.defaultLocale, //手动指定locale
 
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         TranslationsDelegate.delegate,
       ],
-      supportedLocales: [
-        const Locale('en', 'US'), // 美国英语
-        const Locale('zh', 'CN'), // 中文简体
-        //其它Locales
-      ],
+      supportedLocales: SupportedLocales.locales,
     );
   }
 }
@@ -132,10 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              Translations.of(context) == null
-                  ? "Welcome2"
-                  : Translations.of(context).text("main.title"),
+            Text(Translations.textOf(context,"main.title"),
             ),
           ],
         ),
