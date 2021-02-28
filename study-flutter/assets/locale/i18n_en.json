@@ -12,6 +12,7 @@
   "settings.devTool":"Developer Tool",
   "settings.alreadyLatestVersion":"This is already the latest version! ",
   "settings.downloading":"Downloading...",
+  "settings.upgrade.dialog.title":"Do upgrade to the latest version? ",
 
   "tv.list.title":"TV List",
   "tv.list.bottomAll":"All",

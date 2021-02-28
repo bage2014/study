@@ -12,6 +12,7 @@
   "settings.devTool":"开发者工具",
   "settings.alreadyLatestVersion":"当前版本已经是最新版本！",
   "settings.downloading":"正在下载...",
+  "settings.upgrade.dialog.title":"更新到最新版本? ",
 
   "tv.list.title":"列表",
   "tv.list.bottomAll":"全部",

@@ -8,6 +8,7 @@ import 'package:flutter_study/component/http/HttpRequests.dart';
 import 'package:flutter_study/component/http/HttpResult.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/constant/HttpConstant.dart';
+import 'package:flutter_study/constant/LocaleConstant.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/model/AppVersionResult.dart';
@@ -25,7 +26,9 @@ class _Settings extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: _requestPop,
+        child: Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "settings.title")),
       ),
@@ -74,7 +77,18 @@ class _Settings extends State<Settings> {
           ),
         ]),
       ),
+    )
     );
+  }
+
+  Future<bool> _requestPop() {
+    print("POP");
+    if (Navigator.canPop(context)) {
+      print("POP1");
+      Navigator.pop(context);
+      return Future.value(true);
+    }
+    return Future.value(false);
   }
 
   void _checkAppInfo() async {
@@ -90,41 +104,49 @@ class _Settings extends State<Settings> {
             Translations.textOf(context, "settings.alreadyLatestVersion"));
         return;
       }
+
       AppVersionResult appVersionResult =
           AppVersionResult.fromJson(json.decode(httpResult?.responseBody));
       if (appVersionResult?.code == 200) {
-        Dialogs.showProgress(
-            _context, Translations.textOf(context, "settings.downloading"));
-        // 下载
-        HttpByteResult httpByteResult = await HttpRequests.getBytes(
-            'https://f-droid.org/F-Droid.apk', null, null,
-            (int sent, int total) {
-          double percent = sent / total;
-          print("_doDownloadRequest onReceiveProgress ${percent}%");
-        });
-//        HttpByteResult httpByteResult =
-//            await HttpRequests.bytes(appVersionResult.data.fileUrl, null, null);
-        print('donwload apk finished...');
-        // 保存
-        if (httpByteResult.responseBytes.isEmpty) {
+        // 确认框
+        String showConfirmDialog = await Dialogs.showConfirmDialog(
+            context,
+            Translations.textOf(context, LocaleConstant.settings_upgrade_dialog),
+            appVersionResult.data.description.replaceAll('|', '\n'));
+        Logs.info('showConfirmDialog = $showConfirmDialog');
+
+        if(showConfirmDialog == 'true'){
+          Dialogs.showProgress(
+              _context, Translations.textOf(context, "settings.downloading"));
+          // 下载
+          HttpByteResult httpByteResult = await HttpRequests.getBytes(
+              appVersionResult.data.fileUrl, null, null,
+                  (int sent, int total) {
+                double percent = sent / total;
+                print("_doDownloadRequest onReceiveProgress ${percent}%");
+              });
+          print('donwload apk finished...');
+          // 保存
+          if (httpByteResult.responseBytes.isEmpty) {
+            Dialogs.dismiss(_context);
+            Dialogs.showInfoDialog(_context,
+                Translations.textOf(context, "settings.alreadyLatestVersion"));
+            return;
+          }
+
+          Directory downloadDir = await FileUtils.getDownloadDir();
+          File file = File('${downloadDir.path}/latest-app.apk');
+          bool isSuccess =
+          await FileUtils.write(file, httpByteResult.responseBytes);
+          print('save file isSuccess = ${isSuccess} to ${file.path}');
+
           Dialogs.dismiss(_context);
-          Dialogs.showInfoDialog(_context,
-              Translations.textOf(context, "settings.alreadyLatestVersion"));
-          return;
-        }
 
-        Directory downloadDir = await FileUtils.getDownloadDir();
-        File file = File('${downloadDir.path}/latest-app.apk');
-        bool isSuccess =
-            await FileUtils.write(file, httpByteResult.responseBytes);
-        print('save file isSuccess = ${isSuccess} to ${file.path}');
-
-        Dialogs.dismiss(_context);
-
-        // 打开文件
-        if (isSuccess) {
-          FileUtils.openFile(file);
-          print('open file ${file.path}');
+          // 打开文件
+          if (isSuccess) {
+            FileUtils.openFile(file);
+            print('open file ${file.path}');
+          }
         }
       }
     } catch (e) {

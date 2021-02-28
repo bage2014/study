@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 class Dialogs {
   static Future<void> showProgress(BuildContext context, String title) {
     return showDialog<String>(
-      context: context,
-      barrierDismissible: false, //点击遮罩不关闭对话框
-      builder: (context) {
-        return AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.only(top: 26.0),
-                child: Text(title),
-              )
-            ],
-          ),
-        );
-      });
+        context: context,
+        barrierDismissible: false, //点击遮罩不关闭对话框
+        builder: (context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 26.0),
+                  child: Text(title),
+                )
+              ],
+            ),
+          );
+        });
 //    return showDialog<String>(
 //        context: context,
 //        barrierDismissible: false,
@@ -57,36 +57,46 @@ class Dialogs {
     );
   }
 
-  static Future<String> showConfirmDialog(BuildContext context, String title) {
+  static Future<String> showConfirmDialog(
+      BuildContext context, String title, String content) {
     TextEditingController _controller = TextEditingController();
+    List<Widget> actions = <Widget>[
+      FlatButton(
+        child: Text("取消"),
+        onPressed: () => Navigator.of(context).pop(), // 关闭对话框
+      ),
+      FlatButton(
+        child: Text("确定"),
+        onPressed: () {
+          Navigator.of(context).pop("true");
+        },
+      ),
+    ];
+    if (content == null) {
+      return showDialog<String>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(title: Text(title), actions: actions);
+        },
+      );
+    }
     return showDialog<String>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(title),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("取消"),
-              onPressed: () => Navigator.of(context).pop(), // 关闭对话框
-            ),
-            FlatButton(
-              child: Text("确定"),
-              onPressed: () {
-                Navigator.of(context).pop(_controller.text.toString());
-              },
-            ),
-          ],
-        );
+            title: Text(title), content: Text(content), actions: actions);
       },
     );
   }
 
-  static Future<String> showInputDialog(BuildContext context, String title, String defaultValue) {
-    TextEditingController _controller = TextEditingController.fromValue(TextEditingValue(
-        text: defaultValue,
-        selection: TextSelection.fromPosition(TextPosition(
-            affinity: TextAffinity.downstream,
-            offset: defaultValue.length))));
+  static Future<String> showInputDialog(
+      BuildContext context, String title, String defaultValue) {
+    TextEditingController _controller = TextEditingController.fromValue(
+        TextEditingValue(
+            text: defaultValue,
+            selection: TextSelection.fromPosition(TextPosition(
+                affinity: TextAffinity.downstream,
+                offset: defaultValue.length))));
     return showDialog<String>(
       context: context,
       builder: (context) {
