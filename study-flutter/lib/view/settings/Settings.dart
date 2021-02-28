@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_study/component/dialog/Dialogs.dart';
+import 'package:flutter_study/component/http/CancelRequests.dart';
 import 'package:flutter_study/component/http/HttpByteResult.dart';
 import 'package:flutter_study/component/http/HttpRequests.dart';
 import 'package:flutter_study/component/http/HttpResult.dart';
@@ -22,13 +23,13 @@ class Settings extends StatefulWidget {
 
 class _Settings extends State<Settings> {
   BuildContext _context = null;
+  bool _isDownloading = false;
+  CancelRequests cancelRequests = CancelRequests();
 
   @override
   Widget build(BuildContext context) {
     _context = context;
-    return WillPopScope(
-        onWillPop: _requestPop,
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "settings.title")),
       ),
@@ -77,18 +78,23 @@ class _Settings extends State<Settings> {
           ),
         ]),
       ),
-    )
     );
   }
 
-  Future<bool> _requestPop() {
-    print("POP");
-    if (Navigator.canPop(context)) {
-      print("POP1");
-      Navigator.pop(context);
-      return Future.value(true);
+  Future<bool> onWillPop() async {
+    // 确认框
+    String showConfirmDialog = await Dialogs.showConfirmDialog(
+        context,
+        Translations.textOf(context, LocaleConstant.settings_upgrade_cancel),
+        null);
+    Logs.info('showConfirmDialog = $showConfirmDialog');
+    if ("true" == showConfirmDialog) {
+      cancelRequests.cancel('_onWillPop');
+      return true;
     }
-    return Future.value(false);
+    // You can do some work here.
+    // Returning true allows the pop to happen, returning false prevents it.
+    return false;
   }
 
   void _checkAppInfo() async {
@@ -111,22 +117,30 @@ class _Settings extends State<Settings> {
         // 确认框
         String showConfirmDialog = await Dialogs.showConfirmDialog(
             context,
-            Translations.textOf(context, LocaleConstant.settings_upgrade_dialog),
+            Translations.textOf(
+                context, LocaleConstant.settings_upgrade_dialog),
             appVersionResult.data.description.replaceAll('|', '\n'));
         Logs.info('showConfirmDialog = $showConfirmDialog');
 
-        if(showConfirmDialog == 'true'){
-          Dialogs.showProgress(
-              _context, Translations.textOf(context, "settings.downloading"));
+        if ("true" == showConfirmDialog) {
+          _isDownloading = true;
+          Logs.info('cancelRequests is ${cancelRequests.token}');
+          Dialogs.showProgress(_context, Translations.textOf(context, "settings.downloading"),onWillPop);
           // 下载
           HttpByteResult httpByteResult = await HttpRequests.getBytes(
-              appVersionResult.data.fileUrl, null, null,
-                  (int sent, int total) {
-                double percent = sent / total;
-                print("_doDownloadRequest onReceiveProgress ${percent}%");
-              });
-          print('donwload apk finished...');
+              'https://f-droid.org/F-Droid.apk'
+              /*appVersionResult.data.fileUrl*/,
+              null,
+              null, (int sent, int total) {
+            double percent = sent / total;
+            _isDownloading = sent < total;
+            print("_doDownloadRequest onReceiveProgress ${percent}%");
+          }, cancelRequests);
           // 保存
+          if (httpByteResult.responseBytes == null) {
+            return;
+          }
+          print('donwload apk finished...');
           if (httpByteResult.responseBytes.isEmpty) {
             Dialogs.dismiss(_context);
             Dialogs.showInfoDialog(_context,
@@ -137,7 +151,7 @@ class _Settings extends State<Settings> {
           Directory downloadDir = await FileUtils.getDownloadDir();
           File file = File('${downloadDir.path}/latest-app.apk');
           bool isSuccess =
-          await FileUtils.write(file, httpByteResult.responseBytes);
+              await FileUtils.write(file, httpByteResult.responseBytes);
           print('save file isSuccess = ${isSuccess} to ${file.path}');
 
           Dialogs.dismiss(_context);

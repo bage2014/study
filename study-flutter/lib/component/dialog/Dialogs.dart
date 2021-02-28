@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 
 class Dialogs {
-  static Future<void> showProgress(BuildContext context, String title) {
+  static Future<void> showProgress(
+      BuildContext context, String title, onWillPop) {
     return showDialog<String>(
         context: context,
         barrierDismissible: false, //点击遮罩不关闭对话框
         builder: (context) {
-          return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                CircularProgressIndicator(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 26.0),
-                  child: Text(title),
-                )
-              ],
-            ),
-          );
+          return new WillPopScope(
+              onWillPop: onWillPop, //重点此举
+              child: AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    CircularProgressIndicator(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 26.0),
+                      child: Text(title),
+                    )
+                  ],
+                ),
+              ));
         });
 //    return showDialog<String>(
 //        context: context,

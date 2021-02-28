@@ -52,6 +52,9 @@ dependencies:
   # https://pub.flutter-io.cn/packages/open_file
   open_file: ^3.0.3
 
+  # https://pub.flutter-io.cn/packages/fluttertoast/install
+  fluttertoast: ^7.1.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

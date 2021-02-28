@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Home Page'),
+      home: MyHomePage(title: '小陆'),
       // routes: RouteConfiguration.routes,
 
       // 路由
@@ -84,6 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (isGranted) {
       Application.init(context);
+      Navigator.of(context).pop(1);
       toHome();
     } else {
       Navigator.of(context).pop(1);

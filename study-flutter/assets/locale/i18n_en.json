@@ -6,6 +6,7 @@
   "home.drawer.title":"Tutorials ",
   "home.drawer.settings":"Settings ",
   "home.drawer.about":"About ",
+  "home.back.confirm":"Confirm to exit?",
 
   "settings.title":"Settings ",
   "settings.checkForUpdate":"Check For Update",
@@ -13,6 +14,7 @@
   "settings.alreadyLatestVersion":"This is already the latest version! ",
   "settings.downloading":"Downloading...",
   "settings.upgrade.dialog.title":"Do upgrade to the latest version? ",
+  "settings.upgrade.cancel":"Cancel downloading? ",
 
   "tv.list.title":"TV List",
   "tv.list.bottomAll":"All",

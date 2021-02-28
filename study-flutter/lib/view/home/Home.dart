@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/component/dialog/Dialogs.dart';
+import 'package:flutter_study/component/log/Logs.dart';
+import 'package:flutter_study/component/toast/Toasts.dart';
+import 'package:flutter_study/constant/LocaleConstant.dart';
 import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/view/home/HomeDrawer.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
@@ -11,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _ScaffoldRouteState extends State<Home> {
   List<MenuItem> menuItems = []; //保存Icon数据
+  DateTime _lastTime; //上次点击时间
 
   // 初始化数据
   @override
@@ -25,7 +30,9 @@ class _ScaffoldRouteState extends State<Home> {
     var args = ModalRoute.of(context).settings.arguments;
     print('args=' + args);
 
-    return Scaffold(
+    return new WillPopScope(
+        onWillPop: onWillPop, //重点此举
+        child: Scaffold(
         appBar: AppBar(
           //导航栏
           title: Text(Translations.textOf(context, "app.name")),
@@ -65,7 +72,7 @@ class _ScaffoldRouteState extends State<Home> {
                           ]));
                 },
               ),
-            )));
+            ))));
   }
 
   //模拟异步获取数据
@@ -80,6 +87,26 @@ class _ScaffoldRouteState extends State<Home> {
         ]);
       });
     });
+  }
+
+
+  Future<bool> onWillPop() async {
+    if(_lastTime == null || DateTime.now().difference(_lastTime) > Duration(seconds: 1)){
+      //两次点击间隔超过1s重新计时
+      _lastTime = DateTime.now();
+      Toasts.show("再点一次退出应用");
+      return false;
+    }
+    return true;
+    // 确认框
+    String showConfirmDialog = await Dialogs.showConfirmDialog(
+        context,
+        Translations.textOf(context, LocaleConstant.home_back_confirm),
+        null);
+    Logs.info('showConfirmDialog = $showConfirmDialog');
+    // You can do some work here.
+    // Returning true allows the pop to happen, returning false prevents it.
+    return "true".compareTo(showConfirmDialog) == 0;
   }
 
   void _onAdd() {}

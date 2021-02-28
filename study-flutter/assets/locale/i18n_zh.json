@@ -6,13 +6,15 @@
   "home.drawer.title":"小陆 ",
   "home.drawer.settings":"设置 ",
   "home.drawer.about":"关于 ",
+  "home.back.confirm":"你确定要退出吗?",
 
   "settings.title":"设置 ",
   "settings.checkForUpdate":"检查更新",
   "settings.devTool":"开发者工具",
-  "settings.alreadyLatestVersion":"当前版本已经是最新版本！",
+  "settings.alreadyLatestVersion":"当前版本已经是最新版本!",
   "settings.downloading":"正在下载...",
   "settings.upgrade.dialog.title":"更新到最新版本? ",
+  "settings.upgrade.cancel":"取消下载? ",
 
   "tv.list.title":"列表",
   "tv.list.bottomAll":"全部",

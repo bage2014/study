@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_study/component/http/CancelRequests.dart';
 import 'package:flutter_study/component/http/HttpByteResult.dart';
 import 'package:flutter_study/component/http/HttpProgressCallback.dart';
 import 'package:flutter_study/component/http/HttpResult.dart';
@@ -12,16 +13,24 @@ class HttpRequests {
     _dio = Dio();
   }
 
-  static Future<HttpByteResult> getBytes(String path,
-      Map<String, dynamic> parameters, Map<String, String> headers,
-      HttpProgressCallback onProgress) async {
-    return _doDownloadRequest(path, parameters, null, headers, "get", onProgress);
+  static Future<HttpByteResult> getBytes(
+      String path,
+      Map<String, dynamic> parameters,
+      Map<String, String> headers,
+      HttpProgressCallback onProgress,
+      CancelRequests cancelRequests) async {
+    return _doDownloadRequest(
+        path, parameters, null, headers, "get", onProgress, cancelRequests);
   }
 
-  static Future<HttpByteResult> postBytes(String path,
-      Map<String, dynamic> parameters, Map<String, String> headers,
-      HttpProgressCallback onProgress) async {
-    return _doDownloadRequest(path, parameters, null, headers, "post", onProgress);
+  static Future<HttpByteResult> postBytes(
+      String path,
+      Map<String, dynamic> parameters,
+      Map<String, String> headers,
+      HttpProgressCallback onProgress,
+      CancelRequests cancelRequests) async {
+    return _doDownloadRequest(
+        path, parameters, null, headers, "post", onProgress, cancelRequests);
   }
 
   static Future<HttpResult> get(String path, Map<String, dynamic> parameters,
@@ -69,7 +78,8 @@ class HttpRequests {
       dynamic data,
       Map<String, String> headers,
       String method,
-      HttpProgressCallback onProgress) async {
+      HttpProgressCallback onProgress,
+      CancelRequests cancelRequests) async {
     HttpByteResult result = HttpByteResult();
     try {
       path = rebuildUrl(path);
@@ -77,7 +87,8 @@ class HttpRequests {
       _dio.options = _buildDownloadOption(parameters, data, headers);
       Response response;
       if ("get".compareTo(method) == 0) {
-        response = await _dio.get(path, queryParameters: parameters,
+        response = await _dio.get(path,
+            queryParameters: parameters, cancelToken: cancelRequests.token,
             onReceiveProgress: (int sent, int total) {
           double percent = sent / total;
           print("_doDownloadRequest onReceiveProgress ${percent}%");
@@ -85,7 +96,7 @@ class HttpRequests {
         });
       } else {
         response =
-            await _dio.post(path, queryParameters: parameters, data: data);
+            await _dio.post(path, queryParameters: parameters, cancelToken: cancelRequests.token,data: data);
       }
       Logs.info('_doDownloadRequest statusCode = ${response.statusCode}');
       result.responseBytes = response.data;
