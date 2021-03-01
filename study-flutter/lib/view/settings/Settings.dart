@@ -123,13 +123,20 @@ class _Settings extends State<Settings> {
         Logs.info('showConfirmDialog = $showConfirmDialog');
 
         if ("true" == showConfirmDialog) {
+          Directory downloadDir = await FileUtils.getDownloadDir();
+          String fileName = '${downloadDir.path}/latest-app-${appVersionResult.data.versionCode}.apk';
+          File file = File(fileName);
+          if(file.existsSync()){ // 已经下载过，直接安装
+            FileUtils.openFile(file);
+            print('open file ${file.path}');
+          }
           _isDownloading = true;
           Logs.info('cancelRequests is ${cancelRequests.token}');
           Dialogs.showProgress(_context, Translations.textOf(context, "settings.downloading"),onWillPop);
           // 下载
           HttpByteResult httpByteResult = await HttpRequests.getBytes(
-              'https://f-droid.org/F-Droid.apk'
-              /*appVersionResult.data.fileUrl*/,
+//              'https://f-droid.org/F-Droid.apk'
+              appVersionResult.data.fileUrl,
               null,
               null, (int sent, int total) {
             double percent = sent / total;
@@ -148,8 +155,7 @@ class _Settings extends State<Settings> {
             return;
           }
 
-          Directory downloadDir = await FileUtils.getDownloadDir();
-          File file = File('${downloadDir.path}/latest-app.apk');
+
           bool isSuccess =
               await FileUtils.write(file, httpByteResult.responseBytes);
           print('save file isSuccess = ${isSuccess} to ${file.path}');

@@ -33,46 +33,50 @@ class _ScaffoldRouteState extends State<Home> {
     return new WillPopScope(
         onWillPop: onWillPop, //重点此举
         child: Scaffold(
-        appBar: AppBar(
-          //导航栏
-          title: Text(Translations.textOf(context, "app.name")),
-          actions: <Widget>[
-            //导航栏右侧菜单
-            IconButton(icon: Icon(Icons.share), onPressed: () {}),
-          ],
-        ),
-        drawer: new HomeDrawer(), //抽屉
-        floatingActionButton: FloatingActionButton(
-            //悬浮按钮
-            child: Icon(Icons.add),
-            onPressed: _onAdd),
-        body: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 32.0, 0, 0),
-            child: new Center(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, //每行三列
-                    childAspectRatio: 1.5 //显示区域宽高相等
-                    ),
-                itemCount: menuItems.length,
-                itemBuilder: (context, index) {
-                  return new GestureDetector(
-                      onTap: () {
-                        //处理点击事件
-                        print(index);
-                        Navigator.of(context).pushNamed(
-                            RouteNameConstant.route_name_tv_list,
-                            arguments: "hi");
-                      },
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(menuItems[index].icon,size: 42,),
-                            Text(menuItems[index].text)
-                          ]));
-                },
-              ),
-            ))));
+          appBar: AppBar(
+            //导航栏
+            title: Text(Translations.textOf(context, "app.name")),
+//          actions: <Widget>[
+//            //导航栏右侧菜单
+//            IconButton(icon: Icon(Icons.share), onPressed: () {}),
+//          ],
+          ),
+          drawer: new HomeDrawer(), //抽屉
+          floatingActionButton: FloatingActionButton(
+              //悬浮按钮
+              child: Icon(Icons.add),
+              onPressed: _onAdd),
+          body: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, //每行三列
+                childAspectRatio: 1.4 //显示区域宽高相等
+                ),
+            itemCount: menuItems.length,
+            itemBuilder: (context, index) {
+              return new GestureDetector(
+                  onTap: () {
+                    //处理点击事件
+                    print(index);
+                    Navigator.of(context).pushNamed(
+                        RouteNameConstant.route_name_tv_list,
+                        arguments: "hi");
+                  },
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 24.0, 0, 0),
+                            child: Icon(
+                              menuItems[index].icon,
+                              size: 42,
+                            )),
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0),
+                            child: Text(menuItems[index].text))
+                      ]));
+            },
+          ),
+        ));
   }
 
   //模拟异步获取数据
@@ -89,9 +93,9 @@ class _ScaffoldRouteState extends State<Home> {
     });
   }
 
-
   Future<bool> onWillPop() async {
-    if(_lastTime == null || DateTime.now().difference(_lastTime) > Duration(seconds: 1)){
+    if (_lastTime == null ||
+        DateTime.now().difference(_lastTime) > Duration(seconds: 1)) {
       //两次点击间隔超过1s重新计时
       _lastTime = DateTime.now();
       Toasts.show("再点一次退出应用");
@@ -99,10 +103,8 @@ class _ScaffoldRouteState extends State<Home> {
     }
     return true;
     // 确认框
-    String showConfirmDialog = await Dialogs.showConfirmDialog(
-        context,
-        Translations.textOf(context, LocaleConstant.home_back_confirm),
-        null);
+    String showConfirmDialog = await Dialogs.showConfirmDialog(context,
+        Translations.textOf(context, LocaleConstant.home_back_confirm), null);
     Logs.info('showConfirmDialog = $showConfirmDialog');
     // You can do some work here.
     // Returning true allows the pop to happen, returning false prevents it.
