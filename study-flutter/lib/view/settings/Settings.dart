@@ -42,7 +42,13 @@ class _Settings extends State<Settings> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
 //                Image(image: AssetImage("assets/images/user_null.png"))
-                Image(image: AssetImage("assets/images/logo128.png"))
+                GestureDetector(
+                  child: Image(image: AssetImage("assets/images/logo128.png")),
+                  onDoubleTap: () {
+                    Navigator.of(context).pushNamed(
+                        RouteNameConstant.route_name_setting_develop);
+                  },
+                ),
               ],
             ),
           ),
@@ -65,17 +71,7 @@ class _Settings extends State<Settings> {
               onTap: _checkAppInfo,
             ),
           ),
-          Container(
-            alignment: Alignment.center,
-            child: ListTile(
-              title: Text(Translations.textOf(context, "settings.devTool")),
-              trailing: Icon(Icons.chevron_right),
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed(RouteNameConstant.route_name_setting_develop);
-              },
-            ),
-          ),
+
         ]),
       ),
     );
@@ -124,16 +120,19 @@ class _Settings extends State<Settings> {
 
         if ("true" == showConfirmDialog) {
           Directory downloadDir = await FileUtils.getDownloadDir();
-          String fileName = '${downloadDir.path}/latest-app-${appVersionResult.data.versionCode}.apk';
+          String fileName =
+              '${downloadDir.path}/latest-app-${appVersionResult.data.versionCode}.apk';
           File file = File(fileName);
-          if(file.existsSync()){ // 已经下载过，直接安装
+          if (file.existsSync()) {
+            // 已经下载过，直接安装
             FileUtils.openFile(file);
             print('open file ${file.path}');
             return;
           }
           _isDownloading = true;
           Logs.info('cancelRequests is ${cancelRequests.token}');
-          Dialogs.showProgress(_context, Translations.textOf(context, "settings.downloading"),onWillPop);
+          Dialogs.showProgress(_context,
+              Translations.textOf(context, "settings.downloading"), onWillPop);
           // 下载
           HttpByteResult httpByteResult = await HttpRequests.getBytes(
 //              'https://f-droid.org/F-Droid.apk'
@@ -155,7 +154,6 @@ class _Settings extends State<Settings> {
                 Translations.textOf(context, "settings.alreadyLatestVersion"));
             return;
           }
-
 
           bool isSuccess =
               await FileUtils.write(file, httpByteResult.responseBytes);

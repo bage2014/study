@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/component/cache/HttpRequestCaches.dart';
 import 'package:flutter_study/component/dialog/Dialogs.dart';
+import 'package:flutter_study/component/sp/SharedPreferenceHelper.dart';
+import 'package:flutter_study/constant/SpConstant.dart';
+import 'package:flutter_study/locale/Translations.dart';
 
 class DevelopSetting extends StatefulWidget {
   @override
@@ -7,11 +11,16 @@ class DevelopSetting extends StatefulWidget {
 }
 
 class _DevelopSetting extends State<DevelopSetting> {
+  String _protocol = "";
+  String _host = "";
+  String _port = "";
+
   @override
   Widget build(BuildContext context) {
+    initValues();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Develop Setting"),
+        title: Text(Translations.textOf(context, "settings.devTool.title")),
       ),
       body: Container(
         alignment: Alignment.center,
@@ -23,41 +32,20 @@ class _DevelopSetting extends State<DevelopSetting> {
                 List<String> list = [];
                 list.add("http");
                 list.add("https");
-                Dialogs.showListBottomSheet(context, list)
-                    .then((value) => {print(value)});
+                Dialogs.showListBottomSheet(context, list).then((value) =>
+                    {refreshState(SpConstant.protocol_key, list[value])});
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('协议'),
-                  Text('http', style: TextStyle(fontWeight: FontWeight.bold)),
-                  IconButton(
-                    icon: Icon(
-                      Icons.chevron_right,
-                    ),
-                    onPressed: () => {},
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: new GestureDetector(
-              onTap: () {
-                Dialogs.showInputDialog(context, "域名", '101.132.119.250')
-                    .then((value) => {print(value)});
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('域名'),
-                  Text('101.132.119.250',
+                  Text(Translations.textOf(
+                      context, "settings.devTool.protocol")),
+                  Text('${_protocol}',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   IconButton(
                     icon: Icon(
                       Icons.chevron_right,
                     ),
-                    onPressed: () => {},
                   ),
                 ],
               ),
@@ -66,14 +54,44 @@ class _DevelopSetting extends State<DevelopSetting> {
           Container(
             child: new GestureDetector(
               onTap: () {
-                Dialogs.showInputDialog(context, "端口", '8088')
-                    .then((value) => {print(value)});
+                Dialogs.showInputDialog(
+                        context,
+                        Translations.textOf(context, "settings.devTool.host"),
+                        '${_host}')
+                    .then(
+                        (value) => {refreshState(SpConstant.host_key, value)});
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('端口'),
-                  Text('8088', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(Translations.textOf(context, "settings.devTool.host")),
+                  Text('${_host}',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  IconButton(
+                    icon: Icon(
+                      Icons.chevron_right,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            child: new GestureDetector(
+              onTap: () {
+                Dialogs.showInputDialog(
+                        context,
+                        Translations.textOf(context, "settings.devTool.port"),
+                        '${_port}')
+                    .then(
+                        (value) => {refreshState(SpConstant.port_key, value)});
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(Translations.textOf(context, "settings.devTool.port")),
+                  Text('${_port}',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   IconButton(
                     icon: Icon(
                       Icons.chevron_right,
@@ -87,5 +105,29 @@ class _DevelopSetting extends State<DevelopSetting> {
         ]),
       ),
     );
+  }
+
+  void refreshState(String key, String value) async {
+    bool res = await SharedPreferenceHelper.set(key, value);
+    if (res) {
+      setState(() {
+        if (key == SpConstant.protocol_key) {
+          _protocol = value;
+        } else if (key == SpConstant.host_key) {
+          _host = value;
+        } else if (key == SpConstant.port_key) {
+          _port = value;
+        }
+      });
+      HttpRequestCaches.init();
+    }
+  }
+
+  void initValues() {
+    setState(() {
+      _protocol = HttpRequestCaches.getProtocol();
+      _host = HttpRequestCaches.getHost();
+      _port = HttpRequestCaches.getPort();
+    });
   }
 }

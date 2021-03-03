@@ -10,11 +10,15 @@
 
   "settings.title":"Settings ",
   "settings.checkForUpdate":"Check For Update",
-  "settings.devTool":"Developer Tool",
   "settings.alreadyLatestVersion":"This is already the latest version! ",
   "settings.downloading":"Downloading...",
   "settings.upgrade.dialog.title":"Do upgrade to the latest version? ",
   "settings.upgrade.cancel":"Cancel downloading? ",
+
+  "settings.devTool.title":"Developer Tool",
+  "settings.devTool.protocol":"Protocol",
+  "settings.devTool.host":"Host",
+  "settings.devTool.port":"Port",
 
   "tv.list.title":"TV List",
   "tv.list.bottomAll":"All",

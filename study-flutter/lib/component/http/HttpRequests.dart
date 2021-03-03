@@ -143,10 +143,10 @@ class HttpRequests {
   static BaseOptions _buildDownloadOption(Map<String, dynamic> parameters,
       dynamic data, Map<String, String> headers) {
     return BaseOptions(
-        baseUrl: HttpProp.baseUrl,
+        baseUrl: HttpProp.getBaseUrl(),
 //        receiveTimeout: HttpProp.timeout, // 不需要指定超时时间
         headers: headers,
-        contentType: HttpProp.contentType,
+        contentType: HttpProp.getContentType(),
         responseType: ResponseType.bytes,
         followRedirects: false,
         validateStatus: (status) {
@@ -157,19 +157,19 @@ class HttpRequests {
   static BaseOptions _buildOption(Map<String, dynamic> parameters, dynamic data,
       Map<String, String> headers, int timeoutMilliseconds) {
     return BaseOptions(
-      baseUrl: HttpProp.baseUrl,
-      connectTimeout: HttpProp.timeout,
-      receiveTimeout: HttpProp.timeout,
+      baseUrl: HttpProp.getBaseUrl(),
+      connectTimeout: HttpProp.getTimeout(),
+      receiveTimeout: HttpProp.getTimeout(),
       headers: headers,
-      contentType: HttpProp.contentType,
+      contentType: HttpProp.getContentType(),
       responseType: ResponseType.plain,
     );
   }
 
   static String rebuildUrl(String url) {
-    if (url.startsWith("/") && HttpProp.baseUrl.endsWith("/")) {
+    if (url.startsWith("/") && HttpProp.getBaseUrl().endsWith("/")) {
       url = url.substring(1);
     }
-    return url.startsWith("http") ? url : HttpProp.baseUrl + url;
+    return url.startsWith("http") ? url : HttpProp.getBaseUrl() + url;
   }
 }

@@ -10,11 +10,15 @@
 
   "settings.title":"设置 ",
   "settings.checkForUpdate":"检查更新",
-  "settings.devTool":"开发者工具",
   "settings.alreadyLatestVersion":"当前版本已经是最新版本!",
   "settings.downloading":"正在下载...",
   "settings.upgrade.dialog.title":"更新到最新版本? ",
   "settings.upgrade.cancel":"取消下载? ",
+
+  "settings.devTool.title":"开发者工具",
+  "settings.devTool.protocol":"协议",
+  "settings.devTool.host":"域名",
+  "settings.devTool.port":"端口",
 
   "tv.list.title":"列表",
   "tv.list.bottomAll":"全部",
