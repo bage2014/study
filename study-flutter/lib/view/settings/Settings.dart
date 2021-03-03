@@ -129,6 +129,7 @@ class _Settings extends State<Settings> {
           if(file.existsSync()){ // 已经下载过，直接安装
             FileUtils.openFile(file);
             print('open file ${file.path}');
+            return;
           }
           _isDownloading = true;
           Logs.info('cancelRequests is ${cancelRequests.token}');
