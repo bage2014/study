@@ -4,6 +4,12 @@
 
 http://olive.ren/flutter-build-apk-fail/
 
+
+### TODO
+网络提示
+下载进度条
+APP 名字
+
 ### 参考链接
 
 https://flutter.dev/docs/get-started/install/windows
