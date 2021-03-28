@@ -23,28 +23,25 @@ shadring-jdbc 解析 https://www.shared-code.com/type/9/2
 
 相关文档链接：
 
-https://wenku.baidu.com/view/d8e75e1ddc88d0d233d4b14e852458fb770b38c4.html、
+https://wenku.baidu.com/view/d8e75e1ddc88d0d233d4b14e852458fb770b38c4.html
 
-https://wenku.baidu.com/view/3153a8e46529647d272852c3.html、
+https://wenku.baidu.com/view/3153a8e46529647d272852c3.html
 
- https://wenku.baidu.com/view/9e4b1ead3868011ca300a6c30c2259010302f348.html、
+ https://wenku.baidu.com/view/9e4b1ead3868011ca300a6c30c2259010302f348.html
 
-https://max.book118.com/html/2017/0622/117283023.shtm、
+https://max.book118.com/html/2017/0622/117283023.shtm
 
-https://cloud.tencent.com/developer/article/1608469、
+https://cloud.tencent.com/developer/article/1608469
 
-https://my.oschina.net/tinyframework/blog/531444、
+https://my.oschina.net/tinyframework/blog/531444
 
 http://blog.itpub.net/69940575/viewspace-2684066/
 
 https://xuliugen.blog.csdn.net/article/details/114701152
 
-
-
 https://www.baidu.com/s?wd=%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%20PPT&pn=20&oq=%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%20PPT&ie=utf-8&usm=3&rsv_pq=91434e500003e06a&rsv_t=e2e4Nwt3E9Jdo%2F5xF30T6yWbqR71JIx6rGC1eNV%2ByPNsXbx8lK7JS63TxFA
-
-
-
+https://www.iocoder.cn/Sharding-JDBC/
+coke
 
 
 二次查询法[https://blog.csdn.net/uiuan00/article/details/102716457#3%E3%80%81%E7%BB%88%E6%9E%81%E6%AD%A6%E5%99%A8-%E4%BA%8C%E6%AC%A1%E6%9F%A5%E8%AF%A2%E6%B3%95](https://blog.csdn.net/uiuan00/article/details/102716457#3、终极武器-二次查询法)
