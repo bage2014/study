@@ -19,6 +19,10 @@
 
 shadring-jdbc 解析 https://www.shared-code.com/type/9/2
 
+文章精选 https://github.com/apache/shardingsphere/issues/650
+
+
+
 
 
 相关文档链接：
