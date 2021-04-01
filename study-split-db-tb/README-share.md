@@ -135,7 +135,7 @@ Fabric
 
 mysql_proxy
 
-
+MyCat + kingSharding + Atlas + Fabric + mysql_proxy
 
 数据库中间件
 
