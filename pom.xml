@@ -141,6 +141,7 @@
     <module>study-ews-java-api</module>
     <module>study-netty</module>
       <module>study-m3u</module>
+      <module>study-sftp</module>
 
   </modules>
 </project>
