@@ -159,7 +159,7 @@ Generating a new SSH key
 添加对应私钥
 
 	ssh-agent bash
-
+	
 	ssh-add ~/.ssh/id_rsa_another_one
 
 新建文本文件
@@ -176,5 +176,79 @@ Generating a new SSH key
 
 
 
+### SFTP【待验证】 ###
 
+参考链接 https://linuxeye.com/437.html
+
+
+Steps
+
+Open TerminalTerminalGit Bash.	
+	略
+
+切换到 root 用户
+
+	su 
+
+查看openssh的版本，版本必须大于4.8
+
+	ssh -V 
+
+创建sftp 用户组（名字建议就叫做sftp）
+
+	groupadd sftp
+
+创建sftp文件目录
+
+	mkdir -p /data/sftp
+
+设定Chroot目录权限
+
+	chown -R root:sftp /data/sftp
+	chmod 0755 /data/sftp
+
+配置sshd_config（可以先备份文件）
+
+	// vi 编辑
+	vi /etc/ssh/sshd_config
+	// 注释掉 Subsystem 这一行 
+	# Subsystem     sftp    /usr/libexec/openssh/sftp-server
+	// 文末尾添加
+	Port 22
+	Subsystem sftp internal-sftp -l INFO -f AUTH
+	Match Group sftp
+	ChrootDirectory /data/sftp/%u
+	X11Forwarding no
+	AllowTcpForwarding no
+	ForceCommand internal-sftp -l INFO -f AUTH
+
+设置SFTP用户可写入的目录
+
+	mkdir /data/sftp/bagesftp
+	chmod 0755 /data/sftp/bagesftp
+	chown root:sftp /data/sftp/bagesftp
+
+添加用户（-s 禁止登录   -M 不要自动建立用户的登入目录）
+
+	useradd -g sftp -s /sbin/nologin -M bagesftp
+
+创建密钥对
+
+	mkdir -p /home/bagesftp/.ssh
+	ssh-keygen -t rsa
+	cp /root/.ssh/id_rsa.pub /home/bagesftp/.ssh/authorized_keys
+	chown -R bagesftp.sftp /home/bagesftp
+
+创建一个可写目录 upload
+
+	mkdir /data/sftp/bagesftp/upload
+	chown -R bagesftp:sftp /data/sftp/bagesftp/upload
+
+重启sshd 服务
+
+	systemctl restart sshd
+
+连接验证
+
+	sftp -oidentityFile=/root/.ssh/id_rsa bagesftp@127.0.0.1 -oport=22
 
