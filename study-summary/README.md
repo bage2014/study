@@ -316,6 +316,8 @@ request、response；
 - 限流
 - 分布式事务
 
+基本组件，对比，原理，入门，实践
+
 ## Linux ##
 - 常用命令
 - docker
