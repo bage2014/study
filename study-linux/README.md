@@ -1,3 +1,7 @@
+```
+    chmod 700 ~/.ssh/
+```
+
 # study-linux #
 Linux学习笔记
 
@@ -176,7 +180,7 @@ Generating a new SSH key
 
 
 
-### SFTP【待验证】 ###
+### SFTP ###
 
 参考链接 https://linuxeye.com/437.html
 
@@ -222,27 +226,26 @@ Open TerminalTerminalGit Bash.
 	AllowTcpForwarding no
 	ForceCommand internal-sftp -l INFO -f AUTH
 
-设置SFTP用户可写入的目录
 
-	mkdir /data/sftp/bagesftp
-	chmod 0755 /data/sftp/bagesftp
-	chown root:sftp /data/sftp/bagesftp
 
-添加用户（-s 禁止登录   -M 不要自动建立用户的登入目录）
+设置SFTP用户 sftptest2 可写入的目录
 
-	useradd -g sftp -s /sbin/nologin -M bagesftp
+	mkdir /data/sftp/sftptest2
+	chmod 0755 /data/sftp/sftptest2
+	chown root:sftp /data/sftp/sftptest2
+	useradd -g sftp -s /sbin/nologin sftptest2
 
-创建密钥对
+创建用户 sftptest2 的密钥对
 
-	mkdir -p /home/bagesftp/.ssh
+	mkdir -p /home/sftptest2/.ssh
 	ssh-keygen -t rsa
-	cp /root/.ssh/id_rsa.pub /home/bagesftp/.ssh/authorized_keys
-	chown -R bagesftp.sftp /home/bagesftp
+	cp /root/.ssh/id_rsa.pub /home/sftptest2/.ssh/authorized_keys
+	chown -R sftptest2.sftp /home/sftptest2
 
 创建一个可写目录 upload
 
-	mkdir /data/sftp/bagesftp/upload
-	chown -R bagesftp:sftp /data/sftp/bagesftp/upload
+	mkdir /data/sftp/sftptest2/upload
+	chown -R sftptest2:sftp /data/sftp/sftptest2/upload
 
 重启sshd 服务
 
@@ -250,5 +253,24 @@ Open TerminalTerminalGit Bash.
 
 连接验证
 
-	sftp -oidentityFile=/root/.ssh/id_rsa bagesftp@127.0.0.1 -oport=22
+	sftp -oidentityFile=/root/.ssh/id_rsa sftptest2@127.0.0.1 -oport=22
+
+
+
+修改文件权限
+
+```
+ //用户权限
+chmod 700 /home/sftptest2
+//.ssh文件夹权限
+chmod 700 ~/.ssh/
+// ~/.ssh/authorized_keys 文件权限
+chmod 600 ~/.ssh/authorized_keys
+```
+
+```
+systemctl restart sshd.service
+```
+
+
 
