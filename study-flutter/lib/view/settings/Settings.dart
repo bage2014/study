@@ -15,6 +15,7 @@ import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/model/AppVersionResult.dart';
 import 'package:flutter_study/utils/AppUtils.dart';
 import 'package:flutter_study/utils/FileUtils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -71,7 +72,6 @@ class _Settings extends State<Settings> {
               onTap: _checkAppInfo,
             ),
           ),
-
         ]),
       ),
     );
@@ -95,6 +95,14 @@ class _Settings extends State<Settings> {
 
   void _checkAppInfo() async {
     try {
+      if (1 + 1 == 2) {
+        String url = HttpRequests.rebuildUrl('https://f-droid.org/F-Droid.apk');
+        if (await canLaunch(url)) {
+          await launch(url);
+          return;
+        }
+      }
+
       // 版本校验
       String url = HttpConstant.url_settings_version_check
           .replaceAll("{version}", AppUtils.getCurrentVersion().toString());
@@ -119,6 +127,7 @@ class _Settings extends State<Settings> {
         Logs.info('showConfirmDialog = $showConfirmDialog');
 
         if ("true" == showConfirmDialog) {
+
           Directory downloadDir = await FileUtils.getDownloadDir();
           String fileName =
               '${downloadDir.path}/latest-app-${appVersionResult.data.versionCode}.apk';
@@ -135,10 +144,7 @@ class _Settings extends State<Settings> {
               Translations.textOf(context, "settings.downloading"), onWillPop);
           // 下载
           HttpByteResult httpByteResult = await HttpRequests.getBytes(
-//              'https://f-droid.org/F-Droid.apk'
-              appVersionResult.data.fileUrl,
-              null,
-              null, (int sent, int total) {
+              appVersionResult.data.fileUrl, null, null, (int sent, int total) {
             double percent = sent / total;
             _isDownloading = sent < total;
             print("_doDownloadRequest onReceiveProgress ${percent}%");

@@ -4,6 +4,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileUtils {
+
   static void openFile(File file) {
     OpenFile.open(file.path)
         .then((value) => print('openFile then value = ${value.message}'))
