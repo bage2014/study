@@ -27,5 +27,7 @@
   "about.title":"关于",
   "about.author":"关于作者",
 
+  "component.http.no.network":"请检查网络是否已经连接",
+
   "unknown": ""
 }

@@ -170,9 +170,6 @@ class _Settings extends State<Settings> {
       }
     } catch (e) {
       print(e);
-      Dialogs.dismiss(_context);
-      Dialogs.showInfoDialog(_context,
-          Translations.textOf(context, "settings.alreadyLatestVersion"));
     }
   }
 }

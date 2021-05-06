@@ -27,5 +27,7 @@
   "about.title":"About",
   "about.author":"About Author",
 
+  "component.http.no.network":"check network state please",
+
   "unknown": ""
 }

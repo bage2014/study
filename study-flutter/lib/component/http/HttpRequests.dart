@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_study/component/dialog/Dialogs.dart';
 import 'package:flutter_study/component/http/CancelRequests.dart';
 import 'package:flutter_study/component/http/HttpByteResult.dart';
 import 'package:flutter_study/component/http/HttpProgressCallback.dart';
 import 'package:flutter_study/component/http/HttpResult.dart';
 import 'package:flutter_study/component/log/Logs.dart';
+import 'package:flutter_study/constant/HttpConstant.dart';
 import 'package:flutter_study/prop/HttpProp.dart';
 
 class HttpRequests {
@@ -105,6 +107,7 @@ class HttpRequests {
       return result;
     } catch (e) {
       Logs.info('_doDownloadRequest error' + e.toString());
+      result.statusCode = HttpConstant.no_net_work;
     }
     return result;
   }
@@ -136,6 +139,7 @@ class HttpRequests {
       return result;
     } catch (e) {
       Logs.info('_doBaseRequest error' + e.toString());
+      result.statusCode = HttpConstant.no_net_work;
     }
     return result;
   }

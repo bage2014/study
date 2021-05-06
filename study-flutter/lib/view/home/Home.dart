@@ -42,10 +42,10 @@ class _ScaffoldRouteState extends State<Home> {
 //          ],
           ),
           drawer: new HomeDrawer(), //抽屉
-          floatingActionButton: FloatingActionButton(
-              //悬浮按钮
-              child: Icon(Icons.add),
-              onPressed: _onAdd),
+//          floatingActionButton: FloatingActionButton(
+//              //悬浮按钮
+//              child: Icon(Icons.add),
+//              onPressed: _onAdd),
           body: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, //每行三列
@@ -65,7 +65,7 @@ class _ScaffoldRouteState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 24.0, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 16.0, 0, 0),
                             child: Icon(
                               menuItems[index].icon,
                               size: 42,
