@@ -309,6 +309,17 @@ request、response；
 
 ## Spring Cloud ##
 - 注册中心
+
+服务发现
+
+服务下线
+
+水平拓展
+
+高可用
+
+常用组件：Eureka、Consul、ZooKeeper
+
 - 网关
 - 配置中心
 - 负载均衡
