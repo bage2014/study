@@ -4,6 +4,11 @@
 
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
+    <!--自定义-->
+    <appender name="MyAppender" class="com.bage.study.log.logback.MyAppender">
+
+    </appender>
+
     <!--控制台输出-->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -33,6 +38,7 @@
 
     <root>
         <level value="debug"/> <!--输出级别-->
+        <appender-ref ref="MyAppender"/>
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>
