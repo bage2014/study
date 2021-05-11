@@ -142,6 +142,7 @@
     <module>study-netty</module>
       <module>study-m3u</module>
       <module>study-sftp</module>
+      <module>study-jmockit</module>
 
   </modules>
 </project>
