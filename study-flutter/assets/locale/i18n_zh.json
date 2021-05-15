@@ -6,6 +6,7 @@
   "home.drawer.title":"小陆 ",
   "home.drawer.settings":"设置 ",
   "home.drawer.about":"关于 ",
+  "home.drawer.profile":"名片 ",
   "home.back.confirm":"你确定要退出吗?",
 
   "settings.title":"设置 ",
@@ -26,6 +27,11 @@
 
   "about.title":"关于",
   "about.author":"关于作者",
+
+
+  "profile.title":"我的名片",
+  "profile.me":"我的",
+
 
   "component.http.no.network":"请检查网络是否已经连接",
 

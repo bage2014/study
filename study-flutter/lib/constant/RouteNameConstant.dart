@@ -8,6 +8,7 @@ class RouteNameConstant{
   static String route_name_settings = "settings";
   static String route_name_setting_develop = "settings/develop";
   static String route_name_about = "about";
+  static String route_name_profile = "profile";
 
 }
 

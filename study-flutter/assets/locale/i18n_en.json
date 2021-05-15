@@ -6,6 +6,7 @@
   "home.drawer.title":"Tutorials ",
   "home.drawer.settings":"Settings ",
   "home.drawer.about":"About ",
+  "home.drawer.profile":"profile ",
   "home.back.confirm":"Confirm to exit?",
 
   "settings.title":"Settings ",
@@ -26,6 +27,10 @@
 
   "about.title":"About",
   "about.author":"About Author",
+
+  "profile.title":"Me",
+  "profile.me":"Me",
+
 
   "component.http.no.network":"check network state please",
 

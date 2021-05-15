@@ -3,6 +3,7 @@ import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/model/RoutPath.dart';
 import 'package:flutter_study/view/about/About.dart';
 import 'package:flutter_study/view/home/Home.dart';
+import 'package:flutter_study/view/profile/Profile.dart';
 import 'package:flutter_study/view/settings/DevelopSetting.dart';
 import 'package:flutter_study/view/settings/Settings.dart';
 import 'package:flutter_study/view/tv/TvList.dart';
@@ -33,6 +34,10 @@ class RouteConfiguration {
     RoutPath(
       RouteNameConstant.route_name_setting_develop,
           (context, match) => DevelopSetting(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_profile,
+          (context, match) => Profile(),
     ),
   ];
 
