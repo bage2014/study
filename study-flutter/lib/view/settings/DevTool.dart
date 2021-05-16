@@ -5,12 +5,12 @@ import 'package:flutter_study/component/sp/SharedPreferenceHelper.dart';
 import 'package:flutter_study/constant/SpConstant.dart';
 import 'package:flutter_study/locale/Translations.dart';
 
-class DevelopSetting extends StatefulWidget {
+class DevTool extends StatefulWidget {
   @override
-  _DevelopSetting createState() => new _DevelopSetting();
+  _DevTool createState() => new _DevTool();
 }
 
-class _DevelopSetting extends State<DevelopSetting> {
+class _DevTool extends State<DevTool> {
   String _protocol = "";
   String _host = "";
   String _port = "";

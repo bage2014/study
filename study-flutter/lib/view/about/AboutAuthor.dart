@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/locale/Translations.dart';
 
-class Profile extends StatefulWidget {
+class AboutAuthor extends StatefulWidget {
   @override
-  _Profile createState() => new _Profile();
+  _AboutAuthor createState() => new _AboutAuthor();
 }
 
-class _Profile extends State<Profile> {
+class _AboutAuthor extends State<AboutAuthor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Translations.textOf(context, "profile.title")),
+        title: Text(Translations.textOf(context, "about.author.title")),
       ),
       body: Container(
         alignment: Alignment.center,
@@ -25,7 +25,14 @@ class _Profile extends State<Profile> {
               ],
             ),
           ),
-
+          Container(
+            alignment: Alignment.center,
+            child: ListTile(
+              title: Text(Translations.textOf(context, "about.author.name")),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () {},
+            ),
+          ),
         ]),
       ),
     );

@@ -10,12 +10,12 @@ import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/model/QueryTvResult.dart';
 
-class TvList extends StatefulWidget {
+class TV extends StatefulWidget {
   @override
-  _ScaffoldRouteState createState() => _ScaffoldRouteState();
+  _TV createState() => _TV();
 }
 
-class _ScaffoldRouteState extends State<TvList> {
+class _TV extends State<TV> {
   List<TvItem> list;
   int _currentIndex = 1;
 
@@ -28,10 +28,6 @@ class _ScaffoldRouteState extends State<TvList> {
 
   @override
   Widget build(BuildContext context) {
-    //获取路由参数
-    var args = ModalRoute.of(context).settings.arguments;
-    print('args=' + args);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "tv.list.title")),

@@ -47,7 +47,7 @@ class _Settings extends State<Settings> {
                   child: Image(image: AssetImage("assets/images/logo128.png")),
                   onDoubleTap: () {
                     Navigator.of(context).pushNamed(
-                        RouteNameConstant.route_name_setting_develop);
+                        RouteNameConstant.route_name_setting_dev_tool);
                   },
                 ),
               ],

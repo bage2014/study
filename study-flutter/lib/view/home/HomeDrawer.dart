@@ -53,14 +53,14 @@ class HomeDrawer extends StatelessWidget {
                           .pushNamed(RouteNameConstant.route_name_about);
                     },
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.handyman), // todo profile icon 
-                    title: Text(Translations.textOf(context, "home.drawer.profile")),
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(RouteNameConstant.route_name_profile);
-                    },
-                  ),
+//                  ListTile(
+//                    leading: const Icon(Icons.person),
+//                    title: Text(Translations.textOf(context, "home.drawer.profile")),
+//                    onTap: () {
+//                      Navigator.of(context)
+//                          .pushNamed(RouteNameConstant.route_name_profile);
+//                    },
+//                  ),
 //                  ListTile(
 //                    leading: const Icon(Icons.logout),
 //                    title: const Text('Logout'),

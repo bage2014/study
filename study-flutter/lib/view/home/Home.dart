@@ -3,9 +3,9 @@ import 'package:flutter_study/component/dialog/Dialogs.dart';
 import 'package:flutter_study/component/log/Logs.dart';
 import 'package:flutter_study/component/toast/Toasts.dart';
 import 'package:flutter_study/constant/LocaleConstant.dart';
+import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/locale/Translations.dart';
 import 'package:flutter_study/view/home/HomeDrawer.dart';
-import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/view/home/MenuItem.dart';
 
 class Home extends StatefulWidget {
@@ -55,11 +55,8 @@ class _ScaffoldRouteState extends State<Home> {
             itemBuilder: (context, index) {
               return new GestureDetector(
                   onTap: () {
-                    //处理点击事件
-                    print(index);
-                    Navigator.of(context).pushNamed(
-                        RouteNameConstant.route_name_tv_list,
-                        arguments: "hi");
+                    MenuItem current = menuItems[index];
+                    Navigator.of(context).pushNamed(current.route);
                   },
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,10 +81,8 @@ class _ScaffoldRouteState extends State<Home> {
     Future.delayed(Duration(milliseconds: 200)).then((e) {
       setState(() {
         menuItems.addAll([
-          new MenuItem(Icons.tv, 'TV'),
-//          new MenuItem(Icons.tv, 'TV2'),
-//          new MenuItem(Icons.tv, 'TV3'),
-//          new MenuItem(Icons.tv, 'TV4'),
+          new MenuItem(Icons.tv, Translations.textOf(context, "home.menu.tv"), RouteNameConstant.route_name_tv),
+          new MenuItem(Icons.person, Translations.textOf(context, "home.menu.profile"), RouteNameConstant.route_name_profile),
         ]);
       });
     });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/locale/Translations.dart';
 
 class About extends StatefulWidget {
@@ -37,7 +38,10 @@ class _About extends State<About> {
             child: ListTile(
               title: Text(Translations.textOf(context, "about.author")),
               trailing: Icon(Icons.chevron_right),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                    RouteNameConstant.route_name_about_author);
+              },
             ),
           ),
         ]),

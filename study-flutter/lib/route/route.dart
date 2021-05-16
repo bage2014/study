@@ -4,9 +4,10 @@ import 'package:flutter_study/model/RoutPath.dart';
 import 'package:flutter_study/view/about/About.dart';
 import 'package:flutter_study/view/home/Home.dart';
 import 'package:flutter_study/view/profile/Profile.dart';
-import 'package:flutter_study/view/settings/DevelopSetting.dart';
+import 'file:///E:/GitHubDesktop/study/study-flutter/lib/view/about/AboutAuthor.dart';
+import 'package:flutter_study/view/settings/DevTool.dart';
 import 'package:flutter_study/view/settings/Settings.dart';
-import 'package:flutter_study/view/tv/TvList.dart';
+import 'package:flutter_study/view/tv/TV.dart';
 import 'package:flutter_study/view/tv/TvPlayer.dart';
 
 class RouteConfiguration {
@@ -20,21 +21,28 @@ class RouteConfiguration {
       (context, match) => TvPlayer(),
     ),
     RoutPath(
-      RouteNameConstant.route_name_tv_list,
-      (context, match) => TvList(),
+      RouteNameConstant.route_name_tv,
+      (context, match) => TV(),
     ),
     RoutPath(
       RouteNameConstant.route_name_settings,
       (context, match) => Settings(),
     ),
+
     RoutPath(
       RouteNameConstant.route_name_about,
       (context, match) => About(),
     ),
     RoutPath(
-      RouteNameConstant.route_name_setting_develop,
-          (context, match) => DevelopSetting(),
+      RouteNameConstant.route_name_about_author,
+          (context, match) => AboutAuthor(),
     ),
+
+    RoutPath(
+      RouteNameConstant.route_name_setting_dev_tool,
+          (context, match) => DevTool(),
+    ),
+
     RoutPath(
       RouteNameConstant.route_name_profile,
           (context, match) => Profile(),
