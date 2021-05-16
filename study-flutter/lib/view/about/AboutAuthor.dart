@@ -17,11 +17,19 @@ class _AboutAuthor extends State<AboutAuthor> {
         alignment: Alignment.center,
         child: Column(children: <Widget>[
           Container(
-            alignment: Alignment.center,
+            padding: const EdgeInsets.fromLTRB(24.0,8.0,0.0,0.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image(image: AssetImage("assets/images/user_null.png"))
+                Image(image: AssetImage("assets/images/user_null.png")),
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center, //垂直方向居中对齐
+                    children: <Widget>[
+                      Text('陆瑞华',textScaleFactor: 1.5),
+                      Text("上海")
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -33,6 +41,7 @@ class _AboutAuthor extends State<AboutAuthor> {
               onTap: () {},
             ),
           ),
+
         ]),
       ),
     );
