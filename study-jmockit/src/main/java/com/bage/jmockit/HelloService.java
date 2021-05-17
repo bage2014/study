@@ -5,7 +5,7 @@ public class HelloService {
     private HelloJMockit helloJMockit = new HelloJMockit();
 
     public String sayHello() {
-        return helloJMockit.sayHello();
+        return "HelloService:" + helloJMockit.sayHello();
     }
 
 }

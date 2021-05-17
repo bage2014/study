@@ -4,7 +4,7 @@ package com.bage.jmockit;
 public class HelloJMockit {
     // 向JMockit打招呼
     public String sayHello() {
-        return "你好，JMockit!";
+        return "HelloJMockit:sayHello";
     }
 
 }
