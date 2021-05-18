@@ -59,7 +59,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
 
   #https://pub.flutter-io.cn/packages/url_launcher/install
-  # url_launcher: 5.4.2
+  url_launcher: 5.4.2
 
 dev_dependencies:
   flutter_test:

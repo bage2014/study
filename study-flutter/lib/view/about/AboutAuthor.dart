@@ -34,12 +34,9 @@ class _AboutAuthor extends State<AboutAuthor> {
             ),
           ),
           Container(
-            alignment: Alignment.center,
-            child: ListTile(
-              title: Text(Translations.textOf(context, "about.author.name")),
-              trailing: Icon(Icons.chevron_right),
-              onTap: () {},
-            ),
+            alignment: Alignment.centerLeft,
+            child: Text('hello'),
+//            child: Text(Translations.textOf(context, "about.author.name")),
           ),
 
         ]),

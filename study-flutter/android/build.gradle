@@ -1,13 +1,16 @@
-
 buildscript {
     ext.kotlin_version = '1.3.50'
     repositories {
         maven { url 'https://dl.google.com/dl/android/maven2' }
-        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
-//        google()
-//        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'http://download.flutter.io' }
+        google()
+        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -19,11 +22,14 @@ buildscript {
 allprojects {
     repositories {
         maven { url 'https://dl.google.com/dl/android/maven2' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
-//        google()
-//        jcenter()
+        maven { url 'http://download.flutter.io' }
+        google()
+        jcenter()
+        mavenCentral()
     }
 }
 
