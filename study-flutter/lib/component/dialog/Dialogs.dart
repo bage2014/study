@@ -62,7 +62,6 @@ class Dialogs {
 
   static Future<String> showConfirmDialog(
       BuildContext context, String title, String content) {
-    TextEditingController _controller = TextEditingController();
     List<Widget> actions = <Widget>[
       FlatButton(
         child: Text("取消"),
@@ -90,6 +89,39 @@ class Dialogs {
             title: Text(title), content: Text(content), actions: actions);
       },
     );
+  }
+
+  static Future<int> showButtonSelectDialog(
+      BuildContext context, List<String> contents) {
+    return showModalBottomSheet<int>(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => Wrap(children: <Widget>[
+        ListView.builder(
+          itemCount: contents.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text(contents[index]),
+              onTap: () => Navigator.of(context).pop(index),
+            );
+          },
+        )
+      ]),
+    );
+//      return showModalBottomSheet<int>(
+//        context: context,
+//        builder: (BuildContext context) {
+//          return ListView.builder(
+//            itemCount: contents.length,
+//            itemBuilder: (BuildContext context, int index) {
+//              return ListTile(
+//                title: Text(contents[index]),
+//                onTap: () => Navigator.of(context).pop(index),
+//              );
+//            },
+//          );
+//        },
+//      );
   }
 
   static Future<String> showInputDialog(
