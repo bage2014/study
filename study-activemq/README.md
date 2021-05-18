@@ -5,6 +5,7 @@ ActiveMQ学习笔记
 - 官网 [http://activemq.apache.org/getting-started.html](http://activemq.apache.org/getting-started.html)
 - 消息中间件（一）MQ详解及四大MQ比较 [https://blog.csdn.net/wqc19920906/article/details/82193316](https://blog.csdn.net/wqc19920906/article/details/82193316)
 - mq的基本介绍和基本用法 [https://blog.csdn.net/qq_20009015/article/details/81409346](https://blog.csdn.net/qq_20009015/article/details/81409346)
+- Kafka基本介绍 https://www.cnblogs.com/qingyunzong/p/9004509.html
 
 ## Java使用入门 ##
 ### 参考项目 ###
