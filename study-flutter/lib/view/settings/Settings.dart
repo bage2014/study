@@ -42,7 +42,6 @@ class _Settings extends State<Settings> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-//                Image(image: AssetImage("assets/images/user_null.png"))
                 GestureDetector(
                   child: Image(image: AssetImage("assets/images/logo128.png")),
                   onDoubleTap: () {
@@ -57,9 +56,17 @@ class _Settings extends State<Settings> {
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-//              children: <Widget>[Text("[未登录]")],
               children: <Widget>[
-                Text(Translations.textOf(context, "app.name"))
+                Text(Translations.textOf(context, "all.app.name"))
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(Translations.textOf(context, "all.app.version"))
               ],
             ),
           ),

@@ -19,7 +19,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Tutorials"
+        android:label="小陆"
         android:icon="@drawable/logo128">
         <activity
             android:name=".MainActivity"

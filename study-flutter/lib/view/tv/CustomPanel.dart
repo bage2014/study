@@ -136,7 +136,6 @@ class _CustomFijkPanel extends State<CustomPanel> {
   @override
   void dispose() {
     player.removeListener(_playerValueChanged);
-
     /// 关闭流回调
     super.dispose();
   }
