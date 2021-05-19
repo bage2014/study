@@ -154,7 +154,7 @@ https://flutterchina.club/get-started/learn-more/
 
 https://book.flutterchina.club/
 
-
+flutter doctor ???
 
 flutter_app_upgrade 插件使用问题
 
@@ -180,3 +180,5 @@ JSON
 多语言 Flutter Intl
 
 家庭族谱，小工具、实用工具
+
+个人名片、联系方式

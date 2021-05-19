@@ -22,18 +22,6 @@ class Dialogs {
                 ),
               ));
         });
-//    return showDialog<String>(
-//        context: context,
-//        barrierDismissible: false,
-//        builder: (context) {
-//          return Container(
-//              alignment: Alignment.center,
-//              child: CircularProgressIndicator(
-//                strokeWidth: 2,
-//                valueColor: AlwaysStoppedAnimation(Colors.blue),
-//              )
-//          );
-//        });
   }
 
   static Future<void> dismiss(BuildContext context) {
@@ -91,37 +79,25 @@ class Dialogs {
     );
   }
 
+  // ref: https://stackoverflow.com/questions/53311553/how-to-set-showmodalbottomsheet-to-full-height
   static Future<int> showButtonSelectDialog(
       BuildContext context, List<String> contents) {
     return showModalBottomSheet<int>(
       isScrollControlled: true,
       context: context,
+      isDismissible: true,
       builder: (context) => Wrap(children: <Widget>[
         ListView.builder(
-          itemCount: contents.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(contents[index]),
-              onTap: () => Navigator.of(context).pop(index),
-            );
-          },
-        )
+            itemCount: contents.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text(contents[index]),
+                onTap: () => Navigator.of(context).pop(index),
+              );
+            })
       ]),
     );
-//      return showModalBottomSheet<int>(
-//        context: context,
-//        builder: (BuildContext context) {
-//          return ListView.builder(
-//            itemCount: contents.length,
-//            itemBuilder: (BuildContext context, int index) {
-//              return ListTile(
-//                title: Text(contents[index]),
-//                onTap: () => Navigator.of(context).pop(index),
-//              );
-//            },
-//          );
-//        },
-//      );
   }
 
   static Future<String> showInputDialog(

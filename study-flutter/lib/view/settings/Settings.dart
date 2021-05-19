@@ -120,10 +120,14 @@ class _Settings extends State<Settings> {
         Logs.info('showConfirmDialog = $showConfirmDialog');
 
         if ("true" == showConfirmDialog) {
-          List<String> contents = ["Open with browser","Download in APP"];
+          List<String> contents = ["Open with browser","Download in APP","Cancel"];
           int index = await Dialogs.showButtonSelectDialog(
               context,
               contents);
+
+          if (index == contents.length - 1) { // Cancel
+              return;
+          }
 
           if (index == 0) { // open with browser
             String url = HttpRequests.rebuildUrl(appVersionResult.data.fileUrl);
