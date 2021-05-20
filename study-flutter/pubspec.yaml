@@ -61,6 +61,9 @@ dependencies:
   #https://pub.flutter-io.cn/packages/url_launcher/install
   url_launcher: 5.4.2
 
+  #https://pub.dev/packages/share/install
+  share: 0.6.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

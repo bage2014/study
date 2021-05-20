@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study/constant/RouteNameConstant.dart';
 import 'package:flutter_study/locale/Translations.dart';
+import 'package:share/share.dart';
 
 class About extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class _About extends State<About> {
         child: Column(children: <Widget>[
           Container(
             alignment: Alignment.center,
+            padding: const EdgeInsets.only(top: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -30,7 +32,20 @@ class _About extends State<About> {
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[Text("v1.0.0 beta")],
+              children: <Widget>[
+                Text(Translations.textOf(context, "all.app.name"),
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(Translations.textOf(context, "all.app.version"))
+              ],
             ),
           ),
           Container(
@@ -39,8 +54,19 @@ class _About extends State<About> {
               title: Text(Translations.textOf(context, "about.author")),
               trailing: Icon(Icons.chevron_right),
               onTap: () {
-                Navigator.of(context).pushNamed(
-                    RouteNameConstant.route_name_about_author);
+                Navigator.of(context)
+                    .pushNamed(RouteNameConstant.route_name_about_author);
+              },
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: ListTile(
+              title: Text(Translations.textOf(context, "about.share")),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () {
+                Share.share('【小陆，小陆，简单陆】 https://example.com',
+                    subject: 'Look what I made!');
               },
             ),
           ),

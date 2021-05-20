@@ -82,7 +82,8 @@ class _ScaffoldRouteState extends State<Home> {
       setState(() {
         menuItems.addAll([
           new MenuItem(Icons.tv, Translations.textOf(context, "home.menu.tv"), RouteNameConstant.route_name_tv),
-          new MenuItem(Icons.person, Translations.textOf(context, "home.menu.profile"), RouteNameConstant.route_name_profile),
+//          new MenuItem(Icons.person, Translations.textOf(c
+//          ontext, "home.menu.profile"), RouteNameConstant.route_name_profile),
         ]);
       });
     });

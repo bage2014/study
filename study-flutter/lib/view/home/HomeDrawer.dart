@@ -20,26 +20,26 @@ class HomeDrawer extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.only(left: 24),
                     child: ClipOval(
-                      child: Image(
-//                          image: AssetImage("assets/images/user_null.png")),
-                          image: AssetImage("assets/images/logo128.png")),
+                      child:
+                          Image(image: AssetImage("assets/images/logo128.png")),
                     ),
                   ),
-                  Text(
-                    Translations.textOf(context, "home.drawer.title"),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )
+                  Text(Translations.textOf(context, "all.app.name"),
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold))
                 ],
               ),
             ),
             Expanded(
               child: ListView(
+                padding: const EdgeInsets.only(left: 24),
                 children: <Widget>[
                   ListTile(
                     leading: const Icon(Icons.settings),
-                    title: Text (Translations.textOf(context, "home.drawer.settings")),
+                    title: Text(
+                        Translations.textOf(context, "home.drawer.settings")),
                     onTap: () {
                       Navigator.of(context)
                           .pushNamed(RouteNameConstant.route_name_settings);
@@ -47,7 +47,8 @@ class HomeDrawer extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.info),
-                    title: Text(Translations.textOf(context, "home.drawer.about")),
+                    title:
+                        Text(Translations.textOf(context, "home.drawer.about")),
                     onTap: () {
                       Navigator.of(context)
                           .pushNamed(RouteNameConstant.route_name_about);

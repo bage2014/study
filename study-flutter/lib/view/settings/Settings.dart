@@ -39,6 +39,7 @@ class _Settings extends State<Settings> {
         child: Column(children: <Widget>[
           Container(
             alignment: Alignment.center,
+            padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -57,7 +58,8 @@ class _Settings extends State<Settings> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(Translations.textOf(context, "all.app.name"))
+                Text(Translations.textOf(context, "all.app.name"),
+                    style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold))
               ],
             ),
           ),
@@ -102,7 +104,6 @@ class _Settings extends State<Settings> {
 
   void _checkAppInfo() async {
     try {
-
       // 版本校验
       String url = HttpConstant.url_settings_version_check
           .replaceAll("{version}", AppUtils.getCurrentVersion().toString());
@@ -127,16 +128,21 @@ class _Settings extends State<Settings> {
         Logs.info('showConfirmDialog = $showConfirmDialog');
 
         if ("true" == showConfirmDialog) {
-          List<String> contents = ["Open with browser","Download in APP","Cancel"];
-          int index = await Dialogs.showButtonSelectDialog(
-              context,
-              contents);
+          List<String> contents = [
+            Translations.textOf(context, "settings.upgrade.open.by.browser"),
+            Translations.textOf(context, "settings.upgrade.open.by.app"),
+            Translations.textOf(context, "settings.upgrade.open.cancel")
+          ];
+          int index = await Dialogs.showButtonSelectDialog(context, contents);
+          Logs.info('index = $index');
 
-          if (index == contents.length - 1) { // Cancel
-              return;
+          if (index == null || index == contents.length - 1) {
+            // Cancel
+            return;
           }
 
-          if (index == 0) { // open with browser
+          if (index == 0) {
+            // open with browser
             String url = HttpRequests.rebuildUrl(appVersionResult.data.fileUrl);
             if (await canLaunch(url)) {
               await launch(url);

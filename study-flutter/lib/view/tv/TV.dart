@@ -36,9 +36,11 @@ class _TV extends State<TV> {
         // 底部导航
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border), label: Translations.textOf(context, "tv.list.bottomAll")),
+              icon: Icon(Icons.favorite_border),
+              label: Translations.textOf(context, "tv.list.bottomAll")),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: Translations.textOf(context, "tv.list.bottomFavorite")),
+              icon: Icon(Icons.favorite),
+              label: Translations.textOf(context, "tv.list.bottomFavorite")),
         ],
         currentIndex: _currentIndex,
         fixedColor: Colors.blue,
@@ -46,30 +48,37 @@ class _TV extends State<TV> {
       ),
       body: RefreshIndicator(
         onRefresh: _onRefresh,
-        child: ListView.separated(
-          itemCount: list.length,
-          itemBuilder: (context, index) {
-            return new GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed(
-                      RouteNameConstant.route_name_tv_player,
-                      arguments: list[index]);
+        child: list.length == 0
+            ? Center(
+                child: Text(
+                  Translations.textOf(context, "all.list.view.no.data"),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : ListView.separated(
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  return new GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            RouteNameConstant.route_name_tv_player,
+                            arguments: list[index]);
+                      },
+                      child: ListTile(
+                          title: Text(list[index].name),
+                          trailing: new GestureDetector(
+                              onTap: () {
+                                _setFavorite(list[index]);
+                              },
+                              child: list[index].isFavorite
+                                  ? Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                    )
+                                  : Icon(Icons.favorite_border))));
                 },
-                child: ListTile(
-                    title: Text(list[index].name),
-                    trailing: new GestureDetector(
-                        onTap: () {
-                          _setFavorite(list[index]);
-                        },
-                        child: list[index].isFavorite
-                            ? Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              )
-                            : Icon(Icons.favorite_border))));
-          },
-          separatorBuilder: (context, index) => Divider(height: .0),
-        ),
+                separatorBuilder: (context, index) => Divider(height: .0),
+              ),
       ),
     );
   }
@@ -100,9 +109,8 @@ class _TV extends State<TV> {
           list = tvResult.data;
         }
       });
-    }).catchError((error){
+    }).catchError((error) {
       print(error.toString());
-
     });
   }
 

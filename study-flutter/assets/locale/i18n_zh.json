@@ -1,6 +1,7 @@
 {
   "all.app.name":"小陆 ",
   "all.app.version":"v1.0.0 ",
+  "all.list.view.no.data":"暂无数据",
 
   "main.title":"欢迎使用 ",
 
@@ -18,20 +19,24 @@
   "settings.checkForUpdate":"检查更新",
   "settings.alreadyLatestVersion":"当前版本已经是最新版本!",
   "settings.downloading":"正在下载...",
-  "settings.upgrade.dialog.title":"更新到最新版本? ",
+  "settings.upgrade.dialog.title":"确认更新? ",
   "settings.upgrade.cancel":"取消下载? ",
+  "settings.upgrade.open.by.browser":"浏览器打开 ",
+  "settings.upgrade.open.by.app":"应用内下载",
+  "settings.upgrade.open.cancel":"取消 ",
 
   "settings.devTool.title":"开发者工具",
   "settings.devTool.protocol":"协议",
   "settings.devTool.host":"域名",
   "settings.devTool.port":"端口",
 
-  "tv.list.title":"列表",
+  "tv.list.title":"电视列表",
   "tv.list.bottomAll":"全部",
   "tv.list.bottomFavorite":"喜欢",
 
   "about.title":"关于",
   "about.author":"关于作者",
+  "about.share":"分享应用",
 
   "about.author.title":"关于作者",
   "about.author.name":"名字",
