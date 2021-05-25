@@ -22,7 +22,7 @@ public class UserServiceTest {
     @Test
     public void hello() {
         when(fileService.hello()).thenReturn("hello-mock-file");
-        System.out.println(userService.hello());
+        System.out.println(userService.append());
     }
 
 }
