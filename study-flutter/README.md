@@ -4,6 +4,8 @@
 
 http://olive.ren/flutter-build-apk-fail/
 
+https://developer.android.google.cn/studio/run/managing-avds#createavd
+
 
 ### TODO
 网络提示
