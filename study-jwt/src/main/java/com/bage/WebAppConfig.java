@@ -12,19 +12,19 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses=BaseClasses.class)
+@ComponentScan(basePackageClasses = BaseClasses.class)
 public class WebAppConfig
         extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
-    
+
 
     public WebAppConfig() {
         super();
@@ -36,7 +36,7 @@ public class WebAppConfig
         this.applicationContext = applicationContext;
     }
 
-    
+
 
 
     /* ******************************************************************* */
@@ -45,13 +45,13 @@ public class WebAppConfig
     /* ******************************************************************* */
 
     @Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		super.configureDefaultServletHandling(configurer);
-		configurer.enable();
-	}
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        super.configureDefaultServletHandling(configurer);
+        configurer.enable();
+    }
 
 
-	@Override
+    @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/resources/images/**").addResourceLocations("/resources/images/");
@@ -67,7 +67,7 @@ public class WebAppConfig
         messageSource.setBasename("Messages");
         return messageSource;
     }
-  
+
 
     @Bean
     public DateFormatter dateFormatter() {
@@ -82,7 +82,7 @@ public class WebAppConfig
     /* **************************************************************** */
 
     @Bean
-    public SpringResourceTemplateResolver templateResolver(){
+    public SpringResourceTemplateResolver templateResolver() {
         // SpringResourceTemplateResolver automatically integrates with Spring's own
         // resource resolution infrastructure, which is highly recommended.
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
@@ -98,7 +98,7 @@ public class WebAppConfig
     }
 
     @Bean
-    public SpringTemplateEngine templateEngine(){
+    public SpringTemplateEngine templateEngine() {
         // SpringTemplateEngine automatically applies SpringStandardDialect and
         // enables Spring's own MessageSource message resolution mechanisms.
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -113,7 +113,7 @@ public class WebAppConfig
     }
 
     @Bean
-    public ThymeleafViewResolver viewResolver(){
+    public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
@@ -130,5 +130,5 @@ public class WebAppConfig
 //    .exposedHeaders("header1", "header2")
 //    .allowCredentials(false).maxAge(3600);
 //    }
-    
+
 }
