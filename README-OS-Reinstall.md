@@ -56,9 +56,15 @@ Set Proxy -> Automatic proxy configuration url
 
 自定义SDK路径
 
+下载、安装模拟器
+
+集成 Flutter 环境
+
+配置FLUTTER_HOME
+
 ### GitHub Desktop
 
-github 客户端下载
+Github 客户端下载
 
 方便提交Git
 
