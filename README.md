@@ -47,6 +47,7 @@ https://github.com/xbox1994/Java-Interview
 
 https://github.com/jobbole/awesome-java-cn
 
+https://mp.weixin.qq.com/s/kro_gyUQrdKSy1x3ETwb5A
 
 
 
