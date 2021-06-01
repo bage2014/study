@@ -341,6 +341,42 @@ request、response；
 
 基本组件，对比，原理，入门，实践
 
+## Dubbo ##
+
+### Dubbo vs Spring Cloud
+
+#### 通信方式
+
+#### 组成部分
+
+#### 节点角色
+
+https://dubbo.apache.org/zh/docs/v2.7/user/preface/architecture/
+
+- provider 服务提供者
+- consumer 服务消费者
+- registry 注册中心
+- monitor 监控中心
+
+#### 配置覆盖关系
+
+- 方法级优先，接口级次之，全局配置再次之。
+- 如果级别一样，则消费方优先，提供方次之。
+
+#### 集群容错
+
+https://dubbo.apache.org/zh/docs/v2.7/user/examples/
+
+Failover
+
+Failfast
+
+failsafe
+
+failback
+
+forking
+
 ## Linux ##
 - 常用命令
 - docker
