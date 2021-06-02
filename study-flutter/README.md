@@ -167,6 +167,16 @@ ServiceSpecificException: (code -22)
 flutter build apk 报错：
 http://olive.ren/flutter-build-apk-fail/
 
+
+
+https://stackoverflow.com/questions/54552962/flutter-build-error-process-command-e-flutter-apps-flutter-bin-flutter-bat
+
+You can try `reconfiguring the Flutter SDK path` in Android Studio's `File | Settings | Languages & Frameworks | Flutter`.
+
+I have just encountered the same problem and solved it successfully with this method.
+
+
+
 Flutter 基本概念
 
 组件
