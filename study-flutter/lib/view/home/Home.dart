@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/component/dialog/Dialogs.dart';
-import 'package:flutter_study/component/log/Logs.dart';
-import 'package:flutter_study/component/toast/Toasts.dart';
-import 'package:flutter_study/constant/LocaleConstant.dart';
-import 'package:flutter_study/constant/RouteNameConstant.dart';
-import 'package:flutter_study/locale/Translations.dart';
-import 'package:flutter_study/view/home/HomeDrawer.dart';
-import 'package:flutter_study/view/home/MenuItem.dart';
+import 'package:app_lu_lu/component/dialog/Dialogs.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/component/toast/Toasts.dart';
+import 'package:app_lu_lu/constant/LocaleConstant.dart';
+import 'package:app_lu_lu/constant/RouteNameConstant.dart';
+import 'package:app_lu_lu/locale/Translations.dart';
+import 'package:app_lu_lu/view/home/HomeDrawer.dart';
+import 'package:app_lu_lu/view/home/MenuItem.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 
 class _ScaffoldRouteState extends State<Home> {
   List<MenuItem> menuItems = []; //保存Icon数据
-  DateTime _lastTime; //上次点击时间
+  DateTime _lastTime = DateTime.now(); //上次点击时间
 
   // 初始化数据
   @override
@@ -27,8 +27,8 @@ class _ScaffoldRouteState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     //获取路由参数
-    var args = ModalRoute.of(context).settings.arguments;
-    print('args=' + args);
+    var args = ModalRoute.of(context)?.settings?.arguments;
+    print('args={args}');
 
     return new WillPopScope(
         onWillPop: onWillPop, //重点此举
@@ -81,7 +81,8 @@ class _ScaffoldRouteState extends State<Home> {
     Future.delayed(Duration(milliseconds: 200)).then((e) {
       setState(() {
         menuItems.addAll([
-          new MenuItem(Icons.tv, Translations.textOf(context, "home.menu.tv"), RouteNameConstant.route_name_tv),
+          new MenuItem(Icons.tv, Translations.textOf(context, "home.menu.tv"),
+              RouteNameConstant.route_name_tv),
 //          new MenuItem(Icons.person, Translations.textOf(c
 //          ontext, "home.menu.profile"), RouteNameConstant.route_name_profile),
         ]);
@@ -90,21 +91,13 @@ class _ScaffoldRouteState extends State<Home> {
   }
 
   Future<bool> onWillPop() async {
-    if (_lastTime == null ||
-        DateTime.now().difference(_lastTime) > Duration(seconds: 1)) {
+    if (DateTime.now().difference(_lastTime) > Duration(seconds: 1)) {
       //两次点击间隔超过1s重新计时
       _lastTime = DateTime.now();
       Toasts.show("再点一次退出应用");
       return false;
     }
     return true;
-    // 确认框
-    String showConfirmDialog = await Dialogs.showConfirmDialog(context,
-        Translations.textOf(context, LocaleConstant.home_back_confirm), null);
-    Logs.info('showConfirmDialog = $showConfirmDialog');
-    // You can do some work here.
-    // Returning true allows the pop to happen, returning false prevents it.
-    return "true".compareTo(showConfirmDialog) == 0;
   }
 
   void _onAdd() {}

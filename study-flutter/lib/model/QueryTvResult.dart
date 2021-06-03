@@ -1,10 +1,10 @@
 class QueryTvResult {
-  int code;
-  int originCode;
-  String msg;
-  Null originMsg;
-  List<TvItem> data;
-  Pagination pagination;
+  int? code;
+  int? originCode;
+  String? msg;
+  Null? originMsg;
+  List<TvItem>? data;
+  Pagination? pagination;
 
   QueryTvResult(
       {this.code,
@@ -56,13 +56,13 @@ class TvItem {
   List<String> urls;
 
   TvItem(
-      {this.id,
-        this.name,
-        this.logo,
-        this.isFavorite,
-        this.favoriteId,
-        this.userId,
-        this.urls});
+      {this.id = 0,
+        this.name = "",
+        this.logo = "",
+        this.isFavorite = false,
+        this.favoriteId = 0,
+        this.userId = 0,
+        this.urls = []});
 
   TvItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -92,7 +92,7 @@ class Pagination {
   int pageSize;
   int total;
 
-  Pagination({this.targetPage, this.pageSize, this.total});
+  Pagination({this.targetPage = 1, this.pageSize = 10, this.total = 0});
 
   Pagination.fromJson(Map<String, dynamic> json) {
     targetPage = json['targetPage'];

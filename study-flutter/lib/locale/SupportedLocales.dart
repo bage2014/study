@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_study/component/log/Logs.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
 
 class SupportedLocales {
 

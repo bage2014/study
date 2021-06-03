@@ -11,11 +11,11 @@ class CustomPanel extends StatefulWidget {
   final String title;
 
   const CustomPanel({
-    @required this.player,
-    this.buildContext,
-    this.viewSize,
-    this.texturePos,
-    this.title,
+    required this.player,
+    required this.buildContext,
+    required this.viewSize,
+    required this.texturePos,
+    required this.title,
   });
 
   @override
@@ -80,7 +80,10 @@ class _CustomFijkPanel extends State<CustomPanel> {
                                 }),
                             Text(
                               widget.title,
-                              style: TextStyle(color: Colors.white,fontSize: 16.0,),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
                             )
                           ],
                         ),
@@ -136,6 +139,7 @@ class _CustomFijkPanel extends State<CustomPanel> {
   @override
   void dispose() {
     player.removeListener(_playerValueChanged);
+
     /// 关闭流回调
     super.dispose();
   }

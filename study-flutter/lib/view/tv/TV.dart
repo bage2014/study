@@ -2,13 +2,13 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_study/component/cache/Caches.dart';
-import 'package:flutter_study/component/http/HttpRequests.dart';
-import 'package:flutter_study/component/log/Logs.dart';
-import 'package:flutter_study/constant/HttpConstant.dart';
-import 'package:flutter_study/constant/RouteNameConstant.dart';
-import 'package:flutter_study/locale/Translations.dart';
-import 'package:flutter_study/model/QueryTvResult.dart';
+import 'package:app_lu_lu/component/cache/Caches.dart';
+import 'package:app_lu_lu/component/http/HttpRequests.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/constant/HttpConstant.dart';
+import 'package:app_lu_lu/constant/RouteNameConstant.dart';
+import 'package:app_lu_lu/locale/Translations.dart';
+import 'package:app_lu_lu/model/QueryTvResult.dart';
 
 class TV extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class TV extends StatefulWidget {
 }
 
 class _TV extends State<TV> {
-  List<TvItem> list;
+  List<TvItem> list = [];
   int _currentIndex = 1;
 
   @override
@@ -58,6 +58,11 @@ class _TV extends State<TV> {
             : ListView.separated(
                 itemCount: list.length,
                 itemBuilder: (context, index) {
+                  String? name =
+                      list[index].name == null ? "" : list[index].name;
+                  bool? isFavorite = list[index].isFavorite == null
+                      ? false
+                      : list[index].isFavorite;
                   return new GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed(
@@ -65,12 +70,12 @@ class _TV extends State<TV> {
                             arguments: list[index]);
                       },
                       child: ListTile(
-                          title: Text(list[index].name),
+                          title: Text(name == null ? "" : name),
                           trailing: new GestureDetector(
                               onTap: () {
                                 _setFavorite(list[index]);
                               },
-                              child: list[index].isFavorite
+                              child: (isFavorite != null && isFavorite)
                                   ? Icon(
                                       Icons.favorite,
                                       color: Colors.red,
@@ -101,12 +106,12 @@ class _TV extends State<TV> {
     print(json.encode(paramJson));
     HttpRequests.get(HttpConstant.url_tv_query_page, param, null)
         .then((result) {
-      Logs.info('_onRefresh responseBody=' + result?.responseBody);
+      Logs.info('_onRefresh responseBody=' + (result?.responseBody ?? ""));
       setState(() {
         QueryTvResult tvResult =
-            QueryTvResult.fromJson(json.decode(result?.responseBody));
+            QueryTvResult.fromJson(json.decode(result?.responseBody ?? ""));
         if (tvResult.code == 200) {
-          list = tvResult.data;
+          list = tvResult.data ?? [];
         }
       });
     }).catchError((error) {
@@ -122,7 +127,7 @@ class _TV extends State<TV> {
     print(json.encode(item.toJson()));
     HttpRequests.post(HttpConstant.url_tv_set_favorite, param, null)
         .then((result) {
-      Logs.info('_setFavorite responseBody=' + result?.responseBody);
+      Logs.info('_setFavorite responseBody=' + (result?.responseBody ?? ""));
       _onRefresh();
     });
   }

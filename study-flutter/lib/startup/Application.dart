@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_study/component/cache/HttpRequestCaches.dart';
-import 'package:flutter_study/component/http/HttpRequests.dart';
+import 'package:app_lu_lu/component/cache/HttpRequestCaches.dart';
+import 'package:app_lu_lu/component/http/HttpRequests.dart';
 
 class Application {
   /**
@@ -8,6 +8,5 @@ class Application {
    */
   static void init(BuildContext context) {
     HttpRequestCaches.init();
-    HttpRequests.init();
   }
 }

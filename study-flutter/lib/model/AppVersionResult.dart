@@ -1,9 +1,9 @@
 class AppVersionResult {
-  int code;
-  int originCode;
-  String msg;
-  Null originMsg;
-  AppVersion data;
+  int code = 0;
+  int originCode = 0;
+  String msg = "";
+  String originMsg = "";
+  AppVersion data = AppVersion();
 
   AppVersionResult(
       {this.code, this.originCode, this.msg, this.originMsg, this.data});

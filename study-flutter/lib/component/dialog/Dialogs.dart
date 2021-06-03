@@ -24,11 +24,11 @@ class Dialogs {
         });
   }
 
-  static Future<void> dismiss(BuildContext context) {
+  static Future<void> dismiss(BuildContext context) async {
     Navigator.of(context).pop();
   }
 
-  static Future<String> showInfoDialog(BuildContext context, String title) {
+  static Future<String?> showInfoDialog(BuildContext context, String title) {
     TextEditingController _controller = TextEditingController();
     return showDialog<String>(
       context: context,
@@ -48,8 +48,8 @@ class Dialogs {
     );
   }
 
-  static Future<String> showConfirmDialog(
-      BuildContext context, String title, String content) {
+  static Future<String?> showConfirmDialog(
+      BuildContext context, String title, String? content) {
     List<Widget> actions = <Widget>[
       FlatButton(
         child: Text("取消"),
@@ -80,7 +80,7 @@ class Dialogs {
   }
 
   // ref: https://stackoverflow.com/questions/53311553/how-to-set-showmodalbottomsheet-to-full-height
-  static Future<int> showButtonSelectDialog(
+  static Future<int?> showButtonSelectDialog(
       BuildContext context, List<String> contents) {
     return showModalBottomSheet<int>(
       isScrollControlled: true,
@@ -100,7 +100,7 @@ class Dialogs {
     );
   }
 
-  static Future<String> showInputDialog(
+  static Future<String?> showInputDialog(
       BuildContext context, String title, String defaultValue) {
     TextEditingController _controller = TextEditingController.fromValue(
         TextEditingValue(
@@ -137,7 +137,7 @@ class Dialogs {
     );
   }
 
-  static Future<int> showListBottomSheet(
+  static Future<int?> showListBottomSheet(
       BuildContext context, List<String> list) {
     return showModalBottomSheet<int>(
       context: context,

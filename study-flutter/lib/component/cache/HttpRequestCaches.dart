@@ -1,5 +1,5 @@
-import 'package:flutter_study/component/sp/SharedPreferenceHelper.dart';
-import 'package:flutter_study/constant/SpConstant.dart';
+import 'package:app_lu_lu/component/sp/SharedPreferenceHelper.dart';
+import 'package:app_lu_lu/constant/SpConstant.dart';
 
 class HttpRequestCaches {
   static String _protocol = "";

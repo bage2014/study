@@ -2,19 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_study/component/dialog/Dialogs.dart';
-import 'package:flutter_study/component/http/CancelRequests.dart';
-import 'package:flutter_study/component/http/HttpByteResult.dart';
-import 'package:flutter_study/component/http/HttpRequests.dart';
-import 'package:flutter_study/component/http/HttpResult.dart';
-import 'package:flutter_study/component/log/Logs.dart';
-import 'package:flutter_study/constant/HttpConstant.dart';
-import 'package:flutter_study/constant/LocaleConstant.dart';
-import 'package:flutter_study/constant/RouteNameConstant.dart';
-import 'package:flutter_study/locale/Translations.dart';
-import 'package:flutter_study/model/AppVersionResult.dart';
-import 'package:flutter_study/utils/AppUtils.dart';
-import 'package:flutter_study/utils/FileUtils.dart';
+import 'package:app_lu_lu/component/dialog/Dialogs.dart';
+import 'package:app_lu_lu/component/http/CancelRequests.dart';
+import 'package:app_lu_lu/component/http/HttpByteResult.dart';
+import 'package:app_lu_lu/component/http/HttpRequests.dart';
+import 'package:app_lu_lu/component/http/HttpResult.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/constant/HttpConstant.dart';
+import 'package:app_lu_lu/constant/LocaleConstant.dart';
+import 'package:app_lu_lu/constant/RouteNameConstant.dart';
+import 'package:app_lu_lu/locale/Translations.dart';
+import 'package:app_lu_lu/model/AppVersionResult.dart';
+import 'package:app_lu_lu/utils/AppUtils.dart';
+import 'package:app_lu_lu/utils/FileUtils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
@@ -23,7 +23,7 @@ class Settings extends StatefulWidget {
 }
 
 class _Settings extends State<Settings> {
-  BuildContext _context = null;
+  late BuildContext _context;
   bool _isDownloading = false;
   CancelRequests cancelRequests = CancelRequests();
 
@@ -88,7 +88,7 @@ class _Settings extends State<Settings> {
 
   Future<bool> onWillPop() async {
     // 确认框
-    String showConfirmDialog = await Dialogs.showConfirmDialog(
+    String? showConfirmDialog = await Dialogs.showConfirmDialog(
         context,
         Translations.textOf(context, LocaleConstant.settings_upgrade_cancel),
         null);
@@ -108,19 +108,21 @@ class _Settings extends State<Settings> {
       String url = HttpConstant.url_settings_version_check
           .replaceAll("{version}", AppUtils.getCurrentVersion().toString());
       HttpResult httpResult = await HttpRequests.get(url, null, null);
-      Logs.info("responseBody = ${httpResult.responseBody}");
+      String? temp = httpResult?.responseBody;
+      String responseBody = temp == null ? "" : temp;
+      Logs.info("responseBody = ${responseBody}");
       // ignore: null_aware_in_condition
-      if (httpResult?.responseBody?.isEmpty) {
+      if (responseBody.isEmpty) {
         Dialogs.showInfoDialog(_context,
             Translations.textOf(context, "settings.alreadyLatestVersion"));
         return;
       }
 
       AppVersionResult appVersionResult =
-          AppVersionResult.fromJson(json.decode(httpResult?.responseBody));
+          AppVersionResult.fromJson(json.decode(responseBody));
       if (appVersionResult?.code == 200) {
         // 确认框
-        String showConfirmDialog = await Dialogs.showConfirmDialog(
+        String? showConfirmDialog = await Dialogs.showConfirmDialog(
             context,
             Translations.textOf(
                 context, LocaleConstant.settings_upgrade_dialog),
@@ -133,7 +135,7 @@ class _Settings extends State<Settings> {
             Translations.textOf(context, "settings.upgrade.open.by.app"),
             Translations.textOf(context, "settings.upgrade.open.cancel")
           ];
-          int index = await Dialogs.showButtonSelectDialog(context, contents);
+          int? index = await Dialogs.showButtonSelectDialog(context, contents);
           Logs.info('index = $index');
 
           if (index == null || index == contents.length - 1) {

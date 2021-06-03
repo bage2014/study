@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_study/component/log/Logs.dart';
-import 'package:flutter_study/component/permission/PermissionHelper.dart';
-import 'package:flutter_study/constant/RouteNameConstant.dart';
-import 'package:flutter_study/locale/SupportedLocales.dart';
-import 'package:flutter_study/locale/Translations.dart';
-import 'package:flutter_study/route/route.dart';
-import 'package:flutter_study/startup/Application.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/component/permission/PermissionHelper.dart';
+import 'package:app_lu_lu/constant/RouteNameConstant.dart';
+import 'package:app_lu_lu/locale/SupportedLocales.dart';
+import 'package:app_lu_lu/locale/Translations.dart';
+import 'package:app_lu_lu/route/route.dart';
+import 'package:app_lu_lu/startup/Application.dart';
 
 void main() {
   runApp(MyApp());
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void checkPermission() async {
-    bool isGranted = await PermissionHelper.requestPermissions();
+    bool isGranted = await PermissionHelper.requestPermissions()??false;
     Logs.info('isGranted0 = ' + isGranted.toString());
 
     if (isGranted) {

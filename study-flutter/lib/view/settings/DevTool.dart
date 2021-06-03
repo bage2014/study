@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/component/cache/HttpRequestCaches.dart';
-import 'package:flutter_study/component/dialog/Dialogs.dart';
-import 'package:flutter_study/component/sp/SharedPreferenceHelper.dart';
-import 'package:flutter_study/constant/SpConstant.dart';
-import 'package:flutter_study/locale/Translations.dart';
+import 'package:app_lu_lu/component/cache/HttpRequestCaches.dart';
+import 'package:app_lu_lu/component/dialog/Dialogs.dart';
+import 'package:app_lu_lu/component/sp/SharedPreferenceHelper.dart';
+import 'package:app_lu_lu/constant/SpConstant.dart';
+import 'package:app_lu_lu/locale/Translations.dart';
 
 class DevTool extends StatefulWidget {
   @override
@@ -32,8 +32,10 @@ class _DevTool extends State<DevTool> {
                 List<String> list = [];
                 list.add("http");
                 list.add("https");
-                Dialogs.showListBottomSheet(context, list).then((value) =>
-                    {refreshState(SpConstant.protocol_key, list[value])});
+                Dialogs.showListBottomSheet(context, list).then((value) => {
+                      refreshState(SpConstant.protocol_key,
+                          list[value == null ? 0 : value])
+                    });
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,6 +48,7 @@ class _DevTool extends State<DevTool> {
                     icon: Icon(
                       Icons.chevron_right,
                     ),
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -58,8 +61,10 @@ class _DevTool extends State<DevTool> {
                         context,
                         Translations.textOf(context, "settings.devTool.host"),
                         '${_host}')
-                    .then(
-                        (value) => {refreshState(SpConstant.host_key, value)});
+                    .then((value) => {
+                          refreshState(
+                              SpConstant.host_key, value == null ? "" : value)
+                        });
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,6 +76,7 @@ class _DevTool extends State<DevTool> {
                     icon: Icon(
                       Icons.chevron_right,
                     ),
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -83,8 +89,10 @@ class _DevTool extends State<DevTool> {
                         context,
                         Translations.textOf(context, "settings.devTool.port"),
                         '${_port}')
-                    .then(
-                        (value) => {refreshState(SpConstant.port_key, value)});
+                    .then((value) => {
+                          refreshState(
+                              SpConstant.port_key, value == null ? "" : value)
+                        });
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -3,27 +3,27 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_study/component/log/Logs.dart';
-import 'package:flutter_study/locale/SupportedLocales.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/locale/SupportedLocales.dart';
 
 class Translations {
   Translations(Locale locale) {
     this.locale = locale;
-    _localizedValues = null;
   }
 
-  Locale locale;
-  static Map<dynamic, dynamic> _localizedValues;
+  Locale? locale;
+  static Map<dynamic, dynamic> _localizedValues = {};
 
   static String textOf(BuildContext context, String key) {
     Locale myLocale = Localizations.localeOf(context);
 
     Logs.info(
         "textOf is called...${myLocale.countryCode} ${myLocale.languageCode}");
-    return _of(context).text(key);
+    var text = _of(context)?.text(key);
+    return text == null ? "" : text;
   }
 
-  static Translations _of(BuildContext context) {
+  static Translations? _of(BuildContext context) {
     return Localizations.of<Translations>(context, Translations);
   }
 
@@ -34,14 +34,13 @@ class Translations {
   static Future<Translations> load(Locale locale) async {
     Logs.info("load is called...");
     Translations translations = new Translations(locale);
-    String jsonContent =
-    await rootBundle.loadString(
-        "assets/locale/i18n_${locale.languageCode}.json");
+    String jsonContent = await rootBundle
+        .loadString("assets/locale/i18n_${locale.languageCode}.json");
     _localizedValues = json.decode(jsonContent);
     return translations;
   }
 
-  get currentLanguage => locale.languageCode;
+  get currentLanguage => locale?.languageCode;
 }
 
 class TranslationsDelegate extends LocalizationsDelegate<Translations> {
@@ -65,5 +64,4 @@ class TranslationsDelegate extends LocalizationsDelegate<Translations> {
   bool shouldReload(TranslationsDelegate old) => false;
 
   static TranslationsDelegate delegate = const TranslationsDelegate();
-
 }

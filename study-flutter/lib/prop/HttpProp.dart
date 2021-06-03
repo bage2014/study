@@ -1,4 +1,4 @@
-import 'package:flutter_study/component/cache/HttpRequestCaches.dart';
+import 'package:app_lu_lu/component/cache/HttpRequestCaches.dart';
 
 class HttpProp {
   static String getBaseUrl() {

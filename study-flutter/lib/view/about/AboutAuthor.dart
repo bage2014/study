@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/component/log/Logs.dart';
-import 'package:flutter_study/locale/Translations.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/locale/Translations.dart';
 
 class AboutAuthor extends StatefulWidget {
   @override

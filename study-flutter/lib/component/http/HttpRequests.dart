@@ -1,24 +1,19 @@
+import 'package:app_lu_lu/component/http/CancelRequests.dart';
+import 'package:app_lu_lu/component/http/HttpByteResult.dart';
+import 'package:app_lu_lu/component/http/HttpProgressCallback.dart';
+import 'package:app_lu_lu/component/http/HttpResult.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/constant/HttpConstant.dart';
+import 'package:app_lu_lu/prop/HttpProp.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_study/component/dialog/Dialogs.dart';
-import 'package:flutter_study/component/http/CancelRequests.dart';
-import 'package:flutter_study/component/http/HttpByteResult.dart';
-import 'package:flutter_study/component/http/HttpProgressCallback.dart';
-import 'package:flutter_study/component/http/HttpResult.dart';
-import 'package:flutter_study/component/log/Logs.dart';
-import 'package:flutter_study/constant/HttpConstant.dart';
-import 'package:flutter_study/prop/HttpProp.dart';
 
 class HttpRequests {
-  static Dio _dio;
-
-  static void init() {
-    _dio = Dio();
-  }
+  static Dio _dio = Dio();
 
   static Future<HttpByteResult> getBytes(
       String path,
-      Map<String, dynamic> parameters,
-      Map<String, String> headers,
+      Map<String, dynamic>? parameters,
+      Map<String, String>? headers,
       HttpProgressCallback onProgress,
       CancelRequests cancelRequests) async {
     return _doDownloadRequest(
@@ -35,13 +30,13 @@ class HttpRequests {
         path, parameters, null, headers, "post", onProgress, cancelRequests);
   }
 
-  static Future<HttpResult> get(String path, Map<String, dynamic> parameters,
-      Map<String, String> headers) async {
+  static Future<HttpResult> get(String path, Map<String, dynamic>? parameters,
+      Map<String, String>? headers) async {
     return _doBaseRequest(path, parameters, null, headers, "get", null);
   }
 
-  static Future<HttpResult> post(String path, Map<String, dynamic> parameters,
-      Map<String, String> headers) async {
+  static Future<HttpResult> post(String path, Map<String, dynamic>? parameters,
+      Map<String, String>? headers) async {
     return _doBaseRequest(path, parameters, null, headers, "post", null);
   }
 
@@ -76,9 +71,9 @@ class HttpRequests {
 
   static Future<HttpByteResult> _doDownloadRequest(
       String path,
-      Map<String, dynamic> parameters,
+      Map<String, dynamic>? parameters,
       dynamic data,
-      Map<String, String> headers,
+      Map<String, String>? headers,
       String method,
       HttpProgressCallback onProgress,
       CancelRequests cancelRequests) async {
@@ -97,13 +92,15 @@ class HttpRequests {
           onProgress?.call(sent, total);
         });
       } else {
-        response =
-            await _dio.post(path, queryParameters: parameters, cancelToken: cancelRequests.token,data: data);
+        response = await _dio.post(path,
+            queryParameters: parameters,
+            cancelToken: cancelRequests.token,
+            data: data);
       }
       Logs.info('_doDownloadRequest statusCode = ${response.statusCode}');
       result.responseBytes = response.data;
       result.statusCode = response.statusCode;
-      result.headers = response.headers?.map;
+      result.headers = response.headers.map;
       return result;
     } catch (e) {
       Logs.info('_doDownloadRequest error' + e.toString());
@@ -114,17 +111,20 @@ class HttpRequests {
 
   static Future<HttpResult> _doBaseRequest(
       String path,
-      Map<String, dynamic> parameters,
-      dynamic data,
-      Map<String, String> headers,
+      Map<String, dynamic>? parameters,
+      dynamic? data,
+      Map<String, String>? headers,
       String method,
-      int timeoutMilliseconds) async {
+      int? timeoutMilliseconds) async {
     HttpResult result = HttpResult();
     try {
       path = rebuildUrl(path);
       Logs.info('_doBaseRequest path = ${path}');
-      _dio.options =
-          _buildOption(parameters, data, headers, timeoutMilliseconds);
+      _dio.options = _buildOption(
+          parameters == null ? {} : parameters,
+          data,
+          headers == null ? {} : headers,
+          timeoutMilliseconds == null ? 6000 : timeoutMilliseconds);
       Response response;
       if ("get".compareTo(method) == 0) {
         response = await _dio.get(path, queryParameters: parameters);
@@ -135,7 +135,7 @@ class HttpRequests {
       Logs.info('_doBaseRequest statusCode = ${response.statusCode}');
       result.responseBody = response.data;
       result.statusCode = response.statusCode;
-      result.headers = response.headers?.map;
+      result.headers = response.headers.map;
       return result;
     } catch (e) {
       Logs.info('_doBaseRequest error' + e.toString());
@@ -144,8 +144,8 @@ class HttpRequests {
     return result;
   }
 
-  static BaseOptions _buildDownloadOption(Map<String, dynamic> parameters,
-      dynamic data, Map<String, String> headers) {
+  static BaseOptions _buildDownloadOption(Map<String, dynamic>? parameters,
+      dynamic data, Map<String, String>? headers) {
     return BaseOptions(
         baseUrl: HttpProp.getBaseUrl(),
 //        receiveTimeout: HttpProp.timeout, // 不需要指定超时时间

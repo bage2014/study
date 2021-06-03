@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study/constant/RouteNameConstant.dart';
-import 'package:flutter_study/locale/Translations.dart';
+import 'package:app_lu_lu/constant/RouteNameConstant.dart';
+import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:share/share.dart';
 
 class About extends StatefulWidget {

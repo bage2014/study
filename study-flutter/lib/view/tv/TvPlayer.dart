@@ -1,6 +1,6 @@
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_study/model/QueryTvResult.dart';
+import 'package:app_lu_lu/model/QueryTvResult.dart';
 
 import 'CustomPanel.dart';
 
@@ -24,7 +24,7 @@ class _VideoScreenState extends State<TvPlayer> {
   @override
   Widget build(BuildContext context) {
     //获取路由参数
-    TvItem arguments = ModalRoute.of(context).settings.arguments;
+    TvItem? arguments = ModalRoute.of(context).settings.arguments;
 
     if (player.dataSource == null) {
       player.setDataSource(arguments.urls[0], autoPlay: true);

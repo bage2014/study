@@ -177,6 +177,17 @@ I have just encountered the same problem and solved it successfully with this me
 
 
 
+https://stackoverflow.com/questions/64917744/cannot-run-with-sound-null-safety-because-dependencies-dont-support-null-safety
+
+In Android Studio:
+
+```
+Run --> Edit Configurations --> Add Additional Run args --> --no-sound-null-safety
+```
+
+
+
+
 Flutter 基本概念
 
 组件

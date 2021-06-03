@@ -17,6 +17,6 @@ class AppUtils {
   }
 
   static String getPackageId() {
-    return "com.bage.flutter.flutter_study";
+    return "com.bage.flutter.app_lu_lu";
   }
 }
