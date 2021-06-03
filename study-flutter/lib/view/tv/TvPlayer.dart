@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/model/QueryTvResult.dart';
@@ -24,10 +26,10 @@ class _VideoScreenState extends State<TvPlayer> {
   @override
   Widget build(BuildContext context) {
     //获取路由参数
-    TvItem? arguments = ModalRoute.of(context).settings.arguments;
+    TvItem arguments = ModalRoute.of(context)?.settings.arguments as TvItem;
 
     if (player.dataSource == null) {
-      player.setDataSource(arguments.urls[0], autoPlay: true);
+      player.setDataSource(arguments?.urls?[0], autoPlay: true);
     }
 
     return Scaffold(
@@ -42,7 +44,7 @@ class _VideoScreenState extends State<TvPlayer> {
             buildContext: context,
             viewSize: viewSize,
             texturePos: texturePos,
-            title: arguments.name);
+            title: arguments.name??"");
       },
     )));
   }

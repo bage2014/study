@@ -126,7 +126,7 @@ class _Settings extends State<Settings> {
             context,
             Translations.textOf(
                 context, LocaleConstant.settings_upgrade_dialog),
-            appVersionResult.data.description.replaceAll('|', '\n'));
+            appVersionResult.data?.description?.replaceAll('|', '\n'));
         Logs.info('showConfirmDialog = $showConfirmDialog');
 
         if ("true" == showConfirmDialog) {
@@ -145,7 +145,7 @@ class _Settings extends State<Settings> {
 
           if (index == 0) {
             // open with browser
-            String url = HttpRequests.rebuildUrl(appVersionResult.data.fileUrl);
+            String url = HttpRequests.rebuildUrl(appVersionResult?.data?.fileUrl??"");
             if (await canLaunch(url)) {
               await launch(url);
               return;
@@ -154,7 +154,7 @@ class _Settings extends State<Settings> {
 
           Directory downloadDir = await FileUtils.getDownloadDir();
           String fileName =
-              '${downloadDir.path}/latest-app-${appVersionResult.data.versionCode}.apk';
+              '${downloadDir.path}/latest-app-${appVersionResult.data?.versionCode}.apk';
           File file = File(fileName);
           if (file.existsSync()) {
             // 已经下载过，直接安装
@@ -168,7 +168,7 @@ class _Settings extends State<Settings> {
               Translations.textOf(context, "settings.downloading"), onWillPop);
           // 下载
           HttpByteResult httpByteResult = await HttpRequests.getBytes(
-              appVersionResult.data.fileUrl, null, null, (int sent, int total) {
+              appVersionResult?.data?.fileUrl??"", null, null, (int sent, int total) {
             double percent = sent / total;
             _isDownloading = sent < total;
             print("_doDownloadRequest onReceiveProgress ${percent}%");

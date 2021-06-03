@@ -20,9 +20,9 @@ class QueryTvResult {
     msg = json['msg'];
     originMsg = json['originMsg'];
     if (json['data'] != null) {
-      data = new List<TvItem>();
+      data = List.empty();
       json['data'].forEach((v) {
-        data.add(new TvItem.fromJson(v));
+        data?.add(new TvItem.fromJson(v));
       });
     }
     pagination = json['pagination'] != null
@@ -36,24 +36,24 @@ class QueryTvResult {
     data['originCode'] = this.originCode;
     data['msg'] = this.msg;
     data['originMsg'] = this.originMsg;
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+    if (this?.data != null) {
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
     if (this.pagination != null) {
-      data['pagination'] = this.pagination.toJson();
+      data['pagination'] = this.pagination?.toJson();
     }
     return data;
   }
 }
 
 class TvItem {
-  int id;
-  String name;
-  String logo;
-  bool isFavorite;
-  int favoriteId;
-  int userId;
-  List<String> urls;
+  int? id;
+  String? name;
+  String? logo;
+  bool? isFavorite;
+  int? favoriteId;
+  int? userId;
+  List<String>? urls;
 
   TvItem(
       {this.id = 0,
@@ -61,8 +61,8 @@ class TvItem {
         this.logo = "",
         this.isFavorite = false,
         this.favoriteId = 0,
-        this.userId = 0,
-        this.urls = []});
+        this.userId,
+        this.urls});
 
   TvItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -88,9 +88,9 @@ class TvItem {
 }
 
 class Pagination {
-  int targetPage;
-  int pageSize;
-  int total;
+  int? targetPage;
+  int? pageSize;
+  int? total;
 
   Pagination({this.targetPage = 1, this.pageSize = 10, this.total = 0});
 

@@ -1,9 +1,9 @@
 class AppVersionResult {
-  int code = 0;
-  int originCode = 0;
-  String msg = "";
-  String originMsg = "";
-  AppVersion data = AppVersion();
+  int? code;
+  int? originCode;
+  String? msg;
+  Null? originMsg;
+  AppVersion? data;
 
   AppVersionResult(
       {this.code, this.originCode, this.msg, this.originMsg, this.data});
@@ -23,41 +23,41 @@ class AppVersionResult {
     data['msg'] = this.msg;
     data['originMsg'] = this.originMsg;
     if (this.data != null) {
-      data['data'] = this.data.toJson();
+      data['data'] = this.data?.toJson();
     }
     return data;
   }
 }
 
 class AppVersion {
-  int id;
-  int versionCode;
-  String description;
-  int fileId;
-  String fileUrl;
-  String versionName;
-  int fileSize;
-  String updateType;
-  Null createTime;
-  Null updateTime;
-  Null createStaffId;
-  Null updateStaffId;
-  Null deleteState;
+  int? id;
+  int? versionCode;
+  String? description;
+  int? fileId;
+  String? fileUrl;
+  String? versionName;
+  int? fileSize;
+  String? updateType;
+  Null? createTime;
+  Null? updateTime;
+  Null? createStaffId;
+  Null? updateStaffId;
+  Null? deleteState;
 
   AppVersion(
       {this.id,
-      this.versionCode,
-      this.description,
-      this.fileId,
-      this.fileUrl,
-      this.versionName,
-      this.fileSize,
-      this.updateType,
-      this.createTime,
-      this.updateTime,
-      this.createStaffId,
-      this.updateStaffId,
-      this.deleteState});
+        this.versionCode,
+        this.description,
+        this.fileId,
+        this.fileUrl,
+        this.versionName,
+        this.fileSize,
+        this.updateType,
+        this.createTime,
+        this.updateTime,
+        this.createStaffId,
+        this.updateStaffId,
+        this.deleteState});
 
   AppVersion.fromJson(Map<String, dynamic> json) {
     id = json['id'];

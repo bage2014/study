@@ -58,11 +58,8 @@ class _TV extends State<TV> {
             : ListView.separated(
                 itemCount: list.length,
                 itemBuilder: (context, index) {
-                  String? name =
-                      list[index].name == null ? "" : list[index].name;
-                  bool? isFavorite = list[index].isFavorite == null
-                      ? false
-                      : list[index].isFavorite;
+                  String name = list[index].name ?? "";
+                  bool isFavorite = list[index].isFavorite??false;
                   return new GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed(
@@ -70,7 +67,7 @@ class _TV extends State<TV> {
                             arguments: list[index]);
                       },
                       child: ListTile(
-                          title: Text(name == null ? "" : name),
+                          title: Text(name),
                           trailing: new GestureDetector(
                               onTap: () {
                                 _setFavorite(list[index]);
@@ -120,7 +117,7 @@ class _TV extends State<TV> {
   }
 
   Future<Null> _setFavorite(TvItem item) async {
-    item.isFavorite = !item.isFavorite;
+    item.isFavorite = !(item?.isFavorite??false);
     item.userId = Caches.getUserId();
     Map<String, String> param = new HashMap();
     param.putIfAbsent("param", () => json.encode(item.toJson()));
