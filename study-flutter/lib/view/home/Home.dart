@@ -28,7 +28,7 @@ class _ScaffoldRouteState extends State<Home> {
   Widget build(BuildContext context) {
     //获取路由参数
     var args = ModalRoute.of(context)?.settings?.arguments;
-    print('args={args}');
+    print('args=${args}');
 
     return new WillPopScope(
         onWillPop: onWillPop, //重点此举

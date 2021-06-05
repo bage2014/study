@@ -1,3 +1,5 @@
+import 'package:app_lu_lu/component/http/HttpRequests.dart';
+import 'package:app_lu_lu/constant/HttpConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/constant/RouteNameConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
@@ -65,8 +67,9 @@ class _About extends State<About> {
               title: Text(Translations.textOf(context, "about.share")),
               trailing: Icon(Icons.chevron_right),
               onTap: () {
-                Share.share('【小陆，小陆，简单陆】 https://example.com',
-                    subject: 'Look what I made!');
+                String url = HttpRequests.rebuildUrl(
+                    HttpConstant.url_settings_app_latest);
+                Share.share('【小陆，小陆，简简单单的小陆APP】 ${url} ', subject: '');
               },
             ),
           ),

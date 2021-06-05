@@ -1,8 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bage.lulu.app_lu_lu">
-   <application
-        android:label="app_lu_lu"
-        android:icon="@mipmap/ic_launcher">
+
+    <!-- Permissions options for the `storage` group -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+
+
+    <application
+        android:label="小陆"
+        android:icon="@drawable/logo128">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

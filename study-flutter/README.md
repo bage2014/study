@@ -1,5 +1,7 @@
 
 
+
+
 ## Flutter 入门
 
 http://olive.ren/flutter-build-apk-fail/
@@ -11,6 +13,8 @@ https://developer.android.google.cn/studio/run/managing-avds#createavd
 网络提示
 下载进度条
 APP 名字
+文件打开验证
+
 
 ### 参考链接
 
@@ -187,7 +191,8 @@ Run --> Edit Configurations --> Add Additional Run args --> --no-sound-null-safe
 
 
 
---no-sound-null-safety
+flutter build apk --no-sound-null-safety
+
 
 
 Flutter 基本概念

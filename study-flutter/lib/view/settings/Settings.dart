@@ -59,7 +59,8 @@ class _Settings extends State<Settings> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(Translations.textOf(context, "all.app.name"),
-                    style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold))
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
               ],
             ),
           ),
@@ -145,7 +146,8 @@ class _Settings extends State<Settings> {
 
           if (index == 0) {
             // open with browser
-            String url = HttpRequests.rebuildUrl(appVersionResult?.data?.fileUrl??"");
+            String url =
+                HttpRequests.rebuildUrl(appVersionResult?.data?.fileUrl ?? "");
             if (await canLaunch(url)) {
               await launch(url);
               return;
@@ -168,7 +170,8 @@ class _Settings extends State<Settings> {
               Translations.textOf(context, "settings.downloading"), onWillPop);
           // 下载
           HttpByteResult httpByteResult = await HttpRequests.getBytes(
-              appVersionResult?.data?.fileUrl??"", null, null, (int sent, int total) {
+              appVersionResult?.data?.fileUrl ?? "", null, null,
+              (int sent, int total) {
             double percent = sent / total;
             _isDownloading = sent < total;
             print("_doDownloadRequest onReceiveProgress ${percent}%");
