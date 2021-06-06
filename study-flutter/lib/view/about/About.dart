@@ -22,7 +22,6 @@ class _About extends State<About> {
         child: Column(children: <Widget>[
           Container(
             alignment: Alignment.center,
-            padding: const EdgeInsets.only(top: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -37,7 +36,7 @@ class _About extends State<About> {
               children: <Widget>[
                 Text(Translations.textOf(context, "all.app.name"),
                     style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
+                        TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold))
               ],
             ),
           ),
