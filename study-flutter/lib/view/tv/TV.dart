@@ -93,13 +93,17 @@ class _TV extends State<TV> {
   }
 
   Future<Null> _onRefresh() async {
+    Map<String, dynamic> header = new HashMap();
+    header.putIfAbsent("favoriteUserId", () => Caches.getUserId());
+
     Map<String, dynamic> paramJson = new HashMap();
     paramJson.putIfAbsent("favoriteUserId", () => Caches.getUserId());
     paramJson.putIfAbsent("isOnlyFavorite", () => _currentIndex == 1);
     paramJson.putIfAbsent("targetPage", () => 1);
     paramJson.putIfAbsent("pageSize", () => 100);
     Map<String, String> param = new HashMap();
-    param.putIfAbsent("param", () => json.encode(paramJson));
+    String paramStr = Uri.encodeComponent(json.encode(paramJson));
+    param.putIfAbsent("param", () => paramStr);
     print(json.encode(paramJson));
     HttpRequests.get(HttpConstant.url_tv_query_page, param, null)
         .then((result) {

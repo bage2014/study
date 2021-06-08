@@ -65,6 +65,8 @@ dependencies:
   #https://pub.dev/packages/share/install
   share: 0.6.5
 
+  # https://pub.flutter-io.cn/packages/connectivity
+  connectivity: ^3.0.6
 
 dev_dependencies:
   flutter_test:

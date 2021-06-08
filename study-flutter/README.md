@@ -12,8 +12,14 @@ https://developer.android.google.cn/studio/run/managing-avds#createavd
 ### TODO
 网络提示
 下载进度条
-APP 名字
+APP 名字--小陆
 文件打开验证
+
+分享
+
+家庭族谱
+
+模拟器联网问题
 
 
 ### 参考链接
