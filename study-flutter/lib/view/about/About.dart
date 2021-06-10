@@ -1,5 +1,7 @@
+import 'package:app_lu_lu/component/dialog/Dialogs.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
+import 'package:app_lu_lu/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/constant/RouteNameConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
@@ -11,6 +13,11 @@ class About extends StatefulWidget {
 }
 
 class _About extends State<About> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +59,17 @@ class _About extends State<About> {
           Container(
             alignment: Alignment.center,
             child: ListTile(
+              title: Text(Translations.textOf(context, "about.device.id")),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () {
+                // 确认框
+                showDevice();
+              },
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: ListTile(
               title: Text(Translations.textOf(context, "about.author")),
               trailing: Icon(Icons.chevron_right),
               onTap: () {
@@ -75,5 +93,12 @@ class _About extends State<About> {
         ]),
       ),
     );
+  }
+
+  void showDevice() {
+    AppUtils.getDeviceId().then((value) => {
+          Dialogs.showInfoDialog(
+              context, Translations.textOf(context, "about.device.id"), value)
+        });
   }
 }

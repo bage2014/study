@@ -39,7 +39,7 @@ dependencies:
   # flutter_app_upgrade: ^1.1.0
 
   # https://github.com/flutterchina/dio
-  dio: 3.0.10
+  dio: 4.0.0
 
   # https://pub.flutter-io.cn/packages/permission_handler/install
   permission_handler: ^5.0.1+1
@@ -67,6 +67,9 @@ dependencies:
 
   # https://pub.flutter-io.cn/packages/connectivity
   connectivity: ^3.0.6
+
+  # https://pub.dev/packages/device_info
+  device_info: ^2.0.2
 
 dev_dependencies:
   flutter_test:

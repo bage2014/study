@@ -1,3 +1,4 @@
+import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:flutter/material.dart';
 
 class Dialogs {
@@ -28,13 +29,16 @@ class Dialogs {
     Navigator.of(context).pop();
   }
 
-  static Future<String?> showInfoDialog(BuildContext context, String title) {
+  static Future<String?> showInfoDialog(
+      BuildContext context, String? title, String content) {
     TextEditingController _controller = TextEditingController();
     return showDialog<String>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(title),
+          title: Text(
+              title ?? Translations.textOf(context, "all.dialog.info.title")),
+          content: Text(content),
           actions: <Widget>[
             FlatButton(
               child: Text("确定"),

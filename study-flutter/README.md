@@ -10,7 +10,7 @@ https://developer.android.google.cn/studio/run/managing-avds#createavd
 
 
 ### TODO
-网络提示
+网络提示,请先连接网络 同意提示，多语言问题
 下载进度条
 APP 名字--小陆
 文件打开验证
@@ -19,7 +19,17 @@ APP 名字--小陆
 
 家庭族谱
 
+
+
 模拟器联网问题
+
+```
+ipconfig /all
+
+.\emulator -avd Pixel2XLAPI29 -dns-server 10.64.0.100
+```
+
+
 
 
 ### 参考链接
@@ -218,3 +228,7 @@ JSON
 家庭族谱，小工具、实用工具
 
 个人名片、联系方式
+
+C:\Users\bage\.gradle\gradle.properties
+移除
+

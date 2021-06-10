@@ -2,13 +2,19 @@ import 'package:app_lu_lu/component/http/CancelRequests.dart';
 import 'package:app_lu_lu/component/http/HttpByteResult.dart';
 import 'package:app_lu_lu/component/http/HttpProgressCallback.dart';
 import 'package:app_lu_lu/component/http/HttpResult.dart';
+import 'package:app_lu_lu/component/http/NetworkCheckInterceptors.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
 import 'package:app_lu_lu/prop/HttpProp.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 
 class HttpRequests {
   static Dio _dio = Dio();
+
+  static void init() {
+    _dio.interceptors.add(NetworkCheckInterceptors());
+  }
 
   static Future<HttpByteResult> getBytes(
       String path,
@@ -99,7 +105,7 @@ class HttpRequests {
       }
       Logs.info('_doDownloadRequest statusCode = ${response.statusCode}');
       result.responseBytes = response.data;
-      result.statusCode = response.statusCode;
+      result.statusCode = response.statusCode??500;
       result.headers = response.headers.map;
       return result;
     } catch (e) {
@@ -134,7 +140,7 @@ class HttpRequests {
       }
       Logs.info('_doBaseRequest statusCode = ${response.statusCode}');
       result.responseBody = response.data;
-      result.statusCode = response.statusCode;
+      result.statusCode = response.statusCode??500;
       result.headers = response.headers.map;
       return result;
     } catch (e) {
@@ -154,7 +160,7 @@ class HttpRequests {
         responseType: ResponseType.bytes,
         followRedirects: false,
         validateStatus: (status) {
-          return status < 500;
+          return (status??500) < 500;
         });
   }
 

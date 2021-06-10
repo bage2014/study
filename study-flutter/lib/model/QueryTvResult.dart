@@ -20,7 +20,7 @@ class QueryTvResult {
     msg = json['msg'];
     originMsg = json['originMsg'];
     if (json['data'] != null) {
-      data = List.empty();
+      data = [];
       json['data'].forEach((v) {
         data?.add(new TvItem.fromJson(v));
       });

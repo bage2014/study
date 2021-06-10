@@ -115,6 +115,7 @@ class _Settings extends State<Settings> {
       // ignore: null_aware_in_condition
       if (responseBody.isEmpty) {
         Dialogs.showInfoDialog(_context,
+            null,
             Translations.textOf(context, "settings.alreadyLatestVersion"));
         return;
       }
@@ -184,6 +185,7 @@ class _Settings extends State<Settings> {
           if (httpByteResult.responseBytes.isEmpty) {
             Dialogs.dismiss(_context);
             Dialogs.showInfoDialog(_context,
+                null,
                 Translations.textOf(context, "settings.alreadyLatestVersion"));
             return;
           }

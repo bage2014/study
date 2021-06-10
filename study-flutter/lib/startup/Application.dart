@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:app_lu_lu/component/cache/Caches.dart';
 import 'package:app_lu_lu/component/cache/HttpRequestCaches.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
+import 'package:app_lu_lu/utils/AppUtils.dart';
+import 'package:flutter/cupertino.dart';
 
 class Application {
   /**
@@ -8,5 +10,8 @@ class Application {
    */
   static void init(BuildContext context) {
     HttpRequestCaches.init();
+    AppUtils.getDeviceId()
+        .then((deviceId) => {Caches.setUserId(deviceId.hashCode)});
+    HttpRequests.init();
   }
 }

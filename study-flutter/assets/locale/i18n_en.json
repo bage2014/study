@@ -2,6 +2,8 @@
   "all.app.name":"Tutorials ",
   "all.app.version":"v1.0.0 beta",
   "all.list.view.no.data":"No data",
+  "all.dialog.info.title":"Info",
+  "all.no.network.tips":"Please make sure connect network",
 
   "main.title":"Welcome ",
 
@@ -35,6 +37,7 @@
   "tv.list.bottomFavorite":"Favorite",
 
   "about.title":"About",
+  "about.device.id":"Device ID",
   "about.author":"About Author",
   "about.share":"Share APP",
 

@@ -102,9 +102,7 @@ class _TV extends State<TV> {
     paramJson.putIfAbsent("targetPage", () => 1);
     paramJson.putIfAbsent("pageSize", () => 100);
     Map<String, String> param = new HashMap();
-    String paramStr = Uri.encodeComponent(json.encode(paramJson));
-    param.putIfAbsent("param", () => paramStr);
-    print(json.encode(paramJson));
+    param.putIfAbsent("param", () => json.encode(paramJson));
     HttpRequests.get(HttpConstant.url_tv_query_page, param, null)
         .then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.responseBody ?? ""));
