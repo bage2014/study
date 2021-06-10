@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
@@ -20,16 +21,25 @@ class _AboutAuthor extends State<AboutAuthor> {
         alignment: Alignment.center,
         child: Column(children: <Widget>[
           Container(
-            padding: const EdgeInsets.fromLTRB(24.0,8.0,0.0,0.0),
+            padding: const EdgeInsets.fromLTRB(24.0, 8.0, 0.0, 0.0),
             child: Row(
               children: <Widget>[
-                Image(image: AssetImage("assets/images/user_null.png")),
+                Expanded(
+                  child:
+                  CachedNetworkImage(
+                    imageUrl: "https://avatars.githubusercontent.com/u/18094768?v=4",
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    width: 64, //图片的宽
+                    height: 64,
+                  ),
+                ),
                 Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center, //垂直方向居中对齐
                     children: <Widget>[
-                      Text('陆瑞华',textScaleFactor: 1.2),
-                      Text("上海")
+                      Text('陆瑞华', textScaleFactor: 1.2),
+                      Text("893542907@qq.com")
                     ],
                   ),
                 ),
@@ -37,8 +47,8 @@ class _AboutAuthor extends State<AboutAuthor> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.fromLTRB(16.0,16.0,16.0,16.0),
-            child: Text('广西日常饮食主要以清淡为主，由于地理环境的关系，其早期的饮食已有种食稻谷和蔬菜、腌菜、饮茶、行酒礼等习惯。其中以桂林米粉、柳州螺蛳粉、南宁老友粉、钦州猪脚粉、桂林两江松花糖、防城牛腩粉、梧州龟苓膏、巴马香猪、宾阳白切狗、宾阳酸粉、玉林牛巴、玉林云吞、玉林酸料以及各地的米粉、切粉、滤粉等为代表。'),
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            child: Text('上海某互联网，Java 研发工程师，5年研发服务端经验'),
 //            child: Text(Translations.textOf(context, "about.author.name")),
           ),
           Container(
@@ -47,28 +57,28 @@ class _AboutAuthor extends State<AboutAuthor> {
               onRefresh: _onRefresh,
               child: list.length == 0
                   ? Center(
-                child: Text(
-                  Translations.textOf(context, "all.list.view.no.data"),
-                  textAlign: TextAlign.center,
-                ),
-              )
+                      child: Text(
+                        Translations.textOf(context, "all.list.view.no.data"),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   : ListView.separated(
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return new GestureDetector(
-                      onTap: () {
-                        Logs.info('onTap index = $index');
+                      itemCount: list.length,
+                      itemBuilder: (context, index) {
+                        return new GestureDetector(
+                            onTap: () {
+                              Logs.info('onTap index = $index');
+                            },
+                            child: ListTile(
+                                title: Text(list[index]),
+                                trailing: new GestureDetector(
+                                    child: Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ))));
                       },
-                      child: ListTile(
-                          title: Text(list[index]),
-                          trailing: new GestureDetector(
-                              child: Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              ))));
-                },
-                separatorBuilder: (context, index) => Divider(height: .0),
-              ),
+                      separatorBuilder: (context, index) => Divider(height: .0),
+                    ),
             ),
 //            child: Text(Translations.textOf(context, "about.author.name")),
           ),
@@ -99,5 +109,4 @@ class _AboutAuthor extends State<AboutAuthor> {
 //      print(error.toString());
 //    });
   }
-
 }
