@@ -12,7 +12,6 @@ class SharedPreferenceHelper {
 
   static Future<String> get(String key, String defaultValue) async {
     SharedPreferences _prefs = await _getInstance();
-    String value = _prefs.getString(key);
-    return value == null ? defaultValue : value;
+    return _prefs.getString(key)??defaultValue;
   }
 }
