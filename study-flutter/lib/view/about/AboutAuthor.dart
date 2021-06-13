@@ -16,79 +16,64 @@ class _AboutAuthor extends State<AboutAuthor> {
   Widget build(BuildContext context) {
     const double edgeLeft = 16.0;
     const double edgeRight = 16.0;
+    _OrderInfo data = _data(1);
     return Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "about.author.title")),
       ),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(children: <Widget>[
-          Container(
-            padding: const EdgeInsets.fromLTRB(edgeLeft, 16.0, edgeRight, 0.0),
-            child: ClipOval(
-              child: CachedNetworkImage(
-                imageUrl:
-                    "https://avatars.githubusercontent.com/u/18094768?v=4",
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) =>
-                    Image(image: AssetImage("assets/images/user_null.png")),
-                height: 128,
-                width: 128,
-              ),
-            ), //            child: Text(Translations.textOf(context, "about.author.name")),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(edgeLeft, 0.0, edgeRight, 0.0),
-            child: Text('陆瑞华', textScaleFactor: 1.4),
+      body: SingleChildScrollView(
+        child: Container(
+          alignment: Alignment.center,
+          child: Column(children: <Widget>[
+            Container(
+              padding:
+              const EdgeInsets.fromLTRB(edgeLeft, 16.0, edgeRight, 0.0),
+              child: ClipOval(
+                child: CachedNetworkImage(
+                  imageUrl:
+                  "https://avatars.githubusercontent.com/u/18094768?v=4",
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) =>
+                      Image(image: AssetImage("assets/images/user_null.png")),
+                  height: 128,
+                  width: 128,
+                ),
+              ), //            child: Text(Translations.textOf(context, "about.author.name")),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(edgeLeft, 0.0, edgeRight, 0.0),
+              child: Text('陆瑞华', textScaleFactor: 1.4),
 //            child: Text(Translations.textOf(context, "about.author.name")),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(edgeLeft, 0.0, edgeRight, 0.0),
-            child: Text('893542907@qq.com'),
+            ),
+            Container(
+              padding:
+              const EdgeInsets.fromLTRB(edgeLeft, 16.0, edgeRight, 16.0),
+              child: Text('上海某互联网，Java 研发工程师，5年研发服务端经验'),
 //            child: Text(Translations.textOf(context, "about.author.name")),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(edgeLeft, 16.0, edgeRight, 16.0),
-            child: Text('上海某互联网，Java 研发工程师，5年研发服务端经验'),
-//            child: Text(Translations.textOf(context, "about.author.name")),
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  final data = _data(index + 1);
-                  return Card(
-                      margin: EdgeInsets.all(20.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: _OrderTitle(
-                              orderInfo: data,
-                            ),
-                          )),
-                          Expanded(child: Divider(height: 1.0)),
-                          Expanded(
-                              child: _DeliveryProcesses(
-                                  processes: data.deliveryProcesses)),
-                          Expanded(child: Divider(height: 1.0)),
-                          Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: _OnTimeBar(driver: data.driverInfo),
-                          )),
-                        ],
-                      ),
-                  );
-                },
+            ),
+            Card(
+              margin: EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: _OnTimeBar(driver: data.driverInfo),
+                  ),
+                  Divider(height: 1.0),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: _OrderTitle(
+                      orderInfo: data,
+                    ),
+                  ),
+                  Divider(height: 1.0),
+                  _DeliveryProcesses(processes: data.deliveryProcesses),
+                ],
               ),
             ),
-          )
-        ]),
+          ]),
+        ),
       ),
     );
   }
@@ -137,63 +122,13 @@ class _OrderTitle extends StatelessWidget {
         ),
         Spacer(),
         Text(
-          '${orderInfo.date.day}/${orderInfo.date.month}/${orderInfo.date.year}',
+          '${orderInfo.date.day}/${orderInfo.date.month}/${orderInfo.date
+              .year}',
           style: TextStyle(
             color: Color(0xffb6b2b2),
           ),
         ),
       ],
-    );
-  }
-}
-
-class _InnerTimeline extends StatelessWidget {
-  const _InnerTimeline({
-    required this.messages,
-  });
-
-  final List<_DeliveryMessage> messages;
-
-  @override
-  Widget build(BuildContext context) {
-    bool isEdgeIndex(int index) {
-      return index == 0 || index == messages.length + 1;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: FixedTimeline.tileBuilder(
-        theme: TimelineTheme.of(context).copyWith(
-          nodePosition: 0,
-          connectorTheme: TimelineTheme.of(context).connectorTheme.copyWith(
-                thickness: 1.0,
-              ),
-          indicatorTheme: TimelineTheme.of(context).indicatorTheme.copyWith(
-                size: 10.0,
-                position: 0.5,
-              ),
-        ),
-        builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index) =>
-              !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
-          startConnectorBuilder: (_, index) => Connector.solidLine(),
-          endConnectorBuilder: (_, index) => Connector.solidLine(),
-          contentsBuilder: (_, index) {
-            if (isEdgeIndex(index)) {
-              return null;
-            }
-
-            return Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: Text(messages[index - 1].toString()),
-            );
-          },
-          itemExtentBuilder: (_, index) => isEdgeIndex(index) ? 10.0 : 30.0,
-          nodeItemOverlapBuilder: (_, index) =>
-              isEdgeIndex(index) ? true : null,
-          itemCount: messages.length + 2,
-        ),
-      ),
     );
   }
 }
@@ -229,8 +164,6 @@ class _DeliveryProcesses extends StatelessWidget {
             connectionDirection: ConnectionDirection.before,
             itemCount: processes.length,
             contentsBuilder: (_, index) {
-              if (processes[index].isCompleted) return null;
-
               return Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: Column(
@@ -239,11 +172,14 @@ class _DeliveryProcesses extends StatelessWidget {
                   children: [
                     Text(
                       processes[index].name,
-                      style: DefaultTextStyle.of(context).style.copyWith(
-                            fontSize: 18.0,
-                          ),
+                      style: DefaultTextStyle
+                          .of(context)
+                          .style
+                          .copyWith(
+                        fontSize: 18.0,
+                      ),
                     ),
-                    _InnerTimeline(messages: processes[index].messages),
+                    Text(processes[index].message.message),
                   ],
                 ),
               );
@@ -264,9 +200,12 @@ class _DeliveryProcesses extends StatelessWidget {
                 );
               }
             },
-            connectorBuilder: (_, index, ___) => SolidLineConnector(
-              color: processes[index].isCompleted ? Color(0xff66c97f) : null,
-            ),
+            connectorBuilder: (_, index, ___) =>
+                SolidLineConnector(
+                  color: processes[index].isCompleted
+                      ? Color(0xff66c97f)
+                      : null,
+                ),
           ),
         ),
       ),
@@ -322,28 +261,27 @@ class _OnTimeBar extends StatelessWidget {
   }
 }
 
-_OrderInfo _data(int id) => _OrderInfo(
+_OrderInfo _data(int id) =>
+    _OrderInfo(
       id: id,
       date: DateTime.now(),
       driverInfo: _DriverInfo(
         name: 'Philipe',
         thumbnailUrl:
-            'https://i.pinimg.com/originals/08/45/81/084581e3155d339376bf1d0e17979dc6.jpg',
+        'https://i.pinimg.com/originals/08/45/81/084581e3155d339376bf1d0e17979dc6.jpg',
       ),
       deliveryProcesses: [
         _DeliveryProcess(
-          'Package Process',
-          messages: [
-            _DeliveryMessage('8:30am', 'Package received by driver'),
-            _DeliveryMessage('11:30am', 'Reached halfway mark'),
-          ],
+          'Event3',
+          _DeliveryMessage('13:00pm', 'This is a message for test'),
         ),
         _DeliveryProcess(
-          'In Transit',
-          messages: [
-            _DeliveryMessage('13:00pm', 'Driver arrived at destination'),
-            _DeliveryMessage('11:35am', 'Package delivered by m.vassiliades'),
-          ],
+          'Event2',
+          _DeliveryMessage('13:00pm', 'This is a message for test'),
+        ),
+        _DeliveryProcess(
+          'Event1',
+            _DeliveryMessage('11:30am', 'Reached halfway mark'),
         ),
         _DeliveryProcess.complete(),
       ],
@@ -374,19 +312,16 @@ class _DriverInfo {
 }
 
 class _DeliveryProcess {
-  const _DeliveryProcess(
-    this.name, {
-    this.messages = const [],
-  });
+  const _DeliveryProcess(this.name, this.message);
 
   const _DeliveryProcess.complete()
-      : this.name = 'Done',
-        this.messages = const [];
+      : this.name = 'Start',
+        this.message = const _DeliveryMessage('', '');
 
   final String name;
-  final List<_DeliveryMessage> messages;
+  final _DeliveryMessage message;
 
-  bool get isCompleted => name == 'Done';
+  bool get isCompleted => true;
 }
 
 class _DeliveryMessage {
