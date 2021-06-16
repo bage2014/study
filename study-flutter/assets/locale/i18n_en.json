@@ -15,6 +15,7 @@
   "home.drawer.profile":"Profile ",
   "home.back.confirm":"Confirm to exit?",
   "home.menu.tv":"TV",
+  "home.menu.family":"Family",
   "home.menu.profile":"Profile",
 
   "settings.title":"Settings ",
@@ -37,6 +38,7 @@
   "tv.list.bottomFavorite":"Favorite",
 
   "about.title":"About",
+  "about.versions":"版本历史",
   "about.device.id":"Device ID",
   "about.author":"About Author",
   "about.share":"Share APP",

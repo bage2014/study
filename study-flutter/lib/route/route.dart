@@ -1,3 +1,5 @@
+import 'package:app_lu_lu/view/about/AboutVersions.dart';
+import 'package:app_lu_lu/view/family/FamilyEvents.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/constant/RouteNameConstant.dart';
 import 'package:app_lu_lu/model/RoutPath.dart';
@@ -37,12 +39,20 @@ class RouteConfiguration {
       (context, match) => AboutAuthor(),
     ),
     RoutPath(
+      RouteNameConstant.route_name_about_versions,
+      (context, match) => AboutVersions(),
+    ),
+    RoutPath(
       RouteNameConstant.route_name_setting_dev_tool,
       (context, match) => DevTool(),
     ),
     RoutPath(
       RouteNameConstant.route_name_profile,
       (context, match) => Profile(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_family_events,
+          (context, match) => FamilyEvents(),
     ),
   ];
 

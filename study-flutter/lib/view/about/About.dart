@@ -59,6 +59,17 @@ class _About extends State<About> {
           Container(
             alignment: Alignment.center,
             child: ListTile(
+              title: Text(Translations.textOf(context, "about.versions")),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(RouteNameConstant.route_name_about_versions);
+              },
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: ListTile(
               title: Text(Translations.textOf(context, "about.device.id")),
               trailing: Icon(Icons.chevron_right),
               onTap: () {
