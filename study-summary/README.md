@@ -159,12 +159,29 @@ hotspot  虚拟机为例
 了解目标：基本概念、起始版本(时间)、主要特点、基本原理、优点与不足
 
 - Serial
+
 - Parnew
+
 - Parallel Scavenge
+
 - Serial Old 
+
 - Parallel Old
+
 - CMS
-- G1
+
+##### G1
+
+参考连接 
+
+美团技术团队 https://tech.meituan.com/2016/09/23/g1.html
+
+G1 收集器原理理解与分析 https://zhuanlan.zhihu.com/p/52841787
+
+- 差异点
+
+- 特点
+- 基本过程
 
 #### 类加载过程 ####
 
