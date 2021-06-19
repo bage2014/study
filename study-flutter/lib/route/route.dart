@@ -1,3 +1,4 @@
+import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/view/about/AboutVersions.dart';
 import 'package:app_lu_lu/view/family/FamilyEvents.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class RouteConfiguration {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     String? temp = settings?.name;
     String name = temp == null ? "" : temp;
-    print('routeName = {name}');
+    Logs.info('routeName = ${name}');
     // 有限匹配相等的
     for (final path in paths) {
       if (name.compareTo(path.pattern) == 0) {

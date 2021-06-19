@@ -16,7 +16,7 @@ class _AboutVersions extends State<AboutVersions> {
 
   @override
   void initState() {
-      list = new AppVersionsResult().data;
+      list = new AppVersionsResult(1).data;
   }
 
   @override
@@ -104,14 +104,14 @@ class _DeliveryProcesses extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '${processes[index].versionName}',
+                          '版本 ${processes[index].versionName}',
                           style: DefaultTextStyle.of(context).style.copyWith(
                             fontSize: 20.0,
                           ),
                         ),
                         Spacer(),
                         Text(
-                          '${processes[index].createTime?.day}/${processes[index].createTime?.month}/${processes[index].createTime?.year}',
+                          '${processes[index].createTime?.year}-${processes[index].createTime?.month}-${processes[index].createTime?.day}',
                           style: TextStyle(
                             color: Color(0xffb6b2b2),
                           ),
@@ -119,7 +119,7 @@ class _DeliveryProcesses extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0.0,8.0,0.0,0.0),
+                      padding: EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
                       child: Text(processes[index].description??'',),
                     ),
                   ],

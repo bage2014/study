@@ -7,13 +7,13 @@ class AppVersionsResult {
   Null? originMsg;
   List<AppVersion> data = [];
 
-  AppVersionsResult(){
-    for(int i = 0;i < 5; i ++){
+  AppVersionsResult(int n){
+    for(int i = 0;i < n; i ++){
       AppVersion value = new AppVersion();
-      value.id = 5 - i;
-      value.versionCode = 5 - i;
-      value.versionName = 'v1.0.${5 - i}';
-      value.description = 'description${i}\ndescription${i}\ndescription${i}\n';
+      value.id = n - i;
+      value.versionCode = n - i;
+      value.versionName = 'v1.0.${n - i}';
+      value.description = '第一个版本\n电视功能\n家庭族谱功能\n';
       value.createTime = DateTime.now();
       data.add(value);
     }

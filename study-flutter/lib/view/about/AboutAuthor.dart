@@ -9,12 +9,16 @@ class AboutAuthor extends StatefulWidget {
   _AboutAuthor createState() => new _AboutAuthor();
 }
 
-class _AboutAuthor extends State<AboutAuthor> {
+class _AboutAuthor extends State<AboutAuthor>
+    with SingleTickerProviderStateMixin {
   List<_OrderInfo> list = [];
+  late TabController _tabController; //需要定义一个Controller
+  List tabs = ["新闻", "历史", "图片"];
 
   @override
   void initState() {
     list.add(_data(list.length + 1));
+    _tabController = TabController(length: tabs.length, vsync: this);
   }
 
   @override
@@ -40,17 +44,42 @@ class _AboutAuthor extends State<AboutAuthor> {
                 height: 128,
                 width: 128,
               ),
-            ), //            child: Text(Translations.textOf(context, "about.author.name")),
+            ),
           ),
           Container(
             padding: const EdgeInsets.fromLTRB(edgeLeft, 0.0, edgeRight, 0.0),
             child: Text('陆瑞华', textScaleFactor: 1.4),
-//            child: Text(Translations.textOf(context, "about.author.name")),
           ),
           Container(
-            padding: const EdgeInsets.fromLTRB(edgeLeft, 16.0, edgeRight, 16.0),
-            child: Text('上海某互联网，Java 研发工程师，5年研发服务端经验'),
-//            child: Text(Translations.textOf(context, "about.author.name")),
+            padding: const EdgeInsets.fromLTRB(edgeLeft, 0.0, edgeRight, 0.0),
+            child: TabBar(
+                //生成Tab菜单
+                controller: _tabController,
+                tabs: tabs.map((e) => Tab(text: e)).toList()),
+          ),
+          Card(
+            margin: EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.mail_outline),
+                  title: Text('893542907@qq.com'),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: Icon(Icons.link_outlined),
+                  title: Text('https://github.com/bage2014'),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: Text('来自广西壮族自治区，现就职于上海某互联网公司，Java 研发工程师，5年研发服务端经验'),
+                  onTap: () {},
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: RefreshIndicator(
@@ -82,9 +111,11 @@ class _AboutAuthor extends State<AboutAuthor> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     data.driverInfo.name,
-                                    style: DefaultTextStyle.of(context).style.copyWith(
-                                      fontSize: 14.0,
-                                    ),
+                                    style: DefaultTextStyle.of(context)
+                                        .style
+                                        .copyWith(
+                                          fontSize: 14.0,
+                                        ),
                                   ),
                                 )
                               ],
@@ -150,7 +181,7 @@ class _OnTimeBar extends StatelessWidget {
           shape: StadiumBorder(),
           color: Color(0xff66c97f),
           textColor: Colors.white,
-          child: Text('On-time'),
+          child: Text('Activity'),
         ),
         Spacer(),
         Text(
