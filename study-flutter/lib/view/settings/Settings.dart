@@ -114,9 +114,6 @@ class _Settings extends State<Settings> {
       Logs.info("responseBody = ${responseBody}");
       // ignore: null_aware_in_condition
       if (responseBody.isEmpty) {
-        Dialogs.showInfoDialog(_context,
-            null,
-            Translations.textOf(context, "settings.alreadyLatestVersion"));
         return;
       }
 

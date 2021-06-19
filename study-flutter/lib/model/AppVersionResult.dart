@@ -38,7 +38,7 @@ class AppVersion {
   String? versionName;
   int? fileSize;
   String? updateType;
-  Null? createTime;
+  DateTime? createTime;
   Null? updateTime;
   Null? createStaffId;
   Null? updateStaffId;
