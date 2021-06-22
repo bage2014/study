@@ -83,6 +83,21 @@ dependencies:
   # https://pub.dev/packages/fl_chart
   fl_chart: ^0.36.2
 
+  # https://pub.dev/packages/google_fonts
+  # https://pub.dev/packages/json_serializable
+  # https://pub.dev/packages/sentry
+  # https://pub.dev/packages/geolocator
+  # https://pub.dev/packages/share_plus
+  # https://pub.dev/packages/flutter_local_notifications
+  # https://pub.dev/packages/image_picker
+  # https://pub.dev/packages/cached_network_image
+  # https://pub.dev/packages/carousel_slider 图片侧滑
+  # https://pub.dev/packages/flutter_staggered_grid_view
+  # https://pub.dev/packages/introduction_screen
+  # https://pub.dev/packages/video_player
+  # https://pub.dev/packages/photo_view
+  # https://pub.dev/packages/timeago
+
 
 dev_dependencies:
   flutter_test:
