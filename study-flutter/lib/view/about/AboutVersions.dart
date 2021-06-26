@@ -1,8 +1,12 @@
+import 'dart:collection';
+import 'dart:convert';
+
+import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/constant/HttpConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
-import 'package:app_lu_lu/model/AppVersionResult.dart';
+import 'package:app_lu_lu/model/AppVersion.dart';
 import 'package:app_lu_lu/model/AppVersionsResult.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
 
@@ -16,7 +20,7 @@ class _AboutVersions extends State<AboutVersions> {
 
   @override
   void initState() {
-      list = new AppVersionsResult(1).data;
+    _onRefresh();
   }
 
   @override
@@ -47,7 +51,30 @@ class _AboutVersions extends State<AboutVersions> {
       ),
     );
   }
+
+  Future<Null> _onRefresh() async {
+    Map<String, String> param = new HashMap();
+    HttpRequests.get(HttpConstant.url_settings_app_versions, param, null)
+        .then((result) {
+      Logs.info('_onRefresh responseBody=' + (result?.responseBody ?? ""));
+      setState(() {
+        AppVersionsResult response =
+            AppVersionsResult.fromJson(json.decode(result?.responseBody ?? ""));
+        if (response.code == 200) {
+          list = response.data ?? [];
+          if(list.length > 0){
+            AppVersion value = new AppVersion();
+            value.versionName = 'Start';
+            list.insert(0,value);
+          }
+        }
+      });
+    }).catchError((error) {
+      print(error.toString());
+    });
+  }
 }
+
 class _DeliveryProcesses extends StatelessWidget {
   const _DeliveryProcesses({Key? key, required this.processes})
       : super(key: key);
@@ -79,21 +106,23 @@ class _DeliveryProcesses extends StatelessWidget {
             connectionDirection: ConnectionDirection.before,
             itemCount: processes.length,
             contentsBuilder: (_, index) {
-              if (processes[index].versionCode==null) return Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      processes[index].versionName??'',
-                      style: DefaultTextStyle.of(context).style.copyWith(
-                        fontSize: 18.0,
+              var version = processes[processes.length - 1 - index];
+              if (version.versionCode == null)
+                return Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        version.versionName ?? '',
+                        style: DefaultTextStyle.of(context).style.copyWith(
+                              fontSize: 18.0,
+                            ),
                       ),
-                    ),
-                  ],
-                ),
-              );
+                    ],
+                  ),
+                );
 
               return Padding(
                 padding: EdgeInsets.only(left: 8.0),
@@ -104,14 +133,14 @@ class _DeliveryProcesses extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '版本 ${processes[index].versionName}',
+                          '版本 ${version.versionName}',
                           style: DefaultTextStyle.of(context).style.copyWith(
-                            fontSize: 20.0,
-                          ),
+                                fontSize: 20.0,
+                              ),
                         ),
                         Spacer(),
                         Text(
-                          '${processes[index].createTime?.year}-${processes[index].createTime?.month}-${processes[index].createTime?.day}',
+                          '${version.createTime?.year}-${version.createTime?.month}-${version.createTime?.day}',
                           style: TextStyle(
                             color: Color(0xffb6b2b2),
                           ),
@@ -119,22 +148,24 @@ class _DeliveryProcesses extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
-                      child: Text(processes[index].description??'',),
+                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      child: Text(
+                        version.description ?? '',
+                      ),
                     ),
                   ],
                 ),
               );
             },
             indicatorBuilder: (_, index) {
-                return DotIndicator(
-                  color: Color(0xff66c97f),
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 12.0,
-                  ),
-                );
+              return DotIndicator(
+                color: Color(0xff66c97f),
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 12.0,
+                ),
+              );
             },
             connectorBuilder: (_, index, ___) => SolidLineConnector(
               color: Color(0xff66c97f),

@@ -9,6 +9,7 @@ class HttpConstant{
   static String url_settings_version_check = "/ignore/android/app/version/check/{version}";
   static String url_settings_app_download = "/ignore/android/app/version/check/{version}";
   static String url_settings_app_latest = "/ignore/android/app/version/latest";
+  static String url_settings_app_versions = "/ignore/android/app/version/query";
 
 }
 

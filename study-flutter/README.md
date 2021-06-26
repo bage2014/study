@@ -26,7 +26,7 @@ APP 名字--小陆
 ```
 ipconfig /all
 
-.\emulator -avd Pixel2XLAPI29 -dns-server 10.64.0.100
+.\emulator -avd Pixel2XLAPI29 -dns-server 10.0.3.2
 ```
 
 
