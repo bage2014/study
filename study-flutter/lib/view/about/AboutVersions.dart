@@ -17,6 +17,7 @@ class AboutVersions extends StatefulWidget {
 
 class _AboutVersions extends State<AboutVersions> {
   List<AppVersion> list = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -38,39 +39,55 @@ class _AboutVersions extends State<AboutVersions> {
             ),
           ),
           //List
-          new SliverFixedExtentList(
-            itemExtent: 1000.0,
-            delegate: new SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-              //创建列表项
-              return _DeliveryProcesses(processes: list);
-            }, childCount: 1 //列表项
+          isLoading
+              ? SliverToBoxAdapter(
+                  child: LinearProgressIndicator(
+                    backgroundColor: Colors.grey[200],
+                    valueColor: AlwaysStoppedAnimation(Colors.blue),
+                  ),
+                )
+              : new SliverFixedExtentList(
+                  itemExtent: 1000.0,
+                  delegate: new SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    //创建列表项
+                    return _DeliveryProcesses(processes: list);
+                  }, childCount: 1 //列表项
+                      ),
                 ),
-          ),
         ],
       ),
     );
   }
 
+  void hideLoading() {
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   Future<Null> _onRefresh() async {
+    isLoading = true;
     Map<String, String> param = new HashMap();
     HttpRequests.get(HttpConstant.url_settings_app_versions, param, null)
         .then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.responseBody ?? ""));
+      hideLoading();
       setState(() {
         AppVersionsResult response =
             AppVersionsResult.fromJson(json.decode(result?.responseBody ?? ""));
         if (response.code == 200) {
           list = response.data ?? [];
-          if(list.length > 0){
+          if (list.length > 0) {
             AppVersion value = new AppVersion();
             value.versionName = 'Start';
-            list.insert(0,value);
+            list.insert(0, value);
           }
         }
       });
     }).catchError((error) {
       print(error.toString());
+      hideLoading();
     });
   }
 }
@@ -150,7 +167,7 @@ class _DeliveryProcesses extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                       child: Text(
-                        version.description ?? '',
+                        version.description?.replaceAll('|', '\n') ?? '',
                       ),
                     ),
                   ],
