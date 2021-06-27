@@ -12,8 +12,8 @@ class AboutAuthorTabView extends StatelessWidget {
 
   static List<AboutAuthorTab> init() {
     List<AboutAuthorTab> tabs = [];
-    tabs.add(new AboutAuthorTab(key_basic, 'Basic'));
-    tabs.add(new AboutAuthorTab(key_activity, 'Activity'));
+    tabs.add(new AboutAuthorTab(key_basic, '基本信息'));
+    // tabs.add(new AboutAuthorTab(key_activity, '最新动态'));
     return tabs;
   }
 
@@ -53,7 +53,7 @@ class _AboutAuthorTabViewBasic extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.info_outline),
-            title: Text('来自广西壮族自治区，现就职于上海某互联网公司，Java 研发工程师，5年研发服务端经验'),
+            title: Text('来自广西壮族自治区，现就职于上海互联网公司，Java 研发工程师，5年研发服务端经验'),
             onTap: () {},
           ),
         ],

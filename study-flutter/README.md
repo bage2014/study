@@ -207,7 +207,9 @@ Run --> Edit Configurations --> Add Additional Run args --> --no-sound-null-safe
 
 
 
+```
 flutter build apk --no-sound-null-safety
+```
 
 
 
