@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:app_lu_lu/component/dialog/Dialogs.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/component/toast/Toasts.dart';
-import 'package:app_lu_lu/constant/LocaleConstant.dart';
+import '../../constant/LocaleConstant.dart';
 import 'package:app_lu_lu/constant/RouteNameConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/view/home/HomeDrawer.dart';

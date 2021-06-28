@@ -29,6 +29,13 @@ class AppVersion {
         this.updateStaffId,
         this.deleteState});
 
+  static AppVersion getCurrentVersionInfo(){
+    AppVersion appVersion = new AppVersion();
+    appVersion.versionCode = 1;
+    appVersion.versionName = "v1.0.0";
+    return appVersion;
+  }
+
   AppVersion.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     versionCode = json['versionCode'];

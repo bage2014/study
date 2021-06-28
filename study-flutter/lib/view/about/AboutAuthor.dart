@@ -1,5 +1,6 @@
 import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/AboutAuthorTab.dart';
+import 'package:app_lu_lu/model/AuthorInfo.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +15,17 @@ class _AboutAuthor extends State<AboutAuthor>
     with SingleTickerProviderStateMixin {
   late TabController _tabController; //需要定义一个Controller
   List<AboutAuthorTab> tabs = [];
+  late AuthorInfo authorInfo;
 
   @override
   void initState() {
     tabs = AboutAuthorTabView.init();
     _tabController = TabController(length: tabs.length, vsync: this);
+    authorInfo = new AuthorInfo();
+    authorInfo.iconUrl = "https://avatars.githubusercontent.com/u/18094768?v=4";
+    authorInfo.homePageUrl = "https://github.com/bage2014";
+    authorInfo.firstName = "陆";
+    authorInfo.lastName = "瑞华";
   }
 
   @override
@@ -36,8 +43,7 @@ class _AboutAuthor extends State<AboutAuthor>
             padding: const EdgeInsets.fromLTRB(edgeLeft, 16.0, edgeRight, 0.0),
             child: ClipOval(
               child: CachedNetworkImage(
-                imageUrl:
-                    "https://avatars.githubusercontent.com/u/18094768?v=4",
+                imageUrl: authorInfo.iconUrl ?? '',
                 placeholder: (context, url) => CircularProgressIndicator(),
                 errorWidget: (context, url, error) =>
                     Image(image: AssetImage("assets/images/user_null.png")),
@@ -48,7 +54,7 @@ class _AboutAuthor extends State<AboutAuthor>
           ),
           Container(
             padding: const EdgeInsets.fromLTRB(edgeLeft, 0.0, edgeRight, 0.0),
-            child: Text('陆瑞华', textScaleFactor: 1.4),
+            child: Text('${authorInfo.firstName ?? ""}${authorInfo.lastName ?? ""}', textScaleFactor: 1.4),
           ),
           Container(
             padding: const EdgeInsets.fromLTRB(edgeLeft, 0.0, edgeRight, 0.0),
@@ -73,7 +79,7 @@ class _AboutAuthor extends State<AboutAuthor>
                 children: tabs.map((e) {
                   //创建3个Tab页
                   return Container(
-                    child: AboutAuthorTabView(tab: e),
+                    child: AboutAuthorTabView(tab: e,authorInfo: authorInfo),
                   );
                 }).toList(),
               ),

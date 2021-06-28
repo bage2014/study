@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_lu_lu/model/AppVersion.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/component/dialog/Dialogs.dart';
 import 'package:app_lu_lu/component/http/CancelRequests.dart';
@@ -26,6 +27,12 @@ class _Settings extends State<Settings> {
   late BuildContext _context;
   bool _isDownloading = false;
   CancelRequests cancelRequests = CancelRequests();
+  late AppVersion _currentVersionInfo;
+
+  @override
+  void initState() {
+    _currentVersionInfo = AppVersion.getCurrentVersionInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +76,7 @@ class _Settings extends State<Settings> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(Translations.textOf(context, "all.app.version"))
+                Text(_currentVersionInfo?.versionName??'')
               ],
             ),
           ),

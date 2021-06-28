@@ -1,12 +1,14 @@
 import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/AboutAuthorTab.dart';
+import 'package:app_lu_lu/model/AuthorInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AboutAuthorTabView extends StatelessWidget {
-  const AboutAuthorTabView({Key? key, required this.tab}) : super(key: key);
+  const AboutAuthorTabView({Key? key, required this.tab, required this.authorInfo}) : super(key: key);
 
   final AboutAuthorTab tab;
+  final AuthorInfo authorInfo;
   static const String key_basic = 'basic';
   static const String key_activity = 'activity';
 
@@ -21,7 +23,7 @@ class AboutAuthorTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (tab.key) {
       case key_basic:
-        return _AboutAuthorTabViewBasic();
+        return _AboutAuthorTabViewBasic(authorInfo:authorInfo);
       case key_activity:
         return _AboutAuthorTabViewActivity();
       default:
@@ -31,7 +33,9 @@ class AboutAuthorTabView extends StatelessWidget {
 }
 
 class _AboutAuthorTabViewBasic extends StatelessWidget {
-  const _AboutAuthorTabViewBasic({Key? key}) : super(key: key);
+  final AuthorInfo authorInfo;
+
+  const _AboutAuthorTabViewBasic({Key? key,required this.authorInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +47,17 @@ class _AboutAuthorTabViewBasic extends StatelessWidget {
         children: [
           ListTile(
             leading: Icon(Icons.mail_outline),
-            title: Text('893542907@qq.com'),
+            title: Text('${authorInfo.email}'),
             onTap: () {},
           ),
           ListTile(
             leading: Icon(Icons.link_outlined),
-            title: Text('https://github.com/bage2014'),
+            title: Text('${authorInfo.homePageUrl}'),
             onTap: () {},
           ),
           ListTile(
             leading: Icon(Icons.info_outline),
-            title: Text('来自广西壮族自治区，现就职于上海互联网公司，Java 研发工程师，5年研发服务端经验'),
+            title: Text('${authorInfo.description}'),
             onTap: () {},
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:app_lu_lu/component/dialog/Dialogs.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
+import 'package:app_lu_lu/model/AppVersion.dart';
 import 'package:app_lu_lu/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/constant/RouteNameConstant.dart';
@@ -13,9 +14,12 @@ class About extends StatefulWidget {
 }
 
 class _About extends State<About> {
+
+  late AppVersion _currentVersionInfo;
+
   @override
   void initState() {
-    super.initState();
+    _currentVersionInfo = AppVersion.getCurrentVersionInfo();
   }
 
   @override
@@ -52,7 +56,7 @@ class _About extends State<About> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(Translations.textOf(context, "all.app.version"))
+                Text(_currentVersionInfo?.versionName??'')
               ],
             ),
           ),

@@ -8,8 +8,12 @@ http://olive.ren/flutter-build-apk-fail/
 
 https://developer.android.google.cn/studio/run/managing-avds#createavd
 
-
 ### TODO
+
+发布线上
+
+版本信息
+
 网络提示,请先连接网络 同意提示，多语言问题
 下载进度条
 APP 名字--小陆
