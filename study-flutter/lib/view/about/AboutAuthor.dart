@@ -16,6 +16,7 @@ class _AboutAuthor extends State<AboutAuthor>
   late TabController _tabController; //需要定义一个Controller
   List<AboutAuthorTab> tabs = [];
   late AuthorInfo authorInfo;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _AboutAuthor extends State<AboutAuthor>
     authorInfo.homePageUrl = "https://github.com/bage2014";
     authorInfo.firstName = "陆";
     authorInfo.lastName = "瑞华";
+    isLoading = false;
   }
 
   @override
@@ -78,7 +80,10 @@ class _AboutAuthor extends State<AboutAuthor>
                 controller: _tabController,
                 children: tabs.map((e) {
                   //创建3个Tab页
-                  return Container(
+                  return isLoading ? LinearProgressIndicator(
+                    backgroundColor: Colors.grey[200],
+                    valueColor: AlwaysStoppedAnimation(Colors.blue),
+                  ) : Container(
                     child: AboutAuthorTabView(tab: e,authorInfo: authorInfo),
                   );
                 }).toList(),
