@@ -1,6 +1,35 @@
 # 总结
 
+
+
+## 常用连接
+
+https://github.com/0voice/interview_internal_reference
+
+https://github.com/xingshaocheng/architect-awesome
+
+https://github.com/DeppWang/Java-Books
+
+https://github.com/CyC2018/CS-Notes
+
+https://github.com/PansonPanson/Java-Notes
+
+https://github.com/singgel/JAVA_LINE
+
+https://github.com/Snailclimb/JavaGuide
+
+https://github.com/doocs/advanced-java
+
+https://github.com/xbox1994/Java-Interview
+
+https://github.com/jobbole/awesome-java-cn
+
+https://github.com/akullpp/awesome-java
+
+
+
 ## [Java 基础](https://github.com/bage2014/interview/blob/master/README-Java.md) ##
+
 面向对象理论，基础知识；
 
 Java基础数据类型以及所占用空间大小
@@ -434,31 +463,3 @@ forking
 - Enhanced Github
 
 
-
-## 常用连接
-
-http://mp.weixin.qq.com/s?__biz=MzU0OTE4MzYzMw==&mid=2247488409&idx=5&sn=1c102188c1bb9bc025a67e24ef6e7ebc&chksm=fbb29a67ccc513711212cb48a231aea8f8adada615975611b3811abbe2acad1f8451f9d3b7de&scene=0&xtrack=1#rd
-
-
-
-https://github.com/0voice/interview_internal_reference
-
-https://github.com/xingshaocheng/architect-awesome
-
-https://github.com/DeppWang/Java-Books
-
-https://github.com/CyC2018/CS-Notes
-
-https://github.com/PansonPanson/Java-Notes
-
-https://github.com/singgel/JAVA_LINE
-
-https://github.com/Snailclimb/JavaGuide
-
-https://github.com/doocs/advanced-java
-
-https://github.com/xbox1994/Java-Interview
-
-https://github.com/jobbole/awesome-java-cn
-
-https://github.com/akullpp/awesome-java
