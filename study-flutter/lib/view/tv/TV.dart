@@ -73,11 +73,18 @@ class _TV extends State<TV> {
                       onDoubleTap: () {
                         List<String> urls = list[index]?.urls ?? [];
                         List<String> contents = [];
+                        List<Icon> icons = [];
                         for (int i = 0; i < urls.length; i++) {
-                          contents.add("【路线${i + 1}】");
+                          contents.add("播放路线${i + 1}");
+                          icons.add(i == TvCaches.getTvIndex(list[index]?.id ?? 0)
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.blue,
+                                )
+                              : Icon(Icons.check_circle_outline));
                         }
-                        Dialogs.showButtonSelectDialog(context, contents).then(
-                            (value) =>
+                        Dialogs.showButtonSelectDialog(context, contents, icons)
+                            .then((value) =>
                                 {updateUrlIndex(list[index]?.id ?? 0, value)});
                       },
                       child: ListTile(
@@ -148,8 +155,7 @@ class _TV extends State<TV> {
   updateUrlIndex(int id, int? index) {
     Logs.info('index = $index');
     if (index != null) {
-      Logs.info('index = $index');
-      TvCaches.setTvIndex(id,index);
+      TvCaches.setTvIndex(id, index);
     }
   }
 }

@@ -83,9 +83,10 @@ class Dialogs {
     );
   }
 
+
   // ref: https://stackoverflow.com/questions/53311553/how-to-set-showmodalbottomsheet-to-full-height
   static Future<int?> showButtonSelectDialog(
-      BuildContext context, List<String> contents) {
+      BuildContext context, List<String> contents, List<Icon>? icons) {
     return showModalBottomSheet<int>(
       isScrollControlled: true,
       context: context,
@@ -95,8 +96,12 @@ class Dialogs {
             itemCount: contents.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
+              return icons == null ? ListTile(
                 title: Text(contents[index]),
+                onTap: () => Navigator.of(context).pop(index),
+              ) : ListTile(
+                title: Text(contents[index]),
+                trailing: icons[index],
                 onTap: () => Navigator.of(context).pop(index),
               );
             })

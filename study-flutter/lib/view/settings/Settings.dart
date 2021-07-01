@@ -141,7 +141,7 @@ class _Settings extends State<Settings> {
             Translations.textOf(context, "settings.upgrade.open.by.app"),
             Translations.textOf(context, "settings.upgrade.open.cancel")
           ];
-          int? index = await Dialogs.showButtonSelectDialog(context, contents);
+          int? index = await Dialogs.showButtonSelectDialog(context, contents,null);
           Logs.info('index = $index');
 
           if (index == null || index == contents.length - 1) {
