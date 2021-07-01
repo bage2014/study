@@ -1,5 +1,5 @@
 
-class Caches{
+class UserCaches{
 
   static int _userId = 0;
 

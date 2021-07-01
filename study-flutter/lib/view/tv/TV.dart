@@ -1,14 +1,16 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:app_lu_lu/component/cache/Caches.dart';
+import 'package:app_lu_lu/component/cache/TvCaches.dart';
+import 'package:app_lu_lu/component/cache/UserCaches.dart';
+import 'package:app_lu_lu/component/dialog/Dialogs.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
 import 'package:app_lu_lu/constant/RouteNameConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/QueryTvResult.dart';
+import 'package:flutter/material.dart';
 
 class TV extends StatefulWidget {
   @override
@@ -58,13 +60,25 @@ class _TV extends State<TV> {
             : ListView.separated(
                 itemCount: list.length,
                 itemBuilder: (context, index) {
-                  String name = list[index].name ?? "";
-                  bool isFavorite = list[index].isFavorite??false;
+                  int urlIndex = TvCaches.getTvIndex(list[index]?.id ?? 0);
+                  String urlName = "【路线${urlIndex + 1}】";
+                  String name = '${urlName}${list[index].name ?? ""}';
+                  bool isFavorite = list[index].isFavorite ?? false;
                   return new GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed(
                             RouteNameConstant.route_name_tv_player,
                             arguments: list[index]);
+                      },
+                      onDoubleTap: () {
+                        List<String> urls = list[index]?.urls ?? [];
+                        List<String> contents = [];
+                        for (int i = 0; i < urls.length; i++) {
+                          contents.add("【路线${i + 1}】");
+                        }
+                        Dialogs.showButtonSelectDialog(context, contents).then(
+                            (value) =>
+                                {updateUrlIndex(list[index]?.id ?? 0, value)});
                       },
                       child: ListTile(
                           title: Text(name),
@@ -94,10 +108,10 @@ class _TV extends State<TV> {
 
   Future<Null> _onRefresh() async {
     Map<String, dynamic> header = new HashMap();
-    header.putIfAbsent("favoriteUserId", () => Caches.getUserId());
+    header.putIfAbsent("favoriteUserId", () => UserCaches.getUserId());
 
     Map<String, dynamic> paramJson = new HashMap();
-    paramJson.putIfAbsent("favoriteUserId", () => Caches.getUserId());
+    paramJson.putIfAbsent("favoriteUserId", () => UserCaches.getUserId());
     paramJson.putIfAbsent("isOnlyFavorite", () => _currentIndex == 1);
     paramJson.putIfAbsent("targetPage", () => 1);
     paramJson.putIfAbsent("pageSize", () => 100);
@@ -119,8 +133,8 @@ class _TV extends State<TV> {
   }
 
   Future<Null> _setFavorite(TvItem item) async {
-    item.isFavorite = !(item?.isFavorite??false);
-    item.userId = Caches.getUserId();
+    item.isFavorite = !(item?.isFavorite ?? false);
+    item.userId = UserCaches.getUserId();
     Map<String, String> param = new HashMap();
     param.putIfAbsent("param", () => json.encode(item.toJson()));
     print(json.encode(item.toJson()));
@@ -129,5 +143,13 @@ class _TV extends State<TV> {
       Logs.info('_setFavorite responseBody=' + (result?.responseBody ?? ""));
       _onRefresh();
     });
+  }
+
+  updateUrlIndex(int id, int? index) {
+    Logs.info('index = $index');
+    if (index != null) {
+      Logs.info('index = $index');
+      TvCaches.setTvIndex(id,index);
+    }
   }
 }
