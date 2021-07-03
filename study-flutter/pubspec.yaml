@@ -97,6 +97,12 @@ dependencies:
   # https://pub.dev/packages/video_player
   # https://pub.dev/packages/photo_view
   # https://pub.dev/packages/timeago
+  # https://pub.dev/packages/directed_graph
+  # https://pub.dev/packages/dash_chat
+  # https://pub.dev/packages/stream_chat_flutter
+  # https://pub.dev/packages/flutter_linkify # 富文本显示
+  # https://pub.dev/packages/extended_text_field
+  # https://pub.dev/packages/dart_json_mapper
 
 
 dev_dependencies:
