@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:app_lu_lu/component/cache/TvCaches.dart';
 import 'package:app_lu_lu/component/cache/UserCaches.dart';
@@ -20,11 +21,13 @@ class TV extends StatefulWidget {
 class _TV extends State<TV> {
   List<TvItem> list = [];
   int _currentIndex = 1;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     list = [];
+    _isLoading = false;
     _onRefresh();
   }
 
@@ -48,19 +51,25 @@ class _TV extends State<TV> {
         fixedColor: Colors.blue,
         onTap: _onItemTapped,
       ),
-      body: RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: list.length == 0
-            ? Center(
+      body: ConstrainedBox(
+        constraints: BoxConstraints.expand(),
+        child: Stack(
+          alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
+          children: <Widget>[
+            RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: list.length == 0
+                  ? Center(
                 child: Text(
                   Translations.textOf(context, "all.list.view.no.data"),
                   textAlign: TextAlign.center,
                 ),
               )
-            : ListView.separated(
+                  : ListView.separated(
                 itemCount: list.length,
                 itemBuilder: (context, index) {
-                  int urlIndex = TvCaches.getTvIndex(list[index]?.id ?? 0);
+                  int urlIndex =
+                  TvCaches.getTvIndex(list[index]?.id ?? 0);
                   String urlName = "【路线${urlIndex + 1}】";
                   String name = '${urlName}${list[index].name ?? ""}';
                   bool isFavorite = list[index].isFavorite ?? false;
@@ -76,16 +85,22 @@ class _TV extends State<TV> {
                         List<Icon> icons = [];
                         for (int i = 0; i < urls.length; i++) {
                           contents.add("播放路线${i + 1}");
-                          icons.add(i == TvCaches.getTvIndex(list[index]?.id ?? 0)
+                          icons.add(i ==
+                              TvCaches.getTvIndex(
+                                  list[index]?.id ?? 0)
                               ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.blue,
-                                )
+                            Icons.check_circle,
+                            color: Colors.blue,
+                          )
                               : Icon(Icons.check_circle_outline));
                         }
-                        Dialogs.showButtonSelectDialog(context, contents, icons)
+                        Dialogs.showButtonSelectDialog(
+                            context, contents, icons)
                             .then((value) =>
-                                {updateUrlIndex(list[index]?.id ?? 0, value)});
+                        {
+                          updateUrlIndex(
+                              list[index]?.id ?? 0, value)
+                        });
                       },
                       child: ListTile(
                           title: Text(name),
@@ -95,13 +110,22 @@ class _TV extends State<TV> {
                               },
                               child: (isFavorite != null && isFavorite)
                                   ? Icon(
-                                      Icons.favorite,
-                                      color: Colors.red,
-                                    )
+                                Icons.favorite,
+                                color: Colors.red,
+                              )
                                   : Icon(Icons.favorite_border))));
                 },
                 separatorBuilder: (context, index) => Divider(height: .0),
               ),
+            ),
+            Container(
+              child: _isLoading ? CircularProgressIndicator(
+                backgroundColor: Colors.grey[200],
+                valueColor: AlwaysStoppedAnimation(Colors.blue),
+              ) : null,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -109,8 +133,9 @@ class _TV extends State<TV> {
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
-      _onRefresh();
+      _isLoading = true;
     });
+    _onRefresh();
   }
 
   Future<Null> _onRefresh() async {
@@ -127,15 +152,17 @@ class _TV extends State<TV> {
     HttpRequests.get(HttpConstant.url_tv_query_page, param, null)
         .then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.responseBody ?? ""));
+      hideLoading();
       setState(() {
         QueryTvResult tvResult =
-            QueryTvResult.fromJson(json.decode(result?.responseBody ?? ""));
+        QueryTvResult.fromJson(json.decode(result?.responseBody ?? ""));
         if (tvResult.code == 200) {
           list = tvResult.data ?? [];
         }
       });
     }).catchError((error) {
       print(error.toString());
+      hideLoading();
     });
   }
 
@@ -158,4 +185,11 @@ class _TV extends State<TV> {
       TvCaches.setTvIndex(id, index);
     }
   }
+
+  hideLoading() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
 }

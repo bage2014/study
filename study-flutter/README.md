@@ -18,7 +18,9 @@ https://fluttergems.dev/
 
 版本信息
 
-网络提示,请先连接网络 同意提示，多语言问题
+网络提示,请先连接网络 
+
+同意提示，多语言问题
 下载进度条（参考https://github.com/rhymelph/r_upgrade/blob/v0.3.2/README_CN.md）
 APP 名字--小陆
 文件打开验证
