@@ -1,4 +1,11 @@
+常用命令
 
+```
+D:\softwares\SDK\emulator\emulator -avd Pixel2XLAPI29 -dns-server 10.0.3.2
+
+flutter build apk --no-sound-null-safety
+
+```
 
 
 
@@ -28,18 +35,6 @@ APP 名字--小陆
 分享
 
 家庭族谱
-
-
-
-模拟器联网问题
-
-```
-ipconfig /all
-
-D:\softwares\SDK\emulator\emulator -avd Pixel2XLAPI29 -dns-server 10.0.3.2
-
-.\emulator -avd Pixel2XLAPI29 -dns-server 10.0.3.2
-```
 
 
 
