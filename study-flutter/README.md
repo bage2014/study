@@ -29,14 +29,22 @@ https://fluttergems.dev/
 
 同意提示，多语言问题
 下载进度条（参考https://github.com/rhymelph/r_upgrade/blob/v0.3.2/README_CN.md）
-APP 名字--小陆
-文件打开验证
 
 分享
 
 家庭族谱
 
 
+
+app idea reference:
+
+https://www.douban.com/group/689011/
+
+https://www.douban.com/group/705002/
+
+https://www.douban.com/group/gameres/
+
+https://www.douban.com/group/523351/
 
 
 ### 参考链接
