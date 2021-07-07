@@ -4,6 +4,7 @@ logback 基本使用
 
 ## 参考链接 ##
 
+- https://www.baeldung.com/mdc-in-log4j-2-logback
 - 中文官网 [http://www.logback.cn/](http://www.logback.cn/)
 - demo [http://github.com/qos-ch/logback-demo](http://github.com/qos-ch/logback-demo)
 - How to setup SLF4J and LOGBack in a web app - fast [https://wiki.base22.com/btg/how-to-setup-slf4j-and-logback-in-a-web-app-fast-35488048.html](https://wiki.base22.com/btg/how-to-setup-slf4j-and-logback-in-a-web-app-fast-35488048.html)

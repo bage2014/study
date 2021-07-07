@@ -7,6 +7,9 @@ import org.slf4j.MDC;
 import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.core.ConsoleAppender;
 
+/**
+ * https://www.baeldung.com/mdc-in-log4j-2-logback
+ */
 public class SimpleMDC {
   static public void main(String[] args) throws Exception {
 
