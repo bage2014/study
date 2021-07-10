@@ -324,6 +324,10 @@ listener、filter、servlet的启动顺序；
 
 request、response；
 
+## 消息队列
+
+qmq https://github.com/qunarcorp/qmq
+
 ## redis ##
 集群；
 
