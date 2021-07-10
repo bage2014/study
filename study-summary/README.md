@@ -370,6 +370,7 @@ qmq https://github.com/qunarcorp/qmq
 - 幂等性
 - 日志
 - 监控
+- SSO
 
 ## Spring Cloud ##
 ### 注册中心 ###
