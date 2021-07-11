@@ -1,5 +1,5 @@
-<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0>
-    <#list classInfo.fieldList as fieldItem >
+<#if myClassInfo.fieldList?exists && myClassInfo.fieldList?size gt 0>
+    <#list myClassInfo.fieldList as fieldItem >
         <#if fieldItem.fieldClass == "Date">
             <#assign importDdate = true />
         </#if>
@@ -11,15 +11,15 @@ import java.util.Date;
 </#if>
 
 /**
-*  ${classInfo.classComment}
+*  ${myClassInfo.classComment}
 *
 *  Created on '${.now?string('yyyy-MM-dd HH:mm:ss')}'.
 */
-public class ${classInfo.className} implements Serializable {
+public class ${myClassInfo.className} implements Serializable {
     private static final long serialVersionUID = 42L;
 
-<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0>
-<#list classInfo.fieldList as fieldItem >
+<#if myClassInfo.fieldList?exists && myClassInfo.fieldList?size gt 0>
+<#list myClassInfo.fieldList as fieldItem >
     /**
     * ${fieldItem.fieldComment}
     */
@@ -28,8 +28,8 @@ public class ${classInfo.className} implements Serializable {
 </#list>
 </#if>
 
-<#if classInfo.fieldList?exists && classInfo.fieldList?size gt 0>
-<#list classInfo.fieldList as fieldItem>
+<#if myClassInfo.fieldList?exists && myClassInfo.fieldList?size gt 0>
+<#list myClassInfo.fieldList as fieldItem>
     public ${fieldItem.fieldClass} get${fieldItem.fieldName?cap_first}() {
         return ${fieldItem.fieldName};
     }

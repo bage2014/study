@@ -1,13 +1,13 @@
-package com.bage.agent;
+package com.bage.agent.model;
 
 import java.util.List;
 
-public class ClassInfo {
+public class MyClassInfo {
 
     private String className;
     private List<String> methodNames;
 
-    public ClassInfo(String className, List<String> methodNames) {
+    public MyClassInfo(String className, List<String> methodNames) {
         this.className = className;
         this.methodNames = methodNames;
     }
@@ -30,7 +30,7 @@ public class ClassInfo {
 
     @Override
     public String toString() {
-        return "ClassInfo{" +
+        return "MyClassInfo{" +
                 "className='" + className + '\'' +
                 ", methodNames=" + methodNames +
                 '}';

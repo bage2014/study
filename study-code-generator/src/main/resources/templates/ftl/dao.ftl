@@ -4,17 +4,17 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
-* ${classInfo.classComment}
+* ${myClassInfo.classComment}
 *
 * Created on '${.now?string('yyyy-MM-dd HH:mm:ss')}'.
 */
 @Component
-public interface ${classInfo.className}Dao {
+public interface ${myClassInfo.className}Dao {
 
     /**
     * 新增
     */
-    public int insert(@Param("${classInfo.className?uncap_first}") ${classInfo.className} ${classInfo.className?uncap_first});
+    public int insert(@Param("${myClassInfo.className?uncap_first}") ${myClassInfo.className} ${myClassInfo.className?uncap_first});
 
     /**
     * 删除
@@ -24,17 +24,17 @@ public interface ${classInfo.className}Dao {
     /**
     * 更新
     */
-    public int update(@Param("${classInfo.className?uncap_first}") ${classInfo.className} ${classInfo.className?uncap_first});
+    public int update(@Param("${myClassInfo.className?uncap_first}") ${myClassInfo.className} ${myClassInfo.className?uncap_first});
 
     /**
     * Load查询
     */
-    public ${classInfo.className} load(@Param("id") int id);
+    public ${myClassInfo.className} load(@Param("id") int id);
 
     /**
     * 分页查询Data
     */
-	public List<${classInfo.className}> pageList(@Param("offset") int offset,
+	public List<${myClassInfo.className}> pageList(@Param("offset") int offset,
                                                  @Param("pagesize") int pagesize);
 
     /**

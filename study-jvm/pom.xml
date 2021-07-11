@@ -18,8 +18,8 @@
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>
-                            <Premain-Class>com.bage.agent.MyAgent</Premain-Class>
-                            <Agent-Class>com.bage.agent.MyAgent</Agent-Class>
+                            <Premain-Class>com.bage.agent.transform.MyAgent</Premain-Class>
+                            <Agent-Class>com.bage.agent.transform.MyAgent</Agent-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>

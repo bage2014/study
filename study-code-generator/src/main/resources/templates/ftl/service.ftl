@@ -1,16 +1,16 @@
 import java.util.Map;
 
 /**
-* ${classInfo.classComment}
+* ${myClassInfo.classComment}
 *
 * Created on '${.now?string('yyyy-MM-dd HH:mm:ss')}'.
 */
-public interface ${classInfo.className}Service {
+public interface ${myClassInfo.className}Service {
 
     /**
     * 新增
     */
-    public ReturnT<String> insert(${classInfo.className} ${classInfo.className?uncap_first});
+    public ReturnT<String> insert(${myClassInfo.className} ${myClassInfo.className?uncap_first});
 
     /**
     * 删除
@@ -20,12 +20,12 @@ public interface ${classInfo.className}Service {
     /**
     * 更新
     */
-    public ReturnT<String> update(${classInfo.className} ${classInfo.className?uncap_first});
+    public ReturnT<String> update(${myClassInfo.className} ${myClassInfo.className?uncap_first});
 
     /**
     * Load查询
     */
-    public ${classInfo.className} load(int id);
+    public ${myClassInfo.className} load(int id);
 
     /**
     * 分页查询

@@ -7,28 +7,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* ${classInfo.classComment}
+* ${myClassInfo.classComment}
 *
 * Created on '${.now?string('yyyy-MM-dd HH:mm:ss')}'.
 */
 @Service
-public class ${classInfo.className}ServiceImpl implements ${classInfo.className}Service {
+public class ${myClassInfo.className}ServiceImpl implements ${myClassInfo.className}Service {
 
 	@Resource
-	private ${classInfo.className}Dao ${classInfo.className?uncap_first}Dao;
+	private ${myClassInfo.className}Dao ${myClassInfo.className?uncap_first}Dao;
 
 	/**
     * 新增
     */
 	@Override
-	public ReturnT<String> insert(${classInfo.className} ${classInfo.className?uncap_first}) {
+	public ReturnT<String> insert(${myClassInfo.className} ${myClassInfo.className?uncap_first}) {
 
 		// valid
-		if (${classInfo.className?uncap_first} == null) {
+		if (${myClassInfo.className?uncap_first} == null) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "必要参数缺失");
         }
 
-		${classInfo.className?uncap_first}Dao.insert(${classInfo.className?uncap_first});
+		${myClassInfo.className?uncap_first}Dao.insert(${myClassInfo.className?uncap_first});
         return ReturnT.SUCCESS;
 	}
 
@@ -37,7 +37,7 @@ public class ${classInfo.className}ServiceImpl implements ${classInfo.className}
 	*/
 	@Override
 	public ReturnT<String> delete(int id) {
-		int ret = ${classInfo.className?uncap_first}Dao.delete(id);
+		int ret = ${myClassInfo.className?uncap_first}Dao.delete(id);
 		return ret>0?ReturnT.SUCCESS:ReturnT.FAIL;
 	}
 
@@ -45,8 +45,8 @@ public class ${classInfo.className}ServiceImpl implements ${classInfo.className}
 	* 更新
 	*/
 	@Override
-	public ReturnT<String> update(${classInfo.className} ${classInfo.className?uncap_first}) {
-		int ret = ${classInfo.className?uncap_first}Dao.update(${classInfo.className?uncap_first});
+	public ReturnT<String> update(${myClassInfo.className} ${myClassInfo.className?uncap_first}) {
+		int ret = ${myClassInfo.className?uncap_first}Dao.update(${myClassInfo.className?uncap_first});
 		return ret>0?ReturnT.SUCCESS:ReturnT.FAIL;
 	}
 
@@ -54,8 +54,8 @@ public class ${classInfo.className}ServiceImpl implements ${classInfo.className}
 	* Load查询
 	*/
 	@Override
-	public ${classInfo.className} load(int id) {
-		return ${classInfo.className?uncap_first}Dao.load(id);
+	public ${myClassInfo.className} load(int id) {
+		return ${myClassInfo.className?uncap_first}Dao.load(id);
 	}
 
 	/**
@@ -64,8 +64,8 @@ public class ${classInfo.className}ServiceImpl implements ${classInfo.className}
 	@Override
 	public Map<String,Object> pageList(int offset, int pagesize) {
 
-		List<${classInfo.className}> pageList = ${classInfo.className?uncap_first}Dao.pageList(offset, pagesize);
-		int totalCount = ${classInfo.className?uncap_first}Dao.pageListCount(offset, pagesize);
+		List<${myClassInfo.className}> pageList = ${myClassInfo.className?uncap_first}Dao.pageList(offset, pagesize);
+		int totalCount = ${myClassInfo.className?uncap_first}Dao.pageListCount(offset, pagesize);
 
 		// result
 		Map<String, Object> result = new HashMap<String, Object>();

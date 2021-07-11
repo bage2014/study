@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* ${classInfo.classComment}
+* ${myClassInfo.classComment}
 *
 * Created on '${.now?string('yyyy-MM-dd HH:mm:ss')}'.
 */
@@ -17,15 +17,15 @@ import java.util.Map;
 public class ConfController {
 
     @Resource
-    private ${classInfo.className}Service ${classInfo.className?uncap_first}Service;
+    private ${myClassInfo.className}Service ${myClassInfo.className?uncap_first}Service;
 
     /**
     * 新增
     */
     @RequestMapping("/insert")
     @ResponseBody
-    public ReturnT<String> insert(${classInfo.className} ${classInfo.className?uncap_first}){
-        return ${classInfo.className?uncap_first}Service.insert(${classInfo.className?uncap_first});
+    public ReturnT<String> insert(${myClassInfo.className} ${myClassInfo.className?uncap_first}){
+        return ${myClassInfo.className?uncap_first}Service.insert(${myClassInfo.className?uncap_first});
     }
 
     /**
@@ -34,7 +34,7 @@ public class ConfController {
     @RequestMapping("/delete")
     @ResponseBody
     public ReturnT<String> delete(int id){
-        return ${classInfo.className?uncap_first}Service.delete(id);
+        return ${myClassInfo.className?uncap_first}Service.delete(id);
     }
 
     /**
@@ -42,8 +42,8 @@ public class ConfController {
     */
     @RequestMapping("/update")
     @ResponseBody
-    public ReturnT<String> update(${classInfo.className} ${classInfo.className?uncap_first}){
-        return ${classInfo.className?uncap_first}Service.update(${classInfo.className?uncap_first});
+    public ReturnT<String> update(${myClassInfo.className} ${myClassInfo.className?uncap_first}){
+        return ${myClassInfo.className?uncap_first}Service.update(${myClassInfo.className?uncap_first});
     }
 
     /**
@@ -52,7 +52,7 @@ public class ConfController {
     @RequestMapping("/load")
     @ResponseBody
     public ReturnT<String> load(int id){
-        return ${classInfo.className?uncap_first}Service.load(id);
+        return ${myClassInfo.className?uncap_first}Service.load(id);
     }
 
     /**
@@ -62,7 +62,7 @@ public class ConfController {
     @ResponseBody
     public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int offset,
                                         @RequestParam(required = false, defaultValue = "10") int pagesize) {
-        return ${classInfo.className?uncap_first}Service.pageList(offset, pagesize);
+        return ${myClassInfo.className?uncap_first}Service.pageList(offset, pagesize);
     }
 
 }
