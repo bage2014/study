@@ -144,6 +144,7 @@
       <module>study-sftp</module>
       <module>study-jmockit</module>
       <module>study-mockito</module>
+      <module>study-java-agent-instrument</module>
 
   </modules>
 </project>
