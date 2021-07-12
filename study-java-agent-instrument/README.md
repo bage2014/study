@@ -28,11 +28,11 @@ attach 方式 JDK 1.6+
 
 包结构 
 
-![instrument-packages](.\images\instrument-packages.png)
+![instrument-packages](./images/instrument-packages.png)
 
 Instrumentation
 
-![instrument-methods](.\images\instrument-methods.png)
+![instrument-methods](./images/instrument-methods.png)
 
 ## 实例Demo
 
@@ -40,7 +40,7 @@ Instrumentation
 
 **实现ClassFileTransformer**
 
-![code-trsf](.\images\code-trsf.png)
+![code-trsf](./images/code-trsf.png)
 
 ```
 public class MyClassInfo {
@@ -53,7 +53,7 @@ public class MyClassInfo {
 
 **编写 MyAgent 类，premain 方法，装配 MyClassFileTransformer**
 
-![code-agt](.\images\code-agt.png)
+![code-agt](./images/code-agt.png)
 
 **配置 MyAgent，使之生效**
 
@@ -91,7 +91,7 @@ java -javaagent:transform-service-1.0-SNAPSHOT.jar -jar demo-service-1.0-SNAPSHO
 
 运行结果
 
-![run-result-1](.\images\run-result-1.png)
+![run-result-1](./images/run-result-1.png)
 
 
 
@@ -101,7 +101,7 @@ java -javaagent:transform-service-1.0-SNAPSHOT.jar -jar demo-service-1.0-SNAPSHO
 
 **编写 MyAgent 类，agentmain 方法**
 
-![code-agt](.\images\code-agt.png)
+![code-agt](./images/code-agt.png)
 
 **配置 MyAgent，使之生效**
 
@@ -137,13 +137,13 @@ mvn assembly:assembly
 
 **运行时候关联**
 
-![code-agt-2](.\images\code-agt-2.png)
+![code-agt-2](./images/code-agt-2.png)
 
 
 
 运行效果
 
-![run-result-2](.\images\run-result-2.png)
+![run-result-2](./images/run-result-2.png)
 
 ## 注意事项
 
