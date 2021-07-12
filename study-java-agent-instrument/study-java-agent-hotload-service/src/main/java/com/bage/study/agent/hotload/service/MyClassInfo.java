@@ -1,4 +1,4 @@
-package com.bage.agent.model;
+package com.bage.study.agent.hotload.service;
 
 import java.util.List;
 

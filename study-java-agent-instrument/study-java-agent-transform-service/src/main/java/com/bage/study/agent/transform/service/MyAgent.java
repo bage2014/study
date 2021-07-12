@@ -1,6 +1,4 @@
-package com.bage.agent.transform;
-
-import com.bage.agent.model.MyClassInfo;
+package com.bage.study.agent.transform.service;
 
 import java.lang.instrument.Instrumentation;
 import java.util.Collections;
@@ -17,8 +15,8 @@ public class MyAgent {
      * @param instrumentation
      */
     public static void premain(String agentArgs, Instrumentation instrumentation) {
-        System.out.println("hello MyAgent premain");
-        MyClassInfo myClassInfo = new MyClassInfo("com.bage.demo.HelloService", Collections.singletonList("sayHi"));
+        System.out.println("MyAgent premain started....");
+        MyClassInfo myClassInfo = new MyClassInfo("com.bage.study.agent.demo.service.HelloService", Collections.singletonList("sayHi"));
         MyClassFileTransformer transformer = new MyClassFileTransformer(Collections.singletonList(myClassInfo));
         instrumentation.addTransformer(transformer);
     }
