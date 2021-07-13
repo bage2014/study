@@ -2,6 +2,9 @@
 
 ## 背景
 
+todo 类功能切换，计算方法耗时
+todo 画一个大概的执行图
+
 JVMTI
 
 调用链
@@ -27,6 +30,12 @@ attach 方式 JDK 1.6+
 ## API 接口
 
 包结构 
+
+- addTransformer – adds a transformer to the instrumentation engine
+- getAllLoadedClasses – returns an array of all classes currently loaded by the JVM
+- retransformClasses – facilitates the instrumentation of already loaded classes by adding byte-code
+- removeTransformer – unregisters the supplied transformer
+- redefineClasses – redefine the supplied set of classes using the supplied class files, meaning that the class will be fully replaced, not modified as with retransformClasses
 
 ![instrument-packages](./images/instrument-packages.png)
 
@@ -149,7 +158,8 @@ mvn assembly:assembly
 
 - 不能新增、删除、重命名属性或方法，也不能修改方法的签名
 - 修改字节码：1.基于源代码修改重新编译 2.javassist等等
-- 执行命令顺序不能更改
+- jar 执行命令顺序不能更改
+- 不能新加载一个不存在的class
 
 
 
@@ -161,6 +171,11 @@ mvn assembly:assembly
 
 [JAVA热部署，通过agent进行代码增量热替换！！！](http://www.manongjc.com/detail/19-xyhrjmatcudvkdo.html)
 
+[java-instrumentation](https://www.baeldung.com/java-instrumentation)
+
+[java-agent-1](https://dzone.com/articles/java-agent-1)
+
+[javaagent使用指南](https://www.cnblogs.com/rickiyang/p/11368932.html)
 
 
 
