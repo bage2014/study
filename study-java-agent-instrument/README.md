@@ -2,16 +2,13 @@
 
 ## 背景
 
-todo 类功能切换，计算方法耗时
-todo 画一个大概的执行图
-
 JVMTI
 
 调用链
 
 热更新
 
-线上debug
+线上Debug
 
 ## 概述
 
@@ -19,7 +16,7 @@ Java 探针
 
 JDK 1.5 +
 
-attach 方式 JDK 1.6+
+Attach 方式 JDK 1.6+
 
 ## 基本功能
 
@@ -160,6 +157,7 @@ mvn assembly:assembly
 - 修改字节码：1.基于源代码修改重新编译 2.javassist等等
 - jar 执行命令顺序不能更改
 - 不能新加载一个不存在的class
+- 慎用慎用
 
 
 
