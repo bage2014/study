@@ -12,6 +12,10 @@ JVMTI
 
 ## 概述
 
+Provides services that allow Java programming language agents to instrument programs running on the JVM. The mechanism for instrumentation is modification of the byte-codes of methods.
+
+java agent本质上可以理解为一个jar包插件，通过JVMTI（JVM Tool Interface）完成加载，最终借助JPLISAgent（Java Programming Language Instrumentation Services Agent）完成对目标代码的修改。
+
 Java 探针
 
 JDK 1.5 +
