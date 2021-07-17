@@ -111,7 +111,7 @@ java -javaagent:transform-service-1.0-SNAPSHOT.jar -jar demo-service-1.0-SNAPSHO
 
 **编写 MyAgent 类，agentmain 方法**
 
-![code-agt](./images/code-agt.png)
+![code-agt](./images/code-agent-3.png)
 
 **配置 MyAgent，使之生效**
 
@@ -178,7 +178,6 @@ mvn assembly:assembly
 [java-agent-1](https://dzone.com/articles/java-agent-1)
 
 [javaagent使用指南](https://www.cnblogs.com/rickiyang/p/11368932.html)
-
 
 
 
