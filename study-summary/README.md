@@ -254,6 +254,10 @@ GC触发原因；
 
 常用命令，参数调优；
 
+### Java Agent ###
+
+[Java Agent & Instrument](https://github.com/bage2014/study/tree/master/study-java-agent-instrument)
+
 ## 性能优化 ##
 
 CPU、Memory、Disk、Network等指标；
