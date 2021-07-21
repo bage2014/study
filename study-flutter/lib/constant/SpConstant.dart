@@ -7,4 +7,6 @@ class SpConstant {
   static String port_key = '_port_key';
   static String port_value_default = '8088';
 
+  static String tv_list_cache_key = 'tv_list_cache_key';
+
 }

@@ -1,4 +1,5 @@
 import 'package:app_lu_lu/component/cache/HttpRequestCaches.dart';
+import 'package:app_lu_lu/component/cache/TvCaches.dart';
 import 'package:app_lu_lu/component/cache/UserCaches.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/utils/AppUtils.dart';
@@ -10,6 +11,7 @@ class Application {
    */
   static void init(BuildContext context) {
     HttpRequestCaches.init();
+    TvCaches.init();
     AppUtils.getDeviceId()
         .then((deviceId) => {UserCaches.setUserId(deviceId.hashCode)});
     HttpRequests.init();
