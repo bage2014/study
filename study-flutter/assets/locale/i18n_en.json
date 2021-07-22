@@ -37,10 +37,13 @@
   "tv.list.bottomFavorite":"Favorite",
 
   "about.title":"About",
-  "about.versions":"版本历史",
+  "about.versions":"Versions",
   "about.device.id":"Device ID",
   "about.author":"About Author",
   "about.share":"Share APP",
+
+  "about.version.start":"Start",
+  "about.version.name":"Version",
 
   "about.author.title":"About Author",
   "about.author.name":"Name",

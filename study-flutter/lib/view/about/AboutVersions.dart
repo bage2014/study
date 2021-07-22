@@ -80,7 +80,7 @@ class _AboutVersions extends State<AboutVersions> {
           list = response.data ?? [];
           if (list.length > 0) {
             AppVersion value = new AppVersion();
-            value.versionName = 'Start';
+            value.versionName = Translations.textOf(context, 'about.version.start');
             list.insert(0, value);
           }
         }
@@ -150,7 +150,7 @@ class _DeliveryProcesses extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '版本 ${version.versionName}',
+                          '${Translations.textOf(context, 'about.version.name')} ${version.versionName}',
                           style: DefaultTextStyle.of(context).style.copyWith(
                                 fontSize: 20.0,
                               ),

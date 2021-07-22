@@ -22,7 +22,6 @@ class TvCaches {
   }
 
   static int getTvIndex(int id) {
-    Logs.info('TvCaches ${id}: ${map[id.toString()]}');
     return map[id.toString()]??0;
   }
 

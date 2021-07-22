@@ -183,6 +183,7 @@ class _TV extends State<TV> {
     Logs.info('index = $index');
     if (index != null) {
       TvCaches.setTvIndex(id, index);
+      _onRefresh();
     }
   }
 
