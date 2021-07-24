@@ -1,5 +1,6 @@
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/view/about/AboutVersions.dart';
+import 'package:app_lu_lu/view/apks/Apks.dart';
 import 'package:app_lu_lu/view/family/FamilyEvents.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/constant/RouteNameConstant.dart';
@@ -26,6 +27,10 @@ class RouteConfiguration {
     RoutPath(
       RouteNameConstant.route_name_tv,
       (context, match) => TV(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_apks,
+      (context, match) => Apks(),
     ),
     RoutPath(
       RouteNameConstant.route_name_settings,

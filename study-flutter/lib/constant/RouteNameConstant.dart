@@ -11,6 +11,7 @@ class RouteNameConstant{
   static String route_name_about_versions = "about/versions";
   static String route_name_about_author = "about/author";
   static String route_name_profile = "profile";
+  static String route_name_apks = "apks";
 
   static String route_name_family_events = "family/events";
 
