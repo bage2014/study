@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 class AboutAuthorTabView extends StatelessWidget {
   const AboutAuthorTabView({Key? key, required this.tab, required this.authorInfo}) : super(key: key);
 
-  final AboutAuthorTab tab;
+  final TabTitle tab;
   final AuthorInfo authorInfo;
   static const String key_basic = 'basic';
   static const String key_activity = 'activity';
 
-  static List<AboutAuthorTab> init() {
-    List<AboutAuthorTab> tabs = [];
-    tabs.add(new AboutAuthorTab(key_basic, '基本信息'));
+  static List<TabTitle> init() {
+    List<TabTitle> tabs = [];
+    tabs.add(new TabTitle(key_basic, '基本信息'));
     // tabs.add(new AboutAuthorTab(key_activity, '最新动态'));
     return tabs;
   }

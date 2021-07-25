@@ -1,8 +1,8 @@
 
 
-class AboutAuthorTab {
+class TabTitle {
   String key = '';
   String text = '';
 
-  AboutAuthorTab(this.key, this.text);
+  TabTitle(this.key, this.text);
 }

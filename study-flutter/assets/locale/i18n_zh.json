@@ -20,6 +20,7 @@
 
   "settings.title":"设置 ",
   "settings.checkForUpdate":"检查更新",
+  "settings.feedbacks":"用户留言",
   "settings.alreadyLatestVersion":"当前版本已经是最新版本!",
   "settings.downloading":"正在下载...",
   "settings.upgrade.dialog.title":"确认更新? ",

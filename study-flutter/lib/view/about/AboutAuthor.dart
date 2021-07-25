@@ -14,7 +14,7 @@ class AboutAuthor extends StatefulWidget {
 class _AboutAuthor extends State<AboutAuthor>
     with SingleTickerProviderStateMixin {
   late TabController _tabController; //需要定义一个Controller
-  List<AboutAuthorTab> tabs = [];
+  List<TabTitle> tabs = [];
   late AuthorInfo authorInfo;
   bool isLoading = true;
 

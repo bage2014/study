@@ -20,6 +20,7 @@
 
   "settings.title":"Settings ",
   "settings.checkForUpdate":"Check For Update",
+  "settings.feedbacks":"Feedbacks",
   "settings.alreadyLatestVersion":"This is already the latest version! ",
   "settings.downloading":"Downloading...",
   "settings.upgrade.dialog.title":"Do upgrade to the latest version? ",

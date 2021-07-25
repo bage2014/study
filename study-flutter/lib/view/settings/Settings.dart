@@ -89,6 +89,18 @@ class _Settings extends State<Settings> {
               onTap: _checkAppInfo,
             ),
           ),
+          Container(
+            alignment: Alignment.center,
+            child: ListTile(
+              title:
+              Text(Translations.textOf(context, "settings.feedbacks")),
+              trailing: Icon(Icons.chevron_right),
+              onTap: (){
+                Navigator.of(context)
+                    .pushNamed(RouteNameConstant.route_name_setting_feedbacks);
+              },
+            ),
+          ),
         ]),
       ),
     );
