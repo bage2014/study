@@ -1,6 +1,14 @@
+import 'dart:collection';
+import 'dart:convert';
+
+import 'package:app_lu_lu/component/cache/UserCaches.dart';
+import 'package:app_lu_lu/component/http/HttpRequests.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/constant/HttpConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/AboutAuthorTab.dart';
 import 'package:app_lu_lu/model/AppFeedback.dart';
+import 'package:app_lu_lu/model/FeedbackQueryResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,8 +41,6 @@ class FeedbackTabView extends StatelessWidget {
   }
 }
 
-AppFeedback _data(int id) => AppFeedback('hello ${id}', 'world ${id}');
-
 class _FeedbackTabView extends StatefulWidget {
   @override
   _FeedbackTabState createState() => new _FeedbackTabState();
@@ -45,7 +51,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
 
   @override
   void initState() {
-    list.add(_data(list.length + 1));
+    _onRefresh();
   }
 
   @override
@@ -67,7 +73,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                   child: Card(
                     margin: EdgeInsets.all(8.0),
                     child: Text(
-                      'hello',
+                      list[index]?.msgContent ?? '',
                       style: DefaultTextStyle.of(context).style.copyWith(
                             fontSize: 14.0,
                           ),
@@ -81,8 +87,24 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
   }
 
   Future<Null> _onRefresh() async {
-    setState(() {
-      list.add(_data(list.length + 1));
+    Map<String, dynamic> paramJson = new HashMap();
+    paramJson.putIfAbsent("fromUserId", () => UserCaches.getUserId());
+    paramJson.putIfAbsent("targetPage", () => 1);
+    paramJson.putIfAbsent("pageSize", () => 100);
+    Map<String, String> param = new HashMap();
+    param.putIfAbsent("param", () => json.encode(paramJson));
+    HttpRequests.get(HttpConstant.url_settings_app_feedback_query, param, null)
+        .then((result) {
+      Logs.info('_onRefresh responseBody=' + (result.responseBody ?? ""));
+      setState(() {
+        FeedbackQueryResult feedbackQueryResult = FeedbackQueryResult.fromJson(
+            json.decode(result?.responseBody ?? ""));
+        if (feedbackQueryResult.code == 200) {
+          list = feedbackQueryResult.data ?? [];
+        }
+      });
+    }).catchError((error) {
+      print(error.toString());
     });
   }
 }

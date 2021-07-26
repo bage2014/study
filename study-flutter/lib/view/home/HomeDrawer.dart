@@ -1,14 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:app_lu_lu/component/dialog/Dialogs.dart';
+import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/constant/RouteNameConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
+import 'package:app_lu_lu/utils/AppUtils.dart';
+import 'package:flutter/material.dart';
 
 class HomeDrawer extends StatelessWidget {
-  const HomeDrawer({
+  HomeDrawer({
     Key? key,
   }) : super(key: key);
 
+  late BuildContext _context;
+
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return Drawer(
       child: MediaQuery.removePadding(
         context: context,
@@ -54,6 +60,15 @@ class HomeDrawer extends StatelessWidget {
                           .pushNamed(RouteNameConstant.route_name_about);
                     },
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.exit_to_app),
+                    title:
+                        Text(Translations.textOf(context, "home.drawer.exit")),
+                    onTap: () {
+                      // 确认框
+                      checkExitApp();
+                    },
+                  ),
 //                  ListTile(
 //                    leading: const Icon(Icons.person),
 //                    title: Text(Translations.textOf(context, "home.drawer.profile")),
@@ -76,5 +91,14 @@ class HomeDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> checkExitApp() async {
+    String? showConfirmDialog = await Dialogs.showConfirmDialog(
+        _context, Translations.textOf(_context, "home.back.confirm"), null);
+    Logs.info('checkExitApp showConfirmDialog = $showConfirmDialog');
+    if ("true" == showConfirmDialog) {
+      AppUtils.exitApp();
+    }
   }
 }

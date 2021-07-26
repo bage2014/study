@@ -1,3 +1,4 @@
+import 'package:app_lu_lu/utils/AppUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lu_lu/component/dialog/Dialogs.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
@@ -99,9 +100,10 @@ class _ScaffoldRouteState extends State<Home> {
     if (DateTime.now().difference(_lastTime) > Duration(seconds: 1)) {
       //两次点击间隔超过1s重新计时
       _lastTime = DateTime.now();
-      Toasts.show("再点一次退出应用");
+      Toasts.show(Translations.textOf(context, "home.back.exit.double.tips"));
       return false;
     }
+    AppUtils.exitApp();
     return true;
   }
 

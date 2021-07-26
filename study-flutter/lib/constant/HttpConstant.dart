@@ -10,6 +10,8 @@ class HttpConstant{
   static String url_settings_app_download = "/ignore/android/app/version/check/{version}";
   static String url_settings_app_latest = "/ignore/android/app/version/latest";
   static String url_settings_app_versions = "/ignore/android/app/version/query";
+  static String url_settings_app_feedback_query = "/ignore/feedbackMessage/query/page";
+  static String url_settings_app_feedback_insert = "/ignore/feedbackMessage/insert";
 
 }
 

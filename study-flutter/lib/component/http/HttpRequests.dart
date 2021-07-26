@@ -87,6 +87,8 @@ class HttpRequests {
     try {
       path = rebuildUrl(path);
       Logs.info('_doDownloadRequest path = ${path}');
+      Logs.info('_doDownloadRequest parameters = ${parameters}');
+      Logs.info('_doDownloadRequest data = ${data}');
       _dio.options = _buildDownloadOption(parameters, data, headers);
       Response response;
       if ("get".compareTo(method) == 0) {
@@ -126,6 +128,8 @@ class HttpRequests {
     try {
       path = rebuildUrl(path);
       Logs.info('_doBaseRequest path = ${path}');
+      Logs.info('_doBaseRequest parameters = ${parameters}');
+      Logs.info('_doBaseRequest data = ${data}');
       _dio.options = _buildOption(
           parameters == null ? {} : parameters,
           data,
