@@ -98,26 +98,52 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: <Widget>[
-                                        Text(" Bage lu ",
+                                        Text("Bage lu ",
                                             style: TextStyle(
                                                 fontSize: 17.0,
                                                 fontWeight: FontWeight.bold)),
                                       ],
                                     ),
-                                    Text(
-                                      " hello world,\n " * 5,
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(" hello world "),
-                                        Text(" I am Jack "),
-                                      ],
-                                    )
+                                    Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                            0.0, 8.0, 0.0, 0.0),
+                                        child: Container(
+                                          constraints: BoxConstraints(
+                                            maxWidth: 200,
+                                          ),
+                                          child: Text(
+                                            "hello world, " * 8,
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        )),
+                                    Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                            0.0, 8.0, 0.0, 0.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.favorite,
+                                                    color: Colors.red,
+                                                  ),
+                                                  Text("4 "),
+                                                ]),
+                                            Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.access_time,
+                                                    color: Colors.blue,
+                                                  ),
+                                                  Text("4 minute ago"),
+                                                ])
+                                          ],
+                                        ))
                                   ],
                                 )
                               ],
