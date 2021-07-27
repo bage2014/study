@@ -86,6 +86,12 @@ dependencies:
   # https://pub.flutter-io.cn/packages/flutter_staggered_grid_view/install
   flutter_staggered_grid_view: ^0.4.0
 
+  # https://pub.dev/packages/zefyr/install
+  zefyr: ^0.12.0
+
+  # https://pub.dev/packages/extended_text_field/install
+  extended_text_field: ^8.0.0
+
   # https://pub.dev/packages/google_fonts
   # https://pub.dev/packages/json_serializable
   # https://pub.dev/packages/sentry
@@ -95,7 +101,6 @@ dependencies:
   # https://pub.dev/packages/image_picker
   # https://pub.dev/packages/cached_network_image
   # https://pub.dev/packages/carousel_slider 图片侧滑
-  # https://pub.dev/packages/flutter_staggered_grid_view
   # https://pub.dev/packages/introduction_screen
   # https://pub.dev/packages/video_player
   # https://pub.dev/packages/photo_view
@@ -105,7 +110,10 @@ dependencies:
   # https://pub.dev/packages/stream_chat_flutter
   # https://pub.dev/packages/flutter_linkify # 富文本显示
   # https://pub.dev/packages/extended_text_field
+  # https://pub.dev/packages/zefyr/install
   # https://pub.dev/packages/dart_json_mapper
+  # https://pub.dev/packages/showcaseview
+  # https://pub.dev/packages/logger
 
 
 dev_dependencies:
@@ -128,10 +136,9 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/locale/i18n_en.json
-    - assets/locale/i18n_zh.json
-    - assets/images/logo128.png
-    - assets/images/user_null.png
+    - assets/locale/
+    - assets/images/
+    - assets/emoji/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

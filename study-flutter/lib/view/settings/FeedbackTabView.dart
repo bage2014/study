@@ -48,9 +48,11 @@ class _FeedbackTabView extends StatefulWidget {
 
 class _FeedbackTabState extends State<_FeedbackTabView> {
   List<AppFeedback> list = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
+    _isLoading = true;
     _onRefresh();
   }
 
@@ -58,31 +60,73 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _onRefresh,
-      child: list.length == 0
-          ? Center(
-              child: Text(
-                Translations.textOf(context, "all.list.view.no.data"),
-                textAlign: TextAlign.center,
-              ),
-            )
-          : ListView.separated(
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                return new GestureDetector(
-                  onTap: () {},
-                  child: Card(
-                    margin: EdgeInsets.all(8.0),
+      child: Container(
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                backgroundColor: Colors.grey[200],
+                valueColor: AlwaysStoppedAnimation(Colors.blue),
+              ))
+            : (list.length == 0
+                ? Center(
                     child: Text(
-                      list[index]?.msgContent ?? '',
-                      style: DefaultTextStyle.of(context).style.copyWith(
-                            fontSize: 14.0,
-                          ),
+                      Translations.textOf(context, "all.list.view.no.data"),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => Divider(height: .0),
-            ),
+                  )
+                : ListView.separated(
+                    itemCount: list.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return new GestureDetector(
+                          onTap: () {},
+                          child: Card(
+                            margin: EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                ClipOval(
+                                  child: Image(
+                                      image: AssetImage(
+                                          "assets/images/logo128.png")),
+                                ),
+                                Column(
+                                  //测试Row对齐方式，排除Column默认居中对齐的干扰
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(" Bage lu ",
+                                            style: TextStyle(
+                                                fontSize: 17.0,
+                                                fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
+                                    Text(
+                                      " hello world,\n " * 5,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(" hello world "),
+                                        Text(" I am Jack "),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ));
+                    },
+                    separatorBuilder: (context, index) => Divider(height: .0),
+                  )),
+      ),
     );
   }
 
@@ -95,6 +139,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
     param.putIfAbsent("param", () => json.encode(paramJson));
     HttpRequests.get(HttpConstant.url_settings_app_feedback_query, param, null)
         .then((result) {
+      hideLoading();
       Logs.info('_onRefresh responseBody=' + (result.responseBody ?? ""));
       setState(() {
         FeedbackQueryResult feedbackQueryResult = FeedbackQueryResult.fromJson(
@@ -105,6 +150,13 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
       });
     }).catchError((error) {
       print(error.toString());
+      hideLoading();
+    });
+  }
+
+  hideLoading() {
+    setState(() {
+      _isLoading = false;
     });
   }
 }
