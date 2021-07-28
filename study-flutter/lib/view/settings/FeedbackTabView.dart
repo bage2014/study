@@ -82,72 +82,80 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                           onTap: () {},
                           child: Card(
                             margin: EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                ClipOval(
-                                  child: Image(
-                                      image: AssetImage(
-                                          "assets/images/logo128.png")),
-                                ),
-                                Column(
-                                  //测试Row对齐方式，排除Column默认居中对齐的干扰
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text("Bage lu ",
-                                            style: TextStyle(
-                                                fontSize: 17.0,
-                                                fontWeight: FontWeight.bold)),
-                                      ],
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            0.0, 8.0, 0.0, 0.0),
-                                        child: Container(
-                                          constraints: BoxConstraints(
-                                            maxWidth: 200,
-                                          ),
-                                          child: Text(
-                                            "hello world, " * 8,
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        )),
-                                    Padding(
-                                        padding: EdgeInsets.fromLTRB(
-                                            0.0, 8.0, 0.0, 0.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Icon(
-                                                    Icons.favorite,
-                                                    color: Colors.red,
-                                                  ),
-                                                  Text("4 "),
-                                                ]),
-                                            Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Icon(
-                                                    Icons.access_time,
-                                                    color: Colors.blue,
-                                                  ),
-                                                  Text("4 minute ago"),
-                                                ])
-                                          ],
-                                        ))
-                                  ],
-                                )
-                              ],
-                            ),
+                            child: new Row(
+                                children: [
+                                  ClipOval(
+                                    child: Image(
+                                        width: 48.0,
+                                        height: 48.0,
+                                        image: AssetImage(
+                                            "assets/images/logo128.png")),
+                                  ),
+                                  Column(
+                                    //测试Row对齐方式，排除Column默认居中对齐的干扰
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text("Bage lu ",
+                                              style: TextStyle(
+                                                  fontSize: 17.0,
+                                                  fontWeight: FontWeight.bold)),
+                                        ],
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              0.0, 8.0, 0.0, 0.0),
+                                          child: Container(
+                                            constraints: BoxConstraints(
+                                              maxWidth: 200,
+                                            ),
+                                            child: Text(
+                                              "hello world, " * 8,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          )),
+                                      Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              0.0, 8.0, 0.0, 0.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Icon(
+                                                      Icons.thumb_up,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    Text(" 100 "),
+                                                    Icon(
+                                                      Icons.thumb_down,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    Text(" 4 "),
+                                                  ]),
+                                              Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Icon(
+                                                      Icons.access_time,
+                                                      color: Colors.blue,
+                                                    ),
+                                                    Text(" 4 minute ago "),
+                                                  ])
+                                            ],
+                                          ))
+                                    ],
+                                  )
+                                ]),
                           ));
                     },
                     separatorBuilder: (context, index) => Divider(height: .0),
