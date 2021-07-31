@@ -78,84 +78,141 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                     itemCount: list.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
+                      AppFeedback appFeedback = list[index];
                       return new GestureDetector(
                           onTap: () {},
                           child: Card(
-                            margin: EdgeInsets.all(8.0),
-                            child: new Row(
-                                children: [
-                                  ClipOval(
-                                    child: Image(
-                                        width: 48.0,
-                                        height: 48.0,
-                                        image: AssetImage(
-                                            "assets/images/logo128.png")),
-                                  ),
-                                  Column(
-                                    //测试Row对齐方式，排除Column默认居中对齐的干扰
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text("Bage lu ",
-                                              style: TextStyle(
-                                                  fontSize: 17.0,
-                                                  fontWeight: FontWeight.bold)),
-                                        ],
+                            clipBehavior: Clip.antiAlias,
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 6),
+                            child: Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(left: 10, right: 5),
+                                    width: 100.0,
+                                    child: AspectRatio(
+                                      aspectRatio: 1.2,
+                                      child: ClipOval(
+                                        child: Image(
+                                            width: 48.0,
+                                            height: 48.0,
+                                            image: AssetImage(
+                                                "assets/images/logo128.png")),
                                       ),
-                                      Padding(
-                                          padding: EdgeInsets.fromLTRB(
-                                              0.0, 8.0, 0.0, 0.0),
-                                          child: Container(
-                                            constraints: BoxConstraints(
-                                              maxWidth: 200,
-                                            ),
-                                            child: Text(
-                                              "hello world, " * 8,
-                                              maxLines: 3,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          )),
-                                      Padding(
-                                          padding: EdgeInsets.fromLTRB(
-                                              0.0, 8.0, 0.0, 0.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5, vertical: 10),
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                    child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Icon(
-                                                      Icons.thumb_up,
-                                                      color: Colors.grey,
+                                                    Container(
+                                                      child: Text(
+                                                          '${appFeedback.fromUserId}',
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 15)),
                                                     ),
-                                                    Text(" 100 "),
-                                                    Icon(
-                                                      Icons.thumb_down,
-                                                      color: Colors.grey,
-                                                    ),
-                                                    Text(" 4 "),
-                                                  ]),
-                                              Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
+                                                  ],
+                                                )),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                    child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Icon(
-                                                      Icons.access_time,
-                                                      color: Colors.blue,
+                                                    Container(
+                                                      child: Text(
+                                                        '${appFeedback.msgContent}',
+                                                        maxLines: 3,
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Colors.black87),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
                                                     ),
-                                                    Text(" 4 minute ago "),
-                                                  ])
-                                            ],
-                                          ))
-                                    ],
-                                  )
-                                ]),
+                                                  ],
+                                                )),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                    child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 8.0,
+                                                            right: 0.0),
+                                                        child: Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: <Widget>[
+                                                              Icon(
+                                                                Icons.thumb_up,
+                                                                color:
+                                                                    Colors.grey,
+                                                              ),
+                                                              Text(" 100 " +
+                                                                  '\t\t\t'),
+                                                              Icon(
+                                                                Icons
+                                                                    .thumb_down,
+                                                                color:
+                                                                    Colors.grey,
+                                                              ),
+                                                              Text(" 5 "),
+                                                            ]))),
+                                                Expanded(
+                                                    child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 8.0, right: 8.0),
+                                                      child: Text(
+                                                        '${appFeedback.createTime}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.grey),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ],
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ));
                     },
                     separatorBuilder: (context, index) => Divider(height: .0),

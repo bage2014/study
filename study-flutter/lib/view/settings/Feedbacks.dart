@@ -66,69 +66,25 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
       body: Container(
         alignment: Alignment.center,
         child:
-        Card(
-            elevation: 5,//阴影
-            shape: const RoundedRectangleBorder(//形状
-              //修改圆角
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            color: Colors.white, //颜色
-            margin: EdgeInsets.all(20), //margin
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  leading: Icon(Icons.android),
-                  title: Text('标题'),
-                  subtitle: Text('副标题'),
-                  trailing: Icon(Icons.chevron_right),
-                ),
-                ButtonTheme.bar(
-                  // make buttons use the appropriate styles for cards
-                  child: ButtonBar(
-                    children: <Widget>[
-                      FlatButton(
-                        child: const Text('选项一'),
-                        onPressed: () {
-                          /* ... */
-                        },
-                      ),
-                      FlatButton(
-                        child: const Text('选项二'),
-                        onPressed: () {
-                          /* ... */
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(),
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Text("AAAAAAAAAAAA"),
-                )
-              ],
-            )
-        )
 
-        // Column(children: <Widget>[
-        //   Expanded(
-        //     child: Container(
-        //       child: TabBarView(
-        //         controller: _tabController,
-        //         children: tabs.map((e) {
-        //           return Container(
-        //             child:
-        //             FeedbackTabView(
-        //               tab: e,
-        //               feedbacks: [],
-        //             ),
-        //           );
-        //         }).toList(),
-        //       ),
-        //     ),
-        //   ),
-        // ]),
+        Column(children: <Widget>[
+          Expanded(
+            child: Container(
+              child: TabBarView(
+                controller: _tabController,
+                children: tabs.map((e) {
+                  return Container(
+                    child:
+                    FeedbackTabView(
+                      tab: e,
+                      feedbacks: [],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ]),
 
       ),
       floatingActionButton: new FloatingActionButton(
