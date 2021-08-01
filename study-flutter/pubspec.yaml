@@ -92,6 +92,9 @@ dependencies:
   # https://pub.dev/packages/extended_text_field/install
   extended_text_field: ^8.0.0
 
+  # https://pub.dev/packages/event_bus
+  event_bus: ^2.0.0
+
 #  # https://pub.dev/packages/timeago
 #  timeago: ^3.1.0
 

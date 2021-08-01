@@ -2,11 +2,14 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:app_lu_lu/component/cache/UserCaches.dart';
+import 'package:app_lu_lu/component/dialog/Dialogs.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/AboutAuthorTab.dart';
+import 'package:app_lu_lu/model/AppFeedback.dart';
+import 'package:app_lu_lu/utils/DateTimeUtils.dart';
 import 'package:flutter/material.dart';
 
 import 'FeedbackTabView.dart';
@@ -20,13 +23,18 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
   late TabController _tabController; //需要定义一个Controller
   List<TabTitle> tabs = [];
 
-  void _insertFeedback() {
-    Map<String, dynamic> paramJson = new HashMap();
-    paramJson.putIfAbsent("fromUserId", () => UserCaches.getUserId());
-    paramJson.putIfAbsent("targetPage", () => 1);
-    paramJson.putIfAbsent("pageSize", () => 100);
+  Future<void> _insertFeedback() async {
+    String msgContent =
+        await Dialogs.showInputBottomSheet(context, "请输入留言内容", "") ?? "";
+    if (msgContent.isEmpty) {
+      return;
+    }
+    AppFeedback feedback = AppFeedback();
+    feedback.fromUserId = UserCaches.getUserId();
+    feedback.msgContent = msgContent;
+    feedback.sendTime = DateTimeUtils.format(DateTime.now());
     Map<String, String> param = new HashMap();
-    param.putIfAbsent("param", () => json.encode(paramJson));
+    param.putIfAbsent("param", () => jsonEncode(feedback.toJson()));
     HttpRequests.post(
             HttpConstant.url_settings_app_feedback_insert, param, null)
         .then((result) {
@@ -65,17 +73,14 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
       ),
       body: Container(
         alignment: Alignment.center,
-        child:
-
-        Column(children: <Widget>[
+        child: Column(children: <Widget>[
           Expanded(
             child: Container(
               child: TabBarView(
                 controller: _tabController,
                 children: tabs.map((e) {
                   return Container(
-                    child:
-                    FeedbackTabView(
+                    child: FeedbackTabView(
                       tab: e,
                       feedbacks: [],
                     ),
@@ -85,7 +90,6 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
             ),
           ),
         ]),
-
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: _insertFeedback,

@@ -1,14 +1,16 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:app_lu_lu/component/cache/UserCaches.dart';
+import 'package:app_lu_lu/component/dialog/Dialogs.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
+import 'package:app_lu_lu/constant/LocaleConstant.dart';
 import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/AboutAuthorTab.dart';
 import 'package:app_lu_lu/model/AppFeedback.dart';
 import 'package:app_lu_lu/model/FeedbackQueryResult.dart';
-import 'package:app_lu_lu/utils/DateTimeUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,9 +34,9 @@ class FeedbackTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (tab.key) {
       case key_all:
-        return _FeedbackTabView();
+        return _FeedbackTabView(false);
       case key_my:
-        return _FeedbackTabView();
+        return _FeedbackTabView(true);
       default:
         return Text('');
     }
@@ -42,17 +44,28 @@ class FeedbackTabView extends StatelessWidget {
 }
 
 class _FeedbackTabView extends StatefulWidget {
+  late bool _isMe;
+
+  _FeedbackTabView(bool isMe) {
+    _isMe = isMe;
+  }
+
   @override
-  _FeedbackTabState createState() => new _FeedbackTabState();
+  _FeedbackTabState createState() => new _FeedbackTabState(_isMe);
 }
 
 class _FeedbackTabState extends State<_FeedbackTabView> {
   List<AppFeedback> list = [];
   bool _isLoading = false;
+  bool _isMe = false;
+
+  _FeedbackTabState(bool isMe) {
+    _isMe = isMe;
+  }
 
   @override
   void initState() {
-    _isLoading = true;
+    showLoading();
     _onRefresh();
   }
 
@@ -123,7 +136,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                   children: <Widget>[
                                                     Container(
                                                       child: Text(
-                                                          '${appFeedback.fromUserName ?? ''}',
+                                                          '${appFeedback.fromUserName ?? '佚名'}',
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: TextStyle(
@@ -133,6 +146,36 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                     ),
                                                   ],
                                                 )),
+                                                _isMe
+                                                    ? Expanded(
+                                                        child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: <Widget>[
+                                                              Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          top:
+                                                                              8.0,
+                                                                          right:
+                                                                              8.0),
+                                                                  child: IconButton(
+                                                                      icon: Icon(
+                                                                        Icons
+                                                                            .delete,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        size:
+                                                                            20.0,
+                                                                      ),
+                                                                      onPressed: () {
+                                                                        _delete(
+                                                                            appFeedback);
+                                                                      })),
+                                                            ]),
+                                                      )
+                                                    : SizedBox.shrink(),
                                               ],
                                             ),
                                             SizedBox(
@@ -236,10 +279,12 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
 
   Future<Null> _onRefresh() async {
     Map<String, dynamic> paramJson = new HashMap();
-    // paramJson.putIfAbsent("fromUserId", () => UserCaches.getUserId());
-    paramJson.putIfAbsent("fromUserId", () => 1585040893666);
     paramJson.putIfAbsent("targetPage", () => 1);
     paramJson.putIfAbsent("pageSize", () => 100);
+    if(_isMe){
+      paramJson.putIfAbsent("fromUserId", () => UserCaches.getUserId());
+    }
+
     Map<String, String> param = new HashMap();
     param.putIfAbsent("param", () => json.encode(paramJson));
     HttpRequests.get(HttpConstant.url_settings_app_feedback_query, param, null)
@@ -259,9 +304,37 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
     });
   }
 
+  Future<Null> _delete(AppFeedback appFeedback) async {
+    // 确认框
+    String? showConfirmDialog = await Dialogs.showConfirmDialog(
+        context,
+        Translations.textOf(context, LocaleConstant.all_delete_confirm),
+        null);
+    if ("true" == showConfirmDialog) {
+      Map<String, dynamic> param = new HashMap();
+      param.putIfAbsent("param", () => appFeedback.id);
+      showLoading();
+      HttpRequests.post(
+              HttpConstant.url_settings_app_feedback_delete, param, null)
+          .then((result) {
+        Logs.info('_delete responseBody=' + (result.responseBody ?? ""));
+        _onRefresh();
+      }).catchError((error) {
+        print(error.toString());
+        hideLoading();
+      });
+    }
+  }
+
   hideLoading() {
     setState(() {
       _isLoading = false;
+    });
+  }
+
+  showLoading() {
+    setState(() {
+      _isLoading = true;
     });
   }
 }

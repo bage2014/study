@@ -83,7 +83,6 @@ class Dialogs {
     );
   }
 
-
   // ref: https://stackoverflow.com/questions/53311553/how-to-set-showmodalbottomsheet-to-full-height
   static Future<int?> showButtonSelectDialog(
       BuildContext context, List<String> contents, List<Icon>? icons) {
@@ -96,14 +95,16 @@ class Dialogs {
             itemCount: contents.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              return icons == null ? ListTile(
-                title: Text(contents[index]),
-                onTap: () => Navigator.of(context).pop(index),
-              ) : ListTile(
-                title: Text(contents[index]),
-                trailing: icons[index],
-                onTap: () => Navigator.of(context).pop(index),
-              );
+              return icons == null
+                  ? ListTile(
+                      title: Text(contents[index]),
+                      onTap: () => Navigator.of(context).pop(index),
+                    )
+                  : ListTile(
+                      title: Text(contents[index]),
+                      trailing: icons[index],
+                      onTap: () => Navigator.of(context).pop(index),
+                    );
             })
       ]),
     );
@@ -162,5 +163,58 @@ class Dialogs {
         );
       },
     );
+  }
+
+  static Future<String?> showInputBottomSheet(
+      BuildContext context, String helperText, String defaultValue) {
+    TextEditingController _controller = TextEditingController.fromValue(
+        TextEditingValue(
+            text: defaultValue,
+            selection: TextSelection.fromPosition(TextPosition(
+                affinity: TextAffinity.downstream,
+                offset: defaultValue.length))));
+    return showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.horizontal(
+          left: Radius.circular(8),
+          right: Radius.circular(8),
+        )),
+        builder: (BuildContext context) {
+          return Container(
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextField(
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10.0),
+                        helperText: helperText,
+                      ),
+                      autofocus: true, //自动获取焦点，设置false
+                    ),
+                  ],
+                )),
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      IconButton(
+                          icon: Icon(
+                            Icons.send,
+                            color: Colors.blue,
+                            size: 20.0,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pop(_controller.text.toString());
+                          }),
+                    ])
+              ],
+            ),
+          );
+        });
   }
 }
