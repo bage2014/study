@@ -92,6 +92,9 @@ dependencies:
   # https://pub.dev/packages/extended_text_field/install
   extended_text_field: ^8.0.0
 
+#  # https://pub.dev/packages/timeago
+#  timeago: ^3.1.0
+
   # https://pub.dev/packages/google_fonts
   # https://pub.dev/packages/json_serializable
   # https://pub.dev/packages/sentry

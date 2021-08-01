@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:app_lu_lu/component/cache/UserCaches.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
@@ -9,6 +8,7 @@ import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/AboutAuthorTab.dart';
 import 'package:app_lu_lu/model/AppFeedback.dart';
 import 'package:app_lu_lu/model/FeedbackQueryResult.dart';
+import 'package:app_lu_lu/utils/DateTimeUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -123,7 +123,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                   children: <Widget>[
                                                     Container(
                                                       child: Text(
-                                                          '${appFeedback.fromUserId}',
+                                                          '${appFeedback.fromUserName ?? ''}',
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: TextStyle(
@@ -147,10 +147,10 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                   children: <Widget>[
                                                     Container(
                                                       child: Text(
-                                                        '${appFeedback.msgContent}',
+                                                        '${appFeedback.msgContent ?? ''}',
                                                         maxLines: 3,
                                                         style: TextStyle(
-                                                            fontSize: 12,
+                                                            fontSize: 14,
                                                             color:
                                                                 Colors.black87),
                                                         overflow: TextOverflow
@@ -163,31 +163,44 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                             ),
                                             Row(
                                               children: <Widget>[
-                                                Expanded(
-                                                    child: Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 8.0,
-                                                            right: 0.0),
-                                                        child: Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: <Widget>[
-                                                              Icon(
-                                                                Icons.thumb_up,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                              Text(" 100 " +
-                                                                  '\t\t\t'),
-                                                              Icon(
-                                                                Icons
-                                                                    .thumb_down,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                              Text(" 5 "),
-                                                            ]))),
+                                                // Expanded(
+                                                //     child: Container(
+                                                //         margin: EdgeInsets.only(
+                                                //             top: 8.0,
+                                                //             right: 0.0),
+                                                //         child: Row(
+                                                //             crossAxisAlignment:
+                                                //                 CrossAxisAlignment
+                                                //                     .start,
+                                                //             children: <Widget>[
+                                                //               Icon(
+                                                //                 Icons.thumb_up,
+                                                //                 color:
+                                                //                     Colors.grey,
+                                                //                 size: 12.0,
+                                                //               ),
+                                                //               Text(
+                                                //                   " 100 " +
+                                                //                       '\t\t\t',
+                                                //                   style: TextStyle(
+                                                //                       fontSize:
+                                                //                           12,
+                                                //                       color: Colors
+                                                //                           .grey)),
+                                                //               Icon(
+                                                //                 Icons
+                                                //                     .thumb_down,
+                                                //                 color:
+                                                //                     Colors.grey,
+                                                //                 size: 12.0,
+                                                //               ),
+                                                //               Text(" 5 ",
+                                                //                   style: TextStyle(
+                                                //                       fontSize:
+                                                //                           12,
+                                                //                       color: Colors
+                                                //                           .grey)),
+                                                //             ]))),
                                                 Expanded(
                                                     child: Column(
                                                   crossAxisAlignment:
@@ -197,7 +210,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                       margin: EdgeInsets.only(
                                                           top: 8.0, right: 8.0),
                                                       child: Text(
-                                                        '${appFeedback.createTime}',
+                                                        '${appFeedback.sendTime}',
                                                         style: TextStyle(
                                                             fontSize: 12,
                                                             color: Colors.grey),
@@ -223,7 +236,8 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
 
   Future<Null> _onRefresh() async {
     Map<String, dynamic> paramJson = new HashMap();
-    paramJson.putIfAbsent("fromUserId", () => UserCaches.getUserId());
+    // paramJson.putIfAbsent("fromUserId", () => UserCaches.getUserId());
+    paramJson.putIfAbsent("fromUserId", () => 1585040893666);
     paramJson.putIfAbsent("targetPage", () => 1);
     paramJson.putIfAbsent("pageSize", () => 100);
     Map<String, String> param = new HashMap();

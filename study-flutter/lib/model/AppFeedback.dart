@@ -1,22 +1,26 @@
 class AppFeedback {
   int? id;
   int? fromUserId;
+  String? fromUserName;
   int? toUserId;
+  String? toUserName;
   String? msgContent;
   String? readStatus;
   String? sendTime;
-  Null? readTime;
+  String? readTime;
   String? msgType;
-  Null? createTime;
-  Null? updateTime;
-  Null? createStaffId;
-  Null? updateStaffId;
-  Null? deleteState;
+  String? createTime;
+  String? updateTime;
+  int? createStaffId;
+  int? updateStaffId;
+  String? deleteState;
 
   AppFeedback(
       {this.id,
       this.fromUserId,
+      this.fromUserName,
       this.toUserId,
+      this.toUserName,
       this.msgContent,
       this.readStatus,
       this.sendTime,
@@ -31,7 +35,9 @@ class AppFeedback {
   AppFeedback.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     fromUserId = json['fromUserId'];
+    fromUserName = json['fromUserName'];
     toUserId = json['toUserId'];
+    toUserName = json['toUserName'];
     msgContent = json['msgContent'];
     readStatus = json['readStatus'];
     sendTime = json['sendTime'];
@@ -48,7 +54,9 @@ class AppFeedback {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['fromUserId'] = this.fromUserId;
+    data['fromUserName'] = this.fromUserName;
     data['toUserId'] = this.toUserId;
+    data['toUserName'] = this.toUserName;
     data['msgContent'] = this.msgContent;
     data['readStatus'] = this.readStatus;
     data['sendTime'] = this.sendTime;
