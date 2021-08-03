@@ -167,7 +167,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                                         color: Colors
                                                                             .grey,
                                                                         size:
-                                                                            20.0,
+                                                                            14.0,
                                                                       ),
                                                                       onPressed: () {
                                                                         _delete(
