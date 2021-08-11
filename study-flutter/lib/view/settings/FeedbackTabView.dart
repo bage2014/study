@@ -115,7 +115,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                             width: 48.0,
                                             height: 48.0,
                                             image: AssetImage(
-                                                "assets/images/logo128.png")),
+                                                "assets/images/user_null.png")),
                                       ),
                                     ),
                                   ),
@@ -153,26 +153,18 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: <Widget>[
-                                                              Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          top:
-                                                                              8.0,
-                                                                          right:
-                                                                              8.0),
-                                                                  child: IconButton(
-                                                                      icon: Icon(
-                                                                        Icons
-                                                                            .delete,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                        size:
-                                                                            14.0,
-                                                                      ),
-                                                                      onPressed: () {
-                                                                        _delete(
-                                                                            appFeedback);
-                                                                      })),
+                                                              new GestureDetector(
+                                                                  onTap: () {
+                                                                    _delete(
+                                                                        appFeedback);
+                                                                  },
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    size: 20.0,
+                                                                  ))
                                                             ]),
                                                       )
                                                     : SizedBox.shrink(),
@@ -281,7 +273,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
     Map<String, dynamic> paramJson = new HashMap();
     paramJson.putIfAbsent("targetPage", () => 1);
     paramJson.putIfAbsent("pageSize", () => 100);
-    if(_isMe){
+    if (_isMe) {
       paramJson.putIfAbsent("fromUserId", () => UserCaches.getUserId());
     }
 
@@ -306,10 +298,8 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
 
   Future<Null> _delete(AppFeedback appFeedback) async {
     // 确认框
-    String? showConfirmDialog = await Dialogs.showConfirmDialog(
-        context,
-        Translations.textOf(context, LocaleConstant.all_delete_confirm),
-        null);
+    String? showConfirmDialog = await Dialogs.showConfirmDialog(context,
+        Translations.textOf(context, LocaleConstant.all_delete_confirm), null);
     if ("true" == showConfirmDialog) {
       Map<String, dynamic> param = new HashMap();
       param.putIfAbsent("param", () => appFeedback.id);
