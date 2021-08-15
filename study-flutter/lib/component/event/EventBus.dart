@@ -1,12 +1,18 @@
-// import 'package:event_bus/event_bus.dart';
-//
-//
-// class EventBus{
-//
-//   static void init(){
-//     eventBus.on()
-//         .listen((event) => _log.finest('event fired:  ${event.runtimeType}'));
-//   }
-//
-//
-// }
+import 'package:event_bus/event_bus.dart' as marcojakob;
+
+import 'EventListener.dart';
+
+class EventBus {
+  static marcojakob.EventBus _eventBus = marcojakob.EventBus();
+
+  static void publish(event) {
+    _eventBus.fire(event);
+  }
+
+  static void initConsumers() {
+    _eventBus.on<BaseEvent>().listen((event) {
+      // All events are of type UserLoggedInEvent (or subtypes of it).
+      event.consume(event.data);
+    });
+  }
+}
