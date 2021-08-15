@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:app_lu_lu/component/cache/UserCaches.dart';
 import 'package:app_lu_lu/component/dialog/Dialogs.dart';
+import 'package:app_lu_lu/component/event/EventBus.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
@@ -10,6 +11,7 @@ import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/AboutAuthorTab.dart';
 import 'package:app_lu_lu/model/AppFeedback.dart';
 import 'package:app_lu_lu/utils/DateTimeUtils.dart';
+import 'package:app_lu_lu/view/settings/FeedbackUpdateEvent.dart';
 import 'package:flutter/material.dart';
 
 import 'FeedbackTabView.dart';
@@ -40,11 +42,9 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
         .then((result) {
       Logs.info('_insertFeedback responseBody=' + (result?.responseBody ?? ""));
       setState(() {
-        // FeedbackQueryResult feedbackQueryResult =
-        // FeedbackQueryResult.fromJson(json.decode(result?.responseBody ?? ""));
-        // if (feedbackQueryResult.code == 200) {
-        //   list = feedbackQueryResult.data ?? [];
-        // }
+        FeedbackUpdateEvent event = FeedbackUpdateEvent();
+        event.data = 1234;
+        EventBus.publish(event);
       });
     }).catchError((error) {
       print(error.toString());

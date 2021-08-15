@@ -96,7 +96,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                           onTap: () {},
                           child: Card(
                             clipBehavior: Clip.antiAlias,
-                            elevation: 4,
+                            elevation: 2,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
                             margin: EdgeInsets.symmetric(
