@@ -1,9 +1,9 @@
 package com.bage.study.springboot.aop;
 
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class AsyncService {
 
     public void async1() {
