@@ -43,7 +43,7 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
       Logs.info('_insertFeedback responseBody=' + (result?.responseBody ?? ""));
       setState(() {
         FeedbackUpdateEvent event = FeedbackUpdateEvent();
-        event.data = 1234;
+        event.data = 1;
         EventBus.publish(event);
       });
     }).catchError((error) {
