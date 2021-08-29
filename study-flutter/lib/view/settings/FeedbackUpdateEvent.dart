@@ -1,12 +1,5 @@
-import 'package:app_lu_lu/component/log/Logs.dart';
+import 'package:app_lu_lu/component/event/BaseEvent.dart';
 
-class FeedbackUpdateEvent {
-  @override
-  var data;
-
-  @override
-  void consume(data) {
-    Logs.info("FeedbackUpdateEvent --- ");
-    Logs.info(data.toString());
-  }
+class FeedbackUpdateEvent extends BaseEvent {
+  String data = "hello world";
 }

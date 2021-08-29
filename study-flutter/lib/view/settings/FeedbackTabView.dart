@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:app_lu_lu/component/cache/UserCaches.dart';
 import 'package:app_lu_lu/component/dialog/Dialogs.dart';
+import 'package:app_lu_lu/component/event/EventBus.dart';
 import 'package:app_lu_lu/component/http/HttpRequests.dart';
 import 'package:app_lu_lu/component/log/Logs.dart';
 import 'package:app_lu_lu/constant/HttpConstant.dart';
@@ -11,6 +12,7 @@ import 'package:app_lu_lu/locale/Translations.dart';
 import 'package:app_lu_lu/model/AboutAuthorTab.dart';
 import 'package:app_lu_lu/model/AppFeedback.dart';
 import 'package:app_lu_lu/model/FeedbackQueryResult.dart';
+import 'package:app_lu_lu/view/settings/FeedbackUpdateEvent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -67,6 +69,10 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
   void initState() {
     showLoading();
     _onRefresh();
+    EventBus.consume<FeedbackUpdateEvent>((event) {
+      Logs.info('event = ${event.toString()}');
+      _onRefresh();
+    });
   }
 
   @override
@@ -270,6 +276,9 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
   }
 
   Future<Null> _onRefresh() async {
+    if (!mounted) {
+      return ;
+    }
     Map<String, dynamic> paramJson = new HashMap();
     paramJson.putIfAbsent("targetPage", () => 1);
     paramJson.putIfAbsent("pageSize", () => 100);
