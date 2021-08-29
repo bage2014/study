@@ -1,6 +1,5 @@
+import 'package:app_lu_lu/component/event/BaseEvent.dart';
 import 'package:event_bus/event_bus.dart' as marcojakob;
-
-import 'EventListener.dart';
 
 class EventBus {
   static marcojakob.EventBus _eventBus = marcojakob.EventBus();
