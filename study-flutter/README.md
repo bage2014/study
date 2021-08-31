@@ -19,7 +19,7 @@ https://fluttergems.dev/
 
 ### TODO
 
-版本信息的日期
+发布上线：版本日期、用户头像
 
 用户头像
 
