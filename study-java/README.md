@@ -17,6 +17,14 @@
 - 序列化存储规则
 
 
+java 线程池
+
+- 参数
+- 提交过程
+- 结束过程
+- 注意事项
+
+参考： 池子技术：https://mp.weixin.qq.com/s?__biz=MzUxMzQ0Njc1NQ==&mid=2247494137&idx=1&sn=85962cae0f772c2b41298dd322c6ce5a&chksm=f957aff5ce2026e3201a7b26c08cce9788b340ae371e432b13ef8d035f491cbc55ff3a6b9b79&scene=126&sessionid=1631634578&key=4f90c08c96d622750d1f94cfc9c828d2b4f9b8a4d242217acb0c892b1f5b508c3361dc32b972957612ff0fb223133a8ce49e1f65df8f4ce0aea14a1ee9521ba15fb08ac413c4a7ec31cddc52f10866e62f5854ceb9c8f6d4fc71e97d72416567c92af6c1b4572fb0e40c90d6e037f8e77fc6424650165ad3aa2d40bbe19947fa&ascene=1&uin=MjU5MTQ1MDcxMQ%3D%3D&devicetype=Windows+10+x64&version=6302019c&lang=zh_CN&exportkey=A%2FarF0N%2Fbt0u8YbyerDiyRY%3D&pass_ticket=Uc9EXPQYEBD8FJh0ig5oIlm3BsTVmcxdxPOZc%2BFgOdCZbEfmuz9f7krxzG470APE&wx_header=0&fontgear=2
 
 怎么实现Java的序列化 
 
