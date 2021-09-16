@@ -19,14 +19,10 @@ https://fluttergems.dev/
 
 ### TODO
 
-权限控制问题
-
-用户头像
-
 网络提示,请先连接网络 
 
 同意提示，多语言问题
-下载进度条（参考https://github.com/rhymelph/r_upgrade/blob/v0.3.2/README_CN.md）
+下载进度条（参考 https://github.com/rhymelph/r_upgrade/blob/v0.3.2/README_CN.md）
 
 分享
 
