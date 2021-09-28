@@ -17,6 +17,8 @@ https://developer.android.google.cn/studio/run/managing-avds#createavd
 
 https://fluttergems.dev/
 
+https://github.com/jahnli/awesome-flutter-plugins
+
 ### TODO
 
 服务端代码改造
