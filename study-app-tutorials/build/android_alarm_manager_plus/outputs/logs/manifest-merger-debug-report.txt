@@ -1,0 +1,19 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml:1:1-69
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml:1:1-69
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml:1:1-69
+	package
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml:1:11-66
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml:1:1-69
+uses-sdk
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/android_alarm_manager_plus-2.1.0/android/src/main/AndroidManifest.xml

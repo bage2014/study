@@ -1,0 +1,10 @@
+com/crazecoder/openfile/BuildConfig.java
+ com.crazecoder.openfile.BuildConfig
+com/crazecoder/openfile/utils/MapUtil.java
+ com.crazecoder.openfile.utils.MapUtil
+com/crazecoder/openfile/FileProvider.java
+ com.crazecoder.openfile.FileProvider
+com/crazecoder/openfile/OpenFilePlugin.java
+ com.crazecoder.openfile.OpenFilePlugin
+com/crazecoder/openfile/utils/JsonUtil.java
+ com.crazecoder.openfile.utils.JsonUtil

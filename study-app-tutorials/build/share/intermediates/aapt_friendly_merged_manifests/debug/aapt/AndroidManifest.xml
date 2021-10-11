@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.flutter.plugins.share" >
+
+    <uses-sdk android:minSdkVersion="16" />
+
+    <application>
+        <provider
+            android:name="io.flutter.plugins.share.ShareFileProvider"
+            android:authorities="dollar_openBracket_applicationId_closeBracket.flutter.share_provider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/flutter_share_file_paths" />
+        </provider>
+    </application>
+
+</manifest>

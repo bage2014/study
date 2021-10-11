@@ -1,0 +1,49 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:1:1-21:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:1:1-21:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:1:1-21:12
+	package
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:3:5-38
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml
+	xmlns:tools
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:2:5-51
+	xmlns:android
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.REQUEST_INSTALL_PACKAGES
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:5:5-83
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:5:22-80
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:6:5-80
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:6:22-77
+application
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:8:5-20:19
+provider#com.crazecoder.openfile.FileProvider
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:9:9-19:20
+	android:grantUriPermissions
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:13:13-47
+	android:authorities
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:11:13-88
+	android:exported
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:12:13-37
+	tools:replace
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:14:13-48
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:10:13-64
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:15:13-18:20
+	android:resource
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:17:17-50
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:16:17-67
+uses-sdk
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml

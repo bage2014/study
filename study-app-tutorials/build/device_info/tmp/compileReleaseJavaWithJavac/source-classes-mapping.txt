@@ -1,0 +1,6 @@
+io/flutter/plugins/deviceinfo/MethodCallHandlerImpl.java
+ io.flutter.plugins.deviceinfo.MethodCallHandlerImpl
+io/flutter/plugins/deviceinfo/BuildConfig.java
+ io.flutter.plugins.deviceinfo.BuildConfig
+io/flutter/plugins/deviceinfo/DeviceInfoPlugin.java
+ io.flutter.plugins.deviceinfo.DeviceInfoPlugin

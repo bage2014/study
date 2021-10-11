@@ -1,0 +1,372 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+MERGED from [:flutter_alarm_clock] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_alarm_clock/intermediates/library_manifest/release/AndroidManifest.xml:2:1-9:12
+MERGED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:2:1-17:12
+MERGED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:2:1-19:12
+MERGED from [:flutter_plugin_android_lifecycle] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:sqflite] /Users/bage/bage/github/study/study-app-tutorials/build/sqflite/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:2:1-14:12
+MERGED from [:path_provider_android] /Users/bage/bage/github/study/study-app-tutorials/build/path_provider_android/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:fijkplayer] /Users/bage/bage/github/study/study-app-tutorials/build/fijkplayer/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:image_cropper] /Users/bage/bage/github/study/study-app-tutorials/build/image_cropper/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences_android] /Users/bage/bage/github/study/study-app-tutorials/build/shared_preferences_android/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:device_info] /Users/bage/bage/github/study/study-app-tutorials/build/device_info/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:connectivity] /Users/bage/bage/github/study/study-app-tutorials/build/connectivity/intermediates/library_manifest/release/AndroidManifest.xml:2:1-9:12
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:2:1-24:12
+MERGED from [:android_alarm_manager_plus] /Users/bage/bage/github/study/study-app-tutorials/build/android_alarm_manager_plus/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:fluttertoast] /Users/bage/bage/github/study/study-app-tutorials/build/fluttertoast/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:2:1-19:12
+MERGED from [:permission_handler] /Users/bage/bage/github/study/study-app-tutorials/build/permission_handler/intermediates/library_manifest/release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2c221959306f1e25600c0a03d2200e72/legacy-support-v4-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.github.yalantis:ucrop:2.2.8] /Users/bage/.gradle/caches/transforms-2/files-2.1/3d5fc6f427a05fa7ee6da29bdc961d9f/jetified-ucrop-2.2.8/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat:1.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/7752658d1784de926ab6b8f19622e743/appcompat-1.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.transition:transition:1.4.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/88e514d819cd691a05d7f01d8820d6ee/transition-1.4.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media:media:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/72501ffe447ffd613fc88578f19a914c/media-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/61dc29951a451b38e03eb63efbda5343/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/154602205569c6147c1ab4260dd9d425/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/bage/.gradle/caches/transforms-2/files-2.1/10201d262ed8f9c60ec8c63fd7a1c40d/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.2.4] /Users/bage/.gradle/caches/transforms-2/files-2.1/fb004e5b354a0f3fbf704898dc49bc31/jetified-activity-1.2.4/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/29278506d4d848d7635c0223a1a5ab83/jetified-appcompat-resources-1.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/22a5d9f52d495a432176451a4c4ba982/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/49dee3543bc65746b6bba9f83aa0b18a/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2f70304b103eacfab05dbe55739e869f/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/bcd808757e47d4888ffa27457339053b/coordinatorlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2c07f8b2725cf3ca7c7510a86eb18cae/slidingpanelayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/86cf751735e9e9dd0416cce35c4a71a1/customview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/5c64f35c4f864d4cd139ccbbff91ceb9/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/9b944abc3171b1b947c5fff909724ff1/asynclayoutinflater-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2ee35bfe9d2e9019f071c4a047a96db2/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/361553562ce35cf8cf447832c4a7d1ec/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core:1.6.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/67ff0aaf930f65024e6c37d99bc9e852/core-1.6.0/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/bage/.gradle/caches/transforms-2/files-2.1/0d6ff85b25e6e52b269b3e009bb6194a/exifinterface-1.3.2/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/cf37ac08cdad525e46b47ab5b0406817/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/9611d01e277af0a0bee38db16de6184f/lifecycle-runtime-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/bae4382a703142a8f82a100a412243f1/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/992030e32b5b233f7b54200907a8c687/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/3d71f750e18beb8ec39e98e4d040998e/jetified-savedstate-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/eb99decb44820e6dccd0fcc1b7518938/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/11ae9ec956d6bcf258c0fc60ed922820/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/17959936f75234613fb11b8c15b12e4a/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/a49d8fed6e1f73515c23ded9f02890c2/print-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/6e0f82970a69a6b386ee45a08ac362fe/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/15faa7fdc535e832982b4615d300cb77/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/1b748a836e371cc29277a1943e291316/lifecycle-livedata-core-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/268ebc0b2bd661fb18fff0cceeca14c7/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/7c1a7b78a9eb87d9a948f050e96a4e5d/jetified-tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.befovy.fijkplayer:fijkplayer-full:0.7.16] /Users/bage/.gradle/caches/transforms-2/files-2.1/a79f0b4a6c27df65bde95ff542e979c1/jetified-fijkplayer-full-0.7.16/AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/09be362b5b17ae2df23db8d40e6cc2f1/jetified-annotation-experimental-1.1.0/AndroidManifest.xml:17:1-24:12
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+	package
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:2:5-33
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:1-64:12
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:5:5-76
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:5:22-73
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:6:5-78
+MERGED from [:connectivity] /Users/bage/bage/github/study/study-app-tutorials/build/connectivity/intermediates/library_manifest/release/AndroidManifest.xml:7:5-79
+MERGED from [:connectivity] /Users/bage/bage/github/study/study-app-tutorials/build/connectivity/intermediates/library_manifest/release/AndroidManifest.xml:7:5-79
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:6:22-76
+uses-permission#android.permission.INTERNET
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:7:5-67
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:7:22-64
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:9:5-80
+MERGED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:7:5-80
+MERGED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:7:5-80
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:9:5-80
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:9:5-80
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:9:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:10:5-81
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:10:22-78
+uses-permission#android.permission.REQUEST_INSTALL_PACKAGES
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:12:5-83
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:8:5-83
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:8:5-83
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:12:22-80
+uses-permission#android.permission.ACTIVITY_RECOGNITION
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:13:5-78
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:13:22-76
+application
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:17:5-63:19
+MERGED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:7:5-17:19
+MERGED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:7:5-17:19
+MERGED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:7:5-12:19
+MERGED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:7:5-12:19
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:11:5-22:19
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:11:5-22:19
+MERGED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:7:5-17:19
+MERGED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:7:5-17:19
+MERGED from [androidx.core:core:1.6.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/67ff0aaf930f65024e6c37d99bc9e852/core-1.6.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.6.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/67ff0aaf930f65024e6c37d99bc9e852/core-1.6.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/cf37ac08cdad525e46b47ab5b0406817/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/cf37ac08cdad525e46b47ab5b0406817/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.6.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/67ff0aaf930f65024e6c37d99bc9e852/core-1.6.0/AndroidManifest.xml:24:18-86
+	android:label
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:18:9-34
+	android:icon
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:19:9-41
+activity#com.bage.tutorials.MainActivity
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:20:9-49:20
+	android:launchMode
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:23:13-43
+	android:hardwareAccelerated
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:26:13-47
+	android:windowSoftInputMode
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:27:13-55
+	android:exported
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:21:13-36
+	android:configChanges
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:25:13-163
+	android:theme
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:24:13-47
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:22:13-41
+meta-data#io.flutter.embedding.android.NormalTheme
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:32:13-35:17
+	android:resource
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:34:15-52
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:33:15-70
+meta-data#io.flutter.embedding.android.SplashScreenDrawable
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:41:13-44:17
+	android:resource
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:43:15-61
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:42:15-79
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:45:13-48:29
+action#android.intent.action.MAIN
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:46:17-68
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:46:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:47:17-76
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:47:27-74
+meta-data#flutterEmbedding
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:52:9-54:33
+	android:value
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:54:13-30
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:53:13-44
+activity#com.yalantis.ucrop.UCropActivity
+ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:58:9-61:71
+	android:screenOrientation
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:60:13-49
+	android:theme
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:61:13-69
+	android:name
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:59:13-60
+uses-sdk
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+MERGED from [:flutter_alarm_clock] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_alarm_clock/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:flutter_alarm_clock] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_alarm_clock/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:flutter_plugin_android_lifecycle] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:flutter_plugin_android_lifecycle] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:sqflite] /Users/bage/bage/github/study/study-app-tutorials/build/sqflite/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:sqflite] /Users/bage/bage/github/study/study-app-tutorials/build/sqflite/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:path_provider_android] /Users/bage/bage/github/study/study-app-tutorials/build/path_provider_android/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:path_provider_android] /Users/bage/bage/github/study/study-app-tutorials/build/path_provider_android/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:fijkplayer] /Users/bage/bage/github/study/study-app-tutorials/build/fijkplayer/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:fijkplayer] /Users/bage/bage/github/study/study-app-tutorials/build/fijkplayer/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:image_cropper] /Users/bage/bage/github/study/study-app-tutorials/build/image_cropper/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:image_cropper] /Users/bage/bage/github/study/study-app-tutorials/build/image_cropper/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_android] /Users/bage/bage/github/study/study-app-tutorials/build/shared_preferences_android/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_android] /Users/bage/bage/github/study/study-app-tutorials/build/shared_preferences_android/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:device_info] /Users/bage/bage/github/study/study-app-tutorials/build/device_info/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:device_info] /Users/bage/bage/github/study/study-app-tutorials/build/device_info/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:connectivity] /Users/bage/bage/github/study/study-app-tutorials/build/connectivity/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:connectivity] /Users/bage/bage/github/study/study-app-tutorials/build/connectivity/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:6:5-44
+MERGED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:6:5-44
+MERGED from [:android_alarm_manager_plus] /Users/bage/bage/github/study/study-app-tutorials/build/android_alarm_manager_plus/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:android_alarm_manager_plus] /Users/bage/bage/github/study/study-app-tutorials/build/android_alarm_manager_plus/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] /Users/bage/bage/github/study/study-app-tutorials/build/fluttertoast/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] /Users/bage/bage/github/study/study-app-tutorials/build/fluttertoast/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:permission_handler] /Users/bage/bage/github/study/study-app-tutorials/build/permission_handler/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [:permission_handler] /Users/bage/bage/github/study/study-app-tutorials/build/permission_handler/intermediates/library_manifest/release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2c221959306f1e25600c0a03d2200e72/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2c221959306f1e25600c0a03d2200e72/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.github.yalantis:ucrop:2.2.8] /Users/bage/.gradle/caches/transforms-2/files-2.1/3d5fc6f427a05fa7ee6da29bdc961d9f/jetified-ucrop-2.2.8/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.yalantis:ucrop:2.2.8] /Users/bage/.gradle/caches/transforms-2/files-2.1/3d5fc6f427a05fa7ee6da29bdc961d9f/jetified-ucrop-2.2.8/AndroidManifest.xml:7:5-9:41
+MERGED from [androidx.appcompat:appcompat:1.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/7752658d1784de926ab6b8f19622e743/appcompat-1.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/7752658d1784de926ab6b8f19622e743/appcompat-1.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.4.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/88e514d819cd691a05d7f01d8820d6ee/transition-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.4.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/88e514d819cd691a05d7f01d8820d6ee/transition-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/72501ffe447ffd613fc88578f19a914c/media-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/72501ffe447ffd613fc88578f19a914c/media-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/61dc29951a451b38e03eb63efbda5343/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/61dc29951a451b38e03eb63efbda5343/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/154602205569c6147c1ab4260dd9d425/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/154602205569c6147c1ab4260dd9d425/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/bage/.gradle/caches/transforms-2/files-2.1/10201d262ed8f9c60ec8c63fd7a1c40d/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/bage/.gradle/caches/transforms-2/files-2.1/10201d262ed8f9c60ec8c63fd7a1c40d/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.2.4] /Users/bage/.gradle/caches/transforms-2/files-2.1/fb004e5b354a0f3fbf704898dc49bc31/jetified-activity-1.2.4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.2.4] /Users/bage/.gradle/caches/transforms-2/files-2.1/fb004e5b354a0f3fbf704898dc49bc31/jetified-activity-1.2.4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/29278506d4d848d7635c0223a1a5ab83/jetified-appcompat-resources-1.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/29278506d4d848d7635c0223a1a5ab83/jetified-appcompat-resources-1.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/22a5d9f52d495a432176451a4c4ba982/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/22a5d9f52d495a432176451a4c4ba982/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/49dee3543bc65746b6bba9f83aa0b18a/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/49dee3543bc65746b6bba9f83aa0b18a/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2f70304b103eacfab05dbe55739e869f/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2f70304b103eacfab05dbe55739e869f/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/bcd808757e47d4888ffa27457339053b/coordinatorlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/bcd808757e47d4888ffa27457339053b/coordinatorlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2c07f8b2725cf3ca7c7510a86eb18cae/slidingpanelayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2c07f8b2725cf3ca7c7510a86eb18cae/slidingpanelayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/86cf751735e9e9dd0416cce35c4a71a1/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/86cf751735e9e9dd0416cce35c4a71a1/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/5c64f35c4f864d4cd139ccbbff91ceb9/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/5c64f35c4f864d4cd139ccbbff91ceb9/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/9b944abc3171b1b947c5fff909724ff1/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/9b944abc3171b1b947c5fff909724ff1/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2ee35bfe9d2e9019f071c4a047a96db2/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/2ee35bfe9d2e9019f071c4a047a96db2/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/361553562ce35cf8cf447832c4a7d1ec/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/361553562ce35cf8cf447832c4a7d1ec/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.6.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/67ff0aaf930f65024e6c37d99bc9e852/core-1.6.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.6.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/67ff0aaf930f65024e6c37d99bc9e852/core-1.6.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/bage/.gradle/caches/transforms-2/files-2.1/0d6ff85b25e6e52b269b3e009bb6194a/exifinterface-1.3.2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.2] /Users/bage/.gradle/caches/transforms-2/files-2.1/0d6ff85b25e6e52b269b3e009bb6194a/exifinterface-1.3.2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/cf37ac08cdad525e46b47ab5b0406817/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/cf37ac08cdad525e46b47ab5b0406817/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/9611d01e277af0a0bee38db16de6184f/lifecycle-runtime-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/9611d01e277af0a0bee38db16de6184f/lifecycle-runtime-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/bae4382a703142a8f82a100a412243f1/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/bae4382a703142a8f82a100a412243f1/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/992030e32b5b233f7b54200907a8c687/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/992030e32b5b233f7b54200907a8c687/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/3d71f750e18beb8ec39e98e4d040998e/jetified-savedstate-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/3d71f750e18beb8ec39e98e4d040998e/jetified-savedstate-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/eb99decb44820e6dccd0fcc1b7518938/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/eb99decb44820e6dccd0fcc1b7518938/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/11ae9ec956d6bcf258c0fc60ed922820/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/11ae9ec956d6bcf258c0fc60ed922820/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/17959936f75234613fb11b8c15b12e4a/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/17959936f75234613fb11b8c15b12e4a/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/a49d8fed6e1f73515c23ded9f02890c2/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/a49d8fed6e1f73515c23ded9f02890c2/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/6e0f82970a69a6b386ee45a08ac362fe/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/6e0f82970a69a6b386ee45a08ac362fe/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/15faa7fdc535e832982b4615d300cb77/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/15faa7fdc535e832982b4615d300cb77/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/1b748a836e371cc29277a1943e291316/lifecycle-livedata-core-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] /Users/bage/.gradle/caches/transforms-2/files-2.1/1b748a836e371cc29277a1943e291316/lifecycle-livedata-core-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/268ebc0b2bd661fb18fff0cceeca14c7/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/268ebc0b2bd661fb18fff0cceeca14c7/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/7c1a7b78a9eb87d9a948f050e96a4e5d/jetified-tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/7c1a7b78a9eb87d9a948f050e96a4e5d/jetified-tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.befovy.fijkplayer:fijkplayer-full:0.7.16] /Users/bage/.gradle/caches/transforms-2/files-2.1/a79f0b4a6c27df65bde95ff542e979c1/jetified-fijkplayer-full-0.7.16/AndroidManifest.xml:5:5-7:41
+MERGED from [com.befovy.fijkplayer:fijkplayer-full:0.7.16] /Users/bage/.gradle/caches/transforms-2/files-2.1/a79f0b4a6c27df65bde95ff542e979c1/jetified-fijkplayer-full-0.7.16/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/09be362b5b17ae2df23db8d40e6cc2f1/jetified-annotation-experimental-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/09be362b5b17ae2df23db8d40e6cc2f1/jetified-annotation-experimental-1.1.0/AndroidManifest.xml:20:5-22:41
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+uses-permission#com.android.alarm.permission.SET_ALARM
+ADDED from [:flutter_alarm_clock] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_alarm_clock/intermediates/library_manifest/release/AndroidManifest.xml:7:5-78
+	android:name
+		ADDED from [:flutter_alarm_clock] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_alarm_clock/intermediates/library_manifest/release/AndroidManifest.xml:7:22-75
+queries
+ADDED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:9:5-15:15
+intent#action:name:android.intent.action.GET_CONTENT+data:mimeType:*/*
+ADDED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:10:9-14:18
+action#android.intent.action.GET_CONTENT
+ADDED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:11:13-72
+	android:name
+		ADDED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:11:21-69
+data
+ADDED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:13:13-44
+	android:mimeType
+		ADDED from [:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:13:19-41
+provider#io.flutter.plugins.imagepicker.ImagePickerFileProvider
+ADDED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:8:9-16:20
+	android:grantUriPermissions
+		ADDED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:12:13-47
+	android:authorities
+		ADDED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:10:13-74
+	android:exported
+		ADDED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:9:13-82
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:13:13-15:75
+	android:resource
+		ADDED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:15:17-72
+	android:name
+		ADDED from [:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:14:17-67
+activity#io.flutter.plugins.urllauncher.WebViewActivity
+ADDED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:8:9-11:74
+	android:exported
+		ADDED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:10:13-37
+	android:theme
+		ADDED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:11:13-71
+	android:name
+		ADDED from [:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:9:13-74
+provider#com.crazecoder.openfile.FileProvider
+ADDED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:12:9-21:20
+	android:grantUriPermissions
+		ADDED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:16:13-47
+	android:authorities
+		ADDED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:14:13-88
+	android:exported
+		ADDED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:15:13-37
+	tools:replace
+		ADDED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:17:13-48
+	android:name
+		ADDED from [:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:13:13-64
+provider#io.flutter.plugins.share.ShareFileProvider
+ADDED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:8:9-16:20
+	android:grantUriPermissions
+		ADDED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:12:13-47
+	android:authorities
+		ADDED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:10:13-74
+	android:exported
+		ADDED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from [:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:9:13-70

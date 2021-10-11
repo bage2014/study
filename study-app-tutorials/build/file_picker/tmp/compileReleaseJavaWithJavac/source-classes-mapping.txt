@@ -1,0 +1,21 @@
+com/mr/flutter/plugin/filepicker/FileInfo.java
+ com.mr.flutter.plugin.filepicker.FileInfo
+ com.mr.flutter.plugin.filepicker.FileInfo$Builder
+com/mr/flutter/plugin/filepicker/BuildConfig.java
+ com.mr.flutter.plugin.filepicker.BuildConfig
+com/mr/flutter/plugin/filepicker/FilePickerPlugin.java
+ com.mr.flutter.plugin.filepicker.FilePickerPlugin
+ com.mr.flutter.plugin.filepicker.FilePickerPlugin$1
+ com.mr.flutter.plugin.filepicker.FilePickerPlugin$LifeCycleObserver
+ com.mr.flutter.plugin.filepicker.FilePickerPlugin$MethodResultWrapper
+ com.mr.flutter.plugin.filepicker.FilePickerPlugin$MethodResultWrapper$1
+ com.mr.flutter.plugin.filepicker.FilePickerPlugin$MethodResultWrapper$2
+ com.mr.flutter.plugin.filepicker.FilePickerPlugin$MethodResultWrapper$3
+com/mr/flutter/plugin/filepicker/FilePickerDelegate.java
+ com.mr.flutter.plugin.filepicker.FilePickerDelegate
+ com.mr.flutter.plugin.filepicker.FilePickerDelegate$1
+ com.mr.flutter.plugin.filepicker.FilePickerDelegate$2
+ com.mr.flutter.plugin.filepicker.FilePickerDelegate$3
+ com.mr.flutter.plugin.filepicker.FilePickerDelegate$PermissionManager
+com/mr/flutter/plugin/filepicker/FileUtils.java
+ com.mr.flutter.plugin.filepicker.FileUtils

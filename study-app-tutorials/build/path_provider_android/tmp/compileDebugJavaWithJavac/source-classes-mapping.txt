@@ -1,0 +1,12 @@
+io/flutter/plugins/pathprovider/StorageDirectoryMapper.java
+ io.flutter.plugins.pathprovider.StorageDirectoryMapper
+io/flutter/plugins/pathprovider/BuildConfig.java
+ io.flutter.plugins.pathprovider.BuildConfig
+io/flutter/plugins/pathprovider/PathProviderPlugin.java
+ io.flutter.plugins.pathprovider.PathProviderPlugin
+ io.flutter.plugins.pathprovider.PathProviderPlugin$1
+ io.flutter.plugins.pathprovider.PathProviderPlugin$PathProviderBackgroundThread
+ io.flutter.plugins.pathprovider.PathProviderPlugin$PathProviderImpl
+ io.flutter.plugins.pathprovider.PathProviderPlugin$PathProviderPlatformThread
+ io.flutter.plugins.pathprovider.PathProviderPlugin$PathProviderPlatformThread$1
+ io.flutter.plugins.pathprovider.PathProviderPlugin$UiThreadExecutor

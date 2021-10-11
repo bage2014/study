@@ -1,0 +1,35 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:1:1-10:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:1:1-10:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:1:1-10:12
+	package
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:2:3-45
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:3:5-79
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:3:22-77
+queries
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:4:5-9:15
+intent#action:name:android.intent.action.GET_CONTENT+data:mimeType:*/*
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:5:6-8:14
+action#android.intent.action.GET_CONTENT
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:6:9-68
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:6:17-65
+data
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:7:9-39
+	android:mimeType
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:7:15-37
+uses-sdk
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml

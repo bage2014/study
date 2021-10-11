@@ -1,0 +1,39 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:tools="http://schemas.android.com/tools"
+4    package="com.crazecoder.openfile" >
+5
+6    <uses-sdk android:minSdkVersion="16" />
+6-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml
+7
+8    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+8-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:5:5-83
+8-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:5:22-80
+9    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+9-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:6:5-80
+9-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:6:22-77
+10
+11    <application>
+11-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:8:5-20:19
+12        <provider
+12-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:9:9-19:20
+13            android:name="com.crazecoder.openfile.FileProvider"
+13-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:10:13-64
+14            android:authorities="${applicationId}.fileProvider.com.crazecoder.openfile"
+14-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:11:13-88
+15            android:exported="false"
+15-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:12:13-37
+16            android:grantUriPermissions="true"
+16-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:13:13-47
+17            tools:replace="android:authorities" >
+17-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:14:13-48
+18            <meta-data
+18-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:15:13-18:20
+19                android:name="android.support.FILE_PROVIDER_PATHS"
+19-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:16:17-67
+20                android:resource="@xml/filepaths" />
+20-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/open_file-3.2.1/android/src/main/AndroidManifest.xml:17:17-50
+21        </provider>
+22    </application>
+23
+24</manifest>

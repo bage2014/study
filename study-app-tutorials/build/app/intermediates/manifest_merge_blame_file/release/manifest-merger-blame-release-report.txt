@@ -1,0 +1,199 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.bage.tutorials"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="16"
+8-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="31" />
+9-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml
+10
+11    <!-- Permissions options for the `storage` group -->
+12    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+12-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:5:5-76
+12-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:5:22-73
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:6:5-78
+13-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:6:22-76
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:7:5-67
+14-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:7:22-64
+15    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+15-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:9:5-80
+15-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:9:22-77
+16    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+16-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:10:5-81
+16-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:10:22-78
+17    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+17-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:12:5-83
+17-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:12:22-80
+18    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+18-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:13:5-78
+18-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:13:22-76
+19    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+19-->[:flutter_alarm_clock] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_alarm_clock/intermediates/library_manifest/release/AndroidManifest.xml:7:5-78
+19-->[:flutter_alarm_clock] /Users/bage/bage/github/study/study-app-tutorials/build/flutter_alarm_clock/intermediates/library_manifest/release/AndroidManifest.xml:7:22-75
+20
+21    <queries>
+21-->[:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:9:5-15:15
+22        <intent>
+22-->[:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:10:9-14:18
+23            <action android:name="android.intent.action.GET_CONTENT" />
+23-->[:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:11:13-72
+23-->[:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:11:21-69
+24
+25            <data android:mimeType="*/*" />
+25-->[:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:13:13-44
+25-->[:file_picker] /Users/bage/bage/github/study/study-app-tutorials/build/file_picker/intermediates/library_manifest/release/AndroidManifest.xml:13:19-41
+26        </intent>
+27    </queries>
+28
+29    <application
+29-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:17:5-63:19
+30        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+30-->[androidx.core:core:1.6.0] /Users/bage/.gradle/caches/transforms-2/files-2.1/67ff0aaf930f65024e6c37d99bc9e852/core-1.6.0/AndroidManifest.xml:24:18-86
+31        android:icon="@drawable/logo128"
+31-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:19:9-41
+32        android:label="tutorials" >
+32-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:18:9-34
+33        <activity
+33-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:20:9-49:20
+34            android:name="com.bage.tutorials.MainActivity"
+34-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:22:13-41
+35            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+35-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:25:13-163
+36            android:exported="true"
+36-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:21:13-36
+37            android:hardwareAccelerated="true"
+37-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:26:13-47
+38            android:launchMode="singleTop"
+38-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:23:13-43
+39            android:theme="@style/LaunchTheme"
+39-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:24:13-47
+40            android:windowSoftInputMode="adjustResize" >
+40-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:27:13-55
+41
+42            <!--
+43                 Specifies an Android theme to apply to this Activity as soon as
+44                 the Android process has started. This theme is visible to the user
+45                 while the Flutter UI initializes. After that, this theme continues
+46                 to determine the Window background behind the Flutter UI.
+47            -->
+48            <meta-data
+48-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:32:13-35:17
+49                android:name="io.flutter.embedding.android.NormalTheme"
+49-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:33:15-70
+50                android:resource="@style/NormalTheme" />
+50-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:34:15-52
+51            <!--
+52                 Displays an Android View that continues showing the launch screen
+53                 Drawable until Flutter paints its first frame, then this splash
+54                 screen fades out. A splash screen is useful to avoid any visual
+55                 gap between the end of Android's launch screen and the painting of
+56                 Flutter's first frame.
+57            -->
+58            <meta-data
+58-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:41:13-44:17
+59                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+59-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:42:15-79
+60                android:resource="@drawable/launch_background" />
+60-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:43:15-61
+61
+62            <intent-filter>
+62-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:45:13-48:29
+63                <action android:name="android.intent.action.MAIN" />
+63-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:46:17-68
+63-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:46:25-66
+64
+65                <category android:name="android.intent.category.LAUNCHER" />
+65-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:47:17-76
+65-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:47:27-74
+66            </intent-filter>
+67        </activity>
+68        <!--
+69             Don't delete the meta-data below.
+70             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+71        -->
+72        <meta-data
+72-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:52:9-54:33
+73            android:name="flutterEmbedding"
+73-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:53:13-44
+74            android:value="2" />
+74-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:54:13-30
+75
+76        <!-- https://pub.flutter-io.cn/packages/image_cropper -->
+77        <activity
+77-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:58:9-61:71
+78            android:name="com.yalantis.ucrop.UCropActivity"
+78-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:59:13-60
+79            android:screenOrientation="portrait"
+79-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:60:13-49
+80            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+80-->/Users/bage/bage/github/study/study-app-tutorials/android/app/src/main/AndroidManifest.xml:61:13-69
+81
+82        <provider
+82-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:8:9-16:20
+83            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+83-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:9:13-82
+84            android:authorities="com.bage.tutorials.flutter.image_provider"
+84-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:10:13-74
+85            android:exported="false"
+85-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:11:13-37
+86            android:grantUriPermissions="true" >
+86-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:12:13-47
+87            <meta-data
+87-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:13:13-15:75
+88                android:name="android.support.FILE_PROVIDER_PATHS"
+88-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:14:17-67
+89                android:resource="@xml/flutter_image_picker_file_paths" />
+89-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:15:17-72
+90        </provider>
+91
+92        <activity
+92-->[:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:8:9-11:74
+93            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+93-->[:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:9:13-74
+94            android:exported="false"
+94-->[:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:10:13-37
+95            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+95-->[:url_launcher_android] /Users/bage/bage/github/study/study-app-tutorials/build/url_launcher_android/intermediates/library_manifest/release/AndroidManifest.xml:11:13-71
+96
+97        <provider
+97-->[:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:12:9-21:20
+98            android:name="com.crazecoder.openfile.FileProvider"
+98-->[:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:13:13-64
+99            android:authorities="com.bage.tutorials.fileProvider.com.crazecoder.openfile"
+99-->[:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:14:13-88
+100            android:exported="false"
+100-->[:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:15:13-37
+101            android:grantUriPermissions="true" >
+101-->[:open_file] /Users/bage/bage/github/study/study-app-tutorials/build/open_file/intermediates/library_manifest/release/AndroidManifest.xml:16:13-47
+102            <meta-data
+102-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:13:13-15:75
+103                android:name="android.support.FILE_PROVIDER_PATHS"
+103-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:14:17-67
+104                android:resource="@xml/filepaths" />
+104-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:15:17-72
+105        </provider>
+106        <provider
+106-->[:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:8:9-16:20
+107            android:name="io.flutter.plugins.share.ShareFileProvider"
+107-->[:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:9:13-70
+108            android:authorities="com.bage.tutorials.flutter.share_provider"
+108-->[:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:10:13-74
+109            android:exported="false"
+109-->[:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:11:13-37
+110            android:grantUriPermissions="true" >
+110-->[:share] /Users/bage/bage/github/study/study-app-tutorials/build/share/intermediates/library_manifest/release/AndroidManifest.xml:12:13-47
+111            <meta-data
+111-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:13:13-15:75
+112                android:name="android.support.FILE_PROVIDER_PATHS"
+112-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:14:17-67
+113                android:resource="@xml/flutter_share_file_paths" />
+113-->[:image_picker_android] /Users/bage/bage/github/study/study-app-tutorials/build/image_picker_android/intermediates/library_manifest/release/AndroidManifest.xml:15:17-72
+114        </provider>
+115    </application>
+116
+117</manifest>

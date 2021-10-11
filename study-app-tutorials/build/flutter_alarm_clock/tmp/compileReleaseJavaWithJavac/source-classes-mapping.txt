@@ -1,0 +1,2 @@
+tech/sebastjanmevlja/flutter_alarm_clock/BuildConfig.java
+ tech.sebastjanmevlja.flutter_alarm_clock.BuildConfig

@@ -1,0 +1,26 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.mr.flutter.plugin.filepicker" >
+4
+5    <uses-sdk android:minSdkVersion="16" />
+5-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml
+6
+7    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+7-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:3:5-79
+7-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:3:22-77
+8
+9    <queries>
+9-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:4:5-9:15
+10        <intent>
+10-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:5:6-8:14
+11            <action android:name="android.intent.action.GET_CONTENT" />
+11-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:6:9-68
+11-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:6:17-65
+12
+13            <data android:mimeType="*/*" />
+13-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:7:9-39
+13-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.4.0/android/src/main/AndroidManifest.xml:7:15-37
+14        </intent>
+15    </queries>
+16
+17</manifest>

@@ -1,0 +1,29 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="io.flutter.plugins.share" >
+4
+5    <uses-sdk android:minSdkVersion="16" />
+5-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml
+6
+7    <application>
+7-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:3:5-13:19
+8        <provider
+8-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:4:7-12:18
+9            android:name="io.flutter.plugins.share.ShareFileProvider"
+9-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:5:9-66
+10            android:authorities="${applicationId}.flutter.share_provider"
+10-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:6:9-70
+11            android:exported="false"
+11-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:7:9-33
+12            android:grantUriPermissions="true" >
+12-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:8:9-43
+13            <meta-data
+13-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:9:9-11:61
+14                android:name="android.support.FILE_PROVIDER_PATHS"
+14-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:10:11-61
+15                android:resource="@xml/flutter_share_file_paths" />
+15-->/Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:11:11-59
+16        </provider>
+17    </application>
+18
+19</manifest>

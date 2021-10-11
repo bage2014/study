@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:1:1-14:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:1:1-14:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:1:1-14:12
+	package
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:2:3-37
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:3:5-13:19
+provider#io.flutter.plugins.share.ShareFileProvider
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:4:7-12:18
+	android:grantUriPermissions
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:8:9-43
+	android:authorities
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:6:9-70
+	android:exported
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:7:9-33
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:5:9-66
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:9:9-11:61
+	android:resource
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:11:11-59
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml:10:11-61
+uses-sdk
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/android/src/main/AndroidManifest.xml

@@ -1,0 +1,23 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml:1:1-4:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml:1:1-4:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml:1:1-4:12
+	package
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml:2:3-53
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml:1:11-69
+uses-permission#com.android.alarm.permission.SET_ALARM
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml:3:5-77
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml:3:22-75
+uses-sdk
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_alarm_clock-0.0.2/android/src/main/AndroidManifest.xml

@@ -1,0 +1,12 @@
+io/flutter/plugins/connectivity/ConnectivityPlugin.java
+ io.flutter.plugins.connectivity.ConnectivityPlugin
+io/flutter/plugins/connectivity/ConnectivityMethodChannelHandler.java
+ io.flutter.plugins.connectivity.ConnectivityMethodChannelHandler
+io/flutter/plugins/connectivity/Connectivity.java
+ io.flutter.plugins.connectivity.Connectivity
+io/flutter/plugins/connectivity/BuildConfig.java
+ io.flutter.plugins.connectivity.BuildConfig
+io/flutter/plugins/connectivity/ConnectivityBroadcastReceiver.java
+ io.flutter.plugins.connectivity.ConnectivityBroadcastReceiver
+ io.flutter.plugins.connectivity.ConnectivityBroadcastReceiver$1
+ io.flutter.plugins.connectivity.ConnectivityBroadcastReceiver$2

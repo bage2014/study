@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:1:1-15:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:1:1-15:12
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:1:1-15:12
+	package
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:2:5-45
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:4:5-14:19
+provider#io.flutter.plugins.imagepicker.ImagePickerFileProvider
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:5:9-13:20
+	android:grantUriPermissions
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:9:13-47
+	android:authorities
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:7:13-74
+	android:exported
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:8:13-37
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:6:13-82
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:10:13-12:75
+	android:resource
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:12:17-72
+	android:name
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml:11:17-67
+uses-sdk
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml
+INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml
+		ADDED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/bage/bage/software/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13/android/src/main/AndroidManifest.xml

@@ -1,0 +1,8 @@
+io/flutter/plugins/sharedpreferences/MethodCallHandlerImpl.java
+ io.flutter.plugins.sharedpreferences.MethodCallHandlerImpl
+ io.flutter.plugins.sharedpreferences.MethodCallHandlerImpl$1
+ io.flutter.plugins.sharedpreferences.MethodCallHandlerImpl$1$1
+io/flutter/plugins/sharedpreferences/BuildConfig.java
+ io.flutter.plugins.sharedpreferences.BuildConfig
+io/flutter/plugins/sharedpreferences/SharedPreferencesPlugin.java
+ io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin

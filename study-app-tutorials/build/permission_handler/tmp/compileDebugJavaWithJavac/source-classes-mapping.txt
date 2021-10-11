@@ -1,0 +1,26 @@
+com/baseflow/permissionhandler/ServiceManager.java
+ com.baseflow.permissionhandler.ServiceManager
+ com.baseflow.permissionhandler.ServiceManager$SuccessCallback
+com/baseflow/permissionhandler/PermissionManager.java
+ com.baseflow.permissionhandler.PermissionManager
+ com.baseflow.permissionhandler.PermissionManager$CheckPermissionsSuccessCallback
+ com.baseflow.permissionhandler.PermissionManager$RequestPermissionsSuccessCallback
+ com.baseflow.permissionhandler.PermissionManager$ShouldShowRequestPermissionRationaleSuccessCallback
+com/baseflow/permissionhandler/BuildConfig.java
+ com.baseflow.permissionhandler.BuildConfig
+com/baseflow/permissionhandler/PermissionConstants.java
+ com.baseflow.permissionhandler.PermissionConstants
+ com.baseflow.permissionhandler.PermissionConstants$PermissionGroup
+ com.baseflow.permissionhandler.PermissionConstants$PermissionStatus
+ com.baseflow.permissionhandler.PermissionConstants$ServiceStatus
+com/baseflow/permissionhandler/PermissionHandlerPlugin.java
+ com.baseflow.permissionhandler.PermissionHandlerPlugin
+com/baseflow/permissionhandler/AppSettingsManager.java
+ com.baseflow.permissionhandler.AppSettingsManager
+ com.baseflow.permissionhandler.AppSettingsManager$OpenAppSettingsSuccessCallback
+com/baseflow/permissionhandler/MethodCallHandlerImpl.java
+ com.baseflow.permissionhandler.MethodCallHandlerImpl
+com/baseflow/permissionhandler/PermissionUtils.java
+ com.baseflow.permissionhandler.PermissionUtils
+com/baseflow/permissionhandler/ErrorCallback.java
+ com.baseflow.permissionhandler.ErrorCallback

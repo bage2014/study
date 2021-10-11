@@ -1,0 +1,10 @@
+io/flutter/plugins/share/BuildConfig.java
+ io.flutter.plugins.share.BuildConfig
+io/flutter/plugins/share/MethodCallHandler.java
+ io.flutter.plugins.share.MethodCallHandler
+io/flutter/plugins/share/SharePlugin.java
+ io.flutter.plugins.share.SharePlugin
+io/flutter/plugins/share/ShareFileProvider.java
+ io.flutter.plugins.share.ShareFileProvider
+io/flutter/plugins/share/Share.java
+ io.flutter.plugins.share.Share

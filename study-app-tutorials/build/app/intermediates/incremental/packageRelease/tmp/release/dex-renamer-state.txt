@@ -1,0 +1,4 @@
+#Thu Oct 31 09:25:35 CST 2024
+base.0=/Users/bage/bage/github/study/study-app-tutorials/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
