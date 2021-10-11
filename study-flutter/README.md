@@ -84,6 +84,8 @@ https://github.com/mitesh77/Best-Flutter-UI-Templates
 
 https://github.com/iampawan/Flutter-UI-Kit
 
+https://github.com/olayemii/flutter-ui-kits
+
 https://github.com/flutter/gallery/tree/master/lib
 
 
