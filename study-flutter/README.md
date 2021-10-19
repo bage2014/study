@@ -34,6 +34,14 @@ https://fluttergems.dev/
 
 大厂内推APP
 
+https://github.com/lohanidamodar/flutter_ui_challenges
+
+
+
+https://github.com/FlutterOpen/flutter-ui-nice
+
+
+
 
 
 小组活动：每周体验一款app，产品包括最近热门，评价高，国外好的产品。建议从产品、市场两方面发表看法，也可以自由交流~
