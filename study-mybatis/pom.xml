@@ -117,7 +117,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+<!--
     <build>
         <resources>
             <resource>
@@ -128,5 +128,5 @@
                 </includes>
             </resource>
         </resources>
-    </build>
+    </build>-->
 </project>
