@@ -17,7 +17,11 @@ https://developer.android.google.cn/studio/run/managing-avds#createavd
 
 https://fluttergems.dev/
 
+https://github.com/jahnli/awesome-flutter-plugins
+
 ### TODO
+
+服务端代码改造
 
 网络提示,请先连接网络 
 
@@ -31,6 +35,21 @@ https://fluttergems.dev/
 足迹记录-地图
 
 大厂内推APP
+
+
+
+小组活动：每周体验一款app，产品包括最近热门，评价高，国外好的产品。建议从产品、市场两方面发表看法，也可以自由交流~
+产品方面：
+1.主要功能
+2.解决用户什么需求
+3.独特卖点
+4.关键指标
+
+市场方面：
+1.用户群
+2.推广渠道
+3.收入分析
+4.成本分析
 
 
 
@@ -64,6 +83,8 @@ Froid APP爬虫
 https://github.com/mitesh77/Best-Flutter-UI-Templates
 
 https://github.com/iampawan/Flutter-UI-Kit
+
+https://github.com/olayemii/flutter-ui-kits
 
 https://github.com/flutter/gallery/tree/master/lib
 

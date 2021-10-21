@@ -2,6 +2,7 @@
 
 PPT 讲解 STAR 法则，背景、遇到问题、采取的方案、取得的效果
 
+UT 编写用例
 
 ## 常用连接
 
@@ -29,7 +30,7 @@ https://github.com/akullpp/awesome-java
 
 https://github.com/AobingJava/JavaFamily
 
-
+https://github.com/tuteng/Best-websites-a-programmer-should-visit-zh#interview-preparation
 
 ## [Java 基础](https://github.com/bage2014/interview/blob/master/README-Java.md) ##
 
