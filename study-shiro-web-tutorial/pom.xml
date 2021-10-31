@@ -14,6 +14,8 @@
   <properties>
 		<shiro.version>1.3.2</shiro.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 		<spring.base.version>4.3.9.RELEASE</spring.base.version>
 		<servlet.base.version>3.1.0</servlet.base.version>
 		<hsqldb.base.version>2.3.4</hsqldb.base.version>

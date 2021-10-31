@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import sun.misc.JarFilter;
 
 /**
  * @author lihzh-home
@@ -38,20 +37,20 @@ public class Main {
 			_log.warn("The path must be a directory.");
 			return;
 		}
-		FilenameFilter filter = new JarFilter();
-		File[] jarFiles = file.listFiles(filter);
-		for(File jar: jarFiles){
-			installJarToMaven(jar);
-			if(isDelete){
-				_log.info("Delete the original jar file ["+jar.getName()+"].");
-				jar.delete();
-			}else{
-				if(isMove){
-					String backupPath = propHelper.getValue(KEY_BACKUPPATH);
-					backupJar(jar,file,backupPath);
-				}
-			}
-		}
+//		FilenameFilter filter = new JarFilter();
+//		File[] jarFiles = file.listFiles(filter);
+//		for(File jar: jarFiles){
+//			installJarToMaven(jar);
+//			if(isDelete){
+//				_log.info("Delete the original jar file ["+jar.getName()+"].");
+//				jar.delete();
+//			}else{
+//				if(isMove){
+//					String backupPath = propHelper.getValue(KEY_BACKUPPATH);
+//					backupJar(jar,file,backupPath);
+//				}
+//			}
+//		}
 	}
 
 	private static void backupJar(File jar, File file, String backupPath) {

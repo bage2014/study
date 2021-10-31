@@ -17,6 +17,8 @@ https://developer.android.google.cn/studio/run/managing-avds#createavd
 
 https://fluttergems.dev/
 
+https://github.com/jahnli/awesome-flutter-plugins
+
 ### TODO
 
 服务端代码改造
@@ -89,6 +91,8 @@ Froid APP爬虫
 https://github.com/mitesh77/Best-Flutter-UI-Templates
 
 https://github.com/iampawan/Flutter-UI-Kit
+
+https://github.com/olayemii/flutter-ui-kits
 
 https://github.com/flutter/gallery/tree/master/lib
 

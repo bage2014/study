@@ -12,6 +12,8 @@
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
   <dependencies>
     <dependency>
@@ -24,8 +26,8 @@
 	<dependency>
 	    <groupId>org.projectlombok</groupId>
 	    <artifactId>lombok</artifactId>
-	    <version>1.16.18</version>
-	    <scope>provided</scope>
+        <version>1.18.20</version>
+        <scope>provided</scope>
 	</dependency>
   </dependencies>
 </project>
