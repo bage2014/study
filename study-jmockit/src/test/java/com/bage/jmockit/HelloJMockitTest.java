@@ -3,10 +3,13 @@ package com.bage.jmockit;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.Verifications;
+import mockit.integration.junit4.JMockit;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 //HelloJMockit类的测试类
+@RunWith(JMockit.class)
 public class HelloJMockitTest {
 
     // 这是一个测试属性
