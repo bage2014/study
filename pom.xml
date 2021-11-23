@@ -147,6 +147,7 @@
       <module>study-jmockit</module>
       <module>study-mockito</module>
       <module>study-java-agent-instrument</module>
+      <module>untitled</module>
 
   </modules>
 </project>
