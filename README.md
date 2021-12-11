@@ -25,7 +25,7 @@ AOP实用技巧；比如打日志等
 m3u parser https://github.com/BjoernPetersen/m3u-parser
 
 
-知识汇总：：：：
+知识汇总：
 
 https://github.com/CyC2018/CS-Notes
 
@@ -48,6 +48,10 @@ https://github.com/xbox1994/Java-Interview
 https://github.com/jobbole/awesome-java-cn
 
 https://mp.weixin.qq.com/s/kro_gyUQrdKSy1x3ETwb5A
+
+限流组件
+
+重试组件
 
 
 
