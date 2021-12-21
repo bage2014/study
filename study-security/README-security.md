@@ -164,5 +164,7 @@ sign 签名，请求无法进行伪造
 - 不安全的反序列化漏洞
 
 ## 参考链接 ##
+- https://github.com/CHYbeta/Web-Security-Learning
 - security-guide-for-developers 
 [https://github.com/FallibleInc/security-guide-for-developers](https://github.com/FallibleInc/security-guide-for-developers "security-guide-for-developers")
+- https://github.com/qazbnm456/awesome-web-security/blob/master/README-zh.md
