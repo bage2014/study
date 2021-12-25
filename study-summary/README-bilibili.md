@@ -2,6 +2,9 @@
 
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=50
 
+线程池
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=58
+
 
 ## 总结
 MySQL 
