@@ -10,10 +10,18 @@ hhttps://www.bilibili.com/video/BV1nK4y1H7g9?p=66&spm_id_from=pageDriver
 
 ## 总结
 MySQL 
-1、  索引、联合索引
+1、 索引、联合索引
 2、 log日志
 3、 版本控制
 4、 
+
+Java 锁
+自旋锁 》 偏向锁 》 重量锁
+
+Java 线程池
+优化？？
+注意事项
+
 
 # 常用链接
 
