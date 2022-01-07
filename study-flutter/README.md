@@ -6,7 +6,8 @@ D:\softwares\SDK\emulator\emulator -avd Pixel2XLAPI29 -dns-server 10.0.3.2
 flutter build apk --no-sound-null-safety
 
 ```
-
+盛情域名？？？
+服务器 ？？
 
 
 ## Flutter 入门
