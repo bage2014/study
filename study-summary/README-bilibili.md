@@ -2,6 +2,8 @@
 
 Spring AoP
 
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=77&spm_id_from=pageDriver
+
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=74
 
 Spring 生命周期
@@ -32,6 +34,8 @@ Java 锁
 Java 线程池
 优化？？
 注意事项
+
+条件短点
 
 
 # 常用链接
