@@ -1,5 +1,8 @@
 # 进度备忘
 
+Spring AoP
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=74
 
 Spring 生命周期
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=69&spm_id_from=pageDriver
