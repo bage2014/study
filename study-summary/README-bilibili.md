@@ -1,10 +1,14 @@
 # 进度备忘
 
-分布式事务
+分布式ID
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=154
+
+分布式事务【未完成】
 
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=148
 
-dubbo
+dubbo【暂时段落】
 
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=142&spm_id_from=pageDriver
 
