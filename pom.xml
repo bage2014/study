@@ -150,6 +150,7 @@
       <module>study-java-agent-instrument</module>
       <module>untitled</module>
     <module>study-jol</module>
+      <module>study-servlet</module>
 
   </modules>
 </project>
