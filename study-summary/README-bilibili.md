@@ -1,5 +1,31 @@
 # 进度备忘
 
+Spring Cloud
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=170&spm_id_from=pageDriver
+
+Spring Cloud Nacos
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=167&spm_id_from=pageDriver
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=165
+
+
+
+dubbo【暂时段落】
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=142&spm_id_from=pageDriver
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=140&spm_id_from=pageDriver
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=138&spm_id_from=pageDriver
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=137&spm_id_from=pageDriver
+
+https://www.bilibili.com/video/BV1nK4y1H7g9?p=134
+
+
+
 Tomcat
 
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=27&spm_id_from=pageDriver
@@ -16,9 +42,7 @@ https://www.bilibili.com/video/BV1r3411Y7fd?spm_id_from=333.851.b_7265636f6d6d65
 
 
 
-Spring Cloud
 
-https://www.bilibili.com/video/BV1nK4y1H7g9?p=165
 
 分布式ID
 
@@ -27,18 +51,6 @@ https://www.bilibili.com/video/BV1nK4y1H7g9?p=154
 分布式事务【未完成】
 
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=148
-
-dubbo【暂时段落】
-
-https://www.bilibili.com/video/BV1nK4y1H7g9?p=142&spm_id_from=pageDriver
-
-https://www.bilibili.com/video/BV1nK4y1H7g9?p=140&spm_id_from=pageDriver
-
-https://www.bilibili.com/video/BV1nK4y1H7g9?p=138&spm_id_from=pageDriver
-
-https://www.bilibili.com/video/BV1nK4y1H7g9?p=137&spm_id_from=pageDriver
-
-https://www.bilibili.com/video/BV1nK4y1H7g9?p=134
 
 
 
