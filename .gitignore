@@ -44,4 +44,4 @@ buildNumber.properties
 *.iml
 out
 gen
-study-summary/.DS_Store
+*/.DS_Store
