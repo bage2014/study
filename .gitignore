@@ -45,3 +45,4 @@ buildNumber.properties
 out
 gen
 */.DS_Store
+.DS_Store
