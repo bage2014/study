@@ -1,5 +1,7 @@
 # 进度备忘
 
+注册中心、分布式事务、网管
+
 Spring Cloud
 
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=173&spm_id_from=pageDriver
