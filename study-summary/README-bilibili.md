@@ -2,6 +2,12 @@
 
 注册中心、分布式事务、网管
 
+ShardingSphere
+
+https://www.bilibili.com/video/BV1XU4y177De?from=search&seid=5629134683248808430&spm_id_from=333.337.0.0
+
+https://www.bilibili.com/video/BV1uz4y1S7ov?p=2
+
 Spring Boot
 
 https://www.bilibili.com/video/BV1nK4y1H7g9?p=189
