@@ -1,5 +1,11 @@
 # 进度备忘
 
+问答
+
+https://www.bilibili.com/video/BV1iV411p7LU?p=9&spm_id_from=pageDriver
+
+https://www.bilibili.com/video/BV1iV411p7LU?from=search&seid=7880316255452534004&spm_id_from=333.337.0.0
+
 注册中心、分布式事务、网管
 
 ShardingSphere
