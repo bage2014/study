@@ -28,7 +28,7 @@ class Solution {
         head.next = null;
         return listNode;
     }
-}ß
+}
 
  class ListNode {
       int val;
