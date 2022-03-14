@@ -10,6 +10,8 @@ https://leetcode-cn.com/problems/UHnkqh/
 
 问答
 
+https://www.bilibili.com/video/BV1iV411p7LU?p=31
+
 https://www.bilibili.com/video/BV1iV411p7LU?p=30&spm_id_from=pageDriver
 
 https://www.bilibili.com/video/BV1iV411p7LU?p=24&spm_id_from=pageDriver
