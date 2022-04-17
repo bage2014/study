@@ -6,6 +6,42 @@
 
     <!--自定义-->
     <appender name="MyAppender" class="com.bage.study.log.logback.MyAppender">
+        <!--<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <provider class="com.bage.study.log.logback.MaskingPatternLayout">
+                    <rules>
+                        <rule>
+                            <name>email</name>
+                            <pattern></pattern>
+                        </rule>
+                        <rule>
+                            <name>ssn</name>
+                            <pattern>\d{3}-?\d{3}-?\d{4}</pattern>
+                        </rule>
+                    </rules>
+                </provider>
+                <stackTrace/>
+                <pattern>
+                    <pattern>
+                        {
+                        "severity": "%level",
+                        "thread": "%thread",
+                        "class": "%logger{40}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>-->
+
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.bage.study.log.logback.MaskingPatternLayout">
+                <maskPattern>\"ssn\"\s*:\s*\"(.*?)\"</maskPattern> <!-- ssn JSON pattern -->
+                <maskPattern>\"email\"\s*:\s*\"(.*?)\"</maskPattern> <!-- Email JSON pattern -->
+            </layout>
+        </encoder>
 
     </appender>
 
