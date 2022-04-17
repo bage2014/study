@@ -22,4 +22,17 @@ public class LogAppTest {
 		LOG.error("I am programming.");
 		
 	}
+	@org.junit.Test
+	public void testMasking() {
+		// Throw some logging statements in your code somewhere where you know they'll be fired right away when you run your app. For example:
+		String json = "{\n" +
+				"    \"user_id\":\"87656\",\n" +
+				"    \"ssn\":\"123-12-345\",\n" +
+				"    \"city\":\"Chicago\",\n" +
+				"    \"Country\":\"U.S.\",\n" +
+				"    \"email\":\"bage@qq.com\"\n" +
+				" }";
+		LOG.info(json);
+
+	}
 }

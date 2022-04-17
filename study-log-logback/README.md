@@ -9,7 +9,8 @@ logback 基本使用
 - demo [http://github.com/qos-ch/logback-demo](http://github.com/qos-ch/logback-demo)
 - How to setup SLF4J and LOGBack in a web app - fast [https://wiki.base22.com/btg/how-to-setup-slf4j-and-logback-in-a-web-app-fast-35488048.html](https://wiki.base22.com/btg/how-to-setup-slf4j-and-logback-in-a-web-app-fast-35488048.html)
 - Mapped Diagnostic Context [https://logback.qos.ch/manual/mdc.html](https://logback.qos.ch/manual/mdc.html)
-
+- 日志过滤 https://www.baeldung.com/logback-mask-sensitive-data
+- 日志过滤 https://github.com/premanandc/masking-logback-json-provider
 ## 环境搭建 ##
 添加logback依赖
 

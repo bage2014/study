@@ -3,6 +3,7 @@ study-jmeter学习笔记
 
 ## 参考链接 ##
 - 官网 [http://jmeter.apache.org/](http://jmeter.apache.org/)
+- 中文网 http://www.jmeter.com.cn/
 
 ## 环境搭建 ##
 安装jdk后，下载解压直接打开 /bin/jmeter.bat
