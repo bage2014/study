@@ -1,7 +1,8 @@
 package com.bage.study.log.logback;
 
-import ch.qos.logback.access.PatternLayout;
-import ch.qos.logback.access.spi.IAccessEvent;
+import ch.qos.logback.classic.PatternLayout;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,11 +20,15 @@ public class MaskingPatternLayout extends PatternLayout {
         multilinePattern = Pattern.compile(maskPatterns.stream().collect(Collectors.joining("|")), Pattern.MULTILINE);
     }
 
-    @Override
-    public String doLayout(IAccessEvent event) {
-        return super.doLayout(event);
-    }
+//    @Override
+//    public String doLayout(IAccessEvent event) {
+//        return super.doLayout(event);
+//    }
 
+    @Override
+    public String doLayout(ILoggingEvent event) {
+        return maskMessage(super.doLayout(event));
+    }
     private String maskMessage(String message) {
         if (multilinePattern == null) {
             return message;

@@ -22,6 +22,7 @@ public class LogAppTest {
 		LOG.error("I am programming.");
 		
 	}
+
 	@org.junit.Test
 	public void testMasking() {
 		// Throw some logging statements in your code somewhere where you know they'll be fired right away when you run your app. For example:

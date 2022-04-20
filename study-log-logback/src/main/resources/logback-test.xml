@@ -6,7 +6,7 @@
 
     <!--自定义-->
     <appender name="MyAppender" class="com.bage.study.log.logback.MyAppender">
-        <!--<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <timestamp>
                     <timeZone>UTC</timeZone>
@@ -14,12 +14,8 @@
                 <provider class="com.bage.study.log.logback.MaskingPatternLayout">
                     <rules>
                         <rule>
-                            <name>email</name>
-                            <pattern></pattern>
-                        </rule>
-                        <rule>
                             <name>ssn</name>
-                            <pattern>\d{3}-?\d{3}-?\d{4}</pattern>
+                            <pattern>\d{3}-?\d{2}-?\d{4}</pattern>
                         </rule>
                     </rules>
                 </provider>
@@ -34,7 +30,7 @@
                     </pattern>
                 </pattern>
             </providers>
-        </encoder>-->
+        </encoder>
 
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.bage.study.log.logback.MaskingPatternLayout">
