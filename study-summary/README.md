@@ -12,6 +12,9 @@ Cauch 教练管理方式
 
 代理： https://blog.csdn.net/lx1315998513/article/details/120641124
 
+## Mac 使用技巧
+https://zhuanlan.zhihu.com/p/89987302
+
 ## 常用连接
 
 https://github.com/0voice/interview_internal_reference
