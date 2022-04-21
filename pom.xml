@@ -148,7 +148,7 @@
       <module>study-jmockit</module>
       <module>study-mockito</module>
       <module>study-java-agent-instrument</module>
-      <module>untitled</module>
+    <module>study-file-online-preview</module>
     <module>study-jol</module>
       <module>study-servlet</module>
 
