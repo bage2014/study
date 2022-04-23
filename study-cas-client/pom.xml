@@ -17,7 +17,7 @@
 	  <maven.compiler.source>1.8</maven.compiler.source>
 	  <maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.base.version>4.3.9.RELEASE</spring.base.version>
+		<spring.base.version>5.3.19</spring.base.version>
 		<junit.base.version>UTF-8</junit.base.version>
 		<servlet.base.version>3.0-alpha-1</servlet.base.version>
 		<jsp.base.version>2.1</jsp.base.version>
