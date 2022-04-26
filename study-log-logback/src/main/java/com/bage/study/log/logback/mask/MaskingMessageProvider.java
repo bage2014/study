@@ -16,7 +16,6 @@ public class MaskingMessageProvider extends MessageJsonProvider {
     JsonWritingUtils.writeStringField(generator, getFieldName(), rules.apply(event.getFormattedMessage()));
   }
 
-  @SuppressWarnings("unused")
   public void setRules(MaskRules rules) {
     this.rules = rules;
   }
