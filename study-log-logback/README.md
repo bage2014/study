@@ -1,6 +1,8 @@
 # study-log-logback #
 logback 基本使用
 
+todo: setRules null
+
 
 ## 参考链接 ##
 
