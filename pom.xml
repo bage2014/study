@@ -138,7 +138,9 @@
       <module>study-summary</module>
       <module>study-id-generator</module>
       <module>study-stream-m3u8</module>
+<!--
       <module>study-jvm</module>
+-->
       <module>study-hystrix</module>
       <module>study-resilience4j</module>
     <module>study-ews-java-api</module>
@@ -147,7 +149,9 @@
       <module>study-sftp</module>
       <module>study-jmockit</module>
       <module>study-mockito</module>
+<!--
       <module>study-java-agent-instrument</module>
+-->
     <module>study-file-online-preview</module>
     <module>study-jol</module>
       <module>study-servlet</module>
