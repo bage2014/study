@@ -135,9 +135,36 @@ Docker Pull Command
 
     docker pull mysql
 
+Mac M1 报错
+
+```
+docker pull mysql
+
+Using default tag: latest
+
+latest: Pulling from library/mysql
+
+no matching manifest for linux/arm64/v8 in the manifest list entries
+
+```
+
+解决方案
+
+```
+docker pull mysql/mysql-server
+```
+
+
+
 Start a mysql server instance
 
     docker run --name bage-mysql -v /home/bage/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d bage-mysql
+    
+    Mac:
+    docker run --name bage-mysql -v /Users/bage/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    
+    
+    
 其中
 
 	--name 起名 bage-mysql 
@@ -375,6 +402,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.5.1
 
  
+
 
 
 
@@ -676,6 +704,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
