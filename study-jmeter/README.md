@@ -1,6 +1,8 @@
 # study-jmeter #
 study-jmeter学习笔记
 
+todo: 链接 MySQL
+
 ## 参考链接 ##
 - 官网 [http://jmeter.apache.org/](http://jmeter.apache.org/)
 - 中文网 http://www.jmeter.com.cn/
