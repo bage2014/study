@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/db")
-public class PingController {
+public class MySQLController {
 
-    @RequestMapping("/mysql")
+    @RequestMapping("/ping")
     public @ResponseBody String ping() {
         System.out.println(LocalDateTime.now());
         return "pang";
