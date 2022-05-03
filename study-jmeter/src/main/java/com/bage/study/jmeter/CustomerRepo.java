@@ -44,9 +44,9 @@ public class CustomerRepo {
         ).forEach(customer -> log.info(customer.toString()));
     }
 
-    public List<Customer> query() {
+    public List<Customer> query(String key) {
         return jdbcTemplate.query(
-                "SELECT id, first_name, last_name FROM customers WHERE first_name = ?", new Object[]{"Josh"},
+                "SELECT id, first_name, last_name FROM customers WHERE first_name = ?", new Object[]{key},
                 (rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
         );
 

@@ -71,3 +71,32 @@ KB/Sec：每秒从服务器端接收到的数据量，相当于LoadRunner中的T
 - JMeter Exception: java.net.BindException: Address already in use: connect [http://twit88.com/blog/2008/07/28/jmeter-exception-javanetbindexception-departmentAddress-already-in-use-connect/](http://twit88.com/blog/2008/07/28/jmeter-exception-javanetbindexception-departmentAddress-already-in-use-connect/)
 - Address already in use : connect 的解决办法 [https://blog.csdn.net/qq_31441637/article/details/80422901](https://blog.csdn.net/qq_31441637/article/details/80422901)
 
+
+
+
+
+## 简单压测
+
+### 数据库压测
+
+数据库连接数
+
+```
+登陆 root 
+mysql -uroot -p
+  
+查看当前最大连接数
+show variables like 'max_connections';
+
+设置最大连接数
+set global max_connections=10;
+```
+
+
+
+
+
+
+
+
+
