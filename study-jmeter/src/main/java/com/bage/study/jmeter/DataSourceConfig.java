@@ -33,10 +33,11 @@ public class DataSourceConfig {
         hikariDataSource.setConnectionTimeout(5000);//连接超时时间设置
         hikariDataSource.setIdleTimeout(3000);//连接空闲生命周期设置
         hikariDataSource.setIsolateInternalQueries(false);//执行查询启动设置
-        hikariDataSource.setMaximumPoolSize(500);//连接池允许的最大连接数量
+        hikariDataSource.setMaximumPoolSize(8);//连接池允许的最大连接数量
         hikariDataSource.setMaxLifetime(1800000);//检查空余连接优化连接池设置时间,单位毫秒
-        hikariDataSource.setMinimumIdle(10);//连接池保持最小空余连接数量
+        hikariDataSource.setMinimumIdle(2);//连接池保持最小空余连接数量
         hikariDataSource.setPoolName(AppConstants.APP_PREF + "HikariPool");//连接池名称
+//        hikariDataSource.setLogWriter();
         return builder.build();
     }
 

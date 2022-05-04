@@ -80,7 +80,8 @@ public class MyThreadPoolExecutor {
 //		SynchronousQueue,
 //		LinkedBlockingDeque,
 //		ArrayBlockingQueue;
-		
+
+//		threadPoolExecutor.shutdownNow();
 	}
 	
 }

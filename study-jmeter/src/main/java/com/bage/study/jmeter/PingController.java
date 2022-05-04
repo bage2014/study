@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class PingController {
 
     @RequestMapping("/ping")
-    public @ResponseBody String ping() {
+    public String ping() {
         System.out.println(LocalDateTime.now());
         return "pang";
     }
