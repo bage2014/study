@@ -162,9 +162,10 @@ Start a mysql server instance
     
     Mac:
     docker run --name bage-mysql -v /Users/bage/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
-    
-    
-    
+
+
+​    
+​    
 其中
 
 	--name 起名 bage-mysql 
@@ -402,6 +403,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.5.1
 
  
+
 
 
 
@@ -711,6 +713,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -738,7 +741,44 @@ setting max_map_count
 	sudo  sysctl -w vm.max_map_count=262144
 
 vi /home/bage/data/logstash/file-beats.conf
-	
+[Mac:   /Users/bage/bage/docker-data/elk/logstash/beats-input.conf]
+
+```
+# 数据输入配置：port -> 端口号；codec -> 输入格式。这里以logback为例。
+input {
+  tcp {
+    port => 5044
+    codec=>json_lines
+  }
+}
+
+# 数据输出配置：hosts -> 主机集合；index -> 你将要创建的索引名称。这里es为例。
+output {
+  elasticsearch {
+    hosts => ["127.0.0.1:9200"]
+    index => "%{[appName]}-%{+YYYY.MM.dd}"
+  }
+}
+```
+
+```
+# 数据输入配置：port -> 端口号；codec -> 输入格式。这里以logback为例。
+input {
+  tcp {
+    port => 5044
+    codec=>json_lines
+  }
+}
+
+# 数据输出配置：hosts -> 主机集合；index -> 你将要创建的索引名称。这里es为例。
+output {
+  elasticsearch {
+    hosts => ["127.0.0.1:9200"]
+    index => "%{[appName]}-%{+YYYY.MM.dd}"
+  }
+}
+```
+
 	# 数据输入配置：port -> 端口号；codec -> 输入格式。这里以logback为例。
 	input {
 	  tcp {
@@ -759,7 +799,10 @@ vi /home/bage/data/logstash/file-beats.conf
 start a instance
 
 	docker run -v /home/bage/data/logstash/file-beats.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
-
+	
+	Mac: 
+	docker run -v /Users/bage/bage/docker-data/elk/es:/var/lib/elasticsearch /Users/bage/bage/docker-data/elk/logstash/beats-input.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
+	
 
 访问
 	
