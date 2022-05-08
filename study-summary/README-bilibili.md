@@ -4,6 +4,8 @@
 
 面试汇总：
 
+Kayak: https://github.com/Snailclimb/JavaGuide-Interview/blob/master/docs/e-3kafka.md
+
 https://github.com/Snailclimb/JavaGuide
 
 https://hadyang.com/interview/docs/architecture/distributed/dubbo/
