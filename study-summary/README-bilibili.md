@@ -4,7 +4,31 @@
 
 面试汇总：
 
-Kayak: https://github.com/Snailclimb/JavaGuide-Interview/blob/master/docs/e-3kafka.md
+
+
+Tomcat
+
+https://baijiahao.baidu.com/s?id=1707755764671407613&wfr=spider&for=pc
+
+https://blog.csdn.net/zps66/article/details/117673727
+
+
+
+场景设计：
+
+https://github.com/Snailclimb/JavaGuide-Interview/blob/master/docs/f-2%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%9D%A2%E8%AF%95%E6%8C%87%E5%8C%97.md
+
+
+
+Kafaka: 
+
+https://github.com/Snailclimb/JavaGuide-Interview/blob/master/docs/e-3kafka.md
+
+https://blog.csdn.net/yanpenglei/article/details/121862772
+
+https://zhuanlan.zhihu.com/p/469002514
+
+
 
 https://github.com/Snailclimb/JavaGuide
 
