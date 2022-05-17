@@ -6,6 +6,8 @@
 
 Spring Cloud：
 
+http://c.biancheng.net/springcloud/eureka.html
+
 http://c.biancheng.net/springcloud/
 
 

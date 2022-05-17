@@ -155,6 +155,7 @@
     <module>study-file-online-preview</module>
     <module>study-jol</module>
       <module>study-servlet</module>
+      <module>study-lombok</module>
 
   </modules>
 </project>
