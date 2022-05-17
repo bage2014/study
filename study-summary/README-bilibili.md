@@ -10,6 +10,10 @@ http://c.biancheng.net/springcloud/eureka.html
 
 http://c.biancheng.net/springcloud/
 
+https://blog.csdn.net/yanpenglei/article/details/121994645
+
+https://blog.csdn.net/m0_48795607/article/details/115917190
+
 
 
 MySQL
