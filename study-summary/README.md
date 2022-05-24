@@ -11,6 +11,14 @@ Cauch 教练管理方式
 
 代理： https://blog.csdn.net/lx1315998513/article/details/120641124
 
+## 员工找回？M
+
+Spring Security ，干掉profile 目录等
+
+Spring Security 使用自定义 数据库表结构
+
+
+
 ## Mac 使用技巧
 https://zhuanlan.zhihu.com/p/89987302
 
