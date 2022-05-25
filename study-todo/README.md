@@ -23,5 +23,13 @@ Docker 版本
 
 
 
+API 方法 VS Logic 直接调用
+
+Message Bus 抽取发送邮件方法
+
+
+
+
+
 
 
