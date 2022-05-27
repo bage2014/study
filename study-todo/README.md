@@ -29,6 +29,22 @@ Message Bus 抽取发送邮件方法
 
 
 
+Auth Server 设置自定义User ID字段
+
+
+
+yarn 配置淘宝 链接
+
+
+
+vue 选型
+
+目前采用： element plus
+
+https://element-plus.gitee.io/zh-CN/guide/design.html
+
+
+
 
 
 
