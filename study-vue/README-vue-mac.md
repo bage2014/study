@@ -87,6 +87,9 @@ node -v
 npm install --global vue-cli
 
 npm install --global vue-cli@3.0.1
+
+npm config set registry https://registry.npm.taobao.org
+
 ```
 
 验证
@@ -109,6 +112,17 @@ npm install -g npm@8.10.0
 
 ```undefined
 brew install yarn
+
+yarn global add vue-cli
+
+```
+
+设置淘宝镜像
+
+```
+yarn config set registry http://registry.npm.taobao.org/
+
+
 ```
 
 验证
@@ -116,8 +130,6 @@ brew install yarn
 ```undefined
 yarn -V
 ```
-
-
 
 
 
