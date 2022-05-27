@@ -45,6 +45,16 @@ https://element-plus.gitee.io/zh-CN/guide/design.html
 
 
 
+vue 使用route
+
+https://cn.vuejs.org/v2/guide/routing.html
+
+https://router.vuejs.org/zh/guide/#javascript
+
+https://github.com/chrisvfritz/vue-2.0-simple-routing-example/
+
+
+
 
 
 
