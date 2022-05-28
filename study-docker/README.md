@@ -794,39 +794,7 @@ output {
 }
 ```
 
-```
-# 数据输入配置：port -> 端口号；codec -> 输入格式。这里以logback为例。
-input {
-  tcp {
-    port => 5044
-    codec=>json_lines
-  }
-}
 
-# 数据输出配置：hosts -> 主机集合；index -> 你将要创建的索引名称。这里es为例。
-output {
-  elasticsearch {
-    hosts => ["127.0.0.1:9200"]
-    index => "%{[appName]}-%{+YYYY.MM.dd}"
-  }
-}
-```
-
-	# 数据输入配置：port -> 端口号；codec -> 输入格式。这里以logback为例。
-	input {
-	  tcp {
-	    port => 5044
-	    codec=>json_lines
-	  }
-	}
-	
-	# 数据输出配置：hosts -> 主机集合；index -> 你将要创建的索引名称。这里es为例。
-	output {
-	  elasticsearch {
-	    hosts => ["127.0.0.1:9200"]
-	    index => "%{[appName]}-%{+YYYY.MM.dd}"
-	  }
-	}
 
 
 start a instance
@@ -838,7 +806,6 @@ start a instance
 	
 	Mac[多目录挂载问题]: 
 	docker run -e MAX_MAP_COUNT="262144" -v /Users/bage/bage/docker-data/elk/es:/var/lib/elasticsearch -v /Users/bage/bage/docker-data/elk/logstash/beats-input.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
-
 
 访问
 	

@@ -63,6 +63,12 @@ https://github.com/chrisvfritz/vue-2.0-simple-routing-example/
 
 、消息服务 ，进行实现
 
+spring boot 日子打到ELK - done
+
+
+
+
+
 
 
 ### docker 安装ELK
@@ -102,18 +108,49 @@ docker pull elasticsearch:7.16.2
 
 ```
 
+创建基础目录 
+
+```
+mkdir /Users/bage/bage/docker-data/es
+
+bage % pwd
+/Users/bage/bage/docker-data/es
+
+bage % ls
+config	data	nodes	plugins
+```
+
+编辑文件
+
+```
+vi /Users/bage/bage/docker-data/es/config/elasticearch.yml
+
+
+```
+
 启动 
 
 ```
-docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.16.2
+docker run --network myapp --name bage-es -p 9092:9200 -p 8093:9300 \
+-e "discovery.type=single-node" \
+-v /Users/bage/bage/docker-data/es/config/elasticearch.yml:/usr/share/elasticsearch/config/elasticearch.yml \
+-v /Users/bage/bage/docker-data/es/data:/usr/share/elasticsearch/data \
+-v /Users/bage/bage/docker-data/es/plugins:/usr/share/elasticsearch/plugins \
+-d elasticsearch:7.16.2
+
 ```
 
  访问
 
 ```
 http://127.0.0.1:9092/_cat/health
-http://127.0.0.1:8093/_cat/health
+http://127.0.0.1:9092
+
+查看索引
+http://localhost:9092/_cat/indices?v&pretty
 ```
+
+
 
 ### 安装kibana
 
@@ -124,25 +161,64 @@ docker pull kibana:7.16.2
 
 ```
 
+创建基础目录 
+
+```
+mkdir /Users/bage/bage/docker-data/kibana
+
+bage % pwd
+/Users/bage/bage/docker-data/kibana
+
+bage % ls
+config
+```
+
+编辑文件[暂时不使用]
+
+```
+/Users/bage/bage/docker-data/kibana/config/kibana.yml
+
+server.port: 8056
+server.host: "0.0.0.0"
+elasticsearch.url: "http://bage-es:9092"
+
+```
+
 start a instance
 
 ```
-docker run --network myapp -it -d -e ELASTICSEARCH_URL=http://elasticsearch:9092/ --name kibana -p 9056:5601 kibana:7.16.2
-```
+docker run --network myapp -d --link bage-es:elasticsearch -p 9056:5601 --name bage-kibana \
+-d kibana:7.16.2
 
-自定义配置文件
-
-```
--v /usr/local/es/es.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 ```
 
 visit
 
 ```
-http://192.168.146.133:5601/app/kibana
+http://127.0.0.1:9056/app/kibana
+
+http://127.0.0.1:9056/app/kibana#/dev_tools/console
 ```
 
+**kibana里建立索引** 
+
+通过kiban菜单去建立索引：Management>Index patterns>Create index pattern，这里会显示可用的索引名称。
+
+可以直接搜索 index 找到 Create index pattern
+
+
+
+选择对应的索引
+
+
+
+Discover 里面创建 看板
+
 ### 安装 logstash
+
+参考链接 https://www.elastic.co/guide/en/logstash/7.17/docker.html
+
+https://github.com/elastic/logstash/blob/7.17/config/logstash.yml
 
 Docker Pull Command
 
@@ -150,13 +226,74 @@ Docker Pull Command
 docker pull logstash:7.16.2
 ```
 
-start a instance[not enough space]
+创建基础目录 
 
 ```
-docker run --name logstash --rm -it -v /home/bage/data/pipeline/:/usr/share/logstash/pipeline/ logstash:7.16.2
+mkdir /Users/bage/bage/docker-data/logstash
+
+bage % pwd
+/Users/bage/bage/docker-data/logstash
+
+bage % ls
+pipeline	config
+
 ```
 
-### 
+编辑文件
+
+```
+vi /Users/bage/bage/docker-data/logstash/config/logstash.yml
+
+http.host: "0.0.0.0"
+# xpack.monitoring.elasticsearch.hosts: ["http://bage-es:9092"]
+monitoring.elasticsearch.hosts: ["http://bage-es:9092"]
+# path.config: /usr/share/logstash/config/conf.d/*.conf
+# path.logs: /usr/share/logstash/logs
+
+```
 
 
+
+```
+vi /Users/bage/bage/docker-data/logstash/pipeline/logstash.conf
+
+# Sample Logstash configuration for creating a simple
+# Beats -> Logstash -> Elasticsearch pipeline.
+
+input {
+ tcp {
+  mode => "server"
+  port => 5044
+  codec => json_lines
+  stat_interval => "5"
+ }
+}
+
+output {
+  elasticsearch {
+    hosts => ["http://bage-es:9200"]
+    index => "{{indexName}}"
+    #user => "elastic"
+    #password => "changeme"
+  }
+}
+
+```
+
+start a instance
+
+```
+docker run --network myapp --name=bage-logstash \
+-p 8056:5601 \
+-p 8044:5044 \
+-v /Users/bage/bage/docker-data/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml \
+-v /Users/bage/bage/docker-data/logstash/pipeline/:/usr/share/logstash/pipeline/ \
+-d logstash:7.16.2
+
+
+docker run --name bage-logstash --network myapp -p 8056:5601 --link bage-es:elasticsearch -d logstash:7.16.2
+  
+```
+
+### 访问
 
