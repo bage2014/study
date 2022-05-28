@@ -41,6 +41,30 @@ Most users set up Docker’s repositories and install from them, for ease of ins
 配置开机启动
 > systemctl enable docker 
 
+
+
+docker hub 设置国内镜像地址
+
+https://www.csdn.net/tags/NtzaMgzsNDA4Ni1ibG9n.html
+
+在任务栏点击 Docker Desktop 应用图标 -> Perferences，在左侧导航菜单选择 Docker  Engine，在右侧像下边一样编辑 json 文件。修改完成之后，点击 Apply & Restart 按钮，Docker  就会重启并应用配置的镜像地址了。
+
+```json
+{
+  "registry-mirrors": [
+    "https://9cpn8tt6.mirror.aliyuncs.com",
+    "https://hub-mirror.c.163.com",
+    "https://registry.docker-cn.com"
+  ]
+}
+```
+
+验证
+
+```
+docker info
+```
+
 ## 常用命令 ##
 
 ### Docker ###
@@ -397,23 +421,27 @@ Docker Pull Command
 Docker Pull Command
 
     docker pull elasticsearch:7.5.1
+    
+    Mac M1
+    docker pull elasticsearch:7.16.2
+    
+    
 
 启动 
 
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.5.1
+    
+    Mac
+    docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
-
-
-
-
-
-
-
 
 访问
 
     http://{ip}:9092/_cat/health  
+    
+    http://127.0.0.1:9092/_cat/health
+    http://127.0.0.1:8093/_cat/health
 
 
 ### 安装部署 zipkin  ###
@@ -714,6 +742,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -721,6 +750,9 @@ start a instance
 Docker Pull Command
 
 	docker pull logstash:7.5.1
+	
+	Mac M1
+	docker pull logstash:7.16.2
 
 start a instance[not enough space]
 
@@ -741,6 +773,7 @@ setting max_map_count
 	sudo  sysctl -w vm.max_map_count=262144
 
 vi /home/bage/data/logstash/file-beats.conf
+
 [Mac:   /Users/bage/bage/docker-data/elk/logstash/beats-input.conf]
 
 ```
@@ -801,8 +834,11 @@ start a instance
 	docker run -v /home/bage/data/logstash/file-beats.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
 	
 	Mac: 
-	docker run -v /Users/bage/bage/docker-data/elk/es:/var/lib/elasticsearch /Users/bage/bage/docker-data/elk/logstash/beats-input.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
+	docker run -v /Users/bage/bage/docker-data/elk/logstash/beats-input.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
 	
+	Mac[多目录挂载问题]: 
+	docker run -e MAX_MAP_COUNT="262144" -v /Users/bage/bage/docker-data/elk/es:/var/lib/elasticsearch -v /Users/bage/bage/docker-data/elk/logstash/beats-input.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
+
 
 访问
 	
@@ -824,6 +860,10 @@ kibana
 Docker Pull Command
 
 	docker pull kibana:7.5.1
+	
+	Mac
+	docker pull kibana:7.16.2
+	
 
 start a instance
 
