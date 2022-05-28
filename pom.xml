@@ -156,6 +156,7 @@
     <module>study-jol</module>
       <module>study-servlet</module>
       <module>study-lombok</module>
+      <module>study-spring-boot-elk</module>
 
   </modules>
 </project>
