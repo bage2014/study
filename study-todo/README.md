@@ -61,9 +61,15 @@ https://github.com/chrisvfritz/vue-2.0-simple-routing-example/
 
 文件上传-待自测
 
-、消息服务 ，进行实现
+、消息服务 ，进行实现 -done 
 
 spring boot 日子打到ELK - done
+
+
+
+
+
+
 
 
 
@@ -297,3 +303,35 @@ docker run --name bage-logstash --network myapp -p 8056:5601 --link bage-es:elas
 
 ### 访问
 
+
+
+## Flutter
+
+Mac 搭建Flutter 环境
+
+下载Flutter 
+
+下载Android Studio
+
+
+
+配置fluter 环境变量
+
+
+
+安装 Dart 插件、Flutter 插件
+
+
+
+ZipException 处理
+
+Flutter run ZipException
+
+https://www.jianshu.com/p/8e1007e65c66
+
+```
+
+  
+```
+
+### 

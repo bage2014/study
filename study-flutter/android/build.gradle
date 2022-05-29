@@ -1,8 +1,8 @@
 buildscript {
     repositories {
         maven { url 'https://dl.google.com/dl/android/maven2' }
-        google()
-        jcenter()
+//        google()
+//        jcenter()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/google' }
@@ -21,8 +21,8 @@ buildscript {
 allprojects {
     repositories {
         maven { url 'https://dl.google.com/dl/android/maven2' }
-        google()
-        jcenter()
+//        google()
+//        jcenter()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/google' }
