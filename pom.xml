@@ -157,6 +157,7 @@
       <module>study-servlet</module>
       <module>study-lombok</module>
       <module>study-spring-boot-elk</module>
+      <module>study-mapstruct</module>
 
   </modules>
 </project>

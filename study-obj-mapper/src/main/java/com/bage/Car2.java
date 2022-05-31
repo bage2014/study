@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-public class Car {
+public class Car2 {
  
     private String make;
     private int numberOfSeats;
