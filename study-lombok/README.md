@@ -5,6 +5,9 @@ lombok 学习笔记
 ### 安装IDE插件 ###
 IDEA 插件 [https://github.com/mplushnikov/lombok-intellij-plugin](https://github.com/mplushnikov/lombok-intellij-plugin)
 
+https://github.com/projectlombok/lombok
+
+
 - 可采用离线安装方式，从上面链接进行下载，最后进行导入
 - 也可以采用在线安装方式进行安装 lombok 插件
 

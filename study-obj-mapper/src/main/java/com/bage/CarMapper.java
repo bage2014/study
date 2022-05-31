@@ -8,16 +8,6 @@ public interface CarMapper {
  
     CarMapper INSTANCE = Mappers.getMapper( CarMapper.class );
  
-    @Mapping(source = "numberOfSeats", target = "seatCount")
-    CarDto carToCarDto(Car car);
+    Car2 carToCarDto(Car car);
 
-    @ObjectFactory
-    default CarDto createCarDto(Car car) {
-        return new CarDto();// ... custom factory logic
-    }
-
-    @AfterMapping
-    default void fillTank(Car vehicle, @MappingTarget CarDto result) {
-        result.setType( vehicle.getType().name());
-    }
 }
