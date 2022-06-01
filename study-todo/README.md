@@ -77,7 +77,17 @@ Html 访问问题 -done 引入themef依赖即可
 
 
 
-MapStruct + Lombok 问题处理
+注册中心：
+
+http://c.biancheng.net/springcloud/nacos.html
+
+
+
+
+
+MapStruct + Lombok 问题处理 -done 
+
+mapping 日期自动mapping 
 
 
 
