@@ -89,7 +89,11 @@ http://c.biancheng.net/springcloud/nacos.html
 
 MapStruct + Lombok 问题处理 -done 
 
-mapping 日期自动mapping 
+mapping 日期自动mapping -done 
+
+compile fix -done 
+
+Run --app 
 
 
 
