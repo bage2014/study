@@ -1046,7 +1046,229 @@ http:localhost:8849
 
 
 
+### docker 安装ELK 【Mac】
 
+#### 设置国内镜像
+
+参考链接： https://www.csdn.net/tags/NtzaMgzsNDA4Ni1ibG9n.html
+
+**操作步骤**
+
+Docker Desktop 应用图标 -> Perferences，在左侧导航菜单选择 Docker  Engine，在右侧像下边一样编辑 json 文件。修改完成之后，点击 Apply & Restart 按钮，Docker  就会重启并应用配置的镜像地址了。
+
+```json
+{
+  "registry-mirrors": [
+    "https://9cpn8tt6.mirror.aliyuncs.com",
+    "https://hub-mirror.c.163.com",
+    "https://registry.docker-cn.com"
+  ]
+}
+```
+
+验证
+
+```
+docker info
+```
+
+
+
+### 安装ES【Mac】
+
+Docker Pull Command
+
+```
+docker pull elasticsearch:7.16.2
+
+```
+
+创建基础目录 
+
+```
+mkdir /Users/bage/bage/docker-data/es
+
+bage % pwd
+/Users/bage/bage/docker-data/es
+
+bage % ls
+config	data	nodes	plugins
+```
+
+编辑文件
+
+```
+vi /Users/bage/bage/docker-data/es/config/elasticearch.yml
+
+
+```
+
+启动 
+
+```
+docker run --network myapp --name bage-es -p 9092:9200 -p 8093:9300 \
+-e "discovery.type=single-node" \
+-v /Users/bage/bage/docker-data/es/config/elasticearch.yml:/usr/share/elasticsearch/config/elasticearch.yml \
+-v /Users/bage/bage/docker-data/es/data:/usr/share/elasticsearch/data \
+-v /Users/bage/bage/docker-data/es/plugins:/usr/share/elasticsearch/plugins \
+-d elasticsearch:7.16.2
+
+```
+
+ 访问
+
+```
+http://127.0.0.1:9092/_cat/health
+http://127.0.0.1:9092
+
+查看索引
+http://localhost:9092/_cat/indices?v&pretty
+```
+
+
+
+### 安装kibana【Mac】
+
+Docker Pull Command
+
+```
+docker pull kibana:7.16.2
+
+```
+
+创建基础目录 
+
+```
+mkdir /Users/bage/bage/docker-data/kibana
+
+bage % pwd
+/Users/bage/bage/docker-data/kibana
+
+bage % ls
+config
+```
+
+编辑文件[暂时不使用]
+
+```
+/Users/bage/bage/docker-data/kibana/config/kibana.yml
+
+server.port: 8056
+server.host: "0.0.0.0"
+elasticsearch.url: "http://bage-es:9092"
+
+```
+
+start a instance
+
+```
+docker run --network myapp -d --link bage-es:elasticsearch -p 9056:5601 --name bage-kibana \
+-d kibana:7.16.2
+
+```
+
+visit
+
+```
+http://127.0.0.1:9056/app/kibana
+
+http://127.0.0.1:9056/app/kibana#/dev_tools/console
+```
+
+**kibana里建立索引** 
+
+通过kiban菜单去建立索引：Management>Index patterns>Create index pattern，这里会显示可用的索引名称。
+
+可以直接搜索 index 找到 Create index pattern
+
+
+
+选择对应的索引
+
+
+
+Discover 里面创建 看板
+
+### 安装 logstash【Mac】
+
+参考链接 https://www.elastic.co/guide/en/logstash/7.17/docker.html
+
+https://github.com/elastic/logstash/blob/7.17/config/logstash.yml
+
+Docker Pull Command
+
+```
+docker pull logstash:7.16.2
+```
+
+创建基础目录 
+
+```
+mkdir /Users/bage/bage/docker-data/logstash
+
+bage % pwd
+/Users/bage/bage/docker-data/logstash
+
+bage % ls
+pipeline	config
+
+```
+
+编辑文件
+
+```
+vi /Users/bage/bage/docker-data/logstash/config/logstash.yml
+
+http.host: "0.0.0.0"
+# xpack.monitoring.elasticsearch.hosts: ["http://bage-es:9092"]
+monitoring.elasticsearch.hosts: ["http://bage-es:9092"]
+# path.config: /usr/share/logstash/config/conf.d/*.conf
+# path.logs: /usr/share/logstash/logs
+
+```
+
+
+
+```
+vi /Users/bage/bage/docker-data/logstash/pipeline/logstash.conf
+
+# Sample Logstash configuration for creating a simple
+# Beats -> Logstash -> Elasticsearch pipeline.
+
+input {
+ tcp {
+  mode => "server"
+  port => 5044
+  codec => json_lines
+  stat_interval => "5"
+ }
+}
+
+output {
+  elasticsearch {
+    hosts => ["http://bage-es:9200"]
+    index => "{{indexName}}"
+    #user => "elastic"
+    #password => "changeme"
+  }
+}
+
+```
+
+start a instance
+
+```
+docker run --network myapp --name=bage-logstash \
+-p 8056:5601 \
+-p 8044:5044 \
+-v /Users/bage/bage/docker-data/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml \
+-v /Users/bage/bage/docker-data/logstash/pipeline/:/usr/share/logstash/pipeline/ \
+-d logstash:7.16.2
+
+
+docker run --name bage-logstash --network myapp -p 8056:5601 --link bage-es:elasticsearch -d logstash:7.16.2
+  
+```
 
 
 
