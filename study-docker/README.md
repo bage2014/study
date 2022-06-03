@@ -424,8 +424,9 @@ Docker Pull Command
     
     Mac M1
     docker pull elasticsearch:7.16.2
-    
-    
+
+
+​    
 
 启动 
 
@@ -435,6 +436,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 访问
 
@@ -743,6 +745,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -830,7 +833,7 @@ Docker Pull Command
 	
 	Mac
 	docker pull kibana:7.16.2
-	
+
 
 start a instance
 
@@ -1014,6 +1017,32 @@ prepare
 start a instance
 
 	$ docker run -d --privileged  -v /home/bage/gluster/fs/cgroup:/sys/fs/cgroup/:ro -p 8080:8080 -v /home/bage/gluster/mnt/gluster-object:/mnt/gluster-object -e S3_ACCOUNT="tv1" -e S3_USER="admin" -e S3_PASSWORD="redhat" gluster/gluster-s3
+
+
+
+### 安装配置 Nacos
+
+参考链接： https://hub.docker.com/r/nacos/nacos-server
+
+Docker Pull Command
+
+```
+docker pull nacos/nacos-server
+```
+
+start a instance
+
+```
+docker run --name nacos-quick -e MODE=standalone -p 8849:8848 -d nacos/nacos-server:2.0.2
+```
+
+Docker Pull Command
+
+```
+http:localhost:8849 
+```
+
+
 
 
 
