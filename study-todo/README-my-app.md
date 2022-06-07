@@ -16,6 +16,26 @@ https://baijiahao.baidu.com/s?id=1730168625302231844&wfr=spider&for=pc
 
 APP开发外包，各个流程详细说明   https://www.bilibili.com/read/cv16571523
 
+
+
+带源码【组件 + 源码】
+
+https://fluttertemplates.dev/
+
+https://github.com/iampawan/Flutter-UI-Kit
+
+https://github.com/olayemii/flutter-ui-kits
+
+https://github.com/bukunmialuko/flutter_ui_kit_obkm
+
+https://github.com/usman18/Flutter-UI-Kit
+
+https://github.com/anoochit/uikits
+
+https://github.com/aelshamy/backpack
+
+
+
 ## 概述
 
 ### 本文目标
