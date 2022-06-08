@@ -1,0 +1,62 @@
+{
+  "all.app.name":"Tutorials ",
+  "all.list.view.no.data":"No data",
+  "all.dialog.info.title":"Info",
+  "all.no.network.tips":"Please make sure connect network",
+  "all.delete.confirm":"Confirm to delete?",
+
+  "main.title":"Welcome ",
+
+  "app.name":"Tutorials ",
+
+  "home.drawer.title":"Tutorials ",
+  "home.drawer.settings":"Settings ",
+  "home.drawer.about":"About ",
+  "home.drawer.exit":"Exit ",
+  "home.drawer.profile":"Profile ",
+  "home.back.confirm":"Confirm to exit?",
+  "home.back.exit.double.tips":"Double click to exit",
+  "home.menu.tv":"TV",
+  "home.menu.family":"Family",
+  "home.menu.profile":"Profile",
+  "home.menu.apks":"Apks",
+
+  "settings.title":"Settings ",
+  "settings.checkForUpdate":"Check For Update",
+  "settings.feedbacks":"Feedbacks",
+  "settings.alreadyLatestVersion":"This is already the latest version! ",
+  "settings.downloading":"Downloading...",
+  "settings.upgrade.dialog.title":"Do upgrade to the latest version? ",
+  "settings.upgrade.cancel":"Cancel downloading? ",
+  "settings.upgrade.open.by.browser":"Oepn with browser ",
+  "settings.upgrade.open.by.app":"Download in App",
+  "settings.upgrade.open.cancel":"Cancel ",
+
+  "settings.devTool.title":"Developer Tool",
+  "settings.devTool.protocol":"Protocol",
+  "settings.devTool.host":"Host",
+  "settings.devTool.port":"Port",
+
+  "tv.list.title":"TV List",
+  "tv.list.bottomAll":"All",
+  "tv.list.bottomFavorite":"Favorite",
+
+  "about.title":"About",
+  "about.versions":"Versions",
+  "about.device.id":"Device ID",
+  "about.author":"About Author",
+  "about.share":"Share APP",
+
+  "about.version.start":"Start",
+  "about.version.name":"Version",
+
+  "about.author.title":"About Author",
+  "about.author.name":"Name",
+
+  "profile.title":"Me",
+
+
+  "component.http.no.network":"check network state please",
+
+  "unknown": ""
+}
