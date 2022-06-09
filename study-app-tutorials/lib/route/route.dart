@@ -1,7 +1,10 @@
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/view/login/Login.dart';
 import 'package:tutorials/view/about/AboutVersions.dart';
-import 'package:tutorials/view/login/Register.dart';
+import 'package:tutorials/view/login/forget_password_verify.dart';
+import 'package:tutorials/view/login/register.dart';
+import 'package:tutorials/view/login/forget_password.dart';
+import 'package:tutorials/view/login/register_verify.dart';
 import 'package:tutorials/view/settings/Feedbacks.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/constant/RouteNameConstant.dart';
@@ -29,7 +32,19 @@ class RouteConfiguration {
       RouteNameConstant.route_name_register,
           (context, match) => Register(),
     ),
+    RoutPath(
+      RouteNameConstant.route_name_register_verify,
+          (context, match) => RegisterVerify(),
+    ),
 
+    RoutPath(
+      RouteNameConstant.route_name_forget_password,
+          (context, match) => ForgetPassword(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_forget_password_verify,
+          (context, match) => ForgetPasswordVerify(),
+    ),
 
     RoutPath(
       RouteNameConstant.route_name_profile,

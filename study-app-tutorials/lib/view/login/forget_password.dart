@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/constant/RouteNameConstant.dart';
+import 'package:tutorials/utils/AppUtils.dart';
 
-class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({Key? key}) : super(key: key);
 
   @override
-  _RegisterView createState() => _RegisterView();
+  _ForgetPasswordState createState() => _ForgetPasswordState();
 }
 
-class _RegisterView extends State<Register> {
+class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,35 +24,18 @@ class _RegisterView extends State<Register> {
               children: [
                 SizedBox(height: 40),
                 Image(image: AssetImage("assets/images/logo128.png")),
-                SizedBox(height: 62),
+                SizedBox(height: 32),
                 Text(
-                  'Hi there, welcome!',
+                  '密码重置',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF262626),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(right: 37, top: 8, bottom: 23),
-                  child: Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Convallis vestibulum augue massa sed aenean.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF262626),
-                      height: 1.28,
-                    ),
-                  ),
-                ),
-                _textField(
-                  hintText: 'Your full name',
-                  prefixIcon:
-                  const Icon(Icons.person, color: Color(0xFFA8A8A8)),
-                ),
                 SizedBox(height: 14),
                 _textField(
-                  hintText: 'Your email address',
+                  hintText: '请输入邮箱',
                   prefixIcon: const Icon(Icons.email, color: Color(0xFFA8A8A8)),
                 ),
                 SizedBox(height: 14),
@@ -58,9 +43,9 @@ class _RegisterView extends State<Register> {
                   children: [
                     Expanded(
                       child: _textField(
-                        hintText: '*******',
+                        hintText: '请出入验证码',
                         prefixIcon:
-                        const Icon(Icons.vpn_key, color: Color(0xFFA8A8A8)),
+                        const Icon(Icons.security_rounded, color: Color(0xFFA8A8A8)),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -78,9 +63,8 @@ class _RegisterView extends State<Register> {
                     ),
                   ],
                 ),
-                SizedBox(height: 95),
-                _button(text: 'Create new account'),
-                _button(text: 'Forgot password', isTransparent: true),
+                SizedBox(height: 24),
+                _button(text: '下一步',route: RouteNameConstant.route_name_forget_password_verify),
               ],
             ),
           ),
@@ -89,11 +73,11 @@ class _RegisterView extends State<Register> {
     );
   }
 
-  Widget _button({required String text, bool isTransparent = false}) =>
+  Widget _button({required String text,required String route, bool isTransparent = false}) =>
       ElevatedButton(
         onPressed: () {
-          // GetIt.I.get<NavigationService>().back(); // todo bage
-          Logs.info("hello onPressed");
+          Logs.info("hello onPressed222333");
+          AppUtils.toPage(context,route);
         },
         style: ElevatedButton.styleFrom(
           primary: isTransparent ? Colors.transparent : const Color(0xFF0043CE),
@@ -113,8 +97,9 @@ class _RegisterView extends State<Register> {
         ),
       );
 
-  Widget _textField({required String hintText, required Widget prefixIcon}) =>
+  Widget _textField({required String hintText, required Widget prefixIcon, bool obscureText = false}) =>
       TextField(
+        obscureText: obscureText,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
