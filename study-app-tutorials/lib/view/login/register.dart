@@ -3,19 +3,16 @@ import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/RouteNameConstant.dart';
 import 'package:tutorials/utils/AppUtils.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  _LoginView createState() => _LoginView();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _LoginView extends State<Login> {
-  bool _isObscure = true;
-
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    bool hideSecurityCode = true;
     return Scaffold(
       backgroundColor: const Color(0xFFFCFCFC),
       body: SafeArea(
@@ -27,9 +24,9 @@ class _LoginView extends State<Login> {
               children: [
                 SizedBox(height: 40),
                 Image(image: AssetImage("assets/images/logo128.png")),
-                SizedBox(height: 62),
+                SizedBox(height: 32),
                 Text(
-                  '用户登陆',
+                  '用户注册',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -39,7 +36,7 @@ class _LoginView extends State<Login> {
                 Padding(
                   padding: EdgeInsets.only(right: 37, top: 8, bottom: 23),
                   child: Text(
-                    '根据用户ID或者邮箱或者手机号进行登陆',
+                    '根据邮箱进行注册',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
@@ -50,24 +47,36 @@ class _LoginView extends State<Login> {
                 ),
                 SizedBox(height: 14),
                 _textField(
-                  hintText: '请输入账号',
-                  prefixIcon: const Icon(Icons.person, color: Color(0xFFA8A8A8)),
+                  hintText: '请输入邮箱',
+                  prefixIcon: const Icon(Icons.email, color: Color(0xFFA8A8A8)),
                 ),
                 SizedBox(height: 14),
                 Row(
                   children: [
                     Expanded(
                       child: _textField(
-                        hintText: '请出入密码',
-                        prefixIcon:
-                        const Icon(Icons.vpn_key, color: Color(0xFFA8A8A8)),
+                          hintText: '请出入密码',
+                          prefixIcon:
+                          const Icon(Icons.vpn_key, color: Color(0xFFA8A8A8)),
                           obscureText: true
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 14),
-                hideSecurityCode ? SizedBox(height: 0):
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textField(
+                          hintText: '请输入确认密码',
+                          prefixIcon:
+                          const Icon(Icons.vpn_key, color: Color(0xFFA8A8A8)),
+                          obscureText: true
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 14),
                 Row(
                   children: [
                     Expanded(
@@ -93,10 +102,7 @@ class _LoginView extends State<Login> {
                   ],
                 ),
                 SizedBox(height: 24),
-                _button(text: '登陆',route: RouteNameConstant.route_name_profile),
-                SizedBox(height: 16),
-                _button(text: '忘记密码',route: RouteNameConstant.route_name_forget_password, isTransparent: true),
-                _button(text: '创建账号', route: RouteNameConstant.route_name_register,isTransparent: true),
+                _button(text: '下一步',route: RouteNameConstant.route_name_register_verify),
               ],
             ),
           ),
@@ -108,7 +114,7 @@ class _LoginView extends State<Login> {
   Widget _button({required String text,required String route, bool isTransparent = false}) =>
       ElevatedButton(
         onPressed: () {
-          Logs.info("hello onPressed");
+          Logs.info("hello onPressed222333");
           AppUtils.toPage(context,route);
         },
         style: ElevatedButton.styleFrom(
@@ -139,14 +145,6 @@ class _LoginView extends State<Login> {
             fontWeight: FontWeight.w400,
             color: const Color(0xFFA8A8A8),
           ),
-            suffixIcon: obscureText ? IconButton(
-                icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
-                onPressed: () {
-                  setState(() {
-                    _isObscure = !_isObscure;
-                    obscureText = !_isObscure;
-                  });
-                }) : null,
           prefixIcon: prefixIcon,
           contentPadding:
           EdgeInsets.symmetric(horizontal: 17, vertical: 22),
