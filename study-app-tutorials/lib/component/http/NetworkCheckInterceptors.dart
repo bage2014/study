@@ -1,5 +1,5 @@
 import 'package:tutorials/component/toast/Toasts.dart';
-import 'package:tutorials/utils/AppUtils.dart';
+import 'package:tutorials/utils/app_utils.dart';
 import 'package:dio/dio.dart';
 
 class NetworkCheckInterceptors implements InterceptorsWrapper {

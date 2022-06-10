@@ -1,8 +1,8 @@
 import 'package:tutorials/component/dialog/Dialogs.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/RouteNameConstant.dart';
+import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
-import 'package:tutorials/utils/AppUtils.dart';
+import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -23,7 +23,11 @@ class HomeDrawer extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 48),
-              child: Row(
+              child: new GestureDetector(
+                onTap: () {
+                  AppUtils.toPage(context, RouteNameConstant.route_name_profile);
+                },
+                child:Row(
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(left: 24),
@@ -36,6 +40,7 @@ class HomeDrawer extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold))
                 ],
+              ),
               ),
             ),
             Expanded(

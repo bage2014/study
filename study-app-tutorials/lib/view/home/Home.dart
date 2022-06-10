@@ -1,7 +1,7 @@
-import 'package:tutorials/utils/AppUtils.dart';
+import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
-import 'package:tutorials/constant/RouteNameConstant.dart';
+import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/view/home/HomeDrawer.dart';
 import 'package:tutorials/view/home/MenuItem.dart';

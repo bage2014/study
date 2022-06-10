@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/RouteNameConstant.dart';
-import 'package:tutorials/utils/AppUtils.dart';
+import 'package:tutorials/constant/route_constant.dart';
+import 'package:tutorials/utils/app_utils.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -93,7 +93,7 @@ class _LoginView extends State<Login> {
                   ],
                 ),
                 SizedBox(height: 24),
-                _button(text: '登陆',route: RouteNameConstant.route_name_profile),
+                _button(text: '登陆',route: RouteNameConstant.route_name_home),
                 SizedBox(height: 16),
                 _button(text: '忘记密码',route: RouteNameConstant.route_name_forget_password, isTransparent: true),
                 _button(text: '创建账号', route: RouteNameConstant.route_name_register,isTransparent: true),
@@ -108,7 +108,6 @@ class _LoginView extends State<Login> {
   Widget _button({required String text,required String route, bool isTransparent = false}) =>
       ElevatedButton(
         onPressed: () {
-          Logs.info("hello onPressed");
           AppUtils.toPage(context,route);
         },
         style: ElevatedButton.styleFrom(

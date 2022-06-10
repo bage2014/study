@@ -2,7 +2,7 @@ import 'package:tutorials/component/cache/HttpRequestCaches.dart';
 import 'package:tutorials/component/cache/TvCaches.dart';
 import 'package:tutorials/component/cache/UserCaches.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';
-import 'package:tutorials/utils/AppUtils.dart';
+import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class Application {

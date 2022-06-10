@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/constant/route_constant.dart';
+import 'package:tutorials/utils/app_utils.dart';
 
 class ForgetPasswordVerify extends StatefulWidget {
   const ForgetPasswordVerify({Key? key}) : super(key: key);
@@ -24,6 +26,21 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                Padding(
+                  padding:
+                  EdgeInsets.only(left: 0, right: 24, top: 24, bottom: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          AppUtils.back(context);
+                        },
+                        child: const Icon(Icons.arrow_back_outlined),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 64,
                 ),
@@ -87,7 +104,7 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Logs.info("onPressed is callled,,,");
+                          AppUtils.toPage(context,RouteNameConstant.route_name_forget_password_finish);
                         },
                         style: ElevatedButton.styleFrom(
                           primary: const Color(0xFF161616),
