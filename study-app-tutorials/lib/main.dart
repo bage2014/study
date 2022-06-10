@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tutorials/component/permission/PermissionHelper.dart';
-import 'package:tutorials/constant/RouteNameConstant.dart';
+import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/SupportedLocales.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/route/route.dart';
@@ -92,8 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void toDefaultPage() {
-    Navigator.of(context)
-        .pushNamed(RouteNameConstant.route_name_login, arguments: "hi");
+    Navigator.of(context).pushNamed(RouteNameConstant.route_name_login, arguments: "hi");
   }
 
   @override

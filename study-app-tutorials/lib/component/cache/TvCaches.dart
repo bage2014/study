@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
-import 'package:tutorials/constant/SpConstant.dart';
+import 'package:tutorials/constant/sp_constant.dart';
 
 class TvCaches {
   static Map<String, dynamic> map = Map();

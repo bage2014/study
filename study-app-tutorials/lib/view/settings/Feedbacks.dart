@@ -6,11 +6,11 @@ import 'package:tutorials/component/dialog/Dialogs.dart';
 import 'package:tutorials/component/event/EventBus.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/HttpConstant.dart';
+import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
 import 'package:tutorials/model/AppFeedback.dart';
-import 'package:tutorials/utils/DateTimeUtils.dart';
+import 'package:tutorials/utils/date_time_utils.dart';
 import 'package:tutorials/view/settings/FeedbackUpdateEvent.dart';
 import 'package:flutter/material.dart';
 

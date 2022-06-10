@@ -9,13 +9,13 @@ import 'package:tutorials/component/http/HttpByteResult.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';
 import 'package:tutorials/component/http/HttpResult.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/HttpConstant.dart';
-import 'package:tutorials/constant/LocaleConstant.dart';
-import 'package:tutorials/constant/RouteNameConstant.dart';
+import 'package:tutorials/constant/http_constant.dart';
+import 'package:tutorials/constant/locale_constant.dart';
+import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AppVersionResult.dart';
-import 'package:tutorials/utils/AppUtils.dart';
-import 'package:tutorials/utils/FileUtils.dart';
+import 'package:tutorials/utils/app_utils.dart';
+import 'package:tutorials/utils/file_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {

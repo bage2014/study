@@ -59,4 +59,8 @@ class AppUtils {
     Navigator.of(context).pushNamed(route, arguments: "hi");
   }
 
+  static void back(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
 }

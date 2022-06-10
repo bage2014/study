@@ -16,9 +16,13 @@ class RouteNameConstant{
   static String route_name_login = "login";
   static String route_name_register = "register";
   static String route_name_register_verify = "register/verify";
+  static String route_name_register_finish = "register/finish";
+
   static String route_name_profile = "profile";
   static String route_name_forget_password = "forget/password";
   static String route_name_forget_password_verify = "forget/password/verify";
+  static String route_name_forget_password_finish = "forget/password/finish";
+
 
 
 }

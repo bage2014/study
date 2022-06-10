@@ -1,5 +1,5 @@
 import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
-import 'package:tutorials/constant/SpConstant.dart';
+import 'package:tutorials/constant/sp_constant.dart';
 
 class HttpRequestCaches {
   static String _protocol = "";

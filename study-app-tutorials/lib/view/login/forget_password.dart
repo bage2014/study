@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/RouteNameConstant.dart';
-import 'package:tutorials/utils/AppUtils.dart';
+import 'package:tutorials/constant/route_constant.dart';
+import 'package:tutorials/utils/app_utils.dart';
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({Key? key}) : super(key: key);
@@ -22,7 +22,22 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 40),
+                Padding(
+                  padding:
+                  EdgeInsets.only(left: 0, right: 24, top: 24, bottom: 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          AppUtils.back(context);
+                        },
+                        child: const Icon(Icons.arrow_back_outlined),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
                 Image(image: AssetImage("assets/images/logo128.png")),
                 SizedBox(height: 32),
                 Text(

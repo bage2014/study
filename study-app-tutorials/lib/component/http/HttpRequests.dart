@@ -4,7 +4,7 @@ import 'package:tutorials/component/http/HttpProgressCallback.dart';
 import 'package:tutorials/component/http/HttpResult.dart';
 import 'package:tutorials/component/http/NetworkCheckInterceptors.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/HttpConstant.dart';
+import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/prop/HttpProp.dart';
 import 'package:dio/dio.dart';
 

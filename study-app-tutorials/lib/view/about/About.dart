@@ -1,10 +1,10 @@
 import 'package:tutorials/component/dialog/Dialogs.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';
-import 'package:tutorials/constant/HttpConstant.dart';
+import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/model/AppVersion.dart';
-import 'package:tutorials/utils/AppUtils.dart';
+import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:tutorials/constant/RouteNameConstant.dart';
+import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:share/share.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tutorials/component/cache/HttpRequestCaches.dart';
 import 'package:tutorials/component/dialog/Dialogs.dart';
 import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
-import 'package:tutorials/constant/SpConstant.dart';
+import 'package:tutorials/constant/sp_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 
 class DevTool extends StatefulWidget {
