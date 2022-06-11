@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
@@ -17,30 +18,18 @@ class _RegisterVerifyState extends State<RegisterVerify> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body:
-      SafeArea(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: ColorConstant.app_bar_only_back_color),
+      ),
+      body:  SafeArea(
           child: SingleChildScrollView(
           child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Padding(
-            padding:
-            EdgeInsets.only(left: 8, right: 24, top: 24, bottom: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    AppUtils.back(context);
-                  },
-                  child: const Icon(Icons.arrow_back_outlined),
-                ),
-              ],
-            ),
-          ),
           SizedBox(
             height: 64,
           ),
@@ -56,7 +45,7 @@ class _RegisterVerifyState extends State<RegisterVerify> {
                   ),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 24,
                 ),
                 Text(
                   '请输入6位验证码，已发送到 ',
@@ -70,10 +59,10 @@ class _RegisterVerifyState extends State<RegisterVerify> {
                   ),
                 ),
                 SizedBox(
-                  height: 100,
+                  height: 84,
                 ),
                 Container(
-                  height: 70,
+                  height: 64,
                   width: size.width,
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                   decoration: BoxDecoration(
@@ -94,7 +83,7 @@ class _RegisterVerifyState extends State<RegisterVerify> {
             ),
           ),
           SizedBox(
-            height: 100,
+            height: 96,
           ),
           SizedBox(
             // color: Colors.blue,

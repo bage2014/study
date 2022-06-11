@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/utils/app_utils.dart';
-// import 'package:google_fonts/google_fonts.dart';
+import 'package:tutorials/constant/color_constant.dart';
+import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/widgets/app_bar_only_back.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -16,27 +17,16 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text(Translations.textOf(context, "profile.title")),
+        ),
       body: SafeArea(
         child: ListView(
           children: [
-            Padding(
-              padding:
-                  EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      AppUtils.back(context);
-                    },
-                    child: const Icon(Icons.arrow_back_outlined),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: 8),
             Padding(
-              padding: EdgeInsets.only(left: 48, right: 48, top: 16, bottom: 8),
+              padding:
+                  EdgeInsets.only(left: 48, right: 168, top: 16, bottom: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -44,14 +34,9 @@ class _ProfileState extends State<Profile> {
                     onTap: () {
                       Logs.info("GetIt.I.get<NavigationService>().back();");
                     },
-                    child: Container(
-                      width: 86,
-                      height: 86,
-                      margin: EdgeInsets.only(top: 32, bottom: 32),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(86),
-                        color: Color(0XFFC4C4C4),
-                      ),
+                    child: ClipOval(
+                      child: Image(
+                          image: AssetImage("assets/images/user_null.png")),
                     ),
                   ),
                   Column(
@@ -61,47 +46,26 @@ class _ProfileState extends State<Profile> {
                       Text(
                         "刘亦菲",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 24,
                           color: Colors.black,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Text(
-                        "中国，上海",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                          child: Text(
-                            '已关注',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w600,
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.location_on),
+                            Text(
+                              "上海",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                          ),
-                        ),
-                        style: TextButton.styleFrom(
-                          primary: Colors.white,
-                          backgroundColor: const Color(0xffD0D0D0),
-                        ),
-                        onPressed: () {},
-                      ),
+                          ]),
                     ],
                   ),
                 ],
@@ -195,7 +159,7 @@ class _ProfileState extends State<Profile> {
             Container(
               padding: EdgeInsets.only(left: 24, right: 24),
               child: Text(
-                "关于",
+                "简介",
                 style: TextStyle(
                   fontSize: 16,
                   color: Color(0xffA8A8A8),

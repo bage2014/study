@@ -24,6 +24,16 @@ https://github.com/bukunmialuko/flutter_ui_kit_obkm 很多很赞
 
 https://github.com/anoochit/uikits 很多很赞
 
+https://github.com/lohanidamodar/flutter_ui_challenges 很多很赞
+
+https://github.com/simplezhli/flutter_deer 常用页面
+
+https://github.com/Vignesh0404/Flutter-UI-Kit 应用集合
+
+https://docs.flutter.dev/development/ui/widgets/material 官网常用
+
+https://github.com/vinothvino42/SwiggyUI 页面合集
+
 https://github.com/usman18/Flutter-UI-Kit
 
 https://fluttertemplates.dev/
@@ -34,9 +44,13 @@ https://github.com/olayemii/flutter-ui-kits
 
 https://www.behance.net/gallery/69411833/Backpack-UI-Kit-Free-for-Adobe-XD UI资源 很多
 
-```
-route_name_forget_password
-```
+
+
+FLutter Icon 
+
+https://www.fluttericon.cn/
+
+
 
 ## 概述
 

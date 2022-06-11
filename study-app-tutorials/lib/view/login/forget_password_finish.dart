@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
@@ -14,24 +15,13 @@ class _ForgetPasswordFinishState extends State<ForgetPasswordFinish> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: ColorConstant.app_bar_only_back_color),
+      ),
       body: Column(
         children: [
-          SizedBox(height: 24),
-          Padding(
-            padding:
-            EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    AppUtils.back(context);
-                  },
-                  child: const Icon(Icons.arrow_back_outlined),
-                ),
-              ],
-            ),
-          ),
           SizedBox(height: 64),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 40),
@@ -45,10 +35,10 @@ class _ForgetPasswordFinishState extends State<ForgetPasswordFinish> {
                   ),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 24,
                 ),
                 Text(
-                  '请查看邮箱，获取最新密码，重新登陆，开启新篇章吧.',
+                  '请查看邮箱获取最新密码，重新登陆',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                   ),

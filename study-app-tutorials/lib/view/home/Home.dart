@@ -79,12 +79,8 @@ class _ScaffoldRouteState extends State<Home> {
     Future.delayed(Duration(milliseconds: 200)).then((e) {
       setState(() {
         menuItems.addAll([
-          new MenuItem(Icons.tv, Translations.textOf(context, "home.menu.tv"),
-              RouteNameConstant.route_name_login),
-
-          new MenuItem(Icons.app_blocking_rounded, "register", RouteNameConstant.route_name_register),
-          new MenuItem(Icons.app_blocking_rounded, "profile", RouteNameConstant.route_name_profile),
-
+          // new MenuItem(Icons.tv, Translations.textOf(context, "home.menu.tv"),
+          //     RouteNameConstant.route_name_tv),
           // new MenuItem(Icons.home_outlined, Translations.textOf(context, "home.menu.family"),
           //     RouteNameConstant.route_name_family_events),
 //          new MenuItem(Icons.person, Translations.textOf(c
