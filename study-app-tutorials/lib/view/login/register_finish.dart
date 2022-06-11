@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
@@ -13,24 +14,13 @@ class _RegisterFinishState extends State<RegisterFinish> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: ColorConstant.app_bar_only_back_color),
+      ),
       body: Column(
         children: [
-          SizedBox(height: 24),
-          Padding(
-            padding:
-            EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    AppUtils.back(context);
-                  },
-                  child: const Icon(Icons.arrow_back_outlined),
-                ),
-              ],
-            ),
-          ),
           SizedBox(height: 64),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 40),
@@ -44,7 +34,7 @@ class _RegisterFinishState extends State<RegisterFinish> {
                   ),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 24,
                 ),
                 Text(
                   '点击登陆，开启新篇章吧.',

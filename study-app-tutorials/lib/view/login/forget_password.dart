@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
@@ -14,32 +15,20 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFCFCFC),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: ColorConstant.app_bar_only_back_color),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding:
-                  EdgeInsets.only(left: 0, right: 24, top: 24, bottom: 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          AppUtils.back(context);
-                        },
-                        child: const Icon(Icons.arrow_back_outlined),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
                 Image(image: AssetImage("assets/images/logo128.png")),
-                SizedBox(height: 32),
+                SizedBox(height: 24),
                 Text(
                   '密码重置',
                   style: TextStyle(
@@ -48,7 +37,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     color: const Color(0xFF262626),
                   ),
                 ),
-                SizedBox(height: 14),
+                SizedBox(height: 24),
                 _textField(
                   hintText: '请输入邮箱',
                   prefixIcon: const Icon(Icons.email, color: Color(0xFFA8A8A8)),
@@ -78,7 +67,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: 64),
                 _button(text: '下一步',route: RouteNameConstant.route_name_forget_password_verify),
               ],
             ),

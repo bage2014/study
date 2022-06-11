@@ -1,9 +1,15 @@
 # study-TODO #
 **上线备忘**：
 
-- 删除demo页面
+- 删除demo页
+- 更新验证码输入页面： https://github.com/Vignesh0404/Flutter-UI-Kit/blob/main/Auth-otp-CustomKeypad/lib/verifyOTP.dart
+- 微信登陆 https://www.authingyun.com/solutions/wechat 
 
 
+
+```
+Scaffold
+```
 
 
 

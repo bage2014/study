@@ -13,7 +13,7 @@ import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/model/RoutPath.dart';
 import 'package:tutorials/view/about/About.dart';
 import 'package:tutorials/view/home/Home.dart';
-import 'package:tutorials/view/profile/Profile.dart';
+import 'package:tutorials/view/profile/profile.dart';
 import 'package:tutorials/view/about/AboutAuthor.dart';
 import 'package:tutorials/view/settings/DevTool.dart';
 import 'package:tutorials/view/settings/Settings.dart';
