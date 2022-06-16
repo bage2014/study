@@ -4,12 +4,11 @@
 - 删除demo页
 - 更新验证码输入页面： https://github.com/Vignesh0404/Flutter-UI-Kit/blob/main/Auth-otp-CustomKeypad/lib/verifyOTP.dart
 - 微信登陆 https://www.authingyun.com/solutions/wechat 
+- 登陆注册APP更新页面
 
 
 
-```
-Scaffold
-```
+
 
 
 
