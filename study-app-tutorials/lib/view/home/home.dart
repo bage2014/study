@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
-import 'package:tutorials/view/home/HomeDrawer.dart';
-import 'package:tutorials/view/home/MenuItem.dart';
+import 'package:tutorials/view/home/home_drawer.dart';
+import 'package:tutorials/view/home/menu_item.dart';
+import 'package:tutorials/view/home/statistics.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _ScaffoldRouteState extends State<Home> {
     var args = ModalRoute.of(context)?.settings?.arguments;
     print('args=${args}');
 
-    return new WillPopScope(
+    return WillPopScope(
         onWillPop: onWillPop, //重点此举
         child: Scaffold(
           appBar: AppBar(
@@ -44,33 +45,34 @@ class _ScaffoldRouteState extends State<Home> {
 //              //悬浮按钮
 //              child: Icon(Icons.add),
 //              onPressed: _onAdd),
-          body: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, //每行三列
-                childAspectRatio: 1.4 //显示区域宽高相等
-                ),
-            itemCount: menuItems.length,
-            itemBuilder: (context, index) {
-              return new GestureDetector(
-                  onTap: () {
-                    MenuItem current = menuItems[index];
-                    Navigator.of(context).pushNamed(current.route);
-                  },
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 16.0, 0, 0),
-                            child: Icon(
-                              menuItems[index].icon,
-                              size: 42,
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0),
-                            child: Text(menuItems[index].text))
-                      ]));
-            },
-          ),
+          body: Statistics(),
+//           body: GridView.builder(
+//             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                 crossAxisCount: 3, //每行三列
+//                 childAspectRatio: 1.4 //显示区域宽高相等
+//                 ),
+//             itemCount: menuItems.length,
+//             itemBuilder: (context, index) {
+//               return new GestureDetector(
+//                   onTap: () {
+//                     MenuItem current = menuItems[index];
+//                     Navigator.of(context).pushNamed(current.route);
+//                   },
+//                   child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.center,
+//                       children: <Widget>[
+//                         Padding(
+//                             padding: const EdgeInsets.fromLTRB(0, 16.0, 0, 0),
+//                             child: Icon(
+//                               menuItems[index].icon,
+//                               size: 42,
+//                             )),
+//                         Padding(
+//                             padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0),
+//                             child: Text(menuItems[index].text))
+//                       ]));
+//             },
+//           ),
         ));
   }
 
@@ -79,12 +81,10 @@ class _ScaffoldRouteState extends State<Home> {
     Future.delayed(Duration(milliseconds: 200)).then((e) {
       setState(() {
         menuItems.addAll([
-          // new MenuItem(Icons.tv, Translations.textOf(context, "home.menu.tv"),
-          //     RouteNameConstant.route_name_tv),
           // new MenuItem(Icons.home_outlined, Translations.textOf(context, "home.menu.family"),
           //     RouteNameConstant.route_name_family_events),
-//          new MenuItem(Icons.person, Translations.textOf(c
-//          ontext, "home.menu.profile"), RouteNameConstant.route_name_profile),
+         new MenuItem(Icons.person, Translations.textOf(context, "home.menu.profile"),
+             RouteNameConstant.route_name_home_statistics),
 
         ]);
       });

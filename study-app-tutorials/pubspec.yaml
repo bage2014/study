@@ -88,6 +88,10 @@ dependencies:
   # https://pub.dev/packages/timelines
   timelines: ^0.1.0
 
+  # https://pub.flutter-io.cn/packages/fl_chart/install
+  fl_chart: ^0.51.0
+
+
   # https://pub.dev/packages/fl_chart
   # fl_chart: ^0.36.2
 

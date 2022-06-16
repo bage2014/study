@@ -1,4 +1,5 @@
 import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/view/home/statistics.dart';
 import 'package:tutorials/view/login/forget_password_finish.dart';
 import 'package:tutorials/view/login/login.dart';
 import 'package:tutorials/view/about/AboutVersions.dart';
@@ -12,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/model/RoutPath.dart';
 import 'package:tutorials/view/about/About.dart';
-import 'package:tutorials/view/home/Home.dart';
+import 'package:tutorials/view/home/home.dart';
 import 'package:tutorials/view/profile/profile.dart';
 import 'package:tutorials/view/about/AboutAuthor.dart';
 import 'package:tutorials/view/settings/DevTool.dart';
@@ -23,6 +24,10 @@ class RouteConfiguration {
     RoutPath(
       RouteNameConstant.route_name_home,
       (context, match) => Home(),
+    ),
+    RoutPath(
+      RouteNameConstant.route_name_home_statistics,
+          (context, match) => Statistics(),
     ),
 
 
