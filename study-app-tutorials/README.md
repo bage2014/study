@@ -2,6 +2,16 @@
 
 A tutorials project.
 
+
+
+参考资料
+
+[《Flutter实战·第二版》](https://book.flutterchina.club/) https://book.flutterchina.club/
+
+
+
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
