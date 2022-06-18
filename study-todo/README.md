@@ -1,17 +1,4 @@
 # study-TODO #
-**上线备忘**：
-
-- 删除demo页
-- 更新验证码输入页面： https://github.com/Vignesh0404/Flutter-UI-Kit/blob/main/Auth-otp-CustomKeypad/lib/verifyOTP.dart
-- 微信登陆 https://www.authingyun.com/solutions/wechat 
-- 登陆注册APP更新页面
-
-
-
-
-
-
-
 ## 代办事项
 
 ### APP 代办
@@ -36,6 +23,15 @@ UI route 设置部分页面拦截登陆
 
 
 
+- 删除demo页
+- 更新验证码输入页面： https://github.com/Vignesh0404/Flutter-UI-Kit/blob/main/Auth-otp-CustomKeypad/lib/verifyOTP.dart
+- 微信登陆 https://www.authingyun.com/solutions/wechat 
+- 登陆注册APP更新页面
+
+
+
+
+
 ### 技术代办
 
 Kayak
@@ -53,6 +49,8 @@ Docker 版本
 搭建Spring Cloud 环境
 
 注册中心、啥的 【docker版本】
+
+Spring Test 
 
 
 
