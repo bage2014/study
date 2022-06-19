@@ -7,7 +7,13 @@
 
   "main.title":"Welcome ",
 
-  "app.name":"Tutorials ",
+  "login.title":"Login ",
+  "login.account.hint":"Mail ",
+  "login.password.hint":"Password ",
+  "login.security.hint":"Security Code ",
+  "login.button":"Go ",
+  "login.password.reset":"Forget Password ",
+  "login.register":"Create New Account ",
 
   "home.drawer.title":"Tutorials ",
   "home.drawer.settings":"Settings ",
@@ -54,7 +60,6 @@
   "about.author.name":"Name",
 
   "profile.title":"Me",
-
 
   "component.http.no.network":"check network state please",
 
