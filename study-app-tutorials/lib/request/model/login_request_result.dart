@@ -1,7 +1,12 @@
 class LoginRequestResult {
+
+  int code = 200;
+  String message = "";
+
+
+  int? id;
   String? userName;
-  String? sex;
-  String? url;
+  String? iconUrl;
   String? mail;
 
 }

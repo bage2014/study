@@ -18,40 +18,6 @@ APP开发外包，各个流程详细说明   https://www.bilibili.com/read/cv165
 
 
 
-带源码【组件 + 源码】
-
-https://github.com/bukunmialuko/flutter_ui_kit_obkm 很多很赞
-
-https://github.com/anoochit/uikits 很多很赞
-
-https://github.com/lohanidamodar/flutter_ui_challenges 很多很赞
-
-https://github.com/simplezhli/flutter_deer 常用页面
-
-https://github.com/Vignesh0404/Flutter-UI-Kit 应用集合
-
-https://docs.flutter.dev/development/ui/widgets/material 官网常用
-
-https://github.com/vinothvino42/SwiggyUI 页面合集
-
-https://github.com/usman18/Flutter-UI-Kit
-
-https://fluttertemplates.dev/
-
-https://github.com/iampawan/Flutter-UI-Kit
-
-https://github.com/olayemii/flutter-ui-kits
-
-https://www.behance.net/gallery/69411833/Backpack-UI-Kit-Free-for-Adobe-XD UI资源 很多
-
-
-
-FLutter Icon 
-
-https://www.fluttericon.cn/
-
-
-
 ## 概述
 
 ### 本文目标

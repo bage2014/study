@@ -1,7 +1,9 @@
+import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/Dialogs.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/request/model/User.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,7 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _context = context;
+    User user = UserCaches.getUser();
     return Drawer(
       child: MediaQuery.removePadding(
         context: context,
@@ -23,7 +26,7 @@ class HomeDrawer extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 48),
-              child: new GestureDetector(
+              child: GestureDetector(
                 onTap: () {
                   AppUtils.toPage(context, RouteNameConstant.route_name_profile);
                 },
@@ -36,7 +39,7 @@ class HomeDrawer extends StatelessWidget {
                           Image(image: AssetImage("assets/images/logo128.png")),
                     ),
                   ),
-                  Text(Translations.textOf(context, "all.app.name"),
+                  Text(user.userName ?? Translations.textOf(context, "all.app.name"),
                       style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold))
                 ],

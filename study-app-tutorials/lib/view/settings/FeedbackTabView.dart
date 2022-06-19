@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:tutorials/component/cache/UserCaches.dart';
+import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/Dialogs.dart';
 import 'package:tutorials/component/event/EventBus.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';
@@ -11,7 +11,7 @@ import 'package:tutorials/constant/locale_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
 import 'package:tutorials/model/AppFeedback.dart';
-import 'package:tutorials/model/FeedbackQueryResult.dart';
+import 'package:tutorials/request/model/FeedbackQueryResult.dart';
 import 'package:tutorials/view/settings/FeedbackUpdateEvent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

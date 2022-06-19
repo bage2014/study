@@ -18,15 +18,17 @@ class LoginRequests {
     Map<String, String> param = HashMap();
     // param.putIfAbsent("param", () => userName);
     // return HttpRequests.post(HttpConstant.url_login, param, null);
-    return Future.delayed(const Duration(seconds: 1),() => mock());
+    return Future.delayed(const Duration(seconds: 3),() => mock());
   }
 
   static LoginRequestResult mock(){
     LoginRequestResult result = LoginRequestResult();
-    result.userName = '小陆';
-    result.sex = '男';
+    result.code = 404;
+    result.message = "404啦啦啦";
+    result.id = 12345;
+    result.userName = '小陆[已登陆]';
     result.mail = 'bage@qq.com';
-    result.url = '小陆';
+    result.iconUrl = 'hhh';
     return result;
   }
 
