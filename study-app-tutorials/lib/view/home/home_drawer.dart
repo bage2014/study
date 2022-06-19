@@ -1,5 +1,5 @@
 import 'package:tutorials/component/cache/user_caches.dart';
-import 'package:tutorials/component/dialog/Dialogs.dart';
+import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';

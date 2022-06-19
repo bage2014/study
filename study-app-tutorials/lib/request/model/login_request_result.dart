@@ -1,8 +1,8 @@
+import 'common_result.dart';
+
 class LoginRequestResult {
 
-  int code = 200;
-  String message = "";
-
+  CommonResult common = CommonResult();
 
   int? id;
   String? userName;

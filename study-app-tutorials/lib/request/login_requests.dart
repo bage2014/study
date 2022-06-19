@@ -11,20 +11,18 @@ import 'package:tutorials/request/model/login_request_result.dart';
 
 class LoginRequests {
 
-  static Future<LoginRequestResult> login(LoginRequestParam loginRequestParam) async {
-    Logs.info('loginRequestParam username : ${loginRequestParam.userName}');
-    // Logs.info('loginRequestParam password : ${loginRequestParam.password}');
-    Logs.info('loginRequestParam securityCode : ${loginRequestParam.securityCode}');
+  static Future<LoginRequestResult> login(LoginRequestParam requestParam) async {
+    Logs.info('param : ${requestParam?.toString()}');
     Map<String, String> param = HashMap();
     // param.putIfAbsent("param", () => userName);
     // return HttpRequests.post(HttpConstant.url_login, param, null);
-    return Future.delayed(const Duration(seconds: 3),() => mock());
+    return Future.delayed(const Duration(seconds: 1),() => mock());
   }
 
   static LoginRequestResult mock(){
     LoginRequestResult result = LoginRequestResult();
-    result.code = 404;
-    result.message = "404啦啦啦";
+    result.common.code = 200;
+    // result.message = "404啦啦啦";
     result.id = 12345;
     result.userName = '小陆[已登陆]';
     result.mail = 'bage@qq.com';

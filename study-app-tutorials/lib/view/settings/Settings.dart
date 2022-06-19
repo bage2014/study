@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:tutorials/model/AppVersion.dart';
 import 'package:flutter/material.dart';
-import 'package:tutorials/component/dialog/Dialogs.dart';
+import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/http/CancelRequests.dart';
 import 'package:tutorials/component/http/HttpByteResult.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';

@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:tutorials/component/cache/user_caches.dart';
-import 'package:tutorials/component/dialog/Dialogs.dart';
-import 'package:tutorials/component/event/EventBus.dart';
+import 'package:tutorials/component/dialog/dialogs.dart';
+import 'package:tutorials/component/event/event_bus.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
