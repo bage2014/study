@@ -1,4 +1,4 @@
-import 'package:tutorials/component/cache/HttpRequestCaches.dart';
+import 'package:tutorials/component/cache/http_request_caches.dart';
 
 class HttpProp {
   static String getBaseUrl() {

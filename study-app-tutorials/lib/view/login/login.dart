@@ -258,8 +258,8 @@ class _LoginView extends State<Login> {
         .then((result) {
       Logs.info('login result=' + (result.toString() ?? ""));
       hideLoading();
-      if (result.code != 200) {
-        Toasts.show(result.message);
+      if (result.common.code != 200) {
+        Toasts.show(result.common.message);
         return;
       }
       UserCaches.cacheUser(User.from(result));
