@@ -34,7 +34,7 @@ class _ScaffoldRouteState extends State<Home> {
         child: Scaffold(
           appBar: AppBar(
             //导航栏
-            title: Text(Translations.textOf(context, "app.name")),
+            title: Text(Translations.textOf(context, "all.app.name")),
 //          actions: <Widget>[
 //            //导航栏右侧菜单
 //            IconButton(icon: Icon(Icons.share), onPressed: () {}),

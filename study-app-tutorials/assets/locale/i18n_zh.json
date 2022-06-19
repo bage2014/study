@@ -7,7 +7,13 @@
 
   "main.title":"欢迎使用 ",
 
-  "app.name":"小陆 ",
+  "login.title":"用户登陆 ",
+  "login.account.hint":"请输入账号 ",
+  "login.password.hint":"请输入密码 ",
+  "login.security.hint":"请输入验证码 ",
+  "login.button":"登陆 ",
+  "login.password.reset":"忘记密码 ",
+  "login.register":"创建账号 ",
 
   "home.drawer.title":"小陆 ",
   "home.drawer.settings":"设置 ",
