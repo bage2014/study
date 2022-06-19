@@ -1,6 +1,6 @@
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
-import 'package:tutorials/model/AuthorInfo.dart';
+import 'package:tutorials/request/model/AuthorInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

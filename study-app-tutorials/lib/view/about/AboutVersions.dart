@@ -6,7 +6,7 @@ import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AppVersion.dart';
-import 'package:tutorials/model/AppVersionsResult.dart';
+import 'package:tutorials/request/model/AppVersionsResult.dart';
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
 

@@ -13,7 +13,7 @@ import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/constant/locale_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
-import 'package:tutorials/model/AppVersionResult.dart';
+import 'package:tutorials/request/model/AppVersionResult.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/utils/file_utils.dart';
 import 'package:url_launcher/url_launcher.dart';

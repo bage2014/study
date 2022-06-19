@@ -7,7 +7,9 @@ API 方法 VS Logic 直接调用
 
 Auth Server 设置自定义User ID字段
 
+登陆结果回显
 
+登陆进度框
 
 统一校验登陆状态；
 
@@ -20,6 +22,8 @@ Run --app
 app 名字更新确定
 
 UI route 设置部分页面拦截登陆
+
+
 
 
 
