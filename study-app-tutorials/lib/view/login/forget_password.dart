@@ -1,7 +1,14 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
+import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/request/model/forget_password_request_param.dart';
+import 'package:tutorials/request/model/security_code_request_param.dart';
+import 'package:tutorials/request/security_code_requests.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -12,8 +19,12 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController securityCodeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    String _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -23,52 +34,111 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image(image: AssetImage("assets/images/logo128.png")),
-                SizedBox(height: 24),
+                const Image(image: AssetImage("assets/images/logo128.png")),
+                const SizedBox(height: 24),
                 Text(
-                  '密码重置',
-                  style: TextStyle(
+                  Translations.textOf(context, 'forget.password.title'),
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xFF262626),
+                    color: Color(0xFF262626),
                   ),
                 ),
-                SizedBox(height: 24),
-                _textField(
-                  hintText: '请输入邮箱',
-                  prefixIcon: const Icon(Icons.email, color: Color(0xFFA8A8A8)),
+                const SizedBox(height: 24),
+                TextField(
+                  controller: userNameController,
+                  decoration: InputDecoration(
+                    hintText: Translations.textOf(
+                        context, 'forget.password.mail.hint'),
+                    hintStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFFA8A8A8),
+                    ),
+                    prefixIcon:
+                        const Icon(Icons.email, color: Color(0xFFA8A8A8)),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 17, vertical: 22),
+                    border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+                    focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+                  ),
                 ),
-                SizedBox(height: 14),
+                const SizedBox(height: 14),
                 Row(
                   children: [
                     Expanded(
-                      child: _textField(
-                        hintText: '请出入验证码',
-                        prefixIcon:
-                        const Icon(Icons.security_rounded, color: Color(0xFFA8A8A8)),
+                      child: TextField(
+                        controller: securityCodeController,
+                        decoration: InputDecoration(
+                          hintText: Translations.textOf(
+                              context, 'forget.password.security.code.hint'),
+                          hintStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFFA8A8A8),
+                          ),
+                          prefixIcon: const Icon(Icons.security_rounded,
+                              color: Color(0xFFA8A8A8)),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 17, vertical: 22),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+                        ),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Container(
-                      width: 74,
-                      height: 65,
+                      width: 120,
+                      height: 64,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(0xFFD0D0D0),
                         ),
                       ),
-                      child: Center(
-                        child: Image(image: AssetImage("assets/images/user_null.png")),
+                      child: CachedNetworkImage(
+                        imageUrl: _imageUrl,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Image(
+                            image: AssetImage("assets/images/user_null.png")),
+                        height: 64,
+                        width: 120,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 64),
-                _button(text: '下一步',route: RouteNameConstant.route_name_forget_password_verify),
+                const SizedBox(height: 64),
+                ElevatedButton(
+                  onPressed: () {
+                    next();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xFF0043CE),
+                    elevation: 0,
+                    shadowColor: Colors.transparent,
+                    fixedSize: const Size(342, 64),
+                  ),
+                  child: Text(
+                    Translations.textOf(context, 'forget.password.go'),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFFF4F4F4),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -77,49 +147,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     );
   }
 
-  Widget _button({required String text,required String route, bool isTransparent = false}) =>
-      ElevatedButton(
-        onPressed: () {
-          Logs.info("hello onPressed222333");
-          AppUtils.toPage(context,route);
-        },
-        style: ElevatedButton.styleFrom(
-          primary: isTransparent ? Colors.transparent : const Color(0xFF0043CE),
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          fixedSize: Size(342, 64),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: isTransparent
-                ? const Color(0xFF0043CE)
-                : const Color(0xFFF4F4F4),
-          ),
-        ),
-      );
-
-  Widget _textField({required String hintText, required Widget prefixIcon, bool obscureText = false}) =>
-      TextField(
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: const Color(0xFFA8A8A8),
-          ),
-          prefixIcon: prefixIcon,
-          contentPadding:
-          EdgeInsets.symmetric(horizontal: 17, vertical: 22),
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFD0D0D0))),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFD0D0D0))),
-          enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFD0D0D0))),
-        ),
-      );
+  void next() {
+    ForgetPasswordRequestParam param = ForgetPasswordRequestParam();
+    param.userName = userNameController.text;
+    param.securityCode = securityCodeController.text;
+    String str = json.encode(param.toJson());
+    Logs.info("json : $str");
+    AppUtils.toPage(
+        context, RouteNameConstant.route_name_forget_password_verify,
+        args: str);
+  }
 }
