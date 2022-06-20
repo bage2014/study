@@ -15,6 +15,11 @@
   "login.password.reset":"Forget Password ",
   "login.register":"Create New Account ",
 
+  "forget.password.title":"Forget Password ",
+  "forget.password.mail.hint":"Mail ",
+  "forget.password.security.code.hint":"Security Code ",
+  "forget.password.go":"Next ",
+
   "home.drawer.title":"Tutorials ",
   "home.drawer.settings":"Settings ",
   "home.drawer.about":"About ",

@@ -15,6 +15,12 @@
   "login.password.reset":"忘记密码 ",
   "login.register":"创建账号 ",
 
+
+  "forget.password.title":"密码重置 ",
+  "forget.password.mail.hint":"请输入邮箱 ",
+  "forget.password.security.code.hint":"请出入验证码 ",
+  "forget.password.go":"下一步 ",
+
   "home.drawer.title":"小陆 ",
   "home.drawer.settings":"设置 ",
   "home.drawer.about":"关于 ",

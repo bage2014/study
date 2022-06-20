@@ -55,12 +55,18 @@ class AppUtils {
     return "com.bage.flutter.tutorials";
   }
 
-  static void toPage(BuildContext context,String route) {
-    Navigator.of(context).pushNamed(route, arguments: "hi");
+  static void toPage(
+    BuildContext context,
+    String route, {
+    Object? args,
+  }) {
+    Navigator.of(context).pushNamed(route, arguments: args);
   }
 
+  static Object? getArgs(BuildContext context) {
+    return ModalRoute.of(context)?.settings?.arguments;
+  }
   static void back(BuildContext context) {
     Navigator.of(context).pop();
   }
-
 }

@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
+import 'package:tutorials/request/model/forget_password_request_param.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
 class ForgetPasswordVerify extends StatefulWidget {
@@ -15,6 +18,11 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
 
   @override
   Widget build(BuildContext context) {
+    String str = AppUtils.getArgs(context).toString();
+    Logs.info("json : $str");
+    ForgetPasswordRequestParam param = ForgetPasswordRequestParam.fromJson(json.decode(str));
+    Logs.info("param : ${param.userName}");
+
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(

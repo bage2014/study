@@ -156,7 +156,8 @@ class _LoginView extends State<Login> {
                               const SizedBox(width: 10),
                               GestureDetector(
                                 onTap: () {
-                                  _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
+                                  _imageUrl = SecurityCodeRequests.url(
+                                      SecurityCodeRequestParam());
                                 },
                                 child: Container(
                                   width: 120,
@@ -192,7 +193,7 @@ class _LoginView extends State<Login> {
                         primary: const Color(0xFF0043CE),
                         elevation: 0,
                         shadowColor: Colors.transparent,
-                        fixedSize: Size(342, 64),
+                        fixedSize: const Size(342, 64),
                       ),
                       child: Text(
                         Translations.textOf(context, 'login.button'),
