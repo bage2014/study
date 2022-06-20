@@ -2,9 +2,8 @@
 
 import 'dart:collection';
 
-import 'package:tutorials/component/http/HttpRequests.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/http_constant.dart';
+import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/request/model/login_request_param.dart';
 import 'package:tutorials/request/model/login_request_result.dart';
 
@@ -22,11 +21,13 @@ class LoginRequests {
   static LoginRequestResult mock(){
     LoginRequestResult result = LoginRequestResult();
     result.common.code = 200;
-    // result.message = "404啦啦啦";
+    // result.common.code = ErrorCodeConstant.loginSecurityCodeRequired;
+    result.common.message = "404啦啦啦";
     result.id = 12345;
     result.userName = '小陆[已登陆]';
     result.mail = 'bage@qq.com';
-    result.iconUrl = 'hhh';
+    result.iconUrl = 'https://avatars.githubusercontent.com/u/18094768?v=4';
+
     return result;
   }
 

@@ -7,6 +7,5 @@ class LoginRequestParam {
 
   CommonParam common = CommonParam();
 
-  LoginRequestParam(this.userName, this.password, this.securityCode);
 
 }

@@ -4,4 +4,6 @@ class SecurityCodeRequestParam {
 
   CommonParam common = CommonParam();
 
+  String clientId = "";
+
 }

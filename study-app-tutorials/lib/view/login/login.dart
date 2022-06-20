@@ -1,12 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
+import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/request/login_requests.dart';
 import 'package:tutorials/request/model/User.dart';
 import 'package:tutorials/request/model/login_request_param.dart';
+import 'package:tutorials/request/model/security_code_request_param.dart';
+import 'package:tutorials/request/security_code_requests.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
 class Login extends StatefulWidget {
@@ -19,7 +23,7 @@ class Login extends StatefulWidget {
 class _LoginView extends State<Login> {
   bool _obscureText = true;
   bool _isLoading = false;
-  bool hideSecurityCode = true;
+  bool _loginSecurityCodeRequired = false;
 
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -27,6 +31,7 @@ class _LoginView extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    String _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
     return Scaffold(
       backgroundColor: const Color(0xFFFCFCFC),
       body: SafeArea(
@@ -116,7 +121,7 @@ class _LoginView extends State<Login> {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    hideSecurityCode
+                    !_loginSecurityCodeRequired
                         ? const SizedBox(height: 0)
                         : Row(
                             children: [
@@ -149,18 +154,31 @@ class _LoginView extends State<Login> {
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              Container(
-                                width: 74,
-                                height: 65,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: const Color(0xFFD0D0D0),
+                              GestureDetector(
+                                onTap: () {
+                                  _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
+                                },
+                                child: Container(
+                                  width: 120,
+                                  height: 64,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color(0xFFD0D0D0),
+                                    ),
                                   ),
-                                ),
-                                child: const Center(
-                                  child: Image(
-                                      image: AssetImage(
-                                          "assets/images/user_null.png")),
+                                  child: Center(
+                                    child: CachedNetworkImage(
+                                      imageUrl: _imageUrl,
+                                      placeholder: (context, url) =>
+                                          const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          const Image(
+                                              image: AssetImage(
+                                                  "assets/images/user_null.png")),
+                                      height: 64,
+                                      width: 120,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -252,21 +270,37 @@ class _LoginView extends State<Login> {
   }
 
   void login() {
+    LoginRequestParam param = buildParam();
+
     showLoading();
-    LoginRequests.login(LoginRequestParam(userNameController.text,
-            passwordController.text, securityCodeController.text))
-        .then((result) {
+
+    // 输入框校验
+
+    LoginRequests.login(param).then((result) {
       Logs.info('login result=' + (result.toString() ?? ""));
       hideLoading();
-      if (result.common.code != 200) {
+      if (result.common.code == ErrorCodeConstant.success) {
+        _loginSecurityCodeRequired = false;
+        UserCaches.cacheUser(User.from(result));
+        AppUtils.toPage(context, RouteNameConstant.route_name_home);
+      } else if (result.common.code ==
+          ErrorCodeConstant.loginSecurityCodeRequired) {
         Toasts.show(result.common.message);
-        return;
+        _loginSecurityCodeRequired = true;
+      } else {
+        Toasts.show(result.common.message);
       }
-      UserCaches.cacheUser(User.from(result));
-      AppUtils.toPage(context, RouteNameConstant.route_name_home);
     }).catchError((error) {
       Logs.info(error.toString());
       hideLoading();
     });
+  }
+
+  LoginRequestParam buildParam() {
+    LoginRequestParam param = LoginRequestParam();
+    param.userName = userNameController.text;
+    param.password = passwordController.text;
+    param.securityCode = securityCodeController.text;
+    return param;
   }
 }
