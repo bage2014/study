@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/log/Logs.dart';
@@ -18,6 +19,7 @@ class HomeDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     _context = context;
     User user = UserCaches.getUser();
+    Logs.info("user:  ${user.toString()}");
     return Drawer(
       child: MediaQuery.removePadding(
         context: context,
@@ -25,25 +27,37 @@ class HomeDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 48),
+              padding: const EdgeInsets.only(top: 68,bottom: 36),
               child: GestureDetector(
                 onTap: () {
-                  AppUtils.toPage(context, RouteNameConstant.route_name_profile);
+                  AppUtils.toPage(
+                      context, RouteNameConstant.route_name_profile);
                 },
-                child:Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24),
-                    child: ClipOval(
-                      child:
-                          Image(image: AssetImage("assets/images/logo128.png")),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 36),
+                      child: ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: user.iconUrl ?? '',
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => const Image(
+                              image: AssetImage("assets/images/user_null.png")),
+                          height: 86,
+                          width: 86,
+                        ),
+                      ),
                     ),
-                  ),
-                  Text(user.userName ?? Translations.textOf(context, "all.app.name"),
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold))
-                ],
-              ),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Text(
+                            user.userName ??
+                                Translations.textOf(context, "all.app.name"),
+                            style: const TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.bold))),
+                  ],
+                ),
               ),
             ),
             Expanded(
