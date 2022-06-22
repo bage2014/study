@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
+import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/request/model/forget_password_request_param.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
@@ -38,7 +39,7 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 64,
                 ),
                 Container(
@@ -46,17 +47,17 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
                   child: Column(
                     children: [
                       Text(
-                        '请输入验证码',
-                        style: TextStyle(
+                        Translations.textOf(context, 'forget.password.security.code.hint'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 24,
                       ),
                       Text(
-                        '请输入4位验证码，已发送到 ',
+                        Translations.textOf(context, 'forget.password.security.code.send.hint'),
                         textAlign: TextAlign.center,
                       ),
                       Text(
@@ -66,13 +67,13 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
                           decoration: TextDecoration.underline,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 100,
                       ),
                       Container(
                         height: 70,
                         width: size.width,
-                        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                         decoration: BoxDecoration(
                           // color: Colors.purple,
                           borderRadius: BorderRadius.circular(4),
@@ -90,7 +91,7 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
                 SizedBox(
@@ -104,14 +105,14 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
                           AppUtils.toPage(context,RouteNameConstant.route_name_forget_password_finish);
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFF161616),
+                          primary: const Color(0xFF0043CE),
                           elevation: 0,
                           shadowColor: Colors.transparent,
-                          fixedSize: Size(325, 50),
+                          fixedSize: const Size(325, 50),
                         ),
                         child: Text(
-                          '确认重置',
-                          style: TextStyle(
+                          Translations.textOf(context, 'forget.password.reset.confirm'),
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -142,7 +143,7 @@ class VerificationTextField extends StatelessWidget {
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: Color(0xFFF4F4F4),
+        color: const Color(0xFFF4F4F4),
         borderRadius: BorderRadius.circular(4),
         boxShadow: [
           BoxShadow(
@@ -153,7 +154,7 @@ class VerificationTextField extends StatelessWidget {
           ),
         ],
       ),
-      child: TextField(
+      child: const TextField(
         textAlign: TextAlign.center,
         maxLength: 1,
         style: TextStyle(
