@@ -20,6 +20,11 @@
   "forget.password.mail.hint":"请输入邮箱 ",
   "forget.password.security.code.hint":"请出入验证码 ",
   "forget.password.go":"下一步 ",
+  "forget.password.security.code.send.hint":"验证码已发送到 ",
+  "forget.password.reset.confirm":"确认重置 ",
+  "forget.password.reset.finish.hint":"重置成功 ",
+  "forget.password.reset.to.login.hint":"请查看邮箱获取最新密码，重新登陆 ",
+  "forget.password.reset.to.login":"重新登陆 ",
 
   "home.drawer.title":"小陆 ",
   "home.drawer.settings":"设置 ",

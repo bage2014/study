@@ -19,6 +19,11 @@
   "forget.password.mail.hint":"Mail ",
   "forget.password.security.code.hint":"Security Code ",
   "forget.password.go":"Next ",
+  "forget.password.security.code.send.hint":"Security Code already Send To  ",
+  "forget.password.reset.confirm":"Reset ",
+  "forget.password.reset.to.login.hint":"Mail Get Password To Login Again",
+  "forget.password.reset.to.login":"Login Again ",
+
 
   "home.drawer.title":"Tutorials ",
   "home.drawer.settings":"Settings ",
