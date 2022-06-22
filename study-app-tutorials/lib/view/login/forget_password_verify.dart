@@ -60,9 +60,9 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        'your.mail@qq.com',
+                        param.userName??'',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           decoration: TextDecoration.underline,
                         ),
                       ),
