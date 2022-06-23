@@ -206,14 +206,15 @@ class _LoginView extends State<Login> {
                     ),
                     const SizedBox(height: 16),
                     _button(
+                        text: Translations.textOf(context, 'login.register'),
+                        route: RouteNameConstant.route_name_register,
+                        isTransparent: true),
+                    _button(
                         text: Translations.textOf(
                             context, 'login.password.reset'),
                         route: RouteNameConstant.route_name_forget_password,
                         isTransparent: true),
-                    _button(
-                        text: Translations.textOf(context, 'login.register'),
-                        route: RouteNameConstant.route_name_register,
-                        isTransparent: true),
+
                   ],
                 ),
               ),
@@ -222,7 +223,7 @@ class _LoginView extends State<Login> {
               child: _isLoading
                   ? CircularProgressIndicator(
                       backgroundColor: Colors.grey[200],
-                      valueColor: AlwaysStoppedAnimation(Colors.blue),
+                      valueColor: const AlwaysStoppedAnimation(Colors.blue),
                     )
                   : null,
             ),
@@ -244,7 +245,7 @@ class _LoginView extends State<Login> {
           primary: isTransparent ? Colors.transparent : const Color(0xFF0043CE),
           elevation: 0,
           shadowColor: Colors.transparent,
-          fixedSize: Size(342, 64),
+          fixedSize: const Size(342, 64),
         ),
         child: Text(
           text,

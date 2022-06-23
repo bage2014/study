@@ -99,22 +99,28 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Container(
-                      width: 120,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0xFFD0D0D0),
-                        ),
-                      ),
-                      child: CachedNetworkImage(
-                        imageUrl: _imageUrl,
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => const Image(
-                            image: AssetImage("assets/images/user_null.png")),
+                    GestureDetector(
+                      onTap: () {
+                        _imageUrl = SecurityCodeRequests.url(
+                            SecurityCodeRequestParam());
+                      },
+                      child: Container(
+                        width: 120,
                         height: 64,
-                        width: 64,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color(0xFFD0D0D0),
+                          ),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: _imageUrl,
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => const Image(
+                              image: AssetImage("assets/images/user_null.png")),
+                          height: 64,
+                          width: 64,
+                        ),
                       ),
                     ),
                   ],

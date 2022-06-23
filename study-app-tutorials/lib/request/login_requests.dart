@@ -15,13 +15,13 @@ class LoginRequests {
     Map<String, String> param = HashMap();
     // param.putIfAbsent("param", () => userName);
     // return HttpRequests.post(HttpConstant.url_login, param, null);
-    return Future.delayed(const Duration(seconds: 1),() => mock());
+    return Future.delayed(const Duration(seconds: 2),() => mock());
   }
 
   static LoginRequestResult mock(){
     LoginRequestResult result = LoginRequestResult();
     result.common.code = 200;
-    // result.common.code = ErrorCodeConstant.loginSecurityCodeRequired;
+    result.common.code = ErrorCodeConstant.loginSecurityCodeRequired;
     result.common.message = "404啦啦啦";
     result.id = 12345;
     result.userName = '小陆[已登陆]';

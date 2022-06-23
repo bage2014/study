@@ -26,7 +26,6 @@ class _RegisterState extends State<Register> {
   TextEditingController passwordAgainController = TextEditingController();
   TextEditingController securityCodeController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     String _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
@@ -185,22 +184,28 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Container(
-                      width: 120,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0xFFD0D0D0),
-                        ),
-                      ),
-                      child: CachedNetworkImage(
-                        imageUrl: _imageUrl,
-                        placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => const Image(
-                            image: AssetImage("assets/images/user_null.png")),
+                    GestureDetector(
+                      onTap: () {
+                        _imageUrl = SecurityCodeRequests.url(
+                            SecurityCodeRequestParam());
+                      },
+                      child: Container(
+                        width: 120,
                         height: 64,
-                        width: 64,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color(0xFFD0D0D0),
+                          ),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: _imageUrl,
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => const Image(
+                              image: AssetImage("assets/images/user_null.png")),
+                          height: 64,
+                          width: 64,
+                        ),
                       ),
                     ),
                   ],
@@ -233,7 +238,6 @@ class _RegisterState extends State<Register> {
     );
   }
 
-
   void next() {
     RegisterRequestParam param = RegisterRequestParam();
     param.userName = userNameController.text;
@@ -241,9 +245,7 @@ class _RegisterState extends State<Register> {
     param.securityCode = securityCodeController.text;
     String str = json.encode(param.toJson());
     Logs.info("json : $str");
-    AppUtils.toPage(
-        context, RouteNameConstant.route_name_register_verify,
+    AppUtils.toPage(context, RouteNameConstant.route_name_register_verify,
         args: str);
   }
-
 }
