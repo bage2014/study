@@ -114,7 +114,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         errorWidget: (context, url, error) => const Image(
                             image: AssetImage("assets/images/user_null.png")),
                         height: 64,
-                        width: 120,
+                        width: 64,
                       ),
                     ),
                   ],

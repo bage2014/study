@@ -25,6 +25,19 @@
   "forget.password.reset.to.login":"Login Again ",
 
 
+  "register.hint":"Register ",
+  "register.mail.hint":"Mail ",
+  "register.password.hint":"Password ",
+  "register.password.again.hint":"Password Again ",
+  "register.security.hint":"Security Code ",
+  "register.next":"Next ",
+  "register.finish.title":"Register Success ",
+  "register.finish.hint":"Login To Get It ",
+  "register.finish.login":"Login ",
+  "register.security.code.send.hint":"Security Code already Send To  ",
+  "register.go":"Register  ",
+
+
   "home.drawer.title":"Tutorials ",
   "home.drawer.settings":"Settings ",
   "home.drawer.about":"About ",
