@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
+import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
 class RegisterFinish extends StatefulWidget {
@@ -21,40 +22,40 @@ class _RegisterFinishState extends State<RegisterFinish> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 64),
+          const SizedBox(height: 64),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               children: [
                 Text(
-                  '注册成功!',
-                  style: TextStyle(
+                  Translations.textOf(context, 'register.finish.title'),
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
                 Text(
-                  '点击登陆，开启新篇章吧.',
+                  Translations.textOf(context, 'register.finish.hint'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 64),
+          const SizedBox(height: 64),
           Container(
             height: 128,
             // color: Colors.green,
-            padding: EdgeInsets.only(left: 50, right: 50),
-            child: Image(image: AssetImage("assets/images/logo128.png")),
+            padding: const EdgeInsets.only(left: 50, right: 50),
+            child: const Image(image: AssetImage("assets/images/logo128.png")),
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedButton(
               onPressed: () {
                 AppUtils.toPage(context,RouteNameConstant.route_name_login);
@@ -63,11 +64,11 @@ class _RegisterFinishState extends State<RegisterFinish> {
                 primary: const Color(0xFF161616),
                 elevation: 0,
                 shadowColor: Colors.transparent,
-                fixedSize: Size(342, 54),
+                fixedSize: const Size(342, 54),
               ),
               child: Text(
-                '登陆',
-                style: TextStyle(
+                Translations.textOf(context, 'register.finish.login'),
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -75,7 +76,7 @@ class _RegisterFinishState extends State<RegisterFinish> {
               ),
             ),
           ),
-          SizedBox(height: 88),
+          const SizedBox(height: 88),
         ],
       ),
     );
