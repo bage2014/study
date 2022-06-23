@@ -26,6 +26,18 @@
   "forget.password.reset.to.login.hint":"请查看邮箱获取最新密码，重新登陆 ",
   "forget.password.reset.to.login":"重新登陆 ",
 
+  "register.hint":"用户注册 ",
+  "register.mail.hint":"请输入邮箱 ",
+  "register.password.hint":"请输入密码 ",
+  "register.password.again.hint":"请再次输入密码 ",
+  "register.security.hint":"请输入验证码 ",
+  "register.next":"下一步 ",
+  "register.finish.title":"注册成功 ",
+  "register.finish.hint":"点击登陆，开启新篇章吧 ",
+  "register.finish.login":"登陆 ",
+  "register.security.code.send.hint":"验证码已发送到  ",
+  "register.go":"立即注册  ",
+
   "home.drawer.title":"小陆 ",
   "home.drawer.settings":"设置 ",
   "home.drawer.about":"关于 ",
