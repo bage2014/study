@@ -29,18 +29,13 @@ class _RegisterVerifyState extends State<RegisterVerify> {
   TextEditingController code4Controller = TextEditingController();
 
   @override
-  void setState(VoidCallback fn) {
-    String str = AppUtils.getArgs(context).toString();
-    Logs.info("json222 : $str");
-    param = RegisterRequestParam.fromJson(json.decode(str));
-    Logs.info("param : ${param.userName}");
-    super.setState(fn);
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    String str = AppUtils.getArgs(context).toString();
+    Logs.info("json : $str");
+    param = RegisterRequestParam.fromJson(json.decode(str));
+    Logs.info("param : ${param.userName}");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
