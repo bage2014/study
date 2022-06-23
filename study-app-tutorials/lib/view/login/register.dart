@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/request/model/register_request_param.dart';
+import 'package:tutorials/request/model/security_code_request_param.dart';
+import 'package:tutorials/request/security_code_requests.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
 class Register extends StatefulWidget {
@@ -26,6 +29,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    String _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -182,16 +186,21 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(width: 10),
                     Container(
-                      width: 74,
-                      height: 65,
+                      width: 120,
+                      height: 64,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(0xFFD0D0D0),
                         ),
                       ),
-                      child: const Center(
-                        child: Image(
+                      child: CachedNetworkImage(
+                        imageUrl: _imageUrl,
+                        placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Image(
                             image: AssetImage("assets/images/user_null.png")),
+                        height: 64,
+                        width: 64,
                       ),
                     ),
                   ],
@@ -199,8 +208,7 @@ class _RegisterState extends State<Register> {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
-                    AppUtils.toPage(
-                        context, RouteNameConstant.route_name_register_verify);
+                    next();
                   },
                   style: ElevatedButton.styleFrom(
                     primary: const Color(0xFF0043CE),
@@ -234,7 +242,7 @@ class _RegisterState extends State<Register> {
     String str = json.encode(param.toJson());
     Logs.info("json : $str");
     AppUtils.toPage(
-        context, RouteNameConstant.route_name_forget_password_verify,
+        context, RouteNameConstant.route_name_register_verify,
         args: str);
   }
 
