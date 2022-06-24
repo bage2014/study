@@ -86,7 +86,7 @@ class _Settings extends State<Settings> {
               title:
                   Text(Translations.textOf(context, "settings.checkForUpdate")),
               trailing: Icon(Icons.chevron_right),
-              onTap: _checkAppInfo,
+              onTap: _checkAppUpdateInfo,
             ),
           ),
           Container(
@@ -122,7 +122,7 @@ class _Settings extends State<Settings> {
     return false;
   }
 
-  void _checkAppInfo() async {
+  void _checkAppUpdateInfo() async {
     try {
       // 版本校验
       String url = HttpConstant.url_settings_version_check
