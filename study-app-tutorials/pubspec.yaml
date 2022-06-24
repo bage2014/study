@@ -91,6 +91,8 @@ dependencies:
   # https://pub.flutter-io.cn/packages/fl_chart/install
   fl_chart: ^0.51.0
 
+  # https://pub.flutter-io.cn/packages/flutter_cache_manager/example
+  flutter_cache_manager: ^3.3.0
 
   # https://pub.dev/packages/fl_chart
   # fl_chart: ^0.36.2
