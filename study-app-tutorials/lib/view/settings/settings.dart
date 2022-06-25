@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:tutorials/component/cache/setting_caches.dart';
 import 'package:tutorials/component/downloader/file_downloader.dart';
+import 'package:tutorials/component/picker/file_picker.dart';
+import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/model/AppVersion.dart';
@@ -34,6 +37,7 @@ class _Settings extends State<Settings> {
   late BuildContext _context;
   bool _isDownloading = false;
   bool _isLoading = false;
+  double _value = 0;
   CancelRequests cancelRequests = CancelRequests();
   late AppVersion _currentVersionInfo;
 
@@ -110,6 +114,17 @@ class _Settings extends State<Settings> {
                   onTap: () {
                     Navigator.of(context).pushNamed(
                         RouteNameConstant.route_name_setting_feedbacks);
+                  },
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: ListTile(
+                  title: Text(
+                      Translations.textOf(context, "settings.dir.setting")),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    downloadDirSetting();
                   },
                 ),
               ),
@@ -214,7 +229,7 @@ class _Settings extends State<Settings> {
   }
 
   void downloadFromApp(AppVersionCheckRequestResult result) async {
-    String downloadDir = FileUtils.getDownloadDirectory();
+    String downloadDir = await FileUtils.getDownloadDirectory();
     String fileName = '${downloadDir}/latest-app-${result?.versionCode}.apk';
     File file = File(fileName);
     if (file.existsSync()) {
@@ -227,15 +242,20 @@ class _Settings extends State<Settings> {
     }
 
     _isDownloading = true;
+    _value = 0.5;
 
     Logs.info('cancelRequests is ${cancelRequests.token}');
     Dialogs.showProgress(_context,
-        Translations.textOf(context, "settings.downloading"), onWillPop);
+        Translations.textOf(context, "settings.downloading"), _value, onWillPop);
     // 下载
     HttpByteResult httpByteResult = await HttpRequests.getBytes(
         result?.fileUrl ?? "", null, null, (int sent, int total) {
       _isDownloading = sent < total;
+      setState(() {
+        _value = sent / total;
+      });
       Logs.info("_doDownloadRequest onReceiveProgress $sent / $total");
+      Logs.info("_doDownloadRequest onReceiveProgress value = $_value");
     }, cancelRequests);
 
     // 保存
@@ -260,5 +280,13 @@ class _Settings extends State<Settings> {
       FileUtils.openFile(file);
       Logs.info('open file ${file.path}');
     }
+  }
+
+  Future<void> downloadDirSetting() async {
+    String? dir = await FilePicker.pickDirectory();
+    if (dir != null) {
+      SettingCaches.cacheDownloadDirectory(dir);
+      Toasts.show(Translations.textOf(context, "settings.download.dir.setting.success"));
+  }
   }
 }
