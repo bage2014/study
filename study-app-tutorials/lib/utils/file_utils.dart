@@ -12,8 +12,14 @@ class FileUtils {
         .catchError((error) => {print('openFile catchError error = $error')});
   }
 
+  static String getDownloadDirectory() {
+    return "/storage/emulated/0/Download";
+  }
+
   static Future<Directory?> getDownloadDir() async {
-    return getTemporaryDirectory();
+    // return getTemporaryDirectory();
+    return getExternalStorageDirectory();
+    // return getApplicationDocumentsDirectory();
   }
 
   static Future<bool> write(File file, var bytes) async {

@@ -18,7 +18,7 @@ class SettingRequests {
     Map<String, String> param = HashMap();
     // param.putIfAbsent("param", () => userName);
     // return HttpRequests.post(HttpConstant.url_login, param, null);
-    return Future.delayed(const Duration(seconds: 2), () => mock());
+    return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 
   static AppVersionCheckRequestResult mock() {
@@ -34,7 +34,7 @@ class SettingRequests {
         '哈哈哈哈哈哈哈';
     result.fileId = 12345;
     result.fileUrl =
-        "https://github.com/bage2014/study/blob/master/study-app-tutorials/apks/app-release.apk";
+        "https://raw.githubusercontent.com/bage2014/study/master/study-app-tutorials/apks/app-release.apk";
     result.versionName = "Beta";
     result.fileSize = 123;
     result.updateType = "Default";

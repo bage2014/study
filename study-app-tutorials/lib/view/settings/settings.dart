@@ -214,10 +214,12 @@ class _Settings extends State<Settings> {
   }
 
   void downloadFromApp(AppVersionCheckRequestResult result) async {
-    Directory? downloadDir = await FileUtils.getDownloadDir();
-    String fileName = '${downloadDir?.path}'+'latest-app-${result?.versionCode}.apk';
+    String downloadDir = FileUtils.getDownloadDirectory();
+    String fileName = '${downloadDir}/latest-app-${result?.versionCode}.apk';
     File file = File(fileName);
     if (file.existsSync()) {
+      // Logs.info('delete is ${file.path}');
+      // file.delete();
       // 已经下载过，直接安装
       Logs.info('open file ${file.path}');
       FileUtils.openFile(file);
@@ -233,13 +235,14 @@ class _Settings extends State<Settings> {
     HttpByteResult httpByteResult = await HttpRequests.getBytes(
         result?.fileUrl ?? "", null, null, (int sent, int total) {
       _isDownloading = sent < total;
-      Logs.info("_doDownloadRequest onReceiveProgress $sent/$total");
+      Logs.info("_doDownloadRequest onReceiveProgress $sent / $total");
     }, cancelRequests);
+
     // 保存
     if (httpByteResult.responseBytes == null) {
       return;
     }
-    Logs.info('donwload apk finished...');
+    Logs.info('download apk finished...');
     if (httpByteResult.responseBytes.isEmpty) {
       Dialogs.dismiss(_context);
       Dialogs.showInfoDialog(_context, null,
