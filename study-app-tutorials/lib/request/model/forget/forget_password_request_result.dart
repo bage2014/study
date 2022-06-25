@@ -1,14 +1,12 @@
 
 import 'package:tutorials/request/model/common/common_result.dart';
 
-class SecurityCodeRequestResult {
+class ForgetPasswordRequestResult {
 
   CommonResult common = CommonResult();
 
-  String url = '';
-
   @override
   String toString() {
-    return 'SecurityCodeRequestResult{common: $common, url: $url}';
+    return 'ForgetPasswordRequestResult{common: $common}';
   }
 }

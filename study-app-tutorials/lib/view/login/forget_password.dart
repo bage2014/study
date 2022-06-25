@@ -6,7 +6,7 @@ import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
-import 'package:tutorials/request/model/forget_password_request_param.dart';
+import 'package:tutorials/request/model/forget/forget_password_request_param.dart';
 import 'package:tutorials/request/model/security_code_request_param.dart';
 import 'package:tutorials/request/security_code_requests.dart';
 import 'package:tutorials/utils/app_utils.dart';

@@ -17,4 +17,9 @@ class CommonParam {
     _data['version'] = version;
     return _data;
   }
+
+  @override
+  String toString() {
+    return 'CommonParam{traceId: $traceId, deviceId: $deviceId, version: $version}';
+  }
 }

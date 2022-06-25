@@ -1,0 +1,263 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:tutorials/component/downloader/file_downloader.dart';
+import 'package:tutorials/component/toast/Toasts.dart';
+import 'package:tutorials/constant/error_code_constant.dart';
+import 'package:tutorials/model/AppVersion.dart';
+import 'package:flutter/material.dart';
+import 'package:tutorials/component/dialog/dialogs.dart';
+import 'package:tutorials/component/http/CancelRequests.dart';
+import 'package:tutorials/component/http/HttpByteResult.dart';
+import 'package:tutorials/component/http/HttpRequests.dart';
+import 'package:tutorials/component/http/HttpResult.dart';
+import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/constant/http_constant.dart';
+import 'package:tutorials/constant/locale_constant.dart';
+import 'package:tutorials/constant/route_constant.dart';
+import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/request/model/AppVersionResult.dart';
+import 'package:tutorials/request/model/setting/app_version_check_request_param.dart';
+import 'package:tutorials/request/model/setting/app_version_check_request_result.dart';
+import 'package:tutorials/request/setting_request.dart';
+import 'package:tutorials/utils/app_utils.dart';
+import 'package:tutorials/utils/file_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class Settings extends StatefulWidget {
+  @override
+  _Settings createState() => new _Settings();
+}
+
+class _Settings extends State<Settings> {
+  late BuildContext _context;
+  bool _isDownloading = false;
+  bool _isLoading = false;
+  CancelRequests cancelRequests = CancelRequests();
+  late AppVersion _currentVersionInfo;
+
+  @override
+  void initState() {
+    _currentVersionInfo = AppVersion.getCurrentVersionInfo();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _context = context;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(Translations.textOf(context, "settings.title")),
+      ),
+      body: Stack(
+        alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            child: Column(children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      child: const Image(
+                          image: AssetImage("assets/images/logo128.png")),
+                      onDoubleTap: () {
+                        Navigator.of(context).pushNamed(
+                            RouteNameConstant.route_name_setting_dev_tool);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(Translations.textOf(context, "all.app.name"),
+                        style: const TextStyle(
+                            fontSize: 17.0, fontWeight: FontWeight.bold))
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(_currentVersionInfo?.versionName ?? '')
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: ListTile(
+                  title: Text(
+                      Translations.textOf(context, "settings.checkForUpdate")),
+                  trailing: Icon(Icons.chevron_right),
+                  onTap: _checkAppUpdateInfo,
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: ListTile(
+                  title:
+                      Text(Translations.textOf(context, "settings.feedbacks")),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                        RouteNameConstant.route_name_setting_feedbacks);
+                  },
+                ),
+              ),
+            ]),
+          ),
+          Container(
+            child: _isLoading
+                ? CircularProgressIndicator(
+                    backgroundColor: Colors.grey[200],
+                    valueColor: const AlwaysStoppedAnimation(Colors.blue),
+                  )
+                : null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<bool> onWillPop() async {
+    // 确认框
+    String? showConfirmDialog = await Dialogs.showConfirmDialog(
+        context,
+        Translations.textOf(context, LocaleConstant.settings_upgrade_cancel),
+        null);
+    Logs.info('showConfirmDialog = $showConfirmDialog');
+    if ("true" == showConfirmDialog) {
+      cancelRequests.cancel('_onWillPop');
+      return true;
+    }
+    // You can do some work here.
+    // Returning true allows the pop to happen, returning false prevents it.
+    return false;
+  }
+
+  showLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  hideLoading() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _checkAppUpdateInfo() async {
+    showLoading();
+    // 版本校验
+    SettingRequests.checkVersion(AppVersionCheckRequestParam()).then((result) {
+      Logs.info('checkVersion result=' + (result.toString() ?? ""));
+      hideLoading();
+      if (result.common.code == ErrorCodeConstant.success) {
+        showUpdateDialog(result);
+      } else {
+        Toasts.show(result.common.message);
+      }
+    }).catchError((error) {
+      Logs.info(error.toString());
+      hideLoading();
+    });
+  }
+
+  void showUpdateDialog(AppVersionCheckRequestResult result) async {
+    // 确认框
+    String? showConfirmDialog = await Dialogs.showConfirmDialog(
+        context,
+        Translations.textOf(context, LocaleConstant.settings_upgrade_dialog),
+        result?.description?.replaceAll('|', '\n'));
+    Logs.info('showConfirmDialog = $showConfirmDialog');
+
+    if ("true" == showConfirmDialog) {
+      showUpdateSelector(result);
+    }
+  }
+
+  void showUpdateSelector(AppVersionCheckRequestResult result) async {
+    List<String> contents = [
+      Translations.textOf(context, "settings.upgrade.open.by.browser"),
+      Translations.textOf(context, "settings.upgrade.open.by.app"),
+      Translations.textOf(context, "settings.upgrade.open.cancel")
+    ];
+    int? index = await Dialogs.showButtonSelectDialog(context, contents, null);
+    Logs.info('select index = $index');
+
+    if (index == null || index == contents.length - 1) {
+      // Cancel
+      return;
+    }
+
+    if (index == 0) {
+      // open with browser
+      String url = HttpRequests.rebuildUrl(result?.fileUrl ?? "");
+      if (await canLaunch(url)) {
+        await launch(url);
+        return;
+      }
+    } else if (index == 1) {
+      // download from app
+      downloadFromApp(result);
+    }
+  }
+
+  void downloadFromApp(AppVersionCheckRequestResult result) async {
+    Directory downloadDir = await FileUtils.getDownloadDir();
+    String fileName =
+        '${downloadDir.path}/latest-app-${result?.versionCode}.apk';
+    File file = File(fileName);
+    if (file.existsSync()) {
+      // 已经下载过，直接安装
+      Logs.info('open file ${file.path}');
+      FileUtils.openFile(file);
+      return;
+    }
+
+    _isDownloading = true;
+
+    Logs.info('cancelRequests is ${cancelRequests.token}');
+    Dialogs.showProgress(_context,
+        Translations.textOf(context, "settings.downloading"), onWillPop);
+    // 下载
+    HttpByteResult httpByteResult = await HttpRequests.getBytes(
+        result?.fileUrl ?? "", null, null, (int sent, int total) {
+      double percent = sent / total;
+      _isDownloading = sent < total;
+      Logs.info("_doDownloadRequest onReceiveProgress ${percent}%");
+    }, cancelRequests);
+    // 保存
+    if (httpByteResult.responseBytes == null) {
+      return;
+    }
+    Logs.info('donwload apk finished...');
+    if (httpByteResult.responseBytes.isEmpty) {
+      Dialogs.dismiss(_context);
+      Dialogs.showInfoDialog(_context, null,
+          Translations.textOf(context, "settings.alreadyLatestVersion"));
+      return;
+    }
+
+    bool isSuccess = await FileUtils.write(file, httpByteResult.responseBytes);
+    Logs.info('save file isSuccess = ${isSuccess} to ${file.path}');
+
+    Dialogs.dismiss(_context);
+
+    // 打开文件
+    if (isSuccess) {
+      FileUtils.openFile(file);
+      Logs.info('open file ${file.path}');
+    }
+  }
+}

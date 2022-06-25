@@ -17,7 +17,7 @@ import 'package:tutorials/view/home/home.dart';
 import 'package:tutorials/view/profile/profile.dart';
 import 'package:tutorials/view/about/AboutAuthor.dart';
 import 'package:tutorials/view/settings/DevTool.dart';
-import 'package:tutorials/view/settings/Settings.dart';
+import 'package:tutorials/view/settings/settings.dart';
 
 class RouteConfiguration {
   static List<RoutPath> paths = [

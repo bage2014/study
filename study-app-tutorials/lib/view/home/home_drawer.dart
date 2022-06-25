@@ -4,7 +4,7 @@ import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
-import 'package:tutorials/request/model/User.dart';
+import 'package:tutorials/request/model/user.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 

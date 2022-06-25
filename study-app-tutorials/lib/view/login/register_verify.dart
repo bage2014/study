@@ -7,7 +7,7 @@ import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
-import 'package:tutorials/request/model/register_request_param.dart';
+import 'package:tutorials/request/model/register/register_request_param.dart';
 import 'package:tutorials/request/register_requests.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/widgets/verification_text_field.dart';
