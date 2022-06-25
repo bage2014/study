@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tutorials/component/log/Logs.dart';
 
 class FileUtils {
 
@@ -11,7 +12,7 @@ class FileUtils {
         .catchError((error) => {print('openFile catchError error = $error')});
   }
 
-  static Future<Directory> getDownloadDir() async {
+  static Future<Directory?> getDownloadDir() async {
     return getTemporaryDirectory();
   }
 
@@ -21,7 +22,7 @@ class FileUtils {
       raf.writeFromSync(bytes);
       await raf.close();
     } catch (e) {
-      print(e);
+      Logs.info(e.toString());
       return false;
     }
     return true;

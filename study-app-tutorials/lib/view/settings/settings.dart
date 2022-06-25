@@ -214,9 +214,8 @@ class _Settings extends State<Settings> {
   }
 
   void downloadFromApp(AppVersionCheckRequestResult result) async {
-    Directory downloadDir = await FileUtils.getDownloadDir();
-    String fileName =
-        '${downloadDir.path}/latest-app-${result?.versionCode}.apk';
+    Directory? downloadDir = await FileUtils.getDownloadDir();
+    String fileName = '${downloadDir?.path}'+'latest-app-${result?.versionCode}.apk';
     File file = File(fileName);
     if (file.existsSync()) {
       // 已经下载过，直接安装
@@ -233,9 +232,8 @@ class _Settings extends State<Settings> {
     // 下载
     HttpByteResult httpByteResult = await HttpRequests.getBytes(
         result?.fileUrl ?? "", null, null, (int sent, int total) {
-      double percent = sent / total;
       _isDownloading = sent < total;
-      Logs.info("_doDownloadRequest onReceiveProgress ${percent}%");
+      Logs.info("_doDownloadRequest onReceiveProgress $sent/$total");
     }, cancelRequests);
     // 保存
     if (httpByteResult.responseBytes == null) {
