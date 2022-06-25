@@ -1,4 +1,4 @@
-import 'package:tutorials/request/model/common_param.dart';
+import 'package:tutorials/request/model/common/common_param.dart';
 
 class ForgetPasswordRequestParam {
   String? userName;
@@ -19,5 +19,10 @@ class ForgetPasswordRequestParam {
     _data['securityCode'] = securityCode;
     _data['common'] = common.toJson();
     return _data;
+  }
+
+  @override
+  String toString() {
+    return 'ForgetPasswordRequestParam{userName: $userName, securityCode: $securityCode, common: $common}';
   }
 }

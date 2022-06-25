@@ -1,4 +1,4 @@
-import 'package:tutorials/request/model/common_param.dart';
+import 'package:tutorials/request/model/common/common_param.dart';
 
 class RegisterRequestParam {
   String? userName;
@@ -24,4 +24,8 @@ class RegisterRequestParam {
     return _data;
   }
 
+  @override
+  String toString() {
+    return 'RegisterRequestParam{userName: $userName, password: $password, securityCode: $securityCode, common: $common}';
+  }
 }

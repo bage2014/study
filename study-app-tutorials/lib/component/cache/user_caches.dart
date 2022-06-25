@@ -1,5 +1,5 @@
 
-import 'package:tutorials/request/model/User.dart';
+import 'package:tutorials/request/model/user.dart';
 
 class UserCaches{
 

@@ -1,5 +1,5 @@
 
-import 'package:tutorials/request/model/login_request_result.dart';
+import 'package:tutorials/request/model/login/login_request_result.dart';
 
 class User {
   int? id;
