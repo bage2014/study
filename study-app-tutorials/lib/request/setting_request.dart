@@ -28,7 +28,10 @@ class SettingRequests {
     result.common.message = "404啦啦啦";
     result.id = 12345;
     result.versionCode = 2;
-    result.description = '版本信息｜说明1｜说明2｜哈哈哈哈哈哈哈';
+    result.description = '版本信息\n'
+        '说明1\n'
+        '说明2\n'
+        '哈哈哈哈哈哈哈';
     result.fileId = 12345;
     result.fileUrl =
         "https://github.com/bage2014/study/blob/master/study-app-tutorials/apks/app-release.apk";
