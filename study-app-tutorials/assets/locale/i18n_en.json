@@ -53,6 +53,8 @@
   "settings.title":"Settings ",
   "settings.checkForUpdate":"Check For Update",
   "settings.feedbacks":"Feedbacks",
+  "settings.dir.setting":"Download Directory",
+  "settings.download.dir.setting.success":"Download Directory Updated",
   "settings.alreadyLatestVersion":"This is already the latest version! ",
   "settings.downloading":"Downloading...",
   "settings.upgrade.dialog.title":"Do upgrade to the latest version? ",

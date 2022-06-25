@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Dialogs {
   static Future<void> showProgress(
-      BuildContext context, String title, onWillPop) {
+      BuildContext context, String title, double? value, onWillPop) {
     return showDialog<String>(
         context: context,
         barrierDismissible: false, //点击遮罩不关闭对话框
@@ -14,7 +14,7 @@ class Dialogs {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    CircularProgressIndicator(),
+                    CircularProgressIndicator(value: value,),
                     Padding(
                       padding: const EdgeInsets.only(top: 26.0),
                       child: Text(title),
