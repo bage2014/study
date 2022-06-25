@@ -94,19 +94,21 @@ class HttpRequests {
         response = await _dio.get(path,
             queryParameters: parameters, cancelToken: cancelRequests.token,
             onReceiveProgress: (int sent, int total) {
-          double percent = sent / total;
-          print("_doDownloadRequest onReceiveProgress ${percent}%");
+          print("_doDownloadRequest onReceiveProgress ${sent} / ${total}");
           onProgress?.call(sent, total);
         });
       } else {
         response = await _dio.post(path,
             queryParameters: parameters,
             cancelToken: cancelRequests.token,
-            data: data);
+            data: data, onReceiveProgress: (int sent, int total) {
+          print("_doDownloadRequest onReceiveProgress ${sent} / ${total}");
+          onProgress?.call(sent, total);
+        });
       }
       Logs.info('_doDownloadRequest statusCode = ${response.statusCode}');
       result.responseBytes = response.data;
-      result.statusCode = response.statusCode??500;
+      result.statusCode = response.statusCode ?? 500;
       result.headers = response.headers.map;
       return result;
     } catch (e) {
@@ -143,7 +145,7 @@ class HttpRequests {
       }
       Logs.info('_doBaseRequest statusCode = ${response.statusCode}');
       result.responseBody = response.data;
-      result.statusCode = response.statusCode??500;
+      result.statusCode = response.statusCode ?? 500;
       result.headers = response.headers.map;
       return result;
     } catch (e) {
@@ -163,7 +165,7 @@ class HttpRequests {
         responseType: ResponseType.bytes,
         followRedirects: false,
         validateStatus: (status) {
-          return (status??500) < 500;
+          return (status ?? 500) < 500;
         });
   }
 
