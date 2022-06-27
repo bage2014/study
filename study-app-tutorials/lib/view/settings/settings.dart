@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:tutorials/component/cache/setting_caches.dart';
+import 'package:tutorials/component/dialog/progress_dialogs.dart';
 import 'package:tutorials/component/downloader/file_downloader.dart';
 import 'package:tutorials/component/picker/file_picker.dart';
 import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
@@ -37,7 +38,7 @@ class _Settings extends State<Settings> {
   late BuildContext _context;
   bool _isDownloading = false;
   bool _isLoading = false;
-  double _value = 0;
+  double? _value;
   CancelRequests cancelRequests = CancelRequests();
   late AppVersion _currentVersionInfo;
 
@@ -49,14 +50,14 @@ class _Settings extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(Translations.textOf(context, "settings.title")),
-      ),
-      body: Stack(
-        alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
-        children: <Widget>[
-          Container(
+    return Stack(
+      alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
+      children: <Widget>[
+        Scaffold(
+          appBar: AppBar(
+            title: Text(Translations.textOf(context, "settings.title")),
+          ),
+          body: Container(
             alignment: Alignment.center,
             child: Column(children: <Widget>[
               Container(
@@ -130,16 +131,25 @@ class _Settings extends State<Settings> {
               ),
             ]),
           ),
-          Container(
-            child: _isLoading
-                ? CircularProgressIndicator(
-                    backgroundColor: Colors.grey[200],
-                    valueColor: const AlwaysStoppedAnimation(Colors.blue),
-                  )
-                : null,
-          ),
-        ],
-      ),
+        ),
+        Container(
+          child: _isLoading
+              ? Container(
+                  color: Colors.black54.withOpacity(0.5),
+                  width: double.infinity,
+                )
+              : null,
+        ),
+        Container(
+          child: _isLoading
+              ? CircularProgressIndicator(
+                  value: _value,
+                  backgroundColor: Colors.grey[200],
+                  valueColor: const AlwaysStoppedAnimation(Colors.blue),
+                )
+              : null,
+        ),
+      ],
     );
   }
 
@@ -159,14 +169,16 @@ class _Settings extends State<Settings> {
     return false;
   }
 
-  showLoading() {
+  showLoading({double? value}) {
     setState(() {
+      _value = value;
       _isLoading = true;
     });
   }
 
   hideLoading() {
     setState(() {
+      _value = null;
       _isLoading = false;
     });
   }
@@ -242,11 +254,8 @@ class _Settings extends State<Settings> {
     }
 
     _isDownloading = true;
-    _value = 0.5;
-
     Logs.info('cancelRequests is ${cancelRequests.token}');
-    Dialogs.showProgress(_context,
-        Translations.textOf(context, "settings.downloading"), _value, onWillPop);
+    showLoading(value: _value);
     // 下载
     HttpByteResult httpByteResult = await HttpRequests.getBytes(
         result?.fileUrl ?? "", null, null, (int sent, int total) {
@@ -273,7 +282,7 @@ class _Settings extends State<Settings> {
     bool isSuccess = await FileUtils.write(file, httpByteResult.responseBytes);
     Logs.info('save file isSuccess = ${isSuccess} to ${file.path}');
 
-    Dialogs.dismiss(_context);
+    hideLoading();
 
     // 打开文件
     if (isSuccess) {
@@ -286,7 +295,8 @@ class _Settings extends State<Settings> {
     String? dir = await FilePicker.pickDirectory();
     if (dir != null) {
       SettingCaches.cacheDownloadDirectory(dir);
-      Toasts.show(Translations.textOf(context, "settings.download.dir.setting.success"));
-  }
+      Toasts.show(Translations.textOf(
+          context, "settings.download.dir.setting.success"));
+    }
   }
 }
