@@ -37,17 +37,18 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
 
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(color: ColorConstant.app_bar_only_back_color),
-      ),
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
-          children: <Widget>[
-            SingleChildScrollView(
+    return Stack(
+      alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
+      children: <Widget>[
+        Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            iconTheme:
+                IconThemeData(color: ColorConstant.app_bar_only_back_color),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
@@ -144,20 +145,27 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
                 ),
               ),
             ),
-            Container(
-              child: _isLoading
-                  ? CircularProgressIndicator(
-                      backgroundColor: Colors.grey[200],
-                      valueColor: const AlwaysStoppedAnimation(Colors.blue),
-                    )
-                  : null,
-            ),
-          ],
+          ),
         ),
-      ),
+        Container(
+          child: _isLoading
+              ? Container(
+            color: Colors.black54.withOpacity(0.5),
+            width: double.infinity,
+          )
+              : null,
+        ),
+        Container(
+          child: _isLoading
+              ? CircularProgressIndicator(
+                  backgroundColor: Colors.grey[200],
+                  valueColor: const AlwaysStoppedAnimation(Colors.blue),
+                )
+              : null,
+        ),
+      ],
     );
   }
-
 
   void confirm() {
     showLoading();
@@ -170,7 +178,8 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
       Logs.info('login result=' + (result.toString() ?? ""));
       hideLoading();
       if (result.common.code == ErrorCodeConstant.success) {
-        AppUtils.toPage(context,RouteNameConstant.route_name_forget_password_finish);
+        AppUtils.toPage(
+            context, RouteNameConstant.route_name_forget_password_finish);
       } else {
         Toasts.show(result.common.message);
       }
@@ -191,6 +200,4 @@ class _ForgetPasswordVerifyState extends State<ForgetPasswordVerify> {
       _isLoading = false;
     });
   }
-
 }
-
