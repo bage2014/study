@@ -36,17 +36,18 @@ class _RegisterVerifyState extends State<RegisterVerify> {
     Logs.info("json : $str");
     param = RegisterRequestParam.fromJson(json.decode(str));
     Logs.info("param : ${param.userName}");
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(color: ColorConstant.app_bar_only_back_color),
-      ),
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
-          children: <Widget>[
-            SingleChildScrollView(
+    return Stack(
+      alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
+      children: <Widget>[
+        Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            iconTheme:
+                IconThemeData(color: ColorConstant.app_bar_only_back_color),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
@@ -142,17 +143,25 @@ class _RegisterVerifyState extends State<RegisterVerify> {
                 ),
               ),
             ),
-            Container(
-              child: _isLoading
-                  ? CircularProgressIndicator(
-                      backgroundColor: Colors.grey[200],
-                      valueColor: const AlwaysStoppedAnimation(Colors.blue),
-                    )
-                  : null,
-            ),
-          ],
+          ),
         ),
-      ),
+        Container(
+          child: _isLoading
+              ? Container(
+            color: Colors.black54.withOpacity(0.5),
+            width: double.infinity,
+          )
+              : null,
+        ),
+        Container(
+          child: _isLoading
+              ? CircularProgressIndicator(
+                  backgroundColor: Colors.grey[200],
+                  valueColor: const AlwaysStoppedAnimation(Colors.blue),
+                )
+              : null,
+        ),
+      ],
     );
   }
 
@@ -187,6 +196,4 @@ class _RegisterVerifyState extends State<RegisterVerify> {
       _isLoading = false;
     });
   }
-
 }
-

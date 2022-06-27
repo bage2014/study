@@ -32,13 +32,13 @@ class _LoginView extends State<Login> {
   @override
   Widget build(BuildContext context) {
     String _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
-    return Scaffold(
-      backgroundColor: const Color(0xFFFCFCFC),
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
-          children: <Widget>[
-            SingleChildScrollView(
+    return Stack(
+      alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
+      children: <Widget>[
+        Scaffold(
+          backgroundColor: const Color(0xFFFCFCFC),
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
@@ -214,22 +214,29 @@ class _LoginView extends State<Login> {
                             context, 'login.password.reset'),
                         route: RouteNameConstant.route_name_forget_password,
                         isTransparent: true),
-
                   ],
                 ),
               ),
             ),
-            Container(
-              child: _isLoading
-                  ? CircularProgressIndicator(
-                      backgroundColor: Colors.grey[200],
-                      valueColor: const AlwaysStoppedAnimation(Colors.blue),
-                    )
-                  : null,
-            ),
-          ],
+          ),
         ),
-      ),
+        Container(
+          child: _isLoading
+              ? Container(
+            color: Colors.black54.withOpacity(0.5),
+            width: double.infinity,
+          )
+              : null,
+        ),
+        Container(
+          child: _isLoading
+              ? CircularProgressIndicator(
+                  backgroundColor: Colors.grey[200],
+                  valueColor: const AlwaysStoppedAnimation(Colors.blue),
+                )
+              : null,
+        ),
+      ],
     );
   }
 
