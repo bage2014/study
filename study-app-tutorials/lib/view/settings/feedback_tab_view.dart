@@ -1,16 +1,16 @@
-import 'dart:collection';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/event/event_bus.dart';
-import 'package:tutorials/component/http/HttpRequests.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/http_constant.dart';
+import 'package:tutorials/component/toast/Toasts.dart';
+import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/locale_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
 import 'package:tutorials/request/feedback_request.dart';
+import 'package:tutorials/request/model/feedback/message_feedback_delete_request_param.dart';
 import 'package:tutorials/request/model/feedback/message_feedback_query_request_param.dart';
 import 'package:tutorials/request/model/feedback/message_feedback.dart';
 import 'package:tutorials/view/settings/feedback_update_event.dart';
@@ -28,8 +28,8 @@ class FeedbackTabView extends StatelessWidget {
 
   static List<TabTitle> init() {
     List<TabTitle> tabs = [];
-    tabs.add( TabTitle(key_all, '所有留言'));
-    tabs.add( TabTitle(key_my, '我的留言'));
+    tabs.add(TabTitle(key_all, '所有留言'));
+    tabs.add(TabTitle(key_my, '我的留言'));
     return tabs;
   }
 
@@ -85,7 +85,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
             ? Center(
                 child: CircularProgressIndicator(
                 backgroundColor: Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation(Colors.blue),
+                valueColor: const AlwaysStoppedAnimation(Colors.blue),
               ))
             : (list.isEmpty
                 ? Center(
@@ -112,22 +112,22 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                               child: Row(
                                 children: <Widget>[
                                   Container(
-                                    padding:
-                                        EdgeInsets.only(left: 0, right: 0),
+                                    padding: const EdgeInsets.only(
+                                        left: 0, right: 0),
                                     width: 64.0,
                                     child: ClipOval(
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              appFeedback.fromUserIconUrl ?? '',
-                                          placeholder: (context, url) =>
-                                              const CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              const Image(
-                                                  image: AssetImage(
-                                                      "assets/images/user_null.png")),
-                                          height: 64,
-                                          width: 64,
-                                        ),
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            appFeedback.fromUserIconUrl ?? '',
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Image(
+                                                image: AssetImage(
+                                                    "assets/images/user_null.png")),
+                                        height: 64,
+                                        width: 64,
+                                      ),
                                     ),
                                   ),
                                   Expanded(
@@ -147,7 +147,9 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                   children: <Widget>[
                                                     Container(
                                                       child: Text(
-                                                          '${appFeedback.fromUserName ?? '佚名'}',
+                                                          appFeedback
+                                                                  .fromUserName ??
+                                                              '佚名',
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style:
@@ -171,7 +173,8 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                                     _delete(
                                                                         appFeedback);
                                                                   },
-                                                                  child: const Icon(
+                                                                  child:
+                                                                      const Icon(
                                                                     Icons
                                                                         .delete,
                                                                     color: Colors
@@ -195,9 +198,11 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                   children: <Widget>[
                                                     Container(
                                                       child: Text(
-                                                        '${appFeedback.msgContent ?? ''}',
+                                                        appFeedback
+                                                                .msgContent ??
+                                                            '',
                                                         maxLines: 3,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 14,
                                                             color:
                                                                 Colors.black87),
@@ -255,11 +260,13 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                       CrossAxisAlignment.end,
                                                   children: <Widget>[
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 8.0, right: 8.0),
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 8.0,
+                                                              right: 8.0),
                                                       child: Text(
                                                         '${appFeedback.sendTime}',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 12,
                                                             color: Colors.grey),
                                                       ),
@@ -294,13 +301,16 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
     MessageFeedbackRequests.query(param).then((result) {
       hideLoading();
       Logs.info('_onRefresh responseBody=' + (result.toString() ?? ""));
-      setState(() {
-        if (result.common.code == 200) {
+      if (result.common.code == ErrorCodeConstant.success) {
+        Logs.info('_onRefresh length = ${result.feedbacks.length}');
+        setState(() {
           list = result.feedbacks ?? [];
-        }
-      });
+        });
+      } else {
+        Toasts.show(result.common.message);
+      }
     }).catchError((error) {
-      print(error.toString());
+      Logs.info(error.toString());
       hideLoading();
     });
   }
@@ -310,16 +320,23 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
     String? showConfirmDialog = await Dialogs.showConfirmDialog(context,
         Translations.textOf(context, LocaleConstant.all_delete_confirm), null);
     if ("true" == showConfirmDialog) {
-      Map<String, dynamic> param = new HashMap();
-      param.putIfAbsent("param", () => appFeedback.id);
       showLoading();
-      HttpRequests.post(
-              HttpConstant.url_settings_app_feedback_delete, param, null)
-          .then((result) {
-        Logs.info('_delete responseBody=' + (result.responseBody ?? ""));
-        _onRefresh();
+
+      MessageFeedbackDeleteRequestParam param =
+          MessageFeedbackDeleteRequestParam();
+      param.feedbackId = appFeedback.id;
+      Logs.info('_delete feedbackId=' + (param.feedbackId.toString() ?? ""));
+
+      MessageFeedbackRequests.delete(param).then((result) {
+        hideLoading();
+        Logs.info('_delete responseBody=' + (result.toString() ?? ""));
+        if (result.common.code == ErrorCodeConstant.success) {
+          _onRefresh();
+        } else {
+          Toasts.show(result.common.message);
+        }
       }).catchError((error) {
-        print(error.toString());
+        Logs.info(error.toString());
         hideLoading();
       });
     }

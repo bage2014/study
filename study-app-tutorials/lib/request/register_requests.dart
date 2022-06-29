@@ -1,9 +1,6 @@
 import 'dart:collection';
 
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/error_code_constant.dart';
-import 'package:tutorials/request/model/login/login_request_param.dart';
-import 'package:tutorials/request/model/login/login_request_result.dart';
 import 'package:tutorials/request/model/register/register_request_param.dart';
 import 'package:tutorials/request/model/register/register_request_result.dart';
 
@@ -14,7 +11,7 @@ class RegisterRequests {
     Map<String, String> param = HashMap();
     // param.putIfAbsent("param", () => userName);
     // return HttpRequests.post(HttpConstant.url_login, param, null);
-    return Future.delayed(const Duration(seconds: 2), () => mock());
+    return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 
   static RegisterRequestResult mock() {

@@ -15,7 +15,7 @@ class LoginRequests {
     Map<String, String> param = HashMap();
     // param.putIfAbsent("param", () => userName);
     // return HttpRequests.post(HttpConstant.url_login, param, null);
-    return Future.delayed(const Duration(seconds: 2),() => mock());
+    return Future.delayed(const Duration(seconds: 1),() => mock());
   }
 
   static LoginRequestResult mock(){
