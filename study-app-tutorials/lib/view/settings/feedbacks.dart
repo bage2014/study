@@ -6,10 +6,15 @@ import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/event/event_bus.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';
 import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/toast/Toasts.dart';
+import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
 import 'package:tutorials/model/AppFeedback.dart';
+import 'package:tutorials/request/feedback_request.dart';
+import 'package:tutorials/request/model/feedback/message_feedback.dart';
+import 'package:tutorials/request/model/feedback/message_feedback_insert_request_param.dart';
 import 'package:tutorials/utils/date_time_utils.dart';
 import 'package:tutorials/view/settings/feedback_update_event.dart';
 import 'package:flutter/material.dart';
@@ -31,23 +36,28 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
     if (msgContent.isEmpty) {
       return;
     }
-    AppFeedback feedback = AppFeedback();
+
+    MessageFeedback feedback = MessageFeedback();
     feedback.fromUserId = UserCaches.getUserId();
+    feedback.fromUserIconUrl = UserCaches.getUser().iconUrl;
     feedback.msgContent = msgContent;
     feedback.sendTime = DateTimeUtils.format(DateTime.now());
-    Map<String, String> param = new HashMap();
-    param.putIfAbsent("param", () => jsonEncode(feedback.toJson()));
-    HttpRequests.post(
-            HttpConstant.url_settings_app_feedback_insert, param, null)
-        .then((result) {
-      Logs.info('_insertFeedback responseBody=' + (result?.responseBody ?? ""));
-      setState(() {
-        FeedbackUpdateEvent event = FeedbackUpdateEvent();
-        event.data = "hhh";
-        EventBus.publish(event);
-      });
+
+    MessageFeedbackInsertRequestParam param = MessageFeedbackInsertRequestParam();
+    param.feedback = feedback;
+    MessageFeedbackRequests.insert(param).then((result) {
+      Logs.info('_insertFeedback responseBody=' + (result?.toString() ?? ""));
+      if (result.common.code == ErrorCodeConstant.success) {
+        setState(() {
+          FeedbackUpdateEvent event = FeedbackUpdateEvent();
+          event.data = result.common.message;
+          EventBus.publish(event);
+        });
+      } else {
+        Toasts.show(result.common.message);
+      }
     }).catchError((error) {
-      print(error.toString());
+      Logs.info(error.toString());
     });
   }
 
@@ -91,10 +101,10 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
           ),
         ]),
       ),
-      floatingActionButton: new FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: _insertFeedback,
         tooltip: '+',
-        child: new Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
