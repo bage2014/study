@@ -8,7 +8,7 @@ import 'package:tutorials/view/login/register.dart';
 import 'package:tutorials/view/login/forget_password.dart';
 import 'package:tutorials/view/login/register_finish.dart';
 import 'package:tutorials/view/login/register_verify.dart';
-import 'package:tutorials/view/settings/Feedbacks.dart';
+import 'package:tutorials/view/settings/feedbacks.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/model/RoutPath.dart';
@@ -16,7 +16,7 @@ import 'package:tutorials/view/about/About.dart';
 import 'package:tutorials/view/home/home.dart';
 import 'package:tutorials/view/profile/profile.dart';
 import 'package:tutorials/view/about/AboutAuthor.dart';
-import 'package:tutorials/view/settings/DevTool.dart';
+import 'package:tutorials/view/settings/dev_tool.dart';
 import 'package:tutorials/view/settings/settings.dart';
 
 class RouteConfiguration {

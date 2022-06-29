@@ -1,6 +1,6 @@
 import 'dart:collection';
-import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/event/event_bus.dart';
@@ -10,9 +10,10 @@ import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/constant/locale_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
-import 'package:tutorials/model/AppFeedback.dart';
-import 'package:tutorials/request/model/FeedbackQueryResult.dart';
-import 'package:tutorials/view/settings/FeedbackUpdateEvent.dart';
+import 'package:tutorials/request/feedback_request.dart';
+import 'package:tutorials/request/model/feedback/message_feedback_query_request_param.dart';
+import 'package:tutorials/request/model/feedback/message_feedback.dart';
+import 'package:tutorials/view/settings/feedback_update_event.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,14 +22,14 @@ class FeedbackTabView extends StatelessWidget {
       : super(key: key);
 
   TabTitle tab;
-  List<AppFeedback> feedbacks;
+  List<MessageFeedback> feedbacks;
   static const String key_all = 'all';
   static const String key_my = 'my';
 
   static List<TabTitle> init() {
     List<TabTitle> tabs = [];
-    tabs.add(new TabTitle(key_all, '所有留言'));
-    tabs.add(new TabTitle(key_my, '我的留言'));
+    tabs.add( TabTitle(key_all, '所有留言'));
+    tabs.add( TabTitle(key_my, '我的留言'));
     return tabs;
   }
 
@@ -53,11 +54,11 @@ class _FeedbackTabView extends StatefulWidget {
   }
 
   @override
-  _FeedbackTabState createState() => new _FeedbackTabState(_isMe);
+  _FeedbackTabState createState() => _FeedbackTabState(_isMe);
 }
 
 class _FeedbackTabState extends State<_FeedbackTabView> {
-  List<AppFeedback> list = [];
+  List<MessageFeedback> list = [];
   bool _isLoading = false;
   bool _isMe = false;
 
@@ -86,7 +87,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                 backgroundColor: Colors.grey[200],
                 valueColor: AlwaysStoppedAnimation(Colors.blue),
               ))
-            : (list.length == 0
+            : (list.isEmpty
                 ? Center(
                     child: Text(
                       Translations.textOf(context, "all.list.view.no.data"),
@@ -97,38 +98,42 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                     itemCount: list.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      AppFeedback appFeedback = list[index];
-                      return new GestureDetector(
+                      MessageFeedback appFeedback = list[index];
+                      return GestureDetector(
                           onTap: () {},
                           child: Card(
                             clipBehavior: Clip.antiAlias,
                             elevation: 2,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 6),
                             child: Container(
                               child: Row(
                                 children: <Widget>[
                                   Container(
                                     padding:
-                                        EdgeInsets.only(left: 10, right: 5),
-                                    width: 100.0,
-                                    child: AspectRatio(
-                                      aspectRatio: 1.2,
-                                      child: ClipOval(
-                                        child: Image(
-                                            width: 48.0,
-                                            height: 48.0,
-                                            image: AssetImage(
-                                                "assets/images/user_null.png")),
-                                      ),
+                                        EdgeInsets.only(left: 0, right: 0),
+                                    width: 64.0,
+                                    child: ClipOval(
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              appFeedback.fromUserIconUrl ?? '',
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Image(
+                                                  image: AssetImage(
+                                                      "assets/images/user_null.png")),
+                                          height: 64,
+                                          width: 64,
+                                        ),
                                     ),
                                   ),
                                   Expanded(
                                     flex: 1,
                                     child: Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 5, vertical: 10),
                                         color: Colors.white,
                                         child: Column(
@@ -145,10 +150,12 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                           '${appFeedback.fromUserName ?? '佚名'}',
                                                           overflow: TextOverflow
                                                               .ellipsis,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 15)),
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      15)),
                                                     ),
                                                   ],
                                                 )),
@@ -159,12 +166,12 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                                 CrossAxisAlignment
                                                                     .end,
                                                             children: <Widget>[
-                                                              new GestureDetector(
+                                                              GestureDetector(
                                                                   onTap: () {
                                                                     _delete(
                                                                         appFeedback);
                                                                   },
-                                                                  child: Icon(
+                                                                  child: const Icon(
                                                                     Icons
                                                                         .delete,
                                                                     color: Colors
@@ -176,7 +183,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                                     : SizedBox.shrink(),
                                               ],
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 8,
                                             ),
                                             Row(
@@ -277,26 +284,19 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
 
   Future<Null> _onRefresh() async {
     if (!mounted) {
-      return ;
-    }
-    Map<String, dynamic> paramJson = new HashMap();
-    paramJson.putIfAbsent("targetPage", () => 1);
-    paramJson.putIfAbsent("pageSize", () => 100);
-    if (_isMe) {
-      paramJson.putIfAbsent("fromUserId", () => UserCaches.getUserId());
+      return;
     }
 
-    Map<String, String> param = new HashMap();
-    param.putIfAbsent("param", () => json.encode(paramJson));
-    HttpRequests.get(HttpConstant.url_settings_app_feedback_query, param, null)
-        .then((result) {
+    MessageFeedbackQueryRequestParam param = MessageFeedbackQueryRequestParam();
+    if (_isMe) {
+      param.fromUserId = UserCaches.getUserId();
+    }
+    MessageFeedbackRequests.query(param).then((result) {
       hideLoading();
-      Logs.info('_onRefresh responseBody=' + (result.responseBody ?? ""));
+      Logs.info('_onRefresh responseBody=' + (result.toString() ?? ""));
       setState(() {
-        FeedbackQueryResult feedbackQueryResult = FeedbackQueryResult.fromJson(
-            json.decode(result?.responseBody ?? ""));
-        if (feedbackQueryResult.code == 200) {
-          list = feedbackQueryResult.data ?? [];
+        if (result.common.code == 200) {
+          list = result.feedbacks ?? [];
         }
       });
     }).catchError((error) {
@@ -305,7 +305,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
     });
   }
 
-  Future<Null> _delete(AppFeedback appFeedback) async {
+  Future<Null> _delete(MessageFeedback appFeedback) async {
     // 确认框
     String? showConfirmDialog = await Dialogs.showConfirmDialog(context,
         Translations.textOf(context, LocaleConstant.all_delete_confirm), null);
