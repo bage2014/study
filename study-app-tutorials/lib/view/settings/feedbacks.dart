@@ -11,10 +11,10 @@ import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
 import 'package:tutorials/model/AppFeedback.dart';
 import 'package:tutorials/utils/date_time_utils.dart';
-import 'package:tutorials/view/settings/FeedbackUpdateEvent.dart';
+import 'package:tutorials/view/settings/feedback_update_event.dart';
 import 'package:flutter/material.dart';
 
-import 'FeedbackTabView.dart';
+import 'feedback_tab_view.dart';
 
 class Feedbacks extends StatefulWidget {
   @override
