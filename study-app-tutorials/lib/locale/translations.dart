@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/locale/SupportedLocales.dart';
+import 'package:tutorials/locale/supported_locales.dart';
 
 class Translations {
   Translations(Locale locale) {
@@ -20,7 +20,7 @@ class Translations {
     Logs.info(
         "textOf is called...${myLocale.countryCode} ${myLocale.languageCode}");
     var text = _of(context)?.text(key);
-    return text == null ? "" : text;
+    return text ?? "";
   }
 
   static Translations? _of(BuildContext context) {

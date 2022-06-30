@@ -54,6 +54,7 @@
   "settings.checkForUpdate":"Check For Update",
   "settings.feedbacks":"Feedbacks",
   "settings.dir.setting":"Download Directory",
+  "settings.lang.setting":"System Language",
   "settings.download.dir.setting.success":"Download Directory Updated",
   "settings.alreadyLatestVersion":"This is already the latest version! ",
   "settings.downloading":"Downloading...",
@@ -62,6 +63,9 @@
   "settings.upgrade.open.by.browser":"Oepn with browser ",
   "settings.upgrade.open.by.app":"Download in App",
   "settings.upgrade.open.cancel":"Cancel ",
+  "settings.lang.zh":"zh-CN ",
+  "settings.lang.en":"en-US ",
+  "settings.lang.cancel":"Cancel ",
 
   "settings.devTool.title":"Developer Tool",
   "settings.devTool.protocol":"Protocol",

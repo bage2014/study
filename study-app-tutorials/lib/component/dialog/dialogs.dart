@@ -1,4 +1,4 @@
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:flutter/material.dart';
 
 class Dialogs {

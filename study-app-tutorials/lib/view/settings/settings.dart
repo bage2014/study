@@ -9,6 +9,7 @@ import 'package:tutorials/component/picker/file_picker.dart';
 import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
+import 'package:tutorials/locale/supported_locales.dart';
 import 'package:tutorials/model/AppVersion.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
@@ -20,7 +21,7 @@ import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/constant/locale_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/model/AppVersionResult.dart';
 import 'package:tutorials/request/model/setting/app_version_check_request_param.dart';
 import 'package:tutorials/request/model/setting/app_version_check_request_result.dart';
@@ -126,6 +127,17 @@ class _Settings extends State<Settings> {
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     downloadDirSetting();
+                  },
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: ListTile(
+                  title: Text(
+                      Translations.textOf(context, "settings.lang.setting")),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    langSetting();
                   },
                 ),
               ),
@@ -297,6 +309,29 @@ class _Settings extends State<Settings> {
       SettingCaches.cacheDownloadDirectory(dir);
       Toasts.show(Translations.textOf(
           context, "settings.download.dir.setting.success"));
+    }
+  }
+
+  void langSetting() async {
+    List<String> contents = [
+      Translations.textOf(context, "settings.lang.zh"),
+      Translations.textOf(context, "settings.lang.en"),
+      Translations.textOf(context, "settings.lang.cancel")
+    ];
+    int? index = await Dialogs.showButtonSelectDialog(context, contents, null);
+    Logs.info('select index = $index');
+
+    if (index == null || index == contents.length - 1) {
+      // Cancel
+      return;
+    }
+
+    if (index == 0) {
+      // zh
+      Translations.load(SupportedLocales.zhLocale);
+    } else if (index == 1) {
+      // en
+      Translations.load(SupportedLocales.enLocale);
     }
   }
 }

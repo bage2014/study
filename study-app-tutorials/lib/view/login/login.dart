@@ -5,7 +5,7 @@ import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/login_requests.dart';
 import 'package:tutorials/request/model/user.dart';
 import 'package:tutorials/request/model/login/login_request_param.dart';

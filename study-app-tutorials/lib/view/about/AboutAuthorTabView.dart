@@ -1,4 +1,4 @@
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
 import 'package:tutorials/request/model/AuthorInfo.dart';
 import 'package:flutter/cupertino.dart';

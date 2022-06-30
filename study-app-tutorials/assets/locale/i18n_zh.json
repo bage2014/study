@@ -54,6 +54,7 @@
   "settings.checkForUpdate":"检查更新",
   "settings.feedbacks":"用户留言",
   "settings.dir.setting":"下载目录",
+  "settings.lang.setting":"系统语言",
   "settings.download.dir.setting.success":"下载目录更新成功",
   "settings.alreadyLatestVersion":"当前版本已经是最新版本!",
   "settings.downloading":"正在下载...",
@@ -62,6 +63,9 @@
   "settings.upgrade.open.by.browser":"浏览器打开 ",
   "settings.upgrade.open.by.app":"应用内下载",
   "settings.upgrade.open.cancel":"取消 ",
+  "settings.lang.zh":"中文 ",
+  "settings.lang.en":"英文 ",
+  "settings.lang.cancel":"取消 ",
 
   "settings.devTool.title":"开发者工具",
   "settings.devTool.protocol":"协议",

@@ -1,11 +1,10 @@
-
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/event/event_bus.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
 import 'package:tutorials/request/feedback_request.dart';
 import 'package:tutorials/request/model/feedback/message_feedback.dart';
@@ -26,8 +25,9 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
   List<TabTitle> tabs = [];
 
   Future<void> _insertFeedback() async {
-    String msgContent =
-        await Dialogs.showInputBottomSheet(context, Translations.textOf(context, 'settings.feedback.input.hint'), "") ?? "";
+    String msgContent = await Dialogs.showInputBottomSheet(context,
+            Translations.textOf(context, 'settings.feedback.input.hint'), "") ??
+        "";
     if (msgContent.isEmpty) {
       return;
     }
@@ -38,7 +38,8 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
     feedback.msgContent = msgContent;
     feedback.sendTime = DateTimeUtils.format(DateTime.now());
 
-    MessageFeedbackInsertRequestParam param = MessageFeedbackInsertRequestParam();
+    MessageFeedbackInsertRequestParam param =
+        MessageFeedbackInsertRequestParam();
     param.feedback = feedback;
     MessageFeedbackRequests.insert(param).then((result) {
       Logs.info('_insertFeedback responseBody=' + (result?.toString() ?? ""));
@@ -58,7 +59,10 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    tabs = FeedbackTabView.init(context);
+    String all = Translations.textOf(context, 'settings.feedback.all');
+    String my = Translations.textOf(context, 'settings.feedback.my');
+
+    tabs = FeedbackTabView.init(all, my);
     _tabController = TabController(length: tabs.length, vsync: this);
   }
 

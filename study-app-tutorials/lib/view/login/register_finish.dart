@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
 class RegisterFinish extends StatefulWidget {

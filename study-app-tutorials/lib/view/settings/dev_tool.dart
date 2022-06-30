@@ -3,7 +3,7 @@ import 'package:tutorials/component/cache/http_request_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
 import 'package:tutorials/constant/sp_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 
 class DevTool extends StatefulWidget {
   @override
