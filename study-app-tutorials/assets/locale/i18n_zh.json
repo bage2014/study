@@ -68,6 +68,10 @@
   "settings.devTool.host":"域名",
   "settings.devTool.port":"端口",
 
+  "settings.feedback.input.hint":"请输入留言内容",
+  "settings.feedback.all":"所有留言",
+  "settings.feedback.my":"我的留言",
+
   "tv.list.title":"电视列表",
   "tv.list.bottomAll":"全部",
   "tv.list.bottomFavorite":"喜欢",

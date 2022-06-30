@@ -1,17 +1,12 @@
-import 'dart:collection';
-import 'dart:convert';
 
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/event/event_bus.dart';
-import 'package:tutorials/component/http/HttpRequests.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
-import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
-import 'package:tutorials/model/AppFeedback.dart';
 import 'package:tutorials/request/feedback_request.dart';
 import 'package:tutorials/request/model/feedback/message_feedback.dart';
 import 'package:tutorials/request/model/feedback/message_feedback_insert_request_param.dart';
@@ -32,7 +27,7 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
 
   Future<void> _insertFeedback() async {
     String msgContent =
-        await Dialogs.showInputBottomSheet(context, "请输入留言内容", "") ?? "";
+        await Dialogs.showInputBottomSheet(context, Translations.textOf(context, 'settings.feedback.input.hint'), "") ?? "";
     if (msgContent.isEmpty) {
       return;
     }
@@ -63,7 +58,7 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    tabs = FeedbackTabView.init();
+    tabs = FeedbackTabView.init(context);
     _tabController = TabController(length: tabs.length, vsync: this);
   }
 

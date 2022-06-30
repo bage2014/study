@@ -68,6 +68,10 @@
   "settings.devTool.host":"Host",
   "settings.devTool.port":"Port",
 
+  "settings.feedback.input.hint":"Feedback",
+  "settings.feedback.all":"All",
+  "settings.feedback.my":"My",
+
   "tv.list.title":"TV List",
   "tv.list.bottomAll":"All",
   "tv.list.bottomFavorite":"Favorite",
