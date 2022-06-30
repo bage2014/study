@@ -1,6 +1,10 @@
 # study-TODO #
 ## 代办事项
 
+免费开放API
+
+https://github.com/public-apis/public-apis
+
 ### APP 代办
 
 API 方法 VS Logic 直接调用
