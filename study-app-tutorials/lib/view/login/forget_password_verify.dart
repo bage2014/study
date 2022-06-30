@@ -6,7 +6,7 @@ import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/forget_password_requests.dart';
 import 'package:tutorials/request/model/forget/forget_password_request_param.dart';
 import 'package:tutorials/utils/app_utils.dart';

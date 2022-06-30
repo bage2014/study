@@ -7,7 +7,7 @@ import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/locale_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/model/AboutAuthorTab.dart';
 import 'package:tutorials/request/feedback_request.dart';
 import 'package:tutorials/request/model/feedback/message_feedback_delete_request_param.dart';
@@ -26,10 +26,10 @@ class FeedbackTabView extends StatelessWidget {
   static const String key_all = 'all';
   static const String key_my = 'my';
 
-  static List<TabTitle> init(BuildContext context) {
+  static List<TabTitle> init(String all,String me) {
     List<TabTitle> tabs = [];
-    tabs.add(TabTitle(key_all, Translations.textOf(context, 'settings.feedback.all')));
-    tabs.add(TabTitle(key_my, Translations.textOf(context, 'settings.feedback.my')));
+    tabs.add(TabTitle(key_all, all));
+    tabs.add(TabTitle(key_my, me));
     return tabs;
   }
 

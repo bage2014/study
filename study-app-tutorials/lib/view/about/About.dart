@@ -5,7 +5,7 @@ import 'package:tutorials/model/AppVersion.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/constant/route_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:share/share.dart';
 
 class About extends StatefulWidget {

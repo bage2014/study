@@ -2,7 +2,7 @@ import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/route_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/view/home/home_drawer.dart';
 import 'package:tutorials/view/home/menu_item.dart';
 import 'package:tutorials/view/home/statistics.dart';

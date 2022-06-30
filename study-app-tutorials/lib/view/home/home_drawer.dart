@@ -3,7 +3,7 @@ import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/route_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/model/user.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';

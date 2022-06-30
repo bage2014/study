@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/color_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
+import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/widgets/app_bar_only_back.dart';
 
 class Profile extends StatefulWidget {
