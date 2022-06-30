@@ -26,10 +26,10 @@ class FeedbackTabView extends StatelessWidget {
   static const String key_all = 'all';
   static const String key_my = 'my';
 
-  static List<TabTitle> init() {
+  static List<TabTitle> init(BuildContext context) {
     List<TabTitle> tabs = [];
-    tabs.add(TabTitle(key_all, '所有留言'));
-    tabs.add(TabTitle(key_my, '我的留言'));
+    tabs.add(TabTitle(key_all, Translations.textOf(context, 'settings.feedback.all')));
+    tabs.add(TabTitle(key_my, Translations.textOf(context, 'settings.feedback.my')));
     return tabs;
   }
 
@@ -41,7 +41,7 @@ class FeedbackTabView extends StatelessWidget {
       case key_my:
         return _FeedbackTabView(true);
       default:
-        return Text('');
+        return const Text('');
     }
   }
 }
