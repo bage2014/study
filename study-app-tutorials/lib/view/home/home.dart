@@ -84,7 +84,7 @@ class _ScaffoldRouteState extends State<Home> {
         menuItems.addAll([
           // new MenuItem(Icons.home_outlined, Translations.textOf(context, "home.menu.family"),
           //     RouteNameConstant.route_name_family_events),
-         new MenuItem(Icons.person, Translations.textOf(context, "home.menu.profile"),
+          MenuItem(Icons.person, Translations.textOf(context, "home.menu.profile"),
              RouteNameConstant.route_name_home_statistics),
 
         ]);

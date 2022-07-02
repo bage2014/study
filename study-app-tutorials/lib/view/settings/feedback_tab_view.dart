@@ -68,6 +68,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
 
   @override
   void initState() {
+    super.initState();
     showLoading();
     _onRefresh();
     EventBus.consume<FeedbackUpdateEvent>((event) {
