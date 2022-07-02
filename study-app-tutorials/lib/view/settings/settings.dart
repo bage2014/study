@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:tutorials/component/cache/setting_caches.dart';
+import 'package:tutorials/component/event/event_bus.dart';
 import 'package:tutorials/component/picker/file_picker.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
@@ -19,6 +20,7 @@ import 'package:tutorials/request/model/setting/app_version_check_request_param.
 import 'package:tutorials/request/model/setting/app_version_check_request_result.dart';
 import 'package:tutorials/request/setting_request.dart';
 import 'package:tutorials/utils/file_utils.dart';
+import 'package:tutorials/view/home/locale_update_event.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
@@ -326,6 +328,11 @@ class _Settings extends State<Settings> {
       // en
       Translations.load(SupportedLocales.enLocale);
     }
+
+    LocaleUpdateEvent event = LocaleUpdateEvent();
+    event.data = index.toString();
+    EventBus.publish(event);
+
     setState(() {
       Toasts.show('Success');
     });
