@@ -48,7 +48,11 @@ class MyApp extends StatelessWidget {
         TranslationsDelegate.delegate,
       ],
       supportedLocales: SupportedLocales.locales,
+      localeListResolutionCallback: (locale, supportedLocales) {
+        return null; // 这里必须返回null,CIA
+      },
     );
+
   }
 }
 
@@ -137,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: toDefaultPage,
         tooltip: 'Main',
-        child: Icon(Icons.arrow_forward_rounded),
+        child: const Icon(Icons.arrow_forward_rounded),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

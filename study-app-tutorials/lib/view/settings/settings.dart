@@ -1,12 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:tutorials/component/cache/setting_caches.dart';
-import 'package:tutorials/component/dialog/progress_dialogs.dart';
-import 'package:tutorials/component/downloader/file_downloader.dart';
 import 'package:tutorials/component/picker/file_picker.dart';
-import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/locale/supported_locales.dart';
@@ -16,28 +11,24 @@ import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/http/CancelRequests.dart';
 import 'package:tutorials/component/http/HttpByteResult.dart';
 import 'package:tutorials/component/http/HttpRequests.dart';
-import 'package:tutorials/component/http/HttpResult.dart';
 import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/constant/locale_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
-import 'package:tutorials/request/model/AppVersionResult.dart';
 import 'package:tutorials/request/model/setting/app_version_check_request_param.dart';
 import 'package:tutorials/request/model/setting/app_version_check_request_result.dart';
 import 'package:tutorials/request/setting_request.dart';
-import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/utils/file_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
+  GlobalKey<_Settings> changeLocalizationStateKey = new GlobalKey<_Settings>();
   @override
   _Settings createState() => new _Settings();
 }
 
 class _Settings extends State<Settings> {
   late BuildContext _context;
-  bool _isDownloading = false;
   bool _isLoading = false;
   double? _value;
   CancelRequests cancelRequests = CancelRequests();
@@ -265,13 +256,11 @@ class _Settings extends State<Settings> {
       return;
     }
 
-    _isDownloading = true;
     Logs.info('cancelRequests is ${cancelRequests.token}');
     showLoading(value: _value);
     // 下载
     HttpByteResult httpByteResult = await HttpRequests.getBytes(
         result?.fileUrl ?? "", null, null, (int sent, int total) {
-      _isDownloading = sent < total;
       setState(() {
         _value = sent / total;
       });
@@ -318,7 +307,11 @@ class _Settings extends State<Settings> {
       Translations.textOf(context, "settings.lang.en"),
       Translations.textOf(context, "settings.lang.cancel")
     ];
-    int? index = await Dialogs.showButtonSelectDialog(context, contents, null);
+    // 确认框
+    int? index = await Dialogs.showListBottomSheet(
+        context,
+        contents);
+    // int? index = await Dialogs.showButtonSelectDialog(context, contents, null);
     Logs.info('select index = $index');
 
     if (index == null || index == contents.length - 1) {
@@ -333,5 +326,8 @@ class _Settings extends State<Settings> {
       // en
       Translations.load(SupportedLocales.enLocale);
     }
+    setState(() {
+      Toasts.show('Success');
+    });
   }
 }
