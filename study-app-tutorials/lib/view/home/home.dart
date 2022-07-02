@@ -21,6 +21,7 @@ class _ScaffoldRouteState extends State<Home> {
   void initState() {
     // 初始化数据
     _retrieveIcons();
+    super.initState();
   }
 
   @override
@@ -40,7 +41,7 @@ class _ScaffoldRouteState extends State<Home> {
 //            IconButton(icon: Icon(Icons.share), onPressed: () {}),
 //          ],
           ),
-          drawer: new HomeDrawer(), //抽屉
+          drawer: HomeDrawer(), //抽屉
 //          floatingActionButton: FloatingActionButton(
 //              //悬浮按钮
 //              child: Icon(Icons.add),

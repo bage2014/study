@@ -15,10 +15,6 @@ class Translations {
   static Map<dynamic, dynamic> _localizedValues = {};
 
   static String textOf(BuildContext context, String key) {
-    Locale myLocale = Localizations.localeOf(context);
-
-    Logs.info(
-        "textOf is called...${myLocale.countryCode} ${myLocale.languageCode}");
     var text = _of(context)?.text(key);
     return text ?? "";
   }
@@ -33,7 +29,7 @@ class Translations {
 
   static Future<Translations> load(Locale locale) async {
     Logs.info("load is called...");
-    Translations translations = new Translations(locale);
+    Translations translations = Translations(locale);
     String jsonContent = await rootBundle
         .loadString("assets/locale/i18n_${locale.languageCode}.json");
     _localizedValues = json.decode(jsonContent);
