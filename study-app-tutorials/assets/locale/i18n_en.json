@@ -14,6 +14,7 @@
   "login.button":"Go ",
   "login.password.reset":"Forget Password ",
   "login.register":"Create New Account ",
+  "login.success.toast":"Login Success ",
 
   "forget.password.title":"Forget Password ",
   "forget.password.mail.hint":"Mail ",
