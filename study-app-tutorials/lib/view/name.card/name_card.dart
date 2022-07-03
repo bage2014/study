@@ -105,7 +105,7 @@ class _NameCardState extends State<NameCard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "129K",
+                        "12K",
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
