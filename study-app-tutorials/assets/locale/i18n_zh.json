@@ -14,6 +14,7 @@
   "login.button":"立即登陆 ",
   "login.password.reset":"忘记密码 ",
   "login.register":"创建账号 ",
+  "login.success.toast":"登陆成功 ",
 
 
   "forget.password.title":"密码重置 ",

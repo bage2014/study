@@ -290,6 +290,8 @@ class _LoginView extends State<Login> {
       hideLoading();
       if (result.common.code == ErrorCodeConstant.success) {
         _loginSecurityCodeRequired = false;
+        Toasts.show(Translations.textOf(
+            context, "login.success.toast"));
         UserCaches.cacheUser(User.from(result));
         AppUtils.toPage(context, RouteNameConstant.route_name_home);
       } else if (result.common.code ==
