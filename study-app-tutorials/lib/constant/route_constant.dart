@@ -25,6 +25,9 @@ class RouteNameConstant{
   static String route_name_forget_password_finish = "forget/password/finish";
 
 
+  static String route_name_name_card = "name/card";
+
+
 
 }
 

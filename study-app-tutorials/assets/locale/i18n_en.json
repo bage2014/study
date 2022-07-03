@@ -56,6 +56,7 @@
   "settings.feedbacks":"Feedbacks",
   "settings.dir.setting":"Download Directory",
   "settings.lang.setting":"System Language",
+  "settings.name.card":"Name Card",
   "settings.download.dir.setting.success":"Download Directory Updated",
   "settings.alreadyLatestVersion":"This is already the latest version! ",
   "settings.downloading":"Downloading...",

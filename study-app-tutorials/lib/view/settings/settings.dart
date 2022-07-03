@@ -19,6 +19,7 @@ import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/model/setting/app_version_check_request_param.dart';
 import 'package:tutorials/request/model/setting/app_version_check_request_result.dart';
 import 'package:tutorials/request/setting_request.dart';
+import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/utils/file_utils.dart';
 import 'package:tutorials/view/home/locale_update_event.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -134,6 +135,16 @@ class _Settings extends State<Settings> {
                   },
                 ),
               ),
+              Container(
+                alignment: Alignment.center,
+                child: ListTile(
+                  title: Text(
+                      Translations.textOf(context, "settings.name.card")),
+                  trailing: Icon(Icons.chevron_right),
+                  onTap: nameCard(),
+                ),
+              ),
+
             ]),
           ),
         ),
@@ -310,10 +321,7 @@ class _Settings extends State<Settings> {
       Translations.textOf(context, "settings.lang.cancel")
     ];
     // 确认框
-    int? index = await Dialogs.showListBottomSheet(
-        context,
-        contents);
-    // int? index = await Dialogs.showButtonSelectDialog(context, contents, null);
+    int? index = await Dialogs.showButtonSelectDialog(context, contents, null);
     Logs.info('select index = $index');
 
     if (index == null || index == contents.length - 1) {
@@ -336,5 +344,9 @@ class _Settings extends State<Settings> {
     setState(() {
       Toasts.show('Success');
     });
+  }
+
+  nameCard() {
+    AppUtils.toPage(context, RouteNameConstant.route_name_name_card);
   }
 }
