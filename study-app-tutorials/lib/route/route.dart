@@ -8,6 +8,7 @@ import 'package:tutorials/view/login/register.dart';
 import 'package:tutorials/view/login/forget_password.dart';
 import 'package:tutorials/view/login/register_finish.dart';
 import 'package:tutorials/view/login/register_verify.dart';
+import 'package:tutorials/view/name.card/name_card.dart';
 import 'package:tutorials/view/settings/feedbacks.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/constant/route_constant.dart';
@@ -66,11 +67,6 @@ class RouteConfiguration {
           (context, match) => Profile(),
     ),
 
-
-    // todo other page
-
-
-
     RoutPath(
       RouteNameConstant.route_name_settings,
           (context, match) => Settings(),
@@ -94,6 +90,12 @@ class RouteConfiguration {
     RoutPath(
       RouteNameConstant.route_name_setting_feedbacks,
           (context, match) => Feedbacks(),
+    ),
+
+
+    RoutPath(
+      RouteNameConstant.route_name_name_card,
+          (context, match) => NameCard(),
     ),
 
   ];

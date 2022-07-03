@@ -58,16 +58,14 @@ class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
   }
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     String all = Translations.textOf(context, 'settings.feedback.all');
     String my = Translations.textOf(context, 'settings.feedback.my');
 
     tabs = FeedbackTabView.init(all, my);
     _tabController = TabController(length: tabs.length, vsync: this);
-  }
 
-  @override
-  Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "settings.feedbacks")),
