@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/utils/app_utils.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
 class AboutUser extends StatefulWidget {
   const AboutUser({Key? key}) : super(key: key);

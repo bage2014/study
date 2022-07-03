@@ -141,7 +141,9 @@ class _Settings extends State<Settings> {
                   title: Text(
                       Translations.textOf(context, "settings.name.card")),
                   trailing: Icon(Icons.chevron_right),
-                  onTap: nameCard(),
+                  onTap:  () {
+                    _nameCard();
+                  },
                 ),
               ),
 
@@ -346,7 +348,8 @@ class _Settings extends State<Settings> {
     });
   }
 
-  nameCard() {
+
+  Future<void> _nameCard() async {
     AppUtils.toPage(context, RouteNameConstant.route_name_name_card);
   }
 }
