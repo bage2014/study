@@ -5,6 +5,12 @@
 
 https://github.com/public-apis/public-apis
 
+
+
+学校
+
+https://github.com/516134941/cn-universitysrv
+
 ### APP 代办
 
 API 方法 VS Logic 直接调用

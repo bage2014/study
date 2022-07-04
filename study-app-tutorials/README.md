@@ -4,6 +4,17 @@ A tutorials project.
 
 ## todo
 个人名片
+商用名片
+家用名片
+
+个人经典事迹？？ 别人点赞，验证真伪！！
+
+自定义名片
+
+
+
+Mock 服务，，比如 10% 出现404
+
 
 ## 参考资料
 
@@ -30,15 +41,20 @@ https://github.com/lohanidamodar/flutter_ui_challenges
 常用页面
 https://github.com/simplezhli/flutter_deer
 
-https://github.com/Vignesh0404/Flutter-UI-Kit 应用集合
+应用集合
+https://github.com/Vignesh0404/Flutter-UI-Kit
+
+https://github.com/vinothvino42/SwiggyUI
+
+https://github.com/usman18/Flutter-UI-Kit
+
+
 
 官网常用
 https://docs.flutter.dev/development/ui/widgets/material
 
 页面合集
-https://github.com/vinothvino42/SwiggyUI
 
-https://github.com/usman18/Flutter-UI-Kit
 
 https://fluttertemplates.dev/
 
@@ -53,22 +69,6 @@ https://www.behance.net/gallery/69411833/Backpack-UI-Kit-Free-for-Adobe-XD UI资
 FLutter Icon
 
 https://www.fluttericon.cn/
-
-
-
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 
 
 生成签名
