@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Hello world!
  */
-public class App {
+public class HelloWorld {
     public static void main(String[] args) {
         // 配置规则.
         initFlowRules();
