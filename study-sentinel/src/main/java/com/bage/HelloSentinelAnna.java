@@ -18,7 +18,7 @@ public class HelloSentinelAnna {
     public static void main(String[] args) {
         // 配置规则.
         String hh = new HelloSentinelAnna().getUserById("hh");
-        
+
         initFlowRules();
     }
 
