@@ -98,5 +98,7 @@
 
   "component.http.no.network":"请检查网络是否已经连接",
 
+  "name.card.title":"我的名片",
+
   "unknown": ""
 }
