@@ -98,5 +98,9 @@
 
   "component.http.no.network":"check network state please",
 
+
+  "name.card.title":"Name Card",
+
+
   "unknown": ""
 }

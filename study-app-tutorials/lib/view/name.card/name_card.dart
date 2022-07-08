@@ -16,15 +16,15 @@ class _NameCardState extends State<NameCard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Translations.textOf(context, "profile.title")),
+        title: Text(Translations.textOf(context, "name.card.title")),
       ),
       body: SafeArea(
         child: ListView(
           children: [
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Padding(
               padding:
-              EdgeInsets.only(left: 48, right: 168, top: 16, bottom: 8),
+              const EdgeInsets.only(left: 48, right: 168, top: 16, bottom: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
