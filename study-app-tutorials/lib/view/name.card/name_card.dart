@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/locale/translations.dart';
+import 'package:tutorials/widgets/profile_icon_basic.dart';
 
 class NameCard extends StatefulWidget {
   const NameCard({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class NameCard extends StatefulWidget {
 class _NameCardState extends State<NameCard> {
   List<String> images = [];
 
+  String url = "assets/images/user_null.png";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,52 +25,15 @@ class _NameCardState extends State<NameCard> {
         child: ListView(
           children: [
             const SizedBox(height: 8),
-            Padding(
-              padding:
-              const EdgeInsets.only(left: 48, right: 168, top: 16, bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Logs.info("GetIt.I.get<NavigationService>().back();");
-                    },
-                    child: ClipOval(
-                      child: Image(
-                          image: AssetImage("assets/images/user_null.png")),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "刘亦菲",
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.black,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(Icons.location_on),
-                            Text(
-                              "上海",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ]),
-                    ],
-                  ),
-                ],
-              ),
+            ProfileIconBasic(
+              url: url,
+              onTap: () {
+                setState(() {
+                  url = url == "assets/images/logo128.png"
+                      ? "assets/images/user_null.png"
+                      : "assets/images/logo128.png";
+                });
+              },
             ),
             SizedBox(height: 16),
             Row(
@@ -231,7 +197,7 @@ class _NameCardState extends State<NameCard> {
                 mainAxisSpacing: 0.0,
                 children: List.generate(
                   images.length,
-                      (index) {
+                  (index) {
                     return Container(
                       height: 122,
                       decoration: BoxDecoration(
