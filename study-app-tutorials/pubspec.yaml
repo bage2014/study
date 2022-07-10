@@ -116,6 +116,12 @@ dependencies:
   # https://pub.dev/packages/event_bus
   event_bus: ^2.0.0
 
+  # https://pub.flutter-io.cn/packages/image_picker/example
+  image_picker: ^0.8.5+3
+
+  # https://pub.flutter-io.cn/packages/image_cropper
+  image_cropper: ^1.5.0
+
   # https://pub.flutter-io.cn/packages/google_fonts
 #  google_fonts: ^2.1.1
 

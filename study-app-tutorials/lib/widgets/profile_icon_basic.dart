@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tutorials/component/log/Logs.dart';
-import 'package:tutorials/locale/translations.dart';
 
 class ProfileIconBasic extends StatefulWidget {
   const ProfileIconBasic(

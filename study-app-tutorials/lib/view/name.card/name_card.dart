@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/picker/image_picker.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/widgets/profile_icon_basic.dart';
 
@@ -28,11 +29,7 @@ class _NameCardState extends State<NameCard> {
             ProfileIconBasic(
               url: url,
               onTap: () {
-                setState(() {
-                  url = url == "assets/images/logo128.png"
-                      ? "assets/images/user_null.png"
-                      : "assets/images/logo128.png";
-                });
+                ImagePicker.pickImage().then((value) => {pickBack(value)});
               },
             ),
             SizedBox(height: 16),
@@ -215,5 +212,19 @@ class _NameCardState extends State<NameCard> {
         ),
       ),
     );
+  }
+
+  pickBack(String? value) {
+    if (value != null) {
+      setState(() {
+        url = value;
+      });
+    } else {
+      setState(() {
+        url = url == "assets/images/logo128.png"
+            ? "assets/images/user_null.png"
+            : "assets/images/logo128.png";
+      });
+    }
   }
 }
