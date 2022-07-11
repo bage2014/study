@@ -15,6 +15,8 @@ import java.util.List;
  * Hello world!
  */
 public class HelloSentinelAnna {
+
+    // spring boot ？？
     public static void main(String[] args) {
         // 配置规则.
         String hh = new HelloSentinelAnna().getUserById("hh");
