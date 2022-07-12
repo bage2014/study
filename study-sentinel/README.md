@@ -48,6 +48,16 @@ https://hub.docker.com/r/bladex/sentinel-dashboard
 
 熔断基本过程
 
+参考链接：
+
+https://zhuanlan.zhihu.com/p/399531631
+
+https://juejin.cn/post/6875577249078935566
+
+https://zhuanlan.zhihu.com/p/64786381
+
+
+
 
 
 限流基本过程？
