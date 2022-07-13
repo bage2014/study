@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/component/picker/image_picker.dart';
 import 'package:tutorials/locale/translations.dart';
@@ -26,12 +29,25 @@ class _NameCardState extends State<NameCard> {
         child: ListView(
           children: [
             const SizedBox(height: 8),
-            ProfileIconBasic(
-              url: url,
-              onTap: () {
-                ImagePicker.pickImage().then((value) => {pickBack(value)});
-              },
-            ),
+            url.startsWith('assets')
+                ? ProfileIconBasic(
+                    url: url,
+                    onTap: () {
+                      ImagePicker.pickImage()
+                          .then((value) => {pickBack(value)});
+                    },
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      ImagePicker.pickImage()
+                          .then((value) => {pickBack(value)});
+                    },
+                    child: Image.file(
+                      File(url),
+                      width: 150,
+                      height: 150,
+                    ),
+                  ),
             SizedBox(height: 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,16 +211,19 @@ class _NameCardState extends State<NameCard> {
                 children: List.generate(
                   images.length,
                   (index) {
-                    return Container(
-                      height: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(images[index]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
+                    return Image.file(File(images![index]));
+
+                    //   Container(
+                    //   height: 200,
+                    //   width: 200,
+                    //   decoration: BoxDecoration(
+                    //     image:
+                    //     DecorationImage(
+                    //       image: AssetImage(images[index]),
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    // );
                   },
                 ),
               ),
@@ -215,10 +234,12 @@ class _NameCardState extends State<NameCard> {
     );
   }
 
-  pickBack(String? value) {
+  pickBack(String? value) async {
+    Logs.info('image picked:  $value');
     if (value != null) {
+      String valueCrop = await _cropImage(value);
       setState(() {
-        url = value;
+        url = valueCrop;
       });
     } else {
       setState(() {
@@ -227,5 +248,30 @@ class _NameCardState extends State<NameCard> {
             : "assets/images/logo128.png";
       });
     }
+  }
+
+  Future<String> _cropImage(String valueCrop) async {
+    if (valueCrop != null) {
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: valueCrop,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 100,
+        // uiSettings: [
+        //   AndroidUiSettings(
+        //       toolbarTitle: 'Cropper',
+        //       toolbarColor: Colors.deepOrange,
+        //       toolbarWidgetColor: Colors.white,
+        //       initAspectRatio: CropAspectRatioPreset.original,
+        //       lockAspectRatio: false),
+        //   IOSUiSettings(
+        //     title: 'Cropper',
+        //   ),
+        // ],
+      );
+      if (croppedFile != null) {
+        return croppedFile.path;
+      }
+    }
+    return valueCrop;
   }
 }
