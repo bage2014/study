@@ -251,26 +251,23 @@ class _NameCardState extends State<NameCard> {
   }
 
   Future<String> _cropImage(String valueCrop) async {
-    if (valueCrop != null) {
-      final croppedFile = await ImageCropper().cropImage(
-        sourcePath: valueCrop,
-        compressFormat: ImageCompressFormat.jpg,
-        compressQuality: 100,
-        // uiSettings: [
-        //   AndroidUiSettings(
-        //       toolbarTitle: 'Cropper',
-        //       toolbarColor: Colors.deepOrange,
-        //       toolbarWidgetColor: Colors.white,
-        //       initAspectRatio: CropAspectRatioPreset.original,
-        //       lockAspectRatio: false),
-        //   IOSUiSettings(
-        //     title: 'Cropper',
-        //   ),
-        // ],
-      );
-      if (croppedFile != null) {
-        return croppedFile.path;
-      }
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: valueCrop,
+      compressFormat: ImageCompressFormat.jpg,
+      compressQuality: 100,
+      androidUiSettings: AndroidUiSettings(
+          toolbarTitle: '裁剪',
+          toolbarColor: Colors.blue,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          hideBottomControls: true,
+          lockAspectRatio: false),
+      iosUiSettings: IOSUiSettings(
+        title: '确定',
+      ),
+    );
+    if (croppedFile != null) {
+      return croppedFile.path;
     }
     return valueCrop;
   }
