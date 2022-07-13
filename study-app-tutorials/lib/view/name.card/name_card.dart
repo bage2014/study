@@ -196,7 +196,8 @@ class _NameCardState extends State<NameCard> {
                   images.length,
                   (index) {
                     return Container(
-                      height: 122,
+                      height: 200,
+                      width: 200,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(images[index]),
