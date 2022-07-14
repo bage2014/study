@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:tutorials/component/image.crop/image_cropper.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/component/picker/image_picker.dart';
 import 'package:tutorials/locale/translations.dart';
@@ -48,7 +48,7 @@ class _NameCardState extends State<NameCard> {
                       height: 150,
                     ),
                   ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -251,24 +251,6 @@ class _NameCardState extends State<NameCard> {
   }
 
   Future<String> _cropImage(String valueCrop) async {
-    final croppedFile = await ImageCropper().cropImage(
-      sourcePath: valueCrop,
-      compressFormat: ImageCompressFormat.jpg,
-      compressQuality: 100,
-      androidUiSettings: AndroidUiSettings(
-          toolbarTitle: '裁剪',
-          toolbarColor: Colors.blue,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          hideBottomControls: true,
-          lockAspectRatio: false),
-      iosUiSettings: IOSUiSettings(
-        title: '确定',
-      ),
-    );
-    if (croppedFile != null) {
-      return croppedFile.path;
-    }
-    return valueCrop;
+    return await ImageCropper.cropImage(context, valueCrop);
   }
 }

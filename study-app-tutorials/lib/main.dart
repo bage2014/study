@@ -5,7 +5,7 @@ import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/supported_locales.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/route/route.dart';
-import 'package:tutorials/startup/Application.dart';
+import 'package:tutorials/startup/application.dart';
 import 'package:tutorials/component/log/Logs.dart';
 
 void main() {
