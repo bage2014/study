@@ -24,7 +24,10 @@ class Translations {
   }
 
   String text(String key) {
-    return _localizedValues[key] ?? '** $key not found';
+    if(_localizedValues[key] == null){
+      Logs.info('** $key not found');
+    }
+    return _localizedValues[key] ?? 'Unknown';
   }
 
   static Future<Translations> load(Locale locale) async {
