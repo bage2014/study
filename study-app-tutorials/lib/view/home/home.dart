@@ -46,31 +46,8 @@ class _ScaffoldRouteState extends State<Home> {
 //              //悬浮按钮
 //              child: Icon(Icons.add),
 //              onPressed: _onAdd),
-            body: CustomScrollView(slivers: <Widget>[
-              GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 2,
-                ),
-                children: <Widget>[
-                  Container(
-                    color: Colors.green,
-                    child: Icon(Icons.ac_unit),
-                  ),
-                  //……此处省略7个Icon代码
-                  Container(
-                    color: Colors.green,
-                    child: Icon(Icons.accessible_forward),
-                  ),
-                ],
-              ),
-              SliverToBoxAdapter(
-                child: Text('hhhhhhhh哈哈哈哈'),
-              ),
-            ])
-
+            body:
+            Statistics(),
             // GridView.builder(
             //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             //         crossAxisCount: 3, //每行三列
@@ -101,7 +78,8 @@ class _ScaffoldRouteState extends State<Home> {
             //               ]));
             //     },
             //   ),
-            ));
+            )
+    );
   }
 
   //模拟异步获取数据
