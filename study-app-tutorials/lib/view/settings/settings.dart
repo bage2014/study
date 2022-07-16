@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/http/CancelRequests.dart';
 import 'package:tutorials/component/http/HttpByteResult.dart';
-import 'package:tutorials/component/http/HttpRequests.dart';
+import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/locale_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';

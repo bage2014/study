@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:tutorials/component/http/HttpRequests.dart';
+import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/locale/translations.dart';
