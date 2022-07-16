@@ -47,6 +47,7 @@ dependencies:
   # flutter_app_upgrade: ^1.1.0
 
   # https://github.com/flutterchina/dio
+  # https://pub.flutter-io.cn/packages/dio
   dio: 4.0.0
 
   # https://pub.flutter-io.cn/packages/permission_handler/install

@@ -1,5 +1,5 @@
 import 'package:tutorials/component/dialog/dialogs.dart';
-import 'package:tutorials/component/http/HttpRequests.dart';
+import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/model/AppVersion.dart';
 import 'package:tutorials/utils/app_utils.dart';

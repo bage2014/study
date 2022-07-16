@@ -1,6 +1,6 @@
 import 'package:tutorials/component/cache/http_request_caches.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
-import 'package:tutorials/component/http/HttpRequests.dart';
+import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/cupertino.dart';
 
