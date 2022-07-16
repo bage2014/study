@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tutorials/component/permission/PermissionHelper.dart';
 import 'package:tutorials/constant/route_constant.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
       localeListResolutionCallback: (locale, supportedLocales) {
         return null; // 这里必须返回null,CIA
       },
+      builder: EasyLoading.init(),
     );
 
   }
