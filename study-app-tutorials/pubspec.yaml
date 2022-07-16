@@ -122,6 +122,9 @@ dependencies:
   # https://pub.flutter-io.cn/packages/image_cropper
   image_cropper: ^1.5.0
 
+  # https://pub.flutter-io.cn/packages/flutter_easyloading
+  flutter_easyloading: ^3.0.5
+
   # https://pub.flutter-io.cn/packages/google_fonts
 #  google_fonts: ^2.1.1
 
