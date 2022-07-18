@@ -10,14 +10,14 @@ import 'package:tutorials/request/file_upload_request.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/widgets/profile_icon_basic.dart';
 
-class NameCard extends StatefulWidget {
-  const NameCard({Key? key}) : super(key: key);
+class NameCard2 extends StatefulWidget {
+  const NameCard2({Key? key}) : super(key: key);
 
   @override
   _NameCardState createState() => _NameCardState();
 }
 
-class _NameCardState extends State<NameCard> {
+class _NameCardState extends State<NameCard2> {
   List<String> images = [];
 
   String url = "assets/images/user_null.png";
@@ -34,23 +34,23 @@ class _NameCardState extends State<NameCard> {
             const SizedBox(height: 8),
             url.startsWith('assets')
                 ? ProfileIconBasic(
-              url: url,
-              onTap: () {
-                ImagePicker.pickImage()
-                    .then((value) => {pickBack(value)});
-              },
-            )
+                    url: url,
+                    onTap: () {
+                      ImagePicker.pickImage()
+                          .then((value) => {pickBack(value)});
+                    },
+                  )
                 : GestureDetector(
-              onTap: () {
-                ImagePicker.pickImage()
-                    .then((value) => {pickBack(value)});
-              },
-              child: Image.file(
-                File(url),
-                width: 150,
-                height: 150,
-              ),
-            ),
+                    onTap: () {
+                      ImagePicker.pickImage()
+                          .then((value) => {pickBack(value)});
+                    },
+                    child: Image.file(
+                      File(url),
+                      width: 150,
+                      height: 150,
+                    ),
+                  ),
             const SizedBox(height: 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -213,7 +213,7 @@ class _NameCardState extends State<NameCard> {
                 mainAxisSpacing: 0.0,
                 children: List.generate(
                   images.length,
-                      (index) {
+                  (index) {
                     return Image.file(File(images![index]));
 
                     //   Container(
