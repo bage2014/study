@@ -1,4 +1,4 @@
-import 'package:tutorials/component/sp/SharedPreferenceHelper.dart';
+import 'package:tutorials/component/sp/shared_preference_helper.dart';
 import 'package:tutorials/constant/sp_constant.dart';
 
 class SettingCaches {

@@ -1,4 +1,4 @@
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionHelper {

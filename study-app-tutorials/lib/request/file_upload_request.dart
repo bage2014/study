@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:dio/src/multipart_file.dart';
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/request/model/setting/app_version_check_request_param.dart';
 import 'package:tutorials/request/model/setting/app_version_check_request_result.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';

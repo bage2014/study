@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 typedef PathWidgetBuilder = Widget Function(BuildContext, String);
 
-class RoutPath {
-  const RoutPath(this.pattern, this.builder);
+class RoutePath {
+  const RoutePath(this.pattern, this.builder);
 
   /// A RegEx string for route matching.
   final String pattern;

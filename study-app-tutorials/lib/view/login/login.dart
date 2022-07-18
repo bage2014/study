@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';

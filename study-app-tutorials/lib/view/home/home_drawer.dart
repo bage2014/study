@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/event/event_bus.dart';
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/model/user.dart';

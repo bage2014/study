@@ -1,4 +1,4 @@
-import '../../model/AppVersion.dart';
+import '../../model/app_version.dart';
 
 class AppVersionsResult {
   int? code;
