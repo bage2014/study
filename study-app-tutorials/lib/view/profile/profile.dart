@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
 
 class Profile extends StatefulWidget {

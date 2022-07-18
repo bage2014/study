@@ -1,7 +1,7 @@
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/constant/http_constant.dart';
-import 'package:tutorials/model/AppVersion.dart';
+import 'package:tutorials/model/app_version.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/constant/route_constant.dart';

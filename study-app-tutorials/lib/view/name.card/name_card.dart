@@ -2,14 +2,12 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/image.crop/image_cropper.dart';
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/picker/image_picker.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/file_upload_request.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
-import 'package:tutorials/request/model/upload/file_upload_result.dart';
 import 'package:tutorials/widgets/profile_icon_basic.dart';
 
 class NameCard extends StatefulWidget {

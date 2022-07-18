@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:tutorials/component/permission/PermissionHelper.dart';
+import 'package:tutorials/component/permission/permission_helper.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/supported_locales.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/route/route.dart';
 import 'package:tutorials/startup/application.dart';
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/log/logs.dart';
 
 void main() {
   runApp(MyApp());

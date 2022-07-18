@@ -1,11 +1,11 @@
-import 'package:tutorials/component/http/CancelRequests.dart';
-import 'package:tutorials/component/http/HttpByteResult.dart';
-import 'package:tutorials/component/http/HttpProgressCallback.dart';
-import 'package:tutorials/component/http/HttpResult.dart';
-import 'package:tutorials/component/http/NetworkCheckInterceptors.dart';
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/http/cancel_requests.dart';
+import 'package:tutorials/component/http/http_byte_result.dart';
+import 'package:tutorials/component/http/http_progress_callback.dart';
+import 'package:tutorials/component/http/http_result.dart';
+import 'package:tutorials/component/http/network_check_interceptors.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
-import 'package:tutorials/prop/HttpProp.dart';
+import 'package:tutorials/prop/http_prop.dart';
 import 'package:dio/dio.dart';
 
 class HttpRequests {

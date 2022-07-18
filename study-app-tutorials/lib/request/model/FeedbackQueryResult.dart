@@ -1,5 +1,5 @@
-import '../../model/AppFeedback.dart';
-import '../../model/Pagination.dart';
+import '../../model/app_feedback.dart';
+import '../../model/pagination.dart';
 
 class FeedbackQueryResult {
   int? code;

@@ -2,7 +2,7 @@
 
 import 'dart:collection';
 
-import 'package:tutorials/component/log/Logs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/request/model/login/login_request_param.dart';
 import 'package:tutorials/request/model/login/login_request_result.dart';
