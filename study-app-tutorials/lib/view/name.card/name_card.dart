@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/image.crop/image_cropper.dart';
@@ -45,97 +46,28 @@ class _NameCardState extends State<NameCard> {
                 ImagePicker.pickImage()
                     .then((value) => {pickBack(value)});
               },
-              child: Image.file(
-                File(url),
-                width: 150,
-                height: 150,
+              child:
+              ClipOval(
+                child: CachedNetworkImage(
+                  imageUrl: url,
+                  placeholder: (context, url) =>
+                  const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Image.file(
+                    File(url),
+                    width: 150,
+                    height: 150,
+                  ),
+                  height: 86,
+                  width: 86,
+                ),
               ),
+              // Image.file(
+              //   File(url),
+              //   width: 150,
+              //   height: 150,
+              // ),
             ),
             const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "9",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        "关注",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "12K",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        "粉丝",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "7.2M",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        "留言",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 32),
             Container(
               padding: EdgeInsets.only(left: 24, right: 24),
               child: Text(
@@ -163,74 +95,7 @@ class _NameCardState extends State<NameCard> {
               ),
             ),
             SizedBox(height: 16),
-            Container(
-              padding: EdgeInsets.only(left: 24, right: 25, bottom: 18),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(Icons.photo),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 2),
-                              child: Text(
-                                "最新动态",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        Container(
-                          height: 2,
-                          width: 76,
-                          color: Colors.black,
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 13, right: 11),
-              child: GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 3,
-                crossAxisSpacing: 0.0,
-                mainAxisSpacing: 0.0,
-                children: List.generate(
-                  images.length,
-                      (index) {
-                    return Image.file(File(images![index]));
 
-                    //   Container(
-                    //   height: 200,
-                    //   width: 200,
-                    //   decoration: BoxDecoration(
-                    //     image:
-                    //     DecorationImage(
-                    //       image: AssetImage(images[index]),
-                    //       fit: BoxFit.cover,
-                    //     ),
-                    //   ),
-                    // );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       ),
