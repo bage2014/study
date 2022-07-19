@@ -44,6 +44,34 @@ https://hub.docker.com/r/bladex/sentinel-dashboard
 
 
 
+## 流量控制
+
+
+
+流量控制的手段
+
+- 直接拒绝
+- 冷启动
+- 匀速器
+
+
+
+根据调用方限流
+
+- 调用方限流
+- 链路限流
+- 关联流量控制
+
+
+
+Sentinel 提供以下几种熔断策略
+
+- 慢调用比例 (SLOW_REQUEST_RATIO)
+- 异常比例 (ERROR_RATIO)
+- 异常数 (ERROR_COUNT)
+
+
+
 ## Sentinel
 
 熔断基本过程
