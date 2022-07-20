@@ -44,13 +44,15 @@ UI route 设置部分页面拦截登陆
 
 ### 技术代办
 
-Kayak
+Kafaka
 
 PacificA : kafka采用的一致性协议
 
 压测
 
 线上问题定位
+
+Dump 文件分析
 
 Spring Cloud Alibaba 相关环境搭建
 
