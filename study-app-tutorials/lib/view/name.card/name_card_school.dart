@@ -20,6 +20,7 @@ class NameCard extends StatefulWidget {
 
 class _NameCardState extends State<NameCard> {
   List<String> images = [];
+  int _currentIndex = 1;
 
   String url = "assets/images/user_null.png";
 
@@ -100,7 +101,28 @@ class _NameCardState extends State<NameCard> {
         ),
       ),
 
+      bottomNavigationBar: BottomNavigationBar(
+        // 底部导航
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_border),
+              label: Translations.textOf(context, "tv.list.bottomAll")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: Translations.textOf(context, "tv.list.bottomFavorite")),
+        ],
+        currentIndex: _currentIndex,
+        fixedColor: Colors.blue,
+        onTap: _onItemTapped,
+      ),
     );
+  }
+
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   pickBack(String? value) async {
