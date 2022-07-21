@@ -159,6 +159,7 @@
       <module>study-spring-boot-elk</module>
       <module>study-mapstruct</module>
       <module>study-sentinel</module>
+      <module>study-mybatis-plus</module>
 
   </modules>
 </project>
