@@ -9,6 +9,7 @@ import 'package:tutorials/component/picker/image_picker.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/file_upload_request.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
+import 'package:tutorials/view/name.card/name_card_basic.dart';
 import 'package:tutorials/widgets/profile_icon_basic.dart';
 
 class NameCard extends StatefulWidget {
@@ -35,38 +36,37 @@ class _NameCardState extends State<NameCard> {
             const SizedBox(height: 8),
             url.startsWith('assets')
                 ? ProfileIconBasic(
-              url: url,
-              onTap: () {
-                ImagePicker.pickImage()
-                    .then((value) => {pickBack(value)});
-              },
-            )
+                    url: url,
+                    onTap: () {
+                      ImagePicker.pickImage()
+                          .then((value) => {pickBack(value)});
+                    },
+                  )
                 : GestureDetector(
-              onTap: () {
-                ImagePicker.pickImage()
-                    .then((value) => {pickBack(value)});
-              },
-              child:
-              ClipOval(
-                child: CachedNetworkImage(
-                  imageUrl: url,
-                  placeholder: (context, url) =>
-                  const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Image.file(
-                    File(url),
-                    width: 150,
-                    height: 150,
+                    onTap: () {
+                      ImagePicker.pickImage()
+                          .then((value) => {pickBack(value)});
+                    },
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: url,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Image.file(
+                          File(url),
+                          width: 150,
+                          height: 150,
+                        ),
+                        height: 86,
+                        width: 86,
+                      ),
+                    ),
+                    // Image.file(
+                    //   File(url),
+                    //   width: 150,
+                    //   height: 150,
+                    // ),
                   ),
-                  height: 86,
-                  width: 86,
-                ),
-              ),
-              // Image.file(
-              //   File(url),
-              //   width: 150,
-              //   height: 150,
-              // ),
-            ),
             const SizedBox(height: 16),
             Container(
               padding: EdgeInsets.only(left: 24, right: 24),
@@ -95,11 +95,13 @@ class _NameCardState extends State<NameCard> {
               ),
             ),
             SizedBox(height: 16),
-
+            NameCardBasic(
+              title: 'Basic Info',
+              url: 'https://avatars.githubusercontent.com/u/18094768?v=4',
+            ),
           ],
         ),
       ),
-
     );
   }
 
@@ -113,10 +115,7 @@ class _NameCardState extends State<NameCard> {
 
       FileUploadParam param = FileUploadParam();
       param.files = [MultipartFile.fromFileSync(url)];
-      FileUploadRequests.upload(param,(count, total) { }).then((value) => {
-
-      });
-
+      FileUploadRequests.upload(param, (count, total) {}).then((value) => {});
     } else {
       setState(() {
         url = url == "assets/images/logo128.png"
