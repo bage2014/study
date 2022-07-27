@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorials/component/log/logs.dart';
 
 /// An example of the elevated card type.
 ///
@@ -59,14 +60,14 @@ class _NameCardBasicState extends State<NameCardBasic> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     TextButton(
-                      child: const Text('BUY TICKETS'),
+                      child: const Text('编辑'),
                       onPressed: () {
-                        /* ... */
+                        Logs.info("bianji clicked...");
                       },
                     ),
                     const SizedBox(width: 8),
                     TextButton(
-                      child: const Text('LISTEN'),
+                      child: const Text('分享'),
                       onPressed: () {
                         /* ... */
                       },
