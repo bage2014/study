@@ -45,7 +45,7 @@ class _NameCardBasicState extends State<NameCardSchool> {
                     placeholder: (context, url) =>
                     const CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Image.file(
-                      File(url),
+                      File(''),
                       width: 150,
                       height: 150,
                     ),
