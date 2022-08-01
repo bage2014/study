@@ -13,16 +13,14 @@ import 'package:tutorials/view/name.card/name_card_basic.dart';
 import 'package:tutorials/view/name.card/name_card_school.dart';
 import 'package:tutorials/widgets/profile_icon_basic.dart';
 
-class NameCard extends StatefulWidget {
-  const NameCard({Key? key}) : super(key: key);
+class NameCardEdit extends StatefulWidget {
+  const NameCardEdit({Key? key}) : super(key: key);
 
   @override
-  _NameCardState createState() => _NameCardState();
+  _NameCardEditState createState() => _NameCardEditState();
 }
 
-class _NameCardState extends State<NameCard> {
-  List<String> images = [];
-
+class _NameCardEditState extends State<NameCardEdit> {
   String url = "assets/images/user_null.png";
 
   @override
@@ -34,39 +32,59 @@ class _NameCardState extends State<NameCard> {
       body: SafeArea(
         child: ListView(
           children: [
+            const SizedBox(height: 8),
+            url.startsWith('assets')
+                ? ProfileIconBasic(
+                    url: url,
+                    onTap: () {
+                      ImagePicker.pickImage()
+                          .then((value) => {pickBack(value)});
+                    },
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      ImagePicker.pickImage()
+                          .then((value) => {pickBack(value)});
+                    },
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: url,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Image.file(
+                          File(url),
+                          width: 150,
+                          height: 150,
+                        ),
+                        height: 86,
+                        width: 86,
+                      ),
+                    ),
+                    // Image.file(
+                    //   File(url),
+                    //   width: 150,
+                    //   height: 150,
+                    // ),
+                  ),
+            const SizedBox(height: 16),
+            Container(
+              padding: EdgeInsets.only(left: 24, right: 24),
+              child: Text(
+                "简介",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xffA8A8A8),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 4,
+            ),
             Container(
               padding: EdgeInsets.only(left: 16, right: 16),
               child: NameCardBasic(
                 title: '基本信息',
-                subTitle: '陆瑞华',
-                desc: '1993年，出生于广西上思，21世纪新一代杰出青年！',
-                url: 'https://avatars.githubusercontent.com/u/18094768?v=4',
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: NameCardBasic(
-                title: '学校信息',
-                subTitle: '河海大学',
-                desc: '2013年-2017年 计算机科学与技术专业！',
-                url: 'https://avatars.githubusercontent.com/u/18094768?v=4',
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: NameCardBasic(
-                title: '公司信息',
-                subTitle: '携程旅行',
-                desc: '2019年4月-至今',
-                url: 'https://avatars.githubusercontent.com/u/18094768?v=4',
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: NameCardBasic(
-                title: '公司信息',
-                subTitle: '携程旅行',
-                desc: '2019年4月-至今',
                 url: 'https://avatars.githubusercontent.com/u/18094768?v=4',
               ),
             ),
