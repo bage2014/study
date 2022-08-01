@@ -103,13 +103,7 @@ class _NameCardState extends State<NameCard> {
                 url: 'https://avatars.githubusercontent.com/u/18094768?v=4',
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: NameCardSchool(
-                title: '学校信息',
-                url: 'https://github.com/bage2014/study/blob/master/study-app-tutorials/assets/images/school-logo.png?raw=true',
-              ),
-            ),
+
           ],
         ),
       ),

@@ -14,10 +14,14 @@ class NameCardBasic extends StatefulWidget {
   const NameCardBasic(
       {Key? key,
       this.title = "",
+      this.subTitle = "",
+      this.desc = "",
       this.url = "assets/images/user_null.png",
       this.onTap})
       : super(key: key);
   final String title;
+  final String subTitle;
+  final String desc;
   final String url;
   final GestureTapCallback? onTap;
 
@@ -52,9 +56,9 @@ class _NameCardBasicState extends State<NameCardBasic> {
                     height: 86,
                     width: 86,
                   ),
-                  title: Text('The Enchanted Nightingale'),
+                  title: Text(widget.subTitle),
                   subtitle:
-                      Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+                      Text(widget.desc),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
