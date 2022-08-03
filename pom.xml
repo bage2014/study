@@ -160,6 +160,7 @@
       <module>study-mapstruct</module>
       <module>study-sentinel</module>
       <module>study-mybatis-plus</module>
+      <module>study-oceanbase</module>
 
   </modules>
 </project>
