@@ -50,6 +50,8 @@ Kafaka
 
 PacificA : kafka采用的一致性协议
 
+Paxos 一致性协议
+
 压测
 
 线上问题定位
