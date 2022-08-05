@@ -438,6 +438,7 @@ Docker Pull Command
  
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -736,6 +737,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -1269,6 +1271,31 @@ docker run --network myapp --name=bage-logstash \
 docker run --name bage-logstash --network myapp -p 8056:5601 --link bage-es:elasticsearch -d logstash:7.16.2
   
 ```
+
+
+
+### 安装 OceanBase【Mac】
+
+参考链接 
+
+https://open.oceanbase.com/docs/observer-cn/V3.1.3/10000000000096600
+
+https://hub.docker.com/r/oceanbase/oceanbase-ce
+
+Docker Pull Command
+
+```
+docker pull :7.16.2
+```
+
+To start an OceanBase instance, run this command:
+
+```bash
+docker run -p 2881:2881 --name obstandalone -d oceanbase/oceanbase-ce
+```
+
+
+
 
 
 
