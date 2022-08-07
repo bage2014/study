@@ -25,11 +25,9 @@ class _NameCardEditState extends State<NameCardEdit> {
 
   @override
   Widget build(BuildContext context) {
-
     //获取路由参数
     var args = ModalRoute.of(context)?.settings?.arguments;
     print('NameCardEdit args=${args}');
-
 
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +36,13 @@ class _NameCardEditState extends State<NameCardEdit> {
       body: SafeArea(
         child: ListView(
           children: [
+            NameCardBasic(
+              title: '学校信息',
+              subTitle: '河海大学',
+              desc: '2013年-2017年 计算机科学与技术专业！',
+              url: 'https://avatars.githubusercontent.com/u/18094768?v=4',
+              onTap: () {},
+            ),
             const SizedBox(height: 8),
             url.startsWith('assets')
                 ? ProfileIconBasic(
