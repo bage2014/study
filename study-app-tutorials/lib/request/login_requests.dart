@@ -2,8 +2,9 @@
 
 import 'dart:collection';
 
+import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/log/logs.dart';
-import 'package:tutorials/constant/error_code_constant.dart';
+import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/request/model/login/login_request_param.dart';
 import 'package:tutorials/request/model/login/login_request_result.dart';
 
@@ -13,9 +14,10 @@ class LoginRequests {
   static Future<LoginRequestResult> login(LoginRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
     Map<String, String> param = HashMap();
-    // param.putIfAbsent("param", () => userName);
-    // return HttpRequests.post(HttpConstant.url_login, param, null);
-    return Future.delayed(const Duration(seconds: 1),() => mock());
+    param.putIfAbsent("param", () => requestParam?.userName??'');
+    return Future.value(LoginRequestResultHttpRequests.post(HttpConstant.url_login, param, null).then((value) => value).catchError((){}));
+    return LoginRequestResult
+    // return Future.delayed(const Duration(seconds: 1),() => mock());
   }
 
   static LoginRequestResult mock(){
