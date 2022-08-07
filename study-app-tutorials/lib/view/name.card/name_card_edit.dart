@@ -25,6 +25,12 @@ class _NameCardEditState extends State<NameCardEdit> {
 
   @override
   Widget build(BuildContext context) {
+
+    //获取路由参数
+    var args = ModalRoute.of(context)?.settings?.arguments;
+    print('NameCardEdit args=${args}');
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "name.card.title")),
@@ -81,14 +87,6 @@ class _NameCardEditState extends State<NameCardEdit> {
             SizedBox(
               height: 4,
             ),
-            Container(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: NameCardBasic(
-                title: '基本信息',
-                url: 'https://avatars.githubusercontent.com/u/18094768?v=4',
-              ),
-            ),
-
           ],
         ),
       ),
