@@ -33,9 +33,7 @@ class _NameCardBasicState extends State<NameCardBasic> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Card(
+      child: Card(
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -65,9 +63,7 @@ class _NameCardBasicState extends State<NameCardBasic> {
                   children: <Widget>[
                     TextButton(
                       child: const Text('编辑'),
-                      onPressed: () {
-                        Logs.info("bianji clicked...");
-                      },
+                      onPressed: widget.onTap,
                     ),
                     const SizedBox(width: 8),
                     TextButton(
@@ -82,7 +78,6 @@ class _NameCardBasicState extends State<NameCardBasic> {
               ],
             ),
           ),
-        ),
       ),
     );
   }
