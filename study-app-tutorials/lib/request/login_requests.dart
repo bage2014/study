@@ -1,21 +1,30 @@
 import 'dart:collection';
 
 import 'package:tutorials/component/http/http_requests.dart';
+import 'package:tutorials/component/http/http_result.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/request/model/login/login_request_param.dart';
 import 'package:tutorials/request/model/login/login_request_result.dart';
+import 'package:tutorials/request/origin/login_result_mapping.dart';
+import 'package:tutorials/utils/crypt_utils.dart';
 
 class LoginRequests {
   static Future<LoginRequestResult> login(
       LoginRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
     Map<String, String> param = HashMap();
-    param.putIfAbsent("param", () => requestParam?.userName ?? '');
-    Future.value(HttpRequests.post(HttpConstant.url_login, param, null)
-        .then((value) => value)
-        .catchError(() {}));
-    // return LoginRequestResult
+    param.putIfAbsent("grant_type", () => 'password');
+    param.putIfAbsent("username", () => requestParam?.userName ?? '');
+    param.putIfAbsent("password", () => requestParam?.password ?? '');
+
+    Map<String, String> header = HashMap();
+    String userAndPass = "client:secret";
+    header.putIfAbsent(
+        "Authorization", () => "Basic " + CryptUtils.encode(userAndPass));
+
+    return Future.value(HttpRequests.post(HttpConstant.url_login, param, null)
+        .then((value) => LoginResultMapping.mapping(value)));
     return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 

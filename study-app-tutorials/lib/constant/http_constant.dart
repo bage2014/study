@@ -4,7 +4,7 @@ class HttpConstant{
 
   static int no_net_work = 205;
 
-  static String url_login = "/login";
+  static String url_login = "/oauth/token";
 
   static String url_tv_query_page = "/ignore/android/tv/query/page";
   static String url_tv_set_favorite = "/ignore/android/tv/favorite/set";
