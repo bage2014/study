@@ -45,7 +45,14 @@ class _LoginView extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 40),
-                    const Image(image: AssetImage("assets/images/logo128.png")),
+                    GestureDetector(
+                      child: const Image(
+                          image: AssetImage("assets/images/logo128.png")),
+                      onDoubleTap: () {
+                        Navigator.of(context).pushNamed(
+                            RouteNameConstant.route_name_setting_dev_tool);
+                      },
+                    ),
                     const SizedBox(height: 62),
                     Text(
                       Translations.textOf(context, 'login.title'),
