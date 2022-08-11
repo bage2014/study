@@ -30,6 +30,14 @@ class _LoginView extends State<Login> {
   TextEditingController securityCodeController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    userNameController.text = ('bage2014@qq.com');
+    passwordController.text = ('123456');
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     String _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
     return Stack(

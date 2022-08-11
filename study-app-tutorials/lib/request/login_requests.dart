@@ -23,9 +23,10 @@ class LoginRequests {
     header.putIfAbsent(
         "Authorization", () => "Basic " + CryptUtils.encode(userAndPass));
 
-    return Future.value(HttpRequests.post(HttpConstant.url_login, param, null)
+    return Future.value(HttpRequests.post(HttpConstant.url_login, param, header)
         .then((value) => LoginResultMapping.mapping(value)));
-    return Future.delayed(const Duration(seconds: 1), () => mock());
+
+    // return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 
   static LoginRequestResult mock() {
