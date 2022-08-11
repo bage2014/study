@@ -1,14 +1,14 @@
-class LoginResult {
+class LoginOriginResult {
   int? code;
   int? originCode;
   String? msg;
   String? originMsg;
   Data? data;
 
-  LoginResult(
+  LoginOriginResult(
       {this.code, this.originCode, this.msg, this.originMsg, this.data});
 
-  LoginResult.fromJson(Map<String, dynamic> json) {
+  LoginOriginResult.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     originCode = json['originCode'];
     msg = json['msg'];
