@@ -3,6 +3,7 @@ package com.bage.study.mybatis.springboot.org.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import com.bage.study.mybatis.springboot.org.dao.UserExtMapper;
 import com.bage.study.mybatis.springboot.org.dao.UserMapper;
 import com.bage.study.mybatis.springboot.org.domain.Sex;
 import com.bage.study.mybatis.springboot.org.domain.User;
@@ -18,6 +19,8 @@ public class UserController {
 
 	@Autowired
 	UserMapper userMapper;
+	@Autowired
+	UserExtMapper userExtMapper;
 	
 	@RequestMapping("/insert")
 	@ResponseBody
@@ -80,6 +83,14 @@ public class UserController {
 	    long departmentId = 1L;
 		return userMapper.queryByDepartmentId(departmentId);
 	}
+
+	@RequestMapping("/queryByDepartmentId2")
+	@ResponseBody
+	public List<User> queryByDepartmentId2() {
+	    long departmentId = 1L;
+		return userExtMapper.queryByDepartmentId2(departmentId);
+	}
+
 	@RequestMapping("/all")
 	@ResponseBody
 	public List<User> getUser() {

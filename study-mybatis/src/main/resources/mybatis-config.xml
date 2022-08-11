@@ -39,6 +39,7 @@
 
 	<mappers>
 		<mapper resource="com/bage/study/mybatis/springboot/org/UserMapper.xml"/>
+		<mapper resource="com/bage/study/mybatis/springboot/org/UserExtMapper.xml"/>
 		<mapper resource="com/bage/study/mybatis/springboot/org/DepartmentMapper.xml"/>
 		<mapper resource="com/bage/study/mybatis/springboot/org/DepartmentAddressMapper.xml"/>
 	</mappers>
