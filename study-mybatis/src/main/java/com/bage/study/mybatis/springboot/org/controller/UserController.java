@@ -1,5 +1,6 @@
 package com.bage.study.mybatis.springboot.org.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import com.bage.study.mybatis.springboot.org.dao.UserMapper;
 import com.bage.study.mybatis.springboot.org.domain.Sex;
 import com.bage.study.mybatis.springboot.org.domain.User;
 import com.github.pagehelper.PageHelper;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,8 @@ public class UserController {
 	UserMapper userMapper;
 	@Autowired
 	UserExtMapper userExtMapper;
+	@Autowired
+	SqlSessionTemplate sqlSessionTemplate;
 	
 	@RequestMapping("/insert")
 	@ResponseBody
@@ -37,27 +43,47 @@ public class UserController {
 		return res;
 	}
 
+	@RequestMapping("/batchInsert2")
+	@ResponseBody
+	public Long batchInsert2() {
+		long start = System.currentTimeMillis();
+		List<User> users = new ArrayList<>();
+		SqlSession sqlSession = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
+
+		UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+		for (int i = 0; i < 1000; i++) {
+			User user2 = new User();
+			user2.setId((long) (1000 + i));
+			user2.setName("zhangsan" + i);
+			user2.setSex(Sex.Male);
+			user2.setDepartmentId(3L);
+
+			int res = mapper.insert(user2);
+			System.out.println("验证主键回写：：" + res);
+
+		}
+		sqlSession.commit();
+
+		return System.currentTimeMillis() - start;
+	}
+
 	@RequestMapping("/batchInsert")
 	@ResponseBody
-	public Integer batchInsert() {
-		User user2 = new User();
-		user2.setId(3434L);
-		user2.setName("zhangsan33");
-		user2.setSex(Sex.Male);
-		user2.setDepartmentId(3L);
+	public Long batchInsert() {
+		long start = System.currentTimeMillis();
+		List<User> users = new ArrayList<>();
+		for (int i = 0; i < 1000; i++) {
+			User user2 = new User();
+			user2.setId((long) (1000 + i));
+			user2.setName("zhangsan" + i);
+			user2.setSex(Sex.Male);
+			user2.setDepartmentId(3L);
 
-		User user = new User();
-		user.setId(2L);
-		user.setName("zhangsan");
-		user.setSex(Sex.Male);
-		user.setDepartmentId(1L);
-
-        List<User> users = Arrays.asList(user, user2);
+			users.add(user2);
+		}
         int res = userMapper.batchInsert(users);
-
 		System.out.println("验证主键回写：：" + users);
-
-		return res;
+		return System.currentTimeMillis() - start;
 	}
 
 	@RequestMapping("/delete")
