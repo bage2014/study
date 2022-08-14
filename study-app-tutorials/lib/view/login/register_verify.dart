@@ -166,11 +166,18 @@ class _RegisterVerifyState extends State<RegisterVerify> {
   }
 
   void confirm() {
-    showLoading();
     param.securityCode = code1Controller.text +
         code2Controller.text +
         code3Controller.text +
         code4Controller.text;
+
+    bool fail = checkParam(param);
+    if(fail){
+      return ;
+    }
+
+
+    showLoading();
     RegisterRequests.register(param).then((result) {
       Logs.info('login result=' + (result.toString() ?? ""));
       hideLoading();
@@ -195,5 +202,18 @@ class _RegisterVerifyState extends State<RegisterVerify> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  bool checkParam(RegisterRequestParam param) {
+    if((param.securityCode?.length??0) <= 0){
+      Toasts.show('security code can not be empty');
+      return true;
+    }
+    if((param.securityCode?.length??0) < 4){
+      Toasts.show('security code is unvalid');
+      return true;
+    }
+    return false;
+
   }
 }
