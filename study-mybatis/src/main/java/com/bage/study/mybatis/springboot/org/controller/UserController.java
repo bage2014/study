@@ -51,7 +51,7 @@ public class UserController {
 		SqlSession sqlSession = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
 
 		UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			User user2 = new User();
 			user2.setId((long) (1000 + i));
 			user2.setName("zhangsan" + i);
@@ -67,12 +67,31 @@ public class UserController {
 		return System.currentTimeMillis() - start;
 	}
 
+	@RequestMapping("/batchInsert3")
+	@ResponseBody
+	public Long batchInsert3() {
+		long start = System.currentTimeMillis();
+		List<User> users = new ArrayList<>();
+		for (int i = 0; i < 10000; i++) {
+			User user2 = new User();
+			user2.setId((long) (1000 + i));
+			user2.setName("zhangsan" + i);
+			user2.setSex(Sex.Male);
+			user2.setDepartmentId(3L);
+
+			int res = userMapper.insert(user2);
+			System.out.println("验证主键回写：：" + res);
+
+		}
+		return System.currentTimeMillis() - start;
+	}
+
 	@RequestMapping("/batchInsert")
 	@ResponseBody
 	public Long batchInsert() {
 		long start = System.currentTimeMillis();
 		List<User> users = new ArrayList<>();
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			User user2 = new User();
 			user2.setId((long) (1000 + i));
 			user2.setName("zhangsan" + i);
