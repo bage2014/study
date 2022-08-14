@@ -30,42 +30,62 @@ class LoginOriginResult {
 }
 
 class Data {
-  String? accessToken;
-  String? tokenType;
-  String? refreshToken;
-  int? expiresIn;
-  String? scope;
-  String? sub;
-  String? jti;
+  int? id;
+  String? userName;
+  String? phone;
+  String? mail;
+  String? password;
+  String? sex;
+  Null? iconId;
+  Null? iconUrl;
+  String? birthday;
+  String? createTime;
+  String? updateTime;
+  Null? deleteState;
 
   Data(
-      {this.accessToken,
-        this.tokenType,
-        this.refreshToken,
-        this.expiresIn,
-        this.scope,
-        this.sub,
-        this.jti});
+      {this.id,
+        this.userName,
+        this.phone,
+        this.mail,
+        this.password,
+        this.sex,
+        this.iconId,
+        this.iconUrl,
+        this.birthday,
+        this.createTime,
+        this.updateTime,
+        this.deleteState});
 
   Data.fromJson(Map<String, dynamic> json) {
-    accessToken = json['access_token'];
-    tokenType = json['token_type'];
-    refreshToken = json['refresh_token'];
-    expiresIn = json['expires_in'];
-    scope = json['scope'];
-    sub = json['sub'];
-    jti = json['jti'];
+    id = json['id'];
+    userName = json['userName'];
+    phone = json['phone'];
+    mail = json['mail'];
+    password = json['password'];
+    sex = json['sex'];
+    iconId = json['iconId'];
+    iconUrl = json['iconUrl'];
+    birthday = json['birthday'];
+    createTime = json['createTime'];
+    updateTime = json['updateTime'];
+    deleteState = json['deleteState'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['access_token'] = this.accessToken;
-    data['token_type'] = this.tokenType;
-    data['refresh_token'] = this.refreshToken;
-    data['expires_in'] = this.expiresIn;
-    data['scope'] = this.scope;
-    data['sub'] = this.sub;
-    data['jti'] = this.jti;
+    data['id'] = this.id;
+    data['userName'] = this.userName;
+    data['phone'] = this.phone;
+    data['mail'] = this.mail;
+    data['password'] = this.password;
+    data['sex'] = this.sex;
+    data['iconId'] = this.iconId;
+    data['iconUrl'] = this.iconUrl;
+    data['birthday'] = this.birthday;
+    data['createTime'] = this.createTime;
+    data['updateTime'] = this.updateTime;
+    data['deleteState'] = this.deleteState;
     return data;
   }
 }

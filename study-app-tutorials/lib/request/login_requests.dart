@@ -7,12 +7,13 @@ import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/request/model/login/login_request_param.dart';
 import 'package:tutorials/request/model/login/login_request_result.dart';
+import 'package:tutorials/request/origin/auth_origin_result.dart';
 import 'package:tutorials/request/origin/login_origin_result.dart';
 import 'package:tutorials/request/origin/login_origin_result_mapping.dart';
 import 'package:tutorials/utils/crypt_utils.dart';
 
 class LoginRequests {
-  static Future<LoginOriginResult> _auth(
+  static Future<AuthOriginResult> _auth(
       LoginRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
     Map<String, String> param = HashMap();
@@ -26,7 +27,7 @@ class LoginRequests {
         "Authorization", () => "Basic " + CryptUtils.encode(userAndPass));
 
     return Future.value(HttpRequests.post(HttpConstant.url_login, param, header)
-        .then((value) => LoginOriginResult.fromJson(jsonDecode(value.responseBody))
+        .then((value) => AuthOriginResult.fromJson(jsonDecode(value.responseBody))
     ));
 
     // return Future.delayed(const Duration(seconds: 1), () => mock());
@@ -37,7 +38,7 @@ class LoginRequests {
       LoginRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
 
-    LoginOriginResult auth = await _auth(requestParam);
+    AuthOriginResult auth = await _auth(requestParam);
     Logs.info('request auth : ${auth.toJson()}');
 
     Map<String, String> param = HashMap();
