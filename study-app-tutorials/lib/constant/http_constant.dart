@@ -6,6 +6,7 @@ class HttpConstant{
 
   static String url_login = "/oauth/token";
   static String url_user_profile = "/api/authUser/profile/detail";
+  static String url_validate_code = "/validate/code/generate";
 
   static String url_tv_query_page = "/ignore/api/tv/query/page";
   static String url_tv_set_favorite = "/ignore/android/tv/favorite/set";

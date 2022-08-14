@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
+import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/color_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
@@ -243,9 +244,38 @@ class _RegisterState extends State<Register> {
     param.userName = userNameController.text;
     param.password = passwordController.text;
     param.securityCode = securityCodeController.text;
+
+    bool fail = checkParam(param);
+    if(fail){
+      return ;
+    }
+
+
     String str = json.encode(param.toJson());
     Logs.info("json : $str");
     AppUtils.toPage(context, RouteNameConstant.route_name_register_verify,
         args: str);
+  }
+
+
+  bool checkParam(RegisterRequestParam param) {
+    if((param.userName?.length??0) <= 0){
+      Toasts.show('user name can not be empty');
+      return true;
+    }
+    if((param.password?.length??0) <= 0){
+      Toasts.show('password can not be empty');
+      return true;
+    }
+    if((param.password?.length??0) != (passwordAgainController.text?.length??0)){
+      Toasts.show('password not same');
+      return true;
+    }
+    if((param.securityCode?.length??0) <= 0){
+      Toasts.show('security code can not be empty');
+      return true;
+    }
+    return false;
+
   }
 }
