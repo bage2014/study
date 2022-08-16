@@ -161,6 +161,8 @@
       <module>study-sentinel</module>
       <module>study-mybatis-plus</module>
       <module>study-oceanbase</module>
+      <module>study-spring-boot-trace</module>
+      <module>study-spring-boot-trace-server</module>
 
   </modules>
 </project>
