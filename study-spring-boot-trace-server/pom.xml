@@ -15,7 +15,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.boot.base.version>2.0.1.RELEASE</spring.boot.base.version>
-    <spring.cloud.version>2020.0.1</spring.cloud.version>
+    <spring.cloud.version>Finchley.SR2</spring.cloud.version>
+
   </properties>
 
   <dependencies>
