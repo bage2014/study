@@ -16,7 +16,7 @@ public class AvailabilityController {
     private boolean validate(String console) {
         return "haha".equalsIgnoreCase(console);
 //        return StringUtils.hasText(console) &&
-//               Set.of("ps5", "ps4", "switch", "xbox").contains(console);
+//               Arrey("ps5", "ps4", "switch", "xbox").contains(console);
     }
 
     @GetMapping("/availability/{console}")
