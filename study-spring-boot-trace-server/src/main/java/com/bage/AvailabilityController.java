@@ -6,32 +6,39 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class AvailabilityController {
 
     private boolean validate(String console) {
-        return "haha".equalsIgnoreCase(console);
-//        return StringUtils.hasText(console) &&
-//               Arrey("ps5", "ps4", "switch", "xbox").contains(console);
+        Set set = new HashSet();
+        set.addAll(Arrays.asList("ps5", "ps4", "switch", "xbox"));
+        return StringUtils.hasText(console) &&
+                set.contains(console);
     }
 
     @GetMapping("/availability/{console}")
     Map<String, Object> getAvailability(@PathVariable String console) {
-        return new HashMap<String, Object>();
-//        return Map.of("console", console,
-//                "available", checkAvailability(console));
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("console", console);
+        map.put("available", checkAvailability(console));
+        return map;
     }
 
-//    private boolean checkAvailability(String console) {
-//        Assert.state(validate(console), () -> "the console specified, " + console + ", is not valid.");
-//        return switch (console) {
-//            case "ps5" -> throw new RuntimeException("Service exception");
-//            case "xbox" -> true;
-//            default -> false;
-//        };
-//    }
+    private boolean checkAvailability(String console) {
+        Assert.state(validate(console), () -> "the console specified, " + console + ", is not valid.");
+        boolean result = false;
+        switch (console) {
+            case "ps5":
+                throw new RuntimeException("Service exception");
+            case "xbox":
+                result = true;
+                break;
+            default:
+                result = false;
+                break;
+        }
+        return result;
+    }
 }
