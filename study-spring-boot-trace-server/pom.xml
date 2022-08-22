@@ -9,7 +9,6 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <name>study-spring-boot-trace-server</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <properties>
@@ -56,10 +55,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
     </dependency>
-    <!--<dependency>
-      <groupId>com.wavefront</groupId>
-      <artifactId>wavefront-spring-boot-starter</artifactId>
-    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>com.wavefront</groupId>-->
+<!--      <artifactId>wavefront-spring-boot-starter</artifactId>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
