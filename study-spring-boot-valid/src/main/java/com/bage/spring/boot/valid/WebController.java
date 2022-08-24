@@ -24,7 +24,6 @@ public class WebController implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/hello")
-	@ResponseBody
 	public String hello() {
 		return validLogic.hello(new PersonForm());
 	}
