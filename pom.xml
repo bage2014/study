@@ -164,6 +164,7 @@
       <module>study-spring-boot-trace</module>
       <module>study-spring-boot-trace-server</module>
       <module>study-spring-boot-wavefront</module>
+      <module>study-spring-boot-valid</module>
 
   </modules>
 </project>
