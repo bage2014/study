@@ -165,6 +165,7 @@
       <module>study-spring-boot-trace-server</module>
       <module>study-spring-boot-wavefront</module>
       <module>study-spring-boot-valid</module>
+      <module>study-spring-boot-web-socket</module>
 
   </modules>
 </project>
