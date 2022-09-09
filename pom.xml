@@ -166,6 +166,7 @@
       <module>study-spring-boot-wavefront</module>
       <module>study-spring-boot-valid</module>
       <module>study-spring-boot-web-socket</module>
+      <module>study-spring-cloud-circuit-breaker</module>
 
   </modules>
 </project>
