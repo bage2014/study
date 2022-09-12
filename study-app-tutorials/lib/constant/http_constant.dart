@@ -2,7 +2,8 @@
 
 class HttpConstant{
 
-  static int no_net_work = 205;
+  static int server_not_response = 205;
+  static String server_not_response_msg = 'server not response';
 
   static String url_login = "/oauth/token";
   static String url_user_profile = "/api/authUser/profile/detail";

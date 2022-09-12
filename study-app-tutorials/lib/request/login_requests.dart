@@ -13,8 +13,7 @@ import 'package:tutorials/request/origin/login_origin_result_mapping.dart';
 import 'package:tutorials/utils/crypt_utils.dart';
 
 class LoginRequests {
-  static Future<AuthOriginResult> _auth(
-      LoginRequestParam requestParam) async {
+  static Future<AuthOriginResult> _auth(LoginRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
     Map<String, String> param = HashMap();
     param.putIfAbsent("grant_type", () => 'password');
@@ -26,13 +25,13 @@ class LoginRequests {
     header.putIfAbsent(
         "Authorization", () => "Basic " + CryptUtils.encode(userAndPass));
 
-    return Future.value(HttpRequests.post(HttpConstant.url_login, param, header)
-        .then((value) => AuthOriginResult.fromJson(jsonDecode(value.responseBody))
-    ));
+    return Future.value(
+        HttpRequests.post(HttpConstant.url_login, param, header).then((value) {
+          return AuthOriginResult.fromJson(jsonDecode(value.responseBody));
+    }));
 
     // return Future.delayed(const Duration(seconds: 1), () => mock());
   }
-
 
   static Future<LoginRequestResult> login(
       LoginRequestParam requestParam) async {
@@ -44,12 +43,12 @@ class LoginRequests {
     Map<String, String> param = HashMap();
     Map<String, String> header = HashMap();
     header.putIfAbsent(
-        "Authorization", () => "Bearer ${auth?.data?.accessToken??''}");
+        "Authorization", () => "Bearer ${auth?.data?.accessToken ?? ''}");
     Logs.info('request header : ${header?.toString()}');
 
-
-    return Future.value(HttpRequests.post(HttpConstant.url_user_profile, param, header)
-        .then((value) => LoginOriginResultMapping.mapping(value)));
+    return Future.value(
+        HttpRequests.post(HttpConstant.url_user_profile, param, header)
+            .then((value) => LoginOriginResultMapping.mapping(value)));
 
     // return Future.delayed(const Duration(seconds: 1), () => mock());
   }

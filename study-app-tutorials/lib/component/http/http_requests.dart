@@ -124,7 +124,7 @@ class HttpRequests {
       return result;
     } catch (e) {
       Logs.info('_doDownloadRequest error' + e.toString());
-      result.statusCode = HttpConstant.no_net_work;
+      result.statusCode = HttpConstant.server_not_response;
     }
     return result;
   }
@@ -169,7 +169,7 @@ class HttpRequests {
       return result;
     } catch (e) {
       Logs.info('_doUploadRequest error' + e.toString());
-      result.statusCode = HttpConstant.no_net_work;
+      result.statusCode = HttpConstant.server_not_response;
     }
     return result;
   }
@@ -197,13 +197,17 @@ class HttpRequests {
             await _dio.post(path, queryParameters: parameters, data: data);
       }
       Logs.info('_doBaseRequest statusCode = ${response.statusCode}');
-      result.responseBody = response.data;
+      result.responseBody =
+          response.data == null || "".compareTo(response.data) == 0
+              ? "{}"
+              : response.data;
       result.statusCode = response.statusCode ?? 500;
       result.headers = response.headers.map;
       return result;
     } catch (e) {
       Logs.info('_doBaseRequest error' + e.toString());
-      result.statusCode = HttpConstant.no_net_work;
+      result.statusCode = HttpConstant.server_not_response;
+      result.responseBody = '{ "msg":"${HttpConstant.server_not_response_msg}" }';
     }
     return result;
   }

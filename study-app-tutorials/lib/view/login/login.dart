@@ -317,6 +317,7 @@ class _LoginView extends State<Login> {
         Toasts.show(result.common.message);
       }
     }).catchError((error) {
+      Toasts.show(error.toString());
       Logs.info(error.toString());
       hideLoading();
     });
