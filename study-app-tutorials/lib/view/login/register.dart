@@ -27,6 +27,16 @@ class _RegisterState extends State<Register> {
   TextEditingController passwordAgainController = TextEditingController();
   TextEditingController securityCodeController = TextEditingController();
 
+
+  @override
+  void initState() {
+    super.initState();
+    userNameController.text = ('bage1001@qq.com');
+    passwordController.text = ('123456');
+    passwordAgainController.text = ('123456');
+    securityCodeController.text = ('5374');
+  }
+
   @override
   Widget build(BuildContext context) {
     String _imageUrl = SecurityCodeRequests.url(SecurityCodeRequestParam());
@@ -249,8 +259,6 @@ class _RegisterState extends State<Register> {
     if(fail){
       return ;
     }
-
-
     String str = json.encode(param.toJson());
     Logs.info("json : $str");
     AppUtils.toPage(context, RouteNameConstant.route_name_register_verify,

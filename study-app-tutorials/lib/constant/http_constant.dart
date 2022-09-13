@@ -6,6 +6,7 @@ class HttpConstant{
   static String server_not_response_msg = 'server not response';
 
   static String url_login = "/oauth/token";
+  static String url_register = "/oauth/token";
   static String url_user_profile = "/api/authUser/profile/detail";
   static String url_validate_code = "/validate/code/generate";
 

@@ -15,6 +15,8 @@ https://github.com/516134941/cn-universitysrv
 
 一个月内免费登陆？？？
 
+用户注册API
+
 API 方法 VS Logic 直接调用
 
 Auth Server 设置自定义User ID字段
