@@ -12,7 +12,8 @@ class SecurityCodeRequests {
 
   static String url(SecurityCodeRequestParam requestParam) {
     Logs.info('request param : ${requestParam?.toString()}');
-    return HttpConstant.url_validate_code + '?clientId=123456';
+    // return HttpConstant.url_validate_code + '?clientId=123456';
+    return 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.616pic.com%2Fys_bnew_img%2F00%2F29%2F79%2F9UMK4fzdwr.jpg&refer=http%3A%2F%2Fpic.616pic.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665674476&t=9eb76ad34a4addda1b09213e625ae99c';
   }
 
   static Future<SecurityCodeRequestResult> load(SecurityCodeRequestParam requestParam) async {

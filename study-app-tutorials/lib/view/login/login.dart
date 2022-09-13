@@ -34,7 +34,6 @@ class _LoginView extends State<Login> {
     super.initState();
     userNameController.text = ('bage2014@qq.com');
     passwordController.text = ('123456');
-
   }
 
   @override

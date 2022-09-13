@@ -210,7 +210,7 @@ class _RegisterVerifyState extends State<RegisterVerify> {
       return true;
     }
     if((param.securityCode?.length??0) < 4){
-      Toasts.show('security code is unvalid');
+      Toasts.show('security code is un valid');
       return true;
     }
     return false;
