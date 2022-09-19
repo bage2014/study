@@ -16,12 +16,12 @@ class RegisterRequests {
 
     Map<String, String> header = HashMap();
 
-    return Future.value(
-        HttpRequests.post(HttpConstant.url_login, param, header).then((value) {
-          return AuthOriginResult.fromJson(jsonDecode(value.responseBody));
-        }));
+    // return Future.value(
+    //     HttpRequests.post(HttpConstant.url_login, param, header).then((value) {
+    //       return RegisterRequestResult.fromJson(jsonDecode(value.responseBody));
+    //     }));
 
-    // return Future.delayed(const Duration(seconds: 1), () => mock());
+    return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 
   static Future<RegisterRequestResult> validSecurityCode(
