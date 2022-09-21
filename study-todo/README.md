@@ -3,6 +3,12 @@
 
 免费开放API
 
+https://github.com/modood/Administrative-divisions-of-China
+
+http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/ 官方数据来源
+
+https://github.com/WenryXu/ChinaUniversity 高校
+
 https://github.com/public-apis/public-apis
 
 
@@ -12,6 +18,8 @@ https://github.com/public-apis/public-apis
 https://github.com/516134941/cn-universitysrv
 
 ### APP 代办
+
+https://github.com/florinpop17/app-ideas APP 想法
 
 一个月内免费登陆？？？
 
