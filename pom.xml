@@ -167,6 +167,7 @@
       <module>study-spring-boot-valid</module>
       <module>study-spring-boot-web-socket</module>
     <module>study-spring-cloud-circuit-breaker</module>
+    <module>study-crawler</module>
 
   </modules>
 </project>
