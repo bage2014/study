@@ -27,11 +27,11 @@ public class Controller {
         controller.addSeed("https://www.ics.uci.edu/~welling/");
     	controller.addSeed("https://www.ics.uci.edu/");
     	
-    	// The factory which creates instances of crawlers.
-        CrawlController.WebCrawlerFactory<BasicCrawler> factory = MyCrawler::new;
-        
-        // Start the crawl. This is a blocking operation, meaning that your code
-        // will reach the line after this only when crawling is finished.
-        controller.start(factory, numberOfCrawlers);
+//    	// The factory which creates instances of crawlers.
+//        CrawlController.WebCrawlerFactory<BasicCrawler> factory = MyCrawler::new;
+//
+//        // Start the crawl. This is a blocking operation, meaning that your code
+//        // will reach the line after this only when crawling is finished.
+//        controller.start(factory, numberOfCrawlers);
     }
 }
