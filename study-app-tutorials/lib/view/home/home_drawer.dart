@@ -110,6 +110,15 @@ class _HomeDrawer extends State<HomeDrawer> {
                       checkExitApp();
                     },
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.exit_to_app),
+                    title:
+                    Text(Translations.textOf(context, "home.drawer.logout")),
+                    onTap: () {
+                      // 确认框
+                      checkLogoutApp();
+                    },
+                  ),
 //                  ListTile(
 //                    leading: const Icon(Icons.person),
 //                    title: Text(Translations.textOf(context, "home.drawer.profile")),
@@ -139,6 +148,16 @@ class _HomeDrawer extends State<HomeDrawer> {
         _context, Translations.textOf(_context, "home.back.confirm"), null);
     Logs.info('checkExitApp showConfirmDialog = $showConfirmDialog');
     if ("true" == showConfirmDialog) {
+      AppUtils.exitApp();
+    }
+  }
+
+  Future<void> checkLogoutApp() async {
+    String? showConfirmDialog = await Dialogs.showConfirmDialog(
+        _context, Translations.textOf(_context, "home.logout.confirm"), null);
+    Logs.info('checkExitApp showConfirmDialog = $showConfirmDialog');
+    if ("true" == showConfirmDialog) {
+      // todo  清除各种缓存
       AppUtils.exitApp();
     }
   }
