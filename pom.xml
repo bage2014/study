@@ -168,6 +168,7 @@
       <module>study-spring-boot-web-socket</module>
     <module>study-spring-cloud-circuit-breaker</module>
     <module>study-crawler</module>
+      <module>study-jenkins</module>
 
   </modules>
 </project>
