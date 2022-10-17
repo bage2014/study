@@ -98,6 +98,10 @@
 
   "profile.title":"我的",
 
+  "env.title":"环境设置",
+
+  "env.edit.title":"环境编辑",
+
   "component.http.no.network":"请检查网络是否已经连接",
   "component.crop.title":"裁剪",
 
