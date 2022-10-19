@@ -439,6 +439,8 @@ Docker Pull Command
 
 
 
+
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -737,6 +739,8 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
+
 
 
 
@@ -1292,6 +1296,48 @@ To start an OceanBase instance, run this command:
 
 ```bash
 docker run -p 2881:2881 --name obstandalone -d oceanbase/oceanbase-ce
+```
+
+
+
+### 安装 Jenkins【Mac,toCheck】
+
+参考链接 
+
+https://www.jenkins.io/zh/doc/book/installing/#downloading-and-running-jenkins-in-docker
+
+https://hub.docker.com/r/jenkinsci/blueocean/
+
+Docker Pull Command
+
+```
+docker pull jenkinsci/blueocean
+```
+
+Run 
+
+```
+docker run --name=bage-jenkins -p 8080:8080 jenkinsci/blueocean
+
+docker run --name=bage-jenkins -u root -p 8080:8080 -p 50000:50000 -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean 
+
+```
+
+To start an Jenkins instance, run this command:
+
+```bash
+docker run \
+  -u root \
+  --rm \  
+  -d \ 
+  -p 8080:8080 \ 
+  -p 50000:50000 \ 
+  -v jenkins-data:/var/jenkins_home \ 
+  -v /var/run/docker.sock:/var/run/docker.sock \ 
+  jenkinsci/blueocean 
+
+
+
 ```
 
 
