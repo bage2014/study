@@ -13,14 +13,32 @@ https://hub.docker.com/r/jenkinsci/blueocean/
 
 https://www.jenkins.io/zh/doc/book/installing/
 
-
+maven 应用： https://www.jenkins.io/zh/doc/tutorials/build-a-java-app-with-maven/
 
 下载&启动
 
 ```
 docker pull jenkinsci/blueocean
 
-docker run --name=bage-jenkins -p 8080:8080 jenkinsci/blueocean
+docker run --name=bage-jenkins -p 8080:8080   -v /Users/bage/bage/docker-data/jenkins:/var/jenkins_home jenkinsci/blueocean
+
+```
+
+
+
+访问
+
+```
+http://localhost:8080
+
+docker exec -it bage-jenkins bash
+
+cat /var/jenkins_home/secrets/initialAdminPassword
+
+拷贝密码
+dc631cefb1154ab39e54d538e99a09bd
+
+bage/bage123456
 
 ```
 

@@ -56,8 +56,7 @@ class _LoginView extends State<Login> {
                       child: const Image(
                           image: AssetImage("assets/images/logo128.png")),
                       onDoubleTap: () {
-                        Navigator.of(context).pushNamed(
-                            RouteNameConstant.route_name_setting_dev_tool);
+                        envSetting();
                       },
                     ),
                     const SizedBox(height: 62),
@@ -329,4 +328,11 @@ class _LoginView extends State<Login> {
     param.securityCode = securityCodeController.text;
     return param;
   }
+
+
+  void envSetting() async {
+    Navigator.of(context).pushNamed(
+        RouteNameConstant.route_name_env);
+  }
+
 }

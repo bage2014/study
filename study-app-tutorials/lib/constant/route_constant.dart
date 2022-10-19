@@ -28,6 +28,9 @@ class RouteNameConstant{
   static String route_name_name_card = "name/card";
   static String route_name_name_card_edit = "name/card/edit";
 
+  static String route_name_env = "env/setting";
+  static String route_name_env_edit = "env/edit";
+
 
 
 }
