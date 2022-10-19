@@ -10,6 +10,8 @@ import 'package:tutorials/view/login/register_finish.dart';
 import 'package:tutorials/view/login/register_verify.dart';
 import 'package:tutorials/view/name.card/name_card.dart';
 import 'package:tutorials/view/name.card/name_card_edit.dart';
+import 'package:tutorials/view/settings/env.dart';
+import 'package:tutorials/view/settings/env_edit.dart';
 import 'package:tutorials/view/settings/feedbacks.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/constant/route_constant.dart';
@@ -100,6 +102,14 @@ class RouteConfiguration {
     RoutePath(
       RouteNameConstant.route_name_name_card_edit,
           (context, match) => NameCardEdit(),
+    ),
+    RoutePath(
+      RouteNameConstant.route_name_env,
+          (context, match) => Environment(),
+    ),
+    RoutePath(
+      RouteNameConstant.route_name_env_edit,
+          (context, match) => EnvironmentEdit(),
     ),
 
 
