@@ -16,13 +16,14 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
   String _protocol = "";
   String _host = "";
   String _port = "";
+  String _index = "";
 
   @override
   Widget build(BuildContext context) {
-    initValues();
     String str = AppUtils.getArgs(context).toString();
     Logs.info("param index : $str");
-
+    _index = str;
+    initValues();
 
     return Scaffold(
       appBar: AppBar(
@@ -38,9 +39,10 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
                 List<String> list = [];
                 list.add("http");
                 list.add("https");
-                Dialogs.showListBottomSheet(context, list).then((value) => {
-                      refreshState(SpConstant.protocol_key,
-                          list[value == null ? 0 : value])
+                Dialogs.showListBottomSheet(context, list).then((value) => () {
+                      HttpRequestCaches.setProtocol(
+                          list[value == null ? 0 : value], _index);
+                      initValues();
                     });
               },
               child: Row(
@@ -67,9 +69,9 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
                         context,
                         Translations.textOf(context, "settings.devTool.host"),
                         '${_host}')
-                    .then((value) => {
-                          refreshState(
-                              SpConstant.host_key, value == null ? "" : value)
+                    .then((value) => () {
+                          HttpRequestCaches.setHost(value ?? "", _index);
+                          initValues();
                         });
               },
               child: Row(
@@ -95,9 +97,9 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
                         context,
                         Translations.textOf(context, "settings.devTool.port"),
                         '${_port}')
-                    .then((value) => {
-                          refreshState(
-                              SpConstant.port_key, value == null ? "" : value)
+                    .then((value) => () {
+                          HttpRequestCaches.setPort(value ?? "0", _index);
+                          initValues();
                         });
               },
               child: Row(
@@ -121,27 +123,11 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
     );
   }
 
-  void refreshState(String key, String value) async {
-    bool res = await SharedPreferenceHelper.set(key, value);
-    if (res) {
-      setState(() {
-        if (key == SpConstant.protocol_key) {
-          _protocol = value;
-        } else if (key == SpConstant.host_key) {
-          _host = value;
-        } else if (key == SpConstant.port_key) {
-          _port = value;
-        }
-      });
-      HttpRequestCaches.init();
-    }
-  }
-
   void initValues() {
     setState(() {
-      _protocol = HttpRequestCaches.getProtocol();
-      _host = HttpRequestCaches.getHost();
-      _port = HttpRequestCaches.getPort();
+      _protocol = HttpRequestCaches.getIndexProtocol(_index);
+      _host = HttpRequestCaches.getIndexHost(_index);
+      _port = HttpRequestCaches.getIndexPort(_index);
     });
   }
 }
