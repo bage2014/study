@@ -39,11 +39,14 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
                 List<String> list = [];
                 list.add("http");
                 list.add("https");
-                Dialogs.showListBottomSheet(context, list).then((value) => () {
-                      HttpRequestCaches.setProtocol(
-                          list[value == null ? 0 : value], _index);
-                      initValues();
-                    });
+                Dialogs.showListBottomSheet(context, list).then((value) {
+                  if(value == null){
+                    return ;
+                  }
+                  HttpRequestCaches.setProtocol(
+                      list[value == null ? 0 : value], _index);
+                  initValues();
+                });
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,10 +72,13 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
                         context,
                         Translations.textOf(context, "settings.devTool.host"),
                         '${_host}')
-                    .then((value) => () {
-                          HttpRequestCaches.setHost(value ?? "", _index);
-                          initValues();
-                        });
+                    .then((value) {
+                  if(value == null || value == ""){
+                    return ;
+                  }
+                  HttpRequestCaches.setHost(value ?? "", _index);
+                  initValues();
+                });
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,10 +103,13 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
                         context,
                         Translations.textOf(context, "settings.devTool.port"),
                         '${_port}')
-                    .then((value) => () {
-                          HttpRequestCaches.setPort(value ?? "0", _index);
-                          initValues();
-                        });
+                    .then((value) {
+                  if(value == null || value == ""){
+                    return ;
+                  }
+                  HttpRequestCaches.setPort(value ?? "0", _index);
+                  initValues();
+                });
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
