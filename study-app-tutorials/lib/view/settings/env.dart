@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/cache/http_request_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/sp/shared_preference_helper.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/constant/sp_constant.dart';
 import 'package:tutorials/locale/translations.dart';
+import 'package:tutorials/utils/app_utils.dart';
 
 class Environment extends StatefulWidget {
   @override
@@ -51,7 +53,11 @@ class _Environment extends State <Environment>{
     return Row(
       children: [
         _radio(model),
-        Text("${model.text}")
+        Text(model.text),
+        GestureDetector(
+          child:  const Text("edit"),
+          onTap: go,
+        ),
       ],
     );
   }
@@ -62,7 +68,7 @@ class _Environment extends State <Environment>{
         groupValue: groupValue,
         onChanged: (index){
           groupValue = index;
-          print(index);
+          Logs.info('index : ${index}');
           setState(() {
 
           });
@@ -73,8 +79,9 @@ class _Environment extends State <Environment>{
 
 
   void go() {
-    Navigator.of(context).pushNamed(
-        RouteNameConstant.route_name_env_edit);
+    String str = groupValue.toString();
+    Logs.info("json : $str");
+    AppUtils.toPage(context, RouteNameConstant.route_name_env_edit,args: str);
   }
 
 
