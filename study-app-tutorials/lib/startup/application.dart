@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 class Application {
   /// 应用初始化
   static void init(BuildContext context) {
-    HttpRequestCaches.init();
+    HttpRequestCaches.inits();
     AppUtils.getDeviceId()
         .then((deviceId) => {UserCaches.cacheUserId(deviceId.hashCode)});
     HttpRequests.init();

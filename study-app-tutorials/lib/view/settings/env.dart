@@ -13,9 +13,8 @@ class Environment extends StatefulWidget {
   _Environment createState() => new _Environment();
 }
 
-class _Environment extends State <Environment>{
-
-  List <FMRadioModel> _datas = [];
+class _Environment extends State<Environment> {
+  List<FMRadioModel> _datas = [];
 
   int groupValue = 1;
 
@@ -25,12 +24,12 @@ class _Environment extends State <Environment>{
     initData();
   }
 
-  void initData(){
+  void initData() {
+    groupValue = int.parse(HttpRequestCaches.getIndex());
     _datas.add(FMRadioModel(1, "Dev"));
     _datas.add(FMRadioModel(2, "Test"));
     _datas.add(FMRadioModel(3, "Prod"));
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -41,59 +40,49 @@ class _Environment extends State <Environment>{
       ),
       body: ListView.builder(
           itemCount: _datas.length,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             FMRadioModel model = _datas[index];
             return _buildRow(model);
-          }
-      ),
+          }),
     );
   }
 
-  Row _buildRow(FMRadioModel model){
+  Row _buildRow(FMRadioModel model) {
     return Row(
       children: [
         _radio(model),
-        Text(model.text),
         GestureDetector(
-          child:  const Text("edit"),
-          onTap: go,
+          child: Text(model.text),
+          onTap: () {
+            go(model.index);
+          },
         ),
       ],
     );
   }
 
-  Radio _radio(FMRadioModel model){
+  Radio _radio(FMRadioModel model) {
     return Radio(
         value: model.index,
         groupValue: groupValue,
-        onChanged: (index){
+        onChanged: (index) {
           groupValue = index;
           Logs.info('index : ${index}');
-          setState(() {
-
-          });
-        }
-    );
+          HttpRequestCaches.setIndex(index.toString());
+          setState(() {});
+        });
   }
 
-
-
-  void go() {
-    String str = groupValue.toString();
+  void go(int index) {
+    String str = index.toString();
     Logs.info("json : $str");
-    AppUtils.toPage(context, RouteNameConstant.route_name_env_edit,args: str);
+    AppUtils.toPage(context, RouteNameConstant.route_name_env_edit, args: str);
   }
-
-
 }
 
 class FMRadioModel extends Object {
-
   int index;
   String text;
 
   FMRadioModel(this.index, this.text);
 }
-
-
-
