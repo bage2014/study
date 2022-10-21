@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/cache/http_request_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/sp/shared_preference_helper.dart';
 import 'package:tutorials/constant/sp_constant.dart';
 import 'package:tutorials/locale/translations.dart';
+import 'package:tutorials/utils/app_utils.dart';
 
 class EnvironmentEdit extends StatefulWidget {
   @override
@@ -18,6 +20,10 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
   @override
   Widget build(BuildContext context) {
     initValues();
+    String str = AppUtils.getArgs(context).toString();
+    Logs.info("param index : $str");
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "env.edit.title")),
