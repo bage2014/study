@@ -34,7 +34,7 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
         margin: EdgeInsets.only(left: 16),
         child: Column(children: <Widget>[
           Container(
-            child: new GestureDetector(
+            child: GestureDetector(
               onTap: () {
                 List<String> list = [];
                 list.add("http");
@@ -44,7 +44,7 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
                     return ;
                   }
                   HttpRequestCaches.setProtocol(
-                      list[value == null ? 0 : value], _index);
+                      list[value ?? 0], _index);
                   initValues();
                 });
               },
@@ -52,7 +52,7 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(Translations.textOf(
-                      context, "settings.devTool.protocol")),
+                      context, "env.edit.protocol")),
                   Text('${_protocol}',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   IconButton(
@@ -66,11 +66,11 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
             ),
           ),
           Container(
-            child: new GestureDetector(
+            child: GestureDetector(
               onTap: () {
                 Dialogs.showInputDialog(
                         context,
-                        Translations.textOf(context, "settings.devTool.host"),
+                        Translations.textOf(context, "env.edit.host"),
                         '${_host}')
                     .then((value) {
                   if(value == null || value == ""){
@@ -83,7 +83,7 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(Translations.textOf(context, "settings.devTool.host")),
+                  Text(Translations.textOf(context, "env.edit.host")),
                   Text('${_host}',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   IconButton(
@@ -97,11 +97,11 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
             ),
           ),
           Container(
-            child: new GestureDetector(
+            child: GestureDetector(
               onTap: () {
                 Dialogs.showInputDialog(
                         context,
-                        Translations.textOf(context, "settings.devTool.port"),
+                        Translations.textOf(context, "env.edit.port"),
                         '${_port}')
                     .then((value) {
                   if(value == null || value == ""){
@@ -114,7 +114,7 @@ class _EnvironmentEdit extends State<EnvironmentEdit> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(Translations.textOf(context, "settings.devTool.port")),
+                  Text(Translations.textOf(context, "env.edit.port")),
                   Text('${_port}',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   IconButton(
