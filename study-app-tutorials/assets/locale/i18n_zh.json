@@ -4,6 +4,8 @@
   "all.dialog.info.title":"提示",
   "all.no.network.tips":"请先连接网络",
   "all.delete.confirm":"确认删除?",
+  "all.save.success":"保存成功",
+  "all.save.failure":"保存失败",
 
   "main.title":"欢迎使用 ",
 
@@ -72,9 +74,6 @@
   "settings.lang.cancel":"取消 ",
 
   "settings.devTool.title":"开发者工具",
-  "settings.devTool.protocol":"协议",
-  "settings.devTool.host":"域名",
-  "settings.devTool.port":"端口",
 
   "settings.feedback.input.hint":"请输入留言内容",
   "settings.feedback.all":"所有留言",
@@ -99,8 +98,14 @@
   "profile.title":"我的",
 
   "env.title":"环境设置",
+  "env.dev":"开发环境",
+  "env.test":"测试环境",
+  "env.prod":"生产环境",
 
   "env.edit.title":"环境编辑",
+  "env.edit.protocol":"协议",
+  "env.edit.host":"域名",
+  "env.edit.port":"端口",
 
   "component.http.no.network":"请检查网络是否已经连接",
   "component.crop.title":"裁剪",

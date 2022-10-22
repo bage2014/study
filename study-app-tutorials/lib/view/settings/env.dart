@@ -3,6 +3,7 @@ import 'package:tutorials/component/cache/http_request_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/sp/shared_preference_helper.dart';
+import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/constant/sp_constant.dart';
 import 'package:tutorials/locale/translations.dart';
@@ -14,7 +15,7 @@ class Environment extends StatefulWidget {
 }
 
 class _Environment extends State<Environment> {
-  List<FMRadioModel> _datas = [];
+  static List<FMRadioModel> _list = [];
 
   int groupValue = 1;
 
@@ -26,22 +27,27 @@ class _Environment extends State<Environment> {
 
   void initData() {
     groupValue = int.parse(HttpRequestCaches.getIndex());
-    _datas.add(FMRadioModel(1, "Dev"));
-    _datas.add(FMRadioModel(2, "Test"));
-    _datas.add(FMRadioModel(3, "Prod"));
+    _list = [];
+    _list.add(FMRadioModel(1, "Development"));
+    _list.add(FMRadioModel(2, "Test"));
+    _list.add(FMRadioModel(3, "Production"));
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    _list[0] = (FMRadioModel(1, Translations.textOf(context, "env.dev")));
+    _list[1] = (FMRadioModel(2, Translations.textOf(context, "env.test")));
+    _list[2] = (FMRadioModel(3, Translations.textOf(context, "env.prod")));
+
     return Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "env.title")),
       ),
       body: ListView.builder(
-          itemCount: _datas.length,
+          itemCount: _list.length,
           itemBuilder: (context, index) {
-            FMRadioModel model = _datas[index];
+            FMRadioModel model = _list[index];
             return _buildRow(model);
           }),
     );
@@ -68,8 +74,13 @@ class _Environment extends State<Environment> {
         onChanged: (index) {
           groupValue = index;
           Logs.info('index : ${index}');
-          HttpRequestCaches.setIndex(index.toString());
-          setState(() {});
+          HttpRequestCaches.setIndex(index.toString()).then((value) {
+            setState(() {
+              Toasts.show(value
+                  ? Translations.textOf(context, "all.save.success")
+                  : Translations.textOf(context, "all.save.failure"));
+            });
+          });
         });
   }
 

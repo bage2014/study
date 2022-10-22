@@ -49,9 +49,9 @@ class HttpRequestCaches {
         _buildKey(SpConstant.port_key, index), value);
   }
 
-  static void setIndex(String index) {
+  static Future<bool> setIndex(String index) async{
     _index = index;
-    SharedPreferenceHelper.set(SpConstant.environment_index, index);
+    return SharedPreferenceHelper.set(SpConstant.environment_index, index);
   }
 
   static String getIndex() {
