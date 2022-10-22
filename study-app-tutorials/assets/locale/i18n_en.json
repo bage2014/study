@@ -17,6 +17,9 @@
   "login.password.reset":"Forget Password ",
   "login.register":"Create New Account ",
   "login.success.toast":"Login Success ",
+  "login.validation.username":"Username can not be hull or empty ",
+  "login.validation.password":"Password can not be hull or empty ",
+  "login.validation.security":"Security code can not be hull or empty ",
 
   "forget.password.title":"Forget Password ",
   "forget.password.mail.hint":"Mail ",

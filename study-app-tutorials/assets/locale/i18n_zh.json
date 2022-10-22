@@ -17,7 +17,9 @@
   "login.password.reset":"忘记密码 ",
   "login.register":"创建账号 ",
   "login.success.toast":"登陆成功 ",
-
+  "login.validation.username":"用户名不能为空 ",
+  "login.validation.password":"密码不能为空 ",
+  "login.validation.security":"验证码不能为空 ",
 
   "forget.password.title":"密码重置 ",
   "forget.password.mail.hint":"请输入邮箱 ",

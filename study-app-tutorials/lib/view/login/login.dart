@@ -294,9 +294,13 @@ class _LoginView extends State<Login> {
   void login() {
     LoginRequestParam param = buildParam();
 
-    showLoading();
-
     // 输入框校验
+    bool ok = isOk(param);
+    if(!ok){
+      return ;
+    }
+
+    showLoading();
 
     LoginRequests.login(param).then((result) {
       Logs.info('login result=' + (result.toString() ?? ""));
@@ -333,6 +337,19 @@ class _LoginView extends State<Login> {
   void envSetting() async {
     Navigator.of(context).pushNamed(
         RouteNameConstant.route_name_env);
+  }
+
+  bool isOk(LoginRequestParam param) {
+    if(param.userName == null || (param.userName?.isEmpty??true)){
+      Toasts.show(Translations.textOf(context, 'login.validation.username'));
+      return false;
+    }
+
+    if(param.password == null || (param.password?.isEmpty??true)){
+      Toasts.show(Translations.textOf(context, 'login.validation.password'));
+      return false;
+    }
+    return true;
   }
 
 }
