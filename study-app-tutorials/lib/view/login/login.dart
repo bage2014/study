@@ -349,6 +349,12 @@ class _LoginView extends State<Login> {
       Toasts.show(Translations.textOf(context, 'login.validation.password'));
       return false;
     }
+
+    if(_loginSecurityCodeRequired && (param.securityCode == null || (param.securityCode?.isEmpty??true))){
+      Toasts.show(Translations.textOf(context, 'login.validation.security'));
+      return false;
+    }
+
     return true;
   }
 
