@@ -39,6 +39,12 @@ class LoginRequests {
 
     AuthOriginResult auth = await _auth(requestParam);
     Logs.info('request auth : ${auth.toJson()}');
+    if(auth?.code != 200){
+      LoginRequestResult result = LoginRequestResult();
+      result.common.code = auth.code??0;
+      result.common.message = auth.msg??'';
+      return result;
+    }
 
     Map<String, String> param = HashMap();
     Map<String, String> header = HashMap();

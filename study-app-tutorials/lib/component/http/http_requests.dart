@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tutorials/component/http/cancel_requests.dart';
 import 'package:tutorials/component/http/http_byte_result.dart';
 import 'package:tutorials/component/http/http_origin_result.dart';
@@ -206,14 +208,14 @@ class HttpRequests {
       result.headers = response.headers.map;
       return result;
     } on DioError catch (e) {
-      Logs.info('_doBaseRequest DioError' + e.toString());
-      Logs.info('_doBaseRequest DioError data ' + e.response?.data);
+      Logs.info('_doBaseRequest DioError ${e.toString()}' );
+      Logs.info('_doBaseRequest DioError data ${e.response?.data}');
       result.statusCode = e.response?.statusCode??HttpConstant.server_not_response;
       result.responseBody = '{ "msg":"${e.response?.statusMessage??HttpConstant.server_not_response_msg}" }';
 
       try{
         if(e.response?.statusCode == 400 && (e?.response?.statusMessage?.isEmpty??true)){
-          HttpOriginResult originResult = HttpOriginResult.fromJson(e.response?.data);
+          HttpOriginResult originResult = HttpOriginResult.fromJson(jsonDecode(e.response?.data));
           result.responseBody = '{ "msg":"${originResult.data?.errorDescription??HttpConstant.server_not_response_msg}" }';
         }
       }catch(e){
@@ -221,7 +223,7 @@ class HttpRequests {
       }
 
     } catch (e) {
-      Logs.info('_doBaseRequest error' + e.toString());
+      Logs.info('_doBaseRequest error ${e.toString()}' );
       result.statusCode = HttpConstant.server_not_response;
       result.responseBody = '{ "msg":"${HttpConstant.server_not_response_msg}" }';
     }
