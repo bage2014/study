@@ -1,5 +1,6 @@
 import 'package:tutorials/component/http/cancel_requests.dart';
 import 'package:tutorials/component/http/http_byte_result.dart';
+import 'package:tutorials/component/http/http_origin_result.dart';
 import 'package:tutorials/component/http/http_progress_callback.dart';
 import 'package:tutorials/component/http/http_result.dart';
 import 'package:tutorials/component/http/network_check_interceptors.dart';
@@ -204,6 +205,21 @@ class HttpRequests {
       result.statusCode = response.statusCode ?? 500;
       result.headers = response.headers.map;
       return result;
+    } on DioError catch (e) {
+      Logs.info('_doBaseRequest DioError' + e.toString());
+      Logs.info('_doBaseRequest DioError data ' + e.response?.data);
+      result.statusCode = e.response?.statusCode??HttpConstant.server_not_response;
+      result.responseBody = '{ "msg":"${e.response?.statusMessage??HttpConstant.server_not_response_msg}" }';
+
+      try{
+        if(e.response?.statusCode == 400 && (e?.response?.statusMessage?.isEmpty??true)){
+          HttpOriginResult originResult = HttpOriginResult.fromJson(e.response?.data);
+          result.responseBody = '{ "msg":"${originResult.data?.errorDescription??HttpConstant.server_not_response_msg}" }';
+        }
+      }catch(e){
+        Logs.info(e.toString());
+      }
+
     } catch (e) {
       Logs.info('_doBaseRequest error' + e.toString());
       result.statusCode = HttpConstant.server_not_response;
