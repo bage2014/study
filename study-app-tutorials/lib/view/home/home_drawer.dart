@@ -157,7 +157,8 @@ class _HomeDrawer extends State<HomeDrawer> {
         _context, Translations.textOf(_context, "home.logout.confirm"), null);
     Logs.info('checkExitApp showConfirmDialog = $showConfirmDialog');
     if ("true" == showConfirmDialog) {
-      // todo  清除各种缓存
+      UserCaches.cacheUser(User()); // 清楚缓存、登陆状态
+      Logs.info('cache user = ${UserCaches.getUser().toString()}');
       AppUtils.exitApp();
     }
   }
