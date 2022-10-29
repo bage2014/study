@@ -12,4 +12,7 @@ class SpConstant {
   static String download_dir_cache_key = 'download_dir_cache_key';
   static String download_dir_value_default = '/storage/emulated/0/Download';
 
+  static String token_access_key = '/token/access/key';
+  static String token_refresh_key = '/token/refresh/key';
+
 }
