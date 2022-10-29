@@ -1,21 +1,23 @@
 
-import 'package:tutorials/request/model/user.dart';
+import 'package:tutorials/component/sp/shared_preference_helper.dart';
+import 'package:tutorials/constant/sp_constant.dart';
 
 class TokenCaches{
 
-  static bool cacheAccessToken(String accessToken){
-    return true;
+  static Future<bool> cacheAccessToken(String accessToken){
+    return SharedPreferenceHelper.set(SpConstant.token_access_key, accessToken);
   }
 
-  static bool clearAccessToken(String accessToken){
-    return true;
+  static Future<bool> clearAccessToken(){
+    return SharedPreferenceHelper.set(SpConstant.token_access_key, '');
   }
 
-  static bool cacheRefreshToken(String refreshToken){
-    return true;
+  static Future<bool> cacheRefreshToken(String refreshToken){
+    return SharedPreferenceHelper.set(SpConstant.token_refresh_key, refreshToken);
   }
 
-  static bool clearRefreshToken(String refreshToken){
-    return true;
+  static Future<bool> clearRefreshToken(){
+    return SharedPreferenceHelper.set(SpConstant.token_refresh_key, '');
   }
+
 }
