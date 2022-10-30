@@ -1,10 +1,12 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:tutorials/component/cache/token_caches.dart';
 import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/http/http_result.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
+import 'package:tutorials/constant/sp_constant.dart';
 import 'package:tutorials/request/model/login/login_request_param.dart';
 import 'package:tutorials/request/model/login/login_request_result.dart';
 import 'package:tutorials/request/origin/auth_origin_result.dart';
@@ -13,6 +15,24 @@ import 'package:tutorials/request/origin/login_origin_result_mapping.dart';
 import 'package:tutorials/utils/crypt_utils.dart';
 
 class LoginRequests {
+
+  static Future<LoginRequestResult> tryLogin(
+      String token) async {
+    Logs.info('request param : ${token}');
+
+    Map<String, String> param = HashMap();
+    Map<String, String> header = HashMap();
+    header.putIfAbsent(
+        "Authorization", () => "Bearer ${token}");
+    Logs.info('request header : ${header?.toString()}');
+
+    return Future.value(
+        HttpRequests.post(HttpConstant.url_user_profile, param, header)
+            .then((value) => LoginOriginResultMapping.mapping(value)));
+
+    // return Future.delayed(const Duration(seconds: 1), () => mock());
+  }
+
   static Future<AuthOriginResult> _auth(LoginRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
     Map<String, String> param = HashMap();
@@ -45,6 +65,9 @@ class LoginRequests {
       result.common.message = auth.msg??'';
       return result;
     }
+
+    TokenCaches.cacheAccessToken(auth?.data?.accessToken??'');
+    TokenCaches.cacheRefreshToken(auth?.data?.refreshToken??'');
 
     Map<String, String> param = HashMap();
     Map<String, String> header = HashMap();

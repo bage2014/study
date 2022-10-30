@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorials/component/cache/token_caches.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
@@ -34,6 +35,21 @@ class _LoginView extends State<Login> {
     super.initState();
     userNameController.text = ('bage2014@qq.com');
     passwordController.text = ('123456');
+
+    TokenCaches.getAccessToken().then((token) {
+      if (token?.isNotEmpty ?? false) {
+        Logs.info(' try login ');
+        // 直接尝试访问
+        LoginRequests.tryLogin(token).then((result) {
+          if (result.common.code == ErrorCodeConstant.success) {
+            UserCaches.cacheUser(User.from(result));
+            AppUtils.toPage(context, RouteNameConstant.route_name_home);
+          }
+        });
+      } else {
+        Logs.info('need to login ');
+      }
+    });
   }
 
   @override
@@ -236,9 +252,9 @@ class _LoginView extends State<Login> {
         Container(
           child: _isLoading
               ? Container(
-            color: Colors.black54.withOpacity(0.5),
-            width: double.infinity,
-          )
+                  color: Colors.black54.withOpacity(0.5),
+                  width: double.infinity,
+                )
               : null,
         ),
         Container(
@@ -296,8 +312,8 @@ class _LoginView extends State<Login> {
 
     // 输入框校验
     bool ok = isOk(param);
-    if(!ok){
-      return ;
+    if (!ok) {
+      return;
     }
 
     showLoading();
@@ -307,8 +323,7 @@ class _LoginView extends State<Login> {
       hideLoading();
       if (result.common.code == ErrorCodeConstant.success) {
         _loginSecurityCodeRequired = false;
-        Toasts.show(Translations.textOf(
-            context, "login.success.toast"));
+        Toasts.show(Translations.textOf(context, "login.success.toast"));
         UserCaches.cacheUser(User.from(result));
         AppUtils.toPage(context, RouteNameConstant.route_name_home);
       } else if (result.common.code ==
@@ -333,29 +348,27 @@ class _LoginView extends State<Login> {
     return param;
   }
 
-
   void envSetting() async {
-    Navigator.of(context).pushNamed(
-        RouteNameConstant.route_name_env);
+    Navigator.of(context).pushNamed(RouteNameConstant.route_name_env);
   }
 
   bool isOk(LoginRequestParam param) {
-    if(param.userName == null || (param.userName?.isEmpty??true)){
+    if (param.userName == null || (param.userName?.isEmpty ?? true)) {
       Toasts.show(Translations.textOf(context, 'login.validation.username'));
       return false;
     }
 
-    if(param.password == null || (param.password?.isEmpty??true)){
+    if (param.password == null || (param.password?.isEmpty ?? true)) {
       Toasts.show(Translations.textOf(context, 'login.validation.password'));
       return false;
     }
 
-    if(_loginSecurityCodeRequired && (param.securityCode == null || (param.securityCode?.isEmpty??true))){
+    if (_loginSecurityCodeRequired &&
+        (param.securityCode == null || (param.securityCode?.isEmpty ?? true))) {
       Toasts.show(Translations.textOf(context, 'login.validation.security'));
       return false;
     }
 
     return true;
   }
-
 }
