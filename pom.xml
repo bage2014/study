@@ -169,6 +169,7 @@
     <module>study-spring-cloud-circuit-breaker</module>
     <module>study-crawler</module>
       <module>study-jenkins</module>
+      <module>study-nginx</module>
 
   </modules>
 </project>
