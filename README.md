@@ -2,8 +2,11 @@
 
 # study #
 
-
 本项目为全栈工程师学习笔记，不求最深最好，开源技术搬运工
+
+https://github.com/GrowingGit/GitHub-Chinese-Top-Charts 开源API 
+
+
 
 其他项目：
 Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-services](https://github.com/bage2014/study-micro-services)
