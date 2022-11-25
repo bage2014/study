@@ -1,13 +1,13 @@
 # study-Jenkins
 
 ## 参考链接
-官网文档
-
-https://www.jenkins.io/zh/
+官网文档 https://www.jenkins.io/zh/
 https://www.jenkins.io/zh/doc/book/installing/#downloading-and-running-jenkins-in-docker
 https://mp.weixin.qq.com/s/NHZLONQJTfyurUGkKjlGzg
 
-https://hub.docker.com/r/jenkinsci/blueocean/
+Docker https://hub.docker.com/r/jenkinsci/blueocean/
+
+安装部署 https://www.jenkins.io/zh/doc/book/installing/
 
 部署启动
 
