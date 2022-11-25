@@ -7,6 +7,7 @@
 - 官网文档 http://nginx.org/en/docs/
 - docker hub 下载 https://hub.docker.com/_/nginx
 - Loadbalance http://nginx.org/en/docs/http/load_balancing.html
+- 负载均衡模块 http://nginx.org/en/docs/http/ngx_http_upstream_module.html
 - https://www.bilibili.com/video/BV1em4y1A7ey/?spm_id_from=333.1007.tianma.9-2-38.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 
