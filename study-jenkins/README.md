@@ -44,6 +44,33 @@ bage/bage123456
 
 
 
+设置时区
+
+个人中心 - 设置 - 用户定义的时区
+
+```
+选择时区
+
+```
+
+
+
+
+
+发布
+
+Publish Remote
+
+```
+Publish Remote
+
+
+```
+
+
+
+
+
 
 
 https://www.jenkins.io/zh/doc/book/installing/
