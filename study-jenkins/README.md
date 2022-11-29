@@ -15,6 +15,10 @@ https://www.jenkins.io/zh/doc/book/installing/
 
 maven 应用： https://www.jenkins.io/zh/doc/tutorials/build-a-java-app-with-maven/
 
+流水线 https://www.jenkins.io/zh/doc/book/pipeline/multibranch/
+
+
+
 下载&启动
 
 ```
