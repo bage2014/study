@@ -17,6 +17,8 @@ maven 应用： https://www.jenkins.io/zh/doc/tutorials/build-a-java-app-with-ma
 
 流水线 https://www.jenkins.io/zh/doc/book/pipeline/multibranch/
 
+https://www.jenkins.io/doc/book/pipeline/multibranch/
+
 
 
 下载&启动
@@ -72,6 +74,18 @@ Publish Remote
 ```
 
 
+
+
+
+编译打包
+
+
+
+```
+Publish Remote
+
+
+```
 
 
 
