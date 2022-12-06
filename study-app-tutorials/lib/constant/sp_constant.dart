@@ -15,4 +15,8 @@ class SpConstant {
   static String token_access_key = '/token/access/key';
   static String token_refresh_key = '/token/refresh/key';
 
+
+  static String mock_switch_cache_key = 'mock_switch_cache_key';
+  static String mock_switch_value_default = 'false';
+
 }
