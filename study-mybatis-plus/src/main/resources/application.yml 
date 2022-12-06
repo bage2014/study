@@ -1,3 +1,7 @@
+
+server:
+  port: 8002
+
 # DataSource Config
 spring:
   datasource:
