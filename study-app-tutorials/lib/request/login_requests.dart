@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:tutorials/component/cache/setting_caches.dart';
 import 'package:tutorials/component/cache/token_caches.dart';
 import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/http/http_result.dart';
@@ -30,7 +31,6 @@ class LoginRequests {
         HttpRequests.post(HttpConstant.url_user_profile, param, header)
             .then((value) => LoginOriginResultMapping.mapping(value)));
 
-    // return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 
   static Future<AuthOriginResult> _auth(LoginRequestParam requestParam) async {
@@ -50,13 +50,14 @@ class LoginRequests {
           return AuthOriginResult.fromJson(jsonDecode(value.responseBody));
     }));
 
-    // return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 
   static Future<LoginRequestResult> login(
       LoginRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
-
+    if(await SettingCaches.getMockSwitch() == 'true'){
+      return Future.delayed(const Duration(seconds: 1), () => mock());
+    }
     AuthOriginResult auth = await _auth(requestParam);
     Logs.info('request auth : ${auth.toJson()}');
     if(auth?.code != 200){
@@ -79,7 +80,6 @@ class LoginRequests {
         HttpRequests.post(HttpConstant.url_user_profile, param, header)
             .then((value) => LoginOriginResultMapping.mapping(value)));
 
-    // return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 
   static LoginRequestResult mock() {
@@ -91,7 +91,7 @@ class LoginRequests {
     result.userName = '小陆[已登陆]';
     result.mail = 'bage@qq.com';
     result.iconUrl = 'https://avatars.githubusercontent.com/u/18094768?v=4';
-    Logs.info('request result : ${result?.toString()}');
+    Logs.info('mock request result : ${result?.toString()}');
     return result;
   }
 }
