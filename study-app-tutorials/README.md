@@ -89,7 +89,7 @@ https://www.behance.net/gallery/69411833/Backpack-UI-Kit-Free-for-Adobe-XD UI资
 https://pub.flutter-io.cn/packages/flutter_local_notifications
 
 https://pub.flutter-io.cn/packages/awesome_notifications
-
+https://pub.dev/packages/android_alarm_manager_plus
 
 
 Flutter UI 

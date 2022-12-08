@@ -1,4 +1,56 @@
 # study-TODO #
+
+
+
+
+# 技术代办
+
+Jenkins
+
+Kafaka
+
+PacificA : kafka采用的一致性协议
+
+Paxos 一致性协议
+
+压测
+
+线上问题定位
+
+Dump 文件分析
+
+Spring Cloud Alibaba 相关环境搭建
+
+Docker 版本
+
+搭建Spring Cloud 环境
+
+注册中心、啥的 【docker版本】
+
+Spring Test 
+
+
+
+核心技能
+
+高级JVM 分析
+
+线上问题排查
+
+常用工具高级用法
+
+
+
+注册中心：
+
+https://nacos.io/zh-cn/index.html
+
+http://c.biancheng.net/springcloud/nacos.html
+
+
+
+
+
 ## 项目代办
 
 | 模块       | 功能概述   | 完成状态 |       时间区间        | 边界条件                                                     |
@@ -117,52 +169,6 @@ UI route 设置部分页面拦截登陆
 - 更新验证码输入页面： https://github.com/Vignesh0404/Flutter-UI-Kit/blob/main/Auth-otp-CustomKeypad/lib/verifyOTP.dart
 - 微信登陆 https://www.authingyun.com/solutions/wechat 
 - 登陆注册APP更新页面
-
-
-
-
-
-### 技术代办
-
-Kafaka
-
-PacificA : kafka采用的一致性协议
-
-Paxos 一致性协议
-
-压测
-
-线上问题定位
-
-Dump 文件分析
-
-Spring Cloud Alibaba 相关环境搭建
-
-Docker 版本
-
-搭建Spring Cloud 环境
-
-注册中心、啥的 【docker版本】
-
-Spring Test 
-
-
-
-核心技能
-
-高级JVM 分析
-
-线上问题排查
-
-常用工具高级用法
-
-
-
-注册中心：
-
-https://nacos.io/zh-cn/index.html
-
-http://c.biancheng.net/springcloud/nacos.html
 
 
 
