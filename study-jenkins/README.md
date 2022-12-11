@@ -24,12 +24,21 @@ https://www.jenkins.io/doc/book/pipeline/multibranch/
 
 
 
-下载&启动
+博客参考-docker + shell : cnblogs.com/wang1221/p/16362058.html
+
+
+
+下载
 
 ```
 docker pull jenkinsci/blueocean
 
-docker run --name=bage-jenkins -p 8080:8080   -v /Users/bage/bage/docker-data/jenkins:/var/jenkins_home jenkinsci/blueocean
+```
+
+启动
+
+```
+docker run --name=bage-jenkins -p 8080:8080   -v /Users/bage/bage/docker-data/jenkins:/var/jenkins_home -v /Users/bage/bage/github:/home jenkinsci/blueocean
 
 ```
 
