@@ -5,7 +5,9 @@
 
 # 技术代办
 
-Jenkins
+Jenkins 
+
+redis
 
 Kafaka
 
