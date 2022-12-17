@@ -126,6 +126,10 @@ dependencies:
   # https://pub.flutter-io.cn/packages/flutter_easyloading
   flutter_easyloading: ^3.0.5
 
+  # https://pub.flutter-io.cn/packages/flutter_alarm_clock/install
+  flutter_alarm_clock: ^0.0.2
+
+
   # https://pub.flutter-io.cn/packages/google_fonts
 #  google_fonts: ^2.1.1
 
