@@ -46,8 +46,8 @@ class _ScaffoldRouteState extends State<Home> {
 //              //悬浮按钮
 //              child: Icon(Icons.add),
 //              onPressed: _onAdd),
-            body:
-            Statistics(),
+            body: Text('Test '),
+            // Statistics(),
             // GridView.builder(
             //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             //         crossAxisCount: 3, //每行三列
