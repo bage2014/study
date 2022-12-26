@@ -5,7 +5,7 @@
 
 # 技术代办
 
-Jenkins 
+Jenkins 运行、部署、自动发布、上传远程
 
 redis
 
