@@ -7,6 +7,8 @@
 
 Jenkins 运行、部署、自动发布、上传远程
 
+熔断？原理啥的？
+
 redis
 
 Kafaka
