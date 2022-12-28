@@ -9,15 +9,19 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>study-spring-boot-versions</artifactId>
-  <name>study-spring-boot-versions</name>
+  <artifactId>study-spring-cloud-versions</artifactId>
+
+  <name>study-spring-cloud-versions</name>
   <url>http://www.example.com</url>
 
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>17</java.version>
+
     <spring.boot.base.version>3.0.1</spring.boot.base.version>
+    <spring.cloud-version>2022.0.0</spring.cloud-version>
+
   </properties>
 
   <dependencies>
@@ -32,11 +36,14 @@
     </dependency>
 
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.20</version>
-      <optional>true</optional>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -55,7 +62,15 @@
         <scope>import</scope>
       </dependency>
 
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring.cloud-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
 
 </project>
