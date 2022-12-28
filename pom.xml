@@ -170,6 +170,7 @@
     <module>study-crawler</module>
       <module>study-jenkins</module>
       <module>study-nginx</module>
+      <module>study-spring-boot-versions</module>
 
   </modules>
 </project>
