@@ -166,11 +166,12 @@
       <module>study-spring-boot-wavefront</module>
       <module>study-spring-boot-valid</module>
       <module>study-spring-boot-web-socket</module>
-    <module>study-spring-cloud-circuit-breaker</module>
-    <module>study-crawler</module>
+      <module>study-spring-cloud-circuit-breaker</module>
+      <module>study-crawler</module>
       <module>study-jenkins</module>
       <module>study-nginx</module>
       <module>study-spring-boot-versions</module>
+      <module>study-spring-cloud-versions</module>
 
   </modules>
 </project>
