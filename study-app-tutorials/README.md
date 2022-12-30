@@ -52,6 +52,10 @@ https://github.com/anoochit/uikits
 很多很赞
 https://github.com/lohanidamodar/flutter_ui_challenges
 
+页面合集【也还可以】
+
+https://github.com/FlutterOpen/flutter-ui-nice
+
 常用页面
 https://github.com/simplezhli/flutter_deer
 
@@ -96,6 +100,20 @@ Flutter UI
 
 https://pub.flutter-io.cn/packages/fluent_ui/example
 https://bdlukaa.github.io/fluent_ui/
+
+
+
+UI 适配
+
+https://pub.flutter-io.cn/packages/device_preview
+
+
+
+代码简化？？
+
+https://pub.flutter-io.cn/packages/freezed
+
+
 
 
 

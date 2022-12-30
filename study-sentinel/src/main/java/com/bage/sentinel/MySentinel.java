@@ -40,7 +40,7 @@ public class MySentinel {
                         System.out.println("entry ok");
 
                         try {
-                            Thread.sleep(3000);
+                            Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
