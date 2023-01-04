@@ -9,7 +9,6 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.*;
 
 public class MySentinel {

@@ -4,5 +4,7 @@ resilience4j笔记
 
 ## 参考链接 ##
 
-https://github.com/resilience4j/resilience4j
+官方 GitHub https://github.com/resilience4j/resilience4j
+
+集成 Spring Boot https://github.com/resilience4j/resilience4j-spring-boot2-demo
 

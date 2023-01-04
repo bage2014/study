@@ -13,6 +13,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>17</java.version>
+
     <resilience4jVersion>1.5.0</resilience4jVersion>
   </properties>
 
