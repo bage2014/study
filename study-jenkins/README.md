@@ -2,6 +2,8 @@
 
 大纲？？
 
+Jenkins 官方文档查阅： https://www.jenkins.io/zh/doc/book/pipeline/getting-started/
+
 ## 参考链接
 
 官网文档 https://www.jenkins.io/zh/
@@ -9,6 +11,8 @@ https://www.jenkins.io/zh/doc/book/installing/#downloading-and-running-jenkins-i
 https://mp.weixin.qq.com/s/NHZLONQJTfyurUGkKjlGzg
 
 Docker https://hub.docker.com/r/jenkinsci/blueocean/
+
+Docker 部署Maven依赖配置 https://www.jenkins.io/zh/doc/book/pipeline/docker/
 
 安装部署 https://www.jenkins.io/zh/doc/book/installing/
 
