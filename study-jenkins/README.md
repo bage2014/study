@@ -4,6 +4,8 @@
 
 Jenkins 官方文档查阅： https://www.jenkins.io/zh/doc/book/pipeline/getting-started/
 
+todo maven部署实践！！！ https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/
+
 ## 参考链接
 
 官网文档 https://www.jenkins.io/zh/
