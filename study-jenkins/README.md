@@ -46,6 +46,14 @@ docker pull jenkinsci/blueocean
 ```
 docker run --name=bage-jenkins -p 8080:8080   -v /Users/bage/bage/docker-data/jenkins:/var/jenkins_home -v /Users/bage/bage/github:/home jenkinsci/blueocean
 
+  --volume "$HOME":/home \
+
+macOS is /Users/<your-username>/Documents/GitHub/simple-java-maven-app
+
+For macOS - /home/Documents/GitHub/simple-java-maven-app
+
+
+
 ```
 
 
@@ -110,3 +118,15 @@ Publish Remote
 
 
 https://www.jenkins.io/zh/doc/book/installing/
+
+
+
+### 常见问题
+
+```
+Obtained Jenkinsfile from git /home/simple-java-maven-app
+org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+WorkflowScript: 3: Invalid agent type "docker" specified. Must be one of [any, label, none] @ line 3, column 9.
+```
+
+报错处理 https://stackoverflow.com/questions/62253474/jenkins-invalid-agent-type-docker-specified-must-be-one-of-any-label-none
