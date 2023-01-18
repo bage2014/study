@@ -34,6 +34,8 @@ https://www.jenkins.io/doc/book/pipeline/multibranch/
 
 
 
+## 环境搭建
+
 下载
 
 ```
@@ -44,19 +46,21 @@ docker pull jenkinsci/blueocean
 启动
 
 ```
-docker run --name=bage-jenkins -p 8080:8080   -v /Users/bage/bage/docker-data/jenkins:/var/jenkins_home -v /Users/bage/bage/github:/home jenkinsci/blueocean
+docker run --name=bage-jenkins -p 8080:8080 -v /Users/bage/bage/docker-data/jenkins:/var/jenkins_home -v "$HOME":/home jenkinsci/blueocean
 
-  --volume "$HOME":/home \
+```
+
+挂载目录
+
+```
+
+--volume "$HOME":/home 
 
 macOS is /Users/<your-username>/Documents/GitHub/simple-java-maven-app
 
 For macOS - /home/Documents/GitHub/simple-java-maven-app
 
-
-
 ```
-
-
 
 访问
 
