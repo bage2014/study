@@ -60,6 +60,11 @@ macOS is /Users/<your-username>/Documents/GitHub/simple-java-maven-app
 
 For macOS - /home/Documents/GitHub/simple-java-maven-app
 
+
+EXP: 
+/Users/bage/bage/github/simple-java-maven-app
+/home/bage/github/simple-java-maven-app
+
 ```
 
 访问
