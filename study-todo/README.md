@@ -1,6 +1,8 @@
 # study-TODO #
 
+技术深度？
 
+常用技术流？技术趋势？业务发展？行业概念
 
 # 技术代办
 
@@ -36,7 +38,7 @@ PacificA : kafka采用的一致性协议
 
 Paxos 一致性协议
 
-压测+ jmeter
+压测+ jmeter！
 
 线上问题定位
 
@@ -56,7 +58,7 @@ Spring Test
 
 核心技能
 
-高级JVM 分析
+高级JVM 分析！
 
 线上问题排查
 
