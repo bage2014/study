@@ -1,7 +1,15 @@
 package com.bage;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+/**
+ * https://baomidou.com/pages/223848/#tablename
+ */
+@TableName("user")
 public class User {
     private Long id;
+    @TableField("name")
     private String name;
     private Integer age;
     private String email;
