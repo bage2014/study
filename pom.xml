@@ -98,7 +98,7 @@
       <module>study-spring-boot-mybatis-oracle</module>
       <module>study-jmeter</module>
       <module>study-mybatis-generator-maven-plugin</module>
-    <module>study-obj-mapper</module>
+<!--    <module>study-obj-mapper</module>-->
       <module>study-easyexcel</module>
       <module>study-shiro-spring-boot</module>
       <module>study-vue</module>
@@ -172,6 +172,7 @@
       <module>study-nginx</module>
       <module>study-spring-boot-versions</module>
       <module>study-spring-cloud-versions</module>
+      <module>study-itv-pro</module>
 
   </modules>
 </project>

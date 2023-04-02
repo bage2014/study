@@ -151,10 +151,16 @@ Open TerminalTerminalGit Bash.
 Generating a new SSH key  
 
 	ssh-keygen -t rsa -b 4096 -C "893542907@qq.com"
+	
+	Mac
+	ssh-keygen -t ed25519 -C "893542907@qq.com"
 
 拷贝公钥
 
 	cat /home/bage/.ssh/id_rsa.pub
+	
+	ssh-keygen -t ed25519 -C "893542907@qq.com"
+	cat /Users/bage/.ssh/id_rsa.pub
 
 配置多个(写入到另一个文件)
 
