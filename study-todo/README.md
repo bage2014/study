@@ -1,12 +1,16 @@
 # study-TODO #
 
+https://github.com/DiUS/java-faker Java 模拟数据
+
+https://github.com/jsonzou/jmockdata
+
+
+
 技术深度？
 
 常用技术流？技术趋势？业务发展？行业概念
 
 ES 常用场景和高级技巧
-
-
 
 1、计算机相关专业本科及以上学历；
 2、在消息、存储、分布式或高并发系统等方向有过超过3年具体的项目经验；
