@@ -186,10 +186,11 @@ Start a mysql server instance
     
     Mac:
     docker run --name bage-mysql -v /Users/bage/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    
+    Mac-pro:	
+    docker run --name bage-mysql-pro -v /Users/bage/bage/docker-data/mysql-pro:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
 
 
-​    
-​    
 其中
 
 	--name 起名 bage-mysql 
@@ -436,6 +437,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -739,6 +741,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -1342,6 +1345,36 @@ docker run \
 
 
 
+### 安装 TiDB
+
+参考链接 
+
+https://hub.docker.com/r/pingcap/tidb
+
+Docker Pull Command
+
+```
+docker pull pingcap/tidb
+```
+
+Run 
+
+```
+
+
+```
+
+To start an Jenkins instance, run this command:
+
+```bash
+
+
+
+
+```
+
+
+
 
 
 
@@ -1379,3 +1412,11 @@ Redis启动后无法进行访问
 
 [https://blog.csdn.net/weixin_39800144/article/details/79235460](https://blog.csdn.net/weixin_39800144/article/details/79235460 "参考链接1")
 [https://blog.csdn.net/flymoringbird/article/details/80717700](https://blog.csdn.net/flymoringbird/article/details/80717700 "参考链接2")
+
+
+
+
+
+
+
+git remote set-url origin git@github.com:bage2014/simple-java-maven-app.git
