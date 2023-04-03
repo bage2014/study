@@ -12,3 +12,7 @@
     $ findbugs -textui -low -html -output myreport.html C:\Users\luruihua\git\study\study\study-algorithm
 
 
+
+Mock 生成对象 
+
+https://github.com/DiUS/java-faker
