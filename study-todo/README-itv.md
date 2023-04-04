@@ -1,8 +1,34 @@
 # study-itv2023 #
 
+## LOG
+
+## MQ
+
+## Schedule
+
+## Spring + Boot + Cloud 
+
+## Mybaits + Plus 
+
+## MySQL
+
+MySQL 精选 60 道面试题（含答案） https://blog.csdn.net/hahazz233/article/details/125372412
+
+常见（MySQL）面试题（含答案） https://blog.csdn.net/m0_63592370/article/details/126039076
+
+最完整MySQL数据库面试题（2020最新版）https://zhuanlan.zhihu.com/p/112857507
+
+https://www.ewbang.com/community/article/details/961524446.html
 
 
-## Load test 
+
+## JVM 
+
+JVM 实践 
+
+## 
+
+## Load Test 
 
 JMeter 工具基本使用
 
@@ -24,7 +50,7 @@ ES 高级使用
 
 
 
-## split db&tl
+## Split DB&Table
 
 Schedule:
 
@@ -63,10 +89,48 @@ docker run --name bage-mysql-pro -v /Users/bage/bage/docker-data/mysql-pro:/var/
 
 
 
+## 项目总结
+
+### 分库分表
+
+### 架构升级2.0
+
+### 团队建设+管理
+
+### 技术点
+
+POI 搜索
+
+低价、转票
+
+邮件抓取
+
+优惠券抵扣
+
+出票策略
+
+
+
 ## 参考链接
 
 Java 体系 https://github.com/whx123/JavaHome
 
+bage面试 https://github.com/bage2014/interview
+
+牛客网 https://www.nowcoder.com/experience/639
+
+牛客网题库 https://www.nowcoder.com/exam/company
+
 分库分表经典15连问 http://blog.csdn.net/BASK2311/article/details/128312076
 
+2023Java最新真实面试题汇总（持续更新）https://blog.csdn.net/chuanchengdabing/article/details/118527318
 
+2023年Java面试题及答案整理 https://www.rstk.cn/news/2473.html?action=onClick
+
+2023各大厂Java面试题来喽！面试必看！ https://baijiahao.baidu.com/s?id=1757886422930954006&wfr=spider&for=pc
+
+119道题 https://mikechen.cc/19105.html
+
+知乎汇总 https://zhuanlan.zhihu.com/p/477276448
+
+阿里 https://blog.csdn.net/shy111111111/article/details/129317020
