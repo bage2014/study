@@ -1,6 +1,16 @@
 # study-itv2023 #
 
+## Lock 
+
+Java锁机制 https://www.cnblogs.com/jtxw/p/16326065.html
+
+
+
 ## LOG
+
+
+
+
 
 ## MQ
 
