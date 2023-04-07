@@ -4,6 +4,10 @@
 
 Java锁机制 https://www.cnblogs.com/jtxw/p/16326065.html
 
+ 在代码层面，每个Object都有一个锁，这个锁存放在对象头中，锁记录了当前对象被哪个线程锁占用。
+
+
+
 
 
 ## LOG
