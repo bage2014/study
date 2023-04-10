@@ -1,6 +1,20 @@
 # study-TODO #
 
-https://github.com/DiUS/java-faker Java 模拟数据
+Java 8函数式编程
+
+SQL 执行过程 
+
+数据库分页
+
+change buffer 的优化机制
+
+MySQL 日志
+
+MySQL WAL 机制
+
+
+
+
 
 https://github.com/jsonzou/jmockdata
 

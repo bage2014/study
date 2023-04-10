@@ -1,5 +1,11 @@
 # study-itv2023 #
 
+**16/60  2023-04-10** 
+
+MySQL 精选 60 道面试题（含答案） https://blog.csdn.net/hahazz233/article/details/125372412
+
+
+
 ## Lock 
 
 Java锁机制 https://www.cnblogs.com/jtxw/p/16326065.html
@@ -31,6 +37,20 @@ MySQL 精选 60 道面试题（含答案） https://blog.csdn.net/hahazz233/arti
 最完整MySQL数据库面试题（2020最新版）https://zhuanlan.zhihu.com/p/112857507
 
 https://www.ewbang.com/community/article/details/961524446.html
+
+
+
+### Key关键点
+
+- 关系型数据库 VS 非关系型数据库
+
+- SQL 执行过程
+- 索引结构 
+- 分页机制
+- 聚簇索引
+- change buffer 优化机制
+- 各种Log【3大Log】
+- WAL 机制【write ahead log】
 
 
 
