@@ -2,6 +2,8 @@
 
 Java 8函数式编程
 
+MySQL 层级架构
+
 SQL 执行过程 
 
 数据库分页
@@ -11,6 +13,24 @@ change buffer 的优化机制
 MySQL 日志
 
 MySQL WAL 机制
+
+MySQL 执行过程开关配置？？
+
+
+
+## MySQL 
+
+常用DB 维护【Docker版本】
+
+DB、Table
+
+Index
+
+Batch Insert 
+
+各种索引、查询备用
+
+
 
 
 
