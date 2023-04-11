@@ -18,6 +18,12 @@ MySQL 执行过程开关配置？？
 
 
 
+常用链接 
+
+Spring Valid https://mp.weixin.qq.com/s/qvn9bM7rVhFEqZwt9mp6Hw
+
+
+
 ## MySQL 
 
 常用DB 维护【Docker版本】
