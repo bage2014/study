@@ -16,6 +16,8 @@ MySQL WAL 机制
 
 MySQL 执行过程开关配置？？
 
+MySQL 数据备份实践？
+
 
 
 常用链接 

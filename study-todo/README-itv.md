@@ -1,8 +1,12 @@
 # study-itv2023 #
 
-**16/60  2023-04-10** 
+## Schedule
 
- https://blog.csdn.net/hahazz233/article/details/125372412
+**36/60  2023-04-13** https://blog.csdn.net/hahazz233/article/details/125372412
+
+**16/60  2023-04-10** https://blog.csdn.net/hahazz233/article/details/125372412
+
+
 
 
 
@@ -30,6 +34,8 @@ Java锁机制 https://www.cnblogs.com/jtxw/p/16326065.html
 
 ## MySQL
 
+有趣历史：MySQL5.5.5版本发布于 2010
+
 MySQL 精选 60 道面试题（含答案） https://blog.csdn.net/hahazz233/article/details/125372412
 
 常见（MySQL）面试题（含答案） https://blog.csdn.net/m0_63592370/article/details/126039076
@@ -37,42 +43,6 @@ MySQL 精选 60 道面试题（含答案） https://blog.csdn.net/hahazz233/arti
 最完整MySQL数据库面试题（2020最新版）https://zhuanlan.zhihu.com/p/112857507
 
 https://www.ewbang.com/community/article/details/961524446.html
-
-
-
-索引相关解释说明 https://blog.csdn.net/taoqilin/article/details/121230649
-
-聚簇索引非聚簇索引 
-
-https://blog.csdn.net/weixin_42131383/article/details/125338068
-
-https://blog.csdn.net/weixin_33709364/article/details/94728136
-
-索引覆盖、索引下推
-
-https://mp.weixin.qq.com/s?__biz=MzU3Mjk2NDc3Ng==&mid=2247483828&idx=1&sn=c21c6720a83240c2b899ed81ef57b912&chksm=fcc9ab73cbbe2265ac05ec67cca251bba661e995a00ad2acf2fabb69471bdc56987cdcf5b5e9&scene=27
-
-https://zhuanlan.zhihu.com/p/470255206
-
-https://baijiahao.baidu.com/s?id=1716515482593299829&wfr=spider&for=pc
-
-SQL执行过程 
-
-https://blog.csdn.net/qq_41116027/article/details/124135359
-
-### Key关键点
-
-- 关系型数据库 VS 非关系型数据库
-- MySQL 架构
-- 行业调研、优势、代替方案等
-
-- SQL 执行过程
-- 索引结构 
-- 分页机制
-- 聚簇索引
-- change buffer 优化机制
-- 各种Log【3大Log】
-- WAL 机制【write ahead log】
 
 
 
@@ -188,3 +158,11 @@ bage面试 https://github.com/bage2014/interview
 知乎汇总 https://zhuanlan.zhihu.com/p/477276448
 
 阿里 https://blog.csdn.net/shy111111111/article/details/129317020
+
+
+
+## 兴趣点
+
+ISAM 引擎【不是MyISAM】
+
+MySQL 5.5.5发布时间
