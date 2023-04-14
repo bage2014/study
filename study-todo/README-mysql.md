@@ -7,6 +7,46 @@ TODO
 
 
 
+## MySQL 架构
+
+参考链接 
+
+https://blog.csdn.net/qq_39234967/article/details/126091672
+
+https://blog.csdn.net/weixin_70730532/article/details/125164081
+
+- 网络连接层：提供与Mysql服务器建立连接的支持
+- 核心服务层：主要包含系统管理和控制工具、连接池、SQL接口、解析器、查询优化器和缓存六个部分
+- 存储引擎：负责Mysql中数据的存储与提取，与底层系统文件进行交互
+- 文件系统：负责将数据库的数据和日志存储在文件系统之上，并完成与存储引擎的交互，是文件的物理存储层
+  
+
+架构图
+
+![https://img-blog.csdnimg.cn/20210303232240506.png]()
+
+
+
+## SQL执行过程
+
+参考链接 https://blog.csdn.net/qwer123451234123/article/details/124344299
+
+https://www.cnblogs.com/roadwide/p/17149506.html
+
+包含数据恢复 https://www.qycn.com/xzx/article/17076.html
+
+
+
+sql执行原理
+
+
+
+
+
+## 事务提交过程
+
+
+
 
 
 ## 备忘
@@ -38,11 +78,7 @@ https://blog.csdn.net/qq_41116027/article/details/124135359
 
 ### Key关键点
 
-- 
-- MySQL 架构
 - 行业调研、优势、代替方案等
-- SQL 执行过程
-- 数据库事务提交过程
 - 索引结构 
 - 分页机制
 - 聚簇索引
