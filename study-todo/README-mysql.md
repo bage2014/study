@@ -1,6 +1,29 @@
 # study- Mysql #
 TODO
 
+## Key关键点
+
+- 行业调研、优势、代替方案等
+- 索引结构 
+- 分页机制
+- 聚簇索引
+- change buffer 优化机制
+- 各种Log【3大Log】
+- Bin Log
+- RedoLog
+- UndoLog
+- WAL 机制【write ahead log】
+- MySQL 恢复机制，比如CRASH后如何数据恢复
+- MySQL大表查询为什么不会爆内存
+- 数据库主从备份
+- 主从切换过程 
+- 并发链接和并发查询
+- 叶子节点分裂
+- 相关锁
+- 
+
+
+
 ## 关系 VS 非关系
 
 参考链接 https://blog.csdn.net/weixin_51468875/article/details/114087402
@@ -45,13 +68,19 @@ sql执行原理
 
 ## 事务提交过程
 
-
+参考链接 http://c.biancheng.net/view/7290.html
 
 
 
 ## 主从备份
 
 参考链接 https://www.yzktw.com.cn/post/523759.html
+
+
+
+## 主从切换 
+
+http://cnblogs.com/liang24/p/14149412.html
 
 
 
@@ -84,18 +113,5 @@ SQL执行过程
 
 https://blog.csdn.net/qq_41116027/article/details/124135359
 
-### Key关键点
 
-- 行业调研、优势、代替方案等
-- 索引结构 
-- 分页机制
-- 聚簇索引
-- change buffer 优化机制
-- 各种Log【3大Log】
-- Bin Log
-- RedoLog
-- UndoLog
-- WAL 机制【write ahead log】
-- MySQL 恢复机制，比如CRASH后如何数据恢复
-- MySQL大表查询为什么不会爆内存
-- 数据库主从备份
+
