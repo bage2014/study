@@ -49,6 +49,14 @@ sql执行原理
 
 
 
+## 主从备份
+
+参考链接 https://www.yzktw.com.cn/post/523759.html
+
+
+
+
+
 ## 备忘
 
 https://www.bilibili.com/video/BV1Ca411R7GG?p=46&vd_source=72424c3da68577f00ea40a9e4f9001a1
@@ -90,3 +98,4 @@ https://blog.csdn.net/qq_41116027/article/details/124135359
 - WAL 机制【write ahead log】
 - MySQL 恢复机制，比如CRASH后如何数据恢复
 - MySQL大表查询为什么不会爆内存
+- 数据库主从备份
