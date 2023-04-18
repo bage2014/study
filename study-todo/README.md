@@ -28,6 +28,8 @@ MySQL 主从备份切换实践
 
 Spring Valid https://mp.weixin.qq.com/s/qvn9bM7rVhFEqZwt9mp6Hw
 
+clickhouse  https://juejin.cn/post/7221154297706430525
+
 
 
 ## MySQL 
