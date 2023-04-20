@@ -49,12 +49,12 @@
     </dependency>
 
 
-
+<!--
     <dependency>
       <groupId>edu.uci.ics</groupId>
       <artifactId>crawler4j</artifactId>
-      <version>4.4.0</version>
-    </dependency>
+      <version>4.3</version>
+    </dependency>-->
 
 
 
