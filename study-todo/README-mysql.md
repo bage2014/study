@@ -1,4 +1,10 @@
 # study- Mysql #
+## 简介
+
+MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，属于 Oracle 旗下产品。MySQL 是最流行的关系型数据库管理系统之一，在 WEB 应用方面，MySQL是最好的 RDBMS (Relational Database Management System，关系数据库管理系统) 应用软件之一。在Java企业级开发中非常常用，因为 MySQL 是开源免费的，并且方便扩展。
+
+
+
 TODO
 
 ## Key关键点
@@ -20,13 +26,27 @@ TODO
 - 并发链接和并发查询
 - 叶子节点分裂
 - 相关锁
-- 
+- MySQL自带表
+- 聚集索引
+- 隔离级别
+- 三大范式
 
 
 
 ## 关系 VS 非关系
 
 参考链接 https://blog.csdn.net/weixin_51468875/article/details/114087402
+
+
+
+## MyISAM vs InnoDB
+
+InnoDB
+
+插入缓冲（insert buffer)
+二次写(double write)
+自适应哈希索引(ahi)
+预读(read ahead)
 
 
 
@@ -84,6 +104,16 @@ http://cnblogs.com/liang24/p/14149412.html
 
 
 
+## DB LOG
+
+### Bin Log
+
+binlog有有几种录入格式：statement，row和mixed
+
+### undo Log
+
+### redolog
+
 
 
 ## 聚集索引 
@@ -96,6 +126,14 @@ http://cnblogs.com/liang24/p/14149412.html
 
 
 
+## 索引
+
+
+
+https://zhuanlan.zhihu.com/p/112857507 有很多关于索引的点
+
+
+
 ## 隔离级别
 
 
@@ -103,6 +141,12 @@ http://cnblogs.com/liang24/p/14149412.html
 ## 数据库三范式
 
 
+
+## MySQL 项目结构
+
+MySQL 常用操作记录？
+
+权限
 
 
 
