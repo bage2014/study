@@ -86,6 +86,26 @@ http://cnblogs.com/liang24/p/14149412.html
 
 
 
+## 聚集索引 
+
+- MyISAM（ 非聚集）
+
+- InnoDB（ 聚集索引）
+
+- InnoDB要求表必须有主键（MyISAM可以没有）
+
+
+
+## 隔离级别
+
+
+
+## 数据库三范式
+
+
+
+
+
 ## 备忘
 
 https://www.bilibili.com/video/BV1Ca411R7GG?p=46&vd_source=72424c3da68577f00ea40a9e4f9001a1
