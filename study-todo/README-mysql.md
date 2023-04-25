@@ -11,6 +11,7 @@ TODO
 
 - 行业调研、优势、代替方案等
 - 索引结构 
+- 数据库页
 - 分页机制
 - 聚簇索引
 - change buffer 优化机制
@@ -81,6 +82,25 @@ https://www.cnblogs.com/roadwide/p/17149506.html
 
 
 sql执行原理
+
+## 索引结构
+
+https://blog.csdn.net/m0_50275872/article/details/124138516
+
+https://www.cnblogs.com/xingchong/p/16478639.html
+
+
+
+### 索引分类
+
+B+树索引
+Hash索引(底层是哈希表，哈希索引做区间查询的速度是很慢,要扫描链表，适合等值查询)
+Full-Text全文索引
+R-Tree索引
+
+不同角度，不同分类
+
+### 索引底层结构
 
 
 
