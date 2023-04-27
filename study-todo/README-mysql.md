@@ -95,10 +95,18 @@ https://www.cnblogs.com/xingchong/p/16478639.html
 
 B+树索引
 Hash索引(底层是哈希表，哈希索引做区间查询的速度是很慢,要扫描链表，适合等值查询)
-Full-Text全文索引
+Full-Text全文索引： https://blog.csdn.net/qq_41993206/article/details/109548867
 R-Tree索引
 
 不同角度，不同分类
+
+
+
+空间索引 
+
+https://www.cnblogs.com/LBSer/p/3392491.html
+
+https://www.cnblogs.com/LBSer/p/3403933.html
 
 ### 索引底层结构
 
