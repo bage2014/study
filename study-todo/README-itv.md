@@ -2,7 +2,7 @@
 
 ## Schedule
 
-**索引底层结构/ALL** https://github.com/bage2014/study/blob/master/study-todo/README-mysql.md
+**索引底层结构/ALL** https://github.com/bage2014/study/blob/master/study-todo/README-itv-mysql.md
 
 **done/ALL 2023-04-25** https://www.ewbang.com/community/article/details/961524446.html
 
@@ -17,6 +17,36 @@
 **16/60  2023-04-10** https://blog.csdn.net/hahazz233/article/details/125372412
 
 
+
+## MySQL
+
+有趣历史：MySQL5.5.5版本发布于 2010
+
+MySQL 精选 60 道面试题（含答案） https://blog.csdn.net/hahazz233/article/details/125372412
+
+常见（MySQL）面试题（含答案） https://blog.csdn.net/m0_63592370/article/details/126039076
+
+最完整MySQL数据库面试题（2020最新版）https://zhuanlan.zhihu.com/p/112857507
+
+https://www.ewbang.com/community/article/details/961524446.html
+
+
+
+## Mybaits + Plus 
+
+Mybatis 
+
+https://blog.csdn.net/qq_33036061/article/details/105209254
+
+https://blog.csdn.net/m0_59281987/article/details/127768618
+
+https://zhuanlan.zhihu.com/p/424217408
+
+http://www.bjpowernode.com/javazixun/10429.html
+
+https://zhuanlan.zhihu.com/p/347935099
+
+https://mikechen.cc/17252.html
 
 
 
@@ -40,19 +70,9 @@ Java锁机制 https://www.cnblogs.com/jtxw/p/16326065.html
 
 ## Spring + Boot + Cloud 
 
-## Mybaits + Plus 
 
-## MySQL
 
-有趣历史：MySQL5.5.5版本发布于 2010
-
-MySQL 精选 60 道面试题（含答案） https://blog.csdn.net/hahazz233/article/details/125372412
-
-常见（MySQL）面试题（含答案） https://blog.csdn.net/m0_63592370/article/details/126039076
-
-最完整MySQL数据库面试题（2020最新版）https://zhuanlan.zhihu.com/p/112857507
-
-https://www.ewbang.com/community/article/details/961524446.html
+## Java
 
 
 
