@@ -33,7 +33,7 @@ TODO 有待继续了解 typeHandlers、处理枚举类型...
   - 类型别名是为 Java 类型设置一个短的名字。它只和 XML 配置有关
   - 主要有 类型别名、包别名和注解别名
   - [常见 Java 类型内建的相应的类型别名](http://www.mybatis.org/mybatis-3/zh/configuration.html "详见官网typeAliases")       
-        
+  
 - typeHandlers 类型处理器，SQL和Java类型的转化
   - 无论是 MyBatis 在预处理语句（PreparedStatement）中设置一个参数时，还是从结果集中取出一个值时， 都会用类型处理器将获取的值以合适的方式转换成 Java 类型
   - MyBatis 默认支持BooleanTypeHandler、ByteTypeHandler、ShortTypeHandler等
@@ -55,10 +55,10 @@ MyBatis 一、二级缓存和自定义缓存 [https://www.cnblogs.com/moongeek/p
 ### 一级缓存 ###
 MyBatis **默认开启**了一级缓存，一级缓存是在SqlSession 层面进行缓存的。即，同一个SqlSession ，多次调用同一个Mapper和同一个方法的同一个参数，只会进行一次数据库查询，然后把数据缓存到缓冲中，以后直接先从缓存中取出数据，不会直接去查数据库。
 
-​ 但是不同的SqlSession对象，因为不用的SqlSession都是相互隔离的，所以相同的Mapper、参数和方法，他还是会再次发送到SQL到数据库去执行，返回结果。
+ 但是不同的SqlSession对象，因为不用的SqlSession都是相互隔离的，所以相同的Mapper、参数和方法，他还是会再次发送到SQL到数据库去执行，返回结果。
 
 ### 二级缓存 ###
-​ 为了克服一级缓存问题，需要开启二级缓存，是的缓存zaiSqlSessionFactory层面给各个SqlSession 对象共享。默认二级缓存是不开启的，需要手动进行配置
+ 为了克服一级缓存问题，需要开启二级缓存，是的缓存zaiSqlSessionFactory层面给各个SqlSession 对象共享。默认二级缓存是不开启的，需要手动进行配置
 
     <cache/>
 
@@ -94,11 +94,17 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
 	  </foreach>
 	</insert>
 
+返回ID主键
+
+```java
+useGeneratedKeys="true"
+```
+
 具体实践：
     com\bage\study\mybatis\springboot\org\UserMapper.xml
 
         简单插入 insert
-		批量插入 batchInsert
+    	批量插入 batchInsert
 
 ### delete ###
 
@@ -125,20 +131,20 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
 	<select id="selectPerson" parameterType="int" resultType="hashmap">
 	  SELECT * FROM PERSON WHERE ID = #{id}
 	</select>
-	
+
 一对一 association + 一对多 collection
 请求用例 [http://localhost:8080/department/all](http://localhost:8080/department/all)	
-  
+
     <resultMap id="DepartmentResultMap" type="Department">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
-
-        <association property="departmentAddress" column="id" select="com.bage.study.mybatis.springboot.org.dao.DepartmentAddressMapper.queryByDepartmentId"/>
-
-        <collection property="users" column="id" select="com.bage.study.mybatis.springboot.org.dao.UserMapper.queryByDepartmentId"/>
-
-    </resultMap>
     
+        <association property="departmentAddress" column="id" select="com.bage.study.mybatis.springboot.org.dao.DepartmentAddressMapper.queryByDepartmentId"/>
+    
+        <collection property="users" column="id" select="com.bage.study.mybatis.springboot.org.dao.UserMapper.queryByDepartmentId"/>
+    
+    </resultMap>
+
 ### SQL ###
 
     <sql id="userColumns"> ${alias}.id,${alias}.username,${alias}.password </sql>   
@@ -148,7 +154,7 @@ XML 映射文件 [http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html](http://ww
       from some_table t1
         cross join some_table t2
     </select>
-    
+
 ### 参数 ###
 
     #{age,javaType=int,jdbcType=NUMERIC,typeHandler=MyTypeHandler}
