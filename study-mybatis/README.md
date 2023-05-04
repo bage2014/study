@@ -153,6 +153,14 @@ collection fetchType="lazy"
 
 性能 vs 潜在问题
 
+自动映射【必须类属性名完全一致】
+
+```
+resultType="a.b.c.ABCclass"
+```
+
+
+
 ### SQL ###
 
     <sql id="userColumns"> ${alias}.id,${alias}.username,${alias}.password </sql>   
