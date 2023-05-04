@@ -145,6 +145,14 @@ useGeneratedKeys="true"
     
     </resultMap>
 
+延时加载
+
+```
+collection fetchType="lazy" 
+```
+
+性能 vs 潜在问题
+
 ### SQL ###
 
     <sql id="userColumns"> ${alias}.id,${alias}.username,${alias}.password </sql>   
