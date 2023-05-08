@@ -36,6 +36,22 @@ MySQL 主从备份切换实践
 
 MyBatis : 行业调研、优势、代替方案等核心组件基本架构mybatis中的一级缓存mybatis中的二级缓存延时加载  
 
+spring 容器信息获取
+
+spring 动态注册bean【或者修改bean】
+
+spring 条件加载【加载bean】
+
+spring 启动事件监听【事件机制完成服务启动后的信息整理】
+
+Spring 事件机制获取HTTP请求调用详情【http请求监控】
+
+spring  钩子Aware
+
+spring order + 配置优先级
+
+spring profile 环境
+
 
 
 常用链接 
