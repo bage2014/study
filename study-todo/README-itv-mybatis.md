@@ -1,6 +1,14 @@
 # study- Mybatis #
 ## 简介
 
+https://blog.csdn.net/m0_59281987/article/details/127768618
+
+
+
+## 架构流程
+
+https://blog.csdn.net/m0_59281987/article/details/127768618
+
 
 
 ## 设计模式
@@ -34,6 +42,9 @@ TODO
 - 延时加载 
 - OGNL表达式
 - 设计模式
+- selectKey
+- Executor执行器
+- TypeHandler
 
 
 
