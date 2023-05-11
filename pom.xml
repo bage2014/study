@@ -173,8 +173,8 @@
       <module>study-spring-boot-versions</module>
       <module>study-spring-cloud-versions</module>
       <module>study-itv-pro</module>
-      <module>study-common-repo-h2</module>
-    <module>study-common-repo-mysql-docker</module>
+      <module>study-common-repo-h2-mybatisplus</module>
+    <module>study-common-repo-mysql-mybatisplus</module>
 
   </modules>
 </project>

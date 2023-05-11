@@ -5,11 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.bage</groupId>
-  <artifactId>study-common-repo-h2</artifactId>
+  <artifactId>study-common-repo-mysql-docker</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>study-common-repo-h2</name>
-  <!-- FIXME change it to the project's website -->
+  <name>study-common-repo-mysql-mybatisplus</name>
   <url>http://www.example.com</url>
 
   <properties>
