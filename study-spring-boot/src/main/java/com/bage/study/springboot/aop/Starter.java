@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * @author luruihua
  *
  */
-@SpringBootApplication
-@EnableAsync
+//@SpringBootApplication
+//@EnableAsync
 public class Starter {
 
     public static void main(String[] args) {
