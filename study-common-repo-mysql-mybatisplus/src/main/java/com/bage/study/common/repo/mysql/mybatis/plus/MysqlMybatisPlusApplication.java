@@ -1,4 +1,4 @@
-package com.bage.study.common.repo.h2.mybatis.plus;
+package com.bage.study.common.repo.mysql.mybatis.plus;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
@@ -10,16 +10,14 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @SpringBootApplication
-@MapperScan("com.bage.study.common.repo.h2.mybatis.plus")
-public class H2MybatisPlusApplication implements CommandLineRunner {
+@MapperScan("com.bage.study.common.repo.mysql.mybatis.plus")
+public class MysqlMybatisPlusApplication implements CommandLineRunner {
 
-    @Resource
-    private JdbcTemplate jdbcTemplate;
     @Resource
     private UserMapper userMapper;
 
     public static void main(String args[]) {
-        SpringApplication.run(H2MybatisPlusApplication.class, args);
+        SpringApplication.run(MysqlMybatisPlusApplication.class, args);
     }
 
     @Override
