@@ -32,6 +32,7 @@ TODO
 - 隔离级别
 - 三大范式
 - 自适应哈希索引
+- 错误日志、慢语句日志
 
 
 
@@ -137,9 +138,21 @@ http://cnblogs.com/liang24/p/14149412.html
 
 ## DB LOG
 
+记录的是SQL 还是 记录的是数据？？
+
+分别的作用？？
+
+写入的时机？？
+
+格式？大概结构？
+
 ### Bin Log
 
 binlog有有几种录入格式：statement，row和mixed
+
+系统变量？当前时间等问题？？
+
+sync_bin_log = 1 强一致性？
 
 ### undo Log
 
