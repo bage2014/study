@@ -168,6 +168,60 @@ plaid
 | study-jmeter  |  jmeter 学习笔记 |
 | study-mybatis-generator-maven-plugin  |  mybatis-generator-maven-plugin 学习笔记 |
 | study-spring-boot-jpa  |  study-spring-boot-jpa 学习笔记 |
+| study-json | Jackson 和  gson的使用 |
+| study-spring-boot-multi-datasource | Spring 多数据源 |
+| study-spring-boot-env | Spring Boot 环境 |
+| study-java-shell | Java程序和Shell 脚本交互 |
+| study-spring-email | Spring 发送邮件 |
+| study-zipkin | zipkin链路组件 |
+| study-es | Java 链接ES |
+| study-spring-boot-zipkin | Spring Boot 集成 zipkin |
+| study-itext | Itext pdf 和HTML 转换 |
+| study-spring-boot-sso-oauth2-server-jwt | Spring boot SSO 和JWT |
+| study-split-db-tb | 分库分表实践 |
+| study-vue-npm | vue 环境搭建 |
+| study-xxl-job | xxl- job 实践 |
+| study-html2pdf | html 转 PDF |
+| study-mongodb | mongodb 链接 |
+| study-axon | axon 入门 |
+| study-spring-boot-dynamic-datasource | 动态数据源切换 |
+| study-mapping-generator | 自动生成模型映射工具 |
+| bage-spring-boot-starter-ping | Spring Boot Starter 实践 |
+| study-tencent-share | 腾讯分享API对接 |
+| study-regex | 正则表达式 |
+| study-hashids-java | 短ID 生成器 |
+| study-spring-boot-metrics | Spring Boot 埋点 |
+| study-arthas | 阿里巴巴 Arthas 工具 |
+| study-summary | 总结 |
+| study-id-generator | ID 生成器 |
+| study-stream-m3u8 | m3u8 直播流解析转发 |
+| study-hystrix | 熔断器 Hystrix |
+| study-resilience4j | Resilience4j 限流 |
+| study-ews-java-api | Outlook 邮箱事件监听 |
+| study-netty | Netty 基本使用 |
+| study-m3u | M3u 音乐播放 |
+| study-sftp | sftp 登陆认证 |
+| study-jmockit | jmockit mock工具 |
+| study-mockito | mockito |
+| study-file-online-preview | 文件在线预览工具 |
+| study-jol | jol Java内存模型查看工具 |
+| study-servlet | servlet |
+| study-lombok | lombok 基本使用 |
+| study-spring-boot-elk | Spring Boot 集成 ELK 组件 |
+| study-mapstruct | 模型映射工具  mapstruct |
+| study-sentinel | sentinel 限流 |
+| study-mybatis-plus | Mybatis Plus 基本入门 |
+| study-oceanbase | oceanbase 数据库 |
+| study-spring-boot-trace | 调用链 |
+| study-spring-boot-valid | Spring Boot 参数校验 |
+| study-spring-boot-web-socket | Web Socket |
+| study-spring-cloud-circuit-breaker | circuit-breaker 熔断 |
+| study-crawler | 抓取HTML |
+| study-jenkins | jenkins 使用 |
+| study-nginx | nginx 使用 |
+| study-common-repo-h2-mybatisplus | 基于内存数据库的基础组件 |
+| study-common-repo-mysql-mybatisplus | 基于Docker MySQL 数据库的基础组件 |
+| study-java11 | java11特性 |
 
 
 
