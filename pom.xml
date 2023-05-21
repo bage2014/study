@@ -176,6 +176,7 @@
       <module>study-common-repo-h2-mybatisplus</module>
       <module>study-common-repo-mysql-mybatisplus</module>
       <module>study-java11</module>
+    <module>study-data-mock</module>
 
   </modules>
 </project>
