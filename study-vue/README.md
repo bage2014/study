@@ -20,6 +20,13 @@ vue 显示 markdown 内容 [https://github.com/miaolz123/vue-markdown](https://g
 ### 部署运行 ###
     npm run dev
 
+### 安装Yarn
+
+```
+npm install --global yarn
+```
+
+
 
 ## 学习笔记 ##
 
