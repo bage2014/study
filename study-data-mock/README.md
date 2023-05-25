@@ -19,6 +19,7 @@ https://github.com/DiUS/java-faker Java 模拟数据
 
 https://github.com/jsonzou/jmockdata
 
+https://github.com/binarywang/java-testdata-generator
 
 ## 快速开始
 
