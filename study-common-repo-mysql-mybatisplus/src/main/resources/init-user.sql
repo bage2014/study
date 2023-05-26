@@ -1,10 +1,3 @@
-Create database mydb;
-CREATE USER 'bage'@'%' IDENTIFIED BY 'bage';
-grant all privileges on mydb.* to 'bage'@'%';
-ALTER user 'bage'@'%' IDENTIFIED BY 'bage' PASSWORD EXPIRE NEVER;
-ALTER user 'bage'@'%' IDENTIFIED WITH mysql_native_password BY 'bage';
-FLUSH PRIVILEGES;
-
 
 use mydb;
 
@@ -26,5 +19,4 @@ INSERT INTO user (id, name, age, email) VALUES
 (3, 'Tom', 28, 'test3@baomidou.com'),
 (4, 'Sandy', 21, 'test4@baomidou.com'),
 (5, 'Billie', 24, 'test5@baomidou.com');
-
 
