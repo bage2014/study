@@ -1,4 +1,4 @@
-package com.bage.study.common.repo.mysql.mybatis.plus;
+package com.bage.study.common.repo.mysql.mybatis.plus.beta;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

@@ -5,7 +5,7 @@ import cn.binarywang.tools.generator.ChineseAddressGenerator;
 /**
  * https://github.com/binarywang/java-testdata-generator/blob/master/src/test/java/cn/binarywang/tools/generator/InsertSQLGeneratorTest.java
  *
- * 
+ *
  */
 public class TestDataGeneratorMock {
 

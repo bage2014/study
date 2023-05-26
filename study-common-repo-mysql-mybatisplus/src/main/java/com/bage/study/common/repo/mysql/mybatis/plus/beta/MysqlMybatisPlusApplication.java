@@ -1,10 +1,9 @@
-package com.bage.study.common.repo.mysql.mybatis.plus;
+package com.bage.study.common.repo.mysql.mybatis.plus.beta;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
