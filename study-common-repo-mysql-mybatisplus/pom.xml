@@ -63,10 +63,21 @@
       <scope>provided</scope>
     </dependency>
 
+<!--    mock -->
+    <dependency>
+      <groupId>com.github.jsonzou</groupId>
+      <artifactId>jmockdata</artifactId>
+      <version>4.3.0</version>
+    </dependency>
     <dependency>
       <groupId>com.github.javafaker</groupId>
       <artifactId>javafaker</artifactId>
       <version>1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.binarywang</groupId>
+      <artifactId>java-testdata-generator</artifactId>
+      <version>1.1.2</version>
     </dependency>
 
   </dependencies>
