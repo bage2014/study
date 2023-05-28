@@ -8,3 +8,4 @@ https://baomidou.com/
 
 https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart
 
+https://www.baomidou.com/pages/49cc81/#save
