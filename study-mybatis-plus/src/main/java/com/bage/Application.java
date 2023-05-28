@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @SpringBootApplication
@@ -17,6 +19,8 @@ public class Application implements CommandLineRunner {
     private JdbcTemplate jdbcTemplate;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private MyService myService;
 
     public static void main(String args[]) {
         SpringApplication.run(Application.class, args);
@@ -47,9 +51,27 @@ public class Application implements CommandLineRunner {
                 "(4, 'Sandy', 21, 'test4@baomidou.com'),\n" +
                 "(5, 'Billie', 24, 'test5@baomidou.com');");
 
+
+
         System.out.println(("----- selectAll method test ------"));
         List<User> userList = userMapper.selectList(null);
         System.out.println(("----- selectAll size ------" + userList.size()));
         userList.forEach(System.out::println);
+
+        List<User> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            User user = new User();
+            user.setId(10L + i);
+            user.setName("bage" + i);
+            user.setAge(10 + i);
+            user.setEmail("bage"+i+"@qq.com");
+            list.add(user);
+        }
+        boolean b = myService.saveBatch(list);
+        System.out.println("saveBatch result = " + b);
+
+        List<User> userList2 = userMapper.selectList(null);
+        System.out.println(("----- selectAll size2 ------" + userList2.size()));
+        userList2.forEach(System.out::println);
     }
 }

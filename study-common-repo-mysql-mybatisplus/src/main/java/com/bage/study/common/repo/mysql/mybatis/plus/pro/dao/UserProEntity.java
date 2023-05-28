@@ -9,7 +9,7 @@ import java.sql.Date;
  * https://baomidou.com/pages/223848/#tablename
  */
 @TableName("user_pro")
-public class User {
+public class UserProEntity {
     private Long id;
     @TableField("first_name")
     private String firstName;
