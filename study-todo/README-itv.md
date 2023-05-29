@@ -78,6 +78,26 @@ Java锁机制 https://www.cnblogs.com/jtxw/p/16326065.html
 
 ## MQ
 
+概述？ https://blog.csdn.net/m0_68850571/article/details/125854787
+
+MQ面试题总结【Rabbit MQ】 https://blog.csdn.net/c704395972/article/details/119596005
+
+https://www.cnblogs.com/qingmuchuanqi48/p/11006760.html
+
+https://mikechen.cc/26813.html
+
+Rabbit MQ https://baijiahao.baidu.com/s?id=1677690622513281653&wfr=spider&for=pc
+
+
+
+https://developer.aliyun.com/article/1152461?spm=a2c6h.12873639.article-detail.36.4c5b3772MSABWs&scm=20140722.ID_community@@article@@1152461._.ID_community@@article@@1152461-OR_rec-V_1-RL_community@@article@@1040043
+
+http://imyhq.com/blockchain/2692.html
+
+https://maimai.cn/article/detail?fid=1750646502&efid=Xlffd0CPyLaqvMuOx_liIw
+
+
+
 ## Schedule
 
 ## Spring + Boot + Cloud 
