@@ -82,4 +82,8 @@ server:
         }
     }
     
-   
+  
+## Filter 
+    
+    https://www.baeldung.com/spring-boot-add-filter
+

@@ -42,8 +42,6 @@ public class ResponseBodyWrapHandler implements HandlerMethodReturnValueHandler 
 		}
 
 		delegate.handleReturnValue(rtnMsg, returnType, mavContainer, webRequest);
-		;
-
 
 	}
 
