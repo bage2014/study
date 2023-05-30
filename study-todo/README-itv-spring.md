@@ -20,6 +20,7 @@
 - profile 环境
 - 自动装配
 - AOP【有哪些类型的通知（Advice）】
+- Spring Boot 启动过程
 
 
 
@@ -36,6 +37,16 @@
 https://my.oschina.net/wca/blog/5523428
 
 何时被调用回调？
+
+
+
+## 启动过程
+
+https://blog.csdn.net/well_nature/article/details/125580649
+
+https://www.cnblogs.com/enhance/p/16988798.html
+
+
 
 ## Bilibili 
 
