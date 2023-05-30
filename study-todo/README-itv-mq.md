@@ -13,6 +13,7 @@
 - 手撕MQ ？【自己实现协议？】
 - 组件
 - 如何保证可靠性
+- 死信队列
 
 
 
@@ -22,7 +23,17 @@
 
 ## **架构** 
 
+https://blog.csdn.net/qqq3117004957/article/details/104841592
 
+![](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xMjU1NTk1NC02NDViYzIzNmNlZTQwMzViLnBuZw?x-oss-process=image/format,png)
+
+
+
+## AMQP协议
+
+可以重点看看
+
+https://blog.csdn.net/zhoupenghui168/article/details/130322210
 
 ## 对比
 

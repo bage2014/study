@@ -30,6 +30,10 @@ spring order + 配置优先级
 
 spring profile 环境
 
+自动装配
+
+Spring Condition 以及回调时机
+
 
 
 常用链接 
