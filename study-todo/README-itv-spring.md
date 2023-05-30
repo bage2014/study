@@ -18,6 +18,8 @@
 - 钩子Aware
 - order + 配置优先级
 - profile 环境
+- 自动装配
+- AOP【有哪些类型的通知（Advice）】
 
 
 
@@ -29,7 +31,11 @@
 
 
 
+## 条件加载 
 
+https://my.oschina.net/wca/blog/5523428
+
+何时被调用回调？
 
 ## Bilibili 
 
