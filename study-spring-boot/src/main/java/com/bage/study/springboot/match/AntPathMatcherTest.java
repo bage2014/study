@@ -1,21 +1,27 @@
 package com.bage.study.springboot.match;
 
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 public class AntPathMatcherTest {
 
     public static void main(String[] args) {
+        System.out.println(match("/bage1/**","/bage1"));
+        System.out.println(match("/bage1/**","/bage1/bage2"));
+        System.out.println(match("/bage1/*","/bage1/bage3"));
+        System.out.println(match("/bage1/*","/bage1"));
+        System.out.println(match("/bage1/*","/bage1/bage3/2/32222"));
+        System.out.println(match("/bage1/*/**","/bage1/bage3/2/32222"));
+        System.out.println(match("/bage1/*/**","/bage1"));
+        System.out.println(match("/bage1/*/**","/bage1/122"));
 
-        AntPathMatcher antPathMatcher = new AntPathMatcher();
-        String pattern = "/bage1/**";
-        String path1 = "/bage1";
-        String path2 = "/bage1/bage2";
-        boolean match1 = antPathMatcher.match(pattern, path1);
-        boolean match2 = antPathMatcher.match(pattern, path2);
-        System.out.println("match=" + match1 + "; pattern=" + pattern + "; path=" + path1);
-        System.out.println("match=" + match2 + "; pattern=" + pattern + "; path=" + path2);
+    }
 
-
+    private static String match(String pattern, String path) {
+        PathMatcher antPathMatcher = new AntPathMatcher();
+        boolean match = antPathMatcher.match(pattern, path);
+        String result = ("match=" + match + "; pattern=" + pattern + "; path=" + path);
+        return result;
     }
 
 }
