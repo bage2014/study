@@ -2,7 +2,19 @@
 
 ## MQ 
 
-Rabbit 安装基本使用
+Rocket 安装基本使用
+
+Kafka 安装和基本使用
+
+## Lock 
+
+锁四种状态
+
+升级条件
+
+CAS、AQS等
+
+
 
 ## JAVA 基础
 
