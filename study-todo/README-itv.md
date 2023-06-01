@@ -72,9 +72,21 @@ https://mikechen.cc/17252.html
 
 ## Lock 
 
-Java锁机制 https://www.cnblogs.com/jtxw/p/16326065.html
+Java锁解析【2023-06-01；ALL】 https://www.cnblogs.com/jtxw/p/16326065.html
 
+https://www.python51.com/jc/73707.html
 
+https://betheme.net/dashuju/96421.html
+
+https://blog.csdn.net/libaowen609/article/details/125343833
+
+https://blog.csdn.net/Q_P777/article/details/124894748
+
+https://www.jb51.net/it/713005.html
+
+https://mp.weixin.qq.com/s?__biz=MzU1MjMzNzUwNg==&mid=2247484229&idx=1&sn=9a67add64bf3c9fee15faf63c6df5c38&chksm=fb82ea48ccf5635ea0edc5ff40662680102d6e9e04ce30686332abd860e940f250b7cae0161c&scene=27
+
+https://blog.csdn.net/GitChat/article/details/104871532?spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-3-104871532-blog-109335237.235%5Ev36%5Epc_relevant_default_base3&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-3-104871532-blog-109335237.235%5Ev36%5Epc_relevant_default_base3&utm_relevant_index=4
 
 
 
@@ -104,7 +116,19 @@ https://maimai.cn/article/detail?fid=1750646502&efid=Xlffd0CPyLaqvMuOx_liIw
 
 https://blog.csdn.net/zhoupenghui168/article/details/130322210
 
+
+
 ## Schedule
+
+
+
+## Redis
+
+
+
+
+
+
 
 ## Spring + Boot + Cloud 
 
@@ -158,7 +182,19 @@ Spring Cloud
 
 ## Java
 
+牛客网
 
+https://www.nowcoder.com/exam/interview?order=0
+
+
+
+https://blog.csdn.net/guorui_java/article/details/119299329
+
+https://blog.csdn.net/uuqaz/article/details/123502779
+
+https://www.cnblogs.com/linuxxuexi/p/javamianshi.html
+
+https://baijiahao.baidu.com/s?id=1731248649940070864&wfr=spider&for=pc
 
 
 
