@@ -16,8 +16,8 @@ import java.util.List;
 @Component
 public class UserProDataServiceMockImpl implements UserProDataService {
     @Override
-    public List<UserPro> getInitData() {
-        int max = 1000 * 10000;
+    public List<UserPro> getInitData(int n) {
+        int max = n;
         List<UserPro> list = new ArrayList<>();
         for (int i = 0; i < max; i++) {
             list.add(mockUser(i));

@@ -2,13 +2,15 @@ package com.bage.study.common.repo.mysql.mybatis.plus.pro.dao;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * https://baomidou.com/pages/223848/#tablename
  */
 @TableName("user_pro")
+@Data
 public class UserProEntity {
     private Long id;
     @TableField("first_name")
