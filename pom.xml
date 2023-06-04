@@ -177,6 +177,7 @@
       <module>study-common-repo-mysql-mybatisplus</module>
       <module>study-java11</module>
     <module>study-data-mock</module>
+    <module>study-best-practice</module>
 
   </modules>
 </project>
