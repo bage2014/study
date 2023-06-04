@@ -65,6 +65,15 @@ https://cloud.tencent.com/developer/article/1341385
 ### 参考链接  ###
 - JVM参数配置 [https://www.cnblogs.com/smyhvae/p/4736162.html](https://www.cnblogs.com/smyhvae/p/4736162.html "JVM参数配置") 
 - 参数说明 [https://www.cnblogs.com/marcotan/p/4256885.html](https://www.cnblogs.com/marcotan/p/4256885.html "参数说明")
+
+https://openjdk.java.net/projects/jdk/12/
+https://openjdk.java.net/projects/jdk/13/
+https://openjdk.java.net/projects/jdk/14/
+https://openjdk.java.net/projects/jdk/15/
+https://openjdk.java.net/projects/jdk/16/
+https://openjdk.java.net/projects/jdk/17/
+
+
 ### 参数配置(VM Options) ###
 - `-XX:+PrintGCDetails` 打印日志参数
 - `-Xmx –Xms`：指定最大堆和最小堆
@@ -108,3 +117,5 @@ subList 不是返回ArrayList，而是SubList
 - 主流技术的demo版本（比如redis、MQ、常用组件）
 - 最难问题，如何处理，要能说一个小时！
 - 常见问题解决思路，比如：并发提高、卡顿、线上、宕机、GC日志等处理思路
+
+
