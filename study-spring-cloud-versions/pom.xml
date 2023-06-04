@@ -18,7 +18,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>17</java.version>
-
     <spring.boot.base.version>3.0.1</spring.boot.base.version>
     <spring.cloud-version>2022.0.0</spring.cloud-version>
 
