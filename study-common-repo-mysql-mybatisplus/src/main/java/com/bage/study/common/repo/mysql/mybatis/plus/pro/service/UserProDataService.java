@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface UserProDataService {
 
-    List<UserPro> getInitData();
+    List<UserPro> getInitData(int n);
 }
