@@ -21,6 +21,8 @@
         <mybatisplus.version>3.5.2</mybatisplus.version>
         <mysql.version>8.0.13</mysql.version>
 
+        <lombok.version>1.18.20</lombok.version>
+
     </properties>
 
     <dependencies>
@@ -60,8 +62,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
-            <scope>provided</scope>
+            <version>${lombok.version}</version>
         </dependency>
 
         <!--    mock -->
