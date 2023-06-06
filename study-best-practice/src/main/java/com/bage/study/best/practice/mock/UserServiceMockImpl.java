@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class UserServiceMockImpl implements UserService {
-    @Override
+public class UserServiceMockImpl {
+
     public List<User> getInitData(int n) {
         int max = n;
         List<User> list = new ArrayList<>();

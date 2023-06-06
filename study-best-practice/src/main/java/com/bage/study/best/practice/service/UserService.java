@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> getInitData(int n);
+    List<User> queryUser(String phone);
 }

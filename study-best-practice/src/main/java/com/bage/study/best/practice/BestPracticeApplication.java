@@ -1,5 +1,6 @@
 package com.bage.study.best.practice;
 
+import com.bage.study.best.practice.mock.UserServiceMockImpl;
 import com.bage.study.best.practice.repo.UserMapper;
 import com.bage.study.best.practice.repo.UserEntity;
 import com.bage.study.best.practice.model.User;
@@ -18,7 +19,7 @@ import java.util.List;
 public class BestPracticeApplication implements CommandLineRunner {
 
     @Resource
-    private UserService userProDataService;
+    private UserServiceMockImpl userServiceMock;
     @Resource
     private UserMapper userMapper;
 
@@ -37,7 +38,7 @@ public class BestPracticeApplication implements CommandLineRunner {
         }
 
         //        int max = 1000;
-//        List<User> initData = userProDataService.getInitData(max);
+//        List<User> initData = userServiceMock.getInitData(max);
 //        for (int i = 0; i < initData.size(); i++) {
 //            if(i % 1000 == 0){
 //                Thread.sleep(500L);
