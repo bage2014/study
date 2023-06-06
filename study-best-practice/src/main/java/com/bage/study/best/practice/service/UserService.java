@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> queryUser(String phone);
+    List<User> query(String phone);
+
+    int insert(User user);
 }

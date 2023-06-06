@@ -1,11 +1,8 @@
 package com.bage.study.best.practice;
 
-import com.bage.study.best.practice.mock.UserServiceMockImpl;
+import com.bage.study.best.practice.service.mock.UserServiceMockImpl;
 import com.bage.study.best.practice.repo.UserMapper;
 import com.bage.study.best.practice.repo.UserEntity;
-import com.bage.study.best.practice.model.User;
-import com.bage.study.best.practice.service.UserService;
-import com.bage.study.best.practice.utils.DateUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,11 +15,6 @@ import java.util.List;
 @MapperScan("com.bage.study.best.practice.repo")
 public class BestPracticeApplication implements CommandLineRunner {
 
-    @Resource
-    private UserServiceMockImpl userServiceMock;
-    @Resource
-    private UserMapper userMapper;
-
     public static void main(String args[]) {
         SpringApplication.run(BestPracticeApplication.class, args);
     }
@@ -30,23 +22,8 @@ public class BestPracticeApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        System.out.println(("----- selectAll method test ------"));
-        List<UserEntity> userList = userMapper.selectList(null);
-        System.out.println(("----- selectAll size ------" + userList.size()));
-        for (UserEntity user : userList) {
-            System.out.println(user);
-        }
+        System.out.println(("----- BestPracticeApplication is started ------"));
 
-        //        int max = 1000;
-//        List<User> initData = userServiceMock.getInitData(max);
-//        for (int i = 0; i < initData.size(); i++) {
-//            if(i % 1000 == 0){
-//                Thread.sleep(500L);
-//            }
-//            User userPro = initData.get(i);
-//            int insert = userMapper.insert(mapping(userPro));
-//            System.out.println(insert);
-//        }
     }
 
 }
