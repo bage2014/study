@@ -49,17 +49,4 @@ public class BestPracticeApplication implements CommandLineRunner {
 //        }
     }
 
-    private UserEntity mapping(User userPro) {
-        UserEntity entity = new UserEntity();
-        entity.setId(userPro.getId());
-        entity.setFirstName(userPro.getFirstName());
-        entity.setLastName(userPro.getLastName());
-        entity.setSex(userPro.getSex().getCode());
-        entity.setBirthday(DateUtils.localDate2Date(userPro.getBirthday()));
-        entity.setAddress(userPro.getAddress());
-        entity.setEmail(userPro.getEmail());
-        entity.setPhone(userPro.getPhone());
-        entity.setRemark(userPro.getRemark());
-        return entity;
-    }
 }
