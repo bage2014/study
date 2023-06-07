@@ -443,6 +443,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -741,6 +742,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
