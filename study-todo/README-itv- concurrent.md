@@ -1,9 +1,11 @@
-# study- Lock #
+# study- Concurrent  #
 ## 简介
+
+Java 并发相关知识点 
 
 ## Key关键点
 
-- 锁标识位
+- Object 锁标识位
 - 锁的四种状态、和升级条件
 - CAS 
 - AQS 结构【字段、数据架构】
@@ -66,11 +68,19 @@ https://blog.csdn.net/qq_37419449/article/details/120040856
 
 AQS 解析【2023-06-07】https://www.jianshu.com/p/6a86e10293ab
 
-https://zhuanlan.zhihu.com/p/86072774
+AQS 解析【2023-06-07】https://zhuanlan.zhihu.com/p/86072774
 
 
 
+## 公平锁 VS 非公平锁
 
+过程解析【2023-06-07】https://blog.csdn.net/weixin_43243916/article/details/100060923
+
+
+
+## 读写锁
+
+读写锁 【2023-06-07】https://blog.csdn.net/weixin_45607513/article/details/119213660
 
 
 
