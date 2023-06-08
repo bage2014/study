@@ -178,6 +178,9 @@
       <module>study-java11</module>
     <module>study-data-mock</module>
     <module>study-best-practice</module>
+    <module>study-dubbo-spring-boot-api</module>
+    <module>study-dubbo-spring-boot-provider</module>
+    <module>study-dubbo-spring-boot-consumer</module>
 
   </modules>
 </project>
