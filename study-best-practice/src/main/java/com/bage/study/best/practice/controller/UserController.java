@@ -32,7 +32,7 @@ public class UserController {
     @RequestMapping("/insert")
     public Object insert() {
         User user = userMockService.mockOne();
-        log.info("UserController insert user = {}", user);
+        log.debug("UserController insert user = {}", user);
         int insert = userService.insert(user);
         log.info("UserController insert insert = {}", insert);
         return insert;
