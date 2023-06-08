@@ -9,7 +9,6 @@ Java 并发相关知识点
 - 锁的四种状态、和升级条件
 - CAS 
 - AQS 结构【字段、数据架构】
-
 - 加锁解锁基本过程、优缺点、简单应用
 - 可重入锁&不可重入锁
 - 公平锁&非公平锁、实现原理
@@ -18,6 +17,7 @@ Java 并发相关知识点
 - 条件队列
 - 响应中断
 - Lock Support
+- Lock Support 和 wait等区别 
 
 
 
@@ -35,10 +35,27 @@ Java 并发相关知识点
 
 ## LockSupport
 
-**描述**
+### **描述**
 
 LockSupport是一个线程阻塞工具类.所有的方法都是静态方法.可以让线程在任意位置阻塞.阻塞之后也有对应的唤醒方法.其本质上调用的是Unsafe类的native方法.
 其实现原理是这样的:每个使用它的线程都有一个许可(permit)关联.permit相当于1,0的开关.默认是0.
+
+【2023-06-08】https://www.jianshu.com/p/f1f2cd289205
+
+【2023-06-08】https://blog.csdn.net/BaiHang111/article/details/125685979
+
+【2023-06-08】https://blog.csdn.net/zyzzxycj/article/details/90268381
+
+【2023-06-08】https://baijiahao.baidu.com/s?id=1666548481761194849&wfr=spider&for=pc
+
+### 对比差异 
+
+- notify只能随机选择一个线程唤醒，无法唤醒指定的线程，unpark却可以唤醒一个指定的线程
+- wait和notify都是Object中的方法,在调用这两个方法前必须先获得锁对象，但是park不需要获取某个对象的锁就可以锁住线程
+- 相对于线程的stop和resume，park和unpark的先后顺序并不是那么严格。stop和resume如果顺序反了，会出现死锁现象。而park和unpark却不会
+- blocker的作用是在dump线程的时候看到阻塞对象的信息
+
+
 
 ## CAS 
 

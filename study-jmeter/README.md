@@ -6,9 +6,19 @@ MySQL 压力测试:  [README-MySQL.md](README-MySQL.md)
 ## 参考链接 ##
 - 官网 [http://jmeter.apache.org/](http://jmeter.apache.org/)
 - 中文网 http://www.jmeter.com.cn/
+- 入门 https://jmeter.apache.org/usermanual/get-started.html
 
 ## 环境搭建 ##
 安装jdk后，下载解压直接打开 /bin/jmeter.bat
+
+## 关键点
+
+- 快速入门
+- 断言、数据模拟、登陆态、重定向、缓存、页面交互
+- 结果查看、结果分析
+- 高阶配置项
+
+
 
 ## 简单使用 ##
 
@@ -73,4 +83,69 @@ KB/Sec：每秒从服务器端接收到的数据量，相当于LoadRunner中的T
 
 
 
+## 入门
+
+https://jmeter.apache.org/usermanual/index.html
+
+
+
+### 前置知识 
+
+Thread Group, 
+
+HTTP Request, 
+
+HTTP Request Defaults, 
+
+and Graph Results.
+
+
+
+Test Plan -> Thread Group -> HTTP Request
+
+### Building a Test Plan
+
+基础 web 请求 https://jmeter.apache.org/usermanual/build-web-test-plan.html
+
+高阶 web 请求  https://jmeter.apache.org/usermanual/build-adv-web-test-plan.html
+
+
+
+### Cookie 支持
+
+ [HTTP Cookie Manager](https://jmeter.apache.org/usermanual/component_reference.html#HTTP_Cookie_Manager) 
+
+
+
+### 结果监听
+
+https://jmeter.apache.org/usermanual/component_reference.html#listeners
+
+
+
+### 多用户模拟请求
+
+
+
+### 请求头
+
+[HTTP Header Manager](https://jmeter.apache.org/usermanual/component_reference.html#HTTP_Header_Manager) 
+
+
+
+### 报告
+
+report 生成 https://jmeter.apache.org/usermanual/generating-dashboard.html
+
+
+
+### 变量
+
+User variables
+
+
+
+### 自带函数
+
+https://jmeter.apache.org/usermanual/functions.html
 
