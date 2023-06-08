@@ -51,3 +51,16 @@ https://blog.csdn.net/Abysscarry/article/details/80792876
 
 当创建**(a,b,c)****联合索引**时，相当于创建了**(a)****单列索引**，**(a,b)****联合索引**以及**(a,b,c)****联合索引** 
  想要索引生效的话,只能使用 a和a,b和a,b,c三种组合；当然，我们上面测试过，**a,c****组合也可以，但实际上只用到了****a****的索引，****c****并没有用到！** 
+
+
+
+
+
+查看表大小 
+
+```
+SELECT   TABLE_NAME AS `Table`,   ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)` FROM   information_schema.TABLES WHERE   TABLE_SCHEMA
+
+= "mydbpro" ORDER BY   (DATA_LENGTH + INDEX_LENGTH) DESC;
+```
+

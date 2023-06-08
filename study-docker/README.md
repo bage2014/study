@@ -444,6 +444,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -757,6 +758,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -864,7 +866,7 @@ docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elas
 
 
 ### 安装配置 mongo ###
-参考链接：[https://hub.docker.com/_/mongo](https://hub.docker.com/_/mongo)
+参考链接: https://hub.docker.com/_/mongo
 Docker Pull Command
 
 	docker pull mongo
@@ -874,6 +876,10 @@ mkdir
 
     mkdir -p /home/bage/data/mongodb
     mkdir -p /home/bage/conf/mongodb
+    
+    Mac
+    mkdir -p /Users/bage/bage/docker-data/mongodb
+    
 
 vi /home/bage/conf/mongodb/mongodb.conf
 	
@@ -929,21 +935,43 @@ start a instance
 	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/etc/mongo -d mongo --config /home/bage/conf/mongodb/mongodb.conf --auth
 	
 	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
+	
+	
+	Mac: 
+	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo --auth
+	
+	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
+	
+	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
+	
 
 visit	
 	
 	docker exec -it mongo mongo admin
 
 
+
 create user 
-       -- 初始化admin密码
-        db.createUser({ user:'admin',pwd:'bage.mongodb',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
-	
+
+```
+db.createUser({ user:'bage',pwd:'lulu1234',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+```
+
+   	
+
 	db.auth('admin', 'bage.mongodb')
 	
 	db.createUser({ user:'bage',pwd:'lulu1234',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 	
 	db.createUser({ user: 'test', pwd: 'bagetest', roles: [{ role: "readWrite", db: "bagedb" }] });
+	
+	Mac: 
+	db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+	
+
+
+
+
 
 ### 安装配置 prometheus ###
 
