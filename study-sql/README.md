@@ -64,3 +64,6 @@ SELECT   TABLE_NAME AS `Table`,   ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 10
 = "mydbpro" ORDER BY   (DATA_LENGTH + INDEX_LENGTH) DESC;
 ```
 
+## SQL 解析
+https://github.com/JSQLParser/JSqlParser
+https://www.yii666.com/blog/307676.html
