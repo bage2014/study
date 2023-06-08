@@ -445,6 +445,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -759,6 +760,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -879,7 +881,7 @@ mkdir
     
     Mac
     mkdir -p /Users/bage/bage/docker-data/mongodb
-    
+
 
 vi /home/bage/conf/mongodb/mongodb.conf
 	
@@ -935,15 +937,17 @@ start a instance
 	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/etc/mongo -d mongo --config /home/bage/conf/mongodb/mongodb.conf --auth
 	
 	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
-	
-	
+
+
+​	
 	Mac: 
-	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo --auth
+	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
+	--auth
 	
 	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
 	
 	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
-	
+
 
 visit	
 	
@@ -951,10 +955,18 @@ visit
 
 
 
+Auth
+
+```
+db.auth('admin', 'bage')
+```
+
+
+
 create user 
 
 ```
-db.createUser({ user:'bage',pwd:'lulu1234',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 ```
 
    	
@@ -967,7 +979,28 @@ db.createUser({ user:'bage',pwd:'lulu1234',roles:[ { role:'userAdminAnyDatabase'
 	
 	Mac: 
 	db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
-	
+
+
+
+**CRUD**
+
+
+
+
+
+#### 社区版本
+
+参考链接：
+
+https://www.mongodb.com/docs/manual/tutorial/install-mongodb-community-with-docker/#std-label-docker-mongodb-community-install
+
+download 
+
+```
+docker pull mongodb/mongodb-community-server
+
+```
+
 
 
 
