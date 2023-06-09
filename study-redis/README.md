@@ -111,6 +111,7 @@ redis采用的是定期删除+惰性删除策略
 ### 参考链接 ###
 - Redis下载和安装(Linux版) [https://redis.io/download](https://redis.io/download "下载和安装")
 - Docker环境搭建 [https://hub.docker.com/_/redis/](https://hub.docker.com/_/redis/ "Docker环境搭建")
+- Jedis 客户端 https://github.com/redis/jedis
 
 ## 常用数据类型 ##
 - **String**: Binary-safe strings.
