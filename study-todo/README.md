@@ -1,5 +1,21 @@
 # study-TODO #
 
+## Redis
+
+- 环境搭建
+
+- 基本使用
+
+- 分布式锁
+
+- 持久化机制 RDB AOF
+- 分布式锁
+- 内存使用率【组合压缩？】
+- 内存淘汰策略
+- 集群【哨兵、Cluster】
+
+
+
 ## MQ 
 
 Rocket 安装基本使用
@@ -61,6 +77,8 @@ clickhouse  https://juejin.cn/post/7221154297706430525
 ## MySQL 
 
 常用DB 维护【Docker版本】
+
+DB 监控 负载情况查看
 
 DB、Table
 

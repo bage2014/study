@@ -57,6 +57,13 @@
             <artifactId>spring-context</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.bage</groupId>
+            <artifactId>study-dubbo-spring-boot-api</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+<!--            <version>${version}</version>-->
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

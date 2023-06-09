@@ -9,9 +9,12 @@
 
 - 行业调研、优势、代替方案等
 - 架构
-- 数据结构
-- 持久化机制
-- 
+- 底层数据结构
+- 持久化机制 RDB AOF
+- 分布式锁
+- 内存使用率【组合压缩？】
+- 内存淘汰策略
+- 集群【哨兵、Cluster】
 
 
 
@@ -23,15 +26,47 @@
 
 
 
+## 数据类型
+
+### String
+
+### Hash
+
+### Map
+
+### List
+
+### Set
 
 
-参考链接
 
-https://blog.csdn.net/guorui_java/article/details/117194603
+Bitmap
 
-https://zhuanlan.zhihu.com/p/536216476
+HyperLogLog
 
-http://www.360doc.com/content/23/0114/20/64417993_1063691727.shtml
+Geospatial
+
+Pipeline
+
+pub/sub
+
+
+
+## 淘汰策略
+
+
+
+## 持久化策略
+
+
+
+## 参考链接
+
+经典知识点【2023-06-10】https://blog.csdn.net/guorui_java/article/details/117194603
+
+经典知识点【2023-06-10】https://zhuanlan.zhihu.com/p/536216476
+
+其他高阶？【】http://www.360doc.com/content/23/0114/20/64417993_1063691727.shtml
 
 
 
