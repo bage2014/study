@@ -334,7 +334,10 @@ connect to it from an application
 
 	docker run -p 8379:6379 -v /home/bage/conf/redis.conf:/usr/local/etc/redis/redis.conf --name redis -d redis redis-server /usr/local/etc/redis/redis.conf  --requirepass "bage.redis"
 
+
+
 ### 安装配置RabbitMQ ###
+
 参考链接：[https://hub.docker.com/_/rabbitmq](https://hub.docker.com/_/rabbitmq "安装配置RabbitMQ")
 
 Docker Pull Command
@@ -869,6 +872,11 @@ docker run -p 8092:9200 -p 8093:9300 -e "discovery.type=single-node" docker.elas
 
 ### 安装配置 mongo ###
 参考链接: https://hub.docker.com/_/mongo
+
+【成功案例】https://www.linode.com/docs/guides/set-up-mongodb-on-docker/
+
+
+
 Docker Pull Command
 
 	docker pull mongo
@@ -941,8 +949,9 @@ start a instance
 
 ​	
 	Mac: 
-	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
-	--auth
+	docker run --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo
+	
+	docker run --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
 	
 	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
 	
@@ -958,7 +967,15 @@ visit
 Auth
 
 ```
+use admin
+
 db.auth('admin', 'bage')
+db.auth('bage2', 'bage')
+
+mongo admin -u admin -p bage
+
+mongo 127.0.0.1:27017 -u "admin" -p "bage" --authenticationDatabase "admin"
+
 ```
 
 
@@ -966,7 +983,7 @@ db.auth('admin', 'bage')
 create user 
 
 ```
-db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+db.createUser({ user:'bage2',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 ```
 
    	
@@ -983,6 +1000,8 @@ db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db
 
 
 **CRUD**
+
+https://www.mongodb.com/docs/manual/crud/
 
 
 
