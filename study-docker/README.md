@@ -229,8 +229,14 @@ Start a mysql server instance
 
     FLUSH PRIVILEGES;
 
+### 安装配置signoz
 
-### 安装配置Postgres ###
+https://signoz.io/docs/install/docker/
+
+
+
+### 安装配置Postgres
+
 参考链接：[https://hub.docker.com/_/postgres/](https://hub.docker.com/_/postgres/ "安装配置Postgres")
 
 Docker Pull Command
@@ -1040,6 +1046,8 @@ Docker Pull Command
 start a instance
 
 	docker run --name prometheus -p 9090:9090 prom/prometheus
+	
+	docker run -d --name bage-prometheus -p 9090:9090 prom/prometheus
 
 start a instance
 
@@ -1050,7 +1058,7 @@ visit
 
 	http://192.168.146.139:9090/metrics
 
-https://hub.docker.com/r/grafana/grafana
+
 
 ### 安装配置 grafana ###
 
@@ -1063,6 +1071,8 @@ Docker Pull Command
 start a instance
 
 	docker run -d --name=grafana -p 3000:3000 grafana/grafana
+	
+	docker run -d --name=bage-grafana -p 3000:3000 grafana/grafana
 
 visit
 
