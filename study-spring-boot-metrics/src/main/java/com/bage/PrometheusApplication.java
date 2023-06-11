@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @RestController
-public class Application {
+public class PrometheusApplication {
 
     @RequestMapping("/")
     public String home() {
@@ -21,13 +21,13 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(PrometheusApplication.class, args);
     }
 
-//    @Bean
-//    MeterRegistryCustomizer<MeterRegistry> configurer(
-//            @Value("${spring.application.name}") String applicationName) {
-//        return (registry) -> registry.config().commonTags("application", applicationName);
-//    }
+    @Bean
+    MeterRegistryCustomizer<MeterRegistry> configurer(
+            @Value("${spring.application.name}") String applicationName) {
+        return (registry) -> registry.config().commonTags("application", applicationName);
+    }
 
 }
