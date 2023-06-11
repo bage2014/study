@@ -19,6 +19,11 @@ https://docs.spring.io/spring-boot/docs/2.1.1.RELEASE/reference/htmlsingle/#prod
 
 https://micrometer.io/docs/concepts
 
+https://mehmetozkaya.medium.com/monitor-spring-boot-custom-metrics-with-micrometer-and-prometheus-using-docker-62798123c714
+
+docker 配置访问宿主机 
+https://docs.docker.com/desktop/networking/
+
 整合过程
 https://zhuanlan.zhihu.com/p/583833859
 

@@ -1052,6 +1052,11 @@ start a instance
 start a instance
 
 	docker run --name prometheus -p 9090:9090 -v /home/bage/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+	
+	Mac 
+	docker run --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+	
+	
 
 
 visit
@@ -1491,11 +1496,20 @@ To connect a running container to an existing user-defined bridge,
       
     docker network connect my-net my-nginx
 
-
 验证，可以在其他容器中，ping myapp-xxx
 
 
+
+docker 配置访问宿主机 
+
+```
+https://docs.docker.com/desktop/networking/
+```
+
+
+
 ### 常见错误 ###
+
 启动centos镜像报错
 
     $ docker run centos
