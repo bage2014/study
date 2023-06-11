@@ -1,4 +1,4 @@
-# my global config
+# 配置到 Docker 中
 global:
   # 设置抓取数据的时间间隔，间隔设置为每15秒一次。默认为每1分钟。
   scrape_interval:     15s
@@ -16,8 +16,3 @@ scrape_configs:
     # scheme defaults to 'http'.
     static_configs:
       - targets: ['127.0.0.1:8080']
-
-
-
-
-bage_counter_total
