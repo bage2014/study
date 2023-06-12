@@ -185,10 +185,10 @@ Start a mysql server instance
     docker run --name bage-mysql -v /home/bage/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d bage-mysql
     
     Mac:
-    docker run --name bage-mysql -v /Users/bage/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    docker run --network my-net --name bage-mysql -v /Users/bage/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
     
     Mac-pro:	
-    docker run --name bage-mysql-pro -v /Users/bage/bage/docker-data/mysql-pro:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    docker run --network my-net --name bage-mysql-pro -v /Users/bage/bage/docker-data/mysql-pro:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
 
 
 其中
@@ -335,6 +335,11 @@ connect to it from an application
 设置密码(启动时候)
 
     docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
+    
+    Mac 
+    docker run --network bage-net -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
+    
+    
 
  自定义配置文件启动
 
@@ -394,6 +399,10 @@ Docker Pull Command
 启动
 
     docker run --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
+    
+    Mac
+    docker run --network bage-net --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
+    
 
 
 ### 安装部署portainer  ###
@@ -446,6 +455,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -770,6 +780,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -948,20 +959,21 @@ start a instance
 		
 	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --auth
 		
-	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/etc/mongo -d mongo --config /home/bage/conf/mongodb/mongodb.conf --auth
+	docker run --network bage-net --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/etc/mongo -d mongo --config /home/bage/conf/mongodb/mongodb.conf --auth
 	
-	docker run --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
+	Mac
+	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
 
 
 ​	
-	Mac: 
-	docker run --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo
+​	Mac: 
+​	docker run --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo
+​	
+	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
 	
-	docker run --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
+	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
 	
-	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
-	
-	docker run --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
+	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
 
 
 visit	
@@ -1054,9 +1066,10 @@ start a instance
 	docker run --name prometheus -p 9090:9090 -v /home/bage/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 	
 	Mac 
-	docker run --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
-	
-	
+	docker run --network bage-net --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
+
+​	
 
 
 visit
@@ -1077,7 +1090,8 @@ start a instance
 
 	docker run -d --name=grafana -p 3000:3000 grafana/grafana
 	
-	docker run -d --name=bage-grafana -p 3000:3000 grafana/grafana
+	Mac
+	docker run --network bage-net -d --name=bage-grafana -p 3000:3000 grafana/grafana
 
 visit
 
@@ -1483,6 +1497,10 @@ To start an Jenkins instance, run this command:
 自定义 bright 网络，名字为 my-net
 
 	docker network create my-net
+	
+	docker network create bage-net
+	
+	docker network connect bage-net container-xxx
 
 在运行时候，添加参数，可以通过 myapp-xxx 别名访问
 
