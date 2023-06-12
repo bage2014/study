@@ -1,12 +1,14 @@
-package com.bage;
+package com.bage.study.mybatis.plus;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 /**
  *
  */
+@Component
 public class InitService {
 
     @Resource
