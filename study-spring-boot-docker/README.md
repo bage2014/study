@@ -22,7 +22,7 @@ study-spring-boot-docker 学习笔记
                 <configuration>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>com.bage.Application</mainClass>
+                            <mainClass>com.bage.study.mybatis.plus.Application</mainClass>
                         </transformer>
                     </transformers>
                 </configuration>

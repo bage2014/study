@@ -22,3 +22,38 @@ dubbo:
     port: -1
   registry:
     address: zookeeper://${zookeeper.address:127.0.0.1}:2181
+
+
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+    continue-on-error: false
+#    schema: classpath*:schema-h2.sql
+#    data: classpath*:data-h2.sql
+    schema: schema-h2.sql
+    data: data-h2.sql
+#    schema-locations: classpath*:schema-h2.sql
+#    data-locations: classpath*:data-h2.sql
+    schema-locations: schema-h2.sql
+    data-locations: data-h2.sql
+    url: jdbc:h2:mem:test
+    username: sa
+    password: bage
+  h2:
+    console:
+        enabled: true
+        path: /h2-console
+        settings:
+            web-allow-others: true
+
+# Logger Config
+logging:
+  level:
+    com.bage: debug
+
+
+server:
+    port: 8000
+

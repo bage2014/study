@@ -37,15 +37,17 @@ public class HelloServiceCallerRunner implements CommandLineRunner {
         HelloParam param = getParam();
         System.out.println("Send param ======> " + param);
         HelloResult result = demoService.sayHello(param);
+        Integer age = result.getUserList().get(0).getAge();
         System.out.println("Receive result ======> " + result);
 
         new Thread(()-> {
             while (true) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(30000);
                     HelloParam param2 = getParam();
                     System.out.println(new Date() + "Send param ======> " + param);
-                    System.out.println(new Date() + " Receive result ======> " + demoService.sayHello(param2));
+                    HelloResult helloResult = demoService.sayHello(param2);
+                    System.out.println(new Date() + " Receive result ======> " + helloResult);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Thread.currentThread().interrupt();
