@@ -22,15 +22,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.boot.base.version>2.0.1.RELEASE</spring.boot.base.version>
 
-        <mybatis.version>3.4.6</mybatis.version>
-        <mybatis-spring.version>1.3.2</mybatis-spring.version>
-        <mysql.version>8.0.13</mysql.version>
-
+        <mybatisplus.version>3.5.2</mybatisplus.version>
         <lombok.version>1.18.20</lombok.version>
-
-        <page.helper.version>1.2.12</page.helper.version>
-        <mybatis.generator.version>1.4.0</mybatis.generator.version>
-
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
 
     </properties>
@@ -56,30 +49,15 @@
         <!--Spring-->
 
         <!--数据库连接-->
+
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>${mybatis.version}</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>${mybatis-spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-autoconfigure</artifactId>
-            <version>${mybatis-spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis-spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatisplus.version}</version>
         </dependency>
         <!--数据库连接-->
 

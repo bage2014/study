@@ -19,13 +19,29 @@ package com.bage.study.dubbo.spring.boot.provider;
 
 
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+
 @SpringBootApplication
 @EnableDubbo
-public class ProviderApplication {
+@MapperScan("com.bage.study.dubbo.spring.boot.provider")
+public class ProviderApplication implements CommandLineRunner {
+    @Autowired
+    private UserMapper userMapper;
     public static void main(String[] args) {
         SpringApplication.run(ProviderApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        List<UserEntity> userList = userMapper.selectList(null);
+        for (int i = 0; i < userList.size(); i++) {
+            System.out.println(userList.get(i));
+        }
     }
 }
