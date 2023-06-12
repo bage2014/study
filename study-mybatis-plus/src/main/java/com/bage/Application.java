@@ -10,17 +10,17 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 @MapperScan("com.bage")
 public class Application implements CommandLineRunner {
 
     @Resource
-    private JdbcTemplate jdbcTemplate;
+    private InitService initService;
     @Resource
-    private UserMapper userMapper;
-    @Resource
-    private MyService myService;
+    private CrudService crudService;
+    Random random = new Random();
 
     public static void main(String args[]) {
         SpringApplication.run(Application.class, args);
@@ -28,50 +28,33 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
+        System.out.println(("----- init start ------"));
+        initService.init();
+        System.out.println(("----- init end ------"));
 
-        jdbcTemplate.execute("DROP TABLE IF EXISTS user;\n" +
-                "\n" +
-                "CREATE TABLE user\n" +
-                "(\n" +
-                "\tid BIGINT(20) NOT NULL COMMENT '主键ID',\n" +
-                "\tname VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',\n" +
-                "\tage INT(11) NULL DEFAULT NULL COMMENT '年龄',\n" +
-                "\temail VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',\n" +
-                "\tPRIMARY KEY (id)\n" +
-                ");" +
-                "");
+        int nextInt = random.nextInt(100);
+        User user = new User();
+        user.setId(System.currentTimeMillis());
+        user.setAge(nextInt);
+        user.setEmail(random.nextInt(100000) + "@qq.com");
+        user.setName("bage" + nextInt);
+        System.out.println(("----- insert start ------" + user));
+        int insert = crudService.insert(user);
+        System.out.println(("----- insert end ------" + insert));
 
+        String name = "bage" + nextInt;
+        System.out.println(("----- query start ------" + name));
+        List<User> query = crudService.query(name);
+        System.out.println(("----- query end ------" + query));
 
-        jdbcTemplate.execute("DELETE FROM user;\n" +
-                "\n" +
-                "INSERT INTO user (id, name, age, email) VALUES\n" +
-                "(1, 'Jone', 18, 'test1@baomidou.com'),\n" +
-                "(2, 'Jack', 20, 'test2@baomidou.com'),\n" +
-                "(3, 'Tom', 28, 'test3@baomidou.com'),\n" +
-                "(4, 'Sandy', 21, 'test4@baomidou.com'),\n" +
-                "(5, 'Billie', 24, 'test5@baomidou.com');");
+        user.setEmail(user.getEmail() + "-update@.cpm");
+        System.out.println(("----- update start ------" + user));
+        int update = crudService.update(user);
+        System.out.println(("----- update end ------" + update));
 
+        System.out.println(("----- delete start ------" + user));
+        int delete = crudService.delete(query.get(0).getId());
+        System.out.println(("----- delete end ------" + delete));
 
-
-        System.out.println(("----- selectAll method test ------"));
-        List<User> userList = userMapper.selectList(null);
-        System.out.println(("----- selectAll size ------" + userList.size()));
-        userList.forEach(System.out::println);
-
-        List<User> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            User user = new User();
-            user.setId(10L + i);
-            user.setName("bage" + i);
-            user.setAge(10 + i);
-            user.setEmail("bage"+i+"@qq.com");
-            list.add(user);
-        }
-        boolean b = myService.saveBatch(list);
-        System.out.println("saveBatch result = " + b);
-
-        List<User> userList2 = userMapper.selectList(null);
-        System.out.println(("----- selectAll size2 ------" + userList2.size()));
-        userList2.forEach(System.out::println);
     }
 }
