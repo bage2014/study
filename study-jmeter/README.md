@@ -99,7 +99,7 @@ HTTP Request Defaults,
 
 and Graph Results.
 
-
+Synchronizing Timer 并发数
 
 Test Plan -> Thread Group -> HTTP Request
 
