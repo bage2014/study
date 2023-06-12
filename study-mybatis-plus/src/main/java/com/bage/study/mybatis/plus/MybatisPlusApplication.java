@@ -1,20 +1,17 @@
-package com.bage;
+package com.bage.study.mybatis.plus;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
-@MapperScan("com.bage")
-public class Application implements CommandLineRunner {
+@MapperScan("com.bage.study.mybatis.plus")
+public class MybatisPlusApplication implements CommandLineRunner {
 
     @Resource
     private InitService initService;
@@ -23,7 +20,7 @@ public class Application implements CommandLineRunner {
     Random random = new Random();
 
     public static void main(String args[]) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(MybatisPlusApplication.class, args);
     }
 
     @Override

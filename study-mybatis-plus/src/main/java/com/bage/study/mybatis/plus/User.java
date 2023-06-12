@@ -1,4 +1,4 @@
-package com.bage;
+package com.bage.study.mybatis.plus;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

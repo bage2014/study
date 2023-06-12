@@ -1,18 +1,20 @@
-package com.bage;
+package com.bage.study.mybatis.plus;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * 参考链接 https://github.com/baomidou/mybatis-plus-samples/blob/master/mybatis-plus-sample-crud/src/test/java/com/baomidou/mybatisplus/samples/crud/CrudTest.java
  */
+@Component
 public class CrudService {
 
     @Autowired
-    private MyService myService;
+    private UsersServiceImpl myService;
 
     public int insert(User user){
         return myService.save(user) ? 1 : -1;
@@ -36,7 +38,7 @@ public class CrudService {
     }
     public List<User> query(String name){
         LambdaQueryWrapper<User> select = Wrappers.<User>lambdaQuery().select(User::getName);
-        return myService.getBaseMapper().selectList(select);
+        return myService.list(select);
     }
 
 }
