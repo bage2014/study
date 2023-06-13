@@ -2,6 +2,7 @@ package com.bage.study.mybatis.plus;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,8 +38,12 @@ public class CrudService {
         return myService.getById(id);
     }
     public List<User> query(String name){
-        LambdaQueryWrapper<User> select = Wrappers.<User>lambdaQuery().select(User::getName);
+        LambdaQueryWrapper<User> select = Wrappers.<User>lambdaQuery().eq(User::getName,name);
         return myService.list(select);
     }
 
+    public Page page(int current, int size,String name) {
+        LambdaQueryWrapper<User> select = Wrappers.<User>lambdaQuery().eq(User::getName,name);
+        return myService.page(new Page<>(current,size), select);
+    }
 }
