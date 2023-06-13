@@ -1,9 +1,14 @@
 package com.bage.study.mybatis.plus;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,7 +22,15 @@ public class MybatisPlusApplication implements CommandLineRunner {
     private InitService initService;
     @Resource
     private CrudService crudService;
-    Random random = new Random();
+    private Random random = new Random();
+
+
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.H2));
+        return interceptor;
+    }
 
     public static void main(String args[]) {
         SpringApplication.run(MybatisPlusApplication.class, args);
@@ -43,6 +56,13 @@ public class MybatisPlusApplication implements CommandLineRunner {
         System.out.println(("----- query start ------" + name));
         List<User> query = crudService.query(name);
         System.out.println(("----- query end ------" + query));
+
+        String keyword = "bage" + nextInt;
+        System.out.println(("----- query page start ------" + keyword));
+        Page page = crudService.page(1, 10, keyword);
+        System.out.println(("----- query page getCurrent ------" + page.getCurrent()));
+        System.out.println(("----- query page getTotal ------" + page.getTotal()));
+        System.out.println(("----- query page getRecords ------" + page.getRecords()));
 
         user.setEmail(user.getEmail() + "-update@.cpm");
         System.out.println(("----- update start ------" + user));
