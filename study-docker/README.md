@@ -262,12 +262,25 @@ connect to it from an application
     );
 
 ### 安装配置Nginx ###
+
+https://hub.docker.com/_/nginx
+
 下载安装：
 
     docker pull nginx
 启动：
 
     docker run -p 80:80 --name tmp-nginx-container -d nginx
+    
+    Mac
+    docker run -p 80:80 -v /Users/bage/bage/docker-conf/nginx/nginx.conf:/host/path/nginx.conf --name bage-nginx -d nginx
+    
+docker访问宿主机：
+
+```
+host.docker.internal
+```
+
 进入容器：
 
     docker exec -it tmp-nginx-container /bin/bash
@@ -338,8 +351,9 @@ connect to it from an application
     
     Mac 
     docker run --network bage-net -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
-    
-    
+
+
+​    
 
  自定义配置文件启动
 
@@ -402,7 +416,7 @@ Docker Pull Command
     
     Mac
     docker run --network bage-net --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
-    
+
 
 
 ### 安装部署portainer  ###
@@ -455,6 +469,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -781,6 +796,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -969,8 +985,8 @@ start a instance
 ​	Mac: 
 ​	docker run --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo
 ​	
-	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
-	
+​	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
+​	
 	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
 	
 	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
@@ -1519,6 +1535,10 @@ To connect a running container to an existing user-defined bridge,
 
 
 docker 配置访问宿主机 
+
+```
+host.docker.internal
+```
 
 ```
 https://docs.docker.com/desktop/networking/
