@@ -37,7 +37,7 @@ public class HelloServiceCallerRunner implements CommandLineRunner {
         HelloParam param = getParam();
         System.out.println("Send param ======> " + param);
         HelloResult result = demoService.sayHello(param);
-        Integer age = result.getUserList().get(0).getAge();
+        Long age = result.getUserList().get(0).getAge();
         System.out.println("Receive result ======> " + result);
 
         new Thread(()-> {
@@ -58,7 +58,7 @@ public class HelloServiceCallerRunner implements CommandLineRunner {
 
     private HelloParam getParam() {
         HelloParam param = new HelloParam();
-        param.setId(random.nextInt());
+        param.setId(Long.valueOf(random.nextInt()));
         param.setName("hhhh");
         return param;
     }
