@@ -6,22 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RemoteServiceTest {
-
-    @Autowired
-    private RemoteService remoteService;
+public class RemoteService2CallerTest {
 
     @Autowired
     private RemoteService2Caller remoteService2Caller;
+
     @Test
     public void mockRemote() {
-        System.out.println(remoteService.doSomething());
         System.out.println(remoteService2Caller.doSomething());
     }
 
+
 }
+
