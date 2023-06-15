@@ -3,7 +3,6 @@ package com.bage.study.redis;
 import com.bage.study.redis.lock.DistributeLock;
 import com.bage.study.redis.lock.DistributeLockBuilder;
 import com.bage.study.redis.lock.RedisDistributeLock;
-import com.sun.media.jfxmedia.logging.Logger;
 import org.junit.Test;
 
 import java.util.Objects;

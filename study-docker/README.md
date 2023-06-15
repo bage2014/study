@@ -273,7 +273,7 @@ https://hub.docker.com/_/nginx
     docker run -p 80:80 --name tmp-nginx-container -d nginx
     
     Mac
-    docker run -p 80:80 -v /Users/bage/bage/docker-conf/nginx/nginx.conf:/host/path/nginx.conf --name bage-nginx -d nginx
+    docker run -p 80:80 -v /Users/bage/bage/docker-conf/nginx/nginx.conf:/etc/nginx/nginx.conf --name bage-nginx -d nginx
     
 docker访问宿主机：
 

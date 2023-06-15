@@ -149,3 +149,7 @@ User variables
 
 https://jmeter.apache.org/usermanual/functions.html
 
+
+
+同步器
+
