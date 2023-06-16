@@ -103,6 +103,8 @@ TODO
 
 【2023-06-15】https://mp.weixin.qq.com/s?__biz=MzAxMjY5NDU2Ng==&mid=2651861794&idx=1&sn=e4fc20a336d55a9939ff65d7120f73cc&chksm=8049766bb73eff7ddef39af55c80283a9db86680ce46dfc6d1930355977efb49284fe8a6104d&scene=27
 
+
+
 ## 序列化
 
 支持种类
@@ -125,7 +127,7 @@ TODO
 
 【2023-06-14】https://www.jianshu.com/p/8eb0d74e393b
 
-https://www.pianshen.com/article/9549279875/
+【2023-06-16】https://www.pianshen.com/article/9549279875/
 
 https://blog.csdn.net/mfmfmfo/article/details/126818675
 

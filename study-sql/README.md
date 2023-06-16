@@ -1,7 +1,5 @@
 # study- SQL #
-- http://www.baeldung.com/sso-spring-security-oauth2)
-
-
+- 
 
 
 

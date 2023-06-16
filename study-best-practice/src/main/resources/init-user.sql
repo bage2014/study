@@ -17,6 +17,8 @@ CREATE TABLE tb_user
 	PRIMARY KEY (id)
 );
 
+ALTER TABLE tb_user ADD INDEX idx_phone( phone );
+
 
 INSERT INTO tb_user (first_name,last_name, sex, birthday, email,phone,remark) VALUES
 ( 'Jone','si' ,'Male', '1997-02-02', 'test1@baomidou.com','17501500001','hhhhh'),
