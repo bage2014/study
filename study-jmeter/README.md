@@ -18,6 +18,16 @@ MySQL 压力测试:  [README-MySQL.md](README-MySQL.md)
 - 结果查看、结果分析
 - 高阶配置项
 
+## Quick Start
+
+基本使用
+
+https://jmeter.apache.org/usermanual/build-web-test-plan.html
+
+高阶使用
+
+https://jmeter.apache.org/usermanual/build-adv-web-test-plan.html
+
 
 
 ## 简单使用 ##
@@ -151,5 +161,14 @@ https://jmeter.apache.org/usermanual/functions.html
 
 
 
-同步器
+## 同步器
 
+可以积攒请求，达到并发后在一起发起
+
+Synchronizing Timer
+
+
+
+## Bilibili
+
+https://www.bilibili.com/video/BV1Ux4y1L7Lj/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
