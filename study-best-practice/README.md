@@ -5,6 +5,11 @@
 
 查看负载 show global status
 
+## Tomcat 
+线程配置 https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.server
+
+## Spring
+https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties
 
 文档编写目的
 

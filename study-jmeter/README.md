@@ -165,9 +165,9 @@ https://jmeter.apache.org/usermanual/functions.html
 
 可以积攒请求，达到并发后在一起发起
 
-Synchronizing Timer
+Synchronizing Timer 设置每分钟 请求次数？【PQS 】
 
-
+Constant Throughput Timer 设置每分钟 请求次数？【PQS 】
 
 ## Bilibili
 
