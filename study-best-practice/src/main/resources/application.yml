@@ -5,7 +5,8 @@ logging:
 server:
   port: 8000
   tomcat:
-    accept-count: 300
+    max-connections: 300
+    accept-count: 100
 
 spring:
   datasource:

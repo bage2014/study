@@ -169,6 +169,10 @@ Synchronizing Timer 设置每分钟 请求次数？【PQS 】
 
 Constant Throughput Timer 设置每分钟 请求次数？【PQS 】
 
+## Plugins 
+插件管理 https://jmeter-plugins.org/wiki/PluginsManager/
+插件 https://jmeter-plugins.org/wiki/ThroughputShapingTimer/
+
 ## Bilibili
 
 https://www.bilibili.com/video/BV1Ux4y1L7Lj/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
