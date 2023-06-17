@@ -4,9 +4,9 @@ logging:
       bage: info
 server:
   port: 8000
-  tomcat:
-    max-connections: 300
-    accept-count: 100
+#   tomcat:
+#     max-connections: 800
+#     accept-count: 100
 
 spring:
   datasource:
