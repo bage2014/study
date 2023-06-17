@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Component
@@ -38,6 +39,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insert(User user) {
+//        try {
+//            Thread.sleep(new Random().nextInt(1000));
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        return 0;
         return userMapper.insert(userMapping.mapping(user));
     }
 }
