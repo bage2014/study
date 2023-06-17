@@ -181,6 +181,7 @@
     <module>study-dubbo-spring-boot-provider</module>
     <module>study-dubbo-spring-boot-consumer</module>
     <module>study-spring-boot-mongo</module>
+      <module>study-varr</module>
 
   </modules>
 </project>
