@@ -3,9 +3,10 @@ Spring Cloud 体系相关ITV
 
 TODO
 
-## 关键点
+## Keys关键点
 
 - 注册中心的保护机制？
+- 熔断器 
 
 
 
@@ -22,6 +23,22 @@ https://zhuanlan.zhihu.com/p/471003434
 
 
 ## 负载均衡
+
+
+
+## Histrix
+
+熔断器 
+
+https://blog.csdn.net/u012894990/article/details/100741589
+
+## Resilience4j
+
+熔断器 
+
+https://github.com/lmhmhl/Resilience4j-Guides-Chinese/blob/main/index.md
+
+
 
 
 
@@ -45,6 +62,7 @@ https://www.bilibili.com/video/BV1Ca411R7GG?p=3&spm_id_from=pageDriver&vd_source
 
 https://www.bilibili.com/video/BV1H14y147aT?spm_id_from=333.999.0.0
 
+【2023-06-17】https://blog.csdn.net/m0_68102643/article/details/124771234
 
 
 ## Bilibili
