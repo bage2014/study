@@ -3,9 +3,36 @@
 
 ## MySQL
 
-查看负载 show global status
+查看负载 
+
+```
+show global status
+```
+
+查看查询 
+
+```
+show processlist
+```
+
+查看连接数
+
+```
+ SHOW GLOBAL VARIABLES WHERE Variable_name='max_connections';
+```
+
+调整
+
+```
+SET GLOBAL max_connections=10;
+```
+
+ 
+
+
 
 ## Tomcat 
+
 线程配置 https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.server
 
 ## Spring
