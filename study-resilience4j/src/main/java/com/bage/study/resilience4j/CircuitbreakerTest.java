@@ -3,7 +3,6 @@ package com.bage.study.resilience4j;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
-import io.vavr.control.Try;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -42,9 +41,9 @@ public class CircuitbreakerTest {
                     .decorateSupplier(circuitBreaker,
                             backendService::doSomething);
 
-            String result = Try.ofSupplier(decoratedSupplier)
-                    .recover(throwable -> "Hello from Recovery").get();
-            System.out.println("result" + i + ":" + result);
+//            String result = Try.ofSupplier(decoratedSupplier)
+//                    .recover(throwable -> "Hello from Recovery").get();
+//            System.out.println("result" + i + ":" + result);
         }
     }
 

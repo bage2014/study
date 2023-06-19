@@ -1,11 +1,9 @@
 package com.bage.study.resilience4j;
 
+import io.github.resilience4j.core.functions.CheckedRunnable;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
-import io.github.resilience4j.ratelimiter.RequestNotPermitted;
-import io.vavr.CheckedRunnable;
-import io.vavr.control.Try;
 
 import java.time.Duration;
 
@@ -46,8 +44,8 @@ public class LimitTest {
                 .decorateCheckedRunnable(rateLimiter, backendService::doSomething);
 
         for (int i = 0; i < 100; i++) {
-            Try<Void> voids = Try.run(restrictedCall)
-                    .andThenTry(restrictedCall);
+//            Try<Void> voids = Try.run(restrictedCall)
+//                    .andThenTry(restrictedCall);
         }
 
 
