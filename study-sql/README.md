@@ -3,6 +3,16 @@
 
 
 
+## SQL 状态
+
+db查询状态 http://www.taodudu.cc/news/show-1113065.html?action=onClick
+
+连接数 https://www.qycn.com/xzx/article/16932.html
+
+
+
+## 其他
+
 **SQL****学习笔记**
 
 1. **Spring-jdbc****环境**

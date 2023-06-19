@@ -31,10 +31,13 @@ public class UserController {
 
     @RequestMapping("/insert")
     public Object insert() {
+        long start = System.currentTimeMillis();
         User user = userMockService.mockOne();
         log.debug("UserController insert user = {}", user);
         int insert = userService.insert(user);
         log.info("UserController insert insert = {}", insert);
+        long end = System.currentTimeMillis();
+        log.info("UserController insert cost = {}", (end - start));
         return insert;
     }
 

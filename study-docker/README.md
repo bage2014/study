@@ -274,7 +274,7 @@ https://hub.docker.com/_/nginx
     
     Mac
     docker run -p 80:80 -v /Users/bage/bage/docker-conf/nginx/nginx.conf:/etc/nginx/nginx.conf --name bage-nginx -d nginx
-    
+
 docker访问宿主机：
 
 ```
@@ -415,7 +415,7 @@ Docker Pull Command
     docker run --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
     
     Mac
-    docker run --network bage-net --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
+    docker run --network bage-net --name bage-zookeeper -v /Users/bage/bage/docker-data/zookeeper:/data -p 2181:2181 -d zookeeper
 
 
 
@@ -469,6 +469,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -797,6 +798,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -987,8 +989,8 @@ start a instance
 ​	
 ​	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
 ​	
-	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
-	
+​	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
+​	
 	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
 
 
