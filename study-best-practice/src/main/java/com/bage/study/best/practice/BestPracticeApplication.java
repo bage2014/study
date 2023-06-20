@@ -32,14 +32,14 @@ public class BestPracticeApplication extends SpringBootServletInitializer implem
         System.out.println(("----- BestPracticeApplication is started ------"));
 
 
-            List<FlowRule> rules = new ArrayList<>();
-            FlowRule rule = new FlowRule();
-            rule.setResource("HelloWorld");
-            rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
-            // Set limit QPS to 20.
-            rule.setCount(80);
-            rules.add(rule);
-            FlowRuleManager.loadRules(rules);
+        List<FlowRule> rules = new ArrayList<>();
+        FlowRule rule = new FlowRule();
+        rule.setResource("HelloWorld");
+        rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
+        // Set limit QPS to 20.
+        rule.setCount(400);
+        rules.add(rule);
+        FlowRuleManager.loadRules(rules);
 
     }
 

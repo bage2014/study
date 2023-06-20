@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RemoteService3Caller {
+public class RemoteService3Wrapper {
     @Autowired
-    private RemoteService3Wrapper wrapper;
+    private RemoteService3 remoteService3;
 
     public String doSomething() {
-        return wrapper.doSomething();
+        return remoteService3.doSomething3();
     }
 }
