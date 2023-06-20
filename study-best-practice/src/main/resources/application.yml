@@ -5,13 +5,13 @@ logging:
 server:
   port: 8000
   tomcat:
-    max-connections: 100
+    max-connections: 400
     accept-count: 5
 
 spring:
   datasource:
     configuration:
-      maximum-pool-size: 10
+      maximum-pool-size: 500
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: bage
     url: jdbc:mysql://localhost:3306/mydbpro?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&serverTimezone=UTC

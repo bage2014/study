@@ -1,6 +1,7 @@
 package com.bage.study.best.practice.controller;
 
 import com.bage.study.best.practice.model.User;
+import com.bage.study.best.practice.rest.RestResult;
 import com.bage.study.best.practice.service.UserMockService;
 import com.bage.study.best.practice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +31,20 @@ public class UserController {
     }
 
     @RequestMapping("/insert")
-    public Object insert() {
-        long start = System.currentTimeMillis();
-        User user = userMockService.mockOne();
-        log.debug("UserController insert user = {}", user);
-        int insert = userService.insert(user);
-        log.info("UserController insert insert = {}", insert);
-        long end = System.currentTimeMillis();
-        log.info("UserController insert cost = {}", (end - start));
-        return insert;
+    public RestResult insert() {
+        try {
+            long start = System.currentTimeMillis();
+            User user = userMockService.mockOne();
+            log.debug("UserController insert user = {}", user);
+            int insert = userService.insert(user);
+            log.info("UserController insert insert = {}", insert);
+            long end = System.currentTimeMillis();
+            log.info("UserController insert cost = {}", (end - start));
+            return new RestResult(200,insert);
+        }catch (Exception e){
+            return new RestResult(500,e.getMessage());
+        }
+
     }
 
 }
