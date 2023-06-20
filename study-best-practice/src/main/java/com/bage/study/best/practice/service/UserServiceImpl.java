@@ -1,5 +1,8 @@
 package com.bage.study.best.practice.service;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.bage.study.best.practice.mapping.UserMapping;
 import com.bage.study.best.practice.model.User;
 import com.bage.study.best.practice.repo.UserEntity;
@@ -39,12 +42,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insert(User user) {
-//        try {
-//            Thread.sleep(new Random().nextInt(1000));
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        return 0;
-        return userMapper.insert(userMapping.mapping(user));
+//        throw new RuntimeException("blocked!");
+
+        try (Entry entry = SphU.entry("HelloWorld")) {
+            // 被保护的逻辑
+            return userMapper.insert(userMapping.mapping(user));
+        } catch (BlockException ex) {
+            // 处理被流控的逻辑
+            System.out.println("blocked!");
+            throw new RuntimeException("blocked!");
+        }
     }
 }
