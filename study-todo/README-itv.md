@@ -1,40 +1,8 @@
 # study-itv2023 #
 
-## Schedule
+## Retry
 
-**ALL/ALL 2023-05-30**https://mp.weixin.qq.com/s?__biz=MzU5OTc3NDM2Mw==&mid=2247483928&idx=1&sn=a7dd0674a661402975f7d13a2c3f2095&chksm=feae87ecc9d90efa3a8b642314c9b40ce136201fdfe55534d70e0fc984f3eff861774fa9cb17&scene=27
 
-**0/ALL 2023-05-29** http://imyhq.com/blockchain/2692.html
-
-**ALL/ALL 2023-05-29** https://blog.csdn.net/m0_68850571/article/details/125854787
-
-ALL/ALL 2023-05-29**https://www.cnblogs.com/qingmuchuanqi48/p/11006760.html
-
-**ALL/ALL 2023-05-08**  https://zhuanlan.zhihu.com/p/424217408
-
-**ALL/ALL 2023-05-08** https://blog.csdn.net/m0_59281987/article/details/127768618
-
-**动力2021.1/ALL 2023-05-06** https://blog.csdn.net/m0_59281987/article/details/127768618
-
-**1.四/ALL 2023-05-04** https://blog.csdn.net/m0_59281987/article/details/127768618
-
-**ALL/ALL 2023-05-04** https://blog.csdn.net/qq_33036061/article/details/105209254
-
-**6/ALL 2023-05-01** https://blog.csdn.net/qq_33036061/article/details/105209254
-
-**索引底层结构/ALL** https://github.com/bage2014/study/blob/master/study-todo/README-itv-mysql.md
-
-**done/ALL 2023-04-25** https://www.ewbang.com/community/article/details/961524446.html
-
-**事务/ALL 2023-04-23** https://zhuanlan.zhihu.com/p/112857507
-
-**1/1 2023-04-23** https://blog.csdn.net/m0_63592370/article/details/126039076
-
-**60/60  2023-04-17** https://blog.csdn.net/hahazz233/article/details/125372412
-
-**36/60  2023-04-13** https://blog.csdn.net/hahazz233/article/details/125372412
-
-**16/60  2023-04-10** https://blog.csdn.net/hahazz233/article/details/125372412
 
 
 
