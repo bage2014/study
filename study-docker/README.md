@@ -1086,7 +1086,7 @@ start a instance
 	docker run --name prometheus -p 9090:9090 -v /home/bage/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 	
 	Mac 
-	docker run --network bage-net -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+	docker run --network bage-net -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-data/prometheus:/prometheus/data -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 
 
 ​	
@@ -1111,7 +1111,7 @@ start a instance
 	docker run -d --name=grafana -p 3000:3000 grafana/grafana
 	
 	Mac
-	docker run --network bage-net -d --name=bage-grafana -p 3000:3000 grafana/grafana
+	docker run --network bage-net -d --name=bage-grafana -p 3000:3000 -v /Users/bage/bage/docker-data/grafana:/var/lib/grafana grafana/grafana
 
 visit
 
