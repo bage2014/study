@@ -27,6 +27,13 @@ https://docs.docker.com/desktop/networking/
 整合过程
 https://zhuanlan.zhihu.com/p/583833859
 
+## 准备
+启动 prometheus 挂在 网络bage-net 下  
+docker run --network bage-net --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
+启动 kabana
+docker run --network bage-net -d --name=bage-grafana -p 3000:3000 grafana/grafana
+
 ## 命名转换 ##
 http.server.requests
 

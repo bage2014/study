@@ -481,6 +481,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -799,6 +800,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -991,7 +993,7 @@ start a instance
 ​	
 ​	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
 ​	
-	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
+​	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
 
 
 visit	
@@ -1084,7 +1086,7 @@ start a instance
 	docker run --name prometheus -p 9090:9090 -v /home/bage/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 	
 	Mac 
-	docker run --network bage-net --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+	docker run --network bage-net -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 
 
 ​	

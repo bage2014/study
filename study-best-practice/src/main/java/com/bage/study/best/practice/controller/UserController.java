@@ -1,5 +1,7 @@
 package com.bage.study.best.practice.controller;
 
+import com.bage.study.best.practice.metrics.CounterMetrics;
+import com.bage.study.best.practice.metrics.TimerMetrics;
 import com.bage.study.best.practice.model.User;
 import com.bage.study.best.practice.rest.RestResult;
 import com.bage.study.best.practice.service.UserMockService;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RequestMapping("/user")
 @RestController
@@ -21,6 +24,10 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserMockService userMockService;
+    @Autowired
+    private CounterMetrics counterMetrics;
+    @Autowired
+    private TimerMetrics timerMetrics;
 
     @RequestMapping("/query")
     public Object query(@RequestParam("phone") String phone) {
@@ -31,7 +38,8 @@ public class UserController {
     }
 
     @RequestMapping("/insert")
-    public RestResult insert() {
+    public Object insert() {
+        counterMetrics.increment();
         try {
             long start = System.currentTimeMillis();
             User user = userMockService.mockOne();
@@ -40,6 +48,7 @@ public class UserController {
             log.info("UserController insert insert = {}", insert);
             long end = System.currentTimeMillis();
             log.info("UserController insert cost = {}", (end - start));
+            timerMetrics.record((end - start), TimeUnit.MILLISECONDS);
             return new RestResult(200,insert);
         }catch (Exception e){
             return new RestResult(500,e.getMessage());
