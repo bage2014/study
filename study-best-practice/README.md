@@ -121,13 +121,13 @@ docker run --network bage-net -d --name=bage-grafana -p 3000:3000 grafana/grafan
 本地指标
 http://localhost:8000/actuator/prometheus
 
-promethoes
+Promethoes
 http://localhost:9090
 
 查看指标
 http://localhost:9090/targets
 
-kabana
+Grafana
 http://localhost:3000/
 
 admin/admin 登陆 
@@ -135,6 +135,10 @@ admin/admin 登陆
 配置数据源 Data Sources
 http://bage-prometheus:9090
 
+画图
+sum(rate(bage_user_request_count_total[1m]))
+
+sum_over_time(bage_user_request_count_total[1m])
 
 文档编写目的
 
