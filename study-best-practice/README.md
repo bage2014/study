@@ -109,6 +109,33 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/application-prope
 ## Jmeter
 吞吐量上不去？
 
+## metrics
+
+## 准备
+启动 prometheus 挂在 网络bage-net 下  
+docker run --network bage-net -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
+启动 kabana
+docker run --network bage-net -d --name=bage-grafana -p 3000:3000 grafana/grafana
+
+本地指标
+http://localhost:8000/actuator/prometheus
+
+promethoes
+http://localhost:9090
+
+查看指标
+http://localhost:9090/targets
+
+kabana
+http://localhost:3000/
+
+admin/admin 登陆 
+
+配置数据源 Data Sources
+http://bage-prometheus:9090
+
+
 文档编写目的
 
 当前进度

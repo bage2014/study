@@ -38,8 +38,12 @@ public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
             }
         }
         // 将原本的数据包装在ResultVO里
-        log.info("beforeBodyWrite other data = {}",data);
-        return new RestResult(200, data);
+        if (!(data instanceof RestResult)) {
+            log.info("beforeBodyWrite other data = {}",data);
+            return new RestResult(200, data);
+        }
+
+        return data;
     }
 
 
