@@ -12,7 +12,7 @@ show global status
 查看查询 
 
 ```
-show processlist
+show processlist;
 ```
 
 查看连接数

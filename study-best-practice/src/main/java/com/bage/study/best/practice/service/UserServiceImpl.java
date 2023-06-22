@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> query(String phone) {
+        try {
+            Thread.sleep(200L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LambdaQueryWrapper<UserEntity> ge = Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getPhone, phone);
         List<UserEntity> list = userMapper.selectList(ge);
         if (Objects.isNull(list)) {
