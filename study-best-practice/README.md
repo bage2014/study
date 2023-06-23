@@ -19,6 +19,9 @@ show processlist;
 
 ```
  SHOW GLOBAL VARIABLES WHERE Variable_name='max_connections';
+
+ SHOW STATUS WHERE Variable_name like 'Threads_connect%';
+
 ```
 
 调整
@@ -101,7 +104,11 @@ Transfer/sec:     13.84KB
 
 ## Tomcat 
 
-线程配置 https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.server
+线程配置 
+https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.server
+
+https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.server.server.tomcat.threads.max
+
 
 ## Spring
 https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties

@@ -66,9 +66,9 @@ pub/sub
 
 经典知识点【2023-06-10】https://zhuanlan.zhihu.com/p/536216476
 
-其他高阶？【】http://www.360doc.com/content/23/0114/20/64417993_1063691727.shtml
+其他高阶？【】http://www.360doc.com/content/23/0114/20/64417993_1063691727.shtml	
 
-
+总结 https://github.com/whx123/JavaHome/blob/master/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/README.MD
 
 ## Bilibili 
 

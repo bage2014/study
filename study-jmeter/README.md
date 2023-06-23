@@ -176,3 +176,6 @@ Constant Throughput Timer 设置每分钟 请求次数？【PQS 】
 ## Bilibili
 
 https://www.bilibili.com/video/BV1Ux4y1L7Lj/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+【2023-06-22】
+https://www.bilibili.com/video/BV17m4y1m7AM/?p=6&spm_id_from=pageDriver&vd_source=72424c3da68577f00ea40a9e4f9001a1
