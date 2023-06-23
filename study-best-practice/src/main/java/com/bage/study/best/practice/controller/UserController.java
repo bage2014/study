@@ -31,6 +31,7 @@ public class UserController {
 
     @RequestMapping("/query")
     public Object query(@RequestParam("phone") String phone) {
+        counterMetrics.increment2();
         log.info("UserController query phone = {}", phone);
         List<User> users = userService.query(phone);
         log.info("UserController query users = {}", users);

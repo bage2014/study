@@ -56,6 +56,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.16</version>
+        </dependency>
         <!--数据库连接-->
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->

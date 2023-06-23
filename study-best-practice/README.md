@@ -116,6 +116,28 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/application-prope
 ## Jmeter
 吞吐量上不去？
 
+## Druid 
+
+基本配置和使用 
+
+https://github.com/alibaba/druid
+
+https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
+
+
+
+查看监控 
+
+http://localhost:8000/druid/index.html
+
+
+
+http://localhost:8000/druid/sql.html
+
+
+
+
+
 ## metrics
 
 ## 准备

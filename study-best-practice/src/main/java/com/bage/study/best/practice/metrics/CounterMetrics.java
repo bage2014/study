@@ -16,16 +16,20 @@ public class CounterMetrics {
 
     @Autowired
     private MeterRegistry registry;
-    private Counter myCounter;
 
     @PostConstruct
     public void init() {
-        myCounter = registry.counter("bage_user_request_count", "counter","bage-count");
     }
 
     public boolean increment() {
         // 统计下单次数
-        myCounter.increment();
+        registry.counter("bage_user_request_count", "counter", "bage-count","method_name","insert").increment();
+        return true;
+    }
+
+    public boolean increment2() {
+        // 统计下单次数
+        registry.counter("bage_user_request_count", "counter", "bage-count","method_name","query").increment();
         return true;
     }
 
