@@ -415,7 +415,8 @@ Docker Pull Command
     docker run --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
     
     Mac
-    docker run --network bage-net --name bage-zookeeper -v /Users/bage/bage/docker-data/zookeeper:/data -p 2181:2181 -d zookeeper
+    docker run --network bage-net --name bage-zookeeper -v /Users/bage/bage/docker-data/zookeeper:/data --restart always -p 2181:2181 -d zookeeper
+    
 
 
 
@@ -469,6 +470,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -780,6 +782,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
