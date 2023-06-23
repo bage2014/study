@@ -1,4 +1,3 @@
-
 use mydbpro;
 
 DROP TABLE IF EXISTS tb_user;
