@@ -75,3 +75,7 @@ SELECT   TABLE_NAME AS `Table`,   ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 10
 ## SQL 解析
 https://github.com/JSQLParser/JSqlParser
 https://www.yii666.com/blog/307676.html
+
+
+## 链接池 
+https://blog.csdn.net/weixin_46935110/article/details/126848647
