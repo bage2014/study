@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@DubboService
+@DubboService(timeout = 900)
 public class HelloServiceImpl implements HelloService {
     private Random random = new Random();
 
@@ -20,7 +20,13 @@ public class HelloServiceImpl implements HelloService {
 
     @Override
     public HelloResult sayHello(HelloParam param) {
+
         System.out.println(new Date() + "Get param ======> " + param);
+        try {
+            Thread.sleep(new Random().nextInt(2000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         List<UserEntity> users = userMapper.selectList(null);
 

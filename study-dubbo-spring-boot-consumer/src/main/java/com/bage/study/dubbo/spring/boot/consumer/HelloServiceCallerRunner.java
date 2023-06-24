@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HelloServiceCallerRunner implements CommandLineRunner {
-    @DubboReference
+    @DubboReference(retries = 2,timeout = 1000)
     private HelloService demoService;
     private Random random = new Random();
 
