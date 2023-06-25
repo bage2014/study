@@ -13,7 +13,7 @@
 - 持久化机制 RDB AOF
 - 分布式锁
 - 内存使用率【组合压缩？】
-- 内存淘汰策略
+- 淘汰策略
 - 集群【哨兵、Cluster】
 
 
@@ -26,9 +26,27 @@
 
 
 
+## 分布式锁 
+
+https://github.com/bage2014/study/blob/master/study-redis/README-distribute-lock.md
+
+
+
 ## 数据类型
 
 ### String
+
+注意点
+
+- 最大存储为512M
+
+与String对比
+
+- SDS 数据结构 
+- 杜绝缓冲区溢出
+- 预分配容量
+- 惰性释放
+- 二进制安全
 
 ### Hash
 
@@ -54,7 +72,20 @@ pub/sub
 
 ## 淘汰策略
 
+【2023-06-25】https://baijiahao.baidu.com/s?id=1729630215002937706&wfr=spider&for=pc
 
+过期删除 
+
+- 定时删除
+- 惰性删除
+
+
+
+
+
+LRU算法 https://baijiahao.baidu.com/s?id=1729434050706042976
+
+LFU 算法 https://baijiahao.baidu.com/s?id=1729525047952230592
 
 ## 持久化策略
 
@@ -78,9 +109,9 @@ https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247488325&idx=1&sn=6d9bbe
 
 经典知识点【2023-06-10】https://zhuanlan.zhihu.com/p/536216476
 
-其他高阶？【】http://www.360doc.com/content/23/0114/20/64417993_1063691727.shtml	
+总结 【2023-06-25】https://github.com/whx123/JavaHome/blob/master/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/README.MD
 
-总结 https://github.com/whx123/JavaHome/blob/master/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/README.MD
+【2023-06-25】经典知识点 https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247494124&idx=1&sn=c185f7d999d5f006608d05707a8a7eea&chksm=cf2236c5f855bfd329c6e2ee27f23f8131ebcd312960190a10f1a819d67f07a21a08ad17f263&token=162724582&lang=zh_CN&scene=21#wechat_redirect
 
 ## Bilibili 
 
