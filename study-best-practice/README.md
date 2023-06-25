@@ -136,6 +136,20 @@ http://localhost:8000/druid/sql.html
 
 
 
+## Redis
+
+Docker 安装启动
+
+https://github.com/bage2014/study/blob/master/study-docker/README.md
+
+```
+docker run --network bage-net -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
+```
+
+Spring 集成 Redis
+
+https://spring.io/guides/gs/messaging-redis/
+
 
 
 ## metrics

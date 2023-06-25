@@ -85,6 +85,12 @@ pub/sub
 
 LRU算法 https://baijiahao.baidu.com/s?id=1729434050706042976
 
+https://www.bilibili.com/video/BV1Va411677h/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+
+
+
+
 LFU 算法 https://baijiahao.baidu.com/s?id=1729525047952230592
 
 ## 持久化策略
