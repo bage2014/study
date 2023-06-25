@@ -1,4 +1,4 @@
-package com.bage;
+package com.bage.study.jol;
 
 import org.openjdk.jol.info.ClassLayout;
 import org.openjdk.jol.vm.VM;
