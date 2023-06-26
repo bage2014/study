@@ -28,6 +28,8 @@ show processlist;
 
 ```
 SET GLOBAL max_connections=10;
+
+SET GLOBAL max_connections=500;
 ```
 
 ## WRK
@@ -182,6 +184,20 @@ http://bage-prometheus:9090
 sum(rate(bage_user_request_count_total[1m]))
 
 sum_over_time(bage_user_request_count_total[1m])
+
+
+
+## Docker 
+内存使用情况 
+
+```
+docker stats --no-stream
+```
+
+## JVM 
+打开自带的 Jconsole
+
+选择对应的JAVA 进程 
 
 文档编写目的
 

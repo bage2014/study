@@ -49,7 +49,7 @@ public class BestPracticeApplication extends SpringBootServletInitializer implem
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
 //        rule.setControlBehavior()
         // Set limit QPS to 20.
-        rule.setCount(400);
+        rule.setCount(600);
         rules.add(rule);
         FlowRuleManager.loadRules(rules);
 
