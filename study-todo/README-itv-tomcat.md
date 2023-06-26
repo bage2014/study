@@ -8,10 +8,12 @@
 ## Key关键点
 
 - 行业调研、优势、代替方案等
-- 架构
+- 架构【server、service\connector\context】
 - 请求过程 
 - 核心配置 
 - 性能配置 
+- Servlet 加载过程
+-  Pipeline-Valve机制 
 
 
 
