@@ -182,6 +182,7 @@
     <module>study-dubbo-spring-boot-consumer</module>
     <module>study-spring-boot-mongo</module>
       <module>study-varr</module>
+    <module>study-jmh</module>
 
   </modules>
 </project>
