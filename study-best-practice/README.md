@@ -15,12 +15,15 @@ show global status
 show processlist;
 ```
 
-查看连接数
+配置查看 
 
 ```
+ 连接数
  SHOW GLOBAL VARIABLES WHERE Variable_name='max_connections';
-
  SHOW STATUS WHERE Variable_name like 'Threads_connect%';
+ 
+ 缓冲区 
+ SHOW STATUS WHERE Variable_name like '%buffer%';
 
 ```
 

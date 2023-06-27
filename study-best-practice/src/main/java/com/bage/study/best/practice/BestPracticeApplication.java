@@ -45,6 +45,13 @@ public class BestPracticeApplication extends SpringBootServletInitializer implem
         // Set limit QPS to 20.
         rule.setCount(600);
         rules.add(rule);
+
+        FlowRule log = new FlowRule();
+        log.setResource("log");
+        log.setGrade(RuleConstant.FLOW_GRADE_QPS);
+        log.setCount(600);
+        rules.add(log);
+
         FlowRuleManager.loadRules(rules);
     }
 
