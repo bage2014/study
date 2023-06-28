@@ -4,17 +4,11 @@ import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.bage.study.best.practice.metrics.LogCounterMetrics;
-import com.bage.study.best.practice.metrics.TimerMetrics;
-import com.bage.study.best.practice.model.User;
-import com.bage.study.best.practice.rest.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RequestMapping("/log")
 @RestController
@@ -35,6 +29,7 @@ public class LogController {
 
     @RequestMapping("/insert")
     public Object insert() {
+        counterMetrics.increment("insert-no-limit");
         try (Entry entry = SphU.entry("log")) {
             // 被保护的逻辑
             counterMetrics.increment("insert");
@@ -44,13 +39,13 @@ public class LogController {
 //            timerMetrics.record((end - start), TimeUnit.MILLISECONDS);
                 return 1;
             }catch (Exception e){
-                return 200;
+                return 300;
             }
 
         } catch (BlockException ex) {
             // 处理被流控的逻辑
             System.out.println("blocked!");
-            throw new RuntimeException("blocked!");
+            return 600;
         }
 
     }

@@ -1,7 +1,7 @@
 package com.bage.study.best.practice.controller;
 
-import com.bage.study.best.practice.metrics.CounterMetrics;
-import com.bage.study.best.practice.metrics.TimerMetrics;
+import com.bage.study.best.practice.metrics.UserCounterMetrics;
+import com.bage.study.best.practice.metrics.UserTimerMetrics;
 import com.bage.study.best.practice.model.User;
 import com.bage.study.best.practice.rest.RestResult;
 import com.bage.study.best.practice.service.UserMockService;
@@ -25,9 +25,9 @@ public class UserController {
     @Autowired
     private UserMockService userMockService;
     @Autowired
-    private CounterMetrics counterMetrics;
+    private UserCounterMetrics counterMetrics;
     @Autowired
-    private TimerMetrics timerMetrics;
+    private UserTimerMetrics timerMetrics;
 
     @RequestMapping("/query")
     public Object query(@RequestParam("phone") String phone) {
