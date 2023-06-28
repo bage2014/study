@@ -1,13 +1,12 @@
 package com.bage.study.best.practice.cache;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.redis.core.ValueOperations;
 
-import javax.annotation.Resource;
-
 public class RedisStarter implements CommandLineRunner {
 
-    @Resource(name="redisTemplate")
+    @Autowired
     private ValueOperations<String, String> valueOperations;
 
     @Override

@@ -1,5 +1,7 @@
 # study-best-practice
 
+阿里云性能测试PTS的文档
+https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
 
 ## MySQL
 
@@ -24,6 +26,14 @@ show processlist;
  
  缓冲区 
  SHOW STATUS WHERE Variable_name like '%buffer%';
+ 
+ 
+ Bin Log 
+ SHOW STATUS WHERE Variable_name like '%binlog%';
+ SHOW Variables like 'log_bin';
+
+
+请问下，这个如何才能有权限呀？
 
 ```
 
@@ -33,6 +43,11 @@ show processlist;
 SET GLOBAL max_connections=10;
 
 SET GLOBAL max_connections=500;
+
+SET GLOBAL max_connections=500;
+
+SET GLOBAL max_connections=500;
+
 ```
 
 ## WRK
@@ -49,6 +64,8 @@ brew install wrk
 This runs a benchmark for 30 seconds, using 12 threads, and keeping 400 HTTP connections open.
 ```
 wrk -t10 -c400 -d60s http://localhost:8000/user/insert
+
+wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/log/insert
 
 ```
 
@@ -202,6 +219,22 @@ docker stats --no-stream
 
 选择对应的JAVA 进程 
 
+## deploy 
+参考链接 https://www.baeldung.com/deployable-fat-jar-spring-boot
+```
+打包 
+mvn clean package 
+
+启动 
+java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
+
+
+```
+
+
+
+
+------------------
 文档编写目的
 
 当前进度

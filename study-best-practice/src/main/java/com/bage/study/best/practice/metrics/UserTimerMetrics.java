@@ -4,15 +4,18 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
-public class LogCounterMetrics {
+public class UserTimerMetrics {
 
     @Autowired
     private MeterRegistry registry;
 
-    public boolean increment(String methodName) {
-        // 统计下单次数
-        registry.counter("bage_log_request_count", "counter", "bage-count", "method_name", methodName).increment();
+
+    public boolean record(long cost, TimeUnit unit) {
+        registry.timer("bage_user_request_time", "timer", "bage-time").record(cost, unit);
         return true;
     }
+
 }
