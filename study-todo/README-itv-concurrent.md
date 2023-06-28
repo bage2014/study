@@ -14,10 +14,15 @@ Java 并发相关知识点
 - 公平锁&非公平锁、实现原理
 - 互斥锁&共享锁
 - 线程的等待、唤醒
+- 线程池状态、扭转、常用方法、基本过程 
 - 条件队列
 - 响应中断
 - Lock Support
 - Lock Support 和 wait等区别 
+- sleep() 和 wait() 
+- Notify 和 notifyAll
+- Run 和 start
+- 线程循环打印 1 2 3 4
 
 
 
