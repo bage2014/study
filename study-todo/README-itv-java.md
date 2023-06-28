@@ -15,7 +15,7 @@
 - Map
 - JVM 常用参数 
 - List
-- Map
+- Map\hashmap\weakhashmap
 - Set
 - 反射
 - 

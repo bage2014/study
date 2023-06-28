@@ -13,6 +13,8 @@
 - Session Cookie
 - Servlet 生命周期
 - 转发 和 重定向 
+- HTTP 协议
+- 长链接 和 短链接 
 
 
 
