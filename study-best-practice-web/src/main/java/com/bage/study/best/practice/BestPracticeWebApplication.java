@@ -9,21 +9,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
 @MapperScan("com.bage.study.best.practice.repo")
-public class BestPracticeApplication extends SpringBootServletInitializer implements CommandLineRunner {
+@ComponentScan(basePackages = {"com.bage.study.best.practice"})
+public class BestPracticeWebApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
     public static void main(String args[]) {
-        SpringApplication.run(BestPracticeApplication.class, args);
+        SpringApplication.run(BestPracticeWebApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(BestPracticeApplication.class);
+        return builder.sources(BestPracticeWebApplication.class);
     }
 
     @Override

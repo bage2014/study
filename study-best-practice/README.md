@@ -238,6 +238,9 @@ docker stats --no-stream
 打包 
 mvn clean package 
 
+/Users/bage/bage/github/study/study-best-practice
+
+
 启动 
 java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
 

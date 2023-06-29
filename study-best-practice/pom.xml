@@ -8,7 +8,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <!--    <packaging>war</packaging>-->
     <artifactId>study-best-practice</artifactId>
 
 
@@ -19,7 +18,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <java.version>17</java.version>
         <mybatisplus.version>3.5.3.1</mybatisplus.version>
-        <mysql.version>8.0.13</mysql.version>
+        <mysql.version>8.0.33</mysql.version>
 
         <lombok.version>1.18.20</lombok.version>
         <jedis.client.version>4.4.3</jedis.client.version>
@@ -34,6 +33,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -41,12 +46,12 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-log4j2</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -120,6 +125,13 @@
             <version>${jedis.client.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -134,24 +146,5 @@
         </dependencies>
     </dependencyManagement>
 
-
-    <build>
-        <plugins>
-
-            <!--Spring Boot Maven 启动-->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--Spring Boot Maven 启动-->
-        </plugins>
-    </build>
 
 </project>
