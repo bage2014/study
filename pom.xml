@@ -183,6 +183,7 @@
     <module>study-spring-boot-mongo</module>
       <module>study-varr</module>
     <module>study-jmh</module>
+      <module>study-best-practice-web</module>
 
   </modules>
 </project>

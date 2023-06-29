@@ -24,7 +24,6 @@
         <lombok.version>1.18.20</lombok.version>
         <jedis.client.version>4.4.3</jedis.client.version>
 
-        <start-class>com.bage.study.best.practice.BestPracticeApplication</start-class>
     </properties>
 
     <dependencies>

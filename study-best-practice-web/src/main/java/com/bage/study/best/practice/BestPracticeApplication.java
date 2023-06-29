@@ -26,7 +26,6 @@ public class BestPracticeApplication extends SpringBootServletInitializer implem
         return builder.sources(BestPracticeApplication.class);
     }
 
-
     @Override
     public void run(String... strings) throws Exception {
 
