@@ -20,7 +20,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <start-class>com.bage.study.best.practice.BestPracticeApplication</start-class>
+        <start-class>com.bage.study.best.practice.BestPracticeWebApplication</start-class>
 
     </properties>
 
@@ -45,6 +45,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -53,9 +60,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.bage.study.best.practice.BestPracticeApplication</mainClass>
-                </configuration>
+<!--                <configuration>-->
+<!--                    <mainClass>com.bage.study.best.practice.BestPracticeApplication</mainClass>-->
+<!--                </configuration>-->
             </plugin>
 
             <plugin>
