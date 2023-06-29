@@ -3,6 +3,8 @@
 阿里云性能测试PTS的文档
 https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
 
+https://zhuanlan.zhihu.com/p/491927737
+
 ## MySQL
 
 查看负载 
@@ -130,6 +132,17 @@ Transfer/sec:     13.84KB
 https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.server
 
 https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.server.server.tomcat.threads.max
+
+
+Mac 启动 https://cwiki.apache.org/confluence/display/TOMCAT/Building+Tomcat+on+MacOS
+
+/Users/bage/bage/software/apache-tomcat-10.1.10/bin
+
+
+chmod 755 bin/*.sh
+
+startup.sh
+
 
 
 ## Spring
