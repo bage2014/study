@@ -9,4 +9,6 @@ public interface UserService {
     List<User> query(String phone);
 
     int insert(User user);
+
+    int insertBatch(List<User> userList);
 }

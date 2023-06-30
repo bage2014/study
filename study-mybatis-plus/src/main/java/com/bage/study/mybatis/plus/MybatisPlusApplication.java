@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -51,6 +52,15 @@ public class MybatisPlusApplication implements CommandLineRunner {
         System.out.println(("----- insert start ------" + user));
         int insert = crudService.insert(user);
         System.out.println(("----- insert end ------" + insert));
+
+        User user2 = new User();
+        user2.setId(System.currentTimeMillis() + 1);
+        user2.setAge(nextInt);
+        user2.setEmail(random.nextInt(100000) + "@qq.com");
+        user2.setName("bage" + nextInt);
+        System.out.println(("----- insert batch start ------" + user2));
+        int insertBatch = crudService.insertBatch(Collections.singletonList(user2));
+        System.out.println(("----- insert batch end ------" + insertBatch));
 
         String name = "bage" + nextInt;
         System.out.println(("----- query start ------" + name));
