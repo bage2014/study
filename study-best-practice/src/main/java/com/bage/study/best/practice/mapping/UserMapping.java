@@ -7,6 +7,11 @@ import com.bage.study.best.practice.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @Slf4j
 public class UserMapping {
@@ -38,5 +43,12 @@ public class UserMapping {
         result.setPhone(param.getPhone());
         result.setRemark(param.getRemark());
         return result;
+    }
+
+    public Collection<UserEntity> mapping(List<User> userList) {
+        if (userList == null) {
+            return new ArrayList<>();
+        }
+        return userList.stream().map(this::mapping).collect(Collectors.toList());
     }
 }

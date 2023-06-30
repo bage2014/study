@@ -50,9 +50,27 @@ public class UserController {
             long end = System.currentTimeMillis();
             log.info("UserController insert cost = {}", (end - start));
             timerMetrics.record((end - start), TimeUnit.MILLISECONDS);
-            return new RestResult(200,insert);
-        }catch (Exception e){
-            return new RestResult(500,e.getMessage());
+            return new RestResult(200, insert);
+        } catch (Exception e) {
+            return new RestResult(500, e.getMessage());
+        }
+    }
+
+    @RequestMapping("/insert/batch")
+    public Object insertBatch(@RequestParam(value = "total", required = false, defaultValue = "200") Integer total) {
+        counterMetrics.increment();
+        try {
+            long start = System.currentTimeMillis();
+            List<User> userList = userMockService.mockBatch(total);
+            log.debug("UserController insert user = {}", userList);
+            int insert = userService.insertBatch(userList);
+            log.info("UserController insert insert = {}", insert);
+            long end = System.currentTimeMillis();
+            log.info("UserController insert cost = {}", (end - start));
+            timerMetrics.record((end - start), TimeUnit.MILLISECONDS);
+            return new RestResult(200, insert);
+        } catch (Exception e) {
+            return new RestResult(500, e.getMessage());
         }
 
     }
