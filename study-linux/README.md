@@ -32,7 +32,45 @@ source 一下，使配置生效
     source .bash_profile
 
 
+
+### 创建用户
+
+useradd bage
+
+
+
+passwd bage
+
+
+
+
+
+Bage.123
+
+Bage.123
+
+
+
+
+
+### JDK 
+
+安装jdk 8
+
+https://www.digitalocean.com/community/tutorials/how-to-install-java-on-centos-and-fedora
+
+
+
+jdk 17
+
+https://computingforgeeks.com/install-java-openjdk-17-on-centos-rhel-7/
+
+
+
+
+
 ### Maven ###
+
 - 参考链接 
   - 官网 [http://maven.apache.org/](http://maven.apache.org/ "官网")
   - 下载链接[http://mirrors.shu.edu.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz](http://mirrors.shu.edu.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz "下载链接")
@@ -280,3 +318,64 @@ systemctl restart sshd.service
 
 
 
+### MySQL
+
+参考链接 https://www.geeksforgeeks.org/how-to-install-mysql-on-linux/
+
+install 
+
+```
+[root@VM-28-9-centos lighthouse]# yum install mysql-server
+
+```
+
+
+
+No package mysql-server available.
+
+https://serverfault.com/questions/662741/yum-no-package-mysql-server-available-in-cent-os-7
+
+
+
+Yum update 
+
+
+
+```
+yum install mysql-server mysql
+```
+
+```
+yum install mariadb-server mariadb-libs mariadb
+
+```
+
+
+
+启动
+
+```
+mysql --version
+```
+
+systemctl start mariadb.service
+
+
+
+确认安装完成
+
+```
+mysql --version
+```
+
+
+
+*mysql_secure_installation*
+
+
+
+mysql 
+
+Bage1234.
+
+bage1234.

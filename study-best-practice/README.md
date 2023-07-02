@@ -238,7 +238,7 @@ docker stats --no-stream
 打包 
 mvn clean package 
 
-/Users/bage/bage/github/study/study-best-practice
+cd /Users/bage/bage/github/study/study-best-practice
 
 
 启动 
@@ -249,38 +249,8 @@ java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
 
 
 
+拷贝到远程
 
-------------------
-文档编写目的
+scp -r ./target/study-best-practice-0.0.1-SNAPSHOT.jar bage@124.221.97.97:/home/bage
 
-当前进度
-
-后期规划
-
-项目代办
-
-## 参考链接
-
-官网文档 XXX
-
-## 快速开始
-
-下载运行
-
-```
-Publish Remote
-
-```
-
-## 应用实践
-
-下载运行
-
-```
-Publish Remote
-
-```
-
-## 原理解析
-
-基本原理
+java -jar study-best-practice-0.0.1-SNAPSHOT.jar
