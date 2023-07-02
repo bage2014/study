@@ -232,6 +232,8 @@ docker stats --no-stream
 
 选择对应的JAVA 进程 
 
+    java -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
+
 ## deploy 
 参考链接 https://www.baeldung.com/deployable-fat-jar-spring-boot
 ```
@@ -254,3 +256,11 @@ java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
 scp -r ./target/study-best-practice-0.0.1-SNAPSHOT.jar bage@124.221.97.97:/home/bage
 
 java -jar study-best-practice-0.0.1-SNAPSHOT.jar
+
+
+生成 dump 文件
+jmap -dump:file=javaDump.hprof,format=b {pid}
+
+bage@bagedeMacBook-Pro ~ % jmap -dump:file=bestp.hprof,format=b 41337
+
+
