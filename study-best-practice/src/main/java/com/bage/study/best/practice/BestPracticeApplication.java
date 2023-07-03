@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @SpringBootApplication
 @MapperScan("com.bage.study.best.practice.repo")
 @Slf4j
+@EnableAsync
 public class BestPracticeApplication implements CommandLineRunner {
 
     public static void main(String args[]) {

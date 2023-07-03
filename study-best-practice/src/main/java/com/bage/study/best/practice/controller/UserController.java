@@ -8,11 +8,13 @@ import com.bage.study.best.practice.service.UserMockService;
 import com.bage.study.best.practice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @RequestMapping("/user")
@@ -53,6 +55,25 @@ public class UserController {
             return new RestResult(200, insert);
         } catch (Exception e) {
             return new RestResult(500, e.getMessage());
+        }
+    }
+
+    @Async
+    @RequestMapping("/insert/async")
+    public CompletableFuture<Object> insertAsync() {
+        counterMetrics.increment();
+        try {
+            long start = System.currentTimeMillis();
+            User user = userMockService.mockOne();
+            log.debug("UserController insert async user = {}", user);
+            int insert = userService.insert(user);
+            log.info("UserController insert async insert = {}", insert);
+            long end = System.currentTimeMillis();
+            log.info("UserController insert async cost = {}", (end - start));
+            timerMetrics.record((end - start), TimeUnit.MILLISECONDS);
+            return CompletableFuture.completedFuture(new RestResult(200, insert));
+        } catch (Exception e) {
+            return CompletableFuture.completedFuture(new RestResult(500, e.getMessage()));
         }
     }
 
