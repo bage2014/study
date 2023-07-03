@@ -1,4 +1,4 @@
-package com.bage.study.best.practice.cache;
+package com.bage.study.best.practice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
