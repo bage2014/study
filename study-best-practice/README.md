@@ -245,7 +245,7 @@ cd /Users/bage/bage/github/study/study-best-practice
 
 启动 
 java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
-
+java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar --spring.config.location=file:///Users/bage/bage/config/application-remore-db.properties
 
 ```
 
