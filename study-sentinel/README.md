@@ -86,7 +86,11 @@ https://zhuanlan.zhihu.com/p/64786381
 
 
 
+## 自定义 
 
+slot 
+https://github.com/alibaba/Sentinel/tree/master/sentinel-demo/sentinel-demo-slot-spi/src/main/java/com/alibaba/csp/sentinel/demo/slot
+https://blog.51cto.com/u_14888386/2515150
 
 限流基本过程？
 
