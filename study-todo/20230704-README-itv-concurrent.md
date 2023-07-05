@@ -8,6 +8,7 @@ Java 并发相关知识点
 - Object 锁标识位
 - 锁的四种状态、和升级条件
 - CAS 
+- AtomicStampedReference 使用 
 - AQS 结构【字段、数据架构】
 - 加锁解锁基本过程、优缺点、简单应用
 - 可重入锁&不可重入锁
@@ -30,13 +31,53 @@ Java 并发相关知识点
 
 **概念**
 
+对象头中存在标识位
+
+```text
+JDK 1.6后引入
+```
+
 **状态描述**
 
 ![](https://s2.loli.net/2022/04/22/wp6c4LxGA5qt29E.png)
 
 
 
+
+
+**四种状态**
+
+- 无锁
+
+- 偏向锁 
+
+偏向锁 标志 + 记录线程ID 
+
+避免CAS 竞争，而只是简单做上面两个字段的判断校验
+
+- 轻量级锁
+
+CAS 加锁过程
+
+- 重量级锁
+
+直接退化成最原始用法
+
+
+
+
+
 **升级的条件**
+
+
+
+
+
+参考链接 https://www.jianshu.com/p/c67b0dac5d2b
+
+https://zhuanlan.zhihu.com/p/509096754?utm_id=0
+
+
 
 ## LockSupport
 
@@ -64,9 +105,28 @@ LockSupport是一个线程阻塞工具类.所有的方法都是静态方法.可�
 
 ## CAS 
 
+Compare And Set
+
+比较和赋值
 
 
 
+**CAS有哪些缺点？**
+1. 循环时间长，开销大
+2. 如果cas失败，就一直do while尝试。如果长时间不成功，可能给CPU带来很大开销。
+3. 只能保证一个共享变量的原子操作
+4. 如果时多个共享变量，cas无法保证原子性，只能加锁，锁住代码段。
+5. 存在ABA问题。
+
+
+
+
+
+参考链接 
+
+https://www.jianshu.com/p/a47285790467
+
+https://zhuanlan.zhihu.com/p/571637324
 
 
 

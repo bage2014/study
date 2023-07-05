@@ -234,7 +234,15 @@ RuleConstant.FLOW_GRADE_QPS
 
 #### 限流算法
 
+计数器
+
+固定窗口
+
+华滑动窗口
+
 令牌桶等
+
+https://zhuanlan.zhihu.com/p/479956069
 
 
 

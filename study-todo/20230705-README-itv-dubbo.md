@@ -21,9 +21,31 @@ TODO
 
 【2023-06-15】https://www.jianshu.com/p/eab2b272ba75
 
-10层
+Dubbo的整体设计分 10 层：
 
-应用层、配置层、监控层、注册层、协议层、序列化层等等
+第一层：service 层，接口层，给服务提供者和消费者来实现的（留给开发人员来实现）；
+
+第二层：config 层，配置层，主要是对 Dubbo 进行各种配置的，Dubbo 相关配置；
+
+第三层：proxy 层，服务代理层，透明生成客户端的 stub 和服务单的 skeleton，调用的是接
+
+口，实现类没有，所以得生成代理，代理之间再进行网络通讯、负责均衡等；
+
+第四层：registry 层，服务注册层，负责服务的注册与发现；
+
+第五层：cluster 层，集群层，封装多个服务提供者的路由以及负载均衡，将多个实例组合成一 个服务；
+
+第六层：monitor 层，监控层，对 rpc 接口的调用次数和调用时间进行监控；
+
+第七层：protocol 层，远程调用层，封装 rpc 调用；
+
+第八层：exchange 层，信息交换层，封装请求响应模式，同步转异步；
+
+第九层：transport 层，网络传输层，抽象 mina 和 netty 为统一接口；
+
+第十层：serialize 层，数据序列化层。
+
+
 
 ## 核心角色组件
 
@@ -39,7 +61,7 @@ TODO
 
 **容器**
 
-
+![](https://static.mikechen.cc/wp-content/uploads/2022/10/dubbo-principle-01.png)
 
 
 
@@ -66,6 +88,8 @@ TODO
 支持类型
 
 自定义实现
+
+https://cn.dubbo.apache.org/zh-cn/docsv2.7/dev/source/loadbalance/
 
 
 
@@ -102,6 +126,14 @@ TODO
 ## 容错机制
 
 【2023-06-15】https://mp.weixin.qq.com/s?__biz=MzAxMjY5NDU2Ng==&mid=2651861794&idx=1&sn=e4fc20a336d55a9939ff65d7120f73cc&chksm=8049766bb73eff7ddef39af55c80283a9db86680ce46dfc6d1930355977efb49284fe8a6104d&scene=27
+
+
+
+## SPI 机制 
+
+https://cn.dubbo.apache.org/zh-cn/overview/tasks/extensibility/filter/
+
+
 
 
 
