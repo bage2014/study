@@ -31,6 +31,17 @@ https://cn.dubbo.apache.org/zh-cn/overview/core-features/extensibility/#%E8%87%A
 
 
 
+## 常见问题 
+
+```
+Unable to canonicalize address 127.0.0.1/<unresolved>:2181 because it's not resolvable
+
+```
+
+切换JDK，换回JDK8 ，可以启动时候选择JDK 
+
+
+
 ## 参考链接 ##
 
 https://github.com/apache/dubbo-samples/tree/master/1-basic/dubbo-samples-spring-boot/dubbo-samples-spring-boot-provider
