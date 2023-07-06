@@ -9,11 +9,9 @@
 
 - 行业调研、优势、代替方案等
 - 架构
-- 类初始化过程
 - Thread Local 内存泄漏 
 - 线程池 
 - Map
-- JVM 常用参数 
 - List
 - Map\hashmap\weakhashmap
 - Set
@@ -80,19 +78,9 @@ https://www.cnblogs.com/happy-coder/p/6587092.html
 
 ## 线程池
 
-5. 
+#### 状态扭转
 
-### 状态扭转
-
-### 构造参数
-
-### 常用方法 
-
-### ThreadPoolExecutor
-
-https://segmentfault.com/a/1190000015368896
-
-https://www.jianshu.com/p/ae67972d1156
+#### 构造参数
 
 各个参数的作用说明
 
@@ -101,21 +89,38 @@ https://www.jianshu.com/p/ae67972d1156
 - long keepAliveTime = 10; // 线程池中超过corePoolSize数目的空闲线程最大存活时间；可以allowCoreThreadTimeOut(true) 设置核心线程[corePoolSize]有效时间
 - TimeUnit unit = TimeUnit.SECONDS; // keepAliveTime时间单位
 - BlockingQueue<Runnable> workQueue; // 阻塞任务队列，常用的有三种队列，SynchronousQueue, LinkedBlockingDeque, ArrayBlockingQueue。
+- ThreadFactory threadFactory; // 新建线程工厂
+- RejectedExecutionHandler handler; //  当提交任务数超过maxmumPoolSize+workQueue之和时，任务会交给RejectedExecutionHandler来处理。
+
+
+
+#### 拒绝策略
+
+- AbortPolicy（默认）：直接抛弃，并且抛出RejectedExecutionException异常
+
+- CallerRunsPolicy：用调用者的线程执行任务，如果添加到线程池失败，那么调用线程会自己去执行该任务，不会等待线程池中的线程去执行
+
+- DiscardOldestPolicy：抛弃队列中最久的任务
+
+- DiscardPolicy：抛弃当前任务，并且不会有任何异常
+
+
+
+##### 常用方法 
+
+### ThreadPoolExecutor
+
+https://segmentfault.com/a/1190000015368896
+
+https://www.jianshu.com/p/ae67972d1156
 
 [http://www.cnblogs.com/dolphin0520/p/3932906.html](http://www.cnblogs.com/dolphin0520/p/3932906.html)
 
 **上面的线程池，实际使用的线程数的最大值始终是** **corePoolSize** **，即便设置了** **maximumPoolSize** **也没有生效。** **要用上** **maximumPoolSize** **，允许在核心线程满负荷下，继续创建新线程来工作** **，就需要选用有界任务队列。可以给** **LinkedBlockingQueue** **设置容量，比如** **new LinkedBlockingQueue(128)** **，也可以换成** **SynchronousQueue****
 
-- ThreadFactory threadFactory; // 新建线程工厂
-- RejectedExecutionHandler handler; //  当提交任务数超过maxmumPoolSize+workQueue之和时，任务会交给RejectedExecutionHandler来处理。
+- 
 
-AbortPolicy（默认）：直接抛弃，并且抛出RejectedExecutionException异常
 
-CallerRunsPolicy：用调用者的线程执行任务，如果添加到线程池失败，那么调用线程会自己去执行该任务，不会等待线程池中的线程去执行
-
-DiscardOldestPolicy：抛弃队列中最久的任务
-
-DiscardPolicy：抛弃当前任务，并且不会有任何异常
 
 ![pastedGraphic_2.png](/var/folders/cq/j95gptn923n2rg0f3gr8p0r80000gn/T/abnerworks.Typora/C1F5D4F3-B609-4779-BC3B-181C64F51E57/pastedGraphic_2.png)
 
