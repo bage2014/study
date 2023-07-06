@@ -19,6 +19,7 @@
 - 命令行工具
 - 可视化工具
 - JVM 调优
+- JVM 常用参数 
 - Full GC 优化
 - 内存泄露监控
 - 对象头信息
@@ -49,9 +50,9 @@ Eden 新生区；From 和 To 相互拷贝回收，理论上某一时刻只用到
 
 ### 堆相关
 
--Xms 初试堆大小 
+-Xms【memory size】 初试堆大小 
 
--Xmx 最大堆大小
+-Xmx 【memory max】 最大堆大小
 
 -XX:MinHeapFreeRatio 空余内存比例【增大使用】
 

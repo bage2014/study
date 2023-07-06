@@ -190,7 +190,7 @@ https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/advanced-features-an
 
 
 
-#### 自定义拓展** 
+#### 自定义拓展
 
 https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/reference-manual/spi/description/cluster/
 
