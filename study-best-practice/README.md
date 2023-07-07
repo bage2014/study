@@ -69,6 +69,8 @@ wrk -t10 -c400 -d60s http://localhost:8000/user/insert
 
 wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/log/insert
 
+wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/user/insert
+
 ```
 
 Output:
@@ -263,4 +265,6 @@ jmap -dump:file=javaDump.hprof,format=b {pid}
 
 bage@bagedeMacBook-Pro ~ % jmap -dump:file=bestp.hprof,format=b 41337
 
-
+## Arthas 
+A里爸爸工具使用 
+热点图 线上服务的 CPU 火焰图。

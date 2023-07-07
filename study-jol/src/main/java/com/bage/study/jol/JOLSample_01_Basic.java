@@ -25,6 +25,9 @@ public class JOLSample_01_Basic {
 
     public static class A {
         boolean f;
+        boolean f2;
+        boolean f3;
+//        boolean f4; //  四个boolean  刚好是4的背书，这时候就不需要对其
     }
 
 }
