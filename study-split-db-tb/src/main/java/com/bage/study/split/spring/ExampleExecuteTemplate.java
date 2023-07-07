@@ -23,7 +23,7 @@ public final class ExampleExecuteTemplate {
     
     public static void run(final ExampleService exampleService) throws SQLException {
         try {
-            exampleService.initEnvironment();
+//            exampleService.initEnvironment();
             exampleService.processSuccess();
         } finally {
             exampleService.cleanEnvironment();

@@ -1,7 +1,7 @@
 package com.bage.study.split.spring;
 
-import com.bage.study.split.PreciseModuloShardingDatabaseAlgorithm;
-import com.bage.study.split.PreciseModuloShardingTableAlgorithm;
+import com.bage.study.split.basic.PreciseModuloShardingDatabaseAlgorithm;
+import com.bage.study.split.basic.PreciseModuloShardingTableAlgorithm;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.TableRuleConfiguration;
@@ -9,9 +9,11 @@ import org.apache.shardingsphere.api.config.sharding.strategy.StandardShardingSt
 import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -20,28 +22,31 @@ import java.util.Properties;
 public class AppConfig {
 
     @Bean
+    @Primary
     public DataSource datasource() throws SQLException {
         // 配置真实数据源
         Map<String, DataSource> dataSourceMap = new HashMap<>();
 
         // 配置第一个数据源
         BasicDataSource dataSource1 = new BasicDataSource();
-        dataSource1.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource1.setUrl("jdbc:mysql://localhost:3306/split_db_1?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
+        dataSource1.setDriverClassName("org.h2.Driver");
+        dataSource1.setUrl("jdbc:h2:mem:split_db_1?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource1.setUsername("root");
         dataSource1.setPassword("root");
         dataSourceMap.put("split_db_1", dataSource1);
 
         // 配置第二个数据源
         BasicDataSource dataSource2 = new BasicDataSource();
-        dataSource2.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource2.setUrl("jdbc:mysql://localhost:3306/split_db_2?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
+        dataSource2.setDriverClassName("org.h2.Driver");
+        dataSource2.setUrl("jdbc:h2:mem:split_db_2?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource2.setUsername("root");
         dataSource2.setPassword("root");
         dataSourceMap.put("split_db_2", dataSource2);
 
         // 配置Order表规则
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration("tb_order", "split_db_${1..2}.tb_order_${2019..2020}");
+        TableRuleConfiguration orderItemTableRuleConfig = new TableRuleConfiguration("tb_order_item", "split_db_${1..2}.tb_order_item_${2019..2020}");
+        TableRuleConfiguration addressTableRuleConfig = new TableRuleConfiguration("tb_address", "split_db_${1..2}.tb_address_${2019..2020}");
 
         // 配置分库 + 分表策略
 //        orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));
@@ -53,7 +58,10 @@ public class AppConfig {
         shardingRuleConfig.setDefaultTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("create_time", new PreciseModuloShardingTableAlgorithm()));
 
         // 配置分片规则
-        shardingRuleConfig.getTableRuleConfigs().add(orderTableRuleConfig);
+        Collection<TableRuleConfiguration> tableRuleConfigs = shardingRuleConfig.getTableRuleConfigs();
+        tableRuleConfigs.add(orderTableRuleConfig);
+        tableRuleConfigs.add(orderItemTableRuleConfig);
+        tableRuleConfigs.add(addressTableRuleConfig);
 
         // 省略配置order_item表规则...
         // ...

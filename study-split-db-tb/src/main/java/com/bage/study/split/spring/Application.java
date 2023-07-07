@@ -25,7 +25,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.sql.SQLException;
 
-//@ComponentScan("com.bage.study.split.spring")
 @MapperScan(basePackages = "com.bage.study.split.spring")
 @SpringBootApplication(exclude = JtaAutoConfiguration.class)
 public class Application {

@@ -15,7 +15,7 @@
  * </p>
  */
 
-package com.bage.study.split;
+package com.bage.study.split.basic;
 
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;

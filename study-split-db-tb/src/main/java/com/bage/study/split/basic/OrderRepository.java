@@ -1,4 +1,4 @@
-package com.bage.study.split;
+package com.bage.study.split.basic;
 
 import java.util.List;
 

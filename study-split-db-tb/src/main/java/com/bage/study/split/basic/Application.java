@@ -1,4 +1,4 @@
-package com.bage.study.split;
+package com.bage.study.split.basic;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
@@ -59,16 +59,16 @@ public class Application {
 
         // 配置第一个数据源
         BasicDataSource dataSource1 = new BasicDataSource();
-        dataSource1.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource1.setUrl("jdbc:mysql://localhost:3306/split_db_1?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
+        dataSource1.setDriverClassName("org.h2.Driver");
+        dataSource1.setUrl("jdbc:h2:mem:split_db_1?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource1.setUsername("root");
         dataSource1.setPassword("root");
         dataSourceMap.put("split_db_1", dataSource1);
 
         // 配置第二个数据源
         BasicDataSource dataSource2 = new BasicDataSource();
-        dataSource2.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource2.setUrl("jdbc:mysql://localhost:3306/split_db_2?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
+        dataSource2.setDriverClassName("org.h2.Driver");
+        dataSource2.setUrl("jdbc:h2:mem:split_db_2?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource2.setUsername("root");
         dataSource2.setPassword("root");
         dataSourceMap.put("split_db_2", dataSource2);
@@ -88,7 +88,7 @@ public class Application {
 
 
         shardingRuleConfig.setDefaultTableShardingStrategyConfig(new ComplexShardingStrategyConfiguration(
-                StringUtils.collectionToDelimitedString(Arrays.asList("order_id","create_time"), ","),
+                StringUtils.collectionToDelimitedString(Arrays.asList("order_item_id","create_time"), ","),
                 new MyTBComplexKeysShardingAlgorithm()));
 
         // 配置分片规则
@@ -109,14 +109,14 @@ public class Application {
 
         // 配置第一个数据源
         BasicDataSource dataSource1 = new BasicDataSource();
-        dataSource1.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource1.setDriverClassName("org.h2.Driver");
         dataSource1.setUrl("jdbc:mysql://localhost:3306/split_db_1?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource1.setUsername("root");
         dataSource1.setPassword("root");
 
         // 配置第二个数据源
         BasicDataSource dataSource2 = new BasicDataSource();
-        dataSource2.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource2.setDriverClassName("org.h2.Driver");
         dataSource2.setUrl("jdbc:mysql://localhost:3306/split_db_2?serverTimezone=UTC&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         dataSource2.setUsername("root");
         dataSource2.setPassword("root");

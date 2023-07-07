@@ -1,4 +1,4 @@
-package com.bage.study.split;
+package com.bage.study.split.basic;
 
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
@@ -9,13 +9,18 @@ public class PreciseModuloShardingTableAlgorithm implements PreciseShardingAlgor
 
     @Override
     public String doSharding(final Collection<String> tableNames, final PreciseShardingValue<java.sql.Timestamp> shardingValue) {
-        for (String each : tableNames) {
-            if (each.endsWith((shardingValue.getValue().getYear() + 1900) + "")) {
-                return each;
-            }
-        }
-        throw new UnsupportedOperationException();
 
+        if(tableNames.isEmpty()){
+            throw new UnsupportedOperationException();
+        }
+        return tableNames.stream().findFirst().get();
+        //        for (String each : tableNames) {
+//            if (each.endsWith((shardingValue.getValue().getYear() + 1900) + "")) {
+//                return each;
+//            }
+//        }
+//
+//        throw new UnsupportedOperationException();
 //        System.out.println("shardingValue:" + shardingValue);
 //        String[] objects = tableNames.toArray(new String[2]);
 //

@@ -5,5 +5,6 @@
 <configuration>
     <mappers>
         <mapper resource="mybatis/mappers/OrderRepository.xml"/>
+        <mapper resource="mybatis/mappers/OrderItemMapper.xml"/>
     </mappers>
 </configuration>

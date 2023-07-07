@@ -1,4 +1,4 @@
-package com.bage.study.split;
+package com.bage.study.split.basic;
 
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingValue;

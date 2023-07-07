@@ -34,15 +34,19 @@ public class OrderServiceImpl implements ExampleService {
     
     @Resource
     private OrderRepository orderRepository;
+    @Resource
+    private OrderItemRepository orderItemRepository;
     @Override
     public void initEnvironment() throws SQLException {
-        // orderRepository.createTableIfNotExists();
+        orderRepository.createTableIfNotExists();
+        orderItemRepository.createTableIfNotExists();
     }
 
 
     @Override
     public void cleanEnvironment() throws SQLException {
-        // orderRepository.dropTable();
+         orderRepository.dropTable();
+        orderItemRepository.dropTable();
     }
     
     @Override

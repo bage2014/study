@@ -50,10 +50,10 @@
 
 
         <!-- mybatis数据库字段类型映射，此处是重点 -->
+
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-typehandlers-jsr310</artifactId>
-            <version>1.0.1</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
 
 
@@ -71,11 +71,6 @@
             <version>1.2.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
