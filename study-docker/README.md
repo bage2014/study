@@ -415,12 +415,25 @@ Docker Pull Command
     docker run --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
     
     Mac
-    docker run --network bage-net --name bage-zookeeper -v /Users/bage/bage/docker-data/zookeeper:/data --restart always -p 2181:2181 -d zookeeper
+    docker run --network bage-net --name bage-zookeeper -v /Users/bage/bage/docker-data/zookeeper:/data -p 2181:2181 -d zookeeper
+    
+    -e JVMFLAGS="-Xmx1024m"
+    docker run --network bage-net --name bage-zookeeper -v /Users/bage/bage/docker-data/zookeeper:/data -p 2181:2181 -d zookeeper
+
+
+
+Connect to Zookeeper from the Zookeeper command line client
+
+```console
+docker run -it --rm --link bage-zookeeper:zookeeper zookeeper zkCli.sh -server zookeeper
+```
+
 
 
 
 
 ### 安装部署portainer  ###
+
 参考链接: [https://hub.docker.com/r/portainer/portainer]()、[https://portainer.readthedocs.io/en/latest/deployment.html](https://portainer.readthedocs.io/en/latest/deployment.html)
 
 Docker Pull Command
@@ -470,6 +483,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -783,6 +797,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 

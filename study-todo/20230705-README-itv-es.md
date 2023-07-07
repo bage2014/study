@@ -78,7 +78,7 @@ Step4：基于上述运算得分对文档进行综合排序，最后返回结果
 
 FST
 
-
+https://zhuanlan.zhihu.com/p/612483065
 
 ## 组件概念
 
