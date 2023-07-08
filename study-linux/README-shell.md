@@ -211,7 +211,7 @@ nc -v ip -z startPort-endPort
 
 解压，将 hello.zip 压缩文件解压到 hello文件夹
 
-    zip hello.zip hello/
+    unzip hello.zip hello/
 
 
 
@@ -250,6 +250,8 @@ nc -v ip -z startPort-endPort
 
 
 ## 网络
+
+
 
 ## 用户和组
 
