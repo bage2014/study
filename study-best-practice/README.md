@@ -5,6 +5,9 @@ https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
 
 https://zhuanlan.zhihu.com/p/491927737
 
+https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
+
+
 ## MySQL
 
 查看负载 
@@ -189,14 +192,23 @@ https://spring.io/guides/gs/messaging-redis/
 
 
 
+
+
 ## metrics
 
-## 准备
+### 基本使用
 启动 prometheus 挂在 网络bage-net 下  
+
+```
 docker run --network bage-net -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+```
 
 启动 kabana
+
+```
 docker run --network bage-net -d --name=bage-grafana -p 3000:3000 grafana/grafana
+
+```
 
 本地指标
 http://localhost:8000/actuator/prometheus
@@ -219,6 +231,24 @@ http://bage-prometheus:9090
 sum(rate(bage_user_request_count_total[1m]))
 
 sum_over_time(bage_user_request_count_total[1m])
+
+
+
+
+
+### JVM 模板 
+
+https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
+
+
+
+导入
+
+dashboard -> import ;
+
+拷贝上面 https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
+
+链接对应的 ID 或者 json
 
 
 
@@ -255,16 +285,60 @@ java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar --spring.config.location
 
 拷贝到远程
 
+```
 scp -r ./target/study-best-practice-0.0.1-SNAPSHOT.jar bage@124.221.97.97:/home/bage
 
 java -jar study-best-practice-0.0.1-SNAPSHOT.jar
 
 
-生成 dump 文件
+```
+
+
+
+## 生成 dump
+
+https://www.baeldung.com/java-heap-dump-capture
+
+
+
+选择对应的JAVA 进程 
+
+```
+jps
+
 jmap -dump:file=javaDump.hprof,format=b {pid}
 
-bage@bagedeMacBook-Pro ~ % jmap -dump:file=bestp.hprof,format=b 41337
+example：
+jmap -dump:file=bestp.hprof,format=b 41337
+
+bage@bagedeMacBook-Pro ~ % jps
+95028 Jps
+90631 study-best-practice-0.0.1-SNAPSHOT.jar
+90806 ApacheJMeter.jar
+
+bage@bagedeMacBook-Pro ~ % jmap -dump:file=0707.hprof,format=b 90631   
+Dumping heap to /Users/bage/0707.hprof ...
+Heap dump file created [120639811 bytes in 0.287 secs]
+
+
+```
+
+
 
 ## Arthas 
+
 A里爸爸工具使用 
 热点图 线上服务的 CPU 火焰图。
+
+
+
+
+
+## 分析过程 
+
+实践参考 https://help.aliyun.com/document_detail/91580.html?spm=a2c4g.29342.0.0
+
+排查过程 https://www.zhihu.com/question/29269160/answer/2649417643
+
+
+
