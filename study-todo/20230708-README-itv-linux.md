@@ -46,7 +46,7 @@ rpm 安装
 
 tar 
 
-Zip unzip 
+zip unzip 
 
 
 
@@ -58,13 +58,25 @@ nc 监听
 
 ### 进程管理
 
+
+
+### 权限管理
+
+授予执行权限
+
+chmod 777 ./abc.txt
+
+
+
 ### 用户和组
 
-usradd
+useradd
 
 userdel
 
-Usurped
+Userpwd
+
+
 
 ### 文件目录
 
@@ -75,6 +87,8 @@ mkdir
 rm 
 
 rm -rf 
+
+
 
 ### 查找
 
