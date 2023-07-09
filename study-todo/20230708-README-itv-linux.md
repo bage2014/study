@@ -7,6 +7,7 @@ Linux
 - 背景
 - Linux 内核概念
 - 分类
+- 启动过程
 - 硬链接 软链接
 - 常用命令
 - 高阶用法
@@ -34,6 +35,8 @@ Linux
 
 https://github.com/bage2014/study/blob/master/study-linux/README-shell.md
 
+
+
 ### 软件安装
 
 yum 安装
@@ -47,6 +50,12 @@ rpm 安装
 tar 
 
 zip unzip 
+
+
+
+## 启动过程 
+
+https://www.runoob.com/linux/linux-system-boot.html
 
 
 

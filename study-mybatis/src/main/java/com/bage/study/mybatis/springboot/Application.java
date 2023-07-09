@@ -1,8 +1,6 @@
 package com.bage.study.mybatis.springboot;
 
 import com.bage.study.mybatis.springboot.org.dao.UserMapper;
-import com.bage.study.mybatis.springboot.org.domain.Sex;
-import com.bage.study.mybatis.springboot.org.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +19,8 @@ public class Application implements CommandLineRunner {
 
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
+
     @Override
     public void run(String... args) throws Exception {
         System.out.println(userMapper.queryAll());
