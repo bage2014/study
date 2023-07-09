@@ -48,5 +48,39 @@ TODO
 
 
 
+## 核心组件 
 
+https://codeleading.com/article/53613164398/
+
+http://www.voidme.com/mybatis/mybatis-core-components
+
+https://cloud.tencent.com/developer/article/2104525
+
+  mybatis的**核心组件**
+
+### SqlSessionFactoryBuilder
+
+- 它会根据代码或者配置来生成SqlSessionFactory，采用的是分布构建的builder模式。
+
+- 它的唯一作用就是为了生成mybatis的核心接口对象SqlSession，所以我们一般用单例模式处理它。构建它的方法有两种：XML方式和Java代码方式。
+
+### SqlSessionFactory
+
+它可以生成SqlSession，采用的是工厂模式。
+
+### SqlSession
+
+它可以发送SQL语句返回结果，也可以获取Mapper接口。
+
+### SQL Mapper
+
+Java接口和一个XML文件（或注解）构成，需要给出对应的SQL和映射规则，它可以发送SQL并返回结果。
+
+
+
+## Bilibili
+
+Mybatis 核心组件 
+
+【2023-07-08】 https://www.bilibili.com/video/BV1eT41197VG/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
