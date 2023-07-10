@@ -5,5 +5,4 @@ public interface CacheService {
 
     void remove(String key);
 
-    long size();
 }

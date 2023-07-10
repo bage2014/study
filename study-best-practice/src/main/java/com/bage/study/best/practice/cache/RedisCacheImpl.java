@@ -1,27 +1,25 @@
 package com.bage.study.best.practice.cache;
 
+import com.bage.study.best.practice.utils.JsonUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class RedisCacheImpl implements CacheService{
 
-    private Map<String, Object> map = new ConcurrentHashMap();
+
+    @Autowired
+    private ValueOperations<String, String> valueOperations;
 
     @Override
     public void cache(String key, Object data) {
-        map.put(key, data);
+        valueOperations.set(key, JsonUtils.toJson(data));
     }
 
     @Override
     public void remove(String key) {
-        map.remove(key);
+        valueOperations.set(key,null);
     }
 
-    @Override
-    public long size() {
-        return map.size();
-    }
 }
