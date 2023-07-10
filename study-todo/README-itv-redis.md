@@ -48,11 +48,19 @@ https://github.com/bage2014/study/blob/master/study-redis/README-distribute-lock
 - 惰性释放
 - 二进制安全
 
+
+
 ### Hash
+
+
 
 ### Map
 
+
+
 ### List
+
+
 
 ### Set
 
@@ -99,6 +107,12 @@ LFU 算法 https://baijiahao.baidu.com/s?id=1729525047952230592
 
 
 
+## 集群
+
+https://www.bilibili.com/video/BV1MW4y187AH/?spm_id_from=333.788&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+
+
 ## 注意事项 
 
 【2023-06-25】
@@ -118,6 +132,10 @@ https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247488325&idx=1&sn=6d9bbe
 总结 【2023-06-25】https://github.com/whx123/JavaHome/blob/master/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/README.MD
 
 【2023-06-25】经典知识点 https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247494124&idx=1&sn=c185f7d999d5f006608d05707a8a7eea&chksm=cf2236c5f855bfd329c6e2ee27f23f8131ebcd312960190a10f1a819d67f07a21a08ad17f263&token=162724582&lang=zh_CN&scene=21#wechat_redirect
+
+
+
+
 
 ## Bilibili 
 
