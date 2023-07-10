@@ -3,9 +3,35 @@ package com.bage.study.java.multhread;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class CompleteFutureTest {
+public class CompleteFutureDemo {
 
     public static void main(String[] args) {
+
+
+
+        CompletableFuture<?> feature1 = CompletableFuture.supplyAsync(()-> method1());
+        CompletableFuture.allOf(feature1,feature2,feature3);
+        test2(args);
+    }
+
+    private static String method1() {
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "ABC11";
+    }
+    private static String method2() {
+        try {
+            Thread.sleep(3000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "ABC22";
+    }
+
+    public static void test2(String[] args) {
 
         // supplyAsync 基本用法，异步响应,有响应结果
         CompletableFuture.supplyAsync(() -> {
