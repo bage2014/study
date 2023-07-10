@@ -33,9 +33,9 @@ public class CacheController {
 
     @RequestMapping("/size")
     public Object size() {
-        long size = localCache.size();
-        log.info("CacheController size = {}", size);
-        return size;
+//        long size = cacheService.size();
+//        log.info("CacheController size = {}", size);
+        return 0;
     }
 
 

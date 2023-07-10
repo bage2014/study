@@ -20,8 +20,4 @@ public class JvmCacheImpl implements CacheService {
         map.remove(key);
     }
 
-    @Override
-    public long size() {
-        return map.size();
-    }
 }
