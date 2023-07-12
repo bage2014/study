@@ -361,6 +361,23 @@ connect to it from an application
 
 
 
+登陆
+
+... or via redis-cli
+
+```
+$ redis-cli
+
+```
+
+https://redis.io/docs/ui/cli/
+
+```
+redis-cli -a mypassword PING
+```
+
+
+
 ### 安装配置RabbitMQ ###
 
 参考链接：[https://hub.docker.com/_/rabbitmq](https://hub.docker.com/_/rabbitmq "安装配置RabbitMQ")
@@ -483,6 +500,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -797,6 +815,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 

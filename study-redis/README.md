@@ -84,7 +84,7 @@ redis采用的是定期删除+惰性删除策略
 
            192.168.127.128:6379>exists name age departmentAddress(该值存在)
            （integer）2
-      
+          
            192.168.127.128:6379>exists name1 age1 departmentAddress(该值存在)
            （integer）0
 - 语法：flushdb，清空当前数据所有的键值对。
@@ -114,7 +114,11 @@ redis采用的是定期删除+惰性删除策略
 - Jedis 客户端 https://github.com/redis/jedis
 
 ## 常用数据类型 ##
-- **String**: Binary-safe strings.
+https://redis.io/docs/data-types/
+
+
+
+- String**: Binary-safe strings.
 - **Lists**: collections of string elements sorted according to the order of insertion. They are basically linked lists.
 - **Sets**: collections of unique, unsorted string elements.
 - **Sorted sets**, similar to Sets but where every string element is associated to a floating number value, called score. The elements are always taken sorted by their score, so unlike Sets it is possible to retrieve a range of elements (for example you may ask: give me the top 10, or the bottom 10).
@@ -127,7 +131,87 @@ redis采用的是定期删除+惰性删除策略
 - 在线命令测试 [http://try.redis.io/](http://try.redis.io/ "在线命令测试")
 - 常用数据类型 [https://redis.io/topics/data-types-intro](https://redis.io/topics/data-types-intro "常用数据类型")
 
+
+
+链接 
+
+https://redis.io/docs/getting-started/installation/install-redis-on-mac-os/
+
+```bash
+redis-cli
+
+```
+
+If your instance is password protected, the `-a <password>` option will perform authentication saving the need of explicitly using the [`AUTH`](https://redis.io/commands/auth) command:
+
+```
+$ redis-cli -a myUnguessablePazzzzzword123 PING
+```
+
+
+
+### 基本类型
+
+https://redis.io/docs/data-types/
+
+### String 
+
+By default, a single Redis string can be a maximum of 512 MB.
+
+
+
+基本操作 [`SET`](https://redis.io/commands/set) and the [`GET`](https://redis.io/commands/get)
+
+```
+> set mykey somevalue
+OK
+> get mykey
+"somevalue"
+```
+
+
+
+批量操作 [`MSET`](https://redis.io/commands/mset) and [`MGET`](https://redis.io/commands/mget)
+
+```
+> mset a 10 b 20 c 30
+OK
+> mget a b c
+1) "10"
+2) "20"
+3) "30"
+```
+
+
+
+### List
+
+基本操作 
+
+- [`LPUSH`](https://redis.io/commands/lpush) adds a new element to the head of a list; [`RPUSH`](https://redis.io/commands/rpush) adds to the tail.
+- [`LPOP`](https://redis.io/commands/lpop) removes and returns an element from the head of a list; [`RPOP`](https://redis.io/commands/rpop) does the same but from the tails of a list.
+- [`LLEN`](https://redis.io/commands/llen) returns the length of a list.
+- [`LMOVE`](https://redis.io/commands/lmove) atomically moves elements from one list to another.
+- [`LTRIM`](https://redis.io/commands/ltrim) reduces a list to the specified range of elements.
+- Note that [`LRANGE`](https://redis.io/commands/lrange) takes two indexes, the first and the last element of the range to return. Both the indexes can be negative, telling Redis to start counting from the end: so -1 is the last element, -2 is the penultimate element of the list, and so forth.
+
+```
+> LPUSH work:queue:ids 101
+(integer) 1
+> LPUSH work:queue:ids 237
+(integer) 2
+> RPOP work:queue:ids
+"101"
+> RPOP work:queue:ids
+"237"
+```
+
+
+
+
+
 ## Java 连接redis ##
+
 ### 参考链接 ### 
 - 通过Jedis连接 [https://github.com/xetorthio/jedis](https://github.com/xetorthio/jedis "Java链接redis")
 
