@@ -62,3 +62,6 @@ https://www.bilibili.com/video/BV1dJ411N7Um?p=44&vd_source=72424c3da68577f00ea40
 
 【2023-06-23】https://www.bilibili.com/video/BV1dJ411N7Um?p=15&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
+
+
+【2023-07-12】【黑马程序员Java进阶教程Tomcat核心原理解析-哔哩哔哩】 https://b23.tv/tRxGiYM
