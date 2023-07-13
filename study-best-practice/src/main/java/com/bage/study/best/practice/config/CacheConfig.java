@@ -1,7 +1,8 @@
 package com.bage.study.best.practice.config;
 
+import com.bage.study.best.practice.cache.CacheService;
+import com.bage.study.best.practice.cache.RedisCacheServiceImpl;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -30,6 +31,11 @@ public class CacheConfig {
     @Bean
     public StringRedisTemplate template(RedisConnectionFactory connectionFactory) {
         return new StringRedisTemplate(connectionFactory);
+    }
+
+    @Bean
+    public CacheService redisCacheService() {
+        return new RedisCacheServiceImpl();
     }
 
 

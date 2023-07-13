@@ -1,7 +1,6 @@
 package com.bage.study.best.practice.controller;
 
 import com.bage.study.best.practice.cache.CacheService;
-import com.bage.study.best.practice.cache.JvmCacheImpl;
 import com.bage.study.best.practice.model.User;
 import com.bage.study.best.practice.service.UserMockService;
 import com.github.jsonzou.jmockdata.JMockData;

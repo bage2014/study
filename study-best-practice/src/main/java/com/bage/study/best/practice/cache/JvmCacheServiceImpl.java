@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class JvmCacheImpl implements CacheService {
+public class JvmCacheServiceImpl implements CacheService {
 
     private Map<String, Object> map = new ConcurrentHashMap();
 
