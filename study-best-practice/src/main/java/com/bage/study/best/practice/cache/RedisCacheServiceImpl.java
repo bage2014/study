@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-@Component
-public class RedisCacheImpl implements CacheService{
+public class RedisCacheServiceImpl implements CacheService{
 
 
     @Autowired
