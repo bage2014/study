@@ -159,7 +159,17 @@ https://cloud.tencent.com/developer/article/1530481?ivk_sa=1024320u
 
 
 
-## 主从复制 
+https://baijiahao.baidu.com/s?id=1739276119927050514&wfr=spider&for=pc
+
+http://www.xbhp.cn/news/75679.html
+
+
+
+### 主从复制 
+
+redis主从结构特点：一个master可以有多个salve节点；salve节点可以有slave节点，从节点是级联结构。
+
+![](https://mmbiz.qpic.cn/mmbiz_png/JfTPiahTHJhp6HqJk2evzNMibJUBlHLrb61jpaHzW2qVz0SOa5YkfkBlcWiaTib2qd0wW0Avsrb8fRx0zyXYhcFOBA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
 
 - 当新建立一个从服务器时，从服务器将向主服务器发送SYNC命令，接收到SYNC命令后的主服务器会进行一次BGSAVE命令
 - 在执行期间，会将所有命令写入缓冲区中，当BGSAVE命令执行完毕之后会将生成的RDB文件发送给从服务器，从服务器使用这个文件加载数据到内存中，之后主服务器会以Redis命令协议的格式将缓冲区的命令发送给从服务器
@@ -168,7 +178,56 @@ https://cloud.tencent.com/developer/article/1530481?ivk_sa=1024320u
 
 
 
-http://www.xbhp.cn/news/75679.html
+### 哨兵模式 
+
+Redis的Sentinel系统用于管理多个Redis，Redis的Sentinel系统是一个分布式的系统，可以在系统中配置一个或多个Sentinel。主要执行以下三件事：
+
+- 监控：Sentinel会不断的检查主从服务器运行状态
+
+- 提醒：当某个Redis服务器出现故障，可通过API或者其他应用程序发送通知
+
+- 自动故障迁移：当一个主服务器不能正常工作时，Sentinel会进行一次故障自动迁移，会将失效主服务器的从服务器选举出一个新的主服务器，剩下的从服务器将会自动连接复制选举出来的新服务器的数据。
+
+ 
+
+**故障迁移**
+
+- 当一个Sentinel发现主服务器下线时，称为主观下线。
+
+- 只有多个Sentinel都发现主服务下线，并相互之间通过命令进行交流判断主服务器下线时，称为客观下线。
+- 只有对主服务器进行客观下线时，会选举出领头Sentinel，选举出之后，会进行新的主服务器投票选举，选举出一个从服务器升级为主服务器。
+- 并向被选中的从服务器发送Slaveof no one命令，让其变为主服务器。
+- 通过发布订阅的功能，将新的配置广播给其他Sentinel进行更新。
+- 并向下线的主服务器发送Slaveof命令，让其复制新的主服务器。
+- 当所有从服务器都已经开始复制新的主服务器时，领头Sentinel终止本次故障迁移。
+
+当一个 Redis 实例被重新配置是，无论是被设置成主服务器、从服务器、又或者被设置成其他主服务器的从服务器 ，Sentinel 都会向被重新配置的实例发送一个 `CONFIG REWRITE` 命令， 从而确保这些配置会持久化在硬盘里。
+
+https://baijiahao.baidu.com/s?id=1739276119927050514&wfr=spider&for=pc
+
+
+
+### Cluster模式
+
+![](https://pics1.baidu.com/feed/f703738da9773912e77e977f24983712377ae2e4.jpeg@f_auto?token=cb6174db31a2223c2713e9fe1e831709)
+
+
+
+- 之前的主从复制，哨兵模式都难以再现扩容。
+
+- 而Redis cluster集群实现了对Redis的水平扩容，即启动N个Redis节点，每个节点又可以有自己的从服务器，将数据均匀分布的存储在这N个结点上，每个节点存储数据的1/N。
+- Redis cluster集群就是一个可以在多个Redis节点之间进行数据共享的设施；
+- Redis cluster集群采用的是无中心化配置，即节点A无法处理，会将请求转发只节点B进行处理。
+
+
+
+Redis集群中的键空间被分割为16384个槽位。
+
+每个主节点负责16384中槽位的一部分，Redis使用CRC16 算法进行槽位分配。
+
+为了保证高可用，cluster模式也引入了主从复制模式，一个主节点对应一个或多个从节点，当主节点发生宕机时，可进行故障转移，将子节点升级为主节点。
+
+https://baijiahao.baidu.com/s?id=1739276119927050514&wfr=spider&for=pc
 
 
 
