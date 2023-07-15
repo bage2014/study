@@ -1127,3 +1127,9 @@ Java SE 6新特性, 获取 Instrumentation 接口的实例有两种方式：
 
 
 
+
+
+## 参考链接 
+
+https://www.kancloud.cn/luoyoub/jvm-note/1890187
+
