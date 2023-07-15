@@ -31,6 +31,21 @@ public class BestPracticeApplication implements CommandLineRunner {
         log.info(("----- BestPracticeApplication is started ------"));
         limitFlow();
 
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                for (int i = 0; i < 1000; i++) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("bage-command-hhhhhh is running" + i);
+                }
+            }
+        };
+        thread.setName("bage-command-hhhhhh");
+        thread.start();
     }
 
     private void limitFlow() {

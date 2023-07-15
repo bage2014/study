@@ -184,6 +184,7 @@
       <module>study-varr</module>
     <module>study-jmh</module>
       <module>study-best-practice-web</module>
+      <module>study-svm-sandbox</module>
 
   </modules>
 </project>
