@@ -5,8 +5,18 @@ TODO
 
 ## Keys关键点
 
+- 组件服务组成，定位，作用
+- HTTP vs RPC 
 - 注册中心的保护机制？
 - 熔断器 
+
+
+
+## HTTP vs RPC 
+
+**1、** RPC主要的缺陷是服务提供方和调用方式之间的依赖太强，需要对每一个微服务进行接口的定义，并通过持续继承发布，严格版本控制才不会出现冲突。
+
+**2、** REST是轻量级的接口，服务的提供和调用不存在代码之间的耦合，只需要一个约定进行规范。
 
 
 
@@ -57,6 +67,10 @@ https://www.bilibili.com/video/BV1Ca411R7GG?p=3&spm_id_from=pageDriver&vd_source
 
 
 ## 参考链接
+
+【2023-07-16】汇总 https://zhihu.com/column/c_1449336092872441856
+
+【2023-07-16】Spring Cloud itv 35 https://www.jianshu.com/p/7be69b38688b
 
 
 
