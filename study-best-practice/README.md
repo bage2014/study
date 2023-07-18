@@ -269,7 +269,10 @@ docker stats
 
     java -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
 
+
+
 ## deploy 
+
 参考链接 https://www.baeldung.com/deployable-fat-jar-spring-boot
 ```
 打包 
@@ -279,7 +282,10 @@ cd /Users/bage/bage/github/study/study-best-practice
 
 
 启动 
+java -jar  -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
+
 java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
+
 java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar --spring.config.location=file:///Users/bage/bage/config/application-remore-db.properties
 
 ```
