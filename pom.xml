@@ -185,6 +185,7 @@
     <module>study-jmh</module>
       <module>study-best-practice-web</module>
       <module>study-svm-sandbox</module>
+      <module>study-log</module>
 
   </modules>
 </project>
