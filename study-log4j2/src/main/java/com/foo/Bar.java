@@ -7,6 +7,7 @@ public class Bar {
  
   public boolean doIt() {
     logger.entry();
+    logger.info("hello {}","world");
     logger.error("Did it again!");
     return logger.exit(false);
   }
