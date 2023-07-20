@@ -2,9 +2,7 @@ package com.bage.study.spring.boot;
 
 import com.bage.InstanceBuilder;
 import com.bage.generator.DefaultValueGeneratorImpl;
-import com.bage.generator.ValueGenerator;
-import com.bage.study.springboot.aop.AsyncService;
-import com.bage.study.springboot.aop.Starter;
+import com.bage.study.springboot.async.Starter;
 import com.bage.study.springboot.aop.demo.User;
 import com.bage.study.springboot.aop.demo.UserService;
 import com.google.gson.GsonBuilder;
