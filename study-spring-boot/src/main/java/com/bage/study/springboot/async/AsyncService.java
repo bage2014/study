@@ -10,7 +10,7 @@ public class AsyncService {
         System.out.println("async1 currentThread： " + Thread.currentThread().getName());
         return "async1";
     }
-
+    webflowContext
     @Async
     public String async2() {
         System.out.println("async2 currentThread： " + Thread.currentThread().getName());
