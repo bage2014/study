@@ -27,6 +27,10 @@ public class CompleteFutureDemo {
         List<String> collect2 = list.stream().map(item->item.join()).collect(Collectors.toList());
         System.out.println(collect2);
 
+
+        // 第一个结束才执行第二个，如果线程没有，则caller调用
+        feature1.thenApply((res)-> method4());
+        System.out.println(collect);
 //        test2(args);
 
 
@@ -62,6 +66,14 @@ public class CompleteFutureDemo {
             e.printStackTrace();
         }
         return "ABC33";
+    }
+    private static String method4() {
+        try {
+            Thread.sleep(100L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "ABC44";
     }
 
     public static void test2(String[] args) {
