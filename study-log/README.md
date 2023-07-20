@@ -52,9 +52,10 @@ log4j2
 
 https://logging.apache.org/log4j/2.x/log4j-slf4j-impl.html
 
+https://howtodoinjava.com/log4j2/log4j2-with-slf4j/
 
 
-
+logback 
 
 https://www.baeldung.com/slf4j-with-log4j2-logback
 
