@@ -22,7 +22,7 @@ public class CacheController {
     @RequestMapping("/insert")
     public Object query() {
         User user = userMockService.mockOne();
-        log.debug("CacheController insert user = {}", user);
+        log.info("CacheController insert user = {}", user);
         user.setId(JMockData.mock(Long.class));
         cacheService.cache(user.getId() + "", user);
         log.info("CacheController insert insert = {}", user.getId());

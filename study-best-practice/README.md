@@ -74,6 +74,8 @@ wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/log/insert
 
 wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/user/insert
 
+wrk -t10 -c100 -d5s -T3s --latency http://localhost:8000/goods/buy
+
 ```
 
 Output:

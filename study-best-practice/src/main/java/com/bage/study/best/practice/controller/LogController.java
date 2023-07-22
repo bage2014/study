@@ -44,7 +44,7 @@ public class LogController {
 
         } catch (BlockException ex) {
             // 处理被流控的逻辑
-            System.out.println("blocked!");
+            log.warn("block");
             return 600;
         }
 
