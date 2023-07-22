@@ -45,7 +45,7 @@ public class BestPracticeApplication implements CommandLineRunner {
             }
         };
         thread.setName("bage-command-hhhhhh");
-        thread.start();
+//        thread.start();
     }
 
     private void limitFlow() {

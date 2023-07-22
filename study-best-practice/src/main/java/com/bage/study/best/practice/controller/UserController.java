@@ -46,7 +46,7 @@ public class UserController {
         try {
             long start = System.currentTimeMillis();
             User user = userMockService.mockOne();
-            log.debug("UserController insert user = {}", user);
+            log.info("UserController insert user = {}", user);
             int insert = userService.insert(user);
             log.info("UserController insert insert = {}", insert);
             long end = System.currentTimeMillis();
@@ -65,7 +65,7 @@ public class UserController {
         try {
             long start = System.currentTimeMillis();
             User user = userMockService.mockOne();
-            log.debug("UserController insert async user = {}", user);
+            log.info("UserController insert async user = {}", user);
             int insert = userService.insert(user);
             log.info("UserController insert async insert = {}", insert);
             long end = System.currentTimeMillis();
@@ -83,7 +83,7 @@ public class UserController {
         try {
             long start = System.currentTimeMillis();
             List<User> userList = userMockService.mockBatch(total);
-            log.debug("UserController insert user = {}", userList);
+            log.info("UserController insert user = {}", userList);
             int insert = userService.insertBatch(userList);
             log.info("UserController insert insert = {}", insert);
             long end = System.currentTimeMillis();

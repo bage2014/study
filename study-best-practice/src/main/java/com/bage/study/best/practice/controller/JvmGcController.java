@@ -18,7 +18,7 @@ public class JvmGcController {
 
     @RequestMapping("/gc/{step}")
     public Object gc(@PathVariable(value = "step", required = false) Integer step) {
-        log.debug("JvmGcController gc step = {}", step);
+        log.info("JvmGcController gc step = {}", step);
         if (step == null) {
             step = 100;
         }
