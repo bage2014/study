@@ -13,6 +13,7 @@ TODO
 - Poxas 算法 
 - 海量数据处理
 - mongo和ES的技术选型？在你负责设计一个系统时，什么场景你会选用mongo？什么场景你选用ES？
+- select vs poll vs Epoll
 
 
 
