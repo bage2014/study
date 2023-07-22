@@ -49,6 +49,8 @@ Tomcat 是一个小型的轻量级应用服务器，在中小型系统和并发�
 
 
 
+
+
 ## 请求过程 
 
 【2023-06-23】8分钟半左右
@@ -63,11 +65,27 @@ https://zhuanlan.zhihu.com/p/473877606
 
 
 
+https://my.oschina.net/jiagoushi/blog/8590385
+
+1. 请求被发送到本机端口 8080，被在那里侦听的 Coyote HTTP/1.1 Connector 获得
+2. Connector 把该请求交给它所在的 Service 的 Engine 来处理，并等待 Engine 的回应
+3. Engine 获得请求 localhost:8080/test/index.jsp，匹配它所有虚拟主机 Host
+4. Engine 匹配到名为 localhost 的 Host（即使匹配不到也把请求交给该 Host 处理，因为该 Host 被定义为该 Engine 的默认主机）
+5. localhost Host 获得请求 /test/index.jsp，匹配它所拥有的所有 Context
+6. Host 匹配到路径为 /test 的 Context（如果匹配不到就把该请求交给路径名为”” 的 Context 去处理）
+7. path=”/test” 的 Context 获得请求 /index.jsp，在它的 mapping table 中寻找对应的 servlet
+8. Context 匹配到 URL PATTERN 为 *.jsp 的 servlet，对应于 JspServlet 类
+9. 构造 HttpServletRequest 对象和 HttpServletResponse 对象，作为参数调用 JspServlet 的 doGet 或 doPost 方法
+10. Context 把执行完了之后的 HttpServletResponse 对象返回给 Host
+11. Host 把 HttpServletResponse 对象返回给 Engine
+12. Engine 把 HttpServletResponse 对象返回给 Connector
+13. Connector 把 HttpServletResponse 对象返回给客户 browser
+
 ## 核心配置 
 
 https://www.bilibili.com/video/BV1dJ411N7Um?p=20&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
-
+### 线程池
 
 - `maxSpareThreads:` 如果空闲状态的线程数多于设置的数目，则将这些线程中止，减少这个池中的线程总数。
 - `minSpareThreads: `最小备用线程数，tomcat启动时的初始化的线程数。
@@ -79,13 +97,85 @@ https://www.bilibili.com/video/BV1dJ411N7Um?p=20&vd_source=72424c3da68577f00ea40
 
 
 
+### server.xml
+
+https://my.oschina.net/jiagoushi/blog/8590385
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Server代表一个 Tomcat 实例。可以包含一个或多个 Services，其中每个Service都有自己的Engines和Connectors。
+       port="8005"指定一个端口，这个端口负责监听关闭tomcat的请求
+  -->
+<Server port="8005" shutdown="SHUTDOWN">
+    <!-- 监听器 -->
+    <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+    <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+    <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+    <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+    <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+    <!-- 全局命名资源，定义了UserDatabase的一个JNDI(java命名和目录接口)，通过pathname的文件得到一个用户授权的内存数据库 -->
+    <GlobalNamingResources>
+        <Resource name="UserDatabase" auth="Container"
+               type="org.apache.catalina.UserDatabase"
+               description="User database that can be updated and saved"
+               factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+               pathname="conf/tomcat-users.xml" />
+    </GlobalNamingResources>
+    <!-- Service它包含一个<Engine>元素,以及一个或多个<Connector>,这些Connector元素共享用同一个Engine元素 -->
+    <Service name="Catalina">
+        <!-- 
+         每个Service可以有一个或多个连接器<Connector>元素，
+         第一个Connector元素定义了一个HTTP Connector,它通过8080端口接收HTTP请求;第二个Connector元素定
+         义了一个JD Connector,它通过8009端口接收由其它服务器转发过来的请求.
+     -->
+        <Connector port="8080" protocol="HTTP/1.1"
+                connectionTimeout="20000"
+                redirectPort="8443" />
+        <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+        <!-- 每个Service只能有一个<Engine>元素 -->
+        <Engine name="Catalina" defaultHost="localhost">
+            <Realm className="org.apache.catalina.realm.LockOutRealm">
+                <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+                resourceName="UserDatabase"/></Realm>
+            <!-- 默认host配置，有几个域名就配置几个Host，但是这种只能是同一个端口号 -->
+            <Host name="localhost"  appBase="webapps"
+             unpackWARs="true" autoDeploy="true">
+                <!-- Tomcat的访问日志，默认可以关闭掉它，它会在logs文件里生成localhost_access_log的访问日志 -->
+                <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+                prefix="localhost_access_log" suffix=".txt"
+                pattern="%h %l %u %t "%r" %s %b" />
+            </Host>
+            <Host name="www.hzg.com"  appBase="webapps"
+             unpackWARs="true" autoDeploy="true">
+                <Context path="" docBase="/myweb1" />
+                <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+                prefix="hzg_access_log" suffix=".txt"
+                pattern="%h %l %u %t "%r" %s %b" />
+            </Host>
+        </Engine>
+    </Service>
+</Server>
+```
+
+
+
+### 相互关系
+
+https://my.oschina.net/jiagoushi/blog/8590385
+
+![](https://oscimg.oschina.net/oscnet/up-b65977a7e070b20f311ae018cbfce826f18.png)
+
+
+
+
+
 ## 性能配置 
 
 https://www.bilibili.com/video/BV1dJ411N7Um?p=42&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 https://www.bilibili.com/video/BV1dJ411N7Um?p=44&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
-## 
+
 
 
 
