@@ -284,6 +284,8 @@ cd /Users/bage/bage/github/study/study-best-practice
 
 
 启动 
+-Xms【memory size】 初试堆大小 
+-Xmx 【memory max】 最大堆大小
 java -jar  -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
 
 java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
