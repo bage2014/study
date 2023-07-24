@@ -1,5 +1,13 @@
 # study-TODO #
 
+## Linux
+
+常用内存分析命令
+
+Top 
+
+
+
 ## Arthas
 
 基本使用
