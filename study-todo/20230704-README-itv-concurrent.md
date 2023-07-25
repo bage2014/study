@@ -154,6 +154,12 @@ AQS 解析【2023-06-07】https://zhuanlan.zhihu.com/p/86072774
 
 
 
+要点整理 
+
+https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247487939&idx=1&sn=560f9ec0fdbc081949383bbee2407b0e&chksm=cf21ceeaf85647fc24537661ca063f9537b5cb5090da1c4ecf1f4d8326a5359391143bd16e1a&token=1496082535&lang=zh_CN&scene=21#wechat_redirect
+
+
+
 ## 公平锁 VS 非公平锁
 
 过程解析【2023-06-07】https://blog.csdn.net/weixin_43243916/article/details/100060923
