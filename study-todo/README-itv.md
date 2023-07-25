@@ -247,6 +247,20 @@ docker run --name bage-mysql-pro -v /Users/bage/bage/docker-data/mysql-pro:/var/
 
 
 
+## 分布式锁
+
+https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247498750&idx=1&sn=19fe8b4fff28fe81db14e733053bbc74&chksm=cf2224d7f855adc1d0984980a4e3de31fe33329164a472ca8d8255a8a80b69b2e23850811323&token=2001057130&lang=zh_CN#rd
+
+
+
+https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247488142&idx=1&sn=79a304efae7a814b6f71bbbc53810c0c&chksm=cf21cda7f85644b11ff80323defb90193bc1780b45c1c6081f00da85d665fd9eb32cc934b5cf&token=162724582&lang=zh_CN&scene=21#wechat_redirect
+
+
+
+## 分布式事务
+
+https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247498750&idx=1&sn=19fe8b4fff28fe81db14e733053bbc74&chksm=cf2224d7f855adc1d0984980a4e3de31fe33329164a472ca8d8255a8a80b69b2e23850811323&token=2001057130&lang=zh_CN#rd
+
 
 
 ## 项目总结

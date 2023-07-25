@@ -26,6 +26,7 @@
 - 内存泄露监控
 - 对象头信息
 - OOM 场景和处理过程 
+- 内存分配
 
 
 
@@ -199,6 +200,14 @@ https://zhuanlan.zhihu.com/p/618722706
 
 
 不同类型差别
+
+
+
+## 内存分配
+
+大对象直接进老年代 
+
+https://blog.csdn.net/zhou920786312/article/details/123536294
 
 
 
