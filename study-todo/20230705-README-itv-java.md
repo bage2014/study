@@ -18,6 +18,13 @@
 - 反射
 - 注解的实现，原理
 - 占用大小 
+- 触发类加载的六大时机
+
+
+
+## 历史版本 
+
+各个版本说明 https://github.com/whx123/JavaHome/blob/master/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/Java%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AJDK%205-15%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BB%8F%E5%85%B8%E6%96%B0%E7%89%B9%E6%80%A7.md
 
 
 
@@ -202,6 +209,34 @@ https://www.jianshu.com/p/ae67972d1156
    将登陆信息等重要信息存放为SESSION
 
    其他信息如果需要保留，可以放在COOKIE中
+
+## JDK 9模块化
+
+
+
+## 反射
+
+https://github.com/whx123/JavaHome/blob/master/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%B0%88%E8%B0%88Java%E5%8F%8D%E5%B0%84%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%86%8D%E5%88%B0%E5%8E%9F%E7%90%86.md
+
+### 基本使用
+
+
+
+### 原理 
+
+
+
+## 注解
+
+### 基本注解
+
+
+
+### 原理
+
+
+
+### 重复注解
 
 
 
