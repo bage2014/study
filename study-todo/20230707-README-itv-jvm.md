@@ -27,6 +27,7 @@
 - 对象头信息
 - OOM 场景和处理过程 
 - 内存分配
+- 三色标记
 
 
 
@@ -182,6 +183,44 @@ java运行过程就可以分为  编译  》 类加载  》  执行
 参数解析 https://blog.csdn.net/Pluto372/article/details/122084515
 
 参数说明 https://zhuanlan.zhihu.com/p/92588056
+
+
+
+## 回收算法
+
+### 标记清除算法
+
+### 复制算法
+
+### 标记压缩算法
+
+
+
+## 回收器
+
+https://www.bilibili.com/video/BV1Bs4y1N7KZ/?spm_id_from=333.788&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+
+
+https://www.bilibili.com/video/BV1f3411f7LC/?spm_id_from=pageDriver&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+
+
+### Serial
+
+### Serial Old 
+
+...
+
+### CMS
+
+执行过程 
+
+
+
+## G1
+
+
 
 
 
