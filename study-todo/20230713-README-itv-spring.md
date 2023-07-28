@@ -24,6 +24,7 @@
 - 配置优化 
 - Spring Boot Starter
 - 循环依赖
+- 事务失效
 
 
 
@@ -273,6 +274,19 @@ https://www.zhihu.com/question/362583020/answer/2826263500?utm_id=0
 https://mp.weixin.qq.com/s/Un8pyET2XDXpDY4FnRbwXw
 
 ![](https://mmbiz.qpic.cn/sz_mmbiz_png/GvtDGKK4uYkMCL2KK3DtAry0FgPGAV5zUtuzhdmu4ML4EKric1pBuLdjmM7Fus6rxnKRrJjicJnFzge53FicxwpFQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+
+
+## 事务失效
+
+- 方法的访问权限必须是public，其他private等权限，事务失效
+- 方法被定义成了final的，这样会导致事务失效。
+- 在同一个类中的方法直接内部调用，会导致事务失效。
+- 一个方法如果没交给spring管理，就不会生成spring事务。
+- 如果自己try...catch误吞了异常，事务失效。
+- 错误的传播
+- 多线程调用，两个方法不在同一个线程中，获取到的数据库连接不一样的。
+- 表的存储引擎不支持事务
 
 
 
