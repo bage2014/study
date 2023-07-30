@@ -45,6 +45,22 @@ Dubbo的整体设计分 10 层：
 
 
 
+## 基本配置 
+
+| 标签                                                         | 用途         | 解释                                                         |
+| ------------------------------------------------------------ | ------------ | ------------------------------------------------------------ |
+| [dubbo:service/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 服务配置     | 用于暴露一个服务，定义服务的元信息，一个服务可以用多个协议暴露，一个服务也可以注册到多个注册中心 |
+| [dubbo:reference/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 引用配置     | 用于创建一个远程服务代理，一个引用可以指向多个注册中心       |
+| [dubbo:protocol/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 协议配置     | 用于配置提供服务的协议信息，协议由提供方指定，消费方被动接受 |
+| [dubbo:application/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 应用配置     | 用于配置当前应用信息，不管该应用是提供者还是消费者           |
+| [dubbo:module/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 模块配置     | 用于配置当前模块信息，可选                                   |
+| [dubbo:registry/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 注册中心配置 | 用于配置连接注册中心相关信息                                 |
+| [dubbo:monitor/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 监控中心配置 | 用于配置连接监控中心相关信息，可选                           |
+| [dubbo:provider/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 提供方配置   | 当 ProtocolConfig 和 ServiceConfig 某属性没有配置时，采用此缺省值，可选 |
+| [dubbo:consumer/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 消费方配置   | 当 ReferenceConfig 某属性没有配置时，采用此缺省值，可选      |
+| [dubbo:method/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 方法配置     | 用于 ServiceConfig 和 ReferenceConfig 指定方法级的配置信息   |
+| [dubbo:argument](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 参数配置     | 用于指定方法参数配置                                         |
+
 ## 核心角色组件
 
 【2023-06-15】https://mikechen.cc/19925.html
@@ -69,15 +85,29 @@ Dubbo的整体设计分 10 层：
 
 【2023-06-15】https://cn.dubbo.apache.org/zh-cn/blog/2018/10/05/dubbo-%e5%8d%8f%e8%ae%ae%e8%af%a6%e8%a7%a3/
 
-**dubbo协议**
+### dubbo
 
-使用基于mina1.1.7+hessian3.2.1的tbremoting交互
+**1、** dubbo：单一长连接和 NIO 异步通讯，适合大并发小数据量的服务调用，以及消费者远大于提供者。传输协议 TCP，异步， Hessian 序列化；
 
-**rmi协议**
+### rmi
 
-**http协议**
+**2、** rmi：采用 JDK 标准的 rmi 协议实现，传输参数和返回参数对象需要实现Serializable 接口，使用 java 标准序列化机制，使用阻塞式短连接，传输数据包大小混合，消费者和提供者个数差不多，可传文件，传输协议 TCP。多个短连接， TCP 协议传输，同步传输，适用常规的远程服务调用和 rmi 互操作。在依赖低版本的 Common-Collections 包， java 序列化存在安全漏洞；
 
-**rthift协议**
+### http
+
+**3、** http：基于 Http 表单提交的远程调用协议，使用 Spring 的 HttpInvoke 实现。多个短连接，传输协议 HTTP，传入参数大小混合，提供者个数多于消费者，需要给应用程序和浏览器 JS 调用；
+
+### webservice
+
+**4、** webservice：基于 WebService 的远程调用协议，集成 CXF 实现，提供和原生 WebService 的互操作。多个短连接，基于 HTTP 传输，同步传输，适用系统集成和跨语言调用；
+
+### hessian
+
+**5、** hessian：集成 Hessian 服务，基于 HTTP 通讯，采用 Servlet 暴露服务，Dubbo 内嵌 Jetty 作为服务器时默认实现，提供与 Hession 服务互操作。多个短连接，同步 HTTP 传输， Hessian 序列化，传入参数较大，提供者大于消费者，提供者压力较大，可传文件；
+
+### Redis
+
+**6、** Redis：基于 Redis 实现的 RPC 协议
 
 
 
@@ -235,6 +265,8 @@ SPI vs JDK 基本用法
 【2023-06-14】https://www.jianshu.com/p/8eb0d74e393b
 
 【2023-06-16】https://www.pianshen.com/article/9549279875/
+
+itv https://gitee.com/souyunku/DevBooks#dubbo%E6%9C%80%E6%96%B02023%E5%B9%B4%E9%9D%A2%E8%AF%95%E9%A2%98%E5%A4%A7%E6%B1%87%E6%80%BB%E9%99%84%E7%AD%94%E6%A1%88
 
 【itv】https://github.com/whx123/JavaHome/blob/master/Java%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E7%BB%93%E5%8F%B7/dubbo/dubbo%E9%9D%A2%E8%AF%95%E9%A2%98/dubbo%E9%9D%A2%E8%AF%95%E9%A2%98.md
 
