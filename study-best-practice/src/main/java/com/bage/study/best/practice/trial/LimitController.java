@@ -1,4 +1,4 @@
-package com.bage.study.best.practice.controller;
+package com.bage.study.best.practice.trial;
 
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
@@ -10,15 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/log")
+@RequestMapping("/limit")
 @RestController
 @Slf4j
-public class LogController {
+public class LimitController {
 
     @Autowired
     private LogCounterMetrics counterMetrics;
-//    @Autowired
-//    private TimerMetrics timerMetrics;
 
     @RequestMapping("/query")
     public Object query(@RequestParam("phone") String phone) {
