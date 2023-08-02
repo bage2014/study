@@ -1,4 +1,4 @@
-package com.bage.study.best.practice.controller;
+package com.bage.study.best.practice.trial;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/goods")
 @RestController
 @Slf4j
-public class GoodsController {
+public class GoodsSecKillController {
 
     private Map<Long, Integer> goodsMap = new ConcurrentHashMap<>();
     private int max = 1000;

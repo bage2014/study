@@ -345,6 +345,13 @@ A里爸爸工具使用
 
 
 
+## SafePoint 
+
+```
+http://localhost:8000/gc/safe/point/start
+
+```
+
 
 
 ## 分析过程 
