@@ -307,6 +307,40 @@ https://zhuanlan.zhihu.com/p/618722706
 
 
 
+### GC 日志
+
+```
+[346.934s][info ][gc,start    ] GC(271) Pause Young (Normal) (G1 Evacuation Pause)
+[346.934s][info ][gc,task     ] GC(271) Using 8 workers of 8 for evacuation
+[346.937s][info ][gc,phases   ] GC(271)   Pre Evacuate Collection Set: 0.1ms
+[346.937s][info ][gc,phases   ] GC(271)   Merge Heap Roots: 0.1ms
+[346.937s][info ][gc,phases   ] GC(271)   Evacuate Collection Set: 1.8ms
+[346.937s][info ][gc,phases   ] GC(271)   Post Evacuate Collection Set: 0.6ms
+[346.937s][info ][gc,phases   ] GC(271)   Other: 0.2ms
+[346.937s][info ][gc,heap     ] GC(271) Eden regions: 426->0(426)
+[346.937s][info ][gc,heap     ] GC(271) Survivor regions: 4->4(54)
+[346.937s][info ][gc,heap     ] GC(271) Old regions: 170->170
+[346.937s][info ][gc,heap     ] GC(271) Archive regions: 2->2
+[346.937s][info ][gc,heap     ] GC(271) Humongous regions: 0->0
+[346.937s][info ][gc,metaspace] GC(271) Metaspace: 59579K(60096K)->59579K(60096K) NonClass: 52231K(52480K)->52231K(52480K) Class: 7348K(7616K)->7348K(7616K)
+[346.937s][info ][gc          ] GC(271) Pause Young (Normal) (G1 Evacuation Pause) 1200M->347M(1434M) 2.672ms
+[346.937s][info ][gc,cpu      ] GC(271) User=0.01s Sys=0.00s Real=0.00s
+2023-08-01T09:06:56.477+08:00  INFO 39312 --- [io-8000-exec-51] c.b.s.b.p.s.mock.UserServiceMockImpl     : UserServiceMockImpl mockOne cost = 14
+
+```
+
+
+
+user代表进程在用户态消耗的CPU时间，
+
+sys代表代表进程在内核态消耗的CPU时间，
+
+real代表程序从开始到结束所用的时钟时间。这个时间包括其他进程使用的时间片和进程阻塞的时间（比如等待 I/O 完成）。
+
+
+
+
+
 ## 内存分配
 
 大对象直接进老年代 
@@ -329,6 +363,8 @@ https://blog.csdn.net/zhou920786312/article/details/123536294
 
 ## SafePoint
 
+https://zhuanlan.zhihu.com/p/286110609
+
 ### 安全点 
 
 STW并不会只发生在内存回收的时候。现在程序员这么卷，碰到几次safepoint的问题几率也是比较大的。
@@ -337,9 +373,50 @@ STW并不会只发生在内存回收的时候。现在程序员这么卷，碰�
 
 如果在GC前，有线程迟迟进入不了safepoint，那么整个JVM都在等待这个阻塞的线程，造成了整体GC的时间变长。
 
+
+
+
+
+- 现在可达性分析算法耗时最长的查找引用链的过程已经可以做到与用户线程一起并发，但根节点枚举始终还是必须在一个能保障一致性的快照中才得以进行
+
+- 即使是号称停顿时间可控，或者（几乎）不会发生停顿的CMS、G1、 ZGC等收集器，枚举根节点时也是必须要停顿的
+
+
+
+- 用户程序执行时并非在代码指令流的任意位置都能够停顿下来开始垃圾收集，而是强制要求必须执行到达安全点后才能够暂停。
+
+
+
 ### 选择标准
 
 安全点位置的选择标准是：是否能让程序长时间执行；所以会在方法调用、循环跳转、异常跳转等处才会产生安全点
+
+HotSpot会在所有方法的临返回之前，以及所有非counted loop的循环的回跳之前放置安全点。
+
+“长时间执行”的最明显特征就是指令序列的复用，例如方法调用、循环跳转、异常跳转 等都属于指令序列复用，所以只有具有这些功能的指令才会产生安全点。
+
+
+
+## MAT
+
+参考链接 https://c.m.163.com/news/a/HL40JTCI0552ZNXL.html
+
+### 概况
+
+Leak Suspects 》 System Overview
+
+- Heap Dump Overview 
+- System Properties
+- Thread Overview
+- Top Consumers
+  - Biggest Objects (Overview)
+  - Biggest Objects
+  - Biggest Top-Level Dominator Classes (Overview)
+  - Biggest Top-Level Dominator Classes
+  - Biggest Top-Level Dominator Class Loaders (Overview)
+  - Biggest Top-Level Dominator Class Loaders
+  - Biggest Top-Level Dominator Packages
+- Class Histogram
 
 
 
