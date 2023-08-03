@@ -1,7 +1,5 @@
 package com.bage.safe.point;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * https://zhuanlan.zhihu.com/p/286110609
  */
@@ -48,7 +46,8 @@ public class SafePointDemo2 {
 
     public static void main(String[] args) throws InterruptedException {
         t1.start();
-        Thread.sleep(1500L);
+        Thread.sleep(5000L);
+        System.out.println("t2 t3 starting...");
         t2.start();
         t3.start();
     }
