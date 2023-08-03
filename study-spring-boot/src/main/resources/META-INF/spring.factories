@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.bage.study.springboot.config.config.HelloConfig
+,com.bage.study.springboot.config.config.WorldConfig
