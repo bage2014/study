@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = "com.bage.study.springboot.enable.starter")
-@EnableMyService
+//@EnableMyService
 public class MyEnableApplication implements CommandLineRunner {
 
     @Autowired
