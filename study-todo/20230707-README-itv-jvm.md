@@ -205,6 +205,10 @@ java运行过程就可以分为  编译  》 类加载  》  执行
 
 ## 回收器
 
+https://cloud.tencent.com/developer/article/2308202 腾讯云介绍 
+
+
+
 https://www.bilibili.com/video/BV1Bs4y1N7KZ/?spm_id_from=333.788&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 
