@@ -17,6 +17,8 @@ TODO
 
 ## 业界组件对比
 
+https://www.cnblogs.com/chengxy-nds/p/14046856.html
+
 ### 2PC(二阶段提交)方案、3PC
 
 ### TCC（Try、Confirm、Cancel）
