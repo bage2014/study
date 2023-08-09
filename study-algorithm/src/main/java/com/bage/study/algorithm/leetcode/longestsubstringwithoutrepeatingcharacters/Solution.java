@@ -2,21 +2,11 @@ package com.bage.study.algorithm.leetcode.longestsubstringwithoutrepeatingcharac
 
 /**
  * https://leetcode.cn/problems/longest-substring-without-repeating-characters/
+ * todo bage 其他更高效的 算法
  */
 class Solution {
     public int lengthOfLongestSubstring(String str) {
-        if (str.length() <= 1) {
-            return str.length();
-        }
-        String subStr = str.substring(0, str.length() - 1);
-        if (subStr.contains(str.charAt(str.length() - 1) + "")) {
-            return lengthOfLongestSubstring(subStr);
-        }
-        return lengthOfLongestSubstring(subStr) + 1;
-    }
-
-    public int lengthOfLongestSubstringBasic(String s) {
-        return lengthOfLongestSubstringDetail(s).length();
+        return lengthOfLongestSubstringDetail(str).length();
     }
 
     public String lengthOfLongestSubstringDetail(String str) {

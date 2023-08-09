@@ -3,7 +3,7 @@ package com.bage.study.algorithm.leetcode.medianoftwosortedarrays;
 /**
  * https://leetcode.cn/problems/median-of-two-sorted-arrays/
  *
- * todo bage tobecontinue
+ * todo bage tobecontinue 滑动窗口？
  */
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
