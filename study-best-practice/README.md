@@ -7,6 +7,25 @@ https://zhuanlan.zhihu.com/p/491927737
 
 https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
 
+## 启动命令
+
+设置JVM 参数 
+
+```
+
+cd /Users/bage/bage/github/study/study-best-practice
+
+jdk8 :
+java -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:my-gc-%t.gc.log -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
+
+
+
+
+```
+
+
+
+
 
 ## MySQL
 
@@ -267,9 +286,18 @@ docker stats
 ## JVM 
 打开自带的 Jconsole
 
+### 堆内存
+
 选择对应的JAVA 进程 
 
     java -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
+    
+
+
+
+### 线程栈大小？？
+
+配置 减少，用不到1M ？
 
 
 
@@ -347,10 +375,51 @@ A里爸爸工具使用
 
 ## SafePoint 
 
+本地请求地点 
+
 ```
 http://localhost:8000/gc/safe/point/start
 
 ```
+
+
+
+## GC日志
+
+https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
+
+https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.htm
+
+https://zhuanlan.zhihu.com/p/267388951
+
+
+
+配置GC日志写出 
+
+```
+-XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:/opt/ard-user-gc-%t.gc.log
+
+```
+
+解释说明 
+
+```text
+ -Xloggc:/opt/app/ard-user/ard-user-gc-%t.log   设置日志目录和日志名称
+ -XX:+UseGCLogFileRotation           开启滚动生成日志
+ -XX:NumberOfGCLogFiles=5            滚动GC日志文件数，默认0，不滚动
+ -XX:GCLogFileSize=20M               GC文件滚动大小，需开启UseGCLogFileRotation
+ -XX:+PrintGCDetails                 开启记录GC日志详细信息（包括GC类型、各个操作使用的时间）,并且在程序运行结束打印出JVM的内存占用情况
+ -XX:+ PrintGCDateStamps             记录系统的GC时间           
+ -XX:+PrintGCCause                   产生GC的原因(默认开启)
+```
+
+
+
+
+
+GC 分析工具 
+
+https://dgrt.cn/a/2439307.html?action=onClick
 
 
 
