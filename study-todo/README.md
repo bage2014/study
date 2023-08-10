@@ -1,8 +1,22 @@
 # study-TODO #
 
-## 在线网址
+## 项目实践
 
-https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247488041&idx=1&sn=26d55c23ecd439860c4d9865bec61976&chksm=cf21cd00f8564416fe991974d24a51798d925b2e79d62935accf02aa6895c7b02adf48e9e207&token=1990771297&lang=zh_CN#rd
+8-9
+
+线上 JVM 配置 
+
+
+
+8-12
+
+同镜像代码，不同GC 回收器，，观测不同的GC 过程
+
+
+
+8-13
+
+GC 日志、GC 分析 、
 
 
 
@@ -236,6 +250,10 @@ ES 常用场景和高级技巧
 4、具有良好的沟通，团队协作、计划和创新的能力，有良好的责任心和上进心；
 5、本科211以上背景或者一二线互联网公司工作背景(这条不满足很难通过简历筛选)
 PS：薪资范围最高只能选40K 实际上不止，我们部门可能是拼多多最轻松的技术部门了
+
+## 在线网址
+
+https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247488041&idx=1&sn=26d55c23ecd439860c4d9865bec61976&chksm=cf21cd00f8564416fe991974d24a51798d925b2e79d62935accf02aa6895c7b02adf48e9e207&token=1990771297&lang=zh_CN#rd
 
 
 
