@@ -64,34 +64,23 @@ class Solution {
     private String isMatch(String sub, int middle, boolean isVirtual) {
         int i = 1;
         String str = "";
-        if (isVirtual) {
-            int left = middle - (i - 1);
-            int right = middle + i;
-            while (left >= 0 && right < sub.length()) {
-                if (sub.charAt(left) != sub.charAt(right)) {
-                    break;
-                }
-                // 肯定相同
-                str = sub.substring(left, right + 1);
-                i++;
-                left = middle - (i - 1);
-                right = middle + i;
+        int left = middle - getIndex(isVirtual, i);
+        int right = middle + i;
+        while (left >= 0 && right < sub.length()) {
+            if (sub.charAt(left) != sub.charAt(right)) {
+                break;
             }
-        } else {
-            int left = middle - i;
-            int right = middle + i;
-            while (left >= 0 && right < sub.length()) {
-                if (sub.charAt(left) != sub.charAt(right)) {
-                    break;
-                }
-                // 肯定相同
-                str = sub.substring(left, right + 1);
-                i++;
-                left = middle - i;
-                right = middle + i;
-            }
+            // 肯定相同
+            str = sub.substring(left, right + 1);
+            i++;
+            left = middle - getIndex(isVirtual, i);
+            right = middle + i;
         }
         return str;
+    }
+
+    private int getIndex(boolean isVirtual, int i) {
+        return isVirtual ? (i - 1) : i;
     }
 
     public static void main(String[] args) {
