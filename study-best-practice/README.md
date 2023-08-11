@@ -18,6 +18,9 @@ cd /Users/bage/bage/github/study/study-best-practice
 jdk8 :
 java -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:my-gc-%t.gc.log -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
 
+jdk17 :
+java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
+
 
 
 
@@ -88,6 +91,8 @@ brew install wrk
 This runs a benchmark for 30 seconds, using 12 threads, and keeping 400 HTTP connections open.
 ```
 wrk -t10 -c400 -d60s http://localhost:8000/user/insert
+
+wrk -t10 -c100 -d60s http://localhost:8000/user/insert
 
 wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/log/insert
 
