@@ -192,12 +192,6 @@ clickhouse  https://juejin.cn/post/7221154297706430525
 
 常用DB 维护【Docker版本】
 
-DB 监控 负载情况查看
-
-DB、Table
-
-Index
-
 Batch Insert 
 
 各种索引、查询备用
