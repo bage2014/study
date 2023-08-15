@@ -38,6 +38,7 @@ TODO
 - 自适应哈希索引
 - 错误日志、慢语句日志
 - 监控慢SQL
+- DB 监控 
 
 
 
@@ -174,6 +175,117 @@ https://www.cnblogs.com/LBSer/p/3403933.html
 ## 主从切换 
 
 http://cnblogs.com/liang24/p/14149412.html
+
+## DB 监控
+
+https://pythonjishu.com/nmizsyeicjldigb/
+
+### 监控指标
+
+监控MySQL需要关注一些重要的指标，从而控制好MySQL的性能和健康状况：
+
+- 连接数量
+
+连接数量是一个重要的指标，它反映的是当前MySQL的负载情况。可以使用mysqladmin命令查看当前连接情况或者使用如下SQL语句：show processlist;
+
+- InnoDB缓存
+
+InnoDB是MySQL的默认存储引擎，它可以使用缓存来提高查询效率。可以通过如下SQL语句查看InnoDB的缓存情况：SHOW ENGINE INNODB STATUS;
+
+- 慢查询
+
+慢查询是一种常见的性能瓶颈，可以使用mysqldumpslow命令，或者查询慢查询日志的方式来分析慢查询，进行调优。
+
+- 磁盘空间
+
+MySQL的数据文件和日志文件需要占用磁盘空间，当磁盘空间不足时，会影响MySQL的正常运行。可以使用如下语句查看磁盘空间使用情况：df -h
+
+
+
+### 命令行工具
+
+查看负载 
+
+```
+show global status
+```
+
+查看查询 
+
+```
+show processlist;
+```
+
+配置查看 
+
+```
+ 连接数
+ SHOW GLOBAL VARIABLES WHERE Variable_name='max_connections';
+ SHOW STATUS WHERE Variable_name like 'Threads_connect%';
+ 
+ 缓冲区 
+ SHOW STATUS WHERE Variable_name like '%buffer%';
+
+```
+
+调整【重启后失效】
+
+```
+SET GLOBAL max_connections=10;
+
+```
+
+
+
+### 自带工具
+
+- mysqladmin
+
+基本使用：
+
+https://www.jianshu.com/p/5fa5e977ee6f
+
+https://www.yingsoo.com/news/database/54573.html
+
+
+
+用于管理mysql服务，查询状态信息，如可用于查看当前数据库的连接数和线程数等。
+
+```bash
+# 查看链接
+mysqladmin -uroot -p -i 1 processlist
+
+# 查看参数 
+mysqladmin -uroot -p variables
+
+# 等等
+```
+
+- mysqldumpslow
+
+用于分析mysql慢查询日志，获取慢查询的信息，如查询的SQL、查询时间、锁定时间、返回记录数等。
+
+- mysqlslap
+
+模拟多用户请求并发访问mysql服务器，以测试和评估mysql服务器性能的工具。
+
+### 三方工具
+
+除了MySQL自带工具，还有一些第三方的监控工具：
+
+- MySQL Enterprise Monitor
+
+是MySQL官方提供的一款商业版监控工具，它能够实时监控MySQL服务器的状态，并通过告警系统及时通知管理员发现问题，辅助管理员解决问题。
+
+- Zabbix
+
+是一款开源的监控软件，可用于监控MySQL的各种性能指标，支持数据收集和图表展示。
+
+- Nagios
+
+是另一款开源的监控工具，可用于监控MySQL的运行状态、数据库空间、连接数等信息。
+
+
 
 
 
