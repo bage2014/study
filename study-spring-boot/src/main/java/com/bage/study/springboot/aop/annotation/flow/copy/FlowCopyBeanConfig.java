@@ -19,6 +19,11 @@ public class FlowCopyBeanConfig {
     }
 
     @Bean
+    public FlowCopyTraceLogic flowCopyTraceLogic() {
+        return new FlowCopyTraceLogic();
+    }
+
+    @Bean
     public FlowCopyLogic flowCopyLogic() {
         return new FlowCopyLogic();
     }
