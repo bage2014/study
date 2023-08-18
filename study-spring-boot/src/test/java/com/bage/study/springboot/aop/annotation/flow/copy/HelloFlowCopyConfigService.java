@@ -11,7 +11,7 @@ public class HelloFlowCopyConfigService implements FlowCopyConfigService{
     @Override
     public List<FlowCopyConfig> getFlowCopyConfigList() {
         FlowCopyConfig config = new FlowCopyConfig();
-        config.setPercent(80);
+        config.setPercent(100);
         config.setTotal(100);
         config.setToClass(YouHelloService.class);
         config.setSync(false);
@@ -26,8 +26,28 @@ public class HelloFlowCopyConfigService implements FlowCopyConfigService{
 
             }
         }));
+
+        FlowCopyConfig config2 = new FlowCopyConfig();
+        config2.setPercent(100);
+        config2.setTotal(100);
+        config2.setToClass(MyHelloService.class);
+        config2.setSync(false);
+        config2.setListener(Collections.singletonList(new FlowCopyFinishListener() {
+            @Override
+            public void onFinish(FlowCopyFinishParam finishParam) {
+                System.out.println("onFinish++++");
+            }
+
+            @Override
+            public void onException(FlowCopyFinishParam finishParam, Exception proceedException, Exception copyException) {
+
+            }
+        }));
+
+
         List<FlowCopyConfig> list = new ArrayList<>();
         list.add(config);
+        list.add(config2);
         return list;
     }
 }

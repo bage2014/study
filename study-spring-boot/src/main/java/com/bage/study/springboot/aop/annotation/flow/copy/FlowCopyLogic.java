@@ -1,6 +1,5 @@
 package com.bage.study.springboot.aop.annotation.flow.copy;
 
-import com.bage.study.springboot.aop.annotation.log.LoggerAspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -14,26 +13,35 @@ import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class FlowCopyLogic implements ApplicationContextAware {
+    private static final Logger log = LoggerFactory.getLogger(FlowCopyLogic.class);
     private ApplicationContext context;
     @Autowired
     private FlowCopyConfigService flowCopyConfigService;
     @Autowired
+    private FlowCopyTraceLogic flowCopyTraceLogic;
+    @Autowired
     @Qualifier("flowCopyThreadPoolExecutor")
     private ThreadPoolExecutor flowCopyThreadPoolExecutor;
     private Random random = new Random();
-    private static final Logger log = LoggerFactory.getLogger(LoggerAspect.class);
+
 
     public void doCopy(FlowCopy annotation, Method method, Object[] args, Object response, Exception proceedException) {
         log.info("doCopy, annotation = {}", annotation.getClass().getSimpleName());
         Class copyToClass = annotation.toClass();
+        if (method.getDeclaringClass() == copyToClass) {
+            log.error("copyToClass config illegal, copyToClass = {}, method.class = {}", copyToClass, method.getDeclaringClass());
+            return;
+        }
+        // 循环校验
+        if (flowCopyTraceLogic.check(method.getDeclaringClass(),copyToClass)) {
+            log.error("trace check failed, copyToClass = {}, method.class = {}", copyToClass, method.getDeclaringClass());
+            return;
+        }
+
         // 查询配置
         Optional<FlowCopyConfig> first = getFlowCopyConfig(annotation, method);
         if (!first.isPresent()) {
             log.warn("can not get flow copy config from context, copyToClass = {}", copyToClass.getName());
-            return;
-        }
-        if (method.getDeclaringClass() == copyToClass) {
-            log.error("copyToClass config illegal, copyToClass = {}, method.class = {}", copyToClass, method.getDeclaringClass());
             return;
         }
 

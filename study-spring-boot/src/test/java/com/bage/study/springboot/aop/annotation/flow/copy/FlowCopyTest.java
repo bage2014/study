@@ -15,6 +15,10 @@ public class FlowCopyTest {
     MyHelloService helloService;
 
     @Test
+    public void sayHi() {
+        helloService.sayHi("hihi");
+    }
+    @Test
     public void sayHiHey() {
         helloService.sayHi("hihi");
         helloService.sayHey("heihie");
