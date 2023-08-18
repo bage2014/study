@@ -17,16 +17,20 @@ public class FlowCopyTraceLogicTest {
     @Test
     public void check() {
         //  A-B B-A
-        boolean add = logic.check(Application.class, FlowCopy.class);
-        boolean add1 = logic.check(Application.class, FlowCopyFinishListener.class);
-        boolean add2 = logic.check(FlowCopyFinishListener.class, FlowCopy.class);
-        boolean add3 = logic.check(FlowCopy.class, Application.class);
+        System.out.println(check(Application.class, FlowCopy.class));
+        System.out.println(check(Application.class, FlowCopyFinishListener.class));
+        System.out.println(check(FlowCopyFinishListener.class, FlowCopy.class));
+        System.out.println(check(FlowCopy.class, Application.class));
 
         // a-b-c-d 然后添加 d-a
-        boolean add4 = logic.check(FlowCopyConfigService.class, FlowCopyFinishListener.class);
-        boolean add5 = logic.check(FlowCopyFinishListener.class, FlowCopyFinishParam.class);
-        boolean add6 = logic.check(FlowCopyFinishParam.class, FlowCopyLogic.class);
-        boolean add7 = logic.check(FlowCopyLogic.class, FlowCopyConfigService.class);
+        System.out.println(check(FlowCopyConfigService.class, FlowCopyFinishListener.class));
+        System.out.println(check(FlowCopyFinishListener.class, FlowCopyFinishParam.class));
+        System.out.println(check(FlowCopyFinishParam.class, FlowCopyLogic.class));
+        System.out.println(check(FlowCopyLogic.class, FlowCopyConfigService.class));
 
+    }
+
+    private boolean check(Class fromCls, Class toCls) {
+        return logic.check(fromCls.getName() + ".a()", toCls.getName() + ".a()");
     }
 }

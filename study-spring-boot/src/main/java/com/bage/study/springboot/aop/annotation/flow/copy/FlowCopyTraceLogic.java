@@ -6,63 +6,75 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class FlowCopyTraceLogic {
 
-    private Map<Class, List<Class>> map = new ConcurrentHashMap<>();
+    private Map<String, List<String>> map = new ConcurrentHashMap<>();
+    private ThreadLocal<Map<String, List<String>>> mapThreadLocal = new ThreadLocal();
     private static final Logger log = LoggerFactory.getLogger(FlowCopyTraceLogic.class);
 
     /**
-     * @param fromClass
-     * @param toClass
+     * @param from
+     * @param to
      * @return
      */
-    public boolean check(Class fromClass, Class toClass) {
-        // 表示 fromClass 到 fromList 每个节点 都有直接 流量复制关系
-        List<Class> fromList = putIfNotPresentAndGet(fromClass, new ArrayList<>());
-        putIfNotPresentAndGet(toClass, new ArrayList<>());
+    public boolean check(String from, String to) {
+        // 表示 from 到 fromList 每个节点 都有直接 流量复制关系
+        List<String> fromList = putIfNotPresentAndGet(from, new ArrayList<>());
+        putIfNotPresentAndGet(to, new ArrayList<>());
         // 流量复制链
-        List<Class> traceList = new ArrayList<>();
+        List<String> traceList = new ArrayList<>();
         // 判断是否有直接 或者 间接关系
-        boolean isContains = ifTraceContains(toClass, fromClass, traceList);
+        boolean isContains = ifTraceContains(to, from, traceList);
         if (isContains) {
-            String collect = traceList.stream().map(item -> item.getSimpleName()).collect(Collectors.joining("->"));
+            String collect = traceList.stream().collect(Collectors.joining("->"));
             log.info("can not copy to an exist flow, cause exist call: {}", collect);
             return false;
         }
 
         // 添加到直接关系
-        fromList.add(toClass);
+        fromList.add(to);
         return true;
     }
 
-    private boolean ifTraceContains(Class toClass, Class fromClass, List<Class> traceList) {
+    private boolean ifTraceContains(String to, String from, List<String> traceList) {
         // 添加到调用链
-        traceList.add(toClass);
-        if (toClass == fromClass) {
+        traceList.add(to);
+        if (Objects.equals(to, from)) {
             return true;
         }
         // 递归遍历子节点
-        List<Class> subToList = map.getOrDefault(toClass, new ArrayList<>());
-        for (Class item : subToList) {
-            if (ifTraceContains(item, fromClass, traceList)) {
+        List<String> subToList = getMap().getOrDefault(to, new ArrayList<>());
+        for (String item : subToList) {
+            if (ifTraceContains(item, from, traceList)) {
                 return true;
             }
         }
         // 不存在，则移除当前节点
-        traceList.remove(toClass);
+        traceList.remove(to);
         return false;
     }
 
-    private List<Class> putIfNotPresentAndGet(Class fromClass, List<Class> list) {
-        List<Class> toList = map.get(fromClass);
+    private List<String> putIfNotPresentAndGet(String from, List<String> list) {
+        List<String> toList = getMap().get(from);
         if (toList == null) {
             toList = list;
-            map.put(fromClass, toList);
+            getMap().put(from, toList);
         }
         return toList;
+    }
+
+    private Map<String, List<String>> getMap() {
+        return map;
+//        Map<String, List<String>> stringListMap = mapThreadLocal.get();
+//        if(stringListMap == null){
+//            stringListMap = new ConcurrentHashMap<>();
+//            mapThreadLocal.set(stringListMap);
+//        }
+//        return stringListMap;
     }
 
 }
