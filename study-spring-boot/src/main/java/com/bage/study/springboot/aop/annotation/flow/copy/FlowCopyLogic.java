@@ -28,13 +28,18 @@ public class FlowCopyLogic implements ApplicationContextAware {
     public void doCopy(FlowCopy annotation, Method method, Object[] args, Object response, Exception proceedException) {
         log.info("doCopy, annotation = {}", annotation.getClass().getSimpleName());
         Class copyToClass = annotation.toClass();
+        String fromMethod = method.getName();
+        String toMethod = "".equals(annotation.toMethod()) ? fromMethod : annotation.toMethod();
+
         if (method.getDeclaringClass() == copyToClass) {
             log.error("copyToClass config illegal, copyToClass = {}, method.class = {}", copyToClass, method.getDeclaringClass());
             return;
         }
         // 循环校验
-        if (flowCopyTraceLogic.check(method.getDeclaringClass(),copyToClass)) {
-            log.error("trace check failed, copyToClass = {}, method.class = {}", copyToClass, method.getDeclaringClass());
+        String from = method.getDeclaringClass().getName() + "." + fromMethod;
+        String to = copyToClass.getName() + "." + toMethod;
+        if (!flowCopyTraceLogic.check(from, to)) {
+            log.error("trace check failed, from = {}, to = {}", from, to);
             return;
         }
 
@@ -70,8 +75,8 @@ public class FlowCopyLogic implements ApplicationContextAware {
             build.setConfig(config);
             build.setArgs(args);
             build.setFromResponse(response);
-            build.setFromMethod(method.getName());
-            build.setToMethod("".equals(annotation.toMethod()) ? method.getName() : annotation.toMethod());
+            build.setFromMethod(fromMethod);
+            build.setToMethod(toMethod);
             build.setParameterTypes(method.getParameterTypes());
             build.setBeanName(beanName);
             build.setBean(bean);
