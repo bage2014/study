@@ -23,8 +23,9 @@ public class FlowCopyTraceLogic {
      */
     public boolean check(String from, String to) {
         // 表示 from 到 fromList 每个节点 都有直接 流量复制关系
-        List<String> fromList = putIfNotPresentAndGet(from, new ArrayList<>());
-        putIfNotPresentAndGet(to, new ArrayList<>());
+        Map<String, List<String>> currentMap = getMap();
+        List<String> fromList = putIfNotPresentAndGet(currentMap,from, new ArrayList<>());
+        putIfNotPresentAndGet(currentMap,to, new ArrayList<>());
         // 流量复制链
         List<String> traceList = new ArrayList<>();
         // 判断是否有直接 或者 间接关系
@@ -37,6 +38,7 @@ public class FlowCopyTraceLogic {
 
         // 添加到直接关系
         fromList.add(to);
+//        mapThreadLocal.set(currentMap);
         return true;
     }
 
@@ -58,11 +60,11 @@ public class FlowCopyTraceLogic {
         return false;
     }
 
-    private List<String> putIfNotPresentAndGet(String from, List<String> list) {
-        List<String> toList = getMap().get(from);
+    private List<String> putIfNotPresentAndGet(Map<String, List<String>> currentMap,String from, List<String> list) {
+        List<String> toList = currentMap.get(from);
         if (toList == null) {
             toList = list;
-            getMap().put(from, toList);
+            currentMap.put(from, toList);
         }
         return toList;
     }

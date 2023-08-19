@@ -6,4 +6,6 @@ public interface HelloService {
 
     String sayHey(String param);
 
+    String sayYo(String param);
+
 }

@@ -18,6 +18,7 @@ public class FlowCopyTest {
     public void sayHi() {
         helloService.sayHi("hihi");
     }
+
     @Test
     public void sayHiHey() {
         helloService.sayHi("hihi");
