@@ -18,6 +18,31 @@ spring-cloud-sleuth-samples [https://github.com/spring-cloud/spring-cloud-sleuth
 
 
 
+## 访问
+
+应用入口
+
+```
+http://localhost:3380/
+
+http://localhost:3380/call
+
+http://localhost:3380/traced
+
+http://localhost:3380/start
+```
+
+
+
+zipkin
+
+```
+http://localhost:9411/
+
+```
+
+
+
 ## 解析
 
 ### 优点

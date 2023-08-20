@@ -5,9 +5,9 @@ spring:
   application:
     # This ends up as the service name in zipkin
     name: hello-sleuth-zipkin
-    #zipkin:
+    zipkin:
     # Uncomment to send to zipkin, replacing 192.168.99.100 with your zipkin IP address
-    # baseUrl: https://192.168.99.100:9411/
+     baseUrl: http://127.0.0.1:9411/
   sleuth:
     sampler:
       probability: 1.0
