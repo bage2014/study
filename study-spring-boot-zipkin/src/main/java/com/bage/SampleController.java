@@ -49,6 +49,9 @@ public class SampleController
 	@Autowired
 	private SampleBackground controller;
 
+	@Autowired
+	private HelloService helloService;
+
 	private Random random = new Random();
 
 	private int port;
@@ -70,6 +73,8 @@ public class SampleController
 				Thread.sleep(millis);
 				Span currentSpan = SampleController.this.tracer.currentSpan();
 				currentSpan.tag("callable-sleep-millis", String.valueOf(millis));
+				String hhh = helloService.hhh();
+				System.out.println("hhh:" + hhh);
 				return "async hi: " + currentSpan;
 			}
 		};
@@ -110,9 +115,12 @@ public class SampleController
 		int millis = this.random.nextInt(1000);
 		log.info(String.format("Sleeping for [%d] millis", millis));
 		Thread.sleep(millis);
+		String hhh = helloService.hhh();
+		System.out.println("hhh:" + hhh);
 		this.tracer.currentSpan().tag("random-sleep-millis", String.valueOf(millis));
 		String s = this.restTemplate
 				.getForObject("http://localhost:" + this.port + "/call", String.class);
+
 		return "start/" + s;
 	}
 
