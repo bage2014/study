@@ -398,6 +398,84 @@ http://localhost:8000/gc/safe/point/start
 
 
 
+## 瓶颈分析
+
+- 性能测试：CPU/内存/IO性能瓶颈分析常用工具
+
+https://www.jianshu.com/p/e1deb8b6984d
+
+- 性能测试中如何定位性能瓶颈？
+
+https://www.zhihu.com/question/29269160
+
+- 初探调优1：系统压测，瓶颈定位及调优方案
+
+https://blog.51cto.com/u_14006572/3153832
+
+- 性能测试如何定位分析性能瓶颈？ 
+
+https://blog.51cto.com/u_12087147/6225614
+
+- 压力测试瓶颈分析
+
+https://zhuanlan.zhihu.com/p/486542009
+
+- 性能之巅：定位和优化程序 CPU、内存、IO 瓶颈
+
+https://my.oschina.net/u/4526289/blog/4783751
+
+
+
+### 分析过程
+
+#### 硬件环境
+
+应用程序运行的机器环境，CPU、内存、磁盘IO等
+
+#### 应用程序
+
+通过增加资源也就是扩容可以提高系统总体的TPS，但是这种方法，往往会掩盖掉程序本身存在的设计和编码缺陷，还是需要从代码上进行分析，例如缓存设计和命中率，数据库连接设计，数据结构和算法，资源合理释放。
+
+#### 中间件环境
+
+例如高并发下数据库mysql性能调优，通常有建索引，慢SQL分析，SQL语句优化，Buffer Pool调整等措施；Tomcat的JVM内存启动参数调优等。
+
+
+
+
+
+## 问题排查 
+
+- G1GC慢的排查过程
+
+https://zhuanlan.zhihu.com/p/165285835
+
+- 有钱人的烦恼——服务器CPU和JVM GC卡顿问题排查和解决
+
+https://www.jianshu.com/p/890d44df0ba4
+
+- jvm Linux服务器出现异常和卡顿排查思路和步骤
+
+http://www.kuazhi.com/post/442548.html
+
+- 一次YoungGC过慢排查
+
+https://www.jianshu.com/p/4afabaa2b390
+
+- 系统运行缓慢，CPU 100%，以及Full GC次数过多问题的排查思路
+
+https://maimai.cn/article/detail?fid=1746642867&efid=IScZAP8KVukoQ0ZANO9G7A
+
+- 系统运行缓慢，CPU 100%，以及 Full GC 次数过多问题的排查思路
+
+https://my.oschina.net/zhangxufeng/blog/3017521
+
+- 一次线上遇到磁盘 IO 瓶颈的问题处理
+
+https://my.oschina.net/u/4417528/blog/3943828
+
+
+
 ## GC日志
 
 https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
