@@ -79,7 +79,7 @@ public class JosephusProblem {
 			if(a[i] != -1){
 				System.out.print(a[i]);
 			} else {
-				System.out.print("淘汰");
+				System.out.print("x");
 			}
 			System.out.print("\t");
 		}
