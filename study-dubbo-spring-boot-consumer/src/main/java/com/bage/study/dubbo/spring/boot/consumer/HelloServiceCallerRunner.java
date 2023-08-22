@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HelloServiceCallerRunner implements CommandLineRunner {
-    @DubboReference(retries = 2,timeout = 1000)
+    @DubboReference(retries = 2,timeout = 500)
     private HelloService demoService;
     private Random random = new Random();
 
@@ -43,14 +43,13 @@ public class HelloServiceCallerRunner implements CommandLineRunner {
         new Thread(()-> {
             while (true) {
                 try {
-                    Thread.sleep(30000);
+                    Thread.sleep(5000);
                     HelloParam param2 = getParam();
                     System.out.println(new Date() + "Send param ======> " + param);
                     HelloResult helloResult = demoService.sayHello(param2);
                     System.out.println(new Date() + " Receive result ======> " + helloResult);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Thread.currentThread().interrupt();
+                } catch (Exception e) {
+                    System.err.println("Exception：" + e.getMessage());
                 }
             }
         }).start();
