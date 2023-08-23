@@ -176,12 +176,14 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/application-prope
 
 Mac 启动 https://cwiki.apache.org/confluence/display/TOMCAT/Building+Tomcat+on+MacOS
 
-/Users/bage/bage/software/apache-tomcat-10.1.10/bin
+```
 
+cd /Users/bage/bage/software/apache-tomcat-10.1.10/
 
-chmod 755 bin/*.sh
+chmod 755 ./bin/*.sh
 
-startup.sh
+./bin/startup.sh
+```
 
 
 
@@ -400,17 +402,37 @@ http://localhost:8000/gc/safe/point/start
 
 ## 瓶颈分析
 
+https://www.jianshu.com/p/62cf2690e6eb
+
+**业务指标**：如吞吐量(QPS、TPS)、响应时间(RT)、并发数、业务成功率等
+
+**资源指标**：如CPU、内存、Disk I/O、Network I/O等资源的消耗情况
+
+
+
+- 我终于知道高工是如快速分析线上程序性能瓶颈了（CPU篇）
+
+https://zhuanlan.zhihu.com/p/613430726
+
 - 性能测试：CPU/内存/IO性能瓶颈分析常用工具
 
 https://www.jianshu.com/p/e1deb8b6984d
 
-- 性能测试中如何定位性能瓶颈？
+- 性能测试中服务器关键性能指标浅析
 
-https://www.zhihu.com/question/29269160
+https://www.jianshu.com/p/62cf2690e6eb
 
 - 初探调优1：系统压测，瓶颈定位及调优方案
 
 https://blog.51cto.com/u_14006572/3153832
+
+- 性能之巅：定位和优化程序 CPU、内存、IO 瓶颈
+
+https://my.oschina.net/u/4526289/blog/4783751
+
+- 性能测试中如何定位性能瓶颈？
+
+https://www.zhihu.com/question/29269160
 
 - 性能测试如何定位分析性能瓶颈？ 
 
@@ -420,21 +442,31 @@ https://blog.51cto.com/u_12087147/6225614
 
 https://zhuanlan.zhihu.com/p/486542009
 
-- 性能之巅：定位和优化程序 CPU、内存、IO 瓶颈
-
-https://my.oschina.net/u/4526289/blog/4783751
-
 
 
 ### 分析过程
 
 #### 硬件环境
 
-应用程序运行的机器环境，CPU、内存、磁盘IO等
+应用程序运行的机器环境，CPU、内存、磁盘IO
+
+**CPU**
+
+- 使用率 
+
+**内存**
+
+**Disk I/O**
+
+**Network I/O**
 
 #### 应用程序
 
 通过增加资源也就是扩容可以提高系统总体的TPS，但是这种方法，往往会掩盖掉程序本身存在的设计和编码缺陷，还是需要从代码上进行分析，例如缓存设计和命中率，数据库连接设计，数据结构和算法，资源合理释放。
+
+DB
+
+
 
 #### 中间件环境
 
@@ -485,6 +517,38 @@ https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.htm
 https://zhuanlan.zhihu.com/p/267388951
 
 
+
+各种类型 
+
+https://blog.csdn.net/yunxing323/article/details/108304534
+
+
+
+日志查看解析
+
+https://dzone.com/articles/understanding-g1-gc-log-format
+
+https://blog.tier1app.com/2016/04/06/gc-logging-user-sys-real-which-time-to-use/
+
+
+
+个人汇总文章
+
+https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/JVM%20%e6%a0%b8%e5%bf%83%e6%8a%80%e6%9c%af%2032%20%e8%ae%b2%ef%bc%88%e5%ae%8c%ef%bc%89/17%20GC%20%e6%97%a5%e5%bf%97%e8%a7%a3%e8%af%bb%e4%b8%8e%e5%88%86%e6%9e%90%ef%bc%88%e5%9f%ba%e7%a1%80%e9%85%8d%e7%bd%ae%ef%bc%89.md
+
+
+
+https://www.cnblogs.com/felixzh/p/11526306.html
+
+```java
+Real is wall clock time – time from start to finish of the call. This is all elapsed time including time slices used by other processes and time the process spends blocked (for example if it is waiting for I/O to complete).
+User is the amount of CPU time spent in user-mode code (outside the kernel) within the process. This is only actual CPU time used in executing the process. Other processes and time the process spends blocked do not count towards this figure.
+
+Sys is the amount of CPU time spent in the kernel within the process. This means executing CPU time spent in system calls within the kernel, as opposed to library code, which is still running in user-space. Like ‘user’, this is only CPU time used by the process.
+
+User+Sys will tell you how much actual CPU time your process used. Note that this is across all CPUs, so if the process has multiple threads it could potentially exceed the wall clock time reported by Real.
+  
+```
 
 配置GC日志写出 
 
