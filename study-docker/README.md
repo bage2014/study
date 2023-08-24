@@ -517,6 +517,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -534,7 +535,7 @@ Docker Pull Command
 
 启动 
 
-    docker run --network myapp -d -p 9411:9411 openzipkin/zipkin
+    docker run --name bage-zipkin --network myapp -d -p 9411:9411 openzipkin/zipkin
 
 
 
@@ -815,6 +816,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -1302,6 +1304,22 @@ http://127.0.0.1:9092
 
 查看索引
 http://localhost:9092/_cat/indices?v&pretty
+```
+
+### 安装skywalking
+
+https://hub.docker.com/r/apache/skywalking-oap-server
+
+Docker Pull Command
+
+```
+docker pull apache/skywalking-oap-server
+```
+
+创建基础目录 
+
+```
+
 ```
 
 
