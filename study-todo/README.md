@@ -38,6 +38,22 @@ GC 日志、GC 分析 、
 
 
 
+8-26 jl-done!!
+
+
+
+8-26 
+
+内存泄漏的程序？
+
+高CPU程序？
+
+慢IO程序？
+
+高IO网卡程序？？
+
+
+
 ## 分布式事务
 
 业界组件
@@ -276,6 +292,10 @@ https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247488041&idx=1&sn=26d55c
 
 
 # 技术代办
+
+
+
+
 
 Java Lock 相关、分布式锁相关
 
