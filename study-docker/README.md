@@ -518,6 +518,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -842,6 +843,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -968,9 +970,17 @@ mkdir
     Mac
     mkdir -p /Users/bage/bage/docker-data/mongodb
 
+Conf file
 
+```
 vi /home/bage/conf/mongodb/mongodb.conf
-	
+
+Mac
+vi /Users/bage/bage/docker-conf/mongodb/mongodb.conf
+```
+
+content 	
+
 	# mongod.conf
 	
 	# for documentation of all options, see:
@@ -995,8 +1005,7 @@ vi /home/bage/conf/mongodb/mongodb.conf
 	net:
 	  port: 27017
 	  bindIp: 0.0.0.0
-
-
+	
 	# how the process runs
 	processManagement:
 	  timeZoneInfo: /usr/share/zoneinfo
@@ -1023,23 +1032,24 @@ start a instance
 	docker run --network bage-net --name mongo -p 27017:27017 -v /home/bage/data/mongodb:/etc/mongo -d mongo --config /home/bage/conf/mongodb/mongodb.conf --auth
 	
 	Mac
-	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
+	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
+	
+	指定配置文件？
+	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/Users/bage/bage/docker-conf/mongodb/mongodb.conf" --auth
+	
+	
 
 
 ​	
-​	Mac: 
-​	docker run --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo
-​	
-​	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=bage -d mongo
-​	
-​	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --auth
-​	
-​	docker run --network bage-net --name mongo -p 27017:27017 -v /Users/bage/bage/docker-data/mongodb:/data/db -d mongo --config "/home/bage/conf/mongodb/mongodb.conf" --auth
 
 
 visit	
 	
 	docker exec -it mongo mongo admin
+	
+	docker exec -it bage-mongo mongo admin
+	
+	
 
 
 
@@ -1049,7 +1059,8 @@ Auth
 use admin
 
 db.auth('admin', 'bage')
-db.auth('bage2', 'bage')
+
+容器内部：
 
 mongo admin -u admin -p bage
 
@@ -1062,7 +1073,7 @@ mongo 127.0.0.1:27017 -u "admin" -p "bage" --authenticationDatabase "admin"
 create user 
 
 ```
-db.createUser({ user:'bage2',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 ```
 
    	
@@ -1075,6 +1086,9 @@ db.createUser({ user:'bage2',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', d
 	
 	Mac: 
 	db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
+	db.auth('bage', 'bage')
+	
+	
 
 
 
@@ -1082,7 +1096,19 @@ db.createUser({ user:'bage2',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', d
 
 https://www.mongodb.com/docs/manual/crud/
 
+create user 
 
+```
+
+db.inventory.insertOne(
+   { item: "canvas", qty: 100, tags: ["cotton"], size: { h: 28, w: 35.5, uom: "cm" } }
+);
+
+db.inventory.find( { item: "canvas" } );
+
+```
+
+   
 
 
 

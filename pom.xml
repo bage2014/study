@@ -184,6 +184,7 @@
       <module>study-best-practice-web</module>
       <module>study-svm-sandbox</module>
       <module>study-log</module>
+      <module>study-spring-boot-rest-doc</module>
 
   </modules>
 </project>
