@@ -4,7 +4,6 @@ This is an example output for a service running at http://localhost:8080:
 
 .request
 include::./snippets/home/http-request.adoc[]
-include::./snippets/home/http-request.adoc[]
 
 .response
 include::./snippets/home/http-response.adoc[]
