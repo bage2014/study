@@ -185,6 +185,7 @@
       <module>study-svm-sandbox</module>
       <module>study-log</module>
       <module>study-spring-boot-rest-doc</module>
+      <module>study-gc</module>
 
   </modules>
 </project>
