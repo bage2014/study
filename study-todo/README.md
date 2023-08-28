@@ -1,6 +1,5 @@
 # study-TODO #
-temp：：：
-https://github.com/rbmonster/learning-note
+
 
 
 ## 瓶颈分析
@@ -24,6 +23,8 @@ CPU、DB【connection】、IO、NETWORK
 8-12
 
 同镜像代码，不同GC 回收器，，观测不同的GC 过程
+
+- 待验证？？
 
 
 
@@ -52,6 +53,16 @@ GC 日志、GC 分析 、
 慢IO程序？
 
 高IO网卡程序？？
+
+
+
+9-1 
+
+redis 
+
+高负载读取情况？？模拟？？
+
+大KEY 读写？？
 
 
 

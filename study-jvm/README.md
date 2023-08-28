@@ -1029,6 +1029,58 @@ https://github.com/bage2014/interview/blob/master/README-Jvm.md
 
 ## Arthas ##
 
+
+
+## Bistoury
+
+文档说明
+
+https://github.com/qunarcorp/bistoury/blob/master/docs/cn/quick_start.md
+
+最新版本 
+
+https://github.com/qunarcorp/bistoury/releases/download/v2.0.7/bistoury-2.0.7-quick-start.tar.gz
+
+启动
+
+```
+tar -zxvf bistoury-quick-start.tar.gz
+
+/Users/bage/bage/software/bistoury-2.0.7
+
+cd bistoury
+```
+
+
+
+```
+./quick_start.sh -p 1024(待诊断应用进程pid) start
+
+jps 
+38023 
+
+启动 
+./quick_start.sh -p 34464 -c com.bage.study.best.practice.BestPracticeApplication start
+
+./quick_start.sh -p 38023 -c com.bage.study.spring.boot.h2.Application start
+
+关闭 
+./quick_start.sh stop
+```
+
+
+
+启动
+
+```
+http://localhost:9091/
+
+admin/admin
+
+```
+
+
+
 ## Debug ##
 
 debug 功能概述：
