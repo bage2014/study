@@ -1,6 +1,28 @@
 # study-java #
 学习java的笔记
 
+
+
+## 下载地址 
+
+最新版本
+
+https://www.oracle.com/java/technologies/downloads/
+
+
+
+历史版本
+
+https://www.oracle.com/java/technologies/downloads/archive/
+
+
+
+其他下载地址【M1 JDK8】
+
+https://www.azul.com/downloads/?version=java-8-lts&os=macos&package=jdk#zulu
+
+
+
 ## Java 基础
 
 
