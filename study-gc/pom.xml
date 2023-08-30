@@ -16,6 +16,7 @@
         <module>study-gc-biz</module>
         <module>study-gc-jdk8</module>
         <module>study-gc-jdk17</module>
+        <module>study-gc-jdk11</module>
     </modules>
 
     <properties>

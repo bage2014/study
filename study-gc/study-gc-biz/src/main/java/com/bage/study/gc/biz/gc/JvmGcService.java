@@ -1,4 +1,4 @@
-package com.bage.study.gc.biz;
+package com.bage.study.gc.biz.gc;
 
 import lombok.extern.slf4j.Slf4j;
 
