@@ -2,7 +2,8 @@ package com.bage.study.gc.jdk17;
 
 import com.bage.study.gc.biz.GcSafePointService;
 import com.bage.study.gc.biz.GoodsSecKillService;
-import com.bage.study.gc.biz.JvmGcService;
+import com.bage.study.gc.biz.gc.JvmGcService;
+import com.bage.study.gc.biz.cpu.DemoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,12 @@ public class BeanConfig {
     @Bean
     public JvmGcService JvmGcService(){
         return new JvmGcService();
+    }
+
+
+    @Bean
+    public DemoService DemoService(){
+        return new DemoService();
     }
 
 }

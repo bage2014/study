@@ -1,4 +1,4 @@
-package com.bage.study.gc.jdk8;
+package com.bage.study.gc.jdk11;
 
 import com.bage.study.gc.biz.GcSafePointService;
 import com.bage.study.gc.biz.GoodsSecKillService;
@@ -26,7 +26,6 @@ public class BeanConfig {
     public JvmGcService JvmGcService(){
         return new JvmGcService();
     }
-
 
     @Bean
     public DemoService DemoService(){

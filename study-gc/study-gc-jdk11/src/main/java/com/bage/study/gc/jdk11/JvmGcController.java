@@ -1,4 +1,4 @@
-package com.bage.study.gc.jdk17;
+package com.bage.study.gc.jdk11;
 
 import com.bage.study.gc.biz.gc.JvmGcService;
 import lombok.extern.slf4j.Slf4j;
