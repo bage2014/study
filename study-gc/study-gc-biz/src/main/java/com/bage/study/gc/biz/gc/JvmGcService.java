@@ -14,7 +14,7 @@ public class JvmGcService {
     public Object add(Integer step) {
         log.info("JvmGcController gc step = {}", step);
         if (step == null) {
-            step = 100;
+            step = 10;
         }
         for (int i = 0; i < step; i++) {
             map.put(System.currentTimeMillis() + "-bage-add-" + i, new byte[MB * 10]);
