@@ -1,4 +1,4 @@
-package com.bage.study.gc.biz.cpu;
+package com.bage.study.gc.biz.cpu.high;
 
 import lombok.AllArgsConstructor;
 
@@ -13,9 +13,8 @@ public class HeavyProcess implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (HighCpuService.CAN_RUN_HEAVY) {
             String data = "";
-
             for (int i = 0; i < length; i++) {
                 data += UUID.randomUUID().toString();
             }
@@ -26,7 +25,6 @@ public class HeavyProcess implements Runnable {
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException(e);
             }
-
             digest.update(data.getBytes());
         }
     }

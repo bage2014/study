@@ -14,11 +14,6 @@ public class JvmGcController {
     @Autowired
     private JvmGcService service;
 
-    @RequestMapping("/gc/{step}")
-    public Object gc(@PathVariable(value = "step", required = false) Integer step) {
-        return service.gc(step);
-    }
-
     @RequestMapping("/add/{step}")
     public Object add(@PathVariable(value = "step", required = false) Integer step) {
         return service.add(step);

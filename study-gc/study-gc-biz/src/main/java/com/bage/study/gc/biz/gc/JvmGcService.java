@@ -11,18 +11,6 @@ public class JvmGcService {
     private final int MB = 1024 * 1024;
     Map<String, Object> map = new HashMap<>();
 
-    public Object gc(Integer step) {
-        log.info("JvmGcController gc step = {}", step);
-        if (step == null) {
-            step = 100;
-        }
-        Map<String, Object> temp = new HashMap<>();
-        for (int i = 0; i < step; i++) {
-            temp.put(System.currentTimeMillis() + "-bage-gc-" + i, new byte[MB * 10]);
-        }
-        return 1;
-    }
-
     public Object add(Integer step) {
         log.info("JvmGcController gc step = {}", step);
         if (step == null) {
