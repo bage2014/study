@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/helo")
+@RequestMapping("/hello")
 @RestController
 @Slf4j
 public class HelloController {
 
-    @RequestMapping("/worldz")
+    @RequestMapping("/{world}")
     public Object gc(@PathVariable(value = "world", required = false) String world) {
         return "world" + world;
     }
