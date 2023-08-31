@@ -3,7 +3,7 @@ package com.bage.study.gc.jdk11;
 import com.bage.study.gc.biz.GcSafePointService;
 import com.bage.study.gc.biz.GoodsSecKillService;
 import com.bage.study.gc.biz.gc.JvmGcService;
-import com.bage.study.gc.biz.cpu.DemoService;
+import com.bage.study.gc.biz.cpu.high.HighCpuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +28,8 @@ public class BeanConfig {
     }
 
     @Bean
-    public DemoService DemoService(){
-        return new DemoService();
+    public HighCpuService DemoService(){
+        return new HighCpuService();
     }
 
 }

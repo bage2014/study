@@ -1,6 +1,5 @@
-package com.bage.study.gc.biz.cpu;
+package com.bage.study.gc.biz.cpu.high;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.Random;
@@ -11,7 +10,7 @@ public class LightProcess implements Runnable {
     @Override
     public void run() {
         Long l = 0l;
-        while(true) {
+        while(HighCpuService.CAN_RUN_LIGHT) {
             l++;
             try {
                 Thread.sleep(new Random().nextInt(10));
