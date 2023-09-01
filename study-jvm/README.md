@@ -6,6 +6,10 @@ ref [https://www.cnblogs.com/redcreen/](https://www.cnblogs.com/redcreen/)
 
 [https://www.cnblogs.com/snowwhite/p/9569443.html](https://www.cnblogs.com/snowwhite/p/9569443.html)
 
+JVM 知识？
+
+https://www.zhihu.com/column/c_1284812823948804096
+
 【你假笨@JVM】 http://lovestblog.cn/blog/2016/07/20/jstat/
 
 http://www.jintiankansha.me/column/VEAxWixHBx
