@@ -71,10 +71,11 @@ hosts文件格式是一行一条记录，分别是IP地址 hostname aliases，�
 
 ### nc 【netcat】 ###
 
-模拟TCP网络通讯
-端口扫描
-
-
+主要作用
+（1）端口侦听，nc 可以作为 server 以 TCP 或 UDP 方式侦听指定端口；
+（2）端口扫描，nc 可以作为 client 发起 TCP 或 UDP 请求；
+（3）机器之间传输文件；
+（4）机器之间网络测速。
 
 监听 1234端口
 
@@ -103,8 +104,6 @@ nc -v ip -z startPort-endPort
 
 
 ### vi 编辑器【待验证】 ###
-
-
 
 编辑模式 -> 命令模式
 
@@ -157,24 +156,6 @@ nc -v ip -z startPort-endPort
 
 
 
-
-
-
-
-
-监听 1234端口
-
-    nc -l 1234
-
-
-
-
-请求 本地的 1234 端口
-
-    nc localhost 1234 
-
-
-
 ## 主机名 ##
 
 查看主机名
@@ -202,6 +183,46 @@ nc -v ip -z startPort-endPort
 解压，将 hello.tar.gz 压缩文件解压到 hello文件夹
 
     tar -xvf hello.tar.gz hello/
+
+参数含义
+
+```
+The other synopsis forms show the preferred usage.  The first option to
+     tar is a mode indicator from the following list:
+     -c      Create a new archive containing the specified items.  The long
+             option form is --create.
+     -f file, --file file
+             Read the archive from or write the archive to the specified file.
+             The filename can be - for standard input or standard output.  The
+             default varies by system; on FreeBSD, the default is /dev/sa0; on
+             Linux, the default is /dev/st0.
+     -r      Like -c, but new entries are appended to the archive.  Note that
+             this only works on uncompressed archives stored in regular files.
+             The -f option is required.  The long option form is --append.
+     -t      List archive contents to stdout.  The long option form is --list.
+     -u      Like -r, but new entries are added only if they have a modifica-
+             tion date newer than the corresponding entry in the archive.
+             Note that this only works on uncompressed archives stored in reg-
+             ular files.  The -f option is required.  The long form is
+             --update.
+     -x      Extract to disk from the archive.  If a file with the same name
+             appears more than once in the archive, each copy will be
+             extracted, with later copies overwriting (replacing) earlier
+             copies.  The long option form is --extract.
+     -v, --verbose
+             Produce verbose output.  In create and extract modes, tar will
+             list each file name as it is read from or written to the archive.
+             In list mode, tar will produce output similar to that of ls(1).
+             An additional -v option will also provide ls-like details in cre-
+             ate and extract mode.
+     -z, --gunzip, --gzip
+             (c mode only) Compress the resulting archive with gzip(1).  In
+             extract or list modes, this option is ignored.  Note that, unlike
+             other tar implementations, this implementation recognizes gzip
+             compression automatically when reading archives.
+```
+
+
 
 ### zip 类
 
@@ -254,6 +275,21 @@ nc -v ip -z startPort-endPort
 
 
 ## 用户和组
+
+https://www.runoob.com/linux/linux-user-manage.html
+
+
+
+
+
+## 权限 
+
+
+
+```
+chmod 777 ./abc.txt
+
+```
 
 
 
@@ -392,9 +428,10 @@ pwd
 
 ## 磁盘管理 ##
 
-- df：列出文件系统的整体磁盘使用量
-- du：检查磁盘空间使用量
-- fdisk：用于磁盘分区
+- **df**（英文全称：disk free）：列出文件系统的整体磁盘使用量
+
+- **du**（英文全称：disk used）：检查磁盘空间使用量
+- **fdisk**：用于磁盘分区
 
 
 
