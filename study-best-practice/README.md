@@ -510,25 +510,47 @@ https://my.oschina.net/u/4417528/blog/3943828
 
 ## GC日志
 
+日志输出配置参数
+
 https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
 
+JDK doc文档 
+
 https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.htm
-
-https://zhuanlan.zhihu.com/p/267388951
-
-
-
-各种类型 
-
-https://blog.csdn.net/yunxing323/article/details/108304534
-
-
 
 日志查看解析
 
 https://dzone.com/articles/understanding-g1-gc-log-format
 
 https://blog.tier1app.com/2016/04/06/gc-logging-user-sys-real-which-time-to-use/
+
+基本解析
+
+https://zhuanlan.zhihu.com/p/267388951
+
+各种类型 
+
+https://blog.csdn.net/yunxing323/article/details/108304534
+
+### 日志信息
+
+- GC类型
+
+这里会告诉我们产生的是**YGC** （YGC 代表新生代的GC只会收集Eden区和Survivor ）、 还是**Full GC**（Full GC是针对于整个堆进行搜集）
+
+- GC产生的原因
+
+这里一般都会告诉我们是因为什么原因导致产生GC，一般通过这里可以分析出具体是因为哪个区域空间不够了导致的GC。
+
+- 回收的情况
+
+这里主要体现出回收的成果，通过数据告诉我们 回收之前的区域对象占用空间大小、回收之后区域对象占用空间的大小 、当前区域的空间大小、回收使用的时长。
+
+
+
+https://zhuanlan.zhihu.com/p/267388951
+
+![](https://pic1.zhimg.com/v2-5f7d61a15fa505a84fb3459a23988210_r.jpg)
 
 
 
@@ -576,6 +598,16 @@ User+Sys will tell you how much actual CPU time your process used. Note that thi
 GC 分析工具 
 
 https://dgrt.cn/a/2439307.html?action=onClick
+
+
+
+## MAT 使用
+
+官方网址 https://help.eclipse.org/latest/index.jsp?topic=/org.eclipse.mat.ui.help/welcome.html
+
+https://zhuanlan.zhihu.com/p/585668729
+
+http://androooid.github.io/public/lightsky/mat_usage/mat_usage.html
 
 
 

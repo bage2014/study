@@ -54,7 +54,7 @@ GC 日志、GC 分析 、
 
 高IO网卡程序？？
 
-
+GC 程序？？ Full GC + Young GC
 
 9-1 
 
