@@ -20,6 +20,11 @@ public class JvmGcController {
         return service.add(step);
     }
 
+    @RequestMapping("/newAndFinish")
+    public Object newAndFinish(@RequestParam(value = "step", required = false) Integer step) {
+        return service.newAndFinish(step);
+    }
+
 
     @RequestMapping("/info")
     public Object info() {
