@@ -390,6 +390,19 @@ pwd
 
     cp -r ./old-dir/* ./new-dir 
 
+文件切分
+
+```
+split -l 6 hello.txt
+
+[Linux]
+split -l 3 hello.txt -d -a 3 url_
+
+[Mac]
+split -l 3 hello.txt hello__
+
+```
+
 
 
 ### 内容查看 ###
