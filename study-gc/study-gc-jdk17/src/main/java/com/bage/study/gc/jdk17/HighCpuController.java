@@ -28,13 +28,13 @@ public class HighCpuController {
     @RequestMapping("/light/start")
     public Object startLightProcess() {
         int result = service.startLightProcess();
-        return "OK:" + result;
+        return "start:" + result;
     }
 
     @RequestMapping("/light/stop")
     public Object stopLightProcess() {
         int result = service.stopLightProcess();
-        return "OK:" + result;
+        return "stop:" + result;
     }
 
 

@@ -9,7 +9,7 @@ import java.util.Map;
 public class JvmGcService {
 
     private final int MB = 1024 * 1024;
-    Map<String, Object> map = new HashMap<>();
+    private Map<String, Object> map = new HashMap<>();
 
     public Object add(Integer step) {
         log.info("JvmGcController gc step = {}", step);
@@ -22,15 +22,28 @@ public class JvmGcService {
         return 1;
     }
 
+    public Object newAndFinish(Integer step) {
+        log.info("JvmGcController gc step = {}", step);
+        if (step == null) {
+            step = 10;
+        }
+        byte[] temp = null;
+        for (int i = 0; i < step; i++) {
+            temp = new byte[MB * 10];
+        }
+        return 1;
+    }
+
 
     public Object info() {
         Runtime runtime = Runtime.getRuntime();
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("maxMemory", runtime.maxMemory() / MB + " MB;");
-        map.put("freeMemory", runtime.freeMemory() / MB + " MB;");
-        map.put("totalMemory", runtime.totalMemory() / MB + " MB;");
-        return map;
+        Map<String, Object> result = new HashMap<>();
+        result.put("maxMemory", runtime.maxMemory() / MB + " MB;");
+        result.put("freeMemory", runtime.freeMemory() / MB + " MB;");
+        result.put("totalMemory", runtime.totalMemory() / MB + " MB;");
+        result.put("mapSize", map.size() + ";");
+        return result;
     }
 
 }
