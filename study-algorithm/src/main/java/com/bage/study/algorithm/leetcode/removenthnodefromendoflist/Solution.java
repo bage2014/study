@@ -11,6 +11,8 @@ package com.bage.study.algorithm.leetcode.removenthnodefromendoflist;
  * }
  */
 
+import com.bage.study.algorithm.leetcode.common.ListNode;
+
 /**
  * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
  * <p>
@@ -86,19 +88,3 @@ class Solution {
     }
 }
 
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode() {
-    }
-
-    ListNode(int val) {
-        this.val = val;
-    }
-
-    ListNode(int val, ListNode next) {
-        this.val = val;
-        this.next = next;
-    }
-}
