@@ -1,4 +1,4 @@
-package com.bage.study.gc.biz.leak;
+package com.bage.study.gc.biz.leak.memory;
 
 /********************************************
  * Copyright (c) 2019 Kirk Pepperdine
