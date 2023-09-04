@@ -2,7 +2,7 @@ package com.bage.study.gc.biz.leak.file;
 
 import java.io.*;
 
-public class LeakingFile {
+public class LeakingFileService {
 
     public String leak(String fileName, boolean close) {
         StringBuilder sb = new StringBuilder();
