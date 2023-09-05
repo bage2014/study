@@ -158,6 +158,25 @@ https://www.cnblogs.com/LBSer/p/3403933.html
 
 
 
+## MySQL大表查询为什么不会爆内存
+
+- MySQL 是边读变发，因此对于数据量很大的查询结果来说，不会再 server 端保存完整的结果集
+
+- 所以，如果客户端读结果不及时，会堵住 MySQL 的查询过程，但是不会把内存打爆
+
+- InnoDB 引擎内部有淘汰策略，InnoDB 管理 Buffer_Pool 使用的是改进的 LRU 算法，使用链表实现，实现上，按照 5:3 的比例把整个 LRU 链表分成了 young 区域和 old 区域。对冷数据的全扫描，影响也能做到可控制。
+
+
+
+## 改进LRU算法
+
+http://www.taodudu.cc/news/show-979875.html?action=onClick
+
+- 靠近头部的young和靠近末尾的old，取5/12段为分界。
+
+- 新数据在一定时间内只能在old段的头部，当在old段保持了一定的时间后被再次访问才能升级到young。
+- 实质上是分了两段lru，这样做的好处是防止大表扫描时，内存数据被全量替换，导致内存命中率急剧下降而造成性能雪崩。
+
 
 
 ## 数据库页
@@ -171,6 +190,48 @@ https://www.cnblogs.com/LBSer/p/3403933.html
 参考链接 https://www.yzktw.com.cn/post/523759.html
 
 
+
+## MySQL自带表
+
+### mysql.user
+
+这张表中存储了MySQL的用户账户信息。当管理员创建新的用户或者添加一组新的用户权限时，这张表会自动更新。mysql.user表也包含了许多其它的系统级角色和从属关系信息。
+
+### mysql.db
+
+这张表中存储了MySQL数据库的授权信息。在MySQL中，每个数据库都可以有独立的访问控制列表。mysql.db表中包含了每个数据库的访问授权信息，以及相关的用户名和访问权限。
+
+### mysql.host
+
+这张表中存储了MySQL服务器的主机访问列表。mysql.host表中的信息控制了哪些机器上的用户可以访问MySQL服务器。管理员可以使用mysql.host表来控制服务器对多个IP地址的访问权限。
+
+### mysql.procs_priv
+
+这张表中存储了MySQL存储过程的访问控制信息。存储过程是一种SQL语言扩展，允许开发人员在MySQL中使用过程式编程语言来实现更复杂的数据存储或操作逻辑。mysql.procs_priv表中保存了存储过程访问权限的信息。
+
+### mysql.event
+
+这张表中存储了MySQL事件的信息。MySQL事件是一种调度程序，用于定期执行一些特定的操作或任务。管理员可以使用mysql.event表来安排这些事件的执行时间和频率。
+
+### information_schema 
+
+information_schema包含的是MySQL服务器中所有数据库的元数据信息，其中的表和视图提供了有关MySQL数据库和其所包含的对象、用户、权限等各个方面的详细信息。包括列、索引、触发器、存储过程、函数、用户权限等。这些元数据表可以被系统管理员和开发人员用来查询和更改MySQL服务器的元数据信息。
+
+### mysql数据库
+
+mysql表包含了MySQL数据库管理系统自身的配置信息、用户权限信息等，这些信息是MySQL服务器运行、访问和安全管理的必要条件。通过mysql表可以查看或更改MySQL服务器的一些内部参数、用户权限以及各种登录信息等。
+
+### performance_schema数据库
+
+performance_schema是MySQL提供的一种性能监测与分析工具，包含了MySQL服务器各个方面的性能监测信息。performance_schema表提供了大量有关MySQL服务器性能和资源使用情况的统计信息，例如CPU利用率、I/O性能、锁和等待状态、查询命中率、索引命中率等。
+
+### test数据库
+
+test表是MySQL默认安装时内置的一个测试表，通过test表可以测试MySQL的安装和连接是否正常。test表包含了一些常用SQL命令和数据。
+
+### general_log、slow_query_log数据库？
+
+general_log表和slow_query_log表分别用于监测MySQL服务器的SQL语句执行过程。其中，general_log表记录了MySQL服务器上的所有SQL语句执行情况，是诊断MySQL问题时的必要工具。slow_query_log表则是专门用于打印执行时间较长SQL语句的日志信息的，有助于优化SQL查询效率。
 
 ## 主从切换 
 
@@ -187,6 +248,8 @@ https://pythonjishu.com/nmizsyeicjldigb/
 - 连接数量
 
 连接数量是一个重要的指标，它反映的是当前MySQL的负载情况。可以使用mysqladmin命令查看当前连接情况或者使用如下SQL语句：show processlist;
+
+以上数据为**并发连接数**，其中，正在执行的为**并发查询数**
 
 - InnoDB缓存
 
