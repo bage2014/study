@@ -588,13 +588,30 @@ kill -3 xxx
 
 ```
 top
+
+Processes: 474 total, 3 running, 471 sleeping, 2766 threads            08:51:10
+Load Avg: 1.35, 1.67, 1.91  CPU usage: 15.23% user, 7.43% sys, 77.33% idle
+SharedLibs: 440M resident, 89M data, 108M linkedit.
+MemRegions: 251913 total, 5410M resident, 739M private, 3457M shared.
+PhysMem: 15G used (1513M wired), 102M unused.
+VM: 189T vsize, 3272M framework vsize, 0(0) swapins, 0(0) swapouts.
+Networks: packets: 1603397/1093M in, 1837984/1074M out.
+Disks: 557660/13G read, 113712/2110M written.
+
+PID   COMMAND      %CPU  TIME     #TH    #WQ  #PORT MEM    PURG   CMPRS  PGRP
+75    fseventsd    81.1  00:36.26 12/1   1    266   4898K  0B     704K   75
+144   WindowServer 19.9  04:19.81 21     5    3985  609M-  15M+   64M    144
+0     kernel_task  14.4  03:27.33 479/8  0    0     7840K+ 0B     0B     0
+1806  Terminal     10.2  00:29.08 8      3    294-  113M+  6192K  11M    1806
+2781  QQMusic      9.6   01:11.85 57     6    721+  149M+  96K+   33M-   2781
+749   qemu-system- 6.5   06:41.35 9      0    24    8872M  0B     455M   570
+2791  com.apple.We 6.2   00:35.60 4      2    103   105M   0B     19M    2791
+111   opendirector 6.1   00:05.71 9      8    1205- 14M    0B     5216K  111
+2859  top          4.7   00:31.99 1/1    0    47+   5137K  0B     880K   2859
 ```
 
 
 
-### pmap
-
-### sar
 
 ### free
 
@@ -643,14 +660,41 @@ watch -n 3 -d date
 
 
 ### iostat
+执行1次
+```
+iostat 1
 
+              disk0       cpu    load average
+    KB/t  tps  MB/s  us sy id   1m   5m   15m
+   22.62  277  6.12  12  9 79  1.50 4.13 3.53
+```
 ### pstack
-
-### pstrace
-
+```
+$ pstack 7790
+#0  0x00007fe52186f60c in waitpid () from /lib64/libc.so.6
+#1  0x0000000000440c34 in waitchld.isra.10 ()
+#2  0x0000000000441eec in wait_for ()
+#3  0x0000000000433b1e in execute_command_internal ()
+#4  0x0000000000433d3e in execute_command ()
+#5  0x000000000041e375 in reader_loop ()
+#6  0x000000000041c9de in main ()
+```
 
 
 ## 其他+
+### 软连接
+ln -s - 创建软连接
+### ifconfig
+
+### 历史啥的
+who
+history
+### 重定向
+\> >> 2> 重定向
+### 管道
+｜ 管道
+
+
 
 ### 主机名
 
@@ -765,16 +809,6 @@ nc -v ip -z 8000-9000
 
 nc -v ip -z startPort-endPort
 
-
-
-ln -s - 创建软连接
-ifconfig
-who
-history
-
-\> >> 2> 重定向
-
-｜ 管道
 
 
 
