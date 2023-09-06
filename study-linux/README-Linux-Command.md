@@ -1,4 +1,5 @@
 
+
 # study-Linux-Command #
 ## 系统简介 ## 
 
@@ -323,7 +324,19 @@ rpm -e <package_name>
 ```
 
 
+### mount
 
+挂在目录
+将 /dev/from-dir 挂在 /to-dir之下。
+```
+mount /dev/from-dir /to-dir
+```
+
+取消挂载
+
+```
+umount /dev/from-dir
+```
 
 
 ## 磁盘管理 ##
@@ -469,6 +482,12 @@ scp  远程拷贝
 ```
 scp ./abc.txt user@host:/abc.txt
 
+```
+
+echo 输出
+```
+echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/home/lighthouse/.local/bin:/home/lighthouse/bin
 ```
 
 
