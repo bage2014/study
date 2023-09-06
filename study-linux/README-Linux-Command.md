@@ -1,3 +1,4 @@
+
 # study-Linux-Command #
 ## 系统简介 ## 
 
@@ -328,8 +329,21 @@ rpm -e <package_name>
 ## 磁盘管理 ##
 
 - **df**（英文全称：disk free）：列出文件系统的整体磁盘使用量
+当前目录使用情况
+```
+df -h ./
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda1        50G  6.7G   41G  15% /
+```
+
 - **du**（英文全称：disk used）：检查磁盘空间使用量
-- **fdisk**：用于磁盘分区
+
+```
+du -h ./hhh
+8.0K    ./hhh/hello-in-hhh
+12K     ./hhh
+```
+
 
 ## 压缩解压
 
@@ -414,31 +428,62 @@ unzip hello.zip hello/
 ## 网络
 
 ping 
+```
+ping www.baidu.com
+```
+netstat 
+netstat命令是一个用于检查本地计算机与其他计算机之间的网络连接情况的工具。通过使用不同的参数linux web服务器，可以获取各种有关网络连接信息的详细数据  
+端口监听
+```
+netstat -an | grep 3306
+tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.1:3306          127.0.0.1:45736         ESTABLISHED          
+unix  2      [ ]         DGRAM                    135330652 
 
-netstat -l 列出有监听的服务状态
+```
+统计信息  
+```
+netstat -s 
 
+```
+
+wget 
 wget -c url - 断电下载
+```
+wget -c https://console.cloud.tencent.com/lighthouse/instance/detail?searchParams=rid%3D1&rid=4&id=lhins-nlurh7nu&action=DescribeInstanceLogin
+```
 
 curl 
+```
+curl http://localhost:8080
+```
 
-ssh user@host - ssh到远程
+ssh
+远程
+```
+ssh bage@127.0.0.1
 
-scp ./abc.txt user@host:/abc.txt - 远程拷贝
+```
 
+scp  远程拷贝
+```
+scp ./abc.txt user@host:/abc.txt
+
+```
 
 
 ## 用户和组
 
 https://www.runoob.com/linux/linux-user-manage.html
 
-useradd - 添加新用户
-passwd - 设置密码 
-usrrdel - 删除用户
-groupadd -创建用户组
-groupdel - 删除
-su - 切换用户
+    useradd - 添加新用户
+    passwd - 设置密码 
+    usrrdel - 删除用户
+    groupadd -创建用户组
+    groupdel - 删除
+    su - 切换用户whoami
 
-
+    
 
 ## 权限 
 
@@ -754,7 +799,7 @@ history
 
 ### 帮助文档
 
-- Man 命令
+- man 命令
 - info ？
 - whatis ?
 
@@ -791,4 +836,6 @@ linux 在线： https://copy.sh/v86/?profile=linux26
 https://linuxtools-rst.readthedocs.io/zh_CN/latest/index.html
 
 http://cn.linux.vbird.org/
+
+https://www.linuxcool.com/
 
