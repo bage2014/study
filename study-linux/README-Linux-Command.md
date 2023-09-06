@@ -866,6 +866,11 @@ nc -v ip -z startPort-endPort
 
 提高效率
 
+SSH 
+环境搭建、redis\hadoop\k8s\mysql等
+自动备份MySQL、自动提交
+https://github.com/aqzt/kjyw
+
 ### Linux 系统
 
 发展史
@@ -876,11 +881,15 @@ nc -v ip -z startPort-endPort
 
 jdk\maven\mysql\
 
+https://github.com/bage2014/study/tree/master/study-linux
+
 ### Docker
 
 docker 
 
 docker + 
+
+https://github.com/bage2014/study/tree/master/study-docker
 
 ## 参考链接
 
