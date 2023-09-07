@@ -37,13 +37,17 @@ Linux 中一切都是文件；
 
 ## 参数风格
 
--： 一横说明参数是 字符 形式
---：两横说明参数是 单词 形式
+**-** 
+
+一横说明参数是 字符 形式
+**--**
+
+两横说明参数是 单词 形式
 
 -：参数前有横的是 System V风格
 空：参数前没有横的是 BSD风格
 
-
+https://blog.csdn.net/qq_29344757/article/details/78657874
 
 ## 文件与目录
 
@@ -67,7 +71,7 @@ pwd
 
     mkdir xxx
 
-删除空文件夹
+删除**空文件夹**
 
     rmdir xxx
 
@@ -89,10 +93,16 @@ pwd
 
 ### 内容查看
 
-翻页查看内容
+翻页查看内容[b/Space]
 
 ```
 more ./hello.txt
+```
+
+翻页查看内容【可以翻页】
+
+```
+less ./hello.txt
 ```
 
 从文件尾部查看
@@ -113,18 +123,27 @@ head ./hello.txt
 cat ./hello.txt 
 ```
 
+
+
 ### 提高层次
 
 查看文件最新更新等属性
 
 ```
-stat ./hello.txt 
+$ stat hello.txt 
+  File: ‘hello.txt’
+  Size: 410             Blocks: 8          IO Block: 4096   regular file
+Device: fd01h/64769d    Inode: 656178      Links: 1
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/lighthouse)   Gid: ( 1000/lighthouse)
+Access: 2023-09-05 16:35:37.205829810 +0800
+Modify: 2023-09-05 16:35:36.357828424 +0800
+Change: 2023-09-05 16:35:36.361828430 +0800
 ```
 
 文件字数、行数统计
 
 ```
-wc ./hello.txt
+wc -w ./hello.txt
 ```
 
 查看文件编码
@@ -144,9 +163,6 @@ split -l 6 hello.txt
 
 [Linux]
 split -l 3 hello.txt -d -a 3 url_
-
-[Mac]
-split -l 3 hello.txt hello__
 
 ```
 
@@ -221,6 +237,10 @@ x // 将光标处的字符删除
 
 ```
  find ./ -name hello.txt
+ 
+ find ./ -name *.txt
+ 
+ find ./ -name '*.txt'
 ```
 
 从当前目录以及子目录中查找文件名是hello.txt的文件，忽略大小写
@@ -282,13 +302,22 @@ Yellow dog Updater, Modified
 安装软件 package_name
 
 ```
-yum install <package_name>
+# yum install tree
+Loaded plugins: fastestmirror, langpacks
+Determining fastest mirrors
+epel                                                                                                                                                      | 4.7 kB  00:00:00     
+extras                                                                                                                                                    | 2.9 kB  00:00:00     
+os                                                                                                                                                        | 3.6 kB  00:00:00     
+updates                                                                                                                                                   | 2.9 kB  00:00:00     
+(1/5): epel/7/x86_64/group_gz                                                                                                                             |  99 kB  00:00:00     
+(2/5): epel/7/x86_64/updateinfo                                                                                                                           | 1.0 MB  00:00:00     
+(3/5): extras/7/x86_64/primary_db   
 ```
 
 移除软件 package_name
 
 ```
-yum remove <package_name>
+# yum remove tree
 ```
 
 查找软件
@@ -308,7 +337,7 @@ rpm -qa | grep <package_name>
 安装软件 <package_name> 
 
 ```
-rpm - ivh <package_name>
+rpm -ivh <package_name>
 ```
 
 升级软件 <package_name> 
@@ -341,15 +370,23 @@ umount /dev/from-dir
 
 ## 磁盘管理 ##
 
-- **df**（英文全称：disk free）：列出文件系统的整体磁盘使用量
+### df
+
+英文全称：disk free：列出文件系统的整体磁盘使用量
 当前目录使用情况
+
 ```
 df -h ./
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/vda1        50G  6.7G   41G  15% /
+
+du -sh ./
+ 28K	./
 ```
 
-- **du**（英文全称：disk used）：检查磁盘空间使用量
+### du
+
+英文全称：disk used：检查磁盘空间使用量
 
 ```
 du -h ./hhh
@@ -440,13 +477,16 @@ unzip hello.zip hello/
 
 ## 网络
 
-ping 
+### ping 
+
 ```
 ping www.baidu.com
 ```
-netstat 
+### netstat 
+
 netstat命令是一个用于检查本地计算机与其他计算机之间的网络连接情况的工具。通过使用不同的参数linux web服务器，可以获取各种有关网络连接信息的详细数据  
 端口监听
+
 ```
 netstat -an | grep 3306
 tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN     
@@ -460,49 +500,104 @@ netstat -s
 
 ```
 
-wget 
+### wget 
+
 wget -c url - 断电下载
+
 ```
 wget -c https://console.cloud.tencent.com/lighthouse/instance/detail?searchParams=rid%3D1&rid=4&id=lhins-nlurh7nu&action=DescribeInstanceLogin
 ```
 
-curl 
+### curl 
+
 ```
 curl http://localhost:8080
 ```
 
-ssh
+### ssh
+
 远程
+
 ```
 ssh bage@127.0.0.1
 
 ```
 
-scp  远程拷贝
+### scp  远程拷贝
+
 ```
 scp ./abc.txt user@host:/abc.txt
 
 ```
 
-echo 输出
+### echo 输出
+
+输出引用
+
 ```
 echo $PATH
 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/home/lighthouse/.local/bin:/home/lighthouse/bin
 ```
+
+### traceroute
+
+路由过程
+
+```
+% traceroute www.baidu.com
+traceroute: Warning: www.baidu.com has multiple addresses; using 180.101.50.188
+traceroute to www.a.shifen.com (180.101.50.188), 64 hops max, 52 byte packets
+ 1  10.18.104.2 (10.18.104.2)  5.046 ms  6.981 ms  8.974 ms
+ 2  172.30.8.1 (172.30.8.1)  5.855 ms  5.184 ms  3.923 ms
+ 3  172.30.0.99 (172.30.0.99)  6.168 ms  4.686 ms  4.143 ms
+ 4  172.30.2.198 (172.30.2.198)  3.846 ms  12.456 ms  3.552 ms
+```
+
 
 
 ## 用户和组
 
 https://www.runoob.com/linux/linux-user-manage.html
 
-    useradd - 添加新用户
-    passwd - 设置密码 
-    usrrdel - 删除用户
-    groupadd -创建用户组
-    groupdel - 删除
-    su - 切换用户whoami
+添加新用户
 
-    
+```
+# useradd bage2
+```
+
+设置密码 
+
+```
+# passwd bage2
+```
+
+删除用户
+
+```
+# userdel bage2
+```
+
+创建用户组
+
+```
+# groupadd gbage
+```
+
+删除用户组
+
+```
+# groupdel gbage
+```
+
+切换用户
+
+```
+# su bage 
+
+$ su
+```
+
+
 
 ## 权限 
 
@@ -699,21 +794,100 @@ $ pstack 7790
 #6  0x000000000041c9de in main ()
 ```
 
+### pmap
+
+```
+$ pstack 7790
+#0  0x00007fe52186f60c in waitpid () from /lib64/libc.so.6
+#1  0x0000000000440c34 in waitchld.isra.10 ()
+#2  0x0000000000441eec in wait_for ()
+#3  0x0000000000433b1e in execute_command_internal ()
+#4  0x0000000000433d3e in execute_command ()
+#5  0x000000000041e375 in reader_loop ()
+#6  0x000000000041c9de in main ()
+```
+
+
 
 ## 其他+
-### 软连接
-ln -s - 创建软连接
+
+### echo
+
+查看
+
+```
+bage@bagedeMacBook-Pro ~ % hhh=hhhhhh   
+
+bage@bagedeMacBook-Pro ~ % echo $hhh
+
+hhhhhh
+```
+
+### diff
+
+查看差异
+
+```
+diff file1 file2
+```
+
+### ln连接
+
+硬连接；删除一个，将仍能找到
+
+```
+ln from to
+```
+
+符号链接(软链接)；删除源，另一个无法使用；（后面一个ccTo 为新建的文件）
+
+```
+ln -s from to
+```
+
 ### ifconfig
 
-### 历史啥的
-who
+查看IP啥的
+
+```
+ifconfig
+
+ipconfg 
+```
+
+### 历史
+
+查看执行历史
+
+```
 history
-### 重定向
-\> >> 2> 重定向
-### 管道
-｜ 管道
+ 
+```
 
+### who
 
+查看当前登陆用户
+
+```
+who
+
+```
+
+### 重定向 >
+
+输出 aa 到文件 
+
+```
+echo aa >> a.txt
+```
+
+### 管道 |
+
+结果进行过滤
+
+```
+ls | grep hello
+```
 
 ### 主机名
 
@@ -726,7 +900,7 @@ hostname
 暂时更改主机名
 
 ```
-# hostname <host-name> 
+hostname hhhh 
 ```
 
 永久修改主机名
@@ -877,6 +1051,8 @@ https://github.com/aqzt/kjyw
 
 内核+架构
 
+http://cn.linux.vbird.org/linux_basic/linux_basic.php
+
 ### 开发软件安装
 
 jdk\maven\mysql\
@@ -893,11 +1069,11 @@ https://github.com/bage2014/study/tree/master/study-docker
 
 ## 参考链接
 
-linux 在线： https://copy.sh/v86/?profile=linux26
-
 https://linuxtools-rst.readthedocs.io/zh_CN/latest/index.html
 
 http://cn.linux.vbird.org/
 
 https://www.linuxcool.com/
+
+linux 在线： https://copy.sh/v86/?profile=linux26
 
