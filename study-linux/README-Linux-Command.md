@@ -326,6 +326,11 @@ updates                                                                         
 yum search <keyword>
 ```
 
+局域网yum repo 
+```
+....
+```
+
 ### rpm
 
 查询软件 <package_name> 是否安装
