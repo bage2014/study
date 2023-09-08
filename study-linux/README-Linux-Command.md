@@ -507,7 +507,7 @@ netstat -s
 
 ### wget 
 
-wget -c url - 断电下载
+wget -c url - 断点下载
 
 ```
 wget -c https://console.cloud.tencent.com/lighthouse/instance/detail?searchParams=rid%3D1&rid=4&id=lhins-nlurh7nu&action=DescribeInstanceLogin
@@ -531,7 +531,7 @@ ssh bage@127.0.0.1
 ### scp  远程拷贝
 
 ```
-scp ./abc.txt user@host:/abc.txt
+scp ./abc.txt user@host:/opt/usr/data/abc.txt
 
 ```
 
@@ -606,11 +606,39 @@ $ su
 
 ## 权限 
 
+权限说明
 
+![](http://billie66.github.io/TLCL/book/images/101.png)
+
+
+
+增加授权
 
 ```
-chmod 777 ./abc.txt
+$ ll
+total 60600
+drwxrwxr-x 3 bage bage     4096 Jul  1 14:05 logs
+-rw-r--r-- 1 bage bage 61924883 Jul  1 14:05 study-best-practice-0.0.1-SNAPSHOT.jar
+-rw-rw-r-- 1 bage bage   119587 Jul 23 14:55 tmp.txt
 
+```
+
+增加授权
+
+```
+$ chmod 777 ./study-best-practice-0.0.1-SNAPSHOT.jar
+
+$ chmod u+r ./study-best-practice-0.0.1-SNAPSHOT.jar
+```
+
+再次查询
+
+```
+$ ll
+total 60600
+drwxrwxr-x 3 bage bage     4096 Jul  1 14:05 logs
+-rwxrwxrwx 1 bage bage 61924883 Jul  1 14:05 study-best-practice-0.0.1-SNAPSHOT.jar
+-rw-rw-r-- 1 bage bage   119587 Jul 23 14:55 tmp.txt
 ```
 
 
@@ -646,7 +674,15 @@ ps -u bage
 内存中的程序
 
 ```
-ps aux =?= ps -ef 
+ps aux|more
+
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.1  51776  3892 ?        Ss   Jul01  15:52 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+root         2  0.0  0.0      0     0 ?        S    Jul01   0:02 [kthreadd]
+root         4  0.0  0.0      0     0 ?        S<   Jul01   0:00 [kworker/0:0H]
+root         6  0.0  0.0      0     0 ?        S    Jul01   0:42 [ksoftirqd/0]
+root         7  0.0  0.0      0     0 ?        S    Jul01   0:23 [migration/0]
+root         8  0.0  0.0      0     0 ?        S    Jul01   0:00 [rcu_bh]
 ```
 
 
@@ -692,14 +728,6 @@ kill -l
 ```
 kill -9 xxx
 ```
-
-java 程序生成 dump 文件
-
-```
-kill -3 xxx
-```
-
-
 
 ### top
 
@@ -776,7 +804,18 @@ watch -n 3 -d date
 
 ### netstat 
 
+基本使用
 
+```
+$ netstat
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 VM-28-9-centos:mysql    VM-28-9-centos:49438    ESTABLISHED
+tcp        0      0 VM-28-9-centos:mysql    VM-28-9-centos:48762    ESTABLISHED
+tcp        0      0 VM-28-9-centos:mysql    VM-28-9-centos:49746    ESTABLISHED
+tcp        0      0 VM-28-9-centos:52134    169.254.0.55:lsi-bobcat ESTABLISHED
+tcp        0      0 VM-28-9-centos:mysql    VM-28-9-centos:48856    ESTABLISHED
+```
 
 ### iostat
 执行1次
@@ -802,19 +841,67 @@ $ pstack 7790
 ### pmap
 
 ```
-$ pstack 7790
-#0  0x00007fe52186f60c in waitpid () from /lib64/libc.so.6
-#1  0x0000000000440c34 in waitchld.isra.10 ()
-#2  0x0000000000441eec in wait_for ()
-#3  0x0000000000433b1e in execute_command_internal ()
-#4  0x0000000000433d3e in execute_command ()
-#5  0x000000000041e375 in reader_loop ()
-#6  0x000000000041c9de in main ()
+$ pmap 7790
+29128:   java -jar study-best-practice-0.0.1-SNAPSHOT.jar
+00000000e0c00000  83968K rw---   [ anon ]
+00000000e5e00000 425984K -----   [ anon ]
+00000000ffe00000    476K rw--- classes.jsa
+00000000ffe77000    548K rw---   [ anon ]
+00000000fff00000    524K rw--- classes.jsa
+00000000fff83000    500K rw---   [ anon ]
+0000000800000000   4452K rw--- classes.jsa
+0000000800459000   7720K r---- classes.jsa
+0000000800be3000    116K -----   [ anon ]
 ```
 
 
 
+## 按键
+
+### 自动补全  
+
+tab 键
+
+### 快捷键
+
+常用快捷键
+
+| 按键   | 行动                                                   |
+| :----- | :----------------------------------------------------- |
+| Ctrl-a | 移动光标到行首。                                       |
+| Ctrl-e | 移动光标到行尾。                                       |
+| Ctrl-f | 光标前移一个字符；和右箭头作用一样。                   |
+| Ctrl-b | 光标后移一个字符；和左箭头作用一样。                   |
+| Alt-f  | 光标前移一个字。                                       |
+| Alt-b  | 光标后移一个字。                                       |
+| Ctrl-l | 清空屏幕，移动光标到左上角。clear 命令完成同样的工作。 |
+
+
+
 ## 其他+
+
+### 连续操作
+
+; 分割
+
+```
+% cd temp; ls; cd ..
+
+h_aa		h_ac		h_ae		hello.txt
+h_ab		h_ad		h_af
+```
+
+
+
+### which
+
+查看
+
+```
+bage@bagedeMacBook-Pro ~ % which java   
+
+/Users/bage/bage/software/jdk-17.0.5.jdk/Contents/Home/bin/java
+```
 
 ### echo
 
@@ -835,6 +922,22 @@ hhhhhh
 ```
 diff file1 file2
 ```
+
+### 进程前后控制
+
+放到后台
+
+```
+bg
+```
+
+移到前台
+
+```
+fg
+```
+
+
 
 ### ln连接
 
@@ -865,16 +968,32 @@ ipconfg
 查看执行历史
 
 ```
-history
- 
+ % history
+ 1000  clear
+ 1001  ls
+ 1002  cd bage
+ 1003  ls
+ 1004  clear
+ 1005  cd temp
+
 ```
 
-### who
+执行某历史 1001
+
+```
+bage@bagedeMacBook-Pro bage % !1001
+ls
+11		config		mac-pc		software
+```
+
+
+
+### whoami
 
 查看当前登陆用户
 
 ```
-who
+whoami
 
 ```
 
@@ -883,7 +1002,9 @@ who
 输出 aa 到文件 
 
 ```
-echo aa >> a.txt
+echo aa > a.txt  覆盖
+
+echo aa >> a.txt  追加
 ```
 
 ### 管道 |
@@ -1018,6 +1139,11 @@ nc -v ip -z startPort-endPort
 
 文件基础 + 查找 + 权限 + 软件 + 网络 + 进程
 
+### 注意事项
+
+- **rm 慎用！！！！！！**
+- rm -rf 别用？！！！！！！
+
 ### 该会的要会
 
 - 知识概述
@@ -1074,11 +1200,13 @@ https://github.com/bage2014/study/tree/master/study-docker
 
 ## 参考链接
 
+http://billie66.github.io/TLCL/book/index.html
+
+https://www.linuxcool.com/
+
 https://linuxtools-rst.readthedocs.io/zh_CN/latest/index.html
 
 http://cn.linux.vbird.org/
-
-https://www.linuxcool.com/
 
 linux 在线： https://copy.sh/v86/?profile=linux26
 
