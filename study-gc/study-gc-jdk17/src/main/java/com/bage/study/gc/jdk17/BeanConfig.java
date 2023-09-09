@@ -4,6 +4,8 @@ import com.bage.study.gc.biz.GcSafePointService;
 import com.bage.study.gc.biz.GoodsSecKillService;
 import com.bage.study.gc.biz.gc.JvmGcService;
 import com.bage.study.gc.biz.cpu.high.HighCpuService;
+import com.bage.study.gc.biz.redis.BigKeyRedisService;
+import com.bage.study.gc.biz.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,8 +31,13 @@ public class BeanConfig {
 
 
     @Bean
-    public HighCpuService DemoService(){
+    public HighCpuService HighCpuService(){
         return new HighCpuService();
+    }
+
+    @Bean
+    public BigKeyRedisService BigKeyRedisService(RedisService redisService){
+        return new BigKeyRedisService(redisService);
     }
 
 }

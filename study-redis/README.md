@@ -345,3 +345,30 @@ Codis一个比较大的优点是可以不停机动态新增或删除数据节点
 ### **fork耗时严重**
 
 执行生成RDB和AOF重写任务导致的。
+
+## 监控
+
+### 命令行监控
+
+https://signoz.io/blog/redis-monitoring/
+
+https://redis.io/docs/management/optimization/cpu-profiling/
+
+负载情况 
+
+```
+redis-cli --latency -h 127.0.0.1 -p 6379
+```
+
+负载情况 
+
+```
+info stats
+```
+
+内存情况 
+
+```
+info memory
+```
+
