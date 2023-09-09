@@ -34,7 +34,7 @@ public class BigKeyRedisService {
             data += UUID.randomUUID().toString();
         }
         String key = "big-key-" + UUID.randomUUID().toString() + "-" + number;
-        log.info("key = {}", key);
+        log.info("bigValve key = {}", key);
         getService().set(key, "-big-value-" + data + "-" + number);
         return 1;
     }
@@ -51,7 +51,7 @@ public class BigKeyRedisService {
             list.add(UUID.randomUUID().toString() + "-" + i);
         }
         String key = "big-collection-" + UUID.randomUUID().toString() + "-" + length;
-        log.info("key = {}", key);
+        log.info("bigCollection key = {}", key);
         getService().listSet(key, list);
         return length;
     }
@@ -67,7 +67,7 @@ public class BigKeyRedisService {
             String data = UUID.randomUUID().toString();
             String key = "big-number-" + UUID.randomUUID().toString() + "-" + number;
             if (i == 0) {
-                log.info("key = {}", key);
+                log.info("bigNumber key = {}", key);
             }
             getService().set(data, "-big-number-" + data + "-" + i);
         }

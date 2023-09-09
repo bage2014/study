@@ -1,6 +1,7 @@
 package com.bage.study.best.practice.cache;
 
 import com.bage.study.best.practice.utils.JsonUtils;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class RedisCacheServiceImpl implements CacheService{
 
 
-    @Autowired
+    @Resource(name="redisTemplate")
     private ValueOperations<String, String> valueOperations;
 
     @Override
