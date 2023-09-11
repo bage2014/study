@@ -23,6 +23,8 @@ public class HelloSentinel {
         while (i < 100) {
             System.out.print(i + ": ");
             // 1.5.0 版本开始可以直接利用 try-with-resources 特性
+            // 异步
+//            try (Entry entry = SphU.asyncEntry("HelloWorld")) {
             try (Entry entry = SphU.entry("HelloWorld")) {
                 // 被保护的逻辑
                 System.out.println("hello world");
@@ -40,13 +42,20 @@ public class HelloSentinel {
     }
 
     private static void initFlowRules() {
-        List<FlowRule> rules = new ArrayList<>();
         FlowRule rule = new FlowRule();
         rule.setResource("HelloWorld");
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
         // Set limit QPS to 20.
         rule.setCount(2);
+
+
+        List<FlowRule> rules = new ArrayList<>();
         rules.add(rule);
+        /**
+         * 做两件事：
+         * 1、 更新配置
+         * 2、 更定回调调用
+         */
         FlowRuleManager.loadRules(rules);
     }
 

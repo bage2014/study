@@ -7,6 +7,9 @@ https://zhuanlan.zhihu.com/p/491927737
 
 https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
 
+阿里问题排查 
+https://developer.aliyun.com/article/778128
+
 ## 启动命令
 
 设置JVM 参数 
