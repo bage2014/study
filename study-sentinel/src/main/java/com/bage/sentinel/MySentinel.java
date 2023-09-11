@@ -46,6 +46,8 @@ public class MySentinel {
                         System.out.println("entry end");
                     } catch (BlockException e) {
                         System.out.println("entry block : " + e.getMessage());
+                    } catch (Exception e){
+                        System.out.println("Exception : " + e.getMessage());
                     } finally {
                         if (entry != null) {
                             entry.exit();
