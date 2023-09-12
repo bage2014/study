@@ -1,6 +1,14 @@
 # study-algorithm #
 算法学习笔记
 
+## 参考链接
+
+图解算法
+https://github.com/krahets/hello-algo  、  https://www.hello-algo.com/
+
+东哥
+https://github.com/labuladong/fucking-algorithm
+
 ## 刷题地址 ##
 - lintcode：[https://www.lintcode.com/problem/](https://www.lintcode.com/problem/ "https://www.lintcode.com/problem/")
 - 牛客网： [https://www.nowcoder.com/ta/coding-interviews?page=1](https://www.nowcoder.com/ta/coding-interviews?page=1 "https://www.nowcoder.com/ta/coding-interviews?page=1")
