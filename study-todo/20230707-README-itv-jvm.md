@@ -456,6 +456,16 @@ HotSpot会在所有方法的临返回之前，以及所有非counted loop的循�
 
 参考链接 https://c.m.163.com/news/a/HL40JTCI0552ZNXL.html
 
+入门 https://juejin.cn/post/6908665391136899079
+
+进阶 https://juejin.cn/post/6911624328472133646
+
+官网 https://help.eclipse.org/latest/index.jsp?topic=/org.eclipse.mat.ui.help/welcome.html
+
+
+
+
+
 ### 概况
 
 Leak Suspects 》 System Overview
