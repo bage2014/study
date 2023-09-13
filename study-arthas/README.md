@@ -71,6 +71,7 @@ $ java -jar arthas-boot.jar
 
    
 
+
 ## jvm
 查看当前JVM信息
 
@@ -272,6 +273,43 @@ thread {threadId} 会打印线程的栈
 ## profiler/火焰图
 
 - [profiler](https://alibaba.github.io/arthas/profiler.html)–使用[async-profiler](https://github.com/jvm-profiling-tools/async-profiler)对应用采样，生成火焰图
+
+
+
+生成火焰图
+
+```
+[arthas@21777]$ profiler start
+Profiling started
+```
+
+
+
+
+
+停止
+
+```
+[arthas@21777]$ profiler stop --format html
+OK
+profiler output file: /Users/bage/bage/github/study/arthas-output/20230912-190608.html
+
+
+[arthas@21777]$ profiler stop
+OK
+profiler output file: /Users/bage/bage/github/study/arthas-output/20230912-190615.html
+
+```
+
+
+
+访问
+
+```
+http://localhost:3658/arthas-output/
+```
+
+
 
 ## options
 

@@ -47,6 +47,9 @@ https://www.baidu.com/s?wd=%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%20PPT&pn=20&oq=%
 https://www.iocoder.cn/Sharding-JDBC/
 coke
 
+表文档生成
+https://github.com/pingfangushi/screw
+
 
 二次查询法[https://blog.csdn.net/uiuan00/article/details/102716457#3%E3%80%81%E7%BB%88%E6%9E%81%E6%AD%A6%E5%99%A8-%E4%BA%8C%E6%AC%A1%E6%9F%A5%E8%AF%A2%E6%B3%95](https://blog.csdn.net/uiuan00/article/details/102716457#3、终极武器-二次查询法)
 
