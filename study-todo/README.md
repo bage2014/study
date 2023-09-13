@@ -10,6 +10,7 @@ CPU、DB【connection】、IO、NETWORK
 
 瓶颈分析？？
 
+火焰图生成 
 
 
 ## 项目实践
@@ -307,6 +308,8 @@ https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247488041&idx=1&sn=26d55c
 
 
 
+表文档生成
+https://github.com/pingfangushi/screw
 
 
 Java Lock 相关、分布式锁相关

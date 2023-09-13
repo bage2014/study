@@ -1,4 +1,4 @@
-# study- Concurrent  #
+# study-concurrent  #
 ## 简介
 
 Java 并发相关知识点 
@@ -9,7 +9,7 @@ Java 并发相关知识点
 - 锁的四种状态、和升级条件
 - CAS 
 - AtomicStampedReference 使用 
-- AQS 结构【字段、数据架构】
+- AQS 结构【字段、数据架构、模版方法、队列】
 - 加锁解锁基本过程、优缺点、简单应用
 - 可重入锁&不可重入锁
 - 公平锁&非公平锁、实现原理
@@ -156,7 +156,13 @@ https://zhuanlan.zhihu.com/p/571637324
 
 **说明**
 
-可见行的 状态字段 + 先进先出的双向队列
+可见行的 状态字段
+
++当前线程
+
++先进先出的双向队列
+
+维护加锁线程和状态 
 
 **结构**
 
@@ -179,6 +185,65 @@ AQS 解析【2023-06-07】https://zhuanlan.zhihu.com/p/86072774
 要点整理 
 
 https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247487939&idx=1&sn=560f9ec0fdbc081949383bbee2407b0e&chksm=cf21ceeaf85647fc24537661ca063f9537b5cb5090da1c4ecf1f4d8326a5359391143bd16e1a&token=1496082535&lang=zh_CN&scene=21#wechat_redirect
+
+
+
+### 数据结构
+
+
+
+### state字段
+
+- state用volatile修饰，保证多线程中的可见性。
+- getState()和setState()方法采用final修饰，限制AQS的子类重写它们两。
+- compareAndSetState（）方法采用乐观锁思想的CAS算法，也是采用final修饰的，不允许子类重写。
+
+
+
+
+
+### CLH队列
+
+- 双向链表入列出列
+- CAS算法设置尾节点+死循环自旋。
+
+一个FIFO双向队列，其**内部通过节点head和tail**记录队首和队尾元素，队列元素的类型为Node
+
+![](https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzH49o61bopUB4EnjNCwHOecxIIErSt29lDBx4pUsV0ghoAXuia1M4GeNBCw8iaOpdIqv3wiaib81KLkjA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+
+
+
+
+### 模板方法
+
+- isHeldExclusively()
+
+  该线程是否正在独占资源。只有用到condition才需要去实现它。
+
+- tryAcquire(int)
+
+  独占方式。尝试获取资源，成功则返回true，失败则返回false。
+
+- tryRelease(int)
+
+  独占方式。尝试释放资源，成功则返回true，失败则返回false。
+
+- tryAcquireShared(int)
+
+  共享方式。尝试获取资源。负数表示失败；0表示成功，但没有剩余可用资源；正数表示成功，且有剩余资源。
+
+- tryReleaseShared(int)
+
+  共享方式。尝试释放资源，成功则返回true，失败则返回false。
+
+
+
+### ConditionObject
+
+https://www.jianshu.com/p/6a86e10293ab
+
+
 
 
 
