@@ -44,9 +44,48 @@ https://hub.docker.com/r/bladex/sentinel-dashboard
 
 
 
+## 基本架构图
+
+![](https://sentinelguard.io/docs/zh-cn/img/sentinel-slot-chain-architecture.png)
+
+
+
+## 基本组件解析
+
+https://github.com/alibaba/Sentinel/wiki/Sentinel-%E6%A0%B8%E5%BF%83%E7%B1%BB%E8%A7%A3%E6%9E%90
+
+
+
+## 常用组件
+
+- `NodeSelectorSlot` 负责收集资源的路径，并将这些资源的调用路径，以树状结构存储起来，用于根据调用路径来限流降级；
+- `ClusterBuilderSlot` 则用于存储资源的统计信息以及调用者信息，例如该资源的 RT, QPS, thread count 等等，这些信息将用作为多维度限流，降级的依据；
+- `StatisticSlot` 则用于记录、统计不同纬度的 runtime 指标监控信息；
+- `FlowSlot` 则用于根据预设的限流规则以及前面 slot 统计的状态，来进行流量控制；
+- `AuthoritySlot` 则根据配置的黑白名单和调用来源信息，来做黑白名单控制；
+- `DegradeSlot` 则通过统计信息以及预设的规则，来做熔断降级；
+- `SystemSlot` 则通过系统的状态，例如 load1 等，来控制总的入口流量；
+
+
+
 ## 流量控制
 
 
+
+### 基本配置
+
+|      Field      | 说明                                                         | 默认值                        |
+| :-------------: | :----------------------------------------------------------- | :---------------------------- |
+|    resource     | 资源名，资源名是限流规则的作用对象                           |                               |
+|      count      | 限流阈值                                                     |                               |
+|      grade      | 限流阈值类型，QPS 或线程数模式                               | QPS 模式                      |
+|    limitApp     | 流控针对的调用来源                                           | `default`，代表不区分调用来源 |
+|    strategy     | 调用关系限流策略：直接、链路、关联                           | 根据资源本身（直接）          |
+| controlBehavior | 流控效果（直接拒绝 / 排队等待 / 慢启动模式），不支持按调用关系限流 | 直接拒绝                      |
+
+
+
+### 类型配置
 
 流量控制的手段
 
@@ -88,11 +127,15 @@ https://zhuanlan.zhihu.com/p/64786381
 
 ## 自定义 
 
+![](https://user-images.githubusercontent.com/9434884/46783631-93324d00-cd5d-11e8-8ad1-a802bcc8f9c9.png)
+
 slot 
 https://github.com/alibaba/Sentinel/tree/master/sentinel-demo/sentinel-demo-slot-spi/src/main/java/com/alibaba/csp/sentinel/demo/slot
 https://blog.51cto.com/u_14888386/2515150
 
 限流基本过程？
+
+
 
 
 

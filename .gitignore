@@ -5,6 +5,10 @@
 
 # Log file
 *.log
+*.log.[0-9]
+
+# arthas
+arthas-output/
 
 # BlueJ files
 *.ctxt
