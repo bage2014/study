@@ -2,36 +2,45 @@
 
 Dubbo 体系相关ITV
 
-TODO
-
 ## 关键点
 
 - 核心组件
 - 架构分层
 - 使用协议以及场景选择
+- 负载均衡
 - 拓展点
 - SPI 机制
 - 调用过程
 - 容错方案
 - 序列化方式
 
+## 架构角色
+
+交互过程 https://cn.dubbo.apache.org/zh-cn/docsv2.7/user/preface/architecture/
+
+![](https://cn.dubbo.apache.org/imgs/user/dubbo-architecture.jpg)
+
+节点说明
+
+| 节点        | 角色说明                               |
+| ----------- | -------------------------------------- |
+| `Provider`  | 暴露服务的服务提供方                   |
+| `Consumer`  | 调用远程服务的服务消费方               |
+| `Registry`  | 服务注册与发现的注册中心               |
+| `Monitor`   | 统计服务的调用次数和调用时间的监控中心 |
+| `Container` | 服务运行容器                           |
 
 
-## 架构核心模块分层
 
-【2023-06-15】https://www.jianshu.com/p/eab2b272ba75
+## 架构分层
 
-https://cn.dubbo.apache.org/zh-cn/docsv2.7/dev/design/
-
-
+官网 https://cn.dubbo.apache.org/zh-cn/docsv2.7/dev/design/
 
 ![](https://cn.dubbo.apache.org/imgs/dev/dubbo-framework.jpg)
 
 Dubbo的整体设计分 10 层：
 
-第一层：service 层，接口层，给服务提供者和消费者来实现的（留给开发人员来实现）；
-
-
+- **service 层**，接口层，给服务提供者和消费者来实现的（留给开发人员来实现）；
 
 - **config 配置层**：对外配置接口，以 `ServiceConfig`, `ReferenceConfig` 为中心，可以直接初始化配置类，也可以通过 spring 解析配置生成配置类
 - **proxy 服务代理层**：服务接口透明代理，生成服务的客户端 Stub 和服务器端 Skeleton, 以 `ServiceProxy` 为中心，扩展接口为 `ProxyFactory`
@@ -47,7 +56,11 @@ Dubbo的整体设计分 10 层：
 
 ## 基本配置 
 
-| 标签                                                         | 用途         | 解释                                                         |
+### 配置项
+
+配置可选项 https://cn.dubbo.apache.org/zh-cn/docsv2.7/user/configuration/xml/
+
+| 标签                                                         | 主要用途     | 解释                                                         |
 | ------------------------------------------------------------ | ------------ | ------------------------------------------------------------ |
 | [dubbo:service/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 服务配置     | 用于暴露一个服务，定义服务的元信息，一个服务可以用多个协议暴露，一个服务也可以注册到多个注册中心 |
 | [dubbo:reference/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 引用配置     | 用于创建一个远程服务代理，一个引用可以指向多个注册中心       |
@@ -61,57 +74,50 @@ Dubbo的整体设计分 10 层：
 | [dubbo:method/](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 方法配置     | 用于 ServiceConfig 和 ReferenceConfig 指定方法级的配置信息   |
 | [dubbo:argument](https://gitee.com/souyunku/DevBooks/blob/master/docs/Dubbo/Dubbo最新2021年面试题大汇总，附答案.md) | 参数配置     | 用于指定方法参数配置                                         |
 
-## 核心角色组件
+### 优先级
 
-【2023-06-15】https://mikechen.cc/19925.html
+以 timeout 为例，下图显示了配置的查找顺序，其它 retries, loadbalance, actives 等类似：
 
-**注册中心**
-
-**服务提供者**
-
-**服务消费者**
-
-**监控器**
-
-**容器**
-
-![](https://static.mikechen.cc/wp-content/uploads/2022/10/dubbo-principle-01.png)
+- 方法级优先，接口级次之，全局配置再次之。
+- 如果级别一样，则消费方优先，提供方次之。
 
 
 
-## 协议以及场景
+## 协议及场景
+
+【2023-06-15】官网 https://cn.dubbo.apache.org/zh-cn/blog/2018/10/05/dubbo-%e5%8d%8f%e8%ae%ae%e8%af%a6%e8%a7%a3/
 
 【2023-06-15】https://blog.51cto.com/u_15973676/6287825
 
-【2023-06-15】https://cn.dubbo.apache.org/zh-cn/blog/2018/10/05/dubbo-%e5%8d%8f%e8%ae%ae%e8%af%a6%e8%a7%a3/
-
 ### dubbo
 
-**1、** dubbo：单一长连接和 NIO 异步通讯，适合大并发小数据量的服务调用，以及消费者远大于提供者。传输协议 TCP，异步， Hessian 序列化；
+dubbo：单一长连接和 NIO 异步通讯，适合大并发小数据量的服务调用，以及消费者远大于提供者。传输协议 TCP，异步， Hessian 序列化；
 
 ### rmi
 
-**2、** rmi：采用 JDK 标准的 rmi 协议实现，传输参数和返回参数对象需要实现Serializable 接口，使用 java 标准序列化机制，使用阻塞式短连接，传输数据包大小混合，消费者和提供者个数差不多，可传文件，传输协议 TCP。多个短连接， TCP 协议传输，同步传输，适用常规的远程服务调用和 rmi 互操作。在依赖低版本的 Common-Collections 包， java 序列化存在安全漏洞；
+ rmi：采用 JDK 标准的 rmi 协议实现，传输参数和返回参数对象需要实现Serializable 接口，使用 java 标准序列化机制，使用阻塞式短连接，传输数据包大小混合，消费者和提供者个数差不多，可传文件，传输协议 TCP。多个短连接， TCP 协议传输，同步传输，适用常规的远程服务调用和 rmi 互操作。在依赖低版本的 Common-Collections 包， java 序列化存在安全漏洞；
 
 ### http
 
-**3、** http：基于 Http 表单提交的远程调用协议，使用 Spring 的 HttpInvoke 实现。多个短连接，传输协议 HTTP，传入参数大小混合，提供者个数多于消费者，需要给应用程序和浏览器 JS 调用；
+http：基于 Http 表单提交的远程调用协议，使用 Spring 的 HttpInvoke 实现。多个短连接，传输协议 HTTP，传入参数大小混合，提供者个数多于消费者，需要给应用程序和浏览器 JS 调用；
 
 ### webservice
 
-**4、** webservice：基于 WebService 的远程调用协议，集成 CXF 实现，提供和原生 WebService 的互操作。多个短连接，基于 HTTP 传输，同步传输，适用系统集成和跨语言调用；
+webservice：基于 WebService 的远程调用协议，集成 CXF 实现，提供和原生 WebService 的互操作。多个短连接，基于 HTTP 传输，同步传输，适用系统集成和跨语言调用；
 
 ### hessian
 
-**5、** hessian：集成 Hessian 服务，基于 HTTP 通讯，采用 Servlet 暴露服务，Dubbo 内嵌 Jetty 作为服务器时默认实现，提供与 Hession 服务互操作。多个短连接，同步 HTTP 传输， Hessian 序列化，传入参数较大，提供者大于消费者，提供者压力较大，可传文件；
+hessian：集成 Hessian 服务，基于 HTTP 通讯，采用 Servlet 暴露服务，Dubbo 内嵌 Jetty 作为服务器时默认实现，提供与 Hession 服务互操作。多个短连接，同步 HTTP 传输， Hessian 序列化，传入参数较大，提供者大于消费者，提供者压力较大，可传文件；
 
 ### Redis
 
-**6、** Redis：基于 Redis 实现的 RPC 协议
+Redis：基于 Redis 实现的 RPC 协议
 
 
 
 ## 负载均衡
+
+### 支持类型
 
 支持类型 https://cn.dubbo.apache.org/zh-cn/docsv2.7/dev/source/loadbalance/
 
@@ -125,11 +131,54 @@ Dubbo的整体设计分 10 层：
 | P2C LoadBalance               | Power of Two Choice     | 随机选择两个节点后，继续选择“连接数”较小的那个节点。 |
 | Adaptive LoadBalance          | 自适应负载均衡          | 在 P2C 算法基础上，选择二者中 load 最小的那个节点    |
 
+### 配置使用
+
 配置方式 https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/advanced-features-and-usage/performance/loadbalance/#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F
 
+loadbalance = "XXX"
 
+**服务端服务级别**
+
+```xml
+<dubbo:service interface="..." loadbalance="roundrobin" />
+```
+
+**客户端服务级别**
+
+```xml
+<dubbo:reference interface="..." loadbalance="roundrobin" />
+```
+
+**服务端方法级别**
+
+```xml
+<dubbo:service interface="...">
+    <dubbo:method name="..." loadbalance="roundrobin"/>
+</dubbo:service>
+```
+
+**客户端方法级别**
+
+```xml
+<dubbo:reference interface="...">
+    <dubbo:method name="..." loadbalance="roundrobin"/>
+</dubbo:reference>
+```
+
+### 自定义
 
 自定义实现 https://cn.dubbo.apache.org/zh-cn/overview/tasks/extensibility/router/
+
+## 拓展点
+
+官网 https://cn.dubbo.apache.org/zh-cn/overview/tasks/extensibility/
+
+目前支持 ：
+
+- **Filter** 
+- **Protocol**
+- **Register**
+- **Router**
 
 
 
@@ -175,28 +224,28 @@ Dubbo的整体设计分 10 层：
 
 ## 容错机制
 
+官网 https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/advanced-features-and-usage/service/fault-tolerent-strategy/
+
 【2023-06-15】https://mp.weixin.qq.com/s?__biz=MzAxMjY5NDU2Ng==&mid=2651861794&idx=1&sn=e4fc20a336d55a9939ff65d7120f73cc&chksm=8049766bb73eff7ddef39af55c80283a9db86680ce46dfc6d1930355977efb49284fe8a6104d&scene=27
 
-https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/advanced-features-and-usage/service/fault-tolerent-strategy/
-
-#### 基本策略 
+### 基本策略 
 
 **Failfast Cluster**
-快速失败，只发起一次调用，失败立即报错。通常用于非幂等性的写操作，比如新增记录。
+**快速失败**，只发起一次调用，失败立即报错。通常用于非幂等性的写操作，比如新增记录。
 
 **Failsafe Cluster**
-失败安全，出现异常时，直接忽略。通常用于写入审计日志等操作。
+**失败安全**，出现异常时，直接忽略。通常用于写入审计日志等操作。
 
 **Failback Cluster**
-失败自动恢复，后台记录失败请求，定时重发。通常用于消息通知操作。
+**失败自动恢复**，后台记录失败请求，定时重发。通常用于消息通知操作。
 
 **Forking Cluster**
-并行调用多个服务器，只要一个成功即返回。通常用于实时性要求较高的读操作，但需要浪费更多服务资源。可通过 forks="2" 来设置最大并行数。
+**并行调用**多个服务器，只要一个成功即返回。通常用于实时性要求较高的读操作，但需要**浪费更多服务资源**。可通过 forks="2" 来设置最大并行数。
 
 **Broadcast Cluster**
-广播调用所有提供者，逐个调用，任意一台报错则报错。通常用于通知所有提供者更新缓存或日志等本地资源信息。
+**广播调用**所有提供者，逐个调用，任意一台报错则报错。通常用于通知所有提供者更新缓存或日志等本地资源信息。
 
-#### 基本使用
+### 基本使用
 
 配置如下：
 
@@ -218,9 +267,7 @@ https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/advanced-features-an
 </dubbo:reference>
 ```
 
-
-
-#### 自定义拓展
+### 自定义拓展
 
 https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/reference-manual/spi/description/cluster/
 
@@ -228,9 +275,16 @@ https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/reference-manual/spi
 
 ## SPI 机制 
 
+### 基本概念
+
 官方文档 https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/reference-manual/spi/overview/
 
-使用demo 
+Dubbo 中的扩展能力是从 JDK 标准的 SPI 扩展点发现机制加强而来，它改进了 JDK 标准的 SPI 以下问题：
+
+- JDK 标准的 SPI 会一次性实例化扩展点所有实现，如果有扩展实现初始化很耗时，但如果没用上也加载，会很浪费资源。
+- 如果扩展点加载失败，连扩展点的名称都拿不到了。比如：JDK 标准的 ScriptEngine，通过 getName() 获取脚本类型的名称，但如果 RubyScriptEngine 因为所依赖的 jruby.jar 不存在，导致 RubyScriptEngine 类加载失败，这个失败原因被吃掉了，和 ruby 对应不起来，当用户执行 ruby 脚本时，会报不支持 ruby，而不是真正失败的原因。
+
+### 使用demo 
 
 https://cn.dubbo.apache.org/zh-cn/overview/tasks/extensibility/filter/ 
 
@@ -257,6 +311,8 @@ SPI vs JDK 基本用法
 
 
 ## 参考链接
+
+官网 https://cn.dubbo.apache.org/zh-cn/docsv2.7/dev/design/
 
 【2023-06-14】https://mikechen.cc/29721.html
 
