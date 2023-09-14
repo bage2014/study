@@ -272,6 +272,10 @@ thread {threadId} 会打印线程的栈
 
 ## profiler/火焰图
 
+https://github.com/brendangregg/FlameGraph
+
+
+
 - [profiler](https://alibaba.github.io/arthas/profiler.html)–使用[async-profiler](https://github.com/jvm-profiling-tools/async-profiler)对应用采样，生成火焰图
 
 

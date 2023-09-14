@@ -1,16 +1,19 @@
 # study- Redis  #
 ## 简介
 
-
-
 官方文档 https://redis.io/docs/
 
-
+中文官网？http://redis.cn/documentation.html
 
 ## Key关键点
 
 - 行业调研、优势、代替方案等
 - 架构
+- 快的原因？
+- 引入多线程？
+- 管道
+- 大量插入数据？优化？
+- 内存优化？使用内存和学习一些使用技巧？
 - 底层数据结构
 - 持久化机制 RDB AOF
 - 分布式锁
@@ -29,6 +32,38 @@
 
 
 
+## 写的过程
+
+**首先我们来看一下数据库在进行写操作时到底做了哪些事，主要有下面五个过程**： 
+
+- 客户端向服务端发送写操作（数据在客户端的内存中）。
+- 数据库服务端接收到写请求的数据（数据在服务端的内存中）。
+- 服务端调用write这个系统调用，将数据往磁盘上写（数据在系统内存的缓冲区中）。
+- 操作系统将缓冲区中的数据转移到磁盘控制器上（数据在磁盘缓存中）。
+- 磁盘控制器将数据写到磁盘的物理介质中（数据真正落到磁盘上）。
+
+
+
+## 快的原因
+
+https://baijiahao.baidu.com/s?id=1708807538121555902&wfr=spider&for=pc
+
+![](https://pics3.baidu.com/feed/9d82d158ccbf6c81a5b7d1c201bbb13c32fa40a2.png@f_auto?token=dc734ccb2c67c55528d712a9d8dbabf8)
+
+
+
+## 引入多线程
+
+https://www.zhihu.com/question/596651123/answer/3074526739?utm_id=0
+
+**Redis 从 6.0 版本开始引入了多线程**
+
+**Redis 的瓶颈并不在 CPU，而在内存和网络**。
+
+**Redis 的多线程部分只是用来处理网络数据的读写和协议解析，执行命令仍然是单线程顺序执行。**
+
+
+
 ## 分布式锁 
 
 https://github.com/bage2014/study/blob/master/study-redis/README-distribute-lock.md
@@ -39,6 +74,8 @@ https://github.com/bage2014/study/blob/master/study-redis/README-distribute-lock
 
 ### String
 
+https://baijiahao.baidu.com/s?id=1708807538121555902&wfr=spider&for=pc
+
 注意点
 
 - 最大存储为512M
@@ -46,6 +83,7 @@ https://github.com/bage2014/study/blob/master/study-redis/README-distribute-lock
 与String对比
 
 - SDS 数据结构 
+- 直接O(1)复杂度获取长度
 - 杜绝缓冲区溢出
 - 预分配容量
 - 惰性释放
@@ -66,6 +104,14 @@ https://github.com/bage2014/study/blob/master/study-redis/README-distribute-lock
 
 
 ### Set
+
+
+
+### 跳跃表
+
+作为 Redis 中特有的数据结构-跳跃表，其在链表的基础上增加了多级索引来提升查找效率。
+
+​	![](https://pics3.baidu.com/feed/dbb44aed2e738bd48d889ca8190e87df267ff908.png@f_auto?token=e9e8176e77a03ebca861cd9d45a50f96)
 
 
 
@@ -90,7 +136,7 @@ pub/sub
 - 定时删除
 - 惰性删除
 
-**内存淘汰策略** 
+### 淘汰策略
 
 - volatile-lru：当内存不足以容纳新写入数据时，从设置了过期时间的key中使用LRU（最近最少使用）算法进行淘汰；
 - allkeys-lru：当内存不足以容纳新写入数据时，从所有key中使用LRU（最近最少使用）算法进行淘汰。
@@ -109,37 +155,96 @@ lfu: Least Frequently Used 最不频繁使用
 
 
 
-LRU算法 https://baijiahao.baidu.com/s?id=1729434050706042976
+### LRU算法
+
+ https://baijiahao.baidu.com/s?id=1729434050706042976
 
 https://www.bilibili.com/video/BV1Va411677h/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 
 
+### LFU 算法
+
+ https://baijiahao.baidu.com/s?id=1729525047952230592
 
 
-LFU 算法 https://baijiahao.baidu.com/s?id=1729525047952230592
+
+
 
 ## 持久化策略
 
+解析 https://juejin.cn/post/6844903655527677960
+
 ### RDB
+
+#### 概念
+
+Redis Database Backup file(Redis数据备份文件)，也被叫作Redis数据快照
+
+RDB持久化是指在指定的时间间隔内将内存中的数据集快照写入磁盘。
+
+也是默认的持久化方式，这种方式是就是将内存中数据以快照的方式写入到二进制文件中,默认的文件名为dump.rdb。
 
 全量快照，内存数据以快照的形式保存到磁盘
 
+#### 配置
+
+可以通过配置设置自动做快照持久化的方式。我们可以配置redis在n秒内如果超过m个key被修改就自动做快照，下面是默认的快照保存配置
+
+```
+ save 900 1     #900秒内如果超过1个key被修改，则发起快照保存
+```
+
+#### 优劣说明
+
+**优点**
+
 - 适合大规模的数据恢复场景，如备份，全量复制等
 
+- 一旦采用该方式，那么你的整个Redis数据库将只包含一个文件，这样非常方便进行备份。比如你可能打算每1天归档一些数据。
+- 方便备份，我们可以很容易的将一个一个RDB文件移动到其他的存储介质上
+- RDB 在恢复大数据集时的速度比 AOF 的恢复速度要快。
+- RDB 可以最大化 Redis 的性能：父进程在保存 RDB 文件时唯一要做的就是 fork 出一个子进程，然后这个子进程就会处理接下来的所有保存工作，父进程无须执行任何磁盘 I/O 操作。
 
+**不足**
+
+- 如果你需要尽量避免在服务器故障时丢失数据，那么 RDB 不适合你。 虽然 Redis 允许你设置不同的保存点（save point）来控制保存 RDB 文件的频率， 但是， 因为RDB 文件需要保存整个数据集的状态， 所以它并不是一个轻松的操作。 因此你可能会至少 5 分钟才保存一次 RDB 文件。 在这种情况下， 一旦发生故障停机， 你就可能会丢失好几分钟的数据。
+- 每次保存 RDB 的时候，Redis 都要 fork() 出一个子进程，并由子进程来进行实际的持久化工作。 在数据集比较庞大时， fork() 可能会非常耗时，造成服务器在某某毫秒内停止处理客户端； 如果数据集非常巨大，并且 CPU 时间非常紧张的话，那么这种停止时间甚至可能会长达整整一秒。 虽然 AOF 重写也需要进行 fork() ，但无论 AOF 重写的执行间隔有多长，数据的耐久性都不会有任何损失。
 
 ### AOF  
+
+官方网址 https://redis.io/docs/management/persistence/
+
+**概念**
 
 append only file
 
 采用日志的形式来记录每个写操作，追加到文件中，重启时再重新执行AOF文件中的命令来恢复数据
 
+redis会将每一个收到的写命令都通过write函数追加到文件中(默认是 appendonly.aof)。
+
+当redis重启时会通过重新执行文件中保存的写命令来在内存中重建整个数据库的内容。当然由于os会在内核中缓存 write做的修改，所以可能不是立即写到磁盘上。这样aof方式的持久化也还是有可能会丢失部分修改。不过我们可以通过配置文件告诉redis我们想要 通过fsync函数强制os写入到磁盘的时机。有三种方式如下（默认是：每秒fsync一次）
+
+**配置**
+
+```
+appendonly yes              //启用aof持久化方式
+```
+
+#### 优劣说明
+
+**优点**
+
+- 数据安全，aof持久化可以配置appendfsync属性，有always，每进行一次命令操作就记录到aof文件中一次；everySec，就是每秒内进行一次文件的写操作；no就是不进行aof文件的写操作。
+- 通过append模式写文件，即使中途服务器宕机，可以通过redis-check-aof工具解决数据一致性问题。
+- AOF机制的rewrite模式，用来将过大的aof文件缩小，实现原理是将所有的set 通过一句set 命令总结，所有的SADD命令用总结为一句，这样每种命令都概括为一句来执行，就可以减少aof文件的大小了。（注意，在重写的过程中，是创建子进程来完成重写操作，主进程每个命令都会在AOF缓冲区和AOF重写缓冲区进行保存，这样旧版aof文件可以实现数据最新，当更新完后将重写缓冲区中的数据写入新的aof文件中然后就可以将新的文件替换掉旧版的文件。
+
 - 主要解决数据持久化的实时性问题
 
+**不足**
 
-
-官方网址 https://redis.io/docs/management/persistence/
+- 文件会比RDB形式的文件大。
+- 数据集大的时候，比rdb启动效率低
 
 
 
@@ -167,9 +272,13 @@ http://www.xbhp.cn/news/75679.html
 
 ### 主从复制 
 
-redis主从结构特点：一个master可以有多个salve节点；salve节点可以有slave节点，从节点是级联结构。
+#### 拓扑结构
+
+redis主从**结构**特点：一个master可以有多个salve节点；salve节点可以有slave节点，从节点是级联结构。
 
 ![](https://mmbiz.qpic.cn/mmbiz_png/JfTPiahTHJhp6HqJk2evzNMibJUBlHLrb61jpaHzW2qVz0SOa5YkfkBlcWiaTib2qd0wW0Avsrb8fRx0zyXYhcFOBA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+#### 复制过程
 
 - 当新建立一个从服务器时，从服务器将向主服务器发送SYNC命令，接收到SYNC命令后的主服务器会进行一次BGSAVE命令
 - 在执行期间，会将所有命令写入缓冲区中，当BGSAVE命令执行完毕之后会将生成的RDB文件发送给从服务器，从服务器使用这个文件加载数据到内存中，之后主服务器会以Redis命令协议的格式将缓冲区的命令发送给从服务器
