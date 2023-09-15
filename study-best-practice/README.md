@@ -230,7 +230,10 @@ Spring 集成 Redis
 
 https://spring.io/guides/gs/messaging-redis/
 
+验证高并发访问 redis
+http://localhost:8000/redis/random/set
 
+http://localhost:8000/big/number/set?count=2
 
 
 
