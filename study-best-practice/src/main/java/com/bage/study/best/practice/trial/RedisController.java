@@ -35,7 +35,7 @@ public class RedisController {
         log.info("RedisController random cost = {}", (end - start));
         metricService.record((end - start), TimeUnit.MILLISECONDS, "random", "RedisController");
 
-        return random;
+        return new RestResult(200, random);
     }
 
     @RequestMapping("/big/number/set")
@@ -48,7 +48,7 @@ public class RedisController {
         log.info("RedisController bigNumber cost = {}", (end - start));
         metricService.record((end - start), TimeUnit.MILLISECONDS, "bigNumber", "RedisController");
 
-        return random;
+        return new RestResult(200, random);
     }
 
 }

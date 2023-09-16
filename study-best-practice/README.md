@@ -237,6 +237,10 @@ http://localhost:8000/big/number/set?count=2
 
 
 
+配置监控？？采样数据？？
+
+https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-docker-6eb33a5ea998
+
 ## metrics
 
 ### 基本使用

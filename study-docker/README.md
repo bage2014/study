@@ -519,6 +519,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -844,6 +845,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -1036,8 +1038,9 @@ start a instance
 	
 	指定配置文件？
 	docker run --network bage-net --name bage-mongo -p 27017:27017 -v /home/bage/data/mongodb:/data/db -d mongo --config "/Users/bage/bage/docker-conf/mongodb/mongodb.conf" --auth
-	
-	
+
+
+​	
 
 
 ​	
@@ -1048,8 +1051,9 @@ visit
 	docker exec -it mongo mongo admin
 	
 	docker exec -it bage-mongo mongo admin
-	
-	
+
+
+​	
 
 
 
@@ -1087,8 +1091,9 @@ db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db
 	Mac: 
 	db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 	db.auth('bage', 'bage')
-	
-	
+
+
+​	
 
 
 
@@ -1590,6 +1595,24 @@ To start an Jenkins instance, run this command:
 
 
 
+
+### 安装 Redis-Stat 【Mac用不了】
+
+参考链接 
+
+https://hub.docker.com/r/insready/redis-stat
+
+Docker Pull Command
+
+```
+docker pull insready/redis-stat
+```
+
+Run 
+
+```console
+docker run --name bage-redis-stat --link bage-redis:redis -p 8080:63790 -d insready/redis-stat --server redis
+```
 
 
 
