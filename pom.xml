@@ -186,6 +186,7 @@
       <module>study-log</module>
       <module>study-spring-boot-rest-doc</module>
       <module>study-gc</module>
+      <module>study-maven-plugin</module>
 
   </modules>
 </project>

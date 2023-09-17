@@ -37,6 +37,21 @@
   </dependencies>
   <build>
     <finalName>study-maven</finalName>
-  </build>
+
+        <plugins>
+            <plugin>
+                <groupId>com.bage</groupId>
+                <artifactId>study-maven-plugin</artifactId>
+                <version>${version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>dependency-counter</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
