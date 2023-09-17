@@ -1193,6 +1193,14 @@ Try it out, default admin user is admin/admin.
 
 
 
+#### 增加插件redis 看板
+
+```
+http://localhost:3000/admin/plugins/redis-datasource?page=overview
+```
+
+
+
 ### 安装配置 gluster[待验证] ###
 
 参考链接：https://github.com/gluster/gluster-containers
