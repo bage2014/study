@@ -30,6 +30,10 @@
 
 ## **架构** 
 
+![](https://static001.geekbang.org/resource/image/79/e7/79da7093ed998a99d9abe91e610b74e7.jpg)
+
+
+
 
 
 ## 写的过程
@@ -174,6 +178,8 @@ https://www.bilibili.com/video/BV1Va411677h/?spm_id_from=333.337.search-card.all
 ## 持久化策略
 
 解析 https://juejin.cn/post/6844903655527677960
+
+Java keeper https://javakeeper.starfish.ink/data-management/Redis/Redis-Persistence.html#rdb-redis-database
 
 ### RDB
 
@@ -351,6 +357,8 @@ https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247488325&idx=1&sn=6d9bbe
 
 
 ## 参考链接
+
+java keeper https://javakeeper.starfish.ink/data-management/Redis/ReadRedis.html#redis-%E4%BC%98%E5%8A%BF
 
 经典知识点【2023-06-10】https://blog.csdn.net/guorui_java/article/details/117194603
 
