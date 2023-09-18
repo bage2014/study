@@ -1,8 +1,6 @@
 # study-JVM  #
 ## 简介
 
-
-
 主要说： HotSpot JVM
 
 
@@ -103,6 +101,10 @@ https://www.cnblogs.com/dolphin0520/p/3613043.html
 新生代 = Eden + From + To 
 
 Eden 新生区；From 和 To 相互拷贝回收，理论上某一时刻只用到一个
+
+
+
+
 
 
 
