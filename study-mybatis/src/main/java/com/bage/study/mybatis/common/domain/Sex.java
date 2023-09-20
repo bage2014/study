@@ -1,4 +1,4 @@
-package com.bage.study.mybatis.springboot.org.domain;
+package com.bage.study.mybatis.common.domain;
 
 import java.util.HashMap;
 import java.util.Map;

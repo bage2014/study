@@ -1,6 +1,6 @@
 logging:
   level:
-    root: info
+    root: debug
 spring:
   h2:
     console:

@@ -14,11 +14,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bage.study.mybatis.springboot.org.dao.UserExtMapper">
+<mapper namespace="com.bage.study.mybatis.common.dao.UserExtMapper">
 
     <select id="queryByDepartmentId2" resultType="hashmap">
         select
-       <include refid="com.bage.study.mybatis.springboot.org.dao.UserMapper.userColumns"></include>
+       <include refid="com.bage.study.mybatis.common.dao.UserMapper.userColumns"></include>
         from org_user where department_id = #{departmentId}
     </select>
 

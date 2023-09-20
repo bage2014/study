@@ -1,4 +1,4 @@
-package com.bage.study.mybatis.springboot.org.domain;
+package com.bage.study.mybatis.common.domain;
 
 import lombok.Data;
 

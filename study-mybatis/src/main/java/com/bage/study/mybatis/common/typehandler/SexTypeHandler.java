@@ -1,6 +1,6 @@
-package com.bage.study.mybatis.springboot.typehandler;
+package com.bage.study.mybatis.common.typehandler;
 
-import com.bage.study.mybatis.springboot.org.domain.Sex;
+import com.bage.study.mybatis.common.domain.Sex;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;

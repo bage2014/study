@@ -20,28 +20,52 @@
 	mappers（映射器）
 	-->
 
+	<!--设置-->
+	<settings>
+		<!-- SESSION：开启一级缓存功能；STATEMENT：缓存只对当前执行的这一个 SQL 语句有效，也就是没有用到一级缓存功能。 -->
+		<setting name="localCacheScope" value="SESSION"/>
+
+		<!--开启二级缓存-->
+		<setting name="cacheEnabled" value="true"/>
+
+	</settings>
+
+
+
 	<!--别名-->
 	<typeAliases>
-		<package name="com.bage.study.mybatis.springboot.org.domain"/>
+		<package name="com.bage.study.mybatis.common.domain"/>
 	</typeAliases>
 
 	<!--类型处理-->
 	<typeHandlers>
-		<typeHandler handler="com.bage.study.mybatis.springboot.typehandler.SexTypeHandler"></typeHandler>
+		<typeHandler handler="com.bage.study.mybatis.common.typehandler.SexTypeHandler"></typeHandler>
 	</typeHandlers>
 
 	<!-- mybatis-config.xml -->
 	<plugins>
-		<plugin interceptor="com.bage.study.mybatis.springboot.interceptor.SqlTimeCostPlugin">
+		<plugin interceptor="com.bage.study.mybatis.common.interceptor.SqlTimeCostPlugin">
 			<property name="someProperty" value="100"/>
 		</plugin>
 	</plugins>
 
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+
 	<mappers>
-		<mapper resource="com/bage/study/mybatis/springboot/org/UserMapper.xml"/>
-		<mapper resource="com/bage/study/mybatis/springboot/org/UserExtMapper.xml"/>
-		<mapper resource="com/bage/study/mybatis/springboot/org/DepartmentMapper.xml"/>
-		<mapper resource="com/bage/study/mybatis/springboot/org/DepartmentAddressMapper.xml"/>
+		<mapper resource="com/bage/study/mybatis/UserMapper.xml"/>
+		<mapper resource="com/bage/study/mybatis/UserExtMapper.xml"/>
+		<mapper resource="com/bage/study/mybatis/DepartmentMapper.xml"/>
+		<mapper resource="com/bage/study/mybatis/DepartmentAddressMapper.xml"/>
 	</mappers>
 
 </configuration>
