@@ -1,6 +1,6 @@
-package com.bage.study.mybatis.springboot.org.dao;
+package com.bage.study.mybatis.common.dao;
 
-import com.bage.study.mybatis.springboot.org.domain.DepartmentAddress;
+import com.bage.study.mybatis.common.domain.DepartmentAddress;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.bage.study.mybatis.springboot.utils;
+package com.bage.study.mybatis.common.utils;
 
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;

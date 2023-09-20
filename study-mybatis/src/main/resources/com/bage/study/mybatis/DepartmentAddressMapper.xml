@@ -14,19 +14,23 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bage.study.mybatis.springboot.org.dao.DepartmentMapper">
+<mapper namespace="com.bage.study.mybatis.common.dao.DepartmentAddressMapper">
+
+    <sql id="baseColumns"> id,name,department_id as departmentId </sql>
+
     <!-- 一对多结果映射 -->
-    <resultMap id="DepartmentResultMap" type="Department" >
-        <result property="id" column="id"/>
-        <result property="name" column="name"/>
-
-        <association property="departmentAddress" column="id" select="com.bage.study.mybatis.springboot.org.dao.DepartmentAddressMapper.queryByDepartmentId"/>
-
-        <collection fetchType="lazy" property="users" column="id" select="com.bage.study.mybatis.springboot.org.dao.UserMapper.queryByDepartmentId"/>
-
-    </resultMap>
-
-    <select id="queryAll" resultMap="DepartmentResultMap" resultType="Department">
-        select * from org_department
+    <select id="queryAll" resultType="DepartmentAddress">
+        select
+         <include refid="baseColumns"></include>
+         from org_department_address
     </select>
+
+
+
+    <select id="queryByDepartmentId" resultType="DepartmentAddress">
+        select
+        <include refid="baseColumns"></include>
+        from org_department_address where department_id = #{departmentId}
+    </select>
+
 </mapper>

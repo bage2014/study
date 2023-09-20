@@ -1,6 +1,6 @@
-package com.bage.study.mybatis.springboot;
+package com.bage.study.mybatis;
 
-import com.bage.study.mybatis.springboot.org.dao.UserMapper;
+import com.bage.study.mybatis.common.dao.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,12 +9,12 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
 @EnableAutoConfiguration
-@ComponentScan(basePackageClasses=Application.class)
+@ComponentScan(basePackageClasses= SpringMybatisApplication.class)
 @EnableCaching
-public class Application implements CommandLineRunner {
+public class SpringMybatisApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(SpringMybatisApplication.class, args);
     }
 
 

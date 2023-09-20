@@ -1,4 +1,4 @@
-package com.bage.study.mybatis.springboot.interceptor;
+package com.bage.study.mybatis.common.interceptor;
 
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;

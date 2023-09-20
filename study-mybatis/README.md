@@ -14,9 +14,9 @@ TODO 有待继续了解 typeHandlers、处理枚举类型...
  - `springboot` Spring Boot的使用示例
 
 ## 请求用例 ##
-- Mapper注解：[http://localhost:8080/study-mybatis/user/all](http://localhost:8080/study-mybatis/user/all "Mapper注解查询数据")
-- XML配置：[http://localhost:8080/study-mybatis/user/1](http://localhost:8080/study-mybatis/user/1 "XML配置查询数据")
-- H2控制台（jdbc:h2:~/myDb@sa@root）：[http://localhost:8080/study-mybatis/h2-console/](http://localhost:8080/study-mybatis/h2-console/ "H2控制台")
+- Mapper注解：[http://localhost:8080/](http://localhost:8080/user/all "Mapper注解查询数据")
+- XML配置：[http://localhost:8080/user/1](http://localhost:8080/user/1 "XML配置查询数据")
+- H2控制台（jdbc:h2:~/myDb@sa@root）：[http://localhost:8080/h2-console/](http://localhost:8080/h2-console/ "H2控制台")
 ## XML 配置[顺序相对有序] ##
 详见 ： \src\main\resources\mybatis-config.xml
 
@@ -51,6 +51,7 @@ TODO 有待继续了解 typeHandlers、处理枚举类型...
 ## 缓存 ##
 ### 参考链接 ###
 MyBatis 一、二级缓存和自定义缓存 [https://www.cnblogs.com/moongeek/p/7689683.html](https://www.cnblogs.com/moongeek/p/7689683.html)
+http://localhost:8080/user/all
 
 ### 一级缓存 ###
 MyBatis **默认开启**了一级缓存，一级缓存是在SqlSession 层面进行缓存的。即，同一个SqlSession ，多次调用同一个Mapper和同一个方法的同一个参数，只会进行一次数据库查询，然后把数据缓存到缓冲中，以后直接先从缓存中取出数据，不会直接去查数据库。
@@ -101,7 +102,7 @@ useGeneratedKeys="true"
 ```
 
 具体实践：
-    com\bage\study\mybatis\springboot\org\UserMapper.xml
+    com\bage\study\mybatis\UserMapper.xml
 
         简单插入 insert
     	批量插入 batchInsert
@@ -139,9 +140,9 @@ useGeneratedKeys="true"
         <result property="id" column="id"/>
         <result property="name" column="name"/>
     
-        <association property="departmentAddress" column="id" select="com.bage.study.mybatis.springboot.org.dao.DepartmentAddressMapper.queryByDepartmentId"/>
+        <association property="departmentAddress" column="id" select="com.bage.study.mybatis.common.dao.DepartmentAddressMapper.queryByDepartmentId"/>
     
-        <collection property="users" column="id" select="com.bage.study.mybatis.springboot.org.dao.UserMapper.queryByDepartmentId"/>
+        <collection property="users" column="id" select="com.bage.study.mybatis.common.dao.UserMapper.queryByDepartmentId"/>
     
     </resultMap>
 

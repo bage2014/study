@@ -1,10 +1,10 @@
-package com.bage.study.mybatis.springboot.org.dao;
+package com.bage.study.mybatis.common.dao;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.bage.study.mybatis.springboot.org.domain.User;
+import com.bage.study.mybatis.common.domain.User;
 
 @Mapper
 public interface UserMapper {

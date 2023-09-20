@@ -1,13 +1,12 @@
-package com.bage.study.mybatis.springboot.org.controller;
+package com.bage.study.mybatis.springboot.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import com.bage.study.mybatis.springboot.org.dao.UserExtMapper;
-import com.bage.study.mybatis.springboot.org.dao.UserMapper;
-import com.bage.study.mybatis.springboot.org.domain.Sex;
-import com.bage.study.mybatis.springboot.org.domain.User;
+import com.bage.study.mybatis.common.dao.UserExtMapper;
+import com.bage.study.mybatis.common.dao.UserMapper;
+import com.bage.study.mybatis.common.domain.Sex;
+import com.bage.study.mybatis.common.domain.User;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;

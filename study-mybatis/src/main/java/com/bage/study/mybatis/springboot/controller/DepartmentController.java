@@ -1,7 +1,7 @@
-package com.bage.study.mybatis.springboot.org.controller;
+package com.bage.study.mybatis.springboot.controller;
 
-import com.bage.study.mybatis.springboot.org.dao.DepartmentMapper;
-import com.bage.study.mybatis.springboot.org.domain.Department;
+import com.bage.study.mybatis.common.dao.DepartmentMapper;
+import com.bage.study.mybatis.common.domain.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
