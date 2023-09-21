@@ -53,10 +53,10 @@
 		<environment id="development">
 			<transactionManager type="JDBC"/>
 			<dataSource type="POOLED">
-				<property name="driver" value="${driver}"/>
-				<property name="url" value="${url}"/>
-				<property name="username" value="${username}"/>
-				<property name="password" value="${password}"/>
+				<property name="driver" value="org.h2.Driver"/>
+				<property name="url" value="jdbc:h2:~/myDb"/>
+				<property name="username" value="sa"/>
+				<property name="password" value="root"/>
 			</dataSource>
 		</environment>
 	</environments>
