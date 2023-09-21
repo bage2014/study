@@ -51,6 +51,12 @@
         from org_user where ID = #{id}
     </select>
 
+    <select id="queryOne" resultType="User">
+        select
+        <include refid="userColumns"></include>
+        from org_user where ID = #{id}
+    </select>
+
     <select id="queryByDepartmentId" resultType="hashmap">
         select
         <include refid="userColumns"></include>

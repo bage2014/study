@@ -104,7 +104,7 @@ useGeneratedKeys="true"
 具体实践：
     com\bage\study\mybatis\UserMapper.xml
 
-        简单插入 insert
+      简单插入 insert
     	批量插入 batchInsert
 
 ### delete ###

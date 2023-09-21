@@ -40,7 +40,7 @@ java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-pract
 
 
 
-**内存相关**
+### **内存相关**
 
 ```
 new 然后释放
@@ -57,7 +57,9 @@ http://localhost:8017/jvm/add?step=10
 
 
 
-**CPU相关**
+### **CPU相关**
+
+#### 环境准备
 
 ```
 heavy 线程
@@ -71,6 +73,39 @@ http://localhost:8017/cpu/high/light/start
 
 http://localhost:8017/cpu/high/light/stop
 
+
+```
+
+
+
+#### 生成火焰图
+
+```
+启动arthas 
+
+java -jar arthas-boot.jar
+```
+
+
+
+生成
+
+```
+$ profiler start
+
+Profiling started
+
+[arthas@7778]$ profiler stop
+
+OK
+
+profiler output file: /Users/bage/bage/github/study/arthas-output/20230920-093041.html
+
+
+访问：
+http://localhost:3658/arthas-output/
+或者 
+/Users/bage/bage/github/study/arthas-output/20230920-093041.html
 
 ```
 
