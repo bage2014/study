@@ -27,8 +27,6 @@
 
 官方网址 https://sentinelguard.io/zh-cn/
 
-
-
 【2023-06-20】https://wenku.csdn.net/answer/93da450f1ca84a2bad308c17202cfad7
 
 
@@ -187,9 +185,9 @@ https://blog.csdn.net/weixin_45481821/article/details/128932230
 
 #### 熔断策略
 
-DEGRADE_GRADE_RT(响应时间)
-DEGRADE_GRADE_EXCEPTION_RATIO(异常比例)
-DEGRADE_GRADE_EXCEPTION_COUNT(异常数)
+**DEGRADE_GRADE_RT(响应时间)**
+**DEGRADE_GRADE_EXCEPTION_RATIO(异常比例)**
+**DEGRADE_GRADE_EXCEPTION_COUNT(异常数)**
 
 Sentinel 提供以下几种熔断策略：
 
@@ -246,7 +244,7 @@ RuleConstant.FLOW_GRADE_QPS
 
 固定窗口
 
-华滑动窗口
+滑动窗口
 
 令牌桶等
 
@@ -259,6 +257,12 @@ https://zhuanlan.zhihu.com/p/479956069
 https://sentinelguard.io/zh-cn/docs/cluster-flow-control.html
 
 https://sentinelguard.io/zh-cn/docs/cluster-flow-control.html
+
+
+
+https://www.codetd.com/article/14268671
+
+
 
 集群环境下限流 
 
@@ -304,7 +308,7 @@ http://www.lygchunhua.com/html/show-517048.html
 
 SphU
 
-## 
+
 
 ## Bilibili
 
