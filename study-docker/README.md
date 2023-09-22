@@ -368,6 +368,8 @@ connect to it from an application
 ```
 $ redis-cli
 
+
+$ auth XXXX
 ```
 
 https://redis.io/docs/ui/cli/
