@@ -522,6 +522,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -820,6 +821,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -1623,6 +1625,47 @@ Run
 ```console
 docker run --name bage-redis-stat --link bage-redis:redis -p 8080:63790 -d insready/redis-stat --server redis
 ```
+
+
+
+### 安装 mysqld_exporter
+
+参考链接 
+
+https://registry.hub.docker.com/r/prom/mysqld-exporter/
+
+https://github.com/prometheus/mysqld_exporter
+
+Docker Pull Command
+
+```
+docker pull prom/mysqld-exporter
+
+```
+
+Run 
+
+```console
+
+docker run --name bage-mysqld-exporter -d -p 9104:9104 --network bage-net \
+        -e DATA_SOURCE_NAME="bage:bage@(bage-mysql:3306)/mydbpro" prom/mysqld-exporter
+        
+
+docker run --name bage-mysqld-exporter -d -p 9104:9104 \
+        -e DATA_SOURCE_NAME="bage:bage@(bage-mysql:3306)/mydbpro" prom/mysqld-exporter
+              
+```
+
+访问
+
+```
+http://localhost:9104/metrics
+
+```
+
+
+
+- **推荐图标ID：https://grafana.com/dashboards/7362**
 
 
 
