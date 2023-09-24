@@ -109,3 +109,24 @@ http://localhost:3658/arthas-output/
 
 ```
 
+
+
+### **OOM相关**
+
+#### 环境准备
+
+```
+heavy 线程
+http://localhost:8017/cpu/high/heavy/start
+
+http://localhost:8017/cpu/high/heavy/stop
+
+
+light 线程
+http://localhost:8017/cpu/high/light/start
+
+http://localhost:8017/cpu/high/light/stop
+
+
+```
+

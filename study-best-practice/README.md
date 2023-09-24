@@ -87,6 +87,17 @@ SET GLOBAL max_connections=500;
 
 ```
 
+监控工具
+https://registry.hub.docker.com/r/prom/mysqld-exporter/
+
+https://github.com/prometheus/mysqld_exporter
+
+- **推荐图标ID：https://grafana.com/dashboards/7362**
+
+
+
+
+
 ## WRK
 wrk 压测
 https://formulae.brew.sh/formula/wrk
@@ -396,6 +407,39 @@ Heap dump file created [120639811 bytes in 0.287 secs]
 
 A里爸爸工具使用 
 热点图 线上服务的 CPU 火焰图。
+
+https://github.com/brendangregg/FlameGraph
+
+
+
+- [profiler](https://alibaba.github.io/arthas/profiler.html)–使用[async-profiler](https://github.com/jvm-profiling-tools/async-profiler)对应用采样，生成火焰图
+
+
+
+生成火焰图
+
+```
+[arthas@21777]$ profiler start
+Profiling started
+```
+
+
+
+
+
+停止
+
+```
+[arthas@21777]$ profiler stop --format html
+OK
+profiler output file: /Users/bage/bage/github/study/arthas-output/20230912-190608.html
+
+
+[arthas@21777]$ profiler stop
+OK
+profiler output file: /Users/bage/bage/github/study/arthas-output/20230912-190615.html
+
+```
 
 
 
