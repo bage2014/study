@@ -87,10 +87,19 @@ SET GLOBAL max_connections=500;
 
 ```
 
-监控工具
+## MySQL监控
+
+Docker 容器监控工具
+
 https://registry.hub.docker.com/r/prom/mysqld-exporter/
 
 https://github.com/prometheus/mysqld_exporter
+
+
+
+配置对应的图表ID 
+
+7362
 
 - **推荐图标ID：https://grafana.com/dashboards/7362**
 
