@@ -17,8 +17,8 @@ public class FileLeakController {
     @RequestMapping("/leaking")
     public Object leaking(@RequestParam(value = "fileName") String fileName,
                           @RequestParam(value = "close", required = false, defaultValue = "true") Boolean close) {
-        service.leak(fileName, close);
-        return ";;" + close;
+        String result = service.leak(fileName, close);
+        return ";;" + close + ";;;" + result;
     }
 
 

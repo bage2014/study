@@ -111,22 +111,19 @@ http://localhost:3658/arthas-output/
 
 
 
-### **OOM相关**
+### **文件不关闭**
 
 #### 环境准备
 
 ```
-heavy 线程
-http://localhost:8017/cpu/high/heavy/start
-
-http://localhost:8017/cpu/high/heavy/stop
+文件打开不关闭？
+http://localhost:8017/file/leaking?fileName=temp.html&close=true
 
 
-light 线程
-http://localhost:8017/cpu/high/light/start
-
-http://localhost:8017/cpu/high/light/stop
-
+http://localhost:8017/file/leaking?fileName=/Users/bage/bage/github/study/study-gc/README.md&close=false
 
 ```
 
+
+
+hhh
