@@ -43,6 +43,40 @@ source 一下，使配置生效
 
     source .bash_profile
 
+## mac 环境
+
+mac book pro 
+
+```
+https://download.oracle.com/java/21/latest/jdk-21_macos-x64_bin.tar.gz
+```
+
+
+
+https://www.cnblogs.com/dzqdzq/p/15039970.html
+
+```
+
+1.  通过dmg安装Java，可能的路径是
+
+　　目录1：/Users/dzq/Library/Java/JavaVirtualMachines/
+
+　　目录2：/Library/Java/JavaVirtualMachines/
+
+2. 通过brew 方式安装openjdk
+
+　实际目录：/usr/local/Cellar/openjdk..
+
+　软链接目录： /usr/local/opt/openjdk..
+
+再说一下Mac默认的Java程序：
+
+目录1： /usr/bin/java
+
+目录2：/usr/libexec/java_home
+
+```
+
 
 
 ### 创建用户
