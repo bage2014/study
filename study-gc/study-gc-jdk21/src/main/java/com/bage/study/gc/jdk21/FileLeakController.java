@@ -1,0 +1,24 @@
+package com.bage.study.gc.jdk21;
+
+import com.bage.study.gc.biz.leak.file.LeakingFileService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RequestMapping("/file")
+@RestController
+@Slf4j
+public class FileLeakController {
+
+    LeakingFileService service = new LeakingFileService();
+
+    @RequestMapping("/leaking")
+    public Object leaking(@RequestParam(value = "fileName") String fileName,
+                          @RequestParam(value = "close", required = false, defaultValue = "true") Boolean close) {
+        String result = service.leak(fileName, close);
+        return ";;" + close + ";;;" + result;
+    }
+
+
+}
