@@ -19,33 +19,133 @@ ES
 - 选举过程
 - master选举
 - 并发情况下保证读写一致
-
-1. Elasticsearch 索引数据多了怎么办呢，如何调优，部署
-2. Elasticsearch 对于大数据量（上亿量级）的聚合如何实现？
-
-
-
-## 基本使用
-
-#### 安装
+- Elasticsearch 索引数据多了怎么办呢，如何调优，部署
+- Elasticsearch 对于大数据量（上亿量级）的聚合如何实现？
 
 
 
+## 安装
+
+参考 https://github.com/bage2014/study/tree/master/study-docker
 
 
-#### 分词
+
+## 使用场景 
+
+### 网站搜索 
+
+设计了丰富的api来提供搜索服务，github、stackoverflow等网站的搜索都是基于elasticsearch。 
+
+### 日志 
+
+将分散的日志，集中化存储到elasticsearch上。 
+
+日志管理一般分为：日志收集，格式化，检索，风险告警。 
+
+### 数据库同步 
+
+通过某种同步机制将数据库某个表的数据同步到elasticsearch上，然后提供搜索服务。 
+
+### 指标分析
+
+提供了分组查询、top查询、排序、相关度打分，可以进行数据分析
 
 
 
-## 角色节点
+## 常用API 
+
+### 基本API
+
+**健康检测**
+
+节点状态
+
+http://localhost:9092/
+
+集群状态
+
+http://localhost:9092/_cat/nodes
+
+
+
+### CRUD
+
+增删改查操作
+
+https://www.elastic.co/guide/en/elasticsearch/reference/8.10/docs.html
+
+
+
+## 基本原理
+
+整体架构
+
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4016a5cd5b8c4b07aa3eb6b478a4588f~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+
+如上图所示，elasticsearch整体的功能划分：
+
+1. restful api，表示提供rest风格的api来实现编程何管理
+2. Transport, 网络传输模块，支持http，thrift等主流协议，默认tcp
+3. Scripting，脚本语言，支持使用groovy、painless等脚本语言
+4. 3rd plugin，支持第三方插件
+5. Index module 索引文档、search module，搜索文档
+6. River，支持接入其它数据源
+7. Jmx，监控
+8. Discovery，服务发现模块
+9. Lucene directory，底层存储基于lucene实现
+10. Gateway，可以持久化到本地或者其它文件系统
+
+
+
+## 名词解释
+
+elasticsearch核心概念 vs. 数据库核心概念
+
+| Elasticsearch | 数据库 |
+| :------------ | :----- |
+| Document      | 行     |
+| Type          | 表     |
+| Index         | 库     |
+
+文档 
+
+可搜索的最小单位，我们向elasticsearch存储的一条数据，就是一个文档。每个文档都有一个id，可以自己指定，也可以让elasticsearch生成。 
+
+索引 
+
+索引是文档的容器，一类文档的集合。可以对文档元数据进行定义，比如名称、类型等。在物理上，索引的数据分布在分片上。
+
+Type 
+
+在7.0以前，一个索引可以定义多个type，7.0版本后，type废除了，只有一个type为“_doc”。
+
+
+
+## 角色节点划分
+
+节点概念和划分 https://blog.csdn.net/wlei0618/article/details/127371710
+
+更细维度划分 https://blog.csdn.net/weixin_36340771/article/details/121766890
+
+### master
 
 master node： 索引的创建与删除
 
+应避免重任务
+
+### data
+
 data node：存储索引数据、对文档数据增删查改 
+
+### cordinate
 
 cordinate node：协调节点，接收用户请求、转发请求、汇总结果
 
+### ingest
+
 ingest node：拦截请求，对文档进行转换和预处理
+
+### 等等
 
 
 
@@ -61,23 +161,19 @@ https://juejin.cn/post/6971054573976813582
 
 #### 基本概念
 
+Elasticsearch的倒排索引就是文档的单词和文档的id关联
+
 倒排索引（英文：Inverted Index），是一种索引方法，常被用于全文检索系统中的一种单词文档映射结构
 
 关键词——文档 === 形式的一种映射结构
 
 逆向思维运算，是现代信息检索领域里面最有效的一种索引
 
-#### 查询过程 
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5a99164a07074dac9cc38f04a6c8d642~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
 
-一般地，当接受到用户查询请求时，进入到倒排索引进行检索时，在返回结果的过程中，主要有以下几个步骤：
 
-Step1：在分词系统对用户请求等原始Query进行分析，产生对应的terms；
 
-Step2：terms在倒排索引中的词项列表中查找对应的terms的结果列表；
 
-Step3：对结果列表数据进行微运算，如：计算文档静态分，文档相关性等；
-
-Step4：基于上述运算得分对文档进行综合排序，最后返回结果给用户；
 
 #### 数据结构 
 
@@ -111,11 +207,59 @@ https://zhuanlan.zhihu.com/p/612483065
 
 （4）当所有节点写完数据后，cordinate node 返回相应给客户端
 
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/288a2007b0804cdb848d5a51e30d83be~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+
+
+
+如图所示，当一个索引请求到了node3节点上，产生的流程为：
+
+1. 客户端向 Node 3 发送新建、删除请求。
+2. node3发现该文档属于p1分片，转发请求到node1 
+3. Node1完成p1分片的索引，转发node2、node3请求副本分片 
+4. 所有的副本分片完成后node3返回结果。
+
+
+
+## 查询过程 
+
+一般地，当接受到用户查询请求时，进入到倒排索引进行检索时，在返回结果的过程中，主要有以下几个步骤：
+
+Step1：在分词系统对用户请求等原始Query进行分析，产生对应的terms；
+
+Step2：terms在倒排索引中的词项列表中查找对应的terms的结果列表；
+
+Step3：对结果列表数据进行微运算，如：计算文档静态分，文档相关性等；
+
+Step4：基于上述运算得分对文档进行综合排序，最后返回结果给用户；
+
+![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b3578ff2b7e24f51beec62cf70fea620~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+
+如图所示，当一个查询请求，请求到node1上，它的查询流程如下：
+
+1. node1为协调节点，它随机从这6个主副分片选择3个分片发送查询请求。
+2. 每个分片查询返回from size排序好了的id和排序值给协调节点。
+3. 协调节点进入query阶段，将每个分片获取的id和排序值汇总重新排序，选取from size个id。
+4. 并发携带id向对应的分片获取详细信息，然后返回数据给客户端。
+
+
+
+
+
 
 
 ## 参考链接
 知识点汇总 
 https://juejin.cn/column/7026888535719886885
+
+官方网址 https://www.elastic.co/guide/en/elasticsearch/reference/8.10/docs.html
+
+ES 解析 https://juejin.cn/post/7026902638176239653
+
+ES 知识点 汇总 https://www.kancloud.cn/imnotdown1019/java_core_full/2157765
+
+
+
+
 
 【2023-06-19】https://ac.nowcoder.com/discuss/1029975?type=0&order=0&page=1&channel=-1
 
