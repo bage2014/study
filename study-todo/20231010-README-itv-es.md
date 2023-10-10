@@ -1,4 +1,4 @@
-# Study-itv-es #
+# study-itv-es #
 
 ES
 
@@ -16,8 +16,7 @@ ES
 - 查询过程
 - FST 数据结构 
 - ES 集群节点扩容
-- 选举过程
-- master选举
+- master选举过程
 - 并发情况下保证读写一致
 - Elasticsearch 索引数据多了怎么办呢，如何调优，部署
 - Elasticsearch 对于大数据量（上亿量级）的聚合如何实现？
@@ -118,6 +117,16 @@ elasticsearch核心概念 vs. 数据库核心概念
 Type 
 
 在7.0以前，一个索引可以定义多个type，7.0版本后，type废除了，只有一个type为“_doc”。
+
+## master选举过程
+
+
+
+## FST 数据结构 
+
+https://article.juejin.cn/post/7244335987576602680
+
+http://examples.mikemccandless.com/fst.py?terms=mop%2F0%0D%0Acat%2F1%0D%0Adog%2F2%0D%0Amemory%2F3%0D%0Amax%2F4&cmd=Build+it%21
 
 
 
@@ -243,7 +252,53 @@ Step4：基于上述运算得分对文档进行综合排序，最后返回结果
 
 
 
+## 分词器
 
+es支持不同的分析器，在中文分词器中使用较多的是ik分词
+
+https://github.com/medcl/elasticsearch-analysis-ik
+
+官网
+
+https://www.elastic.co/guide/en/elasticsearch/reference/8.10/analysis-analyzers.html
+
+**Standard Analyzer**
+
+The `standard` analyzer divides text into terms on word boundaries, as defined by the Unicode Text Segmentation algorithm. It removes most punctuation, lowercases terms, and supports removing stop words.
+
+**Simple Analyzer**
+
+The `simple` analyzer divides text into terms whenever it encounters a character which is not a letter. It lowercases all terms.
+
+**Whitespace Analyzer**
+
+The `whitespace` analyzer divides text into terms whenever it encounters any whitespace character. It does not lowercase terms.
+
+**Stop Analyzer**
+
+The `stop` analyzer is like the `simple` analyzer, but also supports removal of stop words.
+
+**Keyword Analyzer**
+
+The `keyword` analyzer is a “noop” analyzer that accepts whatever text it is given and outputs the exact same text as a single term.
+
+**Pattern Analyzer**
+
+The `pattern` analyzer uses a regular expression to split the text into terms. It supports lower-casing and stop words.
+
+**Language Analyzers**
+
+Elasticsearch provides many language-specific analyzers like `english` or `french`.
+
+**Fingerprint Analyzer**
+
+The `fingerprint` analyzer is a specialist analyzer which creates a fingerprint which can be used for duplicate detection.
+
+
+
+基本使用 
+
+https://www.elastic.co/guide/en/elasticsearch/reference/8.10/test-analyzer.html
 
 
 
@@ -257,11 +312,11 @@ ES 解析 https://juejin.cn/post/7026902638176239653
 
 ES 知识点 汇总 https://www.kancloud.cn/imnotdown1019/java_core_full/2157765
 
+入门 https://cloud.tencent.com/developer/article/1547867
 
 
 
-
-【2023-06-19】https://ac.nowcoder.com/discuss/1029975?type=0&order=0&page=1&channel=-1
+【2023-10-10】https://ac.nowcoder.com/discuss/1029975?type=0&order=0&page=1&channel=-1
 
 【2023-06-19】https://blog.csdn.net/yanpenglei/article/details/121859896
 
