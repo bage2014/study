@@ -59,11 +59,27 @@ ES
 
 节点状态
 
+```undefined
 http://localhost:9092/
+```
 
 集群状态
 
+```undefined
+http://localhost:9092/_cat/health?v
+
 http://localhost:9092/_cat/nodes
+```
+
+查看索引
+
+```undefined
+http://localhost:9092/_cat/indices?v
+```
+
+
+
+
 
 
 

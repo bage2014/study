@@ -22,11 +22,11 @@ public class EsJavaClientTest {
         RestClient restClient = RestClient.builder(
                 new HttpHost("localhost", 9092)).build();
 
-// Create the transport with a Jackson mapper
+        // Create the transport with a Jackson mapper
         ElasticsearchTransport transport = new RestClientTransport(
                 restClient, new JacksonJsonpMapper());
 
-// And create the API client
+        // And create the API client
         ElasticsearchClient client = new ElasticsearchClient(transport);
 
         // prepare
@@ -35,17 +35,15 @@ public class EsJavaClientTest {
         long id = System.currentTimeMillis();
         System.out.println("id: " + id);
 
-
         insert(client, id);
-
         query(client, id);
 
         // update
         update(client, id);
         query(client, id);
 
-        delete(client, id);
-        query(client, id);
+//        delete(client, id);
+//        query(client, id);
 
     }
 
