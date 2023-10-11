@@ -61,9 +61,15 @@ Bit最小的二进制单位 ，是计算机的操作部分取值0或者1。
 
 ## HashMap
 
-https://blog.csdn.net/v123411739/article/details/78996181
+hashmap 解析 https://blog.csdn.net/v123411739/article/details/78996181
 
-![pastedGraphic.png](/var/folders/cq/j95gptn923n2rg0f3gr8p0r80000gn/T/abnerworks.Typora/C1F5D4F3-B609-4779-BC3B-181C64F51E57/pastedGraphic.png)
+结构 
+
+![pastedGraphic.png](https://img-blog.csdn.net/20180121151050372?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdjEyMzQxMTczOQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+
+
+
+
 
 ## 多线程
 
@@ -86,7 +92,7 @@ https://blog.csdn.net/v123411739/article/details/78996181
 
 https://www.cnblogs.com/GooPolaris/p/8079490.html
 
-![pastedGraphic_1.png](/var/folders/cq/j95gptn923n2rg0f3gr8p0r80000gn/T/abnerworks.Typora/C1F5D4F3-B609-4779-BC3B-181C64F51E57/pastedGraphic_1.png)
+![pastedGraphic_1.png](https://images2017.cnblogs.com/blog/1182445/201712/1182445-20171221131458037-818212883.png)
 
 
 
@@ -157,15 +163,13 @@ https://www.jianshu.com/p/ae67972d1156
 
 **上面的线程池，实际使用的线程数的最大值始终是** **corePoolSize** **，即便设置了** **maximumPoolSize** **也没有生效。** **要用上** **maximumPoolSize** **，允许在核心线程满负荷下，继续创建新线程来工作** **，就需要选用有界任务队列。可以给** **LinkedBlockingQueue** **设置容量，比如** **new LinkedBlockingQueue(128)** **，也可以换成** **SynchronousQueue****
 
-- 
-
 
 
 ![pastedGraphic_2.png](/var/folders/cq/j95gptn923n2rg0f3gr8p0r80000gn/T/abnerworks.Typora/C1F5D4F3-B609-4779-BC3B-181C64F51E57/pastedGraphic_2.png)
 
 1. 1. 1. **常用****4****种实现**
 
-**可缓存线程池****CachedThreadPool**
+**可缓存线程池CachedThreadPool**
 
 1. 这种线程池内部没有核心线程，线程的数量是有没限制的。
 2. 在创建任务时，若有空闲的线程时则复用空闲的线程，若没有则新建线程。
@@ -184,11 +188,16 @@ https://www.jianshu.com/p/ae67972d1156
 **ScheduledThreadPool**
 
 1. 不仅设置了核心线程数，最大线程数也是Integer.MAX_VALUE。
+
 2. 这个线程池是上述4个中为唯一个有延迟执行和周期执行任务的线程池。
 
-1. **Web**
+   
 
-2. 1. **Cookie****和****Session**
+   
+
+   ## Web
+
+3. 1. **Cookie****和****Session**
 
    2. 1. **区别**
 
