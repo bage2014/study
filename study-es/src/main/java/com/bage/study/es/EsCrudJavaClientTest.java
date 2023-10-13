@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-public class EsJavaClientTest {
+public class EsCrudJavaClientTest {
     public static void main(String[] args) throws IOException {
 
         // Create the low-level client
