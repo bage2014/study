@@ -19,8 +19,8 @@ public class EsCrudJavaClientTest {
     public static void main(String[] args) throws IOException {
 
         // Create the low-level client
-        RestClient restClient = RestClient.builder(
-                new HttpHost("localhost", 9092)).build();
+        HttpHost localhost = new HttpHost("localhost", 9092);
+        RestClient restClient = RestClient.builder(localhost).build();
 
         // Create the transport with a Jackson mapper
         ElasticsearchTransport transport = new RestClientTransport(
