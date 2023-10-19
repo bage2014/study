@@ -210,7 +210,24 @@ chmod 755 ./bin/*.sh
 
 
 
+## Jdbc 链接 
+
+```
+http://localhost:8000/connection/get?close=false
+```
+
+
+
+```
+http://localhost:8000/connection/get?close=true
+```
+
+
+
+
+
 ## Spring
+
 https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties
 
 ## Jmeter
