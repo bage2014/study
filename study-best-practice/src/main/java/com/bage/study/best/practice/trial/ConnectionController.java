@@ -35,7 +35,9 @@ public class ConnectionController {
         Connection connection = null;
         int result = 0;
         try {
-            System.out.println("close:" + close);
+            System.out.println("close0:" + close);
+            close = close == null ? true:close;
+            System.out.println("close1:" + close);
             connection = ConnectionUtils.getConnection();
             System.out.println("connection:" + connection);
             result = 1;
