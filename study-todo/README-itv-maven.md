@@ -26,11 +26,58 @@ https://my.oschina.net/u/4090830/blog/10089392
 
 
 
+## 生命周期
+
+常用
+
+```
+mvn compile
+
+mvn clean
+
+mvn test
+
+mvn package
+
+mvn install
+
+mvn deploy
+
+```
+
+
+
+## 依赖范围
+
+依赖
+
+```
+compile 
+
+provided
+
+runtime 
+```
+
+
+
+##  
+
+## 优缺点
+
+https://blog.csdn.net/yang_guang3/article/details/129006607
+
+
+
 
 
 ## B站视频
 
 
 
+## 参考链接
 
+集锦 
+
+https://blog.csdn.net/yang_guang3/article/details/129006607
 
