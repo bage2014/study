@@ -1,15 +1,15 @@
 package com.bage;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
-public class HelloTest {
+import static org.junit.Assert.assertEquals;
+
+public class Hello2Test {
 
 	@Test
 	public void hello() {
 
-		System.out.println("hello.text");
+		System.out.println("hello2.test");
 		assertEquals("true", "true");
 		
 	}
