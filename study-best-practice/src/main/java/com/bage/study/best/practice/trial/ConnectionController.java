@@ -35,11 +35,11 @@ public class ConnectionController {
         Connection connection = null;
         int result = 0;
         try {
-            System.out.println("close0:" + close);
+            System.out.println("ConnectionController close0:" + close);
             close = close == null ? true:close;
-            System.out.println("close1:" + close);
+            System.out.println("ConnectionController close1:" + close);
             connection = ConnectionUtils.getConnection();
-            System.out.println("connection:" + connection);
+            System.out.println("ConnectionController connection:" + connection);
             result = 1;
         } catch (Exception e) {
             result = 2;
