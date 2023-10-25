@@ -47,7 +47,26 @@ Tomcat 是一个小型的轻量级应用服务器，在中小型系统和并发�
 
 - work工作目录：该目录用于存放jsp被访问后生成对应的server文件和.class文件。
 
+```
+% tree -L 1 -C 
+.
+├── BUILDING.txt
+├── CONTRIBUTING.md
+├── LICENSE
+├── NOTICE
+├── README.md
+├── RELEASE-NOTES
+├── RUNNING.txt
+├── bin
+├── conf
+├── lib
+├── logs
+├── temp
+├── webapps
+├── webapps-javaee
+└── work
 
+```
 
 
 
@@ -80,6 +99,10 @@ https://my.oschina.net/jiagoushi/blog/8590385
 11. Host 把 HttpServletResponse 对象返回给 Engine
 12. Engine 把 HttpServletResponse 对象返回给 Connector
 13. Connector 把 HttpServletResponse 对象返回给客户 browser
+
+![](https://pic2.zhimg.com/v2-1b4f890d349aa1d2ee0f2579c923092d_r.jpg)
+
+
 
 ## 核心配置 
 
