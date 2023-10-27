@@ -90,11 +90,31 @@ AIO是非阻塞 以异步方式发起 I/O 操作。当 I/O 操作进行时可以
 
 
 
+## IO 进化史
+
+### 阻塞IO
+
+
+
+### 非阻塞IO
+
+
+
+### 多路复用IO
+
+
+
+### NIO
+
+
+
 
 
 
 
 ## 参考链接
+
+https://www.kancloud.cn/imnotdown1019/java_core_full/1011417
 
 【2023-06-17】https://blog.csdn.net/SearchB/article/details/124338815
 

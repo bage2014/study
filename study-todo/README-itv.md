@@ -8,6 +8,8 @@
 
 2023-10-26 [2.1] 知识点汇总整理 https://www.kancloud.cn/imnotdown1019/java_core_full/2177328
 
+2023-10-26 [5] 知识点汇总整理 https://www.kancloud.cn/imnotdown1019/java_core_full/2177328
+
 2023-10-25 [0] 知识点整理汇总 https://github.com/rbmonster/learning-note
 
 书籍 https://github.com/xjq7/books
