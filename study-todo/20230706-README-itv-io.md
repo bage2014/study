@@ -89,6 +89,8 @@ I/O 多路复用，可以**通过一次系统调用，检查多个文件描述�
 
 ### 异步 I/O 等
 
+异步 I/O 是指应用进程把文件描述符传给内核后，啥都不管了，完全由内核去操作这个文件描述符。内核完成相关操作后，会发信号告诉应用进程，说 I/O 操作完成，现在可以进行后续操作了
+
 
 
 ## NIO、BIO
@@ -150,6 +152,48 @@ AIO是非阻塞 以异步方式发起 I/O 操作。当 I/O 操作进行时可以
 
 
 
+
+## NIO
+
+Java NIO 包含了很多东西，但核心的东西不外乎 Buffer、Channel 和 Selector。
+
+### Buffer 
+
+继承体系
+
+![](https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15200845921379.jpg)
+
+
+
+Buffer 本质就是一个数组，只不过在数组的基础上进行适当的封装，方便使用。 Buffer 中有几个重要的属性，通过这几个属性来显示数据存储的信息。这个属性分别是：
+
+| 属性          | 说明                                                         |
+| :------------ | :----------------------------------------------------------- |
+| capacity 容量 | Buffer 所能容纳数据元素的最大数量，也就是底层数组的容量值。在创建时被指定，不可更改。 |
+| position 位置 | 下一个被读或被写的位置                                       |
+| limit 上界    | 可供读写的最大位置，用于限制 position，position < limit      |
+| mark 标记     | 位置标记，用于记录某一次的读写位置，可以通过 reset 重新回到这个位置 |
+
+Buffer 创建完成后，底层数组的结构信息如下
+
+![](https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15200935482408.jpg)
+
+### Channel
+
+通道是 Java NIO 的核心内容之一，在使用上，通道需和缓存类（ByteBuffer）配合完成读写等操作。与传统的流式 IO 中数据单向流动不同，通道中的数据可以双向流动。通道既可以读
+
+通道类型分为两种，一种是面向文件的，另一种是面向网络的。具体的类声明如下：
+
+- FileChannel
+- DatagramChannel
+- SocketChannel
+- ServerSocketChannel
+
+正如上列表，NIO 通道涵盖了文件 IO，TCP 和 UDP 网络 IO 等通道类型。
+
+NIO FileChannel 在实现上，实际上是对底层操作系统的一些 API 进行了再次封装，也就是一层皮。有了这层封装后，对上就屏蔽了底层 API 的细节，以降低使用难度
+
+### Selector
 
 
 
