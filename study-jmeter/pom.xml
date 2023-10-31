@@ -23,7 +23,7 @@
         <spring.boot.base.version>2.0.1.RELEASE</spring.boot.base.version>
 
         <mybatisplus.version>3.5.2</mybatisplus.version>
-        <lombok.version>1.18.20</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
 
     </properties>
