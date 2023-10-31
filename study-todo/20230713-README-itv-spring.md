@@ -23,7 +23,7 @@
 - Spring Boot 启动过程
 - 配置优化 
 - Spring Boot Starter
-- 循环依赖
+- 循环依赖[如何解决]
 - 事务失效
 
 
@@ -273,7 +273,13 @@ https://www.zhihu.com/question/362583020/answer/2826263500?utm_id=0
 
 https://mp.weixin.qq.com/s/Un8pyET2XDXpDY4FnRbwXw
 
+https://www.kancloud.cn/imnotdown1019/java_core_full/2177474
+
+三个缓存 
+
 ![](https://mmbiz.qpic.cn/sz_mmbiz_png/GvtDGKK4uYkMCL2KK3DtAry0FgPGAV5zUtuzhdmu4ML4EKric1pBuLdjmM7Fus6rxnKRrJjicJnFzge53FicxwpFQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+
 
 
 
