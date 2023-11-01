@@ -4,6 +4,7 @@ import com.bage.study.dubbo.spring.boot.api.HelloParam;
 import com.bage.study.dubbo.spring.boot.api.HelloResult;
 import com.bage.study.dubbo.spring.boot.api.HelloService;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.apache.dubbo.rpc.RpcContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -20,6 +21,12 @@ public class HelloServiceImpl implements HelloService {
 
     @Override
     public HelloResult sayHello(HelloParam param) {
+////客户端隐示设置值
+//        RpcContext.getContext().setAttachment("index", "1"); // 隐式传参，后面的远程调用都会隐
+        //服务端隐示获取值
+        String index = RpcContext.getContext().getAttachment("index");
+
+        System.out.println(new Date() + "getAttachment param ======> " + index);
 
         System.out.println(new Date() + "Get param ======> " + param);
         try {

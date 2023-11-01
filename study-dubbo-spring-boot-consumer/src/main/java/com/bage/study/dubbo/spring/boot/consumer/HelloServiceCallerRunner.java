@@ -23,6 +23,7 @@ import com.bage.study.dubbo.spring.boot.api.HelloParam;
 import com.bage.study.dubbo.spring.boot.api.HelloResult;
 import com.bage.study.dubbo.spring.boot.api.HelloService;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.apache.dubbo.rpc.RpcContext;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,11 @@ public class HelloServiceCallerRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         HelloParam param = getParam();
+        //客户端隐示设置值
+        RpcContext.getContext().setAttachment("index", "1"); // 隐式传参，后面的远程调用都会隐
+//        //服务端隐示获取值
+//        String index = RpcContext.getContext().getAttachment("index");
+
         System.out.println("Send param ======> " + param);
         HelloResult result = demoService.sayHello(param);
         Long age = result.getUserList().get(0).getAge();
