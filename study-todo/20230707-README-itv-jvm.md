@@ -112,6 +112,10 @@ Eden 新生区；From 和 To 相互拷贝回收，理论上某一时刻只用到
 
 https://www.cnblogs.com/fanjie/p/6916784.html
 
+https://javaguide.cn/java/basis/java-basic-questions-01.html#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E8%8A%82%E7%A0%81-%E9%87%87%E7%94%A8%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E5%A5%BD%E5%A4%84%E6%98%AF%E4%BB%80%E4%B9%88
+
+![](https://oss.javaguide.cn/github/javaguide/java/basis/jvm-rough-structure-model.png)
+
 **概述**
 
 java运行过程就可以分为  编译  》 类加载  》  执行

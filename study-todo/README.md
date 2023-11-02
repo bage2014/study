@@ -159,7 +159,7 @@ Dubbo 协议
 - 集群【哨兵、Cluster】
 - SDS内存结构验证
 
-
+Redis list 很大 get（i） 操作 
 
 ## MQ 
 
