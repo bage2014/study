@@ -6,6 +6,8 @@
 
 进度说明 
 
+2023-10-26 [十] 知识点汇总整理-redis 实践 https://www.kancloud.cn/imnotdown1019/java_core_full/1016912
+
 2023-10-26 [十八] 知识点汇总整理 https://www.kancloud.cn/imnotdown1019/java_core_full/2202946
 
 2023-10-26 [2.1] 知识点汇总整理 https://www.kancloud.cn/imnotdown1019/java_core_full/2177328
@@ -14,19 +16,19 @@
 
 2023-10-25 [0] 知识点整理汇总 https://github.com/rbmonster/learning-note
 
-书籍 https://github.com/xjq7/books
-
 Java 体系 https://github.com/whx123/JavaHome
-
-面试体系整理 https://gitee.com/souyunku/DevBooks
 
 bage面试 https://github.com/bage2014/interview
 
-知识汇总 https://github.com/Snailclimb/JavaGuide
+知识汇总 https://github.com/Snailclimb/JavaGuide、https://javaguide.cn/
 
 itv 汇总 https://github.com/CoderLeixiaoshuai/java-eight-part
 
 Java 基础 https://pdai.tech/md/java/collection/java-map-HashMap&HashSet.html
+
+书籍 https://github.com/xjq7/books
+
+面试体系整理 https://gitee.com/souyunku/DevBooks
 
 
 
