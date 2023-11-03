@@ -9,7 +9,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @Slf4j
 @EnableAsync
-public class GcJdk21Application implements CommandLineRunner {
+public class
+GcJdk21Application implements CommandLineRunner {
 
     public static void main(String args[]) {
         SpringApplication.run(GcJdk21Application.class, args);
