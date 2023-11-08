@@ -1,32 +1,25 @@
-package com.bage.study.algorithm.leetcode.binaryrsearch;
+package com.bage.study.algorithm.algorithm.search.binary;
 
-/**
- * https://leetcode.cn/problems/binary-search/
- *
- *
- * 开闭区间问题
- *
- * 闭区间 [0,length-1]
- * 开区间 [0,length)
- *
- */
-class Solution {
+public class FirstIndex {
     public static void main(String[] args) {
-        int[] nums = {3, 5, 10, 24, 25, 77, 96};
-        System.out.println(new Solution().search(nums, 77));
-        System.out.println(new Solution().search(nums, 7));
+        int[] nums = {3, 5, 10, 24, 25, 77,77,77,77,77,77,77, 96};
+        System.out.println(new FirstIndex().search(nums, 77));
+        System.out.println(new FirstIndex().search(nums, 7));
     }
 
     public int search(int[] nums, int target) {
-
         int left = 0;
         int right = nums.length - 1;
-        while (left <= right) { // 等于也可以进来查找[双闭区间]
+        int result = -1;
+        while (left <= right) { // 等于也可以进来查找
             int middle = (left + right) / 2;
             int middleValue = nums[middle];
 
             if (target == middleValue) {
-                return middle;
+                // 继续左边寻找
+                result = middle;
+                right = middle - 1;
+//                return middle;
             } else if (target > middleValue) {
                 // 目标值 大于 中间值
                 // 比如 目标值：77， 数组： 3 5 10 24 25 77 96
@@ -39,6 +32,6 @@ class Solution {
             }
         }
 
-        return -1;
+        return result;
     }
 }
