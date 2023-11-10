@@ -69,4 +69,4 @@ https://github.com/labuladong/fucking-algorithm
 - 求最大公约数
  - 实现 com.bage.study.algorithm.demos.ppts.Gcd
 - 排序 [https://www.lintcode.com/problem/sort-integers/description](https://www.lintcode.com/problem/sort-integers/description "https://www.lintcode.com/problem/sort-integers/description")
- - 实现(插入排序)：com.bage.study.algorithm.sort.InsertSort
+ - 实现(插入排序)：com.bage.study.algorithm.algorithm.sort.InsertSort

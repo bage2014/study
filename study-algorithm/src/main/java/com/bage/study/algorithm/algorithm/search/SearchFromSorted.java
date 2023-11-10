@@ -1,4 +1,4 @@
-package com.bage.study.algorithm.algorithm;
+package com.bage.study.algorithm.algorithm.search;
 
 public class SearchFromSorted {
 
