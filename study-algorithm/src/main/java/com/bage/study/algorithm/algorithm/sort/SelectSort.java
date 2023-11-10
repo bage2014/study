@@ -1,4 +1,4 @@
-package com.bage.study.algorithm.sort;
+package com.bage.study.algorithm.algorithm.sort;
 
 import com.bage.study.algorithm.DataUtils;
 
