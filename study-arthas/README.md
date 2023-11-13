@@ -12,6 +12,14 @@ https://www.bbsmax.com/A/mo5k8o1Edw/
 jvm 热更新类解析
 https://www.cnkirito.moe/instrument/
 
+
+
+## Idea 插件使用
+
+https://plugins.jetbrains.com/plugin/13581-arthas-idea
+
+
+
 ## 参考链接 ##
 
 - github https://github.com/alibaba/arthas
