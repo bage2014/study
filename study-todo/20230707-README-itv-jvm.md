@@ -563,6 +563,8 @@ Leak Suspects 》 System Overview
 
 内容解析 https://www.zhihu.com/column/c_1268282634804400128
 
+加载过程解析 https://my.oschina.net/u/4090830/blog/10141305
+
 
 
 【itv】https://github.com/whx123/JavaHome/blob/master/Java%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E7%BB%93%E5%8F%B7/JVM%20%E7%AF%87/JVM%E9%9D%A2%E8%AF%95%E9%A2%98.md
