@@ -14,6 +14,10 @@ import java.util.UUID;
  * 1、value值很长很大
  * 2、集合存储过多的元素
  * 3、key上亿
+ *
+ * https://juejin.cn/post/7298989375370166298
+ *
+ *
  */
 @Slf4j
 @Component

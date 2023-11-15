@@ -278,6 +278,29 @@ http://localhost:8000/big/number/set?count=2
 
 https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-docker-6eb33a5ea998
 
+
+
+redis 大key
+
+```
+http://localhost:8000/redis/random/set
+
+http://localhost:8000/redis/big/number/set?count=100
+
+```
+
+
+
+Redis 监控 
+
+```
+http://localhost:3000/d/RpSjVqWMz/redis?orgId=1&refresh=10s
+```
+
+
+
+
+
 ## metrics
 
 ### 基本使用
