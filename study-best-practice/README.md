@@ -287,6 +287,16 @@ http://localhost:8000/redis/random/set
 
 http://localhost:8000/redis/big/number/set?count=100
 
+
+http://localhost:8000/redis/big/key/set?count=100
+
+http://localhost:8000/redis/big/key/set?count=10000
+
+http://localhost:8000/redis/big/value/set?count=100
+
+http://localhost:8000/redis/big/value/set?count=10000
+
+
 ```
 
 

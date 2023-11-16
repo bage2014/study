@@ -156,6 +156,8 @@ https://www.cnblogs.com/LBSer/p/3403933.html
 
 参考链接 http://c.biancheng.net/view/7290.html
 
+事务的底层原理 https://my.oschina.net/u/4090830/blog/10142911
+
 
 
 ## MySQL大表查询为什么不会爆内存

@@ -84,9 +84,31 @@ public class RedisService {
             if (i == 0) {
                 log.info("bigNumber key = {}", key);
             }
-            getService().cache(data, "-big-number-" + data + "-" + i);
+            getService().cache(key, "-big-number-" + data + "-" + i);
         }
         return number;
+    }
+    public int bigValue(int length) {
+        String data = "";
+        for (int i = 0; i < length; i++) {
+            data += UUID.randomUUID().toString();
+        }
+        String key = "big-value-" + UUID.randomUUID().toString() + "-";
+        log.info("bigValue key = {}", key);
+        getService().cache(key, "-big-value-" + data + "-");
+        return 1;
+    }
+
+
+    public int bigKey(int length) {
+        String data = "";
+        for (int i = 0; i < length; i++) {
+            data += UUID.randomUUID().toString();
+        }
+        String key = "big-key-" + data;
+        log.info("bigKey key = {}", key);
+        getService().cache(key, "-big-key-" + UUID.randomUUID().toString() + "-");
+        return 1;
     }
 
     private CacheService getService() {
