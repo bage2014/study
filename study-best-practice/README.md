@@ -382,6 +382,12 @@ docker stats
 ## JVM 
 打开自带的 Jconsole
 
+
+
+参数配置 
+
+https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
+
 ### 堆内存
 
 选择对应的JAVA 进程 
