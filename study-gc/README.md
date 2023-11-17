@@ -22,6 +22,10 @@ https://github.com/tusharjoshi024/jvisualvm-demo
 
 ## 启动参数
 
+参数配置 
+
+https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
+
 ```
 jdk8 :
 java -jar -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:my-gc-%t.gc.log -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
@@ -37,6 +41,34 @@ java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-pract
 ### 基本功能
 
 整个过程可以打开jconsole 观察情况 
+
+
+
+### GC功能
+
+增加GC 日志 
+
+```
+jdk 8
+java -jar -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:my-gc-%t.gc.log -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
+
+jdk17 
+
+```
+
+查看GC情况
+
+```
+http://localhost:8008/jvm/add?step=100
+
+http://localhost:8011/jvm/add?step=100
+
+http://localhost:8017/jvm/add?step=100
+
+http://localhost:8021/jvm/add?step=100
+
+
+```
 
 
 
@@ -126,4 +158,5 @@ http://localhost:8017/file/leaking?fileName=/Users/bage/bage/github/study/study-
 
 
 
-hhh
+## 参考链接
+
