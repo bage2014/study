@@ -561,6 +561,8 @@ Leak Suspects 》 System Overview
 
 ## 参考链接 
 
+jvm参数配置 https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
+
 内容解析 https://www.zhihu.com/column/c_1268282634804400128
 
 加载过程解析 https://my.oschina.net/u/4090830/blog/10141305

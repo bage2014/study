@@ -523,6 +523,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -850,6 +851,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -1095,6 +1097,10 @@ db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db
 	Mac: 
 	db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 	db.auth('bage', 'bage')
+	
+	
+	db.createUser({ user:'bage',pwd:'bagedb',roles:[ { role:'userAdminAnyDatabase', db: 'bagedb'}]});
+	db.auth('bage', 'bagedb')
 
 
 ​	
