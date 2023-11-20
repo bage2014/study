@@ -43,6 +43,12 @@ https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247496788&idx=1&sn=f65ddd
 
 
 
+## 架构
+
+https://pdai.tech/md/arch/arch-x-overview.html
+
+
+
 ## B站视频
 
 进度：
