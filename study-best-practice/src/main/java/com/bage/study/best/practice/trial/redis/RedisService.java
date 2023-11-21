@@ -50,7 +50,9 @@ public class RedisService {
         }
         String key = "big-key-" + UUID.randomUUID().toString() + "-" + number;
         log.info("bigValve key = {}", key);
+        long startTime = System.currentTimeMillis();
         getService().cache(key, "-big-value-" + data + "-" + number);
+        log.info("time cost" + (System.currentTimeMillis() - startTime));
         return 1;
     }
 
@@ -67,7 +69,9 @@ public class RedisService {
         }
         String key = "big-collection-" + UUID.randomUUID().toString() + "-" + length;
         log.info("bigCollection key = {}", key);
+        long startTime = System.currentTimeMillis();
         getService().cache(key, list);
+        log.info("time cost" + (System.currentTimeMillis() - startTime));
         return length;
     }
 
@@ -95,7 +99,9 @@ public class RedisService {
         }
         String key = "big-value-" + UUID.randomUUID().toString() + "-";
         log.info("bigValue key = {}", key);
+        long startTime = System.currentTimeMillis();
         getService().cache(key, "-big-value-" + data + "-");
+        log.info("time cost" + (System.currentTimeMillis() - startTime));
         return 1;
     }
 
@@ -107,7 +113,9 @@ public class RedisService {
         }
         String key = "big-key-" + data;
         log.info("bigKey key = {}", key);
+        long startTime = System.currentTimeMillis();
         getService().cache(key, "-big-key-" + UUID.randomUUID().toString() + "-");
+        log.info("time cost" + (System.currentTimeMillis() - startTime));
         return 1;
     }
 
