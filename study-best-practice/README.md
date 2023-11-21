@@ -25,7 +25,7 @@ jdk17 :
 java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
 
 
-jdk17 :
+jdk21 :
 java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
 
 Remote :
