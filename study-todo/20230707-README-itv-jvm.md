@@ -237,6 +237,8 @@ java运行过程就可以分为  编译  》 类加载  》  执行
 
 ## 回收算法
 
+https://juejin.cn/post/7303414348932382774
+
 ### 标记清除算法
 
 
@@ -560,6 +562,12 @@ Leak Suspects 》 System Overview
 
 
 ## 参考链接 
+
+JVM 知识汇总 https://juejin.cn/post/7303386068606812199
+
+GC 解析 https://juejin.cn/post/7303414348932382774
+
+
 
 jvm参数配置 https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
 

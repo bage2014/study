@@ -157,6 +157,8 @@ pub/sub
 
 【2023-06-25】https://baijiahao.baidu.com/s?id=1729630215002937706&wfr=spider&for=pc
 
+淘汰算法 https://juejin.cn/post/7303366710693281829
+
 过期删除 
 
 - 定时删除
@@ -302,6 +304,10 @@ appendonly yes              //启用aof持久化方式
 
 
 ## 集群
+
+集群概念？ https://juejin.cn/post/7303398827225514003
+
+集群解析 https://juejin.cn/post/7302029216142901283
 
 https://www.bilibili.com/video/BV1MW4y187AH/?spm_id_from=333.788&vd_source=72424c3da68577f00ea40a9e4f9001a1
 

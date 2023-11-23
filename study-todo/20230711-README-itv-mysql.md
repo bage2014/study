@@ -67,6 +67,12 @@ https://blog.csdn.net/qq_39234967/article/details/126091672
 
 https://blog.csdn.net/weixin_70730532/article/details/125164081
 
+
+
+MySQL 架构  https://juejin.cn/post/7302330573382008844
+
+
+
 - 网络连接层：提供与Mysql服务器建立连接的支持
 - 核心服务层：主要包含系统管理和控制工具、连接池、SQL接口、解析器、查询优化器和缓存六个部分
 - 存储引擎：负责Mysql中数据的存储与提取，与底层系统文件进行交互

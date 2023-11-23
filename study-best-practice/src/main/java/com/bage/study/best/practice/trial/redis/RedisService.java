@@ -17,6 +17,8 @@ import java.util.UUID;
  *
  * https://juejin.cn/post/7298989375370166298
  *
+ * https://juejin.cn/post/7303719808880590886
+ *
  *
  */
 @Slf4j
@@ -52,7 +54,7 @@ public class RedisService {
         log.info("bigValve key = {}", key);
         long startTime = System.currentTimeMillis();
         getService().cache(key, "-big-value-" + data + "-" + number);
-        log.info("time cost" + (System.currentTimeMillis() - startTime));
+        log.info("time cost： " + (System.currentTimeMillis() - startTime));
         return 1;
     }
 
@@ -71,7 +73,7 @@ public class RedisService {
         log.info("bigCollection key = {}", key);
         long startTime = System.currentTimeMillis();
         getService().cache(key, list);
-        log.info("time cost" + (System.currentTimeMillis() - startTime));
+        log.info("time cost：" + (System.currentTimeMillis() - startTime));
         return length;
     }
 
@@ -101,7 +103,7 @@ public class RedisService {
         log.info("bigValue key = {}", key);
         long startTime = System.currentTimeMillis();
         getService().cache(key, "-big-value-" + data + "-");
-        log.info("time cost" + (System.currentTimeMillis() - startTime));
+        log.info("time cost：" + (System.currentTimeMillis() - startTime));
         return 1;
     }
 
@@ -115,7 +117,7 @@ public class RedisService {
         log.info("bigKey key = {}", key);
         long startTime = System.currentTimeMillis();
         getService().cache(key, "-big-key-" + UUID.randomUUID().toString() + "-");
-        log.info("time cost" + (System.currentTimeMillis() - startTime));
+        log.info("time cost：" + (System.currentTimeMillis() - startTime));
         return 1;
     }
 
