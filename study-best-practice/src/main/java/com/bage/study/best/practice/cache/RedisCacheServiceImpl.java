@@ -16,7 +16,7 @@ public class RedisCacheServiceImpl implements CacheService{
 
     @Override
     public void cache(String key, Object data) {
-        valueOperations.set(key, JsonUtils.toJson(data),60, TimeUnit.SECONDS);
+        valueOperations.set(key, JsonUtils.toJson(data),60 * 10, TimeUnit.SECONDS);
     }
 
     @Override
