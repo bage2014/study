@@ -1,5 +1,6 @@
 package com.bage.study.best.practice.trial.io;
 
+import cn.hutool.core.util.JdkUtil;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.BufferedReader;
@@ -16,6 +17,8 @@ public class FileWriterService {
 
     public static void main(String[] args) {
         new FileWriterService().append("");
+
+        JdkUtil.IS_JDK8
     }
 
     public int append(String content) {
