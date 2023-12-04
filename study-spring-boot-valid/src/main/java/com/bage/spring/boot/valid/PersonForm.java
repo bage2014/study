@@ -8,6 +8,7 @@ public class PersonForm {
 
 	@NotNull
 	@Size(min=2, max=30)
+	@CustomValidation
 	private String name;
 
 	@NotNull

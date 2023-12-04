@@ -17,8 +17,6 @@ public class FileWriterService {
 
     public static void main(String[] args) {
         new FileWriterService().append("");
-
-        JdkUtil.IS_JDK8
     }
 
     public int append(String content) {
