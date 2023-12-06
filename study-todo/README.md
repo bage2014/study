@@ -1,5 +1,15 @@
 # study-TODO #
 
+## 安全框架
+
+https://juejin.cn/post/7308782851360555018
+
+## Feign
+
+请求封装
+
+https://juejin.cn/post/7308643782376144950
+
 
 
 ## Schedule
@@ -285,6 +295,10 @@ clickhouse  https://juejin.cn/post/7221154297706430525
 常用工具 https://juejin.cn/post/7222822313006235685
 
 !!!! 计划进行时！！！！！
+
+
+
+
 
 ## MySQL 
 
