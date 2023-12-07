@@ -188,6 +188,7 @@
       <module>study-gc</module>
       <module>study-maven-plugin</module>
       <module>study-java21</module>
+      <module>study-pac4j</module>
 
   </modules>
 </project>
