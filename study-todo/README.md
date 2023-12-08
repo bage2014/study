@@ -4,11 +4,19 @@
 
 https://juejin.cn/post/7308782851360555018
 
+
+
+
+
 ## Feign
 
 请求封装
 
 https://juejin.cn/post/7308643782376144950
+
+Spring Cloud 系列
+
+https://juejin.cn/user/1714893872170573/posts
 
 
 
@@ -303,6 +311,8 @@ clickhouse  https://juejin.cn/post/7221154297706430525
 ## MySQL 
 
 常用DB 维护【Docker版本】
+
+查询回表验证？
 
 Batch Insert 
 
