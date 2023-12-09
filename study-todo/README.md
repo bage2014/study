@@ -110,7 +110,7 @@ redis
 
 一致性算法 Paxos等
 
-
+数据库连接池 https://juejin.cn/post/7310033153904656399
 
 ## Linux
 
