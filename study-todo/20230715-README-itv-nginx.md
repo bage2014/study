@@ -207,6 +207,10 @@ http { # HTTP区块开始
 
 中文 https://blog.redis.com.cn/doc/
 
+基本配置解析 https://juejin.cn/post/7306041273822527514
+
+
+
 【2023-07-15】https://zhuanlan.zhihu.com/p/398768594
 
 【2023-07-15】https://m.elecfans.com/article/1974990.html
