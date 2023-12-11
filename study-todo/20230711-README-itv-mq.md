@@ -181,6 +181,18 @@ https://blog.csdn.net/zhoupenghui168/article/details/130322210
 
 
 
+## kafaka 概念
+
+1. 生产者`Producer`：生产者，负责创建消息，然后投递到 Kafka 集群中，投递时需要指定消息所属的 Topic，同时确定好发往哪个 Partition。
+2. 消费者 `Consumer`：消费者，会根据它所订阅的 Topic 以及所属的消费组，决定从哪些 Partition 中拉取消息。
+3. 话题`Topic`(具体的队列)： Kafka将消息种子(Feed)分门别类， 每一类的消息称之为话题(Topic).
+4. 代理`Broker`：已发布的消息保存在一组服务器中，称之为Kafka集群。集群中的每一个服务器都是一个代理(Broker).
+5. 分区 `Partition`：为了提高一个队列(topic)的吞吐量，Kafka会把topic进行分区(Partition)。Topic由一个或多个Partition(分区)组成，生产者的消息可以指定或者由系统根据算法分配到指定分区。
+6. `Zookeeper`：负责集群的元数据管理等功能，比如集群中有哪些 broker 节点以及 Topic，每个 Topic 又有哪些 Partition 等。
+7. 消费组`Consumer Group`：一群消费者的集合，向Topic订阅消费消息的单位是Consumers。
+
+
+
 ## Kafaka 高吞吐
 
 https://zhuanlan.zhihu.com/p/526545922
