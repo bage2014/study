@@ -189,6 +189,7 @@
       <module>study-maven-plugin</module>
       <module>study-java21</module>
       <module>study-pac4j</module>
+      <module>study-feign</module>
 
   </modules>
 </project>
