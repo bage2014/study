@@ -31,6 +31,22 @@ Nginx 是一款轻量级的 Web 服务器、反向代理服务器
 
 
 
+## 特色
+
+处理响应请求快（异步非阻塞I/O，零拷贝，mmap，缓存机制）
+
+扩展性好（模块化设计）
+
+内存消耗低（异步非阻塞，多阶段处理）
+
+具有很高的可靠性（无数次的生产验证，很多头部公司都在用）
+
+热部署
+
+高并发连接（事件驱动模型，多进程机制）
+
+自由的BSD许可协议（可以自己修改代码后发布，包容性极强）
+
 
 
 ## **概要** 
@@ -44,6 +60,12 @@ Nginx 是一款轻量级的 Web 服务器、反向代理服务器
 ## **架构** 
 
 
+
+![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2db0016998d447f1bf0c657454180238~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1986&h=1182&s=483033&e=png&b=f4f4f4)
+
+
+
+![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9abd5af68a4f4581b34e14af6810e3a7~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1306&h=928&s=154272&e=png&b=f8f6f2)
 
 ## 目录结构
 
@@ -199,8 +221,6 @@ http { # HTTP区块开始
 
 
 
-
-
 ## 参考链接
 
 官方网址 http://nginx.org/en/
@@ -208,6 +228,8 @@ http { # HTTP区块开始
 中文 https://blog.redis.com.cn/doc/
 
 基本配置解析 https://juejin.cn/post/7306041273822527514
+
+一把梭哈 https://juejin.cn/post/7306041273822527514
 
 
 
