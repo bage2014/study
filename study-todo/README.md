@@ -108,9 +108,9 @@ https://juejin.cn/post/7083795682313633822
 
 自适应算法
 
-跳表
+跳表 https://zhuanlan.zhihu.com/p/637407262
 
-一致性算法 Paxos等
+一致性算法 Paxos等 https://zhuanlan.zhihu.com/p/130332285
 
 数据库连接池 https://juejin.cn/post/7310033153904656399
 
@@ -208,6 +208,12 @@ Dubbo 协议
 
 Redis list 很大 get（i） 操作 
 
+基本结构 
+
+扩容缩容机制
+
+
+
 ## MQ 
 
 Rocket 安装基本使用
@@ -296,25 +302,13 @@ Spring Condition 以及回调时机
 
 
 
-常用链接 
-
-Spring Valid https://mp.weixin.qq.com/s/qvn9bM7rVhFEqZwt9mp6Hw
-
-clickhouse  https://juejin.cn/post/7221154297706430525
-
-常用工具 https://juejin.cn/post/7222822313006235685
-
-!!!! 计划进行时！！！！！
-
-
-
-
-
 ## MySQL 
 
 常用DB 维护【Docker版本】
 
 查询回表验证？
+
+索引结构【逻辑结构】、主键索引+普通索引
 
 Batch Insert 
 
@@ -387,9 +381,17 @@ https://db-engines.com/en/ranking
 
 
 
+## 常用链接 
+
+Spring Valid https://mp.weixin.qq.com/s/qvn9bM7rVhFEqZwt9mp6Hw
+
+clickhouse  https://juejin.cn/post/7221154297706430525
+
+常用工具 https://juejin.cn/post/7222822313006235685
+
+
+
 # 技术代办
-
-
 
 表文档生成
 https://github.com/pingfangushi/screw
