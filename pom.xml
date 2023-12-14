@@ -190,6 +190,7 @@
       <module>study-java21</module>
       <module>study-pac4j</module>
       <module>study-feign</module>
+      <module>study-nacos</module>
 
   </modules>
 </project>
