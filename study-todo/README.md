@@ -39,6 +39,18 @@ CPU、DB【connection】、IO、NETWORK
 
 火焰图生成 
 
+阿里云性能测试PTS的文档
+https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
+
+https://zhuanlan.zhihu.com/p/491927737
+
+https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
+
+阿里问题排查 
+https://developer.aliyun.com/article/778128
+
+
+
 
 ## 项目实践
 
@@ -84,6 +96,8 @@ GC 日志、GC 分析 、
 
 GC 程序？？ Full GC + Young GC
 
+
+
 9-1 
 
 redis 
@@ -100,6 +114,8 @@ redis
 
 问题挑战
 
+
+
 ## 其他
 
 时间轮算法
@@ -114,15 +130,25 @@ https://juejin.cn/post/7083795682313633822
 
 数据库连接池 https://juejin.cn/post/7310033153904656399
 
+
+
 ## Linux
 
-Top 各个参数的含义？？
+各个参数的含义？？
+
+top 
 
 ps
 
 ds
 
+free 
+
 常用内存分析命令
+
+
+
+常用命令 https://baijiahao.baidu.com/s?id=1757600324807486668&wfr=spider&for=pc
 
 
 
@@ -161,6 +187,8 @@ JOL  对象内存分布
 熔断机制
 
 分布式限流 
+
+
 
 代码实践
 
