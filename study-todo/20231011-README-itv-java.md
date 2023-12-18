@@ -26,6 +26,10 @@
 
 各个版本说明 https://github.com/whx123/JavaHome/blob/master/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/Java%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AJDK%205-15%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BB%8F%E5%85%B8%E6%96%B0%E7%89%B9%E6%80%A7.md
 
+参考链接 https://juejin.cn/post/7250734439709048869
+
+
+
 
 
 ## 占用大小
@@ -749,5 +753,7 @@ https://www.bilibili.com/video/BV11M4y1B7tN/?spm_id_from=333.337.search-card.all
 
 
 
-## Bilibili 
+## 常用链接 
+
+Jdk 特性   https://juejin.cn/post/7250734439709048869
 
