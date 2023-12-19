@@ -7,6 +7,7 @@ import java.time.*;
  */
 public class TimeTest {
 
+
     public static void main(String[] args) {
         LocalDateTime localDateTime = LocalDateTime.now();
         System.out.println(localDateTime);
@@ -19,10 +20,16 @@ public class TimeTest {
         System.out.println(localDateTime1);
 
 
-        LocalDate birthDate = LocalDate.of(1995, Month.OCTOBER, 24);
+        LocalDate birthDate1 = LocalDate.of(1995, 12, 17);
+        LocalDate birthDate2 = LocalDate.of(1995, 12, 18);
+        LocalDate birthDate3 = LocalDate.of(1995, 12, 19);
         LocalDate currentDate = LocalDate.now();
-        int age = Period.between(birthDate, currentDate).getYears();
+        int age1 = Period.between(birthDate1, currentDate).getYears();
+        int age2 = Period.between(birthDate2, currentDate).getYears();
+        int age3 = Period.between(birthDate3, currentDate).getYears();
 
-        System.out.println("Age: " + age);
+        System.out.println("Age: " + age1);
+        System.out.println("Age: " + age2);
+        System.out.println("Age: " + age2);
     }
 }
