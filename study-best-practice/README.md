@@ -280,7 +280,7 @@ https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-d
 
 
 
-redis 大key
+redis 大key https://juejin.cn/post/7309482256808509459
 
 ```
 http://localhost:8000/redis/random/set
