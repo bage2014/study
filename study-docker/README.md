@@ -524,6 +524,7 @@ Docker Pull Command
 
 
 
+
 访问
 
     http://{ip}:9092/_cat/health  
@@ -852,6 +853,7 @@ start a instance
 
 
 
+
 ### 安装配置 logstash ###
 版本匹配 https://www.elastic.co/cn/support/matrix#matrix_compatibility 
 参考链接：[https://www.elastic.co/guide/en/logstash/current/docker.html](https://www.elastic.co/guide/en/logstash/current/docker.html)、[https://hub.docker.com/_/logstash?tab=description](https://hub.docker.com/_/logstash?tab=description)、[https://www.elastic.co/guide/en/logstash/current/docker-config.html](https://www.elastic.co/guide/en/logstash/current/docker-config.html)
@@ -1097,8 +1099,9 @@ db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db
 	Mac: 
 	db.createUser({ user:'bage',pwd:'bage',roles:[ { role:'userAdminAnyDatabase', db: 'admin'}]});
 	db.auth('bage', 'bage')
-	
-	
+
+
+​	
 	db.createUser({ user:'bage',pwd:'bagedb',roles:[ { role:'userAdminAnyDatabase', db: 'bagedb'}]});
 	db.auth('bage', 'bagedb')
 
@@ -1536,6 +1539,34 @@ To start an OceanBase instance, run this command:
 
 ```bash
 docker run -p 2881:2881 --name obstandalone -d oceanbase/oceanbase-ce
+```
+
+
+
+### 安装 Postgres
+
+参考链接 
+
+https://hub.docker.com/_/postgres
+
+Docker Pull Command
+
+```
+docker pull postgres
+```
+
+Start an instance
+
+```bash
+docker run --name bage-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+
+$ docker run -d \
+	--name bage-postgres \
+	-e POSTGRES_PASSWORD=mysecretpassword \
+	-e PGDATA=/var/lib/postgresql/data/pgdata \
+	-v /custom/mount:/var/lib/postgresql/data \
+	postgres
 ```
 
 

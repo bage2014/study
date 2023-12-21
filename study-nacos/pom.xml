@@ -15,11 +15,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.base.version>3.0.1</spring.boot.base.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <java.version>17</java.version>
-        <nacos-config-spring-boot.version>0.3.0-RC</nacos-config-spring-boot.version>
+<!--        <spring.boot.base.version>3.0.1</spring.boot.base.version>-->
+        <spring.boot.base.version>2.7.8</spring.boot.base.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>8</java.version>
+<!--        <nacos-config-spring-boot.version>0.3.0-RC</nacos-config-spring-boot.version>-->
+        <nacos-config-spring-boot.version>0.2.12</nacos-config-spring-boot.version>
 
     </properties>
 
