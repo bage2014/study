@@ -5,22 +5,7 @@ Dynamic Naming and Configuration Service的首字母简称，一个更易于构�
 
 
 
-
-
-## Key关键点
-
-- 架构
-- 服务端
-- 客户端
-- 监控 
-
-
-
-## 架构
-
-
-
-## 服务端
+## 服务端部署
 
 https://nacos.io/zh-cn/docs/v2/quickstart/quick-start.html
 
@@ -39,20 +24,18 @@ Docker Pull Command
 ```
 docker pull nacos/nacos-server
 
-[Mac M1 版本？]
+[Mac M1 版本]
 docker pull nacos/nacos-server:v2.1.2-slim
 ```
 
 start a instance
 
 ```
-
 docker run --name bage-nacos -e MODE=standalone -p 8849:8848 -d nacos/nacos-server:2.0.2
 
 [mac m1]
 docker run --name bage-nacos -e MODE=standalone -p 8848:8848 -d nacos/nacos-server:v2.1.2-slim
 
-docker run --name bage-nacos -e MODE=standalone -p 8849:8848 -d nacos/nacos-server
 ```
 
 Open the Nacos console in your browser
@@ -62,10 +45,6 @@ http://localhost:8848
 
 http://127.0.0.1:8848/nacos/
 ```
-
-
-
-
 
 
 
@@ -82,6 +61,7 @@ https://nacos.io/zh-cn/docs/quick-start-spring-boot.html
    ```
    curl -X POST "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=example&group=DEFAULT_GROUP&content=useLocalCache=true"
    
+   curl -X POST "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=example&group=DEFAULT_GROUP&content=useLocalCache=true"
    ```
 
 3. 再次访问 `http://localhost:8080/config/get`，此时返回内容为`true`，说明程序中的`useLocalCache`值已经被动态更新了。
@@ -90,6 +70,9 @@ https://nacos.io/zh-cn/docs/quick-start-spring-boot.html
 
 ```
 curl -X GET 'http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=example&group=DEFAULT_GROUP'
+
+
+curl -X POST "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=example&group=DEFAULT_GROUP&content=hello=bage" 
 ```
 
 
@@ -105,4 +88,6 @@ https://nacos.io/zh-cn/docs/v2/guide/admin/monitor-guide.html
 官网 https://nacos.io/zh-cn/docs/what-is-nacos.html
 
 github https://github.com/alibaba/nacos
+
+Nacos 基本操作 https://nacos.io/zh-cn/docs/nacos-spring.html
 
