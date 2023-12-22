@@ -41,4 +41,20 @@ public class ConfigController {
         System.out.println(hello);
         return hello;
     }
+
+    public boolean isUseLocalCache() {
+        return useLocalCache;
+    }
+
+    public void setUseLocalCache(boolean useLocalCache) {
+        this.useLocalCache = useLocalCache;
+    }
+
+    public String getHello() {
+        return hello;
+    }
+
+    public void setHello(String hello) {
+        this.hello = hello;
+    }
 }
