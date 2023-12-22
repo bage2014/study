@@ -122,6 +122,12 @@ redis
 
 https://juejin.cn/post/7083795682313633822
 
+https://zhuanlan.zhihu.com/p/609284043?utm_id=0
+
+https://zhuanlan.zhihu.com/p/665545437
+
+
+
 自适应算法
 
 跳表 https://zhuanlan.zhihu.com/p/637407262
