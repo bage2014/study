@@ -102,6 +102,8 @@ https://nacos.io/zh-cn/docs/v2/guide/admin/monitor-guide.html
 
 ## 参考链接
 
+Spring Cloud 继承 https://github.com/alibaba/spring-cloud-alibaba/tree/2.2.x/spring-cloud-alibaba-examples
+
 官网 https://nacos.io/zh-cn/docs/what-is-nacos.html
 
 github https://github.com/alibaba/nacos
