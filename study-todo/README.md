@@ -136,6 +136,10 @@ https://zhuanlan.zhihu.com/p/665545437
 
 数据库连接池 https://juejin.cn/post/7310033153904656399
 
+连接池 Druid 实现原理 https://juejin.cn/post/7310033153904656399
+
+
+
 
 
 发展路线 https://github.com/kamranahmedse/developer-roadmap
