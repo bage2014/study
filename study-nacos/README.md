@@ -34,7 +34,7 @@ start a instance
 docker run --name bage-nacos -e MODE=standalone -p 8849:8848 -d nacos/nacos-server:2.0.2
 
 [mac m1]
-docker run --name bage-nacos -e MODE=standalone -p 8848:8848 -d nacos/nacos-server:v2.1.2-slim
+docker run --name bage-nacos -e MODE=standalone -p 8848:8848 -p 9848:9848 -d nacos/nacos-server:v2.1.2-slim
 
 ```
 
@@ -52,7 +52,9 @@ http://127.0.0.1:8848/nacos/
 
 https://nacos.io/zh-cn/docs/quick-start-spring-boot.html
 
+https://segmentfault.com/a/1190000042043050/en
 
+https://blog.csdn.net/keypanj2ee/article/details/118725971 配置多一个外部端口
 
 1. 启动 `NacosConfigApplication`，调用 `curl http://localhost:8080/config/get`，返回内容是 `false`。
 
