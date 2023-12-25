@@ -125,4 +125,17 @@ public class RedisService {
         return cacheService;
     }
 
+    public int init(Integer count) {
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < count; i++) {
+            getService().cache("redis_init_count_index_" + i, "-init-" + UUID.randomUUID().toString() + "-");
+        }
+        log.info("time cost：" + (System.currentTimeMillis() - startTime));
+        return 1;
+    }
+
+    public String get(Integer index) {
+        Object value = getService().get("redis_init_count_index_" + index);
+        return value == null ? null : value.toString();
+    }
 }

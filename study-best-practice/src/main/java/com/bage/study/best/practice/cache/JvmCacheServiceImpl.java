@@ -15,6 +15,11 @@ public class JvmCacheServiceImpl implements CacheService {
     }
 
     @Override
+    public Object get(String key) {
+        return map.get(key);
+    }
+
+    @Override
     public void remove(String key) {
         map.remove(key);
     }
