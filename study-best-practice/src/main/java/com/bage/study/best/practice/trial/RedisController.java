@@ -28,6 +28,36 @@ public class RedisController {
     @Autowired
     private RedisService redisService;
 
+    @RequestMapping("/count/init")
+    public Object init(@RequestParam(value = "count", required = false) Integer count) {
+        metricService.increment("init", "RedisController");
+        log.info("RedisController init count = {}", count);
+        count = count == null ? 100000 : count;
+        log.info("RedisController init count2 = {}", count);
+        long start = System.currentTimeMillis();
+        int random = redisService.init(count);
+        long end = System.currentTimeMillis();
+        log.info("RedisController init cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "init", "RedisController");
+
+        return new RestResult(200, random);
+    }
+
+    @RequestMapping("/count/get")
+    public Object get(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("get", "RedisController");
+        log.info("RedisController get index = {}", index);
+        index = index == null ? 1 : index;
+        log.info("RedisController get count2 = {}", index);
+        long start = System.currentTimeMillis();
+        int random = redisService.get(index);
+        long end = System.currentTimeMillis();
+        log.info("RedisController get cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "get", "RedisController");
+
+        return new RestResult(200, random);
+    }
+
     @RequestMapping("/random/set")
     public Object random() {
         metricService.increment("random", "RedisController");

@@ -20,6 +20,11 @@ public class RedisCacheServiceImpl implements CacheService{
     }
 
     @Override
+    public Object get(String key) {
+        return valueOperations.get(key);
+    }
+
+    @Override
     public void remove(String key) {
         valueOperations.getAndDelete(key);
     }
