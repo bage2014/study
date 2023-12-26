@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,13 +30,13 @@ public class RedisController {
     private RedisService redisService;
 
     @RequestMapping("/count/init")
-    public Object init(@RequestParam(value = "count", required = false) Integer count) {
+    public Object init(@RequestParam(value = "max", required = false) Integer max) {
         metricService.increment("init", "RedisController");
-        log.info("RedisController init count = {}", count);
-        count = count == null ? 100000 : count;
-        log.info("RedisController init count2 = {}", count);
+        log.info("RedisController init max = {}", max);
+        max = max == null ? 100000 : max;
+        log.info("RedisController init max2 = {}", max);
         long start = System.currentTimeMillis();
-        int random = redisService.init(count);
+        int random = redisService.init(max);
         long end = System.currentTimeMillis();
         log.info("RedisController init cost = {}", (end - start));
         metricService.record((end - start), TimeUnit.MILLISECONDS, "init", "RedisController");
@@ -50,12 +51,29 @@ public class RedisController {
         index = index == null ? 1 : index;
         log.info("RedisController get count2 = {}", index);
         long start = System.currentTimeMillis();
-        int random = redisService.get(index);
+        String random = redisService.get(index);
         long end = System.currentTimeMillis();
         log.info("RedisController get cost = {}", (end - start));
         metricService.record((end - start), TimeUnit.MILLISECONDS, "get", "RedisController");
 
         return new RestResult(200, random);
+    }
+
+    @RequestMapping("/count/random")
+    public Object getRandom(@RequestParam(value = "max", required = false) Integer max) {
+        metricService.increment("getRandom", "RedisController");
+        log.info("RedisController getRandom max = {}", max);
+        max = max == null ? 10000 : max;
+        log.info("RedisController getRandom max2 = {}", max);
+        long start = System.currentTimeMillis();
+        int random = new Random().nextInt(max);
+        log.info("RedisController getRandom random = {}", random);
+        String value = redisService.get(random);
+        long end = System.currentTimeMillis();
+        log.info("RedisController getRandom cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "getRandom", "RedisController");
+
+        return new RestResult(200, value);
     }
 
     @RequestMapping("/random/set")
