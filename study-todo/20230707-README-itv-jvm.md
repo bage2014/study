@@ -246,6 +246,12 @@ java运行过程就可以分为  编译  》 类加载  》  执行
 
 链接：https://juejin.cn/post/7303414348932382774
 
+https://zhuanlan.zhihu.com/p/621461833
+
+https://www.bilibili.com/video/BV1KU4y1Y7cu/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+https://www.bilibili.com/video/BV1eu4y127EG/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
 ![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d0f6395054ae42a0998c33eea98b8b2a~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1095&h=1155&s=442276&e=png&b=fdfdfd)
 
 
@@ -254,15 +260,41 @@ java运行过程就可以分为  编译  》 类加载  》  执行
 
 https://juejin.cn/post/7303414348932382774
 
+
+
 ### 标记清除算法
+
+标记无用对象，然后进行清除回收，标记-清除算法是一种常见的基础垃圾收集算法，他将垃圾收集分为两个阶段
+
+1. 标记阶段：标记出可以回收的对象
+2. 清除阶段：回收标记的对象所占用的空间
+
+优点：实现简单，不需要对象进行移动
+ 缺点：标记、清除过程效率低，产生大量不连续的内存碎片，提高了垃圾回收的效率
+
+![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9e79674ee2154218ae2dfad37cb2c88b~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1004&h=314&s=13098&e=png&b=ffffff)
 
 
 
 ### 复制算法
 
+为了解决标记-清除算法的效率不高的问题，产生了复制算法。它把内存空间划分为两个相等的区域，每次只使用其中一个区域。垃圾收集时，遍历当前使用的区域，把存活对象复制到另一个区域中，最后将当前使用的区域的可回收对象进行回收
+
+优点：按顺序分配内存即可，实现简单、运行高效，不用考虑内存碎片
+ 缺点：可用的内存大小缩小为原来的一半，对象存活率高时会频繁进行复制
+
+![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3a47019619444524bbdef3547830d7bc~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1006&h=298&s=13158&e=png&b=ffffff)
+
 
 
 ### 标记压缩算法
+
+在新生代中可以使用复制算法，但是在老年代就不能选择复制算法了，因为老年代的对象存活率会较高，这样会有较多的复制操作，导致效率变低。标记-清除算法应该可以应用在老年代中，但是它效率不高，在内存回收后容易产生大量内存碎片。因此就出现了一种标记-整理算法，与标记-清除不同的是，在标记可回收的对象后将所有存活的对象压缩到内存的一端，使他们紧凑的排列在一起，然后对端边界以外的内存进行回收。回收后，已用和未用的内存都各自一边
+
+优点：解决了标记-清除算法存在内存碎片问题
+ 缺点：仍需要进行局部对象移动，一定程度上降低了效率
+
+![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/de59f419ee144cb899a46016252d9a3c~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1004&h=284&s=12102&e=png&b=ffffff)
 
 
 
