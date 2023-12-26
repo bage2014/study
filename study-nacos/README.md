@@ -79,6 +79,16 @@ curl -X POST "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=example&group=DEF
 
 
 
+5. 设置hello的 值
+
+```
+http://localhost:8080/config/set2
+
+http://localhost:8080/config/get2
+```
+
+
+
 ## 监控 ## 
 
 https://nacos.io/zh-cn/docs/v2/guide/admin/monitor-guide.html

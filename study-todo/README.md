@@ -102,7 +102,7 @@ GC 程序？？ Full GC + Young GC
 
 redis 
 
-高负载读取情况？？模拟？？
+高负载读取情况？？模拟？？热点key或者 多个key高并发去读
 
 大KEY 读写？？
 

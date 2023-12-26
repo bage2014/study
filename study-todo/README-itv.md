@@ -347,7 +347,7 @@ itv 汇总 https://github.com/CoderLeixiaoshuai/java-eight-part
 
 Java 基础 https://pdai.tech/md/java/collection/java-map-HashMap&HashSet.html
 
-
+Bi哩哔哩基础知识整理  https://www.bilibili.com/video/BV1eu4y127EG/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 https://github.com/doocs/advanced-java
 
@@ -355,7 +355,7 @@ https://tech.meituan.com/2016/06/24/java-hashmap.html
 
 
 
-
+Bi哩哔哩 https://www.bilibili.com/video/BV1eu4y127EG/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 
 【2023-06-30】牛客网 https://www.nowcoder.com/experience/639
