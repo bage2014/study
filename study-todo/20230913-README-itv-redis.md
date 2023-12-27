@@ -66,6 +66,8 @@ https://baijiahao.baidu.com/s?id=1708807538121555902&wfr=spider&for=pc
 
 https://zhuanlan.zhihu.com/p/615586279?utm_id=0
 
+https://github.com/bage2014/study/blob/master/study-todo/20230706-README-itv-io.md
+
 redis 采用网络IO多路复用技术来保证在多连接的时候， 系统的高吞吐量。
 
 多路-指的是多个socket连接，复用-指的是复用一个线程。多路复用主要有三种技术：select，poll，epoll。epoll是最新的也是目前最好的多路复用技术。
@@ -133,11 +135,39 @@ set、get、获取成功、更新、截取、追加
 
 
 
+### 字典
+
+https://baijiahao.baidu.com/s?id=1741543694850029622&wfr=spider&for=pc
+
+https://www.jianshu.com/p/4f38121df613
+
+
+
+![](https://pics1.baidu.com/feed/cc11728b4710b912bbd8c82dba2c2d0993452227.png@f_auto?token=7d0d4d640e61512e06f365a9ab67330d)
+
+dictht 是一个散列表结构，使用拉链法保存哈希冲突。
+
+Redis 的字典 dict 中包含两个哈希表 dictht，这是为了方便进行 rehash 操作。
+
+在扩容时，将其中一个 dictht 上的键值对 rehash 到另一个 dictht 上面，完成之后释放空间并交换两个 dictht 的角色。
+
+rehash 操作不是一次性完成，而是采用渐进方式，这是为了避免一次性执行过多的 rehash 操作给服务器带来过大的负担。
+
+渐进式 rehash 通过记录 dict 的 rehashidx 完成，它从 0 开始，然后每执行一次 rehash 都会递增。例如在一次 rehash 中，要把 dict[0] rehash 到 dict[1]，这一次会把 dict[0] 上 table[rehashidx] 的键值对 rehash 到 dict[1] 上，dict[0] 的 table[rehashidx] 指向 null，并令 rehashidx++。
+
+在 rehash 期间，每次对字典执行添加、删除、查找或者更新操作时，都会执行一次渐进式 rehash。
+
+采用渐进式 rehash 会导致字典中的数据分散在两个 dictht 上，因此对字典的查找操作也需要到对应的 dictht 去执行。
+
+
+
 ### 跳跃表
 
 作为 Redis 中特有的数据结构-跳跃表，其在链表的基础上增加了多级索引来提升查找效率。
 
 ​	![](https://pics3.baidu.com/feed/dbb44aed2e738bd48d889ca8190e87df267ff908.png@f_auto?token=e9e8176e77a03ebca861cd9d45a50f96)
+
+
 
 
 
@@ -164,18 +194,22 @@ pub/sub
 - 定时删除
 - 惰性删除
 
+
+
+**LRU的全称为Least Recently Used;   LFU的全称为Least Frequently Used**
+
 Redis 具体有 6 种淘汰策略：
 
-|      策略       |                         描述                         |
-| :-------------: | :--------------------------------------------------: |
+|      策略       | 描述                                                 |
+| :-------------: | :--------------------------------------------------- |
 |  volatile-lru   | 从已设置过期时间的数据集中挑选最近最少使用的数据淘汰 |
-|  volatile-ttl   |   从已设置过期时间的数据集中挑选将要过期的数据淘汰   |
-| volatile-random |      从已设置过期时间的数据集中任意选择数据淘汰      |
-|   allkeys-lru   |       从所有数据集中挑选最近最少使用的数据淘汰       |
-| allkeys-random  |          从所有数据集中任意选择数据进行淘汰          |
-|   noeviction    |                     禁止驱逐数据                     |
+|  volatile-ttl   | 从已设置过期时间的数据集中挑选将要过期的数据淘汰     |
+| volatile-random | 从已设置过期时间的数据集中任意选择数据淘汰           |
+|   allkeys-lru   | 从所有数据集中挑选最近最少使用的数据淘汰             |
+| allkeys-random  | 从所有数据集中任意选择数据进行淘汰                   |
+|   noeviction    | 禁止驱逐数据                                         |
 
-Redis 4.0 引入了 volatile-lfu 和 allkeys-lfu 淘汰策略，LFU 策略通过统计访问频率，将访问频率最少的键值对淘汰。
+**Redis 4.0 引入了 volatile-lfu 和 allkeys-lfu 淘汰策略，LFU 策略通过统计访问频率，将访问频率最少的键值对淘汰。**
 
 
 
@@ -330,6 +364,10 @@ http://www.xbhp.cn/news/75679.html
 
 
 ### 主从复制 
+
+说明 https://zhuanlan.zhihu.com/p/614779697?utm_id=0
+
+解析 说明 https://zhuanlan.zhihu.com/p/648035368
 
 #### 拓扑结构
 

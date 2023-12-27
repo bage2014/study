@@ -140,6 +140,16 @@ https://zhuanlan.zhihu.com/p/665545437
 
 
 
+LRU算法实现  https://baijiahao.baidu.com/s?id=1729434050706042976
+
+LFU算法实现  https://baijiahao.baidu.com/s?id=1729525047952230592
+
+lru: Least Recently Used 最近最少使用
+
+lfu: Least Frequently Used 最不频繁使用 
+
+
+
 
 
 发展路线 https://github.com/kamranahmedse/developer-roadmap
@@ -194,7 +204,16 @@ JOL  对象内存分布
 
 自适应
 
-限流算法
+### 限流算法
+
+https://baijiahao.baidu.com/s?id=1774745070951278024&wfr=spider&for=pc
+
+- 计数器
+- 滑动窗口
+- 令牌桶
+- 漏桶
+
+
 
 熔断机制
 
@@ -251,6 +270,8 @@ Redis list 很大 get（i） 操作
 基本结构 
 
 扩容缩容机制
+
+rdb 保存 + 高并发写入读写 ？
 
 
 
@@ -343,6 +364,8 @@ Spring Condition 以及回调时机
 
 
 ## MySQL 
+
+分别查询、命中主键、唯一索引、常规索引的耗时情况
 
 常用DB 维护【Docker版本】
 

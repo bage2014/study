@@ -154,6 +154,16 @@ $ redis-cli -a myUnguessablePazzzzzword123 PING
 
 https://redis.io/docs/data-types/
 
+
+
+先登陆 
+
+```
+redis-cli
+```
+
+
+
 ### String 
 
 By default, a single Redis string can be a maximum of 512 MB.
