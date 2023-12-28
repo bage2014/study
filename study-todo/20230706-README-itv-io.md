@@ -49,6 +49,20 @@ FileInputStream，FileOutputStream,BufferedOutputStream
 
 字符流BufferedReader和Writer
 
+
+
+#### 长度大小
+
+常用字符编码所占字节数？
+
+`utf8` :英文占 1 字节，中文占 3 字节，
+
+`unicode`：任何字符都占 2 个字节，
+
+`gbk`：英文占 1 字节，中文占 2 字节。
+
+
+
 ## IO模型
 
  I/O 模型，包括
@@ -235,6 +249,8 @@ https://cloud.tencent.com/developer/article/1648648
 ## 参考链接
 
 https://www.kancloud.cn/imnotdown1019/java_core_full/1011417
+
+IO概念 https://llc687.top/126.html
 
 【2023-06-17】https://blog.csdn.net/SearchB/article/details/124338815
 

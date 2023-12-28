@@ -132,7 +132,21 @@ https://zhuanlan.zhihu.com/p/665545437
 
 跳表 https://zhuanlan.zhihu.com/p/637407262
 
+https://mp.weixin.qq.com/s?__biz=MzU0ODMyNDk0Mw==&mid=2247495510&idx=1&sn=7a9f174b2a5facd92ee0efccf712eecc&chksm=fb427c76cc35f560d0ce02d6b7ff2f3e28c0349434734a428b20dfa2c3366d6266b15eacb588&scene=27
+
+原文 https://epaperpress.com/sortsearch/download/skiplist.pdf
+
+1. **跳表的本质是一个多层的有序链表，同时结合了二分和链表的思想；**
+2. 由很多层索引组成，每一层索引是通过**随机函数**随机产生的，每一层都是一个有序的链表，默认是升序 ；
+3. 最底层的链表包含所有元素；
+4. 如果一个元素出现在第i层的链表中，则它在第i层之下的链表也都会出现；
+5. 跳表的每个节点包含两个指针，一个指向同一链表中的下一个元素，一个指向下面一层的元素。
+
+
+
 一致性算法 Paxos等 https://zhuanlan.zhihu.com/p/130332285
+
+
 
 数据库连接池 https://juejin.cn/post/7310033153904656399
 
@@ -229,6 +243,8 @@ https://baijiahao.baidu.com/s?id=1774745070951278024&wfr=spider&for=pc
 
 
 
+
+
 ## Hisytrix
 
 
@@ -300,6 +316,12 @@ Java 8函数式编程
 数组缓存局部性质
 
 List\Map\Set 经典原理？
+
+IO vs NIO
+
+不使用缓冲区 vs 使用缓冲区
+
+https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/io/io-basis.md
 
 ## Java 并发
 

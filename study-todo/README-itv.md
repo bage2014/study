@@ -28,8 +28,6 @@ bage面试 https://github.com/bage2014/interview
 
 书籍 https://github.com/xjq7/books
 
-面试体系整理 https://gitee.com/souyunku/DevBooks
-
 知识汇总 https://github.com/Snailclimb/JavaGuide、https://javaguide.cn/
 
 Java 体系 https://github.com/whx123/JavaHome
