@@ -12,14 +12,14 @@ public class BasicTest {
 
     public static void main(String[] args) {
 
-        try (FileOutputStream output = new FileOutputStream("output.txt")) {
+        try (FileOutputStream output = new FileOutputStream("file.txt")) {
             byte[] array = "JavaGuide".getBytes();
             output.write(array);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        try (InputStream fis = new FileInputStream("input.txt")) {
+        try (InputStream fis = new FileInputStream("file.txt")) {
             System.out.println("Number of remaining bytes:" + fis.available());
             int content = -1;
             long skip = fis.skip(2);
