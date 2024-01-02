@@ -77,6 +77,11 @@ http://localhost:8021/jvm/add?step=100
 ```
 new 然后释放
 http://localhost:8017/jvm/newAndFinish?step=10
+http://localhost:8008/jvm/newAndFinish?step=10
+http://localhost:8011/jvm/newAndFinish?step=10
+
+
+
 
 runtime info
 http://localhost:8017/jvm/info
