@@ -14,7 +14,7 @@ import java.util.Map;
 public class JvmGcController {
 
     private final int MB = 1024 * 1024;
-    Map<String, Object> map = new HashMap<>();
+    private Map<String, Object> map = new HashMap<>();
 
     @RequestMapping("/gc/{step}")
     public Object gc(@PathVariable(value = "step", required = false) Integer step) {
@@ -37,6 +37,18 @@ public class JvmGcController {
         }
         for (int i = 0; i < step; i++) {
             map.put(System.currentTimeMillis() + "-bage-add-" + i, new byte[MB * 10]);
+        }
+        return 1;
+    }
+
+    @RequestMapping("/addAndFinish/{step}")
+    public Object addAndFinish(@PathVariable(value = "step", required = false) Integer step) {
+        log.debug("JvmGcController addAndFinish step = {}", step);
+        if (step == null) {
+            step = 100;
+        }
+        for (int i = 0; i < step; i++) {
+            byte[] bytes = new byte[MB * 10];
         }
         return 1;
     }
