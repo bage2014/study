@@ -651,6 +651,16 @@ https://zhuanlan.zhihu.com/p/267388951
 
 https://blog.csdn.net/yunxing323/article/details/108304534
 
+
+
+GC 过程 
+
+```
+localhost:8000/jvm/addAndFinish/step=10000
+```
+
+
+
 ### 日志信息
 
 - GC类型
