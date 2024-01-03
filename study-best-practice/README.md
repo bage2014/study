@@ -282,12 +282,17 @@ https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-d
 
 redis 大key https://juejin.cn/post/7309482256808509459
 
-```
-http://localhost:8000/redis/random/set
 
+
+请求过程
+
+```
+并发
+http://localhost:8000/redis/random/set
+并发
 http://localhost:8000/redis/big/number/set?count=100
 
-
+大key
 http://localhost:8000/redis/big/key/set?count=100
 
 http://localhost:8000/redis/big/key/set?count=10000
@@ -295,6 +300,13 @@ http://localhost:8000/redis/big/key/set?count=10000
 http://localhost:8000/redis/big/value/set?count=100
 
 http://localhost:8000/redis/big/value/set?count=10000
+
+http://localhost:8000/redis/big/value/set?count=10000
+
+热点key
+http://localhost:8000/redis/count/init?max=10000
+http://localhost:8000/redis/count/get?index=1
+
 
 
 ```
