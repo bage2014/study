@@ -325,7 +325,9 @@ https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/io/io-basis.md
 
 ## Java 并发
 
-线程池
+线程池 
+
+线程池 存活时间 存活地址确认
 
 状态
 
@@ -344,6 +346,14 @@ https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/io/io-basis.md
 状态扭转
 
 常用方法
+
+
+
+
+
+
+
+
 
 ## MyBatis
 
