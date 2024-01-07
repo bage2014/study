@@ -321,6 +321,19 @@ http://localhost:3000/d/RpSjVqWMz/redis?orgId=1&refresh=10s
 
 
 
+## Mybatis
+
+一级二级缓存
+
+```
+一级缓存
+http://localhost:8000/mybatis/cache1/phone=1234
+
+二级缓存
+http://localhost:8000/mybatis/cache2/phone=1234
+
+```
+
 
 
 ## metrics
