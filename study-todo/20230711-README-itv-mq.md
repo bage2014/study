@@ -229,6 +229,12 @@ kafka基于sendfile实现零拷贝，数据不需要在应用程序做业务处�
 
 
 
+
+
 ## 参考链接  
+
+kafaka 笔记 https://zhuanlan.zhihu.com/p/436103370
+
+基本原理 https://www.cnblogs.com/zsbinup/p/15997845.html
 
 参考链接 https://github.com/rbmonster/learning-note/blob/master/src/main/java/com/toc/MESSAGEQUEUE.md

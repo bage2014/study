@@ -164,6 +164,8 @@ lfu: Least Frequently Used 最不频繁使用
 
 
 
+磁盘 https://zhuanlan.zhihu.com/p/556224472?utm_id=0
+
 
 
 发展路线 https://github.com/kamranahmedse/developer-roadmap
@@ -296,6 +298,8 @@ rdb 保存 + 高并发写入读写 ？
 Rocket 安装基本使用
 
 Kafka 安装和基本使用
+
+
 
 ## Lock 
 
