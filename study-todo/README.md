@@ -327,6 +327,12 @@ IO vs NIO
 
 https://github.com/Snailclimb/JavaGuide/blob/main/docs/java/io/io-basis.md
 
+
+
+范型 https://pdai.tech/md/java/basic/java-basic-x-generic.html
+
+
+
 ## Java 并发
 
 线程池 
