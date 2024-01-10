@@ -224,6 +224,8 @@ JOL  对象内存分布
 
 https://baijiahao.baidu.com/s?id=1774745070951278024&wfr=spider&for=pc
 
+https://cloud.tencent.com/developer/article/1838833
+
 - 计数器
 - 滑动窗口
 - 令牌桶
