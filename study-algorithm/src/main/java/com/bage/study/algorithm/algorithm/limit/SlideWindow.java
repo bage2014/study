@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * https://cloud.tencent.com/developer/article/1838833
+ * 滑动时间窗算法
+ * 滑动窗口
  */
 public class SlideWindow {
 
@@ -19,8 +21,9 @@ public class SlideWindow {
 
     public static void main(String[] args) throws InterruptedException {
         while (true) {
+            boolean isGo = SlideWindow.isGo("ListId", 2, 10000L);
             // 任意10秒内，只允许2次通过
-            System.out.println(LocalTime.now().toString() + SlideWindow.isGo("ListId", 2, 10000L));
+            System.out.println(LocalTime.now().toString() + ":" + isGo);
             // 睡眠0-10秒
             Thread.sleep(1000 * new Random().nextInt(10));
         }
