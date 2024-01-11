@@ -2,7 +2,7 @@ package com.bage.study.algorithm.algorithm.limit;
 
 /**
  * https://cloud.tencent.com/developer/article/1838833
- *
+ * 漏桶算法
  */
 public class LeakyBucket {
   public long timeStamp = System.currentTimeMillis();  // 当前时间

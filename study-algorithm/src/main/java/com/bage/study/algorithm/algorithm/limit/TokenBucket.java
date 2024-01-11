@@ -2,7 +2,7 @@ package com.bage.study.algorithm.algorithm.limit;
 
 /**
  * https://cloud.tencent.com/developer/article/1838833
- *
+ * 令牌桶算法
  */
 public class TokenBucket {
   public long timeStamp = System.currentTimeMillis();  // 当前时间

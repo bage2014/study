@@ -2,7 +2,7 @@ package com.bage.study.algorithm.algorithm.limit;
 
 /**
  * https://cloud.tencent.com/developer/article/1838833
- *
+ * 计数器限流算法
  */
 public class Counter {
     public long timeStamp = getNowTime();
