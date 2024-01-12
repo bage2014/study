@@ -23,7 +23,7 @@
 	<!--设置-->
 	<settings>
 		<!-- SESSION：开启一级缓存功能；STATEMENT：缓存只对当前执行的这一个 SQL 语句有效，也就是没有用到一级缓存功能。 -->
-		<setting name="localCacheScope" value="SESSION"/>
+<!--		<setting name="localCacheScope" value="SESSION"/>-->
 
 		<!--开启二级缓存-->
 		<setting name="cacheEnabled" value="true"/>
