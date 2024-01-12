@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.InputStream;
 
-public class BasicUsage {
+public class BasicCache1Usage {
 
     public static void main(String[] args) throws Exception {
         String resource = "mybatis-config.xml";
@@ -17,13 +17,25 @@ public class BasicUsage {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             String statement = "com.bage.study.mybatis.common.dao.UserMapper.queryOne";
             User user = session.selectOne(statement, 1);
-            System.out.println(user);
+            System.out.println("query11:" + user);
 
             User user2 = session.selectOne(statement, 1);
-            System.out.println(user2);
+            System.out.println("query12:" + user2);
 
-            User user3 = session.selectOne(statement, 1);
-            System.out.println(user3);
+        }
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            String statement = "com.bage.study.mybatis.common.dao.UserMapper.queryOne";
+            User user = session.selectOne(statement, 1);
+            System.out.println("query21:" + user);
+
+        }
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            String statement = "com.bage.study.mybatis.common.dao.UserMapper.queryOne";
+            User user = session.selectOne(statement, 1);
+            System.out.println("query31:" + user);
+
         }
 
     }
