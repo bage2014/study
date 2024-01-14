@@ -50,6 +50,12 @@ https://github.com/lmhmhl/Resilience4j-Guides-Chinese/blob/main/index.md
 
 
 
+## gateway
+
+Spring cloud gateway 解析
+
+https://baijiahao.baidu.com/s?id=1735384008263810697&wfr=spider&for=pc
+
 
 
 ## 配置中心
