@@ -1,5 +1,8 @@
 package com.bage.study.java.spi;
 
+import java.util.Iterator;
+import java.util.ServiceLoader;
+
 /**
  *
  ------
@@ -8,12 +11,12 @@ package com.bage.study.java.spi;
  */
 public class TestCase {
     public static void main(String[] args) {
-//        ServiceLoader<Search> s = ServiceLoader.load(Search.class);
-//        Iterator<Search> iterator = s.iterator();
-//        while (iterator.hasNext()) {
-//           Search search =  iterator.next();
-//           search.searchDoc("hello world");
-//        }
+        ServiceLoader<Search> s = ServiceLoader.load(Search.class);
+        Iterator<Search> iterator = s.iterator();
+        while (iterator.hasNext()) {
+           Search search =  iterator.next();
+           search.searchDoc("hello world");
+        }
 
 
     }
