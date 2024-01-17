@@ -191,6 +191,7 @@
       <module>study-pac4j</module>
       <module>study-feign</module>
       <module>study-nacos</module>
+      <module>study-sentinel/study-sentinel-spring</module>
 
   </modules>
 </project>
