@@ -1665,6 +1665,31 @@ docker run --name bage-redis-stat --link bage-redis:redis -p 8080:63790 -d insre
 
 
 
+### 安装配置 Sentinel Dashboard
+
+how to download
+
+```
+docker pull bladex/sentinel-dashboard
+```
+
+how to start
+
+```
+docker run --name bage-sentinel  -d -p 8858:8858 -d  bladex/sentinel-dashboard
+```
+
+how to visit
+
+```
+http://localhost:8858/
+
+```
+
+account and password: [sentinel/sentinel]
+
+
+
 ### 安装 mysqld_exporter
 
 参考链接 
