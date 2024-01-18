@@ -19,8 +19,13 @@ import java.util.List;
 /**
  * 启动时加入 JVM 参数 -Dcsp.sentinel.dashboard.server=consoleIp:port 指定控制台地址和端口。
  * -Dcsp.sentinel.dashboard.server=localhost:port
+ * -Dcsp.sentinel.dashboard.server=localhost:8999
+ *
  * 若启动多个应用，则需要通过 -Dcsp.sentinel.api.port=xxxx 指定客户端监控 API 的端口（默认是 8719）。
  * 控制台下载 https://github.com/alibaba/Sentinel/releases
+ *
+ * 也可以采用配置方式启动：
+ * https://sentinelguard.io/zh-cn/docs/startup-configuration.html
  *
  */
 @SpringBootApplication

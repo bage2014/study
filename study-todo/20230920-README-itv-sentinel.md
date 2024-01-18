@@ -46,14 +46,47 @@ https://github.com/alibaba/Sentinel/releases
 启动
 
 ```
+cd /Users/bage/bage/software
+
+
 java -Dserver.port=8999 -Dcsp.sentinel.dashboard.server=localhost:8999 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar
+
+
+software % java -Dserver.port=8999 -Dcsp.sentinel.dashboard.server=localhost:8999 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard-1.8.7.jar 
+
 ```
+
+
+
+访问 
+
+http://localhost:8999//#/login
+
+sentinel/sentinel
+
+
 
 客户端集成 
 
 https://sentinelguard.io/zh-cn/docs/dashboard.html
 
+启动添加参数 
 
+```bash
+-Dcsp.sentinel.dashboard.server=localhost:8999
+```
+
+
+
+常用配置
+
+https://sentinelguard.io/zh-cn/docs/startup-configuration.html
+
+
+
+验证
+
+http://localhost:8080/hello2
 
 
 
