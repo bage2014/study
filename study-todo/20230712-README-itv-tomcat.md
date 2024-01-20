@@ -358,6 +358,8 @@ https://u19900101.github.io/2021-09-07-tomcat/
 
 ## 参考链接 
 
+tomcat 解析 https://pdai.tech/md/framework/tomcat/tomcat-overview.html
+
 https://mp.weixin.qq.com/s/q9OkCFFHoXwbg2-qrk1csA
 
 【2023-07-12】https://www.jb51.net/article/219367.htm
