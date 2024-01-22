@@ -148,6 +148,10 @@ https://mp.weixin.qq.com/s?__biz=MzU0ODMyNDk0Mw==&mid=2247495510&idx=1&sn=7a9f17
 
 
 
+### 数据库连接池
+
+使用连接池 vs 不使用连接池
+
 数据库连接池 https://juejin.cn/post/7310033153904656399
 
 连接池 Druid 实现原理 https://juejin.cn/post/7310033153904656399
