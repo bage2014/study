@@ -71,6 +71,12 @@ hashmap 解析 https://blog.csdn.net/v123411739/article/details/78996181
 
 ![pastedGraphic.png](https://img-blog.csdn.net/20180121151050372?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdjEyMzQxMTczOQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
 
+数据结构
+
+![](https://pdai.tech/images/java/java-collection-hashmap8.png)
+
+
+
 
 
 ## concurrenthashmap
@@ -231,6 +237,30 @@ https://www.jianshu.com/p/ae67972d1156
 
 
 
+## MapSet
+
+https://pdai.tech/md/interview/x-interview.html#_2-java-%E9%9B%86%E5%90%88
+
+集合基础 
+
+### ArrayList
+
+数据结构
+
+![](https://pdai.tech/images/collection/ArrayList_base.png)
+
+
+
+增长大约是其原容量的1.5倍
+
+ArrayList也采用了快速失败的机制
+
+
+
+
+
+
+
 ## 反射
 
 https://github.com/whx123/JavaHome/blob/master/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%B0%88%E8%B0%88Java%E5%8F%8D%E5%B0%84%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%86%8D%E5%88%B0%E5%8E%9F%E7%90%86.md
@@ -265,19 +295,11 @@ https://www.cnblogs.com/dolphin0520/p/3613043.html
 
 https://www.cnblogs.com/wangjzh/p/5258254.html
 
-1. 1. 1. **结构图**
-
-![pastedGraphic_3.png](/var/folders/cq/j95gptn923n2rg0f3gr8p0r80000gn/T/abnerworks.Typora/C1F5D4F3-B609-4779-BC3B-181C64F51E57/pastedGraphic_3.png)
-
-![pastedGraphic_4.png](/var/folders/cq/j95gptn923n2rg0f3gr8p0r80000gn/T/abnerworks.Typora/C1F5D4F3-B609-4779-BC3B-181C64F51E57/pastedGraphic_4.png)
-
-1. 1. 1. **各个区域说明**
-
-**程序计数器（****Program Counter Register****）**
+### 程序计数器
 
 它保存的是程序当前执行的指令的地址（也可以说保存下一条指令的所在存储单元的地址），当CPU需要执行指令时，需要从程序计数器中得到当前需要执行的指令所在存储单元的地址，然后根据得到的地址获取到指令，在得到指令之后，程序计数器便自动加1或者根据转移指针得到下一条指令的地址，如此循环，直至执行完所有的指令。
 
-**Java****栈也称作虚拟机栈（****Java Vitual Machine Stack****）**
+**Java栈也称作虚拟机栈**
 
 当线程执行一个方法时，就会随之创建一个对应的栈帧，并将建立的栈帧压栈。当方法执行完毕之后，便会将栈帧出栈。因此可知，线程当前执行的方法所对应的栈帧必定位于Java栈的顶部。
 
