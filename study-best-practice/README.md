@@ -686,6 +686,30 @@ localhost:8000/jvm/addAndFinish/step=10000
 
 
 
+**弱引用验证**
+
+内存占用
+
+```
+localhost:8000/jvm/map/add?step=100
+```
+
+GC 模拟
+
+```
+http://localhost:8000/jvm/addAndFinish/1000
+```
+
+查看大小
+
+```
+localhost:8000/jvm/map/size
+```
+
+
+
+
+
 ### 日志信息
 
 - GC类型
