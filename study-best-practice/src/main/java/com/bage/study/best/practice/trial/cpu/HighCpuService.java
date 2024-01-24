@@ -2,9 +2,11 @@ package com.bage.study.best.practice.trial.cpu;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @NoArgsConstructor
+@Component
 public class HighCpuService {
 
     private static int countHeavy = 0;
