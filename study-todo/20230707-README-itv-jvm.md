@@ -349,19 +349,15 @@ VM的一些静态数据结构里指向GC堆里的对象的引用，例如说HotS
 
 https://cloud.tencent.com/developer/article/2308202 腾讯云介绍 
 
-
-
 https://www.bilibili.com/video/BV1Bs4y1N7KZ/?spm_id_from=333.788&vd_source=72424c3da68577f00ea40a9e4f9001a1
-
-
 
 https://www.bilibili.com/video/BV1f3411f7LC/?spm_id_from=pageDriver&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 https://gitee.com/souyunku/DevBooks/blob/master/docs/Jvm/Jvm%E6%9C%80%E6%96%B02021%E5%B9%B4%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E7%AD%94%E6%A1%88%EF%BC%8C%E6%B1%87%E6%80%BB%E7%89%88.md#4%E5%90%84%E7%A7%8D%E5%9B%9E%E6%94%B6%E5%99%A8%E5%90%84%E8%87%AA%E4%BC%98%E7%BC%BA%E7%82%B9%E9%87%8D%E7%82%B9cmsg1
 
-
-
 ### Serial
+
+串行回收
 
 ### Serial Old 
 
@@ -371,9 +367,11 @@ https://gitee.com/souyunku/DevBooks/blob/master/docs/Jvm/Jvm%E6%9C%80%E6%96%B020
 
 执行过程 
 
-
+并行回收
 
 ## G1
+
+G1垃圾回收器
 
 https://cloud.tencent.com/developer/article/2308202
 
