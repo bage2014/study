@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * GC 时候，WeakHashMap 内容 自动会被回收 
+ * GC 时候，WeakHashMap 内容 自动会被回收
  */
 @Component
 @Slf4j
