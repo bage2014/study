@@ -163,5 +163,31 @@ http://localhost:8017/file/leaking?fileName=/Users/bage/bage/github/study/study-
 
 
 
+## 垃圾回收器启用配置
+
+配置启用串行回收器
+
+- ```
+  -XX:+UseSerialGC
+  ```
+
+配置启用并行回收器
+
+- ```
+  -XX:+UseParallelGC
+  ```
+
+配置启用并发标记清除回收器
+
+- ```
+  -XX:+UseConcMarkSweepGC
+  ```
+
+配置启用G1回收器
+
+- ```
+  -XX:+UseG1GC
+  ```
+
 ## 参考链接
 
