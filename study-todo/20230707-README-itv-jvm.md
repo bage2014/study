@@ -1,4 +1,5 @@
-# study-JVM  #
+# study-JVM
+
 ## 简介
 
 主要说： HotSpot JVM
@@ -104,7 +105,26 @@ Eden 新生区；From 和 To 相互拷贝回收，理论上某一时刻只用到
 
 
 
+## 字节码文件 
 
+**文件结构属性**
+
+字节码文件信息\常量池\方法表集合\类名\等等
+
+![](https://pdai.tech/images/jvm/java-jvm-class-2.png)
+
+
+
+**反编译工具**
+
+输入命令查看输出内容
+
+`javap -verbose -p Main.class` 
+
+```
+
+bage@bagedeMacBook-Pro bage % javac HelloTest.java 
+```
 
 
 
@@ -256,11 +276,33 @@ https://www.bilibili.com/video/BV1eu4y127EG/?spm_id_from=333.337.search-card.all
 
 
 
+## GC 名词概念
+
+https://cloud.tencent.com/developer/article/2308202
+
+#### **部分收集(Partial GC)**
+
+##### **新生代收集**
+
+Young GC   Minor GC
+
+Eden、s1、s2的清理，都是发生在新生代
+
+##### **老年代收集**
+
+Major GC ，Old GC
+
+#### **整堆收集**
+
+Full GC，清理整个堆空间，包括年轻代和老年代，理解
+
+
+
 ## 回收算法
 
 https://juejin.cn/post/7303414348932382774
 
-
+https://cloud.tencent.com/developer/article/2308202
 
 ### 标记清除算法
 
@@ -272,7 +314,11 @@ https://juejin.cn/post/7303414348932382774
 优点：实现简单，不需要对象进行移动
  缺点：标记、清除过程效率低，产生大量不连续的内存碎片，提高了垃圾回收的效率
 
-![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9e79674ee2154218ae2dfad37cb2c88b~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1004&h=314&s=13098&e=png&b=ffffff)
+
+
+这个算法，就是把死忘的对象标记出来，然后清除掉，那么清除完之后，就会出现碎片问题，因为存活的对象和死亡的对象在内存中是掺杂一起的，把死亡对象清走，留下的就是零零碎碎的位置。
+
+![](https://developer.qcloudimg.com/http-save/9862454/eeeb7395bf13a35400741797f3048283.png)
 
 
 
@@ -283,18 +329,40 @@ https://juejin.cn/post/7303414348932382774
 优点：按顺序分配内存即可，实现简单、运行高效，不用考虑内存碎片
  缺点：可用的内存大小缩小为原来的一半，对象存活率高时会频繁进行复制
 
-![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3a47019619444524bbdef3547830d7bc~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1006&h=298&s=13158&e=png&b=ffffff)
+
+
+这个算法，就是为了避免内存碎片问题，标记存活的对象，移动到另一片空闲的位置，空闲区域，之后，以新移动的空间作为现在的活动区，之前活动区域，直接全清理掉。作为空闲区，方便下一次GC。
+
+![](https://developer.qcloudimg.com/http-save/9862454/cefd4fa40aabbeea1ffe46b7a4576141.png)
 
 
 
-### 标记压缩算法
+
+
+### 标记压缩算法[标记整理算法]
 
 在新生代中可以使用复制算法，但是在老年代就不能选择复制算法了，因为老年代的对象存活率会较高，这样会有较多的复制操作，导致效率变低。标记-清除算法应该可以应用在老年代中，但是它效率不高，在内存回收后容易产生大量内存碎片。因此就出现了一种标记-整理算法，与标记-清除不同的是，在标记可回收的对象后将所有存活的对象压缩到内存的一端，使他们紧凑的排列在一起，然后对端边界以外的内存进行回收。回收后，已用和未用的内存都各自一边
 
 优点：解决了标记-清除算法存在内存碎片问题
  缺点：仍需要进行局部对象移动，一定程度上降低了效率
 
-![](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/de59f419ee144cb899a46016252d9a3c~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1004&h=284&s=12102&e=png&b=ffffff)
+
+
+这种算法，不会像标记清除算法那样，有内存碎片问题，且不会像标记复制算法那样，需要额外的空间。但是移动的操作，算法的效率就比标记辅助慢些，所以没有万金油，要根据合适的场景。
+
+![](https://developer.qcloudimg.com/http-save/9862454/9c6691059a9a8fb2e60393aeaa7009e5.png)
+
+
+
+### **分代收集算法思想**
+
+上面我们看堆空间采用垃圾回收期，采用新生代和老年代，采用的就是分代回收算法的思想，年轻代存活时间短，死的快，就采用高频回收，老年代都是老油条，老不死的，就进行低频回收。
+
+分代算法根据对象特点，年轻代适合标记复制算法，刚才也讲到了，只复制少量存活的，老年代则适合标记清除，标记压
+
+缩算法，因为存活的是多数的，清除少量死亡的。
+
+ 通过新生代和老年代的划分，使得MinorGC的频率更高，早早的把死的快的对象回收完，减少Old区内存不足，发生FullGC的频率。
 
 
 
@@ -349,33 +417,143 @@ VM的一些静态数据结构里指向GC堆里的对象的引用，例如说HotS
 
 https://cloud.tencent.com/developer/article/2308202 腾讯云介绍 
 
+总结归纳 https://pdai.tech/md/java/jvm/java-jvm-gc.html#3-%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E5%9B%9E%E6%94%B6 
+
+G1介绍 https://pdai.tech/md/java/jvm/java-jvm-gc-g1.html
+
+官方？ http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/G1GettingStarted/index.html
+
 https://www.bilibili.com/video/BV1Bs4y1N7KZ/?spm_id_from=333.788&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 https://www.bilibili.com/video/BV1f3411f7LC/?spm_id_from=pageDriver&vd_source=72424c3da68577f00ea40a9e4f9001a1
 
 https://gitee.com/souyunku/DevBooks/blob/master/docs/Jvm/Jvm%E6%9C%80%E6%96%B02021%E5%B9%B4%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E7%AD%94%E6%A1%88%EF%BC%8C%E6%B1%87%E6%80%BB%E7%89%88.md#4%E5%90%84%E7%A7%8D%E5%9B%9E%E6%94%B6%E5%99%A8%E5%90%84%E8%87%AA%E4%BC%98%E7%BC%BA%E7%82%B9%E9%87%8D%E7%82%B9cmsg1
 
-### Serial
+https://cloud.tencent.com/developer/article/2308202
 
-串行回收
+### **Serial（新生代+老年代）**
+
+这类垃圾收集器就比较鸡肋了，在单核cpu环境比较高效，适用于小型的应用，一般javaweb，springboot不会采用这类收集器
+
+算法，新生代采用标记复制，老年代采用标记整理
+
+
+
+Serial一般和CMS进行配合，或者和Serial Old,
+
+Serial Old是Serial收集器的老年代版本，jdk5之前和Parallel配合使用，或者作为CMS的备选方案
+
+新生代采用单线程进行标记复制算法的回收，老年代也是单线程，进行标记整理算法，都会发生STW
+
+
 
 ### Serial Old 
 
-...
+Serial 中专门处理老年代的部分
 
-### CMS
 
-执行过程 
 
-并行回收
+### **ParNew（新生代）**
 
-## G1
+工作在年轻代上，和ParNew的区别就是将穿行改为了并行，其他基本和Serial一样，应用大型项目，单核比Serial低
+
+算法：新生代采用复制算法，老年代采用标记整理算法
+
+新生代多个线程进行标记复制算法，老年代取与对应的回收器
+
+### **Parallel（新生代+老年代）**
+
+新生代垃圾收集器，
+
+新生代采用标记复制，老年代采用标记整理
+
+算法：新生代采用标记复制算法，老年代采用标记整理算法，
+
+新生代多个线程进行标记复制，老年代标记整理也是多个线程，并行处理，都会发生STW
+
+Parallel与ParNew区别
+
+-XX:+UseParallelGC仅仅对年轻代有效，不可以和CMS收集器同时使用
+
+-XX:+UseParNewGC设置年轻代为多线程收集，可以和CMS配合使用
+
+
+
+### **CMS（老年代）**
+
+执行过程 、并行回收
+
+全程交错Concurrent Mark Sweep，是一款并发的，使用标记清除算法！的垃圾回收期
+
+针对老年代使用的
+
+适用于对响应要求较高的应用程序
+
+整个过程分四步
+
+初始标记、并发标记、重新标记、并发清除
+
+老年代中，初始标记，单线程进行标记与GCROOT直接关联的对象，会发生STW，
+
+并发标记，单个线程处理，此时不会影响用户线程的执行，不会STW
+
+重新标记：处理并发标记出现错误标记的，多个线程重新标记，会发生STW
+
+并发清理：线程与线程并发清理，此时不会STW 
+
+
+
+### G1
 
 G1垃圾回收器
 
-https://cloud.tencent.com/developer/article/2308202
+Garbage First所以叫做G1
+
+在JDK9的时候成为默认的垃圾收集器
+
+**核心思想**
+
+将内存划分多个独立的区域Region，取消了物理上年轻代与老年代的物理划分，但是保留了逻辑上的年轻代与老年代，新增了一个H区存放大对象，
+
+分代没有固定思想。年轻代与老年代的大小式动态分配的
+
+局部采用标记复制算法，整体采用标记整理算法，没有内存碎片问题
+
+通过动态的判断进行垃圾回收，引入MixedGC，动态回收，尽量避免FullGC的发生，从而提高响应速度
+
+**注意点**！
+
+由于G1的特性，动态分配年轻代与老年代空间的 ，所以不手工设置年轻代大小，比如使用 -Xmn 选项或 -XX:NewRatio 等设置年轻代大小
+
+暂停时间的目标不要设置太小，通常100~200ms比较合理，太短的化，每次只能回收很小一部分，可能导致垃圾堆积
+
+![](https://developer.qcloudimg.com/http-save/9862454/6cbe6b99076967fc50d14149114058ed.png)
+
+内存结构
 
 
+
+![](https://pdai.tech/images/pics/9bbddeeb-e939-41f0-8e8e-2b1a0aa7e0a7.png)
+
+**总结**
+
+- Region动态变化，可能垃圾回收之前是年轻代，之后变成老年代，这样回收更精细化
+- 整体标记整理，局部标记复制，不产生内存碎片
+- 除了YongGC，FullGC，还有混合GC:MixedGC
+
+
+
+腾讯云文章 https://cloud.tencent.com/developer/article/2308202
+
+B站视频 https://www.bilibili.com/video/BV1ZV4y1i7hc/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+
+
+### GC回收器汇总
+
+
+
+![](https://developer.qcloudimg.com/http-save/9862454/4ff8f8c99228573cac6050b409d800ff.png)
 
 ## GC 相关
 
