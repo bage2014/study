@@ -121,6 +121,10 @@ https://www.cnblogs.com/xingchong/p/16478639.html
 
 https://zhuanlan.zhihu.com/p/536330578
 
+B数结构 https://pdai.tech/md/db/sql-mysql/sql-mysql-b-tree.html
+
+B+ Tree 是基于 B Tree 和叶子节点顺序访问指针进行实现，它具有 B Tree 的平衡性，并且通过顺序访问指针来提高区间查询的性能。
+
 
 
 ![](https://pic3.zhimg.com/v2-66e70af9257c5e174baa1b103aff9f1a_r.jpg)
@@ -406,13 +410,13 @@ https://zhuanlan.zhihu.com/p/112857507 有很多关于索引的点
 
 https://baijiahao.baidu.com/s?id=1742126549941015304&wfr=spider&for=pc
 
-- 读未提交（read uncommitted）
+### 读未提交（read uncommitted）
 
 一个事务还没提交时，它修改的数据都可以被别的事物看到。
 
 事务可以读取未提交的数据，这也被称为脏读（Dirty Read）。
 
-- 读已提交(read committed)
+### 读已提交(read committed)
 
 一个事务提交之后，它修改的数据才会被别的事物看到。
 
@@ -420,13 +424,13 @@ https://baijiahao.baidu.com/s?id=1742126549941015304&wfr=spider&for=pc
 
 这个级别有时候叫做不可重复读（nonrepeatble read），因为两次执行同样的查询，可能会得到不一样的结果。
 
-- 可重复读(repeatable read)
+### 可重复读(repeatable read)
 
 一个事务执行过程中看到的数据，总是和这个事务开启时看到的数据是一致的。在可重复读的隔离级别下，未提交的事务对其他事务也是不可见的。
 
 当某个事务在读取某个范围内的记录时，另一个事务又在该范围内插入了新的记录，当之前的事务再次读取该范围的记录时，会产生幻行（Phantom Row）
 
-- 串行化(serializable)
+### 串行化(serializable)
 
 数据的读和写都会加锁，读会加读锁，写会加写锁。当遇到读写锁冲突时，后访问的事务必须等前一个事务执行完成后，再继续执行。
 
