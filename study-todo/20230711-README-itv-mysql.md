@@ -170,6 +170,12 @@ https://www.cnblogs.com/LBSer/p/3403933.html
 
 
 
+## MVCC
+
+基本原理 https://pdai.tech/md/db/sql-mysql/sql-mysql-mvcc.html
+
+
+
 ## MySQL大表查询为什么不会爆内存
 
 - MySQL 是边读变发，因此对于数据量很大的查询结果来说，不会再 server 端保存完整的结果集
@@ -493,9 +499,9 @@ show table status;
 
 ## 备忘
 
+MySQL 解析 https://pdai.tech/md/db/sql-mysql/sql-mysql-overview.html
+
 https://www.bilibili.com/video/BV1Ca411R7GG?p=46&vd_source=72424c3da68577f00ea40a9e4f9001a1
-
-
 
 
 索引相关解释说明 https://blog.csdn.net/taoqilin/article/details/121230649
