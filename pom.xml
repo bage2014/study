@@ -192,6 +192,7 @@
       <module>study-feign</module>
       <module>study-nacos</module>
       <module>study-sentinel/study-sentinel-spring</module>
+      <module>bage-spring-boot-starter-ping/study-spring-boot-dev-tools</module>
 
   </modules>
 </project>
