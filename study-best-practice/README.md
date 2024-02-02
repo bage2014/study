@@ -718,10 +718,31 @@ https://blog.csdn.net/yunxing323/article/details/108304534
 
 
 
+GC 日志配置
+
+```
+jdk8 :
+java -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:my-gc-%t.gc.log -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
+
+jdk17 :
+java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
+
+jdk21 :
+java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
+
+Remote :
+java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
+ --spring.config.location=file:///Users/bage/bage/config/application-remore-db.properties
+```
+
+
+
 GC 过程 
 
 ```
 localhost:8000/jvm/addAndFinish/step=10000
+
+
 ```
 
 

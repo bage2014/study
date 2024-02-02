@@ -5,6 +5,8 @@
 
 中文官网？http://redis.cn/documentation.html
 
+redis 知识汇总解析 https://pdai.tech/md/db/nosql-redis/db-redis-overview.html
+
 ## Key关键点
 
 - 行业调研、优势、代替方案等

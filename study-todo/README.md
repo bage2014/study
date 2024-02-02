@@ -11,7 +11,7 @@ Spring3+jdk17
 
 TIMESTAMP vs DATETIME
 
-
+mysql 不使用 连接池 vs 使用连接池 性能对比
 
 分库分表 https://tech.meituan.com/2016/11/18/dianping-order-db-sharding.html
 
