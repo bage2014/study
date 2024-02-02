@@ -91,6 +91,8 @@ MySQL 架构  https://juejin.cn/post/7302330573382008844
 
 包含数据恢复 https://www.qycn.com/xzx/article/17076.html
 
+SQL 执行过程解析 https://pdai.tech/md/db/sql-mysql/sql-mysql-execute.html
+
 
 
 **执行过程参考**
@@ -110,6 +112,36 @@ https://baijiahao.baidu.com/s?id=1761898275313869224&wfr=spider&for=pc
 6、数据库引擎处理：MySQL将执行计划发送给相应的数据库引擎进行处理，执行计划可能被翻译成一组底层操作指令，如数据扫描、索引查找、排序、分组等。
 
 7、数据返回：MySQL将执行结果返回给客户端，可以是查询结果集或者操作结果。
+
+
+
+
+
+**执行引擎-执行器**
+
+准备更新一条 SQL 语句
+
+MySQL（innodb）会先去缓冲池（BufferPool）中去查找这条数据，没找到就会去磁盘中查找，如果查找到就会将这条数据加载到缓冲池（BufferPool）中
+
+在加载到 Buffer Pool 的同时，会将这条数据的原始记录保存到 undo 日志文件中
+
+innodb 会在 Buffer Pool 中执行更新操作
+
+更新后的数据会记录在 redo log buffer 中
+
+MySQL 提交事务的时候，会将 redo log buffer 中的数据写入到 redo 日志文件中 刷磁盘可以通过 innodb_flush_log_at_trx_commit 参数来设置 
+
+- 值为 0 表示不刷入磁盘
+- 值为 1 表示立即刷入磁盘
+- 值为 2 表示先刷到 os cache
+
+myslq 重启的时候会将 redo 日志恢复到缓冲池中
+
+![](https://pdai.tech/images/db/mysql/db-mysql-sql-14.png)
+
+------
+
+原文链接：https://pdai.tech/md/db/sql-mysql/sql-mysql-execute.html
 
 
 
