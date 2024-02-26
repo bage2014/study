@@ -18,6 +18,22 @@ https://www.cnkirito.moe/instrument/
 
 https://plugins.jetbrains.com/plugin/13581-arthas-idea
 
+https://www.yuque.com/arthas-idea-plugin/help/pe6i45
+
+**在线文档** 
+
+https://www.yuque.com/arthas-idea-plugin/help/pe6i45
+
+https://www.yuque.com/arthas-idea-plugin
+
+
+
+**例如**
+
+```
+watch com.bage.study.best.practice.controller.UserController insert '{params,returnObj,throwExp}'  -n 5  -x 3 
+```
+
 
 
 ## 参考链接 ##
@@ -92,6 +108,7 @@ $ java -jar arthas-boot.jar
     thread -i 1000
 
    
+
 
 
 
@@ -222,7 +239,7 @@ thread {threadId} 会打印线程的栈
         @Integer[47],
         @Integer[2675531],
     ]
-    
+
 
 **查看入参 响应**
 
