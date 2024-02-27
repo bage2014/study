@@ -31,7 +31,13 @@ https://www.yuque.com/arthas-idea-plugin
 **例如**
 
 ```
+cd /Users/abcd/abcd/software/arthas
+
+java -jar arthas-boot.jar
+
 watch com.bage.study.best.practice.controller.UserController insert '{params,returnObj,throwExp}'  -n 5  -x 3 
+
+http://localhost:8000/user/insert
 ```
 
 
@@ -68,6 +74,8 @@ watch com.bage.study.best.practice.controller.UserController insert '{params,ret
 
 ### 启动、Attach
 
+    cd /Users/abcd/abcd/software/arthas
+    
     java -jar arthas-boot.jar
 
 选择attach的Java进程，输入对应的序号    
