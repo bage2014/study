@@ -142,6 +142,12 @@ redis
 
 ## 其他
 
+分库分表 
+
+https://pdai.tech/md/framework/ds-sharding/sharding-x-shard.html
+
+
+
 时间轮算法
 
 https://juejin.cn/post/7083795682313633822

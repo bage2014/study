@@ -103,6 +103,16 @@ LockSupport是一个线程阻塞工具类.所有的方法都是静态方法.可�
 
 
 
+
+
+## 线程状态 
+
+状体扭转 
+
+![](https://pdai.tech/images/pics/ace830df-9919-48ca-91b5-60b193f593d2.png)
+
+
+
 ## CAS 
 
 Compare And Set
@@ -247,11 +257,17 @@ https://www.jianshu.com/p/6a86e10293ab
 
 
 
+绑定多个condition 
+
 
 
 ## 公平锁 VS 非公平锁
 
 过程解析【2023-06-07】https://blog.csdn.net/weixin_43243916/article/details/100060923
+
+
+
+公平锁实现过程 
 
 
 
