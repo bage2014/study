@@ -1,6 +1,6 @@
-package com.bage.study.algorithm.leetcode.common;
+package com.bage.study.algorithm.common;
 
-public class NodeUtils {
+public class ListNodeUtils {
 
     public static boolean print(ListNode node) {
         if (node == null) {

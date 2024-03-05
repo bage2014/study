@@ -1,4 +1,4 @@
-package com.bage.study.algorithm.leetcode.common;
+package com.bage.study.algorithm.common;
 
 public class ListNode {
     public int val;
