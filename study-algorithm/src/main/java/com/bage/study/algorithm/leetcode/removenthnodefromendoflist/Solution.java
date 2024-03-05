@@ -11,7 +11,7 @@ package com.bage.study.algorithm.leetcode.removenthnodefromendoflist;
  * }
  */
 
-import com.bage.study.algorithm.leetcode.common.ListNode;
+import com.bage.study.algorithm.common.ListNode;
 
 /**
  * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/

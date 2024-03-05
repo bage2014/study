@@ -1,7 +1,7 @@
 package com.bage.study.algorithm.leetcode.addtwonumbers;
 
-import com.bage.study.algorithm.leetcode.common.ListNode;
-import com.bage.study.algorithm.leetcode.common.NodeUtils;
+import com.bage.study.algorithm.common.ListNode;
+import com.bage.study.algorithm.common.ListNodeUtils;
 
 /**
  * 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
@@ -30,10 +30,10 @@ class Solution {
     }
 
     public static void main(String[] args) {
-        ListNode l1 = NodeUtils.init(5,4,3);
-        ListNode l2 = NodeUtils.init(5,4,3);
+        ListNode l1 = ListNodeUtils.init(5,4,3);
+        ListNode l2 = ListNodeUtils.init(5,4,3);
         ListNode listNode = new Solution().addTwoNumbers(l1, l2);
-        NodeUtils.print(listNode);
+        ListNodeUtils.print(listNode);
     }
 
 }
