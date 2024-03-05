@@ -233,7 +233,9 @@ kafka基于sendfile实现零拷贝，数据不需要在应用程序做业务处�
 
 ## 参考链接  
 
-kafaka 笔记 https://zhuanlan.zhihu.com/p/436103370
+消息队列设计精要  https://tech.meituan.com/2016/07/01/mq-design.html
+
+笔记 https://zhuanlan.zhihu.com/p/436103370
 
 基本原理 https://www.cnblogs.com/zsbinup/p/15997845.html
 
