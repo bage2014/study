@@ -150,6 +150,51 @@ $ redis-cli -a myUnguessablePazzzzzword123 PING
 
 
 
+### Redis 事务 
+
+原文链接：https://pdai.tech/md/db/nosql-redis/db-redis-x-trans.html
+
+#### 基本使用
+
+MULTI ：开启事务，redis会将后续的命令逐个放入队列中，然后使用EXEC命令来原子化执行这个命令系列。
+
+EXEC：执行事务中的所有操作命令。
+
+DISCARD：取消事务，放弃执行事务块中的所有命令。
+
+WATCH：监视一个或多个key,如果事务在执行前，这个key(或多个key)被其他命令修改，则事务被中断，不会执行事务中的任何命令。
+
+UNWATCH：取消WATCH对所有key的监视。
+
+```
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379(TX)> set hello3 workd3
+QUEUED
+127.0.0.1:6379(TX)> set hello2 workd2
+QUEUED
+127.0.0.1:6379(TX)> exec
+1) OK
+2) OK
+127.0.0.1:6379> get hello2 
+"workd2"
+127.0.0.1:6379> get hello3
+"workd3"
+127.0.0.1:6379> 
+```
+
+
+
+#### 注意事项
+
+如果你有使用关系式数据库的经验， 那么 “**Redis 在事务失败时不进行回滚，而是继续执行余下的命令**”这种做法可能会让你觉得有点奇怪。
+
+
+
+
+
+
+
 ### 基本类型
 
 https://redis.io/docs/data-types/
