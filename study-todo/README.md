@@ -7,9 +7,6 @@ https://github.com/alibaba/DataX
 spring boot启动速度优化
 Spring3+jdk17
 
-## top100
-### action 
-
 
 
 TIMESTAMP vs DATETIME
@@ -96,6 +93,8 @@ https://developer.aliyun.com/article/778128
 
 GC 日志、GC 分析 、
 
+不同GC，不同配置的数据参数信息 
+
 
 
 8-14
@@ -174,7 +173,13 @@ https://mp.weixin.qq.com/s?__biz=MzU0ODMyNDk0Mw==&mid=2247495510&idx=1&sn=7a9f17
 
 
 
+## 分布式算法
+
 一致性算法 Paxos等 https://zhuanlan.zhihu.com/p/130332285
+
+https://pdai.tech/md/algorithm/alg-domain-distribute-x-raft.html
+
+
 
 
 
