@@ -409,15 +409,22 @@ redis主从**结构**特点：一个master可以有多个salve节点；salve节�
 
 
 
+#### 无磁盘复制模式
+
+**无磁盘复制模式**：master创建一个新进程直接dump RDB到slave的socket，不经过主进程，不经过硬盘。适用于disk较慢，并且网络较快的时候。
+
+
+
 ### 哨兵模式 
 
-Redis的Sentinel系统用于管理多个Redis，Redis的Sentinel系统是一个分布式的系统，可以在系统中配置一个或多个Sentinel。主要执行以下三件事：
+https://pdai.tech/md/db/nosql-redis/db-redis-x-sentinel.html
 
-- 监控：Sentinel会不断的检查主从服务器运行状态
+哨兵实现了什么功能呢？下面是Redis官方文档的描述：
 
-- 提醒：当某个Redis服务器出现故障，可通过API或者其他应用程序发送通知
-
-- 自动故障迁移：当一个主服务器不能正常工作时，Sentinel会进行一次故障自动迁移，会将失效主服务器的从服务器选举出一个新的主服务器，剩下的从服务器将会自动连接复制选举出来的新服务器的数据。
+- **监控（Monitoring）**：哨兵会不断地检查主节点和从节点是否运作正常。
+- **自动故障转移（Automatic failover）**：当主节点不能正常工作时，哨兵会开始自动故障转移操作，它会将失效主节点的其中一个从节点升级为新的主节点，并让其他从节点改为复制新的主节点。
+- **配置提供者（Configuration provider）**：客户端在初始化时，通过连接哨兵来获得当前Redis服务的主节点地址。
+- **通知（Notification）**：哨兵可以将故障转移的结果发送给客户端。
 
  
 
@@ -435,6 +442,10 @@ Redis的Sentinel系统用于管理多个Redis，Redis的Sentinel系统是一个�
 当一个 Redis 实例被重新配置是，无论是被设置成主服务器、从服务器、又或者被设置成其他主服务器的从服务器 ，Sentinel 都会向被重新配置的实例发送一个 `CONFIG REWRITE` 命令， 从而确保这些配置会持久化在硬盘里。
 
 https://baijiahao.baidu.com/s?id=1739276119927050514&wfr=spider&for=pc
+
+
+
+
 
 
 
@@ -459,12 +470,6 @@ Redis集群中的键空间被分割为16384个槽位。
 为了保证高可用，cluster模式也引入了主从复制模式，一个主节点对应一个或多个从节点，当主节点发生宕机时，可进行故障转移，将子节点升级为主节点。
 
 https://baijiahao.baidu.com/s?id=1739276119927050514&wfr=spider&for=pc
-
-
-
-#### 无磁盘复制模式
-
-**无磁盘复制模式**：master创建一个新进程直接dump RDB到slave的socket，不经过主进程，不经过硬盘。适用于disk较慢，并且网络较快的时候。
 
 
 
