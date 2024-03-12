@@ -1,5 +1,6 @@
 package com.bage.study.algorithm;
 
+import java.util.List;
 import java.util.Random;
 
 public class DataUtils {
@@ -31,5 +32,15 @@ public class DataUtils {
             a[i] = temp;
         }
         return a;
+    }
+    public static String toString(List<List<String>> listList) {
+        StringBuilder sb = new StringBuilder();
+        for (List<String> list : listList) {
+            for (String str : list) {
+                sb.append(str).append("\t");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }
