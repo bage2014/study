@@ -11,12 +11,25 @@ import java.util.List;
 public class ZigzagConversion {
 
     public static void main(String[] args) {
-        new ZigzagConversion().convert("PAYPALISHIRING", 3);
-        new ZigzagConversion().convert("PAYPALISHIRING", 4);
+        String convert = new ZigzagConversion().convert("PAYPALISHIRING", 3);
+        System.out.println(convert);
+        convert = new ZigzagConversion().convert("PAYPALISHIRING", 4);
+        System.out.println(convert);
 
     }
 
+    /**
+     * 定方向，是向上还是向下走！
+     * 方向确定后，下标移动！
+     *
+     * @param str
+     * @param numRows
+     * @return
+     */
     public String convert(String str, int numRows) {
+        if(numRows <= 1){
+            return str;
+        }
         // 初始化
         List<List<String>> listList = new ArrayList<>();
         for (int i = 0; i < numRows; i++) {
@@ -31,7 +44,7 @@ public class ZigzagConversion {
         int length = str.length();
         int down = 1, up = 0;
 
-        int flag = down;
+        int flag = down; // todo bage 边界问题 处理
 
         int row = -1;
         int col = 0;
@@ -54,10 +67,20 @@ public class ZigzagConversion {
             }
         }
 
-        String string = DataUtils.toString(listList);
-        System.out.println(string);
-        return "";
+//        String string = DataUtils.toString(listList);
+//        System.out.println(string);
+        return toString(listList);
     }
 
+
+    public String toString(List<List<String>> listList) {
+        StringBuilder sb = new StringBuilder();
+        for (List<String> list : listList) {
+            for (String str : list) {
+                sb.append(str);
+            }
+        }
+        return sb.toString();
+    }
 
 }
