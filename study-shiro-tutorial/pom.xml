@@ -26,7 +26,7 @@
     <dependency>
         <groupId>org.apache.shiro</groupId>
         <artifactId>shiro-core</artifactId>
-        <version>1.1.0</version>
+        <version>1.9.1</version>
     </dependency>
     <!-- Shiro uses SLF4J for logging.  We'll use the 'simple' binding
          in this example app.  See http://www.slf4j.org for more info. -->
