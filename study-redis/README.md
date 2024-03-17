@@ -191,10 +191,6 @@ QUEUED
 
 
 
-
-
-
-
 ### 基本类型
 
 https://redis.io/docs/data-types/
@@ -262,6 +258,20 @@ OK
 ```
 
 
+
+## 无磁盘复制模式
+
+Redis 默认是磁盘复制，但是**如果使用比较低速的磁盘，这种操作会给主服务器带来较大的压力**。Redis从2.8.18版本开始尝试支持无磁盘的复制。使用这种设置时，子进程直接将RDB通过网络发送给从服务器，不使用磁盘作为中间存储。
+
+**无磁盘复制模式**：master创建一个新进程直接dump RDB到slave的socket，不经过主进程，不经过硬盘。适用于disk较慢，并且网络较快的时候。
+
+使用`repl-diskless-sync`配置参数来启动无磁盘复制。
+
+使用`repl-diskless-sync-delay` 参数来配置传输开始的延迟时间；master等待一个`repl-diskless-sync-delay`的秒数，如果没slave来的话，就直接传，后来的得排队等了; 否则就可以一起传。
+
+------
+
+著作权归@pdai所有 原文链接：https://pdai.tech/md/db/nosql-redis/db-redis-x-copy.html
 
 
 
