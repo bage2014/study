@@ -2,14 +2,23 @@ package com.bage.study.algorithm.top100;
 
 /**
  * https://leetcode.cn/problems/regular-expression-matching/
+ *
+ * todo bage
  */
-public class RegularExpressionMatching {
+public class TODORegularExpressionMatching {
 
     public static void main(String[] args) {
-        System.out.println(new RegularExpressionMatching().isMatch("aa","aa"));
-        System.out.println(new RegularExpressionMatching().isMatch("aa","a"));
-        System.out.println(new RegularExpressionMatching().isMatch("ab","a*"));
-        System.out.println(new RegularExpressionMatching().isMatch("ab",".*"));
+//        System.out.println(new RegularExpressionMatching().isMatch("","aa"));
+//        System.out.println(new RegularExpressionMatching().isMatch("",""));
+//        System.out.println(new RegularExpressionMatching().isMatch("abbc",""));
+//        System.out.println(new RegularExpressionMatching().isMatch("aa","aa"));
+//        System.out.println(new RegularExpressionMatching().isMatch("aa","a"));
+//        System.out.println(new RegularExpressionMatching().isMatch("ab","a*"));
+//        System.out.println(new RegularExpressionMatching().isMatch("ab",".*"));
+//        System.out.println(new RegularExpressionMatching().isMatch("abbbb",".*"));
+//        System.out.println(new RegularExpressionMatching().isMatch("adb","a.*"));
+//        System.out.println(new RegularExpressionMatching().isMatch("adb","a.*cdd"));
+        System.out.println(new TODORegularExpressionMatching().isMatch("aa","a*"));
     }
 
     public boolean isMatch(String str, String pattern) {
@@ -21,6 +30,10 @@ public class RegularExpressionMatching {
         }
 
         if(str == null || pattern == null){
+            return false;
+        }
+
+        if((str.length() == 0 || pattern.length() == 0) && str.length() != pattern.length()){
             return false;
         }
 
@@ -64,16 +77,16 @@ public class RegularExpressionMatching {
                 }
             }
 
-            if(indexStr > str.length() || indexPattern < pattern.length()){
+            if(indexStr >= str.length() || indexPattern >= pattern.length()){
                 break;
             }
         }
 
-        return true;
+        return indexStr == str.length() && indexPattern == pattern.length();
     }
 
     private char charAtNext(int indexPattern, String pattern) {
-        if(indexPattern >= pattern.length()){
+        if(indexPattern + 1 >= pattern.length()){
             return ' ';
         }
         return pattern.charAt(indexPattern + 1);
