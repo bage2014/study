@@ -1,7 +1,5 @@
 package com.bage.study.algorithm.top100;
 
-import com.bage.study.algorithm.DataUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
