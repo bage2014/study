@@ -41,6 +41,18 @@ public class AddTwoNumbers {
      * }
      */
     static class Solution {
+
+        /**
+         * 处理过程
+         * 1、 位数相加，保留进位
+         * 2、 当前位结果添加到节点连表中
+         * 3、 如果一个结束，另一个没有，则可以构造一个数值为0的节点
+         * 4、 两个都结束，则结束； 处理进位 最后一位
+         *
+         * @param l1
+         * @param l2
+         * @return
+         */
         public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
             ListNode node1 = l1;
             ListNode node2 = l2;
