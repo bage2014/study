@@ -4,7 +4,7 @@ package com.bage.study.algorithm.top100;
  * https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/
  *
  */
-public class LongestSubstringWithoutRepeatingCharacters {
+public class TODOLongestSubstringWithoutRepeatingCharacters {
 
     public static void main(String[] args) {
         System.out.println(new Solution().lengthOfLongestSubstring("abcabcbb"));

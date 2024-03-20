@@ -19,6 +19,20 @@ public class MedianOfTwoSortedArrays {
 
 
     }
+
+    /**
+     * 两个有序数组的 中位数 ，中间一个的值，，如果是偶数，则中间两个值的平均值
+     * 处理过程【本质上就是合并有序数组 】
+     * 1、比较当前两个数组的最考前位置两个元素，取较小元素
+     * 2、下标后移
+     * 3、重复以上两个过程
+     * 4、 如果有一个结束，则继续处理另一个
+     *
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         if (nums1.length == 0) {
             return findMedianSortedArrays(nums2);
