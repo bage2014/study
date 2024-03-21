@@ -33,10 +33,21 @@ public class DataUtils {
         }
         return a;
     }
-    public static String toString(List<List<String>> listList) {
+
+    public static String toStringFromStr(List<List<String>> listList) {
         StringBuilder sb = new StringBuilder();
         for (List<String> list : listList) {
             for (String str : list) {
+                sb.append(str).append("\t");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+    public static String toStringFromInt(List<List<Integer>> listList) {
+        StringBuilder sb = new StringBuilder();
+        for (List<Integer> list : listList) {
+            for (Integer str : list) {
                 sb.append(str).append("\t");
             }
             sb.append("\n");
