@@ -3,16 +3,26 @@ package com.bage.study.algorithm.top100;
 import com.bage.study.algorithm.DataUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * https://leetcode.cn/problems/3sum/description/
+ *
+ * // todo bage 超出时间限制
  */
-public class ThreeSum {
+public class TODOThreeSum {
 
     public static void main(String[] args) {
-//        System.out.println(DataUtils.toStringFromInt(new ThreeSum().threeSum(new int[]{-1,0,1,2,-1,-4})));
-        System.out.println(DataUtils.toStringFromInt(new ThreeSum().threeSum(new int[]{-1,0,1,1,2,1,-1,-4})));
+
+        System.out.println(DataUtils.toStringFromInt(new TODOThreeSum().threeSum(new int[]{-1,0,1,2,-1,-4})));
+        System.out.println(DataUtils.toStringFromInt(new TODOThreeSum().threeSum(new int[]{-1,0,1,1,2,1,-1,-4})));
+
+//        System.out.println(new TODOThreeSum().isMatch(Arrays.asList(1,2,3),Arrays.asList(2,2,3)));
+//        System.out.println(new TODOThreeSum().isMatch(Arrays.asList(1,2,3),Arrays.asList(1,2,3)));
+//        System.out.println(new TODOThreeSum().isMatch(Arrays.asList(1,2,3),Arrays.asList(3,2,1)));
+
+
     }
 
     public List<List<Integer>> threeSum(int[] nums) {
@@ -56,11 +66,22 @@ public class ThreeSum {
     }
 
     private boolean isMatch(List<Integer> nowList, List<Integer> list) {
-        for (int i = 0; i < nowList.size(); i++) {
-            for (int j = 0; j < nowList.size(); j++) {
+        boolean[] isUsedInNow = new boolean[nowList.size()];
+        Arrays.fill(isUsedInNow,false); //  初始化 false
 
+        for (int i = 0; i < list.size(); i++) {
+            boolean isFound = false;
+            for (int j = 0; j < nowList.size(); j++) {
+                if(list.get(i) == nowList.get(j) && !isUsedInNow[j]){
+                    isUsedInNow[j] = true;
+                    isFound = true;
+                    break;
+                }
+            }
+            if(!isFound){ // 只要有一个元素。在nowList 里面没有满足，就返回false
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
