@@ -2,9 +2,7 @@ package com.bage.study.algorithm.top100;
 
 import com.bage.study.algorithm.DataUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * https://leetcode.cn/problems/3sum/description/
@@ -53,13 +51,13 @@ public class TODOThreeSum {
         list.add(j);
         list.add(k);
         boolean canAdd = true;
-        for (int i1 = 0; i1 < listList.size(); i1++) {
-            List<Integer> nowList = listList.get(i1);
-            if(isMatch(nowList,list)){
-                canAdd = false;
-                break;
-            }
-        }
+//        for (int i1 = 0; i1 < listList.size(); i1++) {
+//            List<Integer> nowList = listList.get(i1);
+//            if(isMatch(nowList,list)){
+//                canAdd = false;
+//                break;
+//            }
+//        }
         if(canAdd){
             listList.add(list);
         }
