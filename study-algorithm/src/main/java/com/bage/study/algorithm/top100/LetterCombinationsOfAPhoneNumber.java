@@ -9,13 +9,34 @@ import java.util.List;
 public class LetterCombinationsOfAPhoneNumber {
 
     public List<String> letterCombinations(String digits) {
-        List<String> list = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         if(digits == null || digits.length() == 0){
-            return list;
+            return result;
         }
-        int length = digits.length();
+        List<List<String>> list = new ArrayList<>();
+        for (int i = 0; i < digits.length(); i++) {
+            List<String> item = new ArrayList<>();
+            item.add(digits.charAt(i) + "");
+            list.add(item);
+        }
 
-        return list;
+        int indexFirst = 0;
+        int indexLast = 0;
+        while (true) {
+            if(indexFirst >= list.get(0).size()
+                && indexLast >= list.get(list.size() - 1).size()){
+                break;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < list.size(); i++) {
+                sb.append(list.get(i).get(indexFirst));
+            }
+            result.add(sb.toString());
+
+            
+        }
+        return result;
     }
 
 
