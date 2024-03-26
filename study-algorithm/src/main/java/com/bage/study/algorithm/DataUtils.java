@@ -60,7 +60,7 @@ public class DataUtils {
 
     public static boolean print(ListNode node) {
         if (node == null) {
-            System.out.print("->");
+            System.out.println("->");
             return false;
         }
         ListNode head = node;
