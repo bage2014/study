@@ -6,24 +6,24 @@ import com.bage.study.algorithm.common.ListNode;
 /**
  * https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/
  */
-public class RemoveNthNodeFromEndOfList {
+public class TODORemoveNthNodeFromEndOfList {
     public static void main(String[] args) {
-        DataUtils.print(new RemoveNthNodeFromEndOfList()
+        DataUtils.print(new TODORemoveNthNodeFromEndOfList()
                 .removeNthFromEnd(DataUtils.init(1,2), 2));
 
-        DataUtils.print(new RemoveNthNodeFromEndOfList()
+        DataUtils.print(new TODORemoveNthNodeFromEndOfList()
                 .removeNthFromEnd(DataUtils.init(new int[]{1}), 1));
 
-        DataUtils.print(new RemoveNthNodeFromEndOfList()
+        DataUtils.print(new TODORemoveNthNodeFromEndOfList()
                 .removeNthFromEnd(DataUtils.init(1, 2, 3, 4, 5, 6, 7), 3));
 
-        DataUtils.print(new RemoveNthNodeFromEndOfList()
+        DataUtils.print(new TODORemoveNthNodeFromEndOfList()
                 .removeNthFromEnd(DataUtils.init(1, 2, 3, 4, 5, 6, 7), 10));
 
-        DataUtils.print(new RemoveNthNodeFromEndOfList()
+        DataUtils.print(new TODORemoveNthNodeFromEndOfList()
                 .removeNthFromEnd(DataUtils.init(1, 2, 3, 4, 5, 6, 7), 0));
 
-        DataUtils.print(new RemoveNthNodeFromEndOfList()
+        DataUtils.print(new TODORemoveNthNodeFromEndOfList()
                 .removeNthFromEnd(DataUtils.init(1, 2, 3, 4, 5, 6, 7), 1));
     }
 
