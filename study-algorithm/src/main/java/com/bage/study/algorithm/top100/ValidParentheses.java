@@ -2,7 +2,6 @@ package com.bage.study.algorithm.top100;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * https://leetcode.cn/problems/valid-parentheses/description/
