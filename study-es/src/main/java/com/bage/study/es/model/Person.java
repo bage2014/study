@@ -1,10 +1,11 @@
-package com.bage.study.es;
+package com.bage.study.es.model;
 
 import java.util.Date;
 
 public class Person {
 
-    private int age;
+    private Long id;
+    private Integer age;
 
     private String fullName;
 
@@ -13,11 +14,20 @@ public class Person {
     public Person() {
     }
 
-    Person(int age, String fullName, Date dateOfBirth) {
-        super();
+    public Person(Long id, Integer age, String fullName, Date dateOfBirth) {
+        this.id = id;
         this.age = age;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getAge() {
@@ -48,4 +58,5 @@ public class Person {
     public String toString() {
         return "Person [age=" + age + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + "]";
     }
+
 }

@@ -1,22 +1,18 @@
 package com.bage.study.es;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
-import co.elastic.clients.elasticsearch.core.*;
-import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.AnalyzeRequest;
 import co.elastic.clients.elasticsearch.indices.AnalyzeResponse;
 import co.elastic.clients.elasticsearch.indices.analyze.AnalyzeToken;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.bage.study.es.model.Person;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class EsTermsTest {
