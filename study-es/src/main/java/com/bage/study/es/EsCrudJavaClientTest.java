@@ -8,6 +8,7 @@ import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.bage.study.es.crud.EsService;
 import com.bage.study.es.model.Person;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
@@ -17,83 +18,45 @@ import java.util.Date;
 import java.util.List;
 
 public class EsCrudJavaClientTest {
+
+    private static EsService esService = new EsService();
     public static void main(String[] args) throws IOException {
-
-        // Create the low-level client
-        HttpHost localhost = new HttpHost("localhost", 9092);
-        RestClient restClient = RestClient.builder(localhost).build();
-
-        // Create the transport with a Jackson mapper
-        ElasticsearchTransport transport = new RestClientTransport(
-                restClient, new JacksonJsonpMapper());
-
-        // And create the API client
-        ElasticsearchClient client = new ElasticsearchClient(transport);
-
-        // prepare
-
         // CRUD
         long id = System.currentTimeMillis();
         System.out.println("id: " + id);
 
-        insert(client, id);
-        query(client, id);
+        insert(id);
+        query(id);
 
         // update
-        update(client, id);
-        query(client, id);
+        update(id);
+        query(id);
 
-//        delete(client, id);
-//        query(client, id);
+//        delete(id);
+//        query(id);
 
     }
 
-    private static void update(ElasticsearchClient client, long id) throws IOException {
-        Person person = new Person(25, "Janette Doe [new]", new Date());
-        UpdateRequest<Person, Object> request = new UpdateRequest.Builder<Person, Object>()
-                .index("persons")
-                .id("" + id)
-                .doc(person)
-                .build();
-        UpdateResponse<Person> update = client.update(request, Person.class);
+    private static void update(long id) throws IOException {
+        Person person = new Person(id, 25, "Janette Doe [new]", new Date());
+        int update = esService.update(person);
         System.out.println(update);
     }
 
-    private static void delete(ElasticsearchClient client, long id) throws IOException {
-        DeleteRequest request = new DeleteRequest.Builder()
-                .index("persons")
-                .id("" + id)
-                .build();
-        DeleteResponse delete = client.delete(request);
+    private static void delete(long id) throws IOException {
+        int delete = esService.delete(id);
         System.out.println(delete);
     }
 
-    private static void query(ElasticsearchClient client, long id) throws IOException {
-        Query query = QueryBuilders.ids().values("" + id).build()._toQuery();
-        SearchResponse<Person> search = client.search(s -> s
-                        .index("persons")
-                        .query(query)
-//                        .source(
-                , Person.class);
-        List<Hit<Person>> hits = search.hits().hits();
-
-        for (Hit<Person> hit : hits) {
-            processProduct(hit.source());
-        }
+    private static void query(long id) throws IOException {
+        List<Person> query = esService.query(id);
+        System.out.println(query);
     }
 
-    private static void insert(ElasticsearchClient client, long id) throws IOException {
-        Person person = new Person(25, "Janette Doe", new Date());
-        IndexRequest<Person> request = new IndexRequest.Builder<Person>()
-                .document(person)
-                .id("" + id)
-                .index("persons")
-                .build();
-        IndexResponse index = client.index(request);
-        System.out.println(index);
+    private static void insert(long id) throws IOException {
+        Person person = new Person(id, 25, "Janette Doe", new Date());
+        int insert = esService.insert(person);
+        System.out.println(insert);
     }
 
-    private static void processProduct(Person source) {
-        System.out.println(source);
-    }
 }
