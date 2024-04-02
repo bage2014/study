@@ -503,6 +503,15 @@ Docker Pull Command
 
  
 
+基本访问
+
+```
+http://localhost:9092/
+
+
+curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
+```
+
 
 
 

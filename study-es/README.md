@@ -21,7 +21,93 @@ ES 特性 https://www.elastic.co/cn/elasticsearch/features
 
 
 
+
+
+## 基本命令
+
+新增
+
+```
+ID 自动生成 
+curl -X POST "localhost:9092/persons/_doc/?pretty" -H 'Content-Type: application/json' -d'
+{
+  "id" : 1711947442539999,
+   "age" : 25,
+   "fullName" : "Janette Doe",
+   "dateOfBirth" : 1711947444181
+}
+'
+
+指定ID： 1711947442539999
+curl -X POST "localhost:9092/persons/_doc/1711947442539999?pretty" -H 'Content-Type: application/json' -d'
+{
+  "id" : 1711947442539999,
+   "age" : 25,
+   "fullName" : "Janette Doe",
+   "dateOfBirth" : 1711947444181
+}
+'
+
+
+```
+
+查询
+
+```
+浏览器查询
+localhost:9092/persons/_doc/1711947442539?pretty
+
+命令行
+curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
+
+合并查询
+curl -X GET "localhost:9092/_mget?pretty" -H 'Content-Type: application/json' -d'
+{
+  "docs": [
+    {
+      "_index": "persons",
+      "_id": "1711947442539"
+    },
+    {
+      "_index": "persons",
+      "_id": "1711947442539999"
+    }
+  ]
+}
+'
+```
+
+更新
+
+```
+curl -X PUT "localhost:9092/persons/_doc/1711947442539?pretty" -H 'Content-Type: application/json' -d'
+{
+  "id" : 1711947442539999,
+   "age" : 25,
+   "fullName" : "Janette Doe【new-by-curl】",
+   "dateOfBirth" : 1711947444181
+}
+'
+
+curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
+
+```
+
+删除
+
+```
+curl -X DELETE "localhost:9092/persons/_doc/1711947442539"
+
+curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
+
+```
+
+
+
+
+
 ## 参考文档 ##
+
 官网 https://www.elastic.co
 java client https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/index.html
 java client https://www.baeldung.com/elasticsearch-java
