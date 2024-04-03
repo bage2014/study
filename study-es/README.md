@@ -106,6 +106,27 @@ curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
 
 
 
+## 文本分词
+
+https://www.elastic.co/guide/en/elasticsearch/reference/current/test-analyzer.html
+
+使用空格分词
+
+```
+curl -X POST "localhost:9092/_analyze?pretty" -H 'Content-Type: application/json' -d'
+{
+  "analyzer": "whitespace",
+  "text":     "The quick brown fox."
+}
+'
+```
+
+
+
+
+
+
+
 ## 参考文档 ##
 
 官网 https://www.elastic.co
