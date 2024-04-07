@@ -212,17 +212,39 @@ chmod 755 ./bin/*.sh
 
 ## Jdbc 链接 
 
+#### jdbc 关闭实验
+
+jdbc 不关闭
+
 ```
 http://localhost:8000/connection/get?close=false
 ```
 
-
+jdbc 关闭
 
 ```
 http://localhost:8000/connection/get?close=true
 ```
 
+#### Jdbc vs Pool
 
+jdbc 一个connection查询
+
+```
+http://localhost:8000/data/source/jdbc/get?phone=18119069047
+```
+
+datasource查询
+
+```
+http://localhost:8000/data/source/pool/get?phone=18119069047
+```
+
+监控耗时对比
+
+```
+http://localhost:3000/d/Oc-s90XVk/bage?orgId=1&viewPanel=7&from=now-5m&to=now
+```
 
 
 
