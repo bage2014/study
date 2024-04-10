@@ -644,6 +644,12 @@ DB
 
 ## 问题排查 
 
+- 阿里爸爸排查总结稳定
+
+https://developer.aliyun.com/article/778128
+
+
+
 - G1GC慢的排查过程
 
 https://zhuanlan.zhihu.com/p/165285835
