@@ -6,11 +6,13 @@ package com.bage.study.algorithm.top100;
 public class SearchInsertPosition {
 
     public static void main(String[] args) {
-        int[] nums = new int[]{1,2,3,4,5,6,7,8};
-        System.out.println(new SearchInsertPosition().searchInsert(nums,5));
-        System.out.println(new SearchInsertPosition().searchInsert(nums,-1));
-        System.out.println(new SearchInsertPosition().searchInsert(nums,50));
-        System.out.println(new SearchInsertPosition().searchInsert(new int[]{50},50));
+//        int[] nums = new int[]{1,2,3,4,5,6,7,8};
+//        System.out.println(new SearchInsertPosition().searchInsert(nums,5));
+//        System.out.println(new SearchInsertPosition().searchInsert(nums,-1));
+//        System.out.println(new SearchInsertPosition().searchInsert(nums,50));
+//        System.out.println(new SearchInsertPosition().searchInsert(new int[]{50},50));
+        System.out.println(new SearchInsertPosition().searchInsert(new int[]{1,3,5,6},2));
+        System.out.println(new SearchInsertPosition().searchInsert(new int[]{1,3,5,6},4));
     }
     public int searchInsert(int[] nums, int target) {
         int left = 0;
@@ -23,7 +25,7 @@ public class SearchInsertPosition {
             return nums.length;
         }
 
-        while(left < right){ // 等于直接退出
+        while(left <= right){ // 等于直接退出
             int middle = (left + right) / 2;
             int middleValue = nums[middle];
 
@@ -40,7 +42,6 @@ public class SearchInsertPosition {
                 right = middle - 1;
             }
         }
-
         return left;
     }
 }
