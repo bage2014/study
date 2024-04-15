@@ -19,7 +19,13 @@ ES 特性 https://www.elastic.co/cn/elasticsearch/features
 
 基本API https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html
 
+Client 使用 【官网】
 
+https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/index.html
+
+https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/indexing.html
+
+博客baeldung https://www.baeldung.com/elasticsearch-java
 
 
 
