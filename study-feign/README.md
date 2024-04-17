@@ -37,19 +37,21 @@ https://github.com/OpenFeign/feign/#advanced-usage
 
 #### Dynamic Query Parameters
 
+动态参数
 
+map、对象等
 
 ### Error Handling
 
-
+统一异常处理【http异常】
 
 ### Retry
 
-
+统一重试
 
 ### Async execution via `CompletableFuture`
 
-
+异步
 
 
 
