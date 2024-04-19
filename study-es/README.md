@@ -27,6 +27,10 @@ https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/ind
 
 博客baeldung https://www.baeldung.com/elasticsearch-java
 
+Sense 工具
+
+https://www.elastic.co/guide/cn/elasticsearch/guide/current/running-elasticsearch.html#sense
+
 
 
 ## 基本命令
