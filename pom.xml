@@ -194,6 +194,7 @@
       <module>study-sentinel/study-sentinel-spring</module>
       <module>study-spring-boot-dev-tools</module>
       <module>study-spring-boot3</module>
+    <module>study-spring-boot-vault</module>
 
   </modules>
 </project>
