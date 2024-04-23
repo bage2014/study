@@ -9,7 +9,9 @@ https://hub.docker.com/_/vault
 http://localhost:8080/
 
 
+https://developer.hashicorp.com/vault/docs/configuration
 
+https://developer.hashicorp.com/vault/docs/get-started/developer-qs
 
 
 

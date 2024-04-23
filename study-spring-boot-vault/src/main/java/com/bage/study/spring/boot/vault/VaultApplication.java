@@ -4,12 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.vault.authentication.TokenAuthentication;
+import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBackend;
 import org.springframework.vault.core.VaultSysOperations;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.core.VaultTransitOperations;
 import org.springframework.vault.support.VaultMount;
 import org.springframework.vault.support.VaultResponse;
+import org.springframework.vault.support.Versioned;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 public class VaultApplication implements CommandLineRunner {
@@ -23,6 +29,14 @@ public class VaultApplication implements CommandLineRunner {
 
   @Override
   public void run(String... strings) throws Exception {
+
+//    // Write a secret【程序 手动 初始化 】
+//    Map<String, String> data = new HashMap<>();
+//    data.put("github.oauth2.key", "Hashi123");
+//    Versioned.Metadata createResponse = vaultTemplate
+//            .opsForVersionedKeyValue("secret")
+//            .put("github", data);
+//    System.out.println("Secret written successfully.");
 
     // You usually would not print a secret to stdout
     VaultResponse response = vaultTemplate
@@ -64,5 +78,6 @@ public class VaultApplication implements CommandLineRunner {
     System.out.println(plaintext);
     System.out.println("-------------------------------");
     System.out.println();
+
   }
 }
