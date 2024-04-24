@@ -1,32 +1,53 @@
 # study-TODO #
 
+
+
+## **项目实践**
+
+阿里云性能测试PTS的文档
+https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
+
+https://zhuanlan.zhihu.com/p/491927737
+
+https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
+
+阿里问题排查 
+https://developer.aliyun.com/article/778128
+
+
+
+spring boot启动速度优化
+
+mysql 不使用 连接池 vs 使用连接池 性能对比
+
+mysql 主从赋值
+
+瓶颈体现？
+
+CPU、DB【connection】、IO、NETWORK
+
+
+
+## 学习规划
+
+
+
+
+hashicorp/vault UI 
+
 https://github.com/alibaba/DataX
 
 常见算法 动画演示 https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
 
-spring boot启动速度优化
 Spring3+jdk17
-
-
 
 TIMESTAMP vs DATETIME
 
-mysql 不使用 连接池 vs 使用连接池 性能对比
-
 分库分表 https://tech.meituan.com/2016/11/18/dianping-order-db-sharding.html
-
-mysql 主从赋值
-
-
-
-new-start
 
 ## 安全框架
 
 https://juejin.cn/post/7308782851360555018
-
-
-
 
 
 ## Feign
@@ -50,44 +71,22 @@ https://juejin.cn/user/1714893872170573/posts
 
 ## 瓶颈分析
 
-
-
-瓶颈体现？8-21
-
-CPU、DB【connection】、IO、NETWORK
-
 瓶颈分析？？
 
 火焰图生成 
-
-阿里云性能测试PTS的文档
-https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
-
-https://zhuanlan.zhihu.com/p/491927737
-
-https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
-
-阿里问题排查 
-https://developer.aliyun.com/article/778128
-
-
 
 
 ## 项目实践
 
 8-9
 
-线上 JVM 配置 
-
-
+线上 JVM 配置
 
 8-12
 
 同镜像代码，不同GC 回收器，，观测不同的GC 过程
 
 - 待验证？？
-
-
 
 8-13
 
@@ -100,10 +99,6 @@ GC 日志、GC 分析 、
 8-14
 
 笔画图复习！！！
-
-
-
-8-26 jl-done!!
 
 
 
