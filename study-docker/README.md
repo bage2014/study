@@ -1770,18 +1770,17 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickh
 
 参考链接 
 
-https://hub.docker.com/_/vault
-
 https://github.com/hashicorp/vault
 
 https://developer.hashicorp.com/vault/docs/configuration
 
 官网 https://developer.hashicorp.com/vault/docs/get-started/developer-qs 
 
+https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-first-secret
+
 Docker Pull Command
 
 ```
-docker pull vault
 
 https://hub.docker.com/r/hashicorp/vault
 ```
@@ -1789,15 +1788,12 @@ https://hub.docker.com/r/hashicorp/vault
 Run 
 
 ```
-docker run --cap-add=IPC_LOCK -d --name=bage-vault vault
-
-docker run --cap-add=IPC_LOCK -e 'VAULT_DEV_ROOT_TOKEN_ID=my.bage.root' -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8080' --name=bage-vault vault
+docker run -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=dev-only-token' --name=bage-vault hashicorp/vault
 
 docker run --cap-add=IPC_LOCK -e 'VAULT_DEV_ROOT_TOKEN_ID=mybageroot' -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8080' --name=bage-vault hashicorp/vault
 
 docker run --cap-add=IPC_LOCK -e 'VAULT_DEV_ROOT_TOKEN_ID=mybageroot' -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8080' --name=bage-vault -p 8200:8200 hashicorp/vault
 
-docker run -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=dev-only-token' --name=bage-vault hashicorp/vault
 ```
 
 Config
@@ -1807,12 +1803,13 @@ export VAULT_TOKEN="dev-only-token"
 export VAULT_ADDR="http://127.0.0.1:8200"
 ```
 
-Set Value 
+Set/Get Value 
 
 ```
 vault kv put secret/github github.oauth2.key=foobar
 
-
+vault kv put -mount=secret hello foo=world excited=yes
+vault kv get -mount=secret hello
 ```
 
 
