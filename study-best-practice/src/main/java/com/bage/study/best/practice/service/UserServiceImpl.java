@@ -32,11 +32,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> query(String phone) {
-        try {
-            Thread.sleep(200L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         LambdaQueryWrapper<UserEntity> ge = Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getPhone, phone);
         List<UserEntity> list = userMapper.selectList(ge);
         if (Objects.isNull(list)) {
@@ -49,8 +44,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insert(User user) {
-//        throw new RuntimeException("blocked!");
-
         try (Entry entry = SphU.entry("HelloWorld")) {
             // 被保护的逻辑
             return userMapper.insert(userMapping.mapping(user));
