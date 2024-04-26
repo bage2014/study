@@ -195,6 +195,7 @@
       <module>study-spring-boot-dev-tools</module>
       <module>study-spring-boot3</module>
     <module>study-spring-boot-vault</module>
+      <module>study-btrace</module>
 
   </modules>
 </project>
