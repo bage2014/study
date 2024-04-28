@@ -142,13 +142,31 @@ https://pdai.tech/md/framework/ds-sharding/sharding-x-shard.html
 
 
 
-时间轮算法
+### 时间轮算法
+
+https://www.bilibili.com/video/BV1ed4y167s8/?spm_id_from=333.337.search-card.all.click&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+https://zhuanlan.zhihu.com/p/665545437
+
+
+
+多层级
+
+指针一直在转，， 秒->分->时
+
+前一秒，计算下一分钟的任务，重新挂在到秒层
+
+前一分，计算下一个时的任务，重新挂在到分层
+
+
+
+
 
 https://juejin.cn/post/7083795682313633822
 
 https://zhuanlan.zhihu.com/p/609284043?utm_id=0
 
-https://zhuanlan.zhihu.com/p/665545437
+
 
 
 
