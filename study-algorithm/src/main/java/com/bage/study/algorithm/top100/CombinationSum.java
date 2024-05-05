@@ -24,14 +24,18 @@ public class CombinationSum {
         for (int i = 0; i < candidates.length; i++) {
             if (candidates[i] == left) {
                 // match
+                int currentIndex = temp.size();
                 temp.add(candidates[i]);
                 DataUtils.print(temp);
                 // result.add(temp);
+                temp.remove(currentIndex); // 清除
                 return;
             } else if(candidates[i] < left){
                 // continue && next
+                int currentIndex = temp.size();
                 temp.add(candidates[i]);
                 combinationSumR(candidates, left - candidates[i], result, temp);
+                temp.remove(currentIndex);
             } else {
                 // continue
             }
