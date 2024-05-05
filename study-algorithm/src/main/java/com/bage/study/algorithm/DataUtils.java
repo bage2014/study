@@ -100,4 +100,17 @@ public class DataUtils {
         }
         return prevNode;
     }
+
+    public static boolean print(List<Integer> list) {
+        if (list == null) {
+            System.out.println("->");
+            return false;
+        }
+        for (Integer temp : list) {
+            System.out.print(temp);
+            System.out.print("->");
+        }
+        System.out.println();
+        return true;
+    }
 }
