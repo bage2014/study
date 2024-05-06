@@ -2,8 +2,7 @@ package com.bage.study.algorithm;
 
 import com.bage.study.algorithm.common.ListNode;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class DataUtils {
 
@@ -22,7 +21,7 @@ public class DataUtils {
     public static int[] init(int n) {
         int a[] = new int[n];
         for (int i = 0; i < a.length; i++) {
-            a[i] = i+ 1;
+            a[i] = i + 1;
         }
         Random random = new Random();
         int randomI = 0;
@@ -46,6 +45,7 @@ public class DataUtils {
         }
         return sb.toString();
     }
+
     public static String toStringFromInt(List<List<Integer>> listList) {
         StringBuilder sb = new StringBuilder();
         for (List<Integer> list : listList) {
@@ -72,6 +72,7 @@ public class DataUtils {
         System.out.println();
         return true;
     }
+
     public static ListNode copy(ListNode node) {
         if (node == null) {
             return null;
@@ -115,35 +116,51 @@ public class DataUtils {
     }
 
     public static boolean isContains(List<List<Integer>> result, List<Integer> temp) {
-        if(result == null || result.isEmpty()){
+        if (result == null || result.isEmpty()) {
             return false;
         }
-        if(temp == null || temp.isEmpty()){
+        if (temp == null || temp.isEmpty()) {
             return false;
         }
         for (List<Integer> integers : result) {
-            if(isMatch(integers,temp)){
+            if (isMatch(integers, temp)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static boolean isMatch(List<Integer> integers, List<Integer> temp) {
-        if(integers == null || integers.isEmpty()){
+    private static boolean isMatch(List<Integer> list1, List<Integer> list2) {
+        if (list1 == null || list1.isEmpty()) {
             return false;
         }
-        if(temp == null || temp.isEmpty()){
+        if (list2 == null || list2.isEmpty()) {
             return false;
         }
-        if(temp.size() != integers.size()){
+        if (list2.size() != list1.size()) {
             return false;
         }
-        for (Integer integer : integers) {
-            for (Integer i : temp) {
-                
+
+        // init map
+        Map<Integer, Integer> maps1 = new HashMap<>();
+        for (Integer integer : list1) {
+            maps1.put(integer, maps1.getOrDefault(integer, 0));
+        }
+
+        Map<Integer, Integer> maps2 = new HashMap<>();
+        for (Integer integer : list2) {
+            maps2.put(integer, maps2.getOrDefault(integer, 0));
+        }
+
+        // match each entry
+        Iterator<Map.Entry<Integer, Integer>> iterator = maps1.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, Integer> next = iterator.next();
+            Integer orDefault = maps2.getOrDefault(next.getKey(), 0);
+            if (!Objects.equals(next.getValue(), orDefault)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
