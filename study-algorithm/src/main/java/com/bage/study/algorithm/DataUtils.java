@@ -113,4 +113,37 @@ public class DataUtils {
         System.out.println();
         return true;
     }
+
+    public static boolean isContains(List<List<Integer>> result, List<Integer> temp) {
+        if(result == null || result.isEmpty()){
+            return false;
+        }
+        if(temp == null || temp.isEmpty()){
+            return false;
+        }
+        for (List<Integer> integers : result) {
+            if(isMatch(integers,temp)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isMatch(List<Integer> integers, List<Integer> temp) {
+        if(integers == null || integers.isEmpty()){
+            return false;
+        }
+        if(temp == null || temp.isEmpty()){
+            return false;
+        }
+        if(temp.size() != integers.size()){
+            return false;
+        }
+        for (Integer integer : integers) {
+            for (Integer i : temp) {
+                
+            }
+        }
+        return false;
+    }
 }
