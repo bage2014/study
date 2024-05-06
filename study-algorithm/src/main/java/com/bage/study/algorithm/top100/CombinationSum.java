@@ -21,18 +21,20 @@ public class CombinationSum {
     }
 
     private void combinationSumR(int[] candidates, int left, List<List<Integer>> result, List<Integer> temp) {
+        int currentIndex = temp.size();
         for (int i = 0; i < candidates.length; i++) {
             if (candidates[i] == left) {
                 // match
-                int currentIndex = temp.size();
                 temp.add(candidates[i]);
+                if(DataUtils.isContains(result,temp)){
+
+                }
                 DataUtils.print(temp);
                 // result.add(temp);
                 temp.remove(currentIndex); // 清除
                 return;
             } else if(candidates[i] < left){
                 // continue && next
-                int currentIndex = temp.size();
                 temp.add(candidates[i]);
                 combinationSumR(candidates, left - candidates[i], result, temp);
                 temp.remove(currentIndex);
