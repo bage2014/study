@@ -27,10 +27,11 @@ public class CombinationSum {
                 // match
                 temp.add(candidates[i]);
                 if(DataUtils.isContains(result,temp)){
-
+                    temp.remove(currentIndex); // 清除
+                    continue;
                 }
                 DataUtils.print(temp);
-                // result.add(temp);
+                result.add(temp);
                 temp.remove(currentIndex); // 清除
                 return;
             } else if(candidates[i] < left){
