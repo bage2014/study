@@ -196,6 +196,9 @@
       <module>study-spring-boot3</module>
     <module>study-spring-boot-vault</module>
       <module>study-btrace</module>
+      <module>study-spring-boot-contract-rest</module>
+      <module>study-spring-boot-neo4j</module>
+      <module>study-spring-boot-k8s</module>
 
   </modules>
 </project>
