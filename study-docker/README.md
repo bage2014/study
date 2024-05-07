@@ -1832,7 +1832,7 @@ Run
 
 ```console
 docker run \
-    --publish=7474:7474 --publish=7687:7687 \
+    --name=bage-neo4j --publish=7474:7474 --publish=7687:7687 \
     --volume=${HOME}/bage/docker-data/neo4j/:/data \
     neo4j
 ```
