@@ -185,10 +185,10 @@ Start a mysql server instance
     docker run --name bage-mysql -v /home/bage/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d bage-mysql
     
     Mac:
-    docker run --network my-net --name bage-mysql -v /Users/bage/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    docker run --network my-net --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
     
     Mac-pro:	
-    docker run --network my-net --name bage-mysql-pro -v /Users/bage/bage/docker-data/mysql-pro:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    docker run --network my-net --name bage-mysql-pro -v ${HOME}/bage/docker-data/mysql-pro:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
 
 
 其中
@@ -273,7 +273,7 @@ https://hub.docker.com/_/nginx
     docker run -p 80:80 --name tmp-nginx-container -d nginx
     
     Mac
-    docker run -p 80:80 -v /Users/bage/bage/docker-conf/nginx/nginx.conf:/etc/nginx/nginx.conf --name bage-nginx -d nginx
+    docker run -p 80:80 -v ${HOME}/bage/docker-conf/nginx/nginx.conf:/etc/nginx/nginx.conf --name bage-nginx -d nginx
 
 docker访问宿主机：
 
@@ -434,10 +434,10 @@ Docker Pull Command
     docker run --name bage-zookeeper --restart always -p 2181:2181 -d zookeeper
     
     Mac
-    docker run --network bage-net --name bage-zookeeper -v /Users/bage/bage/docker-data/zookeeper:/data -p 2181:2181 -d zookeeper
+    docker run --network bage-net --name bage-zookeeper -v ${HOME}/bage/docker-data/zookeeper:/data -p 2181:2181 -d zookeeper
     
     -e JVMFLAGS="-Xmx1024m"
-    docker run --network bage-net --name bage-zookeeper -v /Users/bage/bage/docker-data/zookeeper:/data -p 2181:2181 -d zookeeper
+    docker run --network bage-net --name bage-zookeeper -v ${HOME}/bage/docker-data/zookeeper:/data -p 2181:2181 -d zookeeper
 
 
 
@@ -898,7 +898,7 @@ setting max_map_count
 
 vi /home/bage/data/logstash/file-beats.conf
 
-[Mac:   /Users/bage/bage/docker-data/elk/logstash/beats-input.conf]
+[Mac:   ${HOME}/bage/docker-data/elk/logstash/beats-input.conf]
 
 ```
 # 数据输入配置：port -> 端口号；codec -> 输入格式。这里以logback为例。
@@ -1811,6 +1811,39 @@ vault kv put secret/github github.oauth2.key=foobar
 vault kv put -mount=secret hello foo=world excited=yes
 vault kv get -mount=secret hello
 ```
+
+
+
+### 安装 Neo4j
+
+参考链接 
+
+https://hub.docker.com/_/neo4j
+
+https://neo4j.com/docs/operations-manual/current/docker/
+
+Docker Pull Command
+
+```
+docker pull neo4j
+```
+
+Run 
+
+```console
+docker run \
+    --publish=7474:7474 --publish=7687:7687 \
+    --volume=${HOME}/bage/docker-data/neo4j/:/data \
+    neo4j
+```
+
+Visit
+
+```
+http://localhost:7474/browser/
+```
+
+By default, this requires you to login with `neo4j/neo4j` and change the password.
 
 
 
