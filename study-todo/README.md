@@ -7,12 +7,22 @@
 阿里云性能测试PTS的文档
 https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
 
+分析说明 
+
+https://help.aliyun.com/zh/pts/test-analysis-and-tuning-29342?spm=a2c4g.11186623.0.0.3a705159bgXWVk
+
+阿里问题排查 
+https://developer.aliyun.com/article/778128
+
+CPU、Memory、DB、NetWork、Disk ？
+
+
+
 https://zhuanlan.zhihu.com/p/491927737
 
 https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
 
-阿里问题排查 
-https://developer.aliyun.com/article/778128
+
 
 
 
