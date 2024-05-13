@@ -6,7 +6,25 @@ https://docs.docker.com/desktop/kubernetes/
 
 
 Spring boot 集成
-https://spring.io/guides/gs/spring-boot-kubernetes
+Spring 基本 https://spring.io/guides/gs/rest-service
+部署到 Docker https://spring.io/guides/topicals/spring-boot-docker
+
+集成K8S https://spring.io/guides/gs/spring-boot-kubernetes
+
+
+
+打包镜像
+
+```
+
+docker build -t myorg/myapp .
+
+docker run -p 8080:8080 myorg/myapp
+
+
+
+```
+
 
 
 
