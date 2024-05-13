@@ -12,12 +12,14 @@
     <artifactId>study-spring-boot-k8s</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
 
-        <spring.boot.base.version>3.2.5</spring.boot.base.version>
+        <spring.boot.base.version>3.0.1</spring.boot.base.version>
 
+        <start-class>com.bage.study.spring.boot.k8s.SpringBoot3K8SApplication</start-class>
     </properties>
 
     <dependencies>
@@ -64,6 +66,7 @@
     </dependencyManagement>
 
 
+
     <build>
         <plugins>
 
@@ -82,6 +85,7 @@
             <!--Spring Boot Maven 启动-->
         </plugins>
     </build>
+
 
 
 </project>

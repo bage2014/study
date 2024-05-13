@@ -1,4 +1,4 @@
-FROM openjdk:21
+FROM openjdk:17
 VOLUME /tmp
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
