@@ -18,19 +18,53 @@ Spring 基本 https://spring.io/guides/gs/rest-service
 
 mvn install
 
-docker build -t myorg/myapp .
+docker build -t bage/myapp .
 
 // -- docker build --build-arg JAR_FILE=target/\*.jar -t myorg/myapp .
 
-docker run -p 8080:8080 myorg/myapp
+docker run -p 8080:8080 bage/myapp
 
-docker tag myorg/myapp myorg/myapp
+docker tag bage/myapp bage/myapp
 
-docker push myorg/myapp
+docker push bage/myapp
 
 ```
 
 
+
+push 到远程仓库
+
+https://hub.docker.com/repository/docker/bage2014/study/general
+
+```
+
+docker tag myapp bage2014/study
+
+docker push bage2014/study:tagname
+
+
+docker push bage2014/study
+
+
+kubectl create deployment study --image=bage2014/study --dry-run -o=yaml > deployment.yaml
+
+echo --- >> deployment.yaml
+
+kubectl create service clusterip study --tcp=8080:8080 --dry-run -o=yaml >> deployment.yaml
+
+kubectl apply -f deployment.yaml
+
+kubectl port-forward svc/study 8080:8080
+```
+
+
+
+push 异常
+
+```
+denied: requested access to the resource is denied
+
+```
 
 build异常 
 
