@@ -18,6 +18,10 @@ CPU、Memory、DB、NetWork、Disk ？
 
 
 
+Bilibili https://www.bilibili.com/video/BV1G24y1m7bD/?spm_id_from=333.788&vd_source=72424c3da68577f00ea40a9e4f9001a1
+
+
+
 https://zhuanlan.zhihu.com/p/491927737
 
 https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
