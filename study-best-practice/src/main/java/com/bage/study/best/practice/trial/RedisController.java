@@ -115,6 +115,20 @@ public class RedisController {
         return new RestResult(200, random);
     }
 
+
+    @RequestMapping("/big/key/get")
+    public Object getBigKey(@RequestParam(value = "key", required = false) String key) {
+        metricService.increment("getBigKey", "RedisController");
+
+        long start = System.currentTimeMillis();
+        String cache = redisService.get(key);
+        long end = System.currentTimeMillis();
+        log.info("RedisController getBigKey cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigKey", "RedisController");
+
+        return new RestResult(200, cache);
+    }
+
     @RequestMapping("/big/value/set")
     public Object bigValue(@RequestParam(value = "count", required = false) Integer count) {
         metricService.increment("bigValue", "RedisController");
@@ -127,5 +141,19 @@ public class RedisController {
 
         return new RestResult(200, random);
     }
+
+    @RequestMapping("/big/value/get")
+    public Object getBigValue(@RequestParam(value = "key", required = false) String key) {
+        metricService.increment("getBigValue", "RedisController");
+
+        long start = System.currentTimeMillis();
+        String cache = redisService.get(key);
+        long end = System.currentTimeMillis();
+        log.info("RedisController getBigKey cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigValue", "RedisController");
+
+        return new RestResult(200, cache);
+    }
+
 
 }
