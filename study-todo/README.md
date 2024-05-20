@@ -1,5 +1,11 @@
 # study-TODO #
-https://github.com/EvanLi/Github-Ranking
+https://github.com/EvanLi/Github-Ranking GitHub 趋势
+
+https://digma.ai/25-best-intellij-idea-plugins-for-developers-in-2023/ Idea 插件 
+
+
+
+
 
 
 ## **项目实践**

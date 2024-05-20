@@ -1,12 +1,13 @@
-package com.bage.study.es.crud;
+package com.bage.study.es.index;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
+import com.bage.study.es.crud.EsUtils;
 import com.bage.study.es.model.Product;
 
 import java.io.IOException;
 
-public class ClientServiceV2 {
+public class EsIndexService {
 
     private ElasticsearchClient esClient = EsUtils.getClient();
 

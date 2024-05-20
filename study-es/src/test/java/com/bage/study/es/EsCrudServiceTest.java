@@ -1,25 +1,16 @@
 package com.bage.study.es;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
-import co.elastic.clients.elasticsearch.core.*;
-import co.elastic.clients.elasticsearch.core.search.Hit;
-import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
-import com.bage.study.es.crud.EsService;
+import com.bage.study.es.crud.DefaultEsService;
+import com.bage.study.es.crud.EsCrudService;
 import com.bage.study.es.model.Person;
-import org.apache.http.HttpHost;
-import org.elasticsearch.client.RestClient;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-public class EsCrudJavaClientTest {
+public class EsCrudServiceTest {
 
-    private static EsService esService = new EsService();
+    private static EsCrudService esService = new DefaultEsService();
     public static void main(String[] args) throws IOException {
         // CRUD
         long id = System.currentTimeMillis();
