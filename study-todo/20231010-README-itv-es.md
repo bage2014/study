@@ -91,6 +91,21 @@ https://www.elastic.co/guide/en/elasticsearch/reference/8.10/docs.html
 
 
 
+// 	query 
+
+```
+http://localhost:9092/persons/_doc/1716165342474
+
+http://localhost:9092/{index}/_doc/{id}
+
+```
+
+
+
+
+
+
+
 ## 基本原理
 
 整体架构
