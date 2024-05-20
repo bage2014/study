@@ -60,24 +60,30 @@ ES
 节点状态
 
 ```undefined
-http://localhost:9092/
+http://localhost:9092/?pretty
 ```
 
 集群状态
 
 ```undefined
-http://localhost:9092/_cat/health?v
+http://localhost:9092/_cat/health?v&pretty
 
-http://localhost:9092/_cat/nodes
+http://localhost:9092/_cat/nodes?pretty
 ```
 
 查看索引
 
 ```undefined
-http://localhost:9092/_cat/indices?v
+http://localhost:9092/_cat/indices?v&pretty
 ```
 
 
+
+分词器
+
+```undefined
+http://localhost:9092/??
+```
 
 
 
@@ -94,7 +100,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/8.10/docs.html
 // 	query 
 
 ```
-http://localhost:9092/persons/_doc/1716165342474
+http://localhost:9092/persons/_doc/1716165342474?pretty
 
 http://localhost:9092/{index}/_doc/{id}
 
@@ -261,6 +267,8 @@ https://zhuanlan.zhihu.com/p/612483065
 
 
 ## 查询过程 
+
+https://juejin.cn/post/7096796055940890632 解析 
 
 一般地，当接受到用户查询请求时，进入到倒排索引进行检索时，在返回结果的过程中，主要有以下几个步骤：
 
