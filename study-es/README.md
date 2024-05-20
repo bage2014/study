@@ -114,6 +114,61 @@ curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
 
 
 
+## Java client 
+
+
+
+异步
+
+```java
+// Asynchronous non-blocking client
+ElasticsearchAsyncClient asyncClient =
+    new ElasticsearchAsyncClient(transport);
+```
+
+
+
+复杂查询
+
+https://www.elastic.co/guide/en/elasticsearch/reference/8.13/query-dsl-intervals-query.html
+
+```
+ElasticsearchClient client = ...
+SearchResponse<SomeApplicationData> results = client
+    .search(b0 -> b0
+        .query(b1 -> b1
+            .intervals(b2 -> b2
+                .field("my_text")
+                .allOf(b3 -> b3
+                    .ordered(true)
+                    .intervals(b4 -> b4
+                        .match(b5 -> b5
+                            .query("my favorite food")
+                            .maxGaps(0)
+                            .ordered(true)
+                        )
+                    )
+                    .intervals(b4 -> b4
+                        .anyOf(b5 -> b5
+                            .intervals(b6 -> b6
+                                .match(b7 -> b7
+                                    .query("hot water")
+                                )
+                            )
+                            .intervals(b6 -> b6
+                                .match(b7 -> b7
+                                    .query("cold porridge")
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        ),
+    SomeApplicationData.class 
+);
+```
+
 
 
 ## 文本分词

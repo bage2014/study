@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EsService {
+public class DefaultEsService implements EsCrudService {
 
     private String index = "persons";
 
+    @Override
     public int insert(Person person) {
         try {
             ElasticsearchClient client = EsUtils.getClient();
@@ -31,6 +32,7 @@ public class EsService {
         return 0;
     }
 
+    @Override
     public int update(Person person) {
         try {
             ElasticsearchClient client = EsUtils.getClient();
@@ -47,6 +49,7 @@ public class EsService {
         return 0;
     }
 
+    @Override
     public int delete(Long id) {
         try {
             ElasticsearchClient client = EsUtils.getClient();
@@ -62,6 +65,7 @@ public class EsService {
         return 0;
     }
 
+    @Override
     public List<Person> query(Long id) {
         List<Person> list = new ArrayList<>();
         try {
