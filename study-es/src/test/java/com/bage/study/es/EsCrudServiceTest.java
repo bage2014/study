@@ -3,6 +3,7 @@ package com.bage.study.es;
 import com.bage.study.es.crud.DefaultEsService;
 import com.bage.study.es.crud.EsCrudService;
 import com.bage.study.es.model.Person;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Date;
@@ -11,7 +12,9 @@ import java.util.List;
 public class EsCrudServiceTest {
 
     private static EsCrudService esService = new DefaultEsService();
-    public static void main(String[] args) throws IOException {
+
+    @Test
+    public void crud() throws IOException {
         // CRUD
         long id = System.currentTimeMillis();
         System.out.println("id: " + id);
