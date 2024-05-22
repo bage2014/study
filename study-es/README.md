@@ -7,11 +7,13 @@ http://localhost:9092/
 
 
 
-
-
-
-
 ## 基本使用
+
+官方文档 https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/installation.html
+
+Docker 部署 https://www.elastic.co/guide/en/elasticsearch/reference/8.13/docker.html
+
+
 
 参考链接 https://pdai.tech/md/db/nosql-es/elasticsearch-x-usage.html
 
@@ -116,7 +118,7 @@ curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
 
 ## Java client 
 
-
+官方 Tests https://github.com/elastic/elasticsearch-java/tree/8.13/java-client/src/test/java/co/elastic/clients/documentation
 
 异步
 
