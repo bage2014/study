@@ -31,13 +31,13 @@
         <dependency>
             <groupId>co.elastic.clients</groupId>
             <artifactId>elasticsearch-java</artifactId>
-            <version>7.17.10</version>
+            <version>8.13.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.12.3</version>
+            <version>2.17.0</version>
         </dependency>
 
 
