@@ -241,6 +241,14 @@ http://www.taodudu.cc/news/show-979875.html?action=onClick
 
 
 
+## 锁
+
+读锁、共享锁、写锁、S锁、排它锁、独占锁、X锁、表锁、意向锁、自增锁、MDL锁、RL锁、GL锁、NKL锁、插入意向锁、间隙锁、页锁、悲观锁、乐观锁
+
+https://juejin.cn/post/7344258231479500841
+
+
+
 ## MySQL自带表
 
 ### mysql.user
