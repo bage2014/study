@@ -3,6 +3,14 @@ https://github.com/EvanLi/Github-Ranking GitHub 趋势
 
 https://digma.ai/25-best-intellij-idea-plugins-for-developers-in-2023/ Idea 插件 
 
+https://www.oceanbase.com/docs/community-observer-cn-10000000000014793 OB 调研
+https://www.oceanbase.com/docs/community-observer-cn-10000000000014908 基本使用
+
+spring boot 
+https://en.oceanbase.com/docs/common-oceanbase-cloud-10000000001053560 
+https://en.oceanbase.com/docs/common-oceanbase-database-10000000001106148 
+https://help.aliyun.com/document_detail/2249866.html
+
 
 
 
