@@ -12,7 +12,6 @@
     <artifactId>study-spring-boot-jpa</artifactId>
 
     <name>study-spring-boot-jpa</name>
-    <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
     <properties>
