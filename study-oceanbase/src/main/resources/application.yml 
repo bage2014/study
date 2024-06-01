@@ -1,0 +1,15 @@
+server:
+  port: 8081
+spring:
+  jpa:
+    database: mysql
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://host:port/test?characterEncoding=UTF-8
+    username: bage
+    password: bage
+#spring.jpa.hibernate.ddl-auto=update
+jackson:
+  serialization:
+    indent_output: true
