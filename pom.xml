@@ -199,6 +199,7 @@
       <module>study-spring-boot-contract-rest</module>
       <module>study-spring-boot-neo4j</module>
       <module>study-spring-boot-k8s</module>
+    <module>study-tidb</module>
 
   </modules>
 </project>

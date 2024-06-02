@@ -1545,14 +1545,29 @@ https://hub.docker.com/r/oceanbase/oceanbase-ce
 Docker Pull Command
 
 ```
-docker pull :7.16.2
+docker pull oceanbase/oceanbase-ce
 ```
 
 To start an OceanBase instance, run this command:
 
 ```bash
 docker run -p 2881:2881 --name obstandalone -d oceanbase/oceanbase-ce
+
+docker run -p 2881:2881 --name bage-oceanbase-ce -d oceanbase/oceanbase-ce
+
+docker logs bage-oceanbase-ce | tail -1
 ```
+
+Connect 【todo】
+
+```
+docker exec -it bage-oceanbase-ce ob-mysql sys # Connect to sys tenant
+
+```
+
+
+
+
 
 
 
@@ -1623,38 +1638,6 @@ docker run \
 
 
 ```
-
-
-
-### 安装 TiDB
-
-参考链接 
-
-https://hub.docker.com/r/pingcap/tidb
-
-Docker Pull Command
-
-```
-docker pull pingcap/tidb
-```
-
-Run 
-
-```
-
-
-```
-
-To start an Jenkins instance, run this command:
-
-```bash
-
-
-
-
-```
-
-
 
 
 
@@ -1844,6 +1827,42 @@ http://localhost:7474/browser/
 ```
 
 By default, this requires you to login with `neo4j/neo4j` and change the password.
+
+
+
+### 安装 TiDB
+
+参考链接 
+
+https://hub.docker.com/r/pingcap/tidb
+
+https://docs-archive.pingcap.com/tidb/v2.1/test-deployment-using-docker
+
+https://developer.aliyun.com/article/138312
+
+Docker Pull Command
+
+```
+docker pull pingcap/tidb
+```
+
+Run 
+
+```
+
+docker run --name tidb-server -d -v ${HOME}/bage/docker-data/tidb:/tmp/tidb -p 4000:4000 -p 10080:10080 pingcap/tidb
+
+```
+
+Visit
+
+```
+# curl localhost:10080/status
+
+# mysql -h 127.0.0.1 -P 4000 -u root -D test
+```
+
+
 
 
 
