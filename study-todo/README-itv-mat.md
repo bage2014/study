@@ -32,6 +32,12 @@
 
 
 
+![img](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/3/171d90d577d85828~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp)
+
+
+
+
+
 **Actions** 
 
 | sdf               | sdf                                                          |
@@ -139,11 +145,37 @@ Incomming Reference 指的是引用当前对象的对象，Outgoing Reference �
 
 
 
+
+
+## GC root
+
+在执行GC时，是通过对象可达性来判断是否回收对象的，一个对象是否可达，也就是看这个对象的引用连是否和`GC Root`相连。一个`GC root`指的是可以从堆外部访问的对象，有以下原因可以使一个对象成为`GC root`对象。
+
+- `System Class`: 通过bootstrap/system类加载器加载的类，如rt.jar中的java.util.*
+- `JNI Local`: JNI方法中的变量或者方法形参
+- `JNI Global`：JNI方法中的全局变量
+- `Thread Block`：线程里面的变量，一个活着的线程里面的对象肯定不能被回收
+- `Thread`：处于激活状态的线程
+- `Busy Monitor`：调用了wait()、notify()方法，或者是同步对象，例如调用synchronized(Object) 或者进入一个synchronized方法后的当前对象
+- `Java Local`：本地变量，例如方法的输入参数或者是方法内部创建的仍在线程堆栈里面的对象
+- `Native Stack`：Java 方法中的变量或者方法形参.
+- `Finalizable`：等待运行finalizer的对象
+- `Unfinalized`：有finalize方法，但未进行finalized，且不在finalizer队列的对象。
+- `Unreachable`：通过其它root都不可达的对象，MAT会把它标记为root以便于分析回收。
+- `Java Stack Frame`：java栈帧
+- `Unknown`
+
+
+
+
+
 ## 参考链接
+
+官方网址：https://help.eclipse.org/latest/index.jsp?topic=/org.eclipse.mat.ui.help/welcome.html
 
 稀土掘金：
 
-https://juejin.cn/post/6844903927528292365?searchId=2024060120241459C9599D9959D3B42EEA
+https://juejin.cn/post/6844903927528292365
 
 https://juejin.cn/post/7018806258392104973
 
