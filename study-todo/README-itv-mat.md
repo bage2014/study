@@ -1,6 +1,18 @@
 # study-MAT #
 ## 简介
 
+
+
+找到最大的对象，因为MAT提供显示合理的累积大小（`retained size`）
+
+探索对象图，包括`inbound`和`outbound`引用，即引用此对象的和此对象引出的。
+
+查找无法回收的对象，可以计算从垃圾收集器根到相关对象的路径
+
+找到内存浪费，比如冗余的String对象，空集合对象等等
+
+
+
 1. 对象信息：类、成员变量、直接量以及引用值；
 2. 类信息 类加载器 、 名称 、 超类 、 静态成员；
 3. Garbage Collections Roots JVM 可达的对象；
@@ -81,6 +93,22 @@ Incomming Reference 指的是引用当前对象的对象，Outgoing Reference �
 
 支配树的概念源自图论。
 
+- 对象X `Dominator`（支配）对象Y，当且仅当在对象树中所有到达Y的路径都必须经过X
+- 对象Y的直接`Dominator`，是指在对象树中距离Y最近的`Dominator`
+- `Dominator tree`利用对象树构建出来。在`Dominator tree`中每一个对象都是他的直接`Dominator`的子节点。
+
+对象树和`Dominator tree`的对应关系如下:
+
+
+
+![](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/8/29/16cdd6c7f512cfc8~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png)
+
+如上图，因为A和B都引用到C，所以A释放时，C内存不会被释放。所以这块内存不会被计算到A或者B的Retained Heap中，因此，对象树在转换成`Dominator tree`时，会A、B、C三个是平级的。
+
+
+
+
+
 在一则流图（flow diagram）中，如果从入口节点到 b 节点的所有路径都要经过 a 节点，那么 a 支配（dominate）b。在 a 支配 b，且 a 不同于 b 的情况下（即 a 严格支配 b），如果从 a 节点到 b 节点的所有路径中不存在支配 b 的其他节点，那么 a 直接支配（immediate dominate）b。这里的支配树指的便是由节点的直接支配节点所组成的树状结构。
 
 列出Heap Dump中处于活跃状态中的最大的几个对象，默认按 retained size进行排序，因此很容易找到占用内存最多的对象。
@@ -114,6 +142,8 @@ Incomming Reference 指的是引用当前对象的对象，Outgoing Reference �
 ## 参考链接
 
 稀土掘金：
+
+https://juejin.cn/post/6844903927528292365?searchId=2024060120241459C9599D9959D3B42EEA
 
 https://juejin.cn/post/7018806258392104973
 
