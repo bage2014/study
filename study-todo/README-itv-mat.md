@@ -165,7 +165,17 @@ Incomming Reference 指的是引用当前对象的对象，Outgoing Reference �
 - `Java Stack Frame`：java栈帧
 - `Unknown`
 
+打开一个dump文件，按照下图的方式可以查看GC Root列表
 
+![img](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0eb069096d224ff0b178dbc4543528e6~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
+
+![img](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ea352cbabfe04c9281f18d19195a6bf6~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
+
+![img](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b22191e383c14c8997c1cf874ae4b096~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
+
+下图是执行了main方法的线程，展开后可以看到main方法里有哪些属性作为GC Root
+
+![img](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/19ea4f58b1f44049900fde5b358a7f7f~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
 
 
 
@@ -174,6 +184,8 @@ Incomming Reference 指的是引用当前对象的对象，Outgoing Reference �
 官方网址：https://help.eclipse.org/latest/index.jsp?topic=/org.eclipse.mat.ui.help/welcome.html
 
 稀土掘金：
+
+https://juejin.cn/post/6858981566405771277
 
 https://juejin.cn/post/6844903927528292365
 
