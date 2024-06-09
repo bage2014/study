@@ -3,12 +3,6 @@ https://github.com/EvanLi/Github-Ranking GitHub 趋势
 
 https://digma.ai/25-best-intellij-idea-plugins-for-developers-in-2023/ Idea 插件 
 
-https://plugins.jetbrains.com/plugin/19470-digma-continuous-feedback
-
-https://plugins.jetbrains.com/plugin/7973-sonarlint
-
-https://plugins.jetbrains.com/plugin/10080-rainbow-brackets
-
 
 ## **项目实践**
 
