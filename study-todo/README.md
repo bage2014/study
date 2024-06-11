@@ -648,3 +648,30 @@ http://c.biancheng.net/springcloud/nacos.html
 
 
 
+## Idea 插件 
+
+### SequenceDiagram
+
+https://juejin.cn/post/7359083412388315146
+
+
+
+### Arthas Idea
+
+
+
+### Digma
+
+Digma is an IntelliJ plugin for automatically identifying and fixing
+
+
+
+### Java Object Layout (JOL) 
+
+Java Object Layout (JOL) is a tool to analyze in memory object
+
+
+
+### Rainbow Brackets 
+
+Rainbow Brackets for IntelliJ based IDEs/Android Studio/HUAWEI DevEco Studio
