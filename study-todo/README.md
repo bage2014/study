@@ -675,3 +675,17 @@ Java Object Layout (JOL) is a tool to analyze in memory object
 ### Rainbow Brackets 
 
 Rainbow Brackets for IntelliJ based IDEs/Android Studio/HUAWEI DevEco Studio
+
+
+
+### Grep Console
+
+
+
+### TabNine
+
+
+
+https://juejin.cn/post/7309921545639493641?searchId=20240612092117B98606A878644F2C1142
+
+https://juejin.cn/post/7225989135999434789?searchId=20240612092117B98606A878644F2C1142
