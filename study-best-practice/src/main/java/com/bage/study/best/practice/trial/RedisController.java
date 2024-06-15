@@ -43,6 +43,33 @@ public class RedisController {
 
         return new RestResult(200, random);
     }
+    @RequestMapping("/count/big/key/init")
+    public Object initBigKey(@RequestParam(value = "max", required = false) Integer max) {
+        metricService.increment("initBigKey", "RedisController");
+        log.info("RedisController initBigKey max = {}", max);
+        max = max == null ? 1000 : max;
+        log.info("RedisController initBigKey max2 = {}", max);
+        long start = System.currentTimeMillis();
+        int random = redisService.initBigKey(max);
+        long end = System.currentTimeMillis();
+        log.info("RedisController initBigKey cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "initBigKey", "RedisController");
+        return new RestResult(200, random);
+    }
+
+    @RequestMapping("/count/big/key/random")
+    public Object getBigKey(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("getBigKey", "RedisController");
+        log.info("RedisController getBigKey index = {}", index);
+        index = index == null ? new Random().nextInt(1000) : index;
+        log.info("RedisController getBigKey count2 = {}", index);
+        long start = System.currentTimeMillis();
+        String random = redisService.getBigKey(index);
+        long end = System.currentTimeMillis();
+        log.info("RedisController getBigKey cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigKey", "RedisController");
+        return new RestResult(200, random);
+    }
 
     @RequestMapping("/count/get")
     public Object get(@RequestParam(value = "index", required = false) Integer index) {
