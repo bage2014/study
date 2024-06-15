@@ -285,7 +285,14 @@ Docker 安装启动
 https://github.com/bage2014/study/blob/master/study-docker/README.md
 
 ```
+// 启动
 docker run --network bage-net -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
+
+// 链接
+redis-cli
+
+auth
+
 ```
 
 Spring 集成 Redis
@@ -305,7 +312,79 @@ https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-d
 
 
 
+### Big Key
+
 redis 大key https://juejin.cn/post/7309482256808509459
+
+监控 http://localhost:3000/d/RpSjVqWMz/redis?orgId=1&refresh=10s&from=now-30m&to=now
+
+基础数据准备【往换成添加N个值】
+
+```
+// set. 初始化 N个
+http://localhost:8000/redis/count/init?max=10000
+
+// get 
+http://localhost:8000/redis/count/get?index=1
+
+
+// set. 初始化 N个BigKey
+http://localhost:8000/redis/count/big/key/init?max=100
+
+// get 一个 BigKey
+http://localhost:8000/redis/count/big/key/random?index=100
+```
+
+常规查询【bigkey 设置之前】
+
+```
+http://localhost:8000/redis/count/random?index=1
+
+4ms 左右
+```
+
+常规BigKey压测查询【bigkey 设置之后】
+
+```
+http://localhost:8000/redis/count/random
+6ms 左右
+```
+
+
+
+设置Big Key
+
+```
+大 Key
+http://localhost:8000/redis/big/key/set?count=100
+
+http://localhost:8000/redis/big/key/set?count=10000
+
+大 Value
+http://localhost:8000/redis/big/value/set?count=100
+
+http://localhost:8000/redis/big/value/set?count=10000
+
+http://localhost:8000/redis/big/value/set?count=10000
+
+```
+
+Big Key 验证
+
+```
+redis-cli -a bage --bigkeys 
+
+```
+
+
+
+常规查询【bigkey 设置之后】
+
+
+
+常规压测查询【bigkey 设置之后】
+
+
 
 
 
@@ -332,6 +411,16 @@ http://localhost:8000/redis/big/value/set?count=10000
 http://localhost:8000/redis/count/init?max=10000
 http://localhost:8000/redis/count/get?index=1
 
+
+
+```
+
+
+
+Redis 大Key 检测 
+
+```
+redis-cli -a bage --bigkeys
 
 
 ```
