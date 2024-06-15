@@ -1,8 +1,6 @@
 # study-MAT #
 ## 简介
 
-
-
 找到最大的对象，因为MAT提供显示合理的累积大小（`retained size`）
 
 探索对象图，包括`inbound`和`outbound`引用，即引用此对象的和此对象引出的。

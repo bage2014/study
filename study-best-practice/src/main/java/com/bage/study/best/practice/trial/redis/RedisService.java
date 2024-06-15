@@ -138,7 +138,7 @@ public class RedisService {
         Object value = getService().get("redis_init_count_index_" + index);
         return value == null ? null : value.toString();
     }
-}
+
     public String get(String key) {
         Object value = getService().get(key);
         return value == null ? null : value.toString();
