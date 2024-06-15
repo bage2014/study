@@ -18,7 +18,10 @@ public class Application implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public static void main(String args[]) {
+        long start = System.currentTimeMillis();
         SpringApplication.run(Application.class, args);
+        long end = System.currentTimeMillis();
+        System.out.println("timeCost=" + (end-start));
     }
 
     @Autowired

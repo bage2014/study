@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = FlowCopyApplication.class)
 public class FlowCopyTraceLogicTest {
 
     @Autowired
@@ -17,10 +17,10 @@ public class FlowCopyTraceLogicTest {
     @Test
     public void check() {
         //  A-B B-A
-        System.out.println(check(Application.class, FlowCopy.class));
-        System.out.println(check(Application.class, FlowCopyFinishListener.class));
+        System.out.println(check(FlowCopyApplication.class, FlowCopy.class));
+        System.out.println(check(FlowCopyApplication.class, FlowCopyFinishListener.class));
         System.out.println(check(FlowCopyFinishListener.class, FlowCopy.class));
-        System.out.println(check(FlowCopy.class, Application.class));
+        System.out.println(check(FlowCopy.class, FlowCopyApplication.class));
 
         // a-b-c-d 然后添加 d-a
         System.out.println(check(FlowCopyConfigService.class, FlowCopyFinishListener.class));
