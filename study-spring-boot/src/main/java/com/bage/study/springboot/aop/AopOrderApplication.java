@@ -10,7 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AopOrderApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         SpringApplication.run(AopOrderApplication.class, args);
+        long end = System.currentTimeMillis();
+        System.out.println("timeCost=" + (end-start));
     }
 
 
