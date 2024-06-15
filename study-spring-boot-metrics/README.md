@@ -6,18 +6,18 @@ Micrometer + Prometheus + Grafana
 - 安装配置 prometheus
 - 安装配置 grafana
 
-
 ## 参考链接 ##
+
+https://micrometer.io/docs/concepts
+
+
 
 micrometer [http://micrometer.io/](http://micrometer.io/)
 github [https://github.com/micrometer-metrics/micrometer](https://github.com/micrometer-metrics/micrometer)
 spring boot metrics https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics
 指标和标签命名
-http://www.coderdocument.com/docs/prometheus/v2.14/best_practices/metric_and_label_naming.html
 
 https://docs.spring.io/spring-boot/docs/2.1.1.RELEASE/reference/htmlsingle/#production-ready-metrics-export-prometheus
-
-https://micrometer.io/docs/concepts
 
 https://mehmetozkaya.medium.com/monitor-spring-boot-custom-metrics-with-micrometer-and-prometheus-using-docker-62798123c714
 
