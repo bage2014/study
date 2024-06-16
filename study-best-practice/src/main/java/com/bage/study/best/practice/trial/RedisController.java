@@ -71,6 +71,23 @@ public class RedisController {
         return new RestResult(200, random);
     }
 
+    @RequestMapping("/count/big/key/random2")
+    public Object getBigKey2(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("getBigKey2", "RedisController");
+        log.info("RedisController getBigKey2 index = {}", index);
+        index = index == null ? new Random().nextInt(1000) : index;
+        log.info("RedisController getBigKey2 count2 = {}", index);
+        final Integer indexx = index;
+        metricService.recordTime(() -> {
+            long start = System.currentTimeMillis();
+            redisService.getBigKey(indexx);
+            long end = System.currentTimeMillis();
+            log.info("RedisController getBigKey2 async cost = {}", (end - start));
+
+        },"getBigKey2", "RedisController");
+        return new RestResult(200, "async");
+    }
+
     @RequestMapping("/count/get")
     public Object get(@RequestParam(value = "index", required = false) Integer index) {
         metricService.increment("get", "RedisController");

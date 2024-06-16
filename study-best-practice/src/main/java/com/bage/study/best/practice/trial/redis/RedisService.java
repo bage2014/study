@@ -25,6 +25,7 @@ import java.util.UUID;
 @Component
 public class RedisService {
     private static final String prefix = "redis_init_count_index_";
+    private static String prefixCache = null;
     private CacheService cacheService;
 
     public RedisService(CacheService cacheService) {
@@ -160,10 +161,16 @@ public class RedisService {
     }
 
     private String getBigKeyPrefix() {
+        if(prefixCache != null && !prefixCache.isEmpty()){
+            return prefixCache;
+        }
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             sb.append(prefix).append("-");
         }
-        return sb.toString();
+        prefixCache = sb.toString();
+        return prefixCache;
     }
+
+
 }

@@ -31,4 +31,13 @@ public class MetricService {
         return true;
     }
 
+    public boolean recordTime(Runnable run, String methodName, String className) {
+        registry.timer("bage_request_time",
+                        "counter", "bage-counter",
+                        "class_name", className,
+                        "method_name", methodName)
+                .record(run);
+        return true;
+    }
+
 }
