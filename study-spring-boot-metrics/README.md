@@ -10,6 +10,12 @@ Micrometer + Prometheus + Grafana
 
 https://micrometer.io/docs/concepts
 
+promethos 
+
+基本语法 https://prometheus.io/docs/prometheus/latest/getting_started/
+
+书籍 https://github.com/yunlzheng/prometheus-book?tab=readme-ov-file、 https://yunlzheng.gitbook.io/prometheus-book
+
 
 
 micrometer [http://micrometer.io/](http://micrometer.io/)
