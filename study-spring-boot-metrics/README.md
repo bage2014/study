@@ -94,7 +94,7 @@ rate(bage_timer_seconds_sum[1m]) / rate(bage_timer_seconds_count[1m])
 http://localhost:8080/counter/incr
 
 ```
-bage_timer_seconds_sum
+bage_timer_seconds_sum ?????
 
 ```
 

@@ -329,7 +329,7 @@ http://localhost:8000/redis/count/get?index=1
 
 
 // set. 初始化 N个BigKey
-http://localhost:8000/redis/count/big/key/init?max=100
+http://localhost:8000/redis/count/big/key/init?max=1000
 
 // get 一个 BigKey
 http://localhost:8000/redis/count/big/key/random?index=100
