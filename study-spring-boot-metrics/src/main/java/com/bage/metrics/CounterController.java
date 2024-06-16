@@ -18,12 +18,9 @@ public class CounterController {
     private MeterRegistry registry;
 
     private Counter myCounter;
-    private Counter counter;
-
     @PostConstruct
     public void init() {
         myCounter = registry.counter("bage_counter", "counter","bage-count");
-        counter = Metrics.counter("bage_counter_2222", "counter", "bage-count");
 
     }
 
@@ -33,8 +30,6 @@ public class CounterController {
         // 统计下单次数
         myCounter.increment();
 
-
-        counter.increment();
         return "flag: " + flag;
     }
 

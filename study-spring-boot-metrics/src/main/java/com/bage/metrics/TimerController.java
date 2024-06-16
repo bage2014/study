@@ -23,7 +23,13 @@ public class TimerController {
 
     @PostConstruct
     public void init() {
-        myTimer = registry.timer("bage_timer", "timer","bage-time");
+//        myTimer = registry.timer("bage_timer", "timer","bage-time");
+
+        myTimer = Timer.builder("bage_timer")
+                .description("a description of what this timer does") // optional
+                .tags("timer", "bage-time") // optional
+                .register(registry);
+
     }
 
 
@@ -39,7 +45,7 @@ public class TimerController {
 
             }
         });
-        return "cost background...";
+        return "cost background";
     }
 
 }
