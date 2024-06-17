@@ -4,6 +4,8 @@ import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.bage.study.best.practice.metrics.LogCounterMetrics;
+import com.bage.study.best.practice.metrics.MetricService;
+import com.bage.study.best.practice.rest.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,35 +18,36 @@ import org.springframework.web.bind.annotation.RestController;
 public class LimitController {
 
     @Autowired
-    private LogCounterMetrics counterMetrics;
+    private MetricService metricService;
 
     @RequestMapping("/query")
     public Object query(@RequestParam("phone") String phone) {
-        counterMetrics.increment("query");
+        metricService.increment("query","LimitController");
         log.info("UserController query users = {}", phone);
-        return 1;
+        return new RestResult(200, "OK");
     }
 
     @RequestMapping("/insert")
     public Object insert() {
-        counterMetrics.increment("insert-no-limit");
-        try (Entry entry = SphU.entry("log")) {
+        int resultCode = 0;
+        metricService.increment("insertOut","LimitController");
+        try (Entry entry = SphU.entry("limit")) {
             // 被保护的逻辑
-            counterMetrics.increment("insert");
+            metricService.increment("insertInner","LimitController");
             try {
                 long end = System.currentTimeMillis();
-                log.info("UserController insert when = {}", (end));
-//            timerMetrics.record((end - start), TimeUnit.MILLISECONDS);
-                return 1;
+                log.info("LimitController insert when = {}", (end));
+                resultCode = 200;
             }catch (Exception e){
-                return 300;
+                resultCode = 300;
             }
 
         } catch (BlockException ex) {
             // 处理被流控的逻辑
             log.warn("block");
-            return 600;
+            resultCode = 600;
         }
+        return new RestResult(resultCode, "OKK?");
 
     }
 

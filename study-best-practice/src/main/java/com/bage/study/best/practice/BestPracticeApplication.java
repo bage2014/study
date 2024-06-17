@@ -8,8 +8,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.ArrayList;
@@ -65,9 +63,9 @@ public class BestPracticeApplication implements CommandLineRunner {
 
 
         FlowRule log = new FlowRule();
-        log.setResource("log");
+        log.setResource("limit");
         log.setGrade(RuleConstant.FLOW_GRADE_QPS);
-        log.setCount(600);
+        log.setCount(200);
         rules.add(log);
 
         FlowRuleManager.loadRules(rules);

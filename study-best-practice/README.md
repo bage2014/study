@@ -435,6 +435,25 @@ http://localhost:3000/d/RpSjVqWMz/redis?orgId=1&refresh=10s
 
 
 
+## sentinel流
+
+访问
+
+```
+// 无限流
+http://localhost:8000/limit/query/phone=1234
+
+// 限流
+http://localhost:8000/limit/insert
+
+```
+
+
+
+
+
+
+
 ## Mybatis
 
 一级二级缓存
