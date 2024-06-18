@@ -31,6 +31,7 @@ public class LimitController {
     public Object insert() {
         int resultCode = 0;
         metricService.increment("insertOut","LimitController");
+        String msg = "Success";
         try (Entry entry = SphU.entry("limit")) {
             // 被保护的逻辑
             metricService.increment("insertInner","LimitController");
@@ -40,15 +41,16 @@ public class LimitController {
                 resultCode = 200;
             }catch (Exception e){
                 resultCode = 300;
+                msg = e.getMessage();
             }
 
         } catch (BlockException ex) {
             // 处理被流控的逻辑
             log.warn("block");
             resultCode = 600;
+            msg = "limit block";
         }
-        return new RestResult(resultCode, "OKK?");
-
+        return new RestResult(resultCode, msg);
     }
 
 }
