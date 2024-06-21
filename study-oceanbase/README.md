@@ -70,3 +70,15 @@ INSERT customer(id,first_name,last_name) VALUES(1,'lu','bage'),(2,'lu2','bage2')
 
 
 
+## 常见问题
+
+```
+org.hibernate.HibernateException: Access to DialectResolutionInfo cannot be null when 'hibernate.dialect' not set
+```
+
+
+
+## 参考链接
+
+https://stackoverflow.com/questions/26548505/org-hibernate-hibernateexception-access-to-dialectresolutioninfo-cannot-be-null
+
