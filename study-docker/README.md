@@ -504,6 +504,7 @@ Docker Pull Command
  
 
 
+
 基本访问
 
 ```
@@ -834,6 +835,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -1862,7 +1864,42 @@ Visit
 # mysql -h 127.0.0.1 -P 4000 -u root -D test
 ```
 
+### 安装 Minio
 
+参考链接 
+
+https://hub.docker.com/r/minio/minio
+
+https://github.com/minio/minio/tree/master/docs/docker
+
+https://github.com/minio/minio
+
+Docker Pull Command
+
+```
+docker pull minio/minio
+```
+
+Run 
+
+```
+mkdir -p ~/bage/docker-data/minio
+
+docker run \
+  -p 9000:9000 \
+  -p 9001:9001 \
+  --name bage-minio \
+  -v $PWD/bage/docker-data/minio:/data \
+  -e "MINIO_ROOT_USER=bage" \
+  -e "MINIO_ROOT_PASSWORD=bage" \
+  quay.io/minio/minio server /data --console-address ":9001"
+```
+
+Visit
+
+```
+http://localhost:9000
+```
 
 
 
