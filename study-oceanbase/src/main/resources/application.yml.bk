@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  jpa:
+    database: mysql
+    show-sql: true
+  datasource:
+      driver-class-name: com.oceanbase.jdbc.Driver
+      url: jdbc:oceanbase://localhost:2881/mydb?characterEncoding=UTF-8
+      username: root@test
+      password:
+#spring.jpa.hibernate.ddl-auto=update
+jackson:
+  serialization:
+    indent_output: true

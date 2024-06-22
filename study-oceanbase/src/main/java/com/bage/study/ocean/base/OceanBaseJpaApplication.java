@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
-//@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @SpringBootApplication
 @Slf4j
 public class OceanBaseJpaApplication {
@@ -22,11 +21,11 @@ public class OceanBaseJpaApplication {
   public CommandLineRunner demo(CustomerRepository repository) {
     return (args) -> {
       // save a few customers
-      repository.save(new Customer("Jack", "Bauer"));
-      repository.save(new Customer("Chloe", "O'Brian"));
-      repository.save(new Customer("Kim", "Bauer"));
-      repository.save(new Customer("David", "Palmer"));
-      repository.save(new Customer("Michelle", "Dessler"));
+//      repository.save(new Customer(System.currentTimeMillis()%100000,"Jack", "Bauer"));
+//      repository.save(new Customer(System.currentTimeMillis()%100000,"Chloe", "O'Brian"));
+//      repository.save(new Customer(System.currentTimeMillis()%100000,"Kim", "Bauer"));
+//      repository.save(new Customer(System.currentTimeMillis()%100000,"David", "Palmer"));
+//      repository.save(new Customer(System.currentTimeMillis()%100000,"Michelle", "Dessler"));
 
       // fetch all customers
       log.info("Customers found with findAll():");
