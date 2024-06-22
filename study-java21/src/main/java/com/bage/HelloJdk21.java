@@ -1,5 +1,6 @@
 package com.bage;
 
+
 public class HelloJdk21 {
     public static void main(String[] args) {
         int n = 100;
