@@ -40,6 +40,12 @@ public class JvmGcController {
         }
         return 1;
     }
+    @RequestMapping("/clean")
+    public Object clean() {
+        log.debug("JvmGcController gc clean");
+        map.clear();
+        return 1;
+    }
 
     @RequestMapping("/addAndFinish/{step}")
     public Object addAndFinish(@PathVariable(value = "step", required = false) Integer step) {

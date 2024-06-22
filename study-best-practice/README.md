@@ -803,6 +803,10 @@ https://my.oschina.net/u/4417528/blog/3943828
 
 ## GC 耗时性能
 
+https://juejin.cn/post/7380513226155704374
+
+
+
 不同垃圾回收器的回收差异 效果
 
 
@@ -812,6 +816,32 @@ https://my.oschina.net/u/4417528/blog/3943828
 
 
 JVM参数配置调整？
+
+
+
+GC 触发
+
+默认在启动后，会每1秒，放一个10M的对象，存储到map中
+
+```
+// 每次放 N * 10M
+http://localhost:8000/jvm/addAndFinish/10
+
+// JVM 监控 
+http://localhost:3000/d/LgQKi_rVk/jvm-micrometer?orgId=1&refresh=30s
+
+// 每次放 N * 10M【不删除引用，会触发OOM】
+http://localhost:8000/jvm/add/10
+
+// 清空 Map 
+http://localhost:8000/jvm/clean
+
+// JVM 内存使用情况
+http://localhost:8000/jvm/info
+
+// metric 信息 
+http://localhost:8000/actuator/prometheus
+```
 
 
 
@@ -879,7 +909,7 @@ jdk17 :
 java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
 
 jdk21 :
-java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
+java -jar -Xlog:gc:my-gc-latest.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
 
 Remote :
 java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
