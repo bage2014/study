@@ -1889,16 +1889,26 @@ docker run \
   -p 9000:9000 \
   -p 9001:9001 \
   --name bage-minio \
-  -v $PWD/bage/docker-data/minio:/data \
+  -v ${HOME}/bage/docker-data/minio:/data \
   -e "MINIO_ROOT_USER=bage" \
-  -e "MINIO_ROOT_PASSWORD=bage" \
-  quay.io/minio/minio server /data --console-address ":9001"
+  -e "MINIO_ROOT_PASSWORD=bage-666666" \
+  minio/minio server /data --console-address ":9001"
+  
 ```
 
 Visit
 
+The MinIO deployment starts using default root credentials `minioadmin:minioadmin`. 
+
+指定后则使用： bage / bage-666666
+
 ```
-http://localhost:9000
+// API: 
+http://127.0.0.1:9000 
+
+
+// WebUI: 
+http://127.0.0.1:9001 
 ```
 
 
