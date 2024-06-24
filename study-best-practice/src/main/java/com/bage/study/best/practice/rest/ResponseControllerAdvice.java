@@ -31,7 +31,7 @@ public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
         if (returnType.getGenericParameterType().equals(String.class) || returnType.getParameterType().equals(String.class)) {
             // 将数据包装在ResultVO里后，再转换为json字符串响应给前端
             try {
-                log.info("beforeBodyWrite String data = {}",data);
+//                log.info("beforeBodyWrite String data = {}",data);
                 return objectMapper.writeValueAsString(new RestResult(200, data));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -39,7 +39,7 @@ public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
         }
         // 将原本的数据包装在ResultVO里
         if (!(data instanceof RestResult)) {
-            log.info("beforeBodyWrite other data = {}",data);
+//            log.info("beforeBodyWrite other data = {}",data);
             return new RestResult(200, data);
         }
 
