@@ -73,8 +73,6 @@ show processlist;
  SHOW Variables like 'log_bin';
 
 
-请问下，这个如何才能有权限呀？
-
 ```
 
 调整
