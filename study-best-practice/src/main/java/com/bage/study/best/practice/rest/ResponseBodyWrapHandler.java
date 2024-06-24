@@ -34,10 +34,10 @@ public class ResponseBodyWrapHandler implements HandlerMethodReturnValueHandler 
 
 		RestResult rtnMsg = null;
 		if (returnValue instanceof RestResult) {
-			log.info("beforeBodyWrite String data = {}",returnValue);
+//			log.info("beforeBodyWrite String data = {}",returnValue);
 			rtnMsg = (RestResult) returnValue;
 		} else {
-			log.info("beforeBodyWrite other data = {}",returnValue);
+//			log.info("beforeBodyWrite other data = {}",returnValue);
 			rtnMsg = new RestResult(200, returnValue);
 		}
 
