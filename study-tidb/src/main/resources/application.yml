@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: ${TIDB_JDBC_URL:jdbc:mysql://localhost:4000/test}
+    username: ${TIDB_USER:root}
+    password: ${TIDB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.TiDBDialect
+    hibernate:
+      ddl-auto: create-drop

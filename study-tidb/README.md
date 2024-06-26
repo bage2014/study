@@ -4,7 +4,9 @@
 
 简介 https://docs.pingcap.com/tidb/stable/overview
 
-Spring boot 链接https://docs.pingcap.com/tidb/stable/dev-guide-sample-application-java-spring-boot
+Spring boot 
+https://docs.pingcap.com/tidb/stable/dev-guide-sample-application-java-spring-boot
+code demo https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart
 
 Docker 
 https://hub.docker.com/r/pingcap/tidb
