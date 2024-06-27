@@ -505,6 +505,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -835,6 +836,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -1862,6 +1864,8 @@ Visit
 # curl localhost:10080/status
 
 # mysql -h 127.0.0.1 -P 4000 -u root -D test
+
+
 ```
 
 ### 安装 Minio
