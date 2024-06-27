@@ -31,8 +31,8 @@ public class PlayerBean {
      *    parameter default), and every operator will increase 1 (by `allocationSize`)
      */
     @Id
-    @GeneratedValue(generator="player_id")
-    @SequenceGenerator(name="player_id", sequenceName="player_jpa_id_seq", allocationSize=1)
+//    @GeneratedValue(generator="player_id")
+//    @SequenceGenerator(name="player_id", sequenceName="player_jpa_id_seq", allocationSize=1)
     private Long id;
 
     /**
@@ -42,6 +42,15 @@ public class PlayerBean {
     private Integer coins;
     @Column(name = "goods")
     private Integer goods;
+
+    public PlayerBean() {
+    }
+
+    public PlayerBean(Long id, Integer coins, Integer goods) {
+        this.id = id;
+        this.coins = coins;
+        this.goods = goods;
+    }
 
     public Long getId() {
         return id;
