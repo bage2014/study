@@ -32,8 +32,11 @@ class SpringJpaHibernateApplicationTests {
     void createPlayers() {
         List<PlayerBean> list = new ArrayList<>();
         list.add(new PlayerBean(System.currentTimeMillis(), 1, 1));
-        Integer count = playerService.createPlayers(list);
-        System.out.println("count = " + count);
+        Integer insert = playerService.createPlayers(list);
+        System.out.println("createPlayers = " + insert);
+
+        Long count = playerService.countPlayers();
+        System.out.println("countPlayers = " + count);
     }
 
     @Test
