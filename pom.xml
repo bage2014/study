@@ -201,6 +201,7 @@
       <module>study-spring-boot-k8s</module>
     <module>study-tidb</module>
       <module>study-minio</module>
+      <module>study-call-trace</module>
 
   </modules>
 </project>
