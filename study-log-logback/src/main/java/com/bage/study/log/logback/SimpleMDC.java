@@ -9,13 +9,17 @@ import ch.qos.logback.core.ConsoleAppender;
 
 /**
  * https://www.baeldung.com/mdc-in-log4j-2-logback
+ *
+ * https://juejin.cn/post/7348785955510370358
+ *
+ *
  */
 public class SimpleMDC {
   static public void main(String[] args) throws Exception {
 
     // You can put values in the MDC at any time. Before anything else
     // we put the first name
-    MDC.put("myTag", "myTag-foo");
+    MDC.put("myTag", "myTag-foo"); // 需要在 logback.xml 配置 myTag 内容
 
 
     Logger logger = LoggerFactory.getLogger(SimpleMDC.class);
@@ -23,6 +27,8 @@ public class SimpleMDC {
     // to Dorothy Parker:
     logger.info("Check enclosed.");
     logger.debug("The most beautiful two words in English.");
+    MDC.clear();
+    logger.debug("The most beautiful after clear");
     MDC.put("myTag", "myTag-bar");
 
     logger.info("I am not a crook.");
