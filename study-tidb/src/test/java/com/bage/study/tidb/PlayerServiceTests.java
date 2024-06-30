@@ -14,7 +14,6 @@
 
 package com.bage.study.tidb;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-class SpringJpaHibernateApplicationTests {
+class PlayerServiceTests {
 
     @Autowired
     private PlayerService playerService;
@@ -31,7 +30,7 @@ class SpringJpaHibernateApplicationTests {
     @Test
     void createPlayers() {
         List<PlayerBean> list = new ArrayList<>();
-        list.add(new PlayerBean(System.currentTimeMillis(), 1, 1));
+        list.add(new PlayerBean(System.currentTimeMillis(), 1, 21));
         Integer insert = playerService.createPlayers(list);
         System.out.println("createPlayers = " + insert);
 

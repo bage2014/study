@@ -22,7 +22,24 @@ code demo https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart
 
 
 
-## 基本CURD
+**Controller CRUD** 
+
+```
+// insert 
+http://localhost:8080/player/insert
+
+// query 
+http://localhost:8080/player/query?id=1719673665386
+
+// total 
+http://localhost:8080/player/total
+
+
+```
+
+
+
+## 基本CRUD
 
 https://docs.pingcap.com/tidb/stable/basic-sql-operations
 
@@ -54,6 +71,12 @@ CREATE TABLE person (
 
 
 ### 表操作
+
+
+
+
+
+
 
 
 

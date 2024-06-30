@@ -22,3 +22,7 @@ java -jar zipkin-server-2.16.2-exec.jar
 启动 brave.webmvc.Frontend 类启动
 访问 api 路径 [http://localhost:8081/api](http://localhost:8081/api)
 
+
+
+
+

@@ -447,7 +447,11 @@ Connect to Zookeeper from the Zookeeper command line client
 docker run -it --rm --link bage-zookeeper:zookeeper zookeeper zkCli.sh -server zookeeper
 ```
 
+### Connecting to ZooKeeper
 
+```
+$ bin/zkCli.sh -server 127.0.0.1:2181
+```
 
 
 
@@ -1856,6 +1860,8 @@ Run
 
 docker run --name tidb-server -d -v ${HOME}/bage/docker-data/tidb:/tmp/tidb -p 4000:4000 -p 10080:10080 pingcap/tidb
 
+docker run --name bage-tidb-server -d -v ${HOME}/bage/docker-data/tidb:/tmp/tidb -p 4000:4000 -p 10080:10080 pingcap/tidb:latest
+
 ```
 
 Visit
@@ -1914,6 +1920,44 @@ http://127.0.0.1:9000
 // WebUI: 
 http://127.0.0.1:9001 
 ```
+
+
+
+
+
+### 安装 Zookeeper
+
+参考链接 
+
+https://hub.docker.com/_/zookeeper
+
+https://farid-baharuddin.medium.com/setting-up-an-apache-zookeeper-cluster-in-docker-8960d5c23f5c
+
+Docker Pull Command
+
+```
+docker pull zookeeper
+
+```
+
+Run 
+
+```
+mkdir -p ~/bage/docker-data/zookeeper
+
+
+```
+
+Visit
+
+```
+// API: 
+
+```
+
+
+
+
 
 
 
