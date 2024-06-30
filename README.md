@@ -1,87 +1,10 @@
 # study #
 
-本项目为全栈工程师学习笔记，不求最深最好，开源技术搬运工
+This project is a learning note for full-stack engineers and a porter of open source technology;
+An introductory summary of Java knowledge points across the industry
 
-https://github.com/GrowingGit/GitHub-Chinese-Top-Charts 开源API
-
-
-
-其他项目：
-Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-services](https://github.com/bage2014/study-micro-services)
-
-Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
-
-Java体系知识点汇总：https://github.com/bage2014/interview
-
-web资源链接
-https://github.com/tvly/tvly-web
-
-https://www.baeldung.com/aws-s3-java S3 基本使用事件
-
-数据库隔离级别验证
-
-常用JVM命令验证
-
-AOP实用技巧；比如打日志等
-
-m3u parser https://github.com/BjoernPetersen/m3u-parser
-
-
-知识汇总：
-
-https://github.com/CyC2018/CS-Notes
-
-https://github.com/xingshaocheng/architect-awesome
-
-https://github.com/DeppWang/Java-Books
-
-https://github.com/justjavac/free-programming-books-zh_CN
-
-https://github.com/singgel/JAVA_LINE
-
-https://github.com/PansonPanson/Java-Notes
-
-https://github.com/Snailclimb/JavaGuide
-
-https://github.com/doocs/advanced-java
-
-https://github.com/xbox1994/Java-Interview
-
-https://github.com/jobbole/awesome-java-cn
-
-https://mp.weixin.qq.com/s/kro_gyUQrdKSy1x3ETwb5A
-
-限流组件
-
-重试组件
-
-
-
-## Others ##
-小工具？？
-
-https://github.com/jgraph/drawio-desktop/releases/tag/v20.3.0
-
-
-
-
-
-GIT 地址
-https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
-
-UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyxxjd/UI-Design-Resources)、[https://github.com/material-components/material-components-android](https://github.com/material-components/material-components-android)
-
-限流算法参考 [https://github.com/shiyujun/syj-ratelimit](https://github.com/shiyujun/syj-ratelimit)
-
-## Android ##
-基于 [https://github.com/project-travel-mate/Travel-Mate](https://github.com/project-travel-mate/Travel-Mate)
-改造升级打怪
-
-iosched
-[https://github.com/google/iosched/releases](https://github.com/google/iosched/releases)
-
-plaid
-[https://github.com/android/plaid/releases/tag/1.1.0](https://github.com/android/plaid/releases/tag/1.1.0)
+本项目为全栈工程师学习笔记，开源技术搬运工;
+Java 全行业知识点的入门总结
 
 ## 模块说明 ##
 按照创建顺序 (不是按照显示顺序) 说明如下
@@ -222,6 +145,77 @@ plaid
 | study-java11 | java11特性 |
 
 
+
+其他项目：
+Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-services](https://github.com/bage2014/study-micro-services)
+
+Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
+
+Java体系知识点汇总：https://github.com/bage2014/interview
+
+web资源链接
+https://github.com/tvly/tvly-web
+
+https://www.baeldung.com/aws-s3-java S3 基本使用事件
+
+m3u parser https://github.com/BjoernPetersen/m3u-parser
+
+
+知识汇总：
+
+https://github.com/CyC2018/CS-Notes
+
+https://github.com/xingshaocheng/architect-awesome
+
+https://github.com/DeppWang/Java-Books
+
+https://github.com/justjavac/free-programming-books-zh_CN
+
+https://github.com/singgel/JAVA_LINE
+
+https://github.com/PansonPanson/Java-Notes
+
+https://github.com/Snailclimb/JavaGuide
+
+https://github.com/doocs/advanced-java
+
+https://github.com/xbox1994/Java-Interview
+
+https://github.com/jobbole/awesome-java-cn
+
+https://mp.weixin.qq.com/s/kro_gyUQrdKSy1x3ETwb5A
+
+限流组件
+
+重试组件
+
+
+
+## Others ##
+小工具？？
+
+https://github.com/jgraph/drawio-desktop/releases/tag/v20.3.0
+
+
+
+
+
+GIT 地址
+https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
+
+UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyxxjd/UI-Design-Resources)、[https://github.com/material-components/material-components-android](https://github.com/material-components/material-components-android)
+
+限流算法参考 [https://github.com/shiyujun/syj-ratelimit](https://github.com/shiyujun/syj-ratelimit)
+
+## Android ##
+基于 [https://github.com/project-travel-mate/Travel-Mate](https://github.com/project-travel-mate/Travel-Mate)
+改造升级打怪
+
+iosched
+[https://github.com/google/iosched/releases](https://github.com/google/iosched/releases)
+
+plaid
+[https://github.com/android/plaid/releases/tag/1.1.0](https://github.com/android/plaid/releases/tag/1.1.0)
 
 
 
