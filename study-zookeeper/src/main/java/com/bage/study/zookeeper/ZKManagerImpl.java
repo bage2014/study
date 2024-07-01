@@ -5,22 +5,24 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 
-import java.io.UnsupportedEncodingException;
-
 public class ZKManagerImpl implements ZKManager {
     private static ZooKeeper zkeeper;
     private static ZKConnection zkConnection;
 
     public ZKManagerImpl() {
-        initialize();
+        try {
+            initialize();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void initialize() {
+    private void initialize() throws Exception {
         zkConnection = new ZKConnection();
         zkeeper = zkConnection.connect("localhost");
     }
 
-    public void closeConnection() {
+    public void closeConnection() throws Exception {
         zkConnection.close();
     }
 
@@ -35,15 +37,13 @@ public class ZKManagerImpl implements ZKManager {
           CreateMode.PERSISTENT);
     }
 
-    public Object getZNodeData(String path, boolean watchFlag) throws InterruptedException, UnsupportedEncodingException {
+    public Object getZNodeData(String path, boolean watchFlag) throws Exception {
  
-        byte[] b = null;
-        b = zkeeper.getData(path, null, null);
+        byte[] b = zkeeper.getData(path, null, null);
         return new String(b, "UTF-8");
     }
 
-    public void update(String path, byte[] data) throws KeeperException, 
-      InterruptedException {
+    public void update(String path, byte[] data) throws Exception{
         int version = zkeeper.exists(path, true).getVersion();
         zkeeper.setData(path, data, version);
     }
