@@ -1,4 +1,6 @@
-public class Main {
+package com.bage.study.call.trace;
+
+public class CallTraceTest {
     public static void main(String[] args) {
 
 
