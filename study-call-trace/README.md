@@ -12,9 +12,17 @@ Java 调用链路
 
 https://github.com/Adrninistrator/java-all-call-graph
 
-https://github.com/Adrninistrator/java-all-call-graph/blob/main/quick_start.md
+参考文档 
+https://github.com/Adrninistrator/java-callgraph2
+
+https://github.com/gousiosg/java-callgraph
+
+
+
 
 ## 快速开始
+https://github.com/Adrninistrator/java-all-call-graph/blob/main/quick_start.md
+
 
 下载运行
 
