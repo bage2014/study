@@ -21,7 +21,7 @@ public class AsyncConfig {
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(200);
         executor.setQueueCapacity(10000);
-        executor.setThreadNamePrefix("UserAsyncExecutor-");
+        executor.setThreadNamePrefix("BageAsyncExecutor-");
         executor.initialize();
         return executor;
     }
