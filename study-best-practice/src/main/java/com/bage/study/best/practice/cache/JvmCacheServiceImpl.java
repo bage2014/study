@@ -1,7 +1,5 @@
 package com.bage.study.best.practice.cache;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

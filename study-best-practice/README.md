@@ -312,9 +312,17 @@ https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-d
 
 ### Big Key
 
-redis 大key https://juejin.cn/post/7309482256808509459
+redis 大key https://juejin.cn/post/7309482256808509459、https://juejin.cn/post/7349360925185818635
 
 监控 http://localhost:3000/d/RpSjVqWMz/redis?orgId=1&refresh=10s&from=now-30m&to=now
+
+性能影响 
+
+- **性能下降**
+
+大 key 会占用大量的内存，导致内存碎片增加，进而影响Redis的性能。同时，对大 key 的读写操作消耗的时间都会比较长，这会导致单个操作阻塞 Redis 服务器，影响整体性能。
+
+尤其是执行像 `HGETALL`、`SMEMBERS`、`ZRANGE`、`LRANGE` 等命令时，如果操作的是大 key，可能会导致明显的延迟。
 
 基础数据准备【往换成添加N个值】
 
