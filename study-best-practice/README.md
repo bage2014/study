@@ -558,6 +558,12 @@ docker stats
 ## JVM 
 打开自带的 Jconsole
 
+JVM参数调优：
+
+https://juejin.cn/post/7344325496983666714
+
+https://juejin.cn/post/7344282440725250085
+
 
 
 参数配置 
