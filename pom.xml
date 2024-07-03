@@ -203,6 +203,7 @@
       <module>study-minio</module>
       <module>study-call-trace</module>
       <module>study-zookeeper</module>
+      <module>study-deep-learning</module>
 
   </modules>
 </project>
