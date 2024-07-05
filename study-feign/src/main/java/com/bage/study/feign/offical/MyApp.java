@@ -1,4 +1,4 @@
-package com.bage.study.feign;
+package com.bage.study.feign.offical;
 
 import feign.Feign;
 import feign.gson.GsonDecoder;
