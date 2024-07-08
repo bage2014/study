@@ -3,15 +3,12 @@ https://github.com/EvanLi/Github-Ranking GitHub 趋势
 
 https://digma.ai/25-best-intellij-idea-plugins-for-developers-in-2023/ Idea 插件 
 
-redis 大key
-
 ## **项目实践**
 
 阿里云性能测试PTS的文档
 https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
 
 分析说明 
-
 https://help.aliyun.com/zh/pts/test-analysis-and-tuning-29342?spm=a2c4g.11186623.0.0.3a705159bgXWVk
 
 阿里问题排查 
@@ -19,17 +16,11 @@ https://developer.aliyun.com/article/778128
 
 CPU、Memory、DB、NetWork、Disk ？
 
-
-
 Bilibili https://www.bilibili.com/video/BV1G24y1m7bD/?spm_id_from=333.788&vd_source=72424c3da68577f00ea40a9e4f9001a1
-
-
 
 https://zhuanlan.zhihu.com/p/491927737
 
 https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
-
-
 
 
 
@@ -48,24 +39,17 @@ CPU、DB【connection】、IO、NETWORK
 ## 学习规划
 
 
-
-
-hashicorp/vault UI 
-
 https://github.com/alibaba/DataX
 
 常见算法 动画演示 https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
 
 Spring3+jdk17
 
-TIMESTAMP vs DATETIME
-
 分库分表 https://tech.meituan.com/2016/11/18/dianping-order-db-sharding.html
 
 ## 安全框架
 
 https://juejin.cn/post/7308782851360555018
-
 
 ## Feign
 
@@ -76,7 +60,6 @@ https://juejin.cn/post/7308643782376144950
 Spring Cloud 系列
 
 https://juejin.cn/user/1714893872170573/posts
-
 
 
 ## Schedule
