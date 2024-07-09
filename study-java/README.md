@@ -38,6 +38,9 @@ https://www.azul.com/downloads/?version=java-8-lts&os=macos&package=jdk#zulu
 - 对敏感字段加密
 - 序列化存储规则
 
+### RoaringBitmap
+https://github.com/RoaringBitmap/RoaringBitmap
+
 ### java 线程池
 
 - 参数
