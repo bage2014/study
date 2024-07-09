@@ -2,8 +2,12 @@ package com.bage.study.java.bitmap;
 
 import java.util.BitSet;
 
+/**
+ * https://www.baeldung.com/java-roaring-bitmap-intro
+ */
 public class UserPresenceChecker {
     private BitSet userBitSet;
+//    private Roaring userBitSet;
 
     public static void main(String[] args) {
         long[] userIdList = {123, 234, 567};
