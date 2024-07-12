@@ -3,6 +3,8 @@ https://github.com/EvanLi/Github-Ranking GitHub 趋势
 
 https://digma.ai/25-best-intellij-idea-plugins-for-developers-in-2023/ Idea 插件 
 
+https://cloud.tencent.com/developer/article/1165567 drools 工具
+
 ## **项目实践**
 
 阿里云性能测试PTS的文档
