@@ -217,44 +217,6 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                             ),
                                             Row(
                                               children: <Widget>[
-                                                // Expanded(
-                                                //     child: Container(
-                                                //         margin: EdgeInsets.only(
-                                                //             top: 8.0,
-                                                //             right: 0.0),
-                                                //         child: Row(
-                                                //             crossAxisAlignment:
-                                                //                 CrossAxisAlignment
-                                                //                     .start,
-                                                //             children: <Widget>[
-                                                //               Icon(
-                                                //                 Icons.thumb_up,
-                                                //                 color:
-                                                //                     Colors.grey,
-                                                //                 size: 12.0,
-                                                //               ),
-                                                //               Text(
-                                                //                   " 100 " +
-                                                //                       '\t\t\t',
-                                                //                   style: TextStyle(
-                                                //                       fontSize:
-                                                //                           12,
-                                                //                       color: Colors
-                                                //                           .grey)),
-                                                //               Icon(
-                                                //                 Icons
-                                                //                     .thumb_down,
-                                                //                 color:
-                                                //                     Colors.grey,
-                                                //                 size: 12.0,
-                                                //               ),
-                                                //               Text(" 5 ",
-                                                //                   style: TextStyle(
-                                                //                       fontSize:
-                                                //                           12,
-                                                //                       color: Colors
-                                                //                           .grey)),
-                                                //             ]))),
                                                 Expanded(
                                                     child: Column(
                                                   crossAxisAlignment:
