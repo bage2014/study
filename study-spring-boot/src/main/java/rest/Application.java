@@ -10,7 +10,7 @@ public class Application {
 
     public static void main(String args[]) {
         RestTemplate restTemplate = new RestTemplate();
-       String res = restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random",String.class);
+        String res = restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random",String.class);
         log.info(res);
     }
 
