@@ -20,7 +20,7 @@ class Feedbacks extends StatefulWidget {
   _Feedbacks createState() => _Feedbacks();
 }
 
-class _Feedbacks extends State<Feedbacks> with SingleTickerProviderStateMixin {
+class _Feedbacks extends State<Feedbacks> with TickerProviderStateMixin {
   late TabController _tabController; //需要定义一个Controller
   List<TabTitle> tabs = [];
 
