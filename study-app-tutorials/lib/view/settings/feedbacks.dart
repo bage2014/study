@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'feedback_tab_view.dart';
 
 class Feedbacks extends StatefulWidget {
+  const Feedbacks({Key? key}) : super(key: key);
+
   @override
   _Feedbacks createState() => _Feedbacks();
 }
