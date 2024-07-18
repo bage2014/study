@@ -12,7 +12,6 @@
     <artifactId>study-spring-boot-actuator</artifactId>
 
     <name>study-spring-boot-actuator</name>
-    <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
     <properties>
