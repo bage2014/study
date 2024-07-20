@@ -135,7 +135,7 @@ Docker Pull Command
     $ docker run -it --rm -p 8888:8080 tomcat
 启动带挂载目录
 
-    $ docker run -v /home/bage/mnt-tomcat:/mnt -it --rm -p 8888:8080 tomcat
+    $ docker run -v ${HOME}/mnt-tomcat:/mnt -it --rm -p 8888:8080 tomcat
 
 
 ​    
@@ -182,7 +182,7 @@ docker pull mysql/mysql-server
 
 Start a mysql server instance
 
-    docker run --name bage-mysql -v /home/bage/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d bage-mysql
+    docker run --name bage-mysql -v ${HOME}/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d bage-mysql
     
     Mac:
     docker run --network my-net --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
@@ -194,7 +194,7 @@ Start a mysql server instance
 其中
 
 	--name 起名 bage-mysql 
-	-v 挂载目录 /home/bage/data/mysql:/var/lib/mysql 
+	-v 挂载目录 ${HOME}/data/mysql:/var/lib/mysql 
 	-e 设置root密码 MYSQL_ROOT_PASSWORD=bage 
 	-p 映射端口 3306:3306 
 	-d bage-mysql
@@ -293,13 +293,13 @@ host.docker.internal
 
 新建一个临时编辑目录：
 
-    mkdir -p /home/bage/workspace/docker/docker/
+    mkdir -p ${HOME}/workspace/docker/docker/
 拷贝配置文件出来进行编辑:
 
-    docker cp tmp-nginx-container:/etc/nginx/conf.d/default.conf /home/bage/workspace/docker/docker/
+    docker cp tmp-nginx-container:/etc/nginx/conf.d/default.conf ${HOME}/workspace/docker/docker/
 编辑修改后进行返回：
 
-    docker cp /home/bage/workspace/docker/docker/ tmp-nginx-container:/etc/nginx/nginx.conf
+    docker cp ${HOME}/workspace/docker/docker/ tmp-nginx-container:/etc/nginx/nginx.conf
 
 基本应用
 
@@ -357,7 +357,7 @@ connect to it from an application
 
  自定义配置文件启动
 
-	docker run -p 8379:6379 -v /home/bage/conf/redis.conf:/usr/local/etc/redis/redis.conf --name redis -d redis redis-server /usr/local/etc/redis/redis.conf  --requirepass "bage.redis"
+	docker run -p 8379:6379 -v ${HOME}/conf/redis.conf:/usr/local/etc/redis/redis.conf --name redis -d redis redis-server /usr/local/etc/redis/redis.conf  --requirepass "bage.redis"
 
 
 
@@ -463,9 +463,9 @@ Docker Pull Command
 
     docker pull portainer/portainer
 
-启动(/home/bage/data/portainer 持久化数据目录)
+启动(${HOME}/data/portainer 持久化数据目录)
 
-    docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /home/bage/data/portainer:/data portainer/portainer
+    docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}/data/portainer:/data portainer/portainer
 
 
 ### 安装部署 jenkins  ###
@@ -506,6 +506,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -575,23 +576,7 @@ Docker Pull Command
     docker run -ti --name storage -v ~/storage_data:/fastdfs/storage/data -v ~/store_path:/fastdfs/store_path --net=host -e TRACKER_SERVER:192.168.1.2:22122 season/fastdfs storage
 
 
-### 安装部署 xxl-job  ###
-参考链接 [https://hub.docker.com/r/xuxueli/xxl-job-admin](https://hub.docker.com/r/xuxueli/xxl-job-admin)
-
-Docker Pull Command
-
-    docker pull xuxueli/xxl-job-admin
-
-启动 
-
-    docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/xxl_job?Unicode=true&characterEncoding=UTF-8" -p 8080:8808 -v /tmp:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
-
-访问
-	
-	http://localhost:8080/xxl-job-admin
-
 ### 安装部署 Vue  ###
-
 打包 vue 项目
 
     npm run build
@@ -666,19 +651,19 @@ Docker Pull Command
 
 创建目录
 	
-	mkdir -p /home/bage/data/ceph/etc
-	mkdir -p /home/bage/data/ceph/lib
+	mkdir -p ${HOME}/data/ceph/etc
+	mkdir -p ${HOME}/data/ceph/lib
 
 If SELinux is enabled, run the following commands:
 
-	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/etc
-	sudo chcon -Rt svirt_sandbox_file_t /home/bage/data/ceph/lib
+	sudo chcon -Rt svirt_sandbox_file_t ${HOME}/data/ceph/etc
+	sudo chcon -Rt svirt_sandbox_file_t ${HOME}/data/ceph/lib
 
 Deploy a monitor
 
 	docker run -d --net=host --name=ceph-mon \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v ${HOME}/data/ceph/etc:/etc/ceph \
+	-v ${HOME}/data/ceph/lib:/var/lib/ceph/ \
 	-e MON_IP=192.168.96.132 \
 	-e CEPH_PUBLIC_NETWORK=192.168.96.132/24 \
 	ceph/daemon mon
@@ -690,8 +675,8 @@ Deploy a monitor
 Deploy a Manager daemon
 
 	docker run -d --net=host --name=ceph-mgr \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v ${HOME}/data/ceph/etc:/etc/ceph \
+	-v ${HOME}/data/ceph/lib:/var/lib/ceph/ \
 	ceph/daemon mgr
 
 查看状态
@@ -708,7 +693,7 @@ exported keyring for client.bootstrap-osd
 
 chmod ceph.client.admin.keyring
 
-	chmod +r /home/bage/data/ceph/etc/ceph.client.admin.keyring
+	chmod +r ${HOME}/data/ceph/etc/ceph.client.admin.keyring
 
 
 
@@ -717,8 +702,8 @@ Deploy an OSD
 	docker run -d --net=host --name=ceph-osd \
 	--pid=host \
 	--privileged=true \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v ${HOME}/data/ceph/etc:/etc/ceph \
+	-v ${HOME}/data/ceph/lib:/var/lib/ceph/ \
 	-v /dev:/dev/ \
 	-e OSD_DEVICE=/dev/sda \
 	ceph/daemon osd_directory
@@ -733,8 +718,8 @@ osd_ceph_disk 启动 报错[待处理]
 	docker run -d --net=host --name=ceph-osd \
 	--pid=host \
 	--privileged=true \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v ${HOME}/data/ceph/etc:/etc/ceph \
+	-v ${HOME}/data/ceph/lib:/var/lib/ceph/ \
 	-v /dev:/dev/ \
 	-e OSD_DEVICE=/dev/sda \
 	ceph/daemon osd_ceph_disk
@@ -745,8 +730,8 @@ osd_ceph_disk 启动 报错[待处理]
 Deploy a MDS
 
 	docker run -d --net=host --name=ceph-mds \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v ${HOME}/data/ceph/etc:/etc/ceph \
+	-v ${HOME}/data/ceph/lib:/var/lib/ceph/ \
 	-e CEPHFS_CREATE=1 \
 	ceph/daemon mds
 
@@ -768,8 +753,8 @@ exported keyring for client.bootstrap-rgw
 Deploy a Rados Gateway 
 
 	docker run -d --net=host --name=ceph-rgw \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph/ \
+	-v ${HOME}/data/ceph/etc:/etc/ceph \
+	-v ${HOME}/data/ceph/lib:/var/lib/ceph/ \
 	ceph/daemon rgw
 
 
@@ -781,8 +766,8 @@ Deploy a Rados Gateway
 Administration via radosgw-admin ??
 
 	docker run -d --name ceph-rgw \
-	-v /home/bage/data/ceph/etc:/etc/ceph \
-	-v /home/bage/data/ceph/lib:/var/lib/ceph \
+	-v ${HOME}/data/ceph/etc:/etc/ceph \
+	-v /ho${HOME}ta/ceph/lib:/var/lib/ceph \
 	-e CEPH_DAEMON=RGW -e RGW_NAME=myrgw -p 9000:9000 \
 	-e RGW_REMOTE_CGI=1 -e RGW_REMOTE_CGI_HOST=192.168.96.132 \
 	-e RGW_REMOTE_CGI_PORT=9000 ceph/daemon
@@ -825,14 +810,15 @@ radosgw-admin user create --display-name="johnny rotten" --uid=johnny \
 
 
 ### 安装配置xxl-job ###
-参考链接：[https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B](https://www.xuxueli.com/xxl-job/#%E3%80%8A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0XXL-JOB%E3%80%8B)
+参考链接：https://hub.docker.com/r/xuxueli/xxl-job-admin/
+
 Docker Pull Command
 
-	docker pull xuxueli/xxl-job-admin:2.1.2
+	docker pull xuxueli/xxl-job-admin:2.4.1
 
 start a instance
 
-	docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/xxl_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=xxljob --spring.datasource.password=xxljob" -p 8808:8080 -v /home/bage/data/xxljob:/data/applogs --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.1.2
+	docker run -e PARAMS="--spring.datasource.url=jdbc:mysql://localhost:3306/xxl_job?Unicode=true&characterEncoding=UTF-8 --spring.datasource.username=xxljob --spring.datasource.password=xxljob" -p 8808:8080 --name xxl-job-admin  -d xuxueli/xxl-job-admin:2.4.1
 
 
 访问
@@ -840,6 +826,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -888,7 +875,7 @@ Docker Pull Command
 
 start a instance[not enough space]
 
-	docker run --name logstash --rm -it -v /home/bage/data/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
+	docker run --name logstash --rm -it -v ${HOME}/data/pipeline/:/usr/share/logstash/pipeline/ logstash:7.5.1
 
 ### 安装配置 elk ###
 
@@ -904,7 +891,7 @@ setting max_map_count
 
 	sudo  sysctl -w vm.max_map_count=262144
 
-vi /home/bage/data/logstash/file-beats.conf
+vi ${HOME}/data/logstash/file-beats.conf
 
 [Mac:   ${HOME}/bage/docker-data/elk/logstash/beats-input.conf]
 
@@ -931,7 +918,7 @@ output {
 
 start a instance
 
-	docker run -v /home/bage/data/logstash/file-beats.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
+	docker run -v ${HOME}/data/logstash/file-beats.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
 	
 	Mac: 
 	docker run -v /Users/bage/bage/docker-data/elk/logstash/beats-input.conf:/etc/logstash/conf.d/02-beats-input.conf -p 8056:5601 -p 8092:9200 -p 8044:5044 -it --name elk sebp/elk:700
