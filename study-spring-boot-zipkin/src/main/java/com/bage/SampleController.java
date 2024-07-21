@@ -67,14 +67,16 @@ public class SampleController
 
 	@RequestMapping("/call")
 	public Callable<String> call() {
+		log.info("call start");
 		return new Callable<String>() {
 			public String call() throws Exception {
+				log.info("async call start");
 				int millis = SampleController.this.random.nextInt(1000);
 				Thread.sleep(millis);
 				Span currentSpan = SampleController.this.tracer.currentSpan();
 				currentSpan.tag("callable-sleep-millis", String.valueOf(millis));
 				String hhh = helloService.hhh();
-				System.out.println("hhh:" + hhh);
+				log.info("async end:" + hhh);
 				return "async hi: " + currentSpan;
 			}
 		};
@@ -106,6 +108,8 @@ public class SampleController
 
 		String s = this.restTemplate
 				.getForObject("http://localhost:" + this.port + "/call", String.class);
+		log.info(String.format("restTemplate "));
+
 		span.finish();
 		return "traced/" + s;
 	}
