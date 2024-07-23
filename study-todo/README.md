@@ -5,7 +5,7 @@ https://digma.ai/25-best-intellij-idea-plugins-for-developers-in-2023/ Idea 插�
 
 https://cloud.tencent.com/developer/article/1165567 drools 工具
 
-https://mp.weixin.qq.com/s/RWGal4LJ3PVPaP1cFPHvFQ 
+https://mp.weixin.qq.com/s/RWGal4LJ3PVPaP1cFPHvFQ redis 大KEY
 
 ## **项目实践**
 
