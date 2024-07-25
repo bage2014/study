@@ -7,6 +7,9 @@ https://cloud.tencent.com/developer/article/1165567 drools 工具
 
 https://mp.weixin.qq.com/s/RWGal4LJ3PVPaP1cFPHvFQ redis 大KEY
 
+everyday an idea!!
+
+
 ## **项目实践**
 
 阿里云性能测试PTS的文档
