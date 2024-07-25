@@ -20,6 +20,11 @@ https://github.com/gousiosg/java-callgraph
 ASM 增强
 https://github.com/avitkus/ASM-method-tracer/
 
+newrelic
+https://one.newrelic.com/catalog-pack-details?account=4557803&state=de6032a3-52a4-0e44-7cdc-bfb0a8f12b74
+
+datadog
+https://docs.datadoghq.com/tracing/trace_collection/automatic_instrumentation/dd_libraries/java/?tab=wget
 
 ## 快速开始
 https://github.com/Adrninistrator/java-all-call-graph/blob/main/quick_start.md
