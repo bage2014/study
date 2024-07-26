@@ -205,7 +205,7 @@
       <module>study-zookeeper</module>
       <module>study-deep-learning</module>
       <module>study-spring-boot-flowable</module>
-    <module>study-skyworking</module>
+    <module>study-skywalking</module>
 
   </modules>
 </project>
