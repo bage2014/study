@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>study-skyworking</artifactId>
+    <artifactId>study-skywalking</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
