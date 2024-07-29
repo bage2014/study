@@ -1975,6 +1975,8 @@ Visit
 
 https://pulsar.apache.org/docs/next/getting-started-docker/
 
+https://hub.docker.com/r/apachepulsar/pulsar-manager
+
 https://pulsar.apache.org/docs/3.3.x/client-libraries-java/
 
 Docker Pull Command
@@ -1998,10 +2000,26 @@ apachepulsar/pulsar \
 bin/pulsar standalone
 ```
 
+Manager
+
+```
+docker pull apachepulsar/pulsar-manager
+
+
+docker run -it \
+  -p 9527:9527 -p 7750:7750 \
+  -e SPRING_CONFIGURATION_FILE=/pulsar-manager/pulsar-manager/application.properties \
+  apachepulsar/pulsar-manager
+```
+
+
+
 Visit
 
 ```
-// API: 
+// Manager
+http://localhost:7750/
+
 
 ```
 
