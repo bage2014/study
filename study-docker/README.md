@@ -1969,6 +1969,44 @@ Visit
 
 
 
+### 安装 Pulsar
+
+参考链接 
+
+https://pulsar.apache.org/docs/next/getting-started-docker/
+
+https://pulsar.apache.org/docs/3.3.x/client-libraries-java/
+
+Docker Pull Command
+
+```
+docker pull apachepulsar/pulsar
+```
+
+Run 
+
+```
+mkdir -p ${HOME}/bage/docker-data/pulsar
+mkdir -p ${HOME}/bage/docker-conf/pulsar
+
+docker run -it --name bage-pulsar \
+-p 6650:6650 \
+-p 8080:8080 \
+--mount source=pulsardata,target=/pulsar/data \
+--mount source=pulsarconf,target=/pulsar/conf \
+apachepulsar/pulsar \
+bin/pulsar standalone
+```
+
+Visit
+
+```
+// API: 
+
+```
+
+
+
 
 
 
