@@ -206,6 +206,7 @@
       <module>study-deep-learning</module>
       <module>study-spring-boot-flowable</module>
     <module>study-skywalking</module>
+    <module>study-pulsar</module>
 
   </modules>
 </project>
