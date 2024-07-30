@@ -15,6 +15,20 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- in your <properties> block -->
+        <pulsar.version>3.3.0</pulsar.version>
+
     </properties>
 
+
+    <dependencies>
+
+        <!-- in your <dependencies> block -->
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-client</artifactId>
+            <version>${pulsar.version}</version>
+        </dependency>
+    </dependencies>
 </project>
