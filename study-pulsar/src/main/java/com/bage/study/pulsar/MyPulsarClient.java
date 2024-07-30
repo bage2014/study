@@ -3,7 +3,7 @@ package com.bage.study.pulsar;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 
-public class PulsarClientProxy {
+public class MyPulsarClient {
 
     public static PulsarClient getInstance(){
         PulsarClient client = null;

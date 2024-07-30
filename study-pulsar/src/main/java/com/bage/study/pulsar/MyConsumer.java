@@ -4,8 +4,8 @@ import org.apache.pulsar.client.api.*;
 
 public class MyConsumer {
 
-    PulsarClient client = null;
-    Consumer consumer = null;
+    private PulsarClient client = null;
+    private Consumer consumer = null;
 
     public void close() {
         try {
@@ -21,8 +21,8 @@ public class MyConsumer {
             return;
         }
 
-        client = PulsarClientProxy.getInstance();
         try {
+            client = MyPulsarClient.getInstance();
             consumer = client.newConsumer()
                     .topic("my-topic")
                     .subscriptionName("my-subscription")

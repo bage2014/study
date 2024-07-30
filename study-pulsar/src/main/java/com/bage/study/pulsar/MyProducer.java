@@ -7,7 +7,7 @@ import org.apache.pulsar.client.api.PulsarClientException;
 public class MyProducer {
 
     public void send(String message) {
-        PulsarClient client = PulsarClientProxy.getInstance();
+        PulsarClient client = MyPulsarClient.getInstance();
         Producer<byte[]> producer = null;
         try {
             producer = client.newProducer()
