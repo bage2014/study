@@ -1,4 +1,39 @@
 # study-TODO #
+
+
+
+## 规划TODO
+
+【细化到可以2H内完成】/ 项
+
+### 学习规划
+
+
+
+| 代办                | 排期       | 备注 |
+| ------------------- | ---------- | ---- |
+| ES-数据基本增删改查 | 2024-07-31 |      |
+| ES-数据分词索引     |            |      |
+| ES-海量数据查询     |            |      |
+|                     |            |      |
+| Log-知识体系        |            |      |
+|                     |            |      |
+|                     |            |      |
+
+### 长期规划
+
+
+
+| 说明 | 排期 | 备注 |
+| ---- | ---- | ---- |
+| 算法 |      |      |
+|      |      |      |
+| 项目 |      |      |
+
+
+
+## 好用链接
+
 https://github.com/EvanLi/Github-Ranking GitHub 趋势
 
 https://digma.ai/25-best-intellij-idea-plugins-for-developers-in-2023/ Idea 插件 
@@ -71,12 +106,6 @@ https://juejin.cn/post/7308643782376144950
 Spring Cloud 系列
 
 https://juejin.cn/user/1714893872170573/posts
-
-
-## Schedule
-
-| 时间        | 说明         | 备注 |
-| ----------- | ------------ | ---- |
 
 
 

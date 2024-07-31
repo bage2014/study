@@ -65,7 +65,7 @@ public class EsUtils {
                 .build();
 
 
-// Create the transport with a Jackson mapper
+        // Create the transport with a Jackson mapper
         ElasticsearchTransport transport = new RestClientTransport(
                 restClient, new JacksonJsonpMapper());
 
