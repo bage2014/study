@@ -67,10 +67,13 @@ curl -X POST "localhost:9092/persons/_doc/1711947442539999?pretty" -H 'Content-T
 
 ```
 浏览器查询
-localhost:9092/persons/_doc/1711947442539?pretty
+http://localhost:9092/persons/_doc/1711947442539999?pretty
+
+localhost:9092/{index}/_doc/{id}?pretty
+
 
 命令行
-curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
+curl -X GET "localhost:9092/persons/_doc/1711947442539999?pretty"
 
 合并查询
 curl -X GET "localhost:9092/_mget?pretty" -H 'Content-Type: application/json' -d'
@@ -78,7 +81,7 @@ curl -X GET "localhost:9092/_mget?pretty" -H 'Content-Type: application/json' -d
   "docs": [
     {
       "_index": "persons",
-      "_id": "1711947442539"
+      "_id": "1711947442539999"
     },
     {
       "_index": "persons",
