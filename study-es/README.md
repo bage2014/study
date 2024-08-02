@@ -37,6 +37,8 @@ https://www.elastic.co/guide/cn/elasticsearch/guide/current/running-elasticsearc
 
 ## 基本命令
 
+### 增删改查
+
 新增
 
 ```
@@ -119,6 +121,98 @@ curl -X GET "localhost:9092/persons/_doc/1711947442539?pretty"
 
 
 
+### 高阶
+
+查询所有【分页+排序】
+
+```
+get /persons/_search
+{
+    "query": {
+        "match_all": {}
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 2,
+    "size": 3
+}
+```
+
+特定条件 【"fullName": "bage new" // 匹配fullname 包含bage或者包含new】
+
+```
+{
+    "query": {
+        "match": {
+            "fullName": "bage new"
+        }
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 0,
+    "size": 3
+}
+```
+
+段落查询【match_phrase】
+
+```
+{
+    "query": {
+        "match_phrase": {
+            "fullName": "bage lu"
+        }
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 0,
+    "size": 3
+}
+```
+
+多条件查询【age=XXX+fullName notContains XXX】
+
+```
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "match": {
+                        "age": "25"
+                    }
+                }
+            ],
+            "must_not": [
+                {
+                    "match": {
+                        "fullName": "Janette"
+                    }
+                }
+            ]
+        }
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 0,
+    "size": 3
+}
+```
+
+
+
 ## Java client 
 
 官方 Tests https://github.com/elastic/elasticsearch-java/tree/8.13/java-client/src/test/java/co/elastic/clients/documentation
@@ -173,6 +267,8 @@ SearchResponse<SomeApplicationData> results = client
     SomeApplicationData.class 
 );
 ```
+
+
 
 
 
