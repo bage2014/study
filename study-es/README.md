@@ -213,6 +213,43 @@ get /persons/_search
 
 
 
+官方例子？
+
+https://pdai.tech/md/db/nosql-es/elasticsearch-x-dsl-com.html
+
+- `must`： 必须匹配。贡献算分
+- `must_not`：过滤子句，必须不能匹配，但不贡献算分
+- `should`： 选择性匹配，至少满足一条。贡献算分
+- `filter`： 过滤子句，必须匹配，但不贡献算分
+
+```
+{
+  "query": {
+    "bool" : {
+      "must" : {
+        "term" : { "user.id" : "kimchy" }
+      },
+      "filter": {
+        "term" : { "tags" : "production" }
+      },
+      "must_not" : {
+        "range" : {
+          "age" : { "gte" : 10, "lte" : 20 }
+        }
+      },
+      "should" : [
+        { "term" : { "tags" : "env1" } },
+        { "term" : { "tags" : "deployed" } }
+      ],
+      "minimum_should_match" : 1,
+      "boost" : 1.0
+    }
+  }
+}
+```
+
+
+
 ## Java client 
 
 官方 Tests https://github.com/elastic/elasticsearch-java/tree/8.13/java-client/src/test/java/co/elastic/clients/documentation
