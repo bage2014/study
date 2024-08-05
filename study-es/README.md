@@ -324,7 +324,38 @@ curl -X POST "localhost:9092/_analyze?pretty" -H 'Content-Type: application/json
 '
 ```
 
-如何使用？？
+分词 
+
+```
+localhost:9092/_analyze?pretty
+
+{
+  "analyzer": "standard",
+  "text": "In 2020, Java is the best language in the world."
+}
+```
+
+指定分词
+
+```
+localhost:9092/_analyze?pretty
+
+{
+  "analyzer": "whitespace",
+  "text": "In 2020, Java is the best language in the world."
+}
+```
+
+不分词
+
+```
+{
+  "analyzer": "keyword",
+  "text": ["The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."]
+}
+```
+
+
 
 使用的过程
 
