@@ -248,6 +248,83 @@ https://pdai.tech/md/db/nosql-es/elasticsearch-x-dsl-com.html
 }
 ```
 
+## 分词器
+
+分词器使用的两个情形：  
+1，Index time analysis.  创建或者更新文档时，会对文档进行分词
+2，Search time analysis.  查询时，对查询语句分词
+
+https://www.elastic.co/guide/en/elasticsearch/reference/current/test-analyzer.html
+
+使用空格分词
+
+```
+curl -X POST "localhost:9092/_analyze?pretty" -H 'Content-Type: application/json' -d'
+{
+  "analyzer": "whitespace",
+  "text":     "The quick brown fox."
+}
+'
+```
+
+分词 
+
+```
+localhost:9092/_analyze?pretty
+
+{
+  "analyzer": "standard",
+  "text": "In 2020, Java is the best language in the world."
+}
+```
+
+指定分词
+
+```
+localhost:9092/_analyze?pretty
+
+{
+  "analyzer": "whitespace",
+  "text": "In 2020, Java is the best language in the world."
+}
+```
+
+不分词
+
+```
+localhost:9092/_analyze?pretty
+
+{
+  "analyzer": "keyword",
+  "text": ["The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."]
+}
+```
+
+指定分词器查询
+
+```
+localhost:9092/persons/_search
+
+{
+    "query": {
+        "match": {
+            "fullName": {
+                "query": "bage new",
+                "analyzer": "standard"
+            }
+        }
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 0,
+    "size": 3
+}
+
+```
+
 
 
 ## Java client 
@@ -306,56 +383,6 @@ SearchResponse<SomeApplicationData> results = client
 ```
 
 
-
-## 文本分词
-
-分词器使用的两个情形：  
-1，Index time analysis.  创建或者更新文档时，会对文档进行分词
-2，Search time analysis.  查询时，对查询语句分词
-
-https://www.elastic.co/guide/en/elasticsearch/reference/current/test-analyzer.html
-
-使用空格分词
-
-```
-curl -X POST "localhost:9092/_analyze?pretty" -H 'Content-Type: application/json' -d'
-{
-  "analyzer": "whitespace",
-  "text":     "The quick brown fox."
-}
-'
-```
-
-分词 
-
-```
-localhost:9092/_analyze?pretty
-
-{
-  "analyzer": "standard",
-  "text": "In 2020, Java is the best language in the world."
-}
-```
-
-指定分词
-
-```
-localhost:9092/_analyze?pretty
-
-{
-  "analyzer": "whitespace",
-  "text": "In 2020, Java is the best language in the world."
-}
-```
-
-不分词
-
-```
-{
-  "analyzer": "keyword",
-  "text": ["The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."]
-}
-```
 
 
 
