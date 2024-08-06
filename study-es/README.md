@@ -307,9 +307,11 @@ SearchResponse<SomeApplicationData> results = client
 
 
 
-
-
 ## 文本分词
+
+分词器使用的两个情形：  
+1，Index time analysis.  创建或者更新文档时，会对文档进行分词
+2，Search time analysis.  查询时，对查询语句分词
 
 https://www.elastic.co/guide/en/elasticsearch/reference/current/test-analyzer.html
 
@@ -354,10 +356,6 @@ localhost:9092/_analyze?pretty
   "text": ["The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."]
 }
 ```
-
-
-
-使用的过程
 
 
 
