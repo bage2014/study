@@ -194,6 +194,94 @@ get /persons/_search
 }
 ```
 
+精准查询【term】
+
+```
+{
+    "query": {
+      "term": {
+        "fullName": {
+          "value": "bage"
+        }
+      }
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 0,
+    "size": 3
+}
+```
+
+精准多值匹配【terms】
+
+```
+{
+    "query": {
+      "terms": {
+        "fullName": [
+          "bage","bage2"
+        ]
+      }
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 0,
+    "size": 3
+}
+```
+
+前缀匹配【prefix】
+
+```
+{
+    "query": {
+      "prefix": {
+        "fullName": {
+          "value": "bage"
+        }
+      }
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 0,
+    "size": 3
+}
+```
+
+
+
+通配符模糊匹配【wildcard】
+
+```
+{
+    "query": {
+      "wildcard": {
+        "fullName": {
+          "value": "*new*"
+        }
+      }
+    },
+    "sort": [
+        {
+            "age": "asc"
+        }
+    ],
+    "from": 0,
+    "size": 3
+}
+```
+
+
+
 多条件查询【age=XXX+fullName notContains XXX】
 
 ```
