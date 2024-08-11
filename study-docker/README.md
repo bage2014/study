@@ -512,6 +512,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -827,6 +828,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -2025,7 +2027,35 @@ http://localhost:7750/
 
 
 
+### 安装 Excalidraw
 
+参考链接 
+
+https://excalidraw.com/
+
+https://hub.docker.com/r/excalidraw/excalidraw
+
+https://docs.excalidraw.com/docs/@excalidraw/excalidraw/installation
+
+Docker Pull Command
+
+```
+docker pull apachepulsar/pulsar
+```
+
+Run 
+
+```
+docker run --rm -dit --name bage-excalidraw -p 5000:80 excalidraw/excalidraw
+
+```
+
+Visit
+
+```
+http://localhost:5000/
+
+```
 
 
 
