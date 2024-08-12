@@ -3,10 +3,18 @@
 This project is a learning note for full-stack engineers and a porter of open source technology;
 An introductory summary of Java knowledge points across the industry
 
-本项目为全栈工程师学习笔记，开源技术搬运工;
-Java 全行业知识点的入门总结
+本项目为全栈工程师学习笔记，开源技术搬运工; Java 全行业知识点的入门总结
 
-## 模块说明 ##
+
+
+## 常用功能
+
+
+
+
+
+## 完整模块说明 ##
+
 按照创建顺序 (不是按照显示顺序) 说明如下
 
 | 项目模块 | 项目说明 |
@@ -146,7 +154,7 @@ Java 全行业知识点的入门总结
 
 
 
-其他项目：
+## 其他 ##
 Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-services](https://github.com/bage2014/study-micro-services)
 
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
@@ -159,7 +167,6 @@ https://github.com/tvly/tvly-web
 https://www.baeldung.com/aws-s3-java S3 基本使用事件
 
 m3u parser https://github.com/BjoernPetersen/m3u-parser
-
 
 知识汇总：
 
@@ -185,20 +192,7 @@ https://github.com/jobbole/awesome-java-cn
 
 https://mp.weixin.qq.com/s/kro_gyUQrdKSy1x3ETwb5A
 
-限流组件
-
-重试组件
-
-
-
-## Others ##
-小工具？？
-
 https://github.com/jgraph/drawio-desktop/releases/tag/v20.3.0
-
-
-
-
 
 GIT 地址
 https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
