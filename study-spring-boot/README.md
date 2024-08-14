@@ -88,3 +88,5 @@ server:
     
     https://www.baeldung.com/spring-boot-add-filter
 
+## 热部署
+https://cloud.tencent.com/developer/article/2357192

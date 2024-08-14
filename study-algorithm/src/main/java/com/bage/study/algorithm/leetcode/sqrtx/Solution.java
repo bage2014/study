@@ -25,6 +25,7 @@ class Solution {
     public static void main(String[] args) {
         System.out.println(new Solution().mySqrt(4));
         System.out.println(new Solution().mySqrt(8));
+        // 二分查找，用x/m<m而不是m*m>x防止溢出 ?
         System.out.println(new Solution().mySqrt(2147483647)); // todo bage 超出了INT 范围
     }
 }
