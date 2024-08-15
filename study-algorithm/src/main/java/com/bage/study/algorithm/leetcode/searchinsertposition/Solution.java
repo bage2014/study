@@ -1,18 +1,20 @@
-package com.bage.study.algorithm.top100;
+package com.bage.study.algorithm.leetcode.searchinsertposition;
 
 /**
- * https://leetcode.cn/problems/search-insert-position/description/
+ * https://leetcode.cn/problems/search-insert-position/
+ *
  */
-public class SearchInsertPosition {
+class Solution {
 
     public static void main(String[] args) {
 //        int[] nums = new int[]{1,2,3,4,5,6,7,8};
-//        System.out.println(new SearchInsertPosition().searchInsert(nums,5));
-//        System.out.println(new SearchInsertPosition().searchInsert(nums,-1));
-//        System.out.println(new SearchInsertPosition().searchInsert(nums,50));
-//        System.out.println(new SearchInsertPosition().searchInsert(new int[]{50},50));
-        System.out.println(new SearchInsertPosition().searchInsert(new int[]{1,3,5,6},2));
-        System.out.println(new SearchInsertPosition().searchInsert(new int[]{1,3,5,6},4));
+        System.out.println(new Solution().searchInsert(new int[]{1,3,5,6},2));
+        System.out.println(new Solution().searchInsert(new int[]{1,3,5,6},4));
+        System.out.println(new Solution().searchInsert(new int[]{1,3},3));
+        System.out.println(new Solution().searchInsert(new int[]{1,3},2));
+        System.out.println(new Solution().searchInsert(new int[]{1,3},5));
+        System.out.println(new Solution().searchInsert(new int[]{2,3},1));
+        System.out.println(new Solution().searchInsert(new int[]{1,3},1));
     }
     public int searchInsert(int[] nums, int target) {
         int left = 0;
@@ -30,7 +32,9 @@ public class SearchInsertPosition {
             int middleValue = nums[middle];
 
             if(target == middleValue){
-                return middle;
+//                return middle;
+                // 继续左边查找
+                right = middle - 1;
             } else if(target > middleValue){
                 // 目标值 大于 中间值
                 // 比如 目标值：77， 大于24 ，， 数组： 3 5 10 24 25 77 96
@@ -44,4 +48,6 @@ public class SearchInsertPosition {
         }
         return left;
     }
+
+
 }
