@@ -25,6 +25,7 @@ public class BestPracticeApplication implements CommandLineRunner {
     private JvmGcController jvmGcController;
 
     public static void main(String args[]) {
+//        System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(BestPracticeApplication.class, args);
     }
 
@@ -34,20 +35,17 @@ public class BestPracticeApplication implements CommandLineRunner {
 //        log.info(("----- BestPracticeApplication is started ------"));
         limitFlow();
 
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                for (int i = 0; i < 200; i++) {
-                    try {
-                        Thread.sleep(2000);
-                        jvmGcController.add(1); // 每 N 秒，自动放
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("bage-command-hhhhhh is running:" + i);
+        Thread thread = new Thread(() -> {
+            for (int i = 0; i < 200; i++) {
+                try {
+                    Thread.sleep(2000);
+                    jvmGcController.add(1); // 每 N 秒，自动放
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                System.out.println("bage-command-hhhhhh is running:" + i);
             }
-        };
+        });
         thread.setName("bage-command-hhhhhh");
         thread.start();
     }
