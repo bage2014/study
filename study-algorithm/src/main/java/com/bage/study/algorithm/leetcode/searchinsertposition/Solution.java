@@ -23,7 +23,7 @@ class Solution {
         if(nums.length == 0 || nums[0] >= target ){
             return 0;
         }
-        if(nums[nums.length-1] <= target ){
+        if(nums[nums.length-1] < target ){
             return nums.length;
         }
 
