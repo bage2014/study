@@ -12,23 +12,26 @@ package com.bage.study.algorithm.leetcode.firstmissingpositive;
  */
 class Solution {
 
+    /**
+     * 答案肯定在 0-N 之间
+     * @param nums
+     * @return
+     */
     public int firstMissingPositive(int[] nums) {
-        int min = 0;
-        int expectMin = 0;
         for (int i = 0; i < nums.length; i++) {
-            int num = nums[i];
-            if(num > 0 && min == 0){
-                // min 还没有赋值过，存在正数，先记录着
-                min = num;
-            }
-            if(num < min){
-                min = num;
+            // 不在0-N 之间的，或者 小于0 的，直接更新为 -1
+            if(nums[i] > nums.length || nums[i] <= 0){
+                nums[i] = -1;
             }
         }
-        if(min == 0){
 
+        for (int i = 0; i < nums.length; i++) {
+            if(nums[i] > nums.length || nums[i] <= 0){
+                nums[i] = -1;
+            }
         }
-        return min + 1;
+
+        return 1;
     }
 
 
