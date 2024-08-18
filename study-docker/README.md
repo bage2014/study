@@ -2057,6 +2057,37 @@ http://localhost:5000/
 
 ```
 
+### 安装 Loki
+
+参考链接 
+
+https://hub.docker.com/r/grafana/loki
+
+https://grafana.com/docs/loki/latest/setup/install/docker/
+
+Docker Pull Command
+
+```
+docker pull grafana/loki
+```
+
+Run 
+
+```
+docker run -d --name=bage-loki -p 3100:3100 grafana/loki
+
+
+mkdir -p ${HOME}/bage/docker-data/loki
+docker run -d --name=bage-loki --mount source=${HOME}/bage/docker-data/loki,target=/loki -p 3100:3100 grafana/loki
+
+```
+
+Visit
+
+```
+
+```
+
 
 
 ### 网络连接 ###
