@@ -207,6 +207,7 @@
       <module>study-spring-boot-flowable</module>
     <module>study-skywalking</module>
     <module>study-pulsar</module>
+      <module>study-loki</module>
 
   </modules>
 </project>
