@@ -2074,19 +2074,21 @@ docker pull grafana/loki
 Run 
 
 ```
-docker run -d --name=bage-loki -p 3100:3100 grafana/loki
+docker run --network bage-net -d --name=bage-loki -p 3100:3100 grafana/loki
 
-
-mkdir -p ${HOME}/bage/docker-data/loki
-docker run -d --name=bage-loki --mount source=${HOME}/bage/docker-data/loki,target=/loki -p 3100:3100 grafana/loki
+docker run --network bage-net --name=bage-loki -p 3100:3100 grafana/loki
 
 ```
 
 Visit
 
 ```
+http://localhost:3100/ready
 
+http://localhost:3100/metrics
 ```
+
+
 
 
 
