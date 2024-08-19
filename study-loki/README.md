@@ -26,7 +26,7 @@ https://mp.weixin.qq.com/s/Z03k3nvUEdzdSxzA2Z52dA
 https://www.baeldung.com/spring-boot-loki-grafana-logging
 
 ```
-{traceId='467242cf-6ab0-4824-a0d7-20a85f402154'}
+{traceId='467242cf-6ab0-4824-a0d7-20a85f402154'} | json
 ```
 
 ## 原理解析
