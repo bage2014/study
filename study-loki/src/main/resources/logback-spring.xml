@@ -6,7 +6,7 @@
         </http>
         <format>
             <label>
-                <pattern>app=${name},host=${HOSTNAME},traceID=%X{traceId:-NONE},level=%level</pattern>
+                <pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
                 <readMarkers>true</readMarkers>
             </label>
             <message>
