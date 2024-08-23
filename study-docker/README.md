@@ -1202,6 +1202,8 @@ visit
 Docker Pull Command
 
 	docker pull grafana/grafana
+	
+	docker pull grafana/grafana
 
 start a instance
 
