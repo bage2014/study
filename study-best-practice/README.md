@@ -13,6 +13,10 @@ https://developer.aliyun.com/article/778128
 juejin 
 https://juejin.cn/post/7355389990530809908
 
+
+启动 gzip
+Content-Encoding: gzip
+
 ## 启动命令
 
 设置JVM 参数 
