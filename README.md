@@ -5,13 +5,7 @@ An introductory summary of Java knowledge points across the industry
 
 本项目为全栈工程师学习笔记，开源技术搬运工; Java 全行业知识点的入门总结
 
-
-
 ## 常用功能
-
-
-
-
 
 ## 完整模块说明 ##
 
@@ -156,9 +150,7 @@ An introductory summary of Java knowledge points across the industry
 
 ## 其他 ##
 Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-services](https://github.com/bage2014/study-micro-services)
-
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
-
 Java体系知识点汇总：https://github.com/bage2014/interview
 
 web资源链接
@@ -169,29 +161,17 @@ https://www.baeldung.com/aws-s3-java S3 基本使用事件
 m3u parser https://github.com/BjoernPetersen/m3u-parser
 
 知识汇总：
-
 https://github.com/CyC2018/CS-Notes
-
 https://github.com/xingshaocheng/architect-awesome
-
 https://github.com/DeppWang/Java-Books
-
 https://github.com/justjavac/free-programming-books-zh_CN
-
 https://github.com/singgel/JAVA_LINE
-
 https://github.com/PansonPanson/Java-Notes
-
 https://github.com/Snailclimb/JavaGuide
-
 https://github.com/doocs/advanced-java
-
 https://github.com/xbox1994/Java-Interview
-
 https://github.com/jobbole/awesome-java-cn
-
 https://mp.weixin.qq.com/s/kro_gyUQrdKSy1x3ETwb5A
-
 https://github.com/jgraph/drawio-desktop/releases/tag/v20.3.0
 
 GIT 地址
