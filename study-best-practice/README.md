@@ -14,6 +14,51 @@ juejin
 https://juejin.cn/post/7355389990530809908
 
 
+
+## 瓶颈分析
+
+https://www.jianshu.com/p/62cf2690e6eb
+
+**业务指标**：如吞吐量(QPS、TPS)、响应时间(RT)、并发数、业务成功率等
+
+**资源指标**：如CPU、内存、Disk I/O、Network I/O等资源的消耗情况
+
+
+
+- 我终于知道高工是如快速分析线上程序性能瓶颈了（CPU篇）
+
+https://zhuanlan.zhihu.com/p/613430726
+
+- 性能测试：CPU/内存/IO性能瓶颈分析常用工具
+
+https://www.jianshu.com/p/e1deb8b6984d
+
+- 性能测试中服务器关键性能指标浅析
+
+https://www.jianshu.com/p/62cf2690e6eb
+
+- 初探调优1：系统压测，瓶颈定位及调优方案
+
+https://blog.51cto.com/u_14006572/3153832
+
+- 性能之巅：定位和优化程序 CPU、内存、IO 瓶颈
+
+https://my.oschina.net/u/4526289/blog/4783751
+
+- 性能测试中如何定位性能瓶颈？
+
+https://www.zhihu.com/question/29269160
+
+- 性能测试如何定位分析性能瓶颈？
+
+https://blog.51cto.com/u_12087147/6225614
+
+- 压力测试瓶颈分析
+
+https://zhuanlan.zhihu.com/p/486542009
+
+
+
 启动 gzip
 Content-Encoding: gzip
 
@@ -702,50 +747,6 @@ profiler output file: /Users/bage/bage/github/study/arthas-output/20230912-19061
 http://localhost:8000/gc/safe/point/start
 
 ```
-
-
-
-## 瓶颈分析
-
-https://www.jianshu.com/p/62cf2690e6eb
-
-**业务指标**：如吞吐量(QPS、TPS)、响应时间(RT)、并发数、业务成功率等
-
-**资源指标**：如CPU、内存、Disk I/O、Network I/O等资源的消耗情况
-
-
-
-- 我终于知道高工是如快速分析线上程序性能瓶颈了（CPU篇）
-
-https://zhuanlan.zhihu.com/p/613430726
-
-- 性能测试：CPU/内存/IO性能瓶颈分析常用工具
-
-https://www.jianshu.com/p/e1deb8b6984d
-
-- 性能测试中服务器关键性能指标浅析
-
-https://www.jianshu.com/p/62cf2690e6eb
-
-- 初探调优1：系统压测，瓶颈定位及调优方案
-
-https://blog.51cto.com/u_14006572/3153832
-
-- 性能之巅：定位和优化程序 CPU、内存、IO 瓶颈
-
-https://my.oschina.net/u/4526289/blog/4783751
-
-- 性能测试中如何定位性能瓶颈？
-
-https://www.zhihu.com/question/29269160
-
-- 性能测试如何定位分析性能瓶颈？ 
-
-https://blog.51cto.com/u_12087147/6225614
-
-- 压力测试瓶颈分析
-
-https://zhuanlan.zhihu.com/p/486542009
 
 
 
