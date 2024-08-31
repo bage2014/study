@@ -19,19 +19,19 @@ import java.util.List;
 public class SpringUtils{
     public static void getPid(){
         ApplicationPid pid = new ApplicationPid() ;
-        System.out.printf("current pid = " +  pid.toString()) ;
+        System.out.printf("current pid = " +  pid.toString() + "\n") ;
     }
 
     public static void getMainDir(){
         ApplicationHome home = new ApplicationHome() ;
-        System.out.printf("dir: %s, source: %s%n", home.getDir(), home.getSource()) ;
+        System.out.printf("dir: %s, source: %s%n", home.getDir(), home.getSource() + "\n") ;
     }
     public static void getJavaVersion(){
-        System.out.printf("Java Version: %s%n", JavaVersion.getJavaVersion()) ;
+        System.out.printf("Java Version: %s%n", JavaVersion.getJavaVersion() + "\n") ;
     }
     public static void getTempDir(){
         ApplicationTemp temp = new ApplicationTemp() ;
-        System.out.printf("temp dir: %s%n", temp.getDir()) ;
+        System.out.printf("temp dir: %s%n", temp.getDir() + "\n") ;
     }
 
     public static void getYmlFile() throws IOException {
@@ -39,12 +39,12 @@ public class SpringUtils{
 //        YamlPropertySourceLoader yamlLoader = new YamlPropertySourceLoader() ;
         PropertiesPropertySourceLoader propertyLoader = new PropertiesPropertySourceLoader() ;
         List<PropertySource<?>> yamls = propertyLoader.load("my.app.value", new ClassPathResource("application.properties")) ;
-        System.out.printf("pack.*: %s%n", yamls.get(0).getSource()) ;
+        System.out.printf("pack.*: %s%n", yamls.get(0).getSource() + "\n") ;
     }
 
 
     public static void getBasePackages(ConfigurableApplicationContext context) {
-        System.out.printf("getBasePackages: %s%n", AutoConfigurationPackages.get(context)) ;
+        System.out.printf("getBasePackages: %s%n", AutoConfigurationPackages.get(context) + "\n") ;
     }
 
 
