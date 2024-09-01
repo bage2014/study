@@ -208,6 +208,7 @@
     <module>study-skywalking</module>
     <module>study-pulsar</module>
       <module>study-loki</module>
+      <module>study-cache-caffeine</module>
 
   </modules>
 </project>
