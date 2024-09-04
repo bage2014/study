@@ -5,10 +5,12 @@ docker 学习笔记
 
 ### 参考链接 ###
 - Docker 官网 [https://docs.docker.com/](https://docs.docker.com/ "Docker 官网")
-- CentOS安装 [https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script](https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script "CentOS安装")
-- CentOS安装 [https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script](https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script "CentOS安装")
+- CentOS安装 [https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-scripthttps://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script "CentOS安装")
 
 ### 安装 ###
+
+https://docs.docker.com/engine/install/centos/
+
 Most users set up Docker’s repositories and install from them, for ease of installation and upgrade tasks. This is the recommended approach.
 
 安装依赖包
