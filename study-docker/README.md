@@ -67,6 +67,48 @@ https://www.csdn.net/tags/NtzaMgzsNDA4Ni1ibG9n.html
 docker info
 ```
 
+
+
+添加当前用户
+
+https://docs.docker.com/engine/install/linux-postinstall/
+
+To create the `docker` group and add your user:
+
+1. Create the `docker` group.
+
+   ```console
+   $ sudo groupadd docker
+   ```
+
+2. Add your user to the `docker` group.
+
+   ```console
+   $ sudo usermod -aG docker $USER
+   
+   usermod -aG docker bage
+   ```
+
+3. Log out and log back in so that your group membership is re-evaluated.
+
+   > If you're running Linux in a virtual machine, it may be necessary to restart the virtual machine for changes to take effect.
+
+   You can also run the following command to activate the changes to groups:
+
+   ```console
+   $ newgrp docker
+   ```
+
+Verify that you can run `docker` commands without `sudo`.
+
+```console
+$ docker run hello-world
+```
+
+This command downloads a test image and runs it in a container. When the container runs, it prints a message and exits.
+
+
+
 ## 常用命令 ##
 
 ### Docker ###
