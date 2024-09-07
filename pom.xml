@@ -209,6 +209,7 @@
     <module>study-pulsar</module>
       <module>study-loki</module>
       <module>study-cache-caffeine</module>
+      <module>study-spring-boot-jasypt</module>
 
   </modules>
 </project>
