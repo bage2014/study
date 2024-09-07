@@ -1,6 +1,7 @@
 # bage-spring-boot-starter-ping #
 自定义 spring-boot-starter学习笔记
 
+主要步骤、过程
 ## 步骤 ##
 1. 引入Spring 自动配置相关的依赖
 
