@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableEncryptableProperties  //开启自动解密功能
-public class XjdocApplication {
+public class JasyptApplication {
  public static void main(String[] args) {
-  SpringApplication.run(XjdocApplication.class, args);
+  SpringApplication.run(JasyptApplication.class, args);
  }
 }
