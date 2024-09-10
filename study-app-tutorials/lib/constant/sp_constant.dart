@@ -19,4 +19,7 @@ class SpConstant {
   static String mock_switch_cache_key = 'mock_switch_cache_key';
   static String mock_switch_value_default = 'false';
 
+  static String tv_list_cache_key = 'tv_list_cache_key';
+
+
 }

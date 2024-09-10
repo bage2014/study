@@ -133,6 +133,9 @@ dependencies:
   android_alarm_manager_plus: ^2.1.0
 
 
+  # https://github.com/befovy/fijkplayer
+  fijkplayer: ^0.10.1
+
   # https://pub.flutter-io.cn/packages/google_fonts
 #  google_fonts: ^2.1.1
 

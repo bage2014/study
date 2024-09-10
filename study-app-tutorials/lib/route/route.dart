@@ -22,6 +22,8 @@ import 'package:tutorials/view/profile/profile.dart';
 import 'package:tutorials/view/about/about_author.dart';
 import 'package:tutorials/view/settings/dev_tool.dart';
 import 'package:tutorials/view/settings/settings.dart';
+import 'package:tutorials/view/tv/tv_list.dart';
+import 'package:tutorials/view/tv/tv_player.dart';
 
 class RouteConfiguration {
   static List<RoutePath> paths = [
@@ -110,6 +112,15 @@ class RouteConfiguration {
     RoutePath(
       RouteNameConstant.route_name_env_edit,
           (context, match) => EnvironmentEdit(),
+    ),
+
+    RoutePath(
+      RouteNameConstant.route_name_tv_list,
+          (context, match) => TVList(),
+    ),
+    RoutePath(
+      RouteNameConstant.route_name_tv_player,
+          (context, match) => TvPlayer(),
     ),
 
 
