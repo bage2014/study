@@ -31,6 +31,8 @@ class RouteNameConstant{
   static String route_name_env = "env/setting";
   static String route_name_env_edit = "env/edit";
 
+  static String route_name_tv_list = "tv/";
+  static String route_name_tv_player = "tv/player";
 
 
 }

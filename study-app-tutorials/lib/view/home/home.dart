@@ -46,38 +46,38 @@ class _ScaffoldRouteState extends State<Home> {
 //              //悬浮按钮
 //              child: Icon(Icons.add),
 //              onPressed: _onAdd),
-            body: Text('Test '),
-            // Statistics(),
-            // GridView.builder(
-            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //         crossAxisCount: 3, //每行三列
-            //         childAspectRatio: 1.4 //显示区域宽高相等
-            //
-            //         ),
-            //     itemCount: menuItems.length,
-            //     itemBuilder: (context, index) {
-            //       return GestureDetector(
-            //           onTap: () {
-            //             MenuItem current = menuItems[index];
-            //             Navigator.of(context).pushNamed(current.route);
-            //           },
-            //           child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.center,
-            //               children: <Widget>[
-            //                 Padding(
-            //                     padding:
-            //                         const EdgeInsets.fromLTRB(0, 16.0, 0, 0),
-            //                     child: Icon(
-            //                       menuItems[index].icon,
-            //                       size: 42,
-            //                     )),
-            //                 Padding(
-            //                     padding:
-            //                         const EdgeInsets.fromLTRB(0, 8.0, 0, 0),
-            //                     child: Text(menuItems[index].text))
-            //               ]));
-            //     },
-            //   ),
+//             body: Text('Test '),
+            body:
+            GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3, //每行三列
+                    childAspectRatio: 1.4 //显示区域宽高相等
+
+                    ),
+                itemCount: menuItems.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                      onTap: () {
+                        MenuItem current = menuItems[index];
+                        Navigator.of(context).pushNamed(current.route);
+                      },
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 16.0, 0, 0),
+                                child: Icon(
+                                  menuItems[index].icon,
+                                  size: 42,
+                                )),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 8.0, 0, 0),
+                                child: Text(menuItems[index].text))
+                          ]));
+                },
+              ),
             )
     );
   }
@@ -92,7 +92,7 @@ class _ScaffoldRouteState extends State<Home> {
           MenuItem(
               Icons.person,
               Translations.textOf(context, "home.menu.profile"),
-              RouteNameConstant.route_name_home_statistics),
+              RouteNameConstant.route_name_tv_list),
         ]);
       });
     });
