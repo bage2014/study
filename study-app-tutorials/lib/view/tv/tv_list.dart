@@ -9,8 +9,8 @@ import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/Translations.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorials/model/tv_item.dart';
 import 'package:tutorials/request/model/tv/tv_query_request_param.dart';
-import 'package:tutorials/request/model/tv/tv_query_request_result.dart';
 import 'package:tutorials/request/tv_query_request.dart';
 import 'package:tutorials/view/tv/tv_caches.dart';
 
@@ -151,7 +151,10 @@ class _TVList extends State<TVList> {
       hideLoading();
       setState(() {
         if (result.code == 200) {
-          list = result.data ?? [];
+          var datas = result.data ?? [];
+          for (var element in datas) {
+            list.add(TvItem.fromJson(element.toJson()));
+          }
         }
       });
     }).catchError((error) {
