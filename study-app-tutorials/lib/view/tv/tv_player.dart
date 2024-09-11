@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
-import 'package:tutorials/request/model/tv/tv_query_request_result.dart';
+import 'package:tutorials/model/tv_item.dart';
 
 import 'custom_panel.dart';
 
