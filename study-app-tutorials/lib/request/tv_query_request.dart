@@ -51,6 +51,7 @@ class TVRequests {
         "            \"favoriteId\": null,\n" +
         "            \"userId\": null,\n" +
         "            \"urls\": [\n" +
+        "                \"https://stream-akamai.castr.com/5b9352dbda7b8c769937e459/live_2361c920455111ea85db6911fe397b9e/index.fmp4.m3u8\",\n" +
         "                \"http://117.169.120.140:8080/live/cctv-1/.m3u8\",\n" +
         "                \"http://117.169.120.140:8080/live/cctv-2/.m3u8\",\n" +
         "                \"http://117.169.120.140:8080/live/cctv-3/.m3u8\"\n" +
