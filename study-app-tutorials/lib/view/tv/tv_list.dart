@@ -151,6 +151,7 @@ class _TVList extends State<TVList> {
       hideLoading();
       setState(() {
         if (result.code == 200) {
+          list.clear();
           var datas = result.data ?? [];
           for (var element in datas) {
             list.add(TvItem.fromJson(element.toJson()));
