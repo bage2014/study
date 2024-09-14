@@ -88,7 +88,7 @@ class LoginRequests {
     // result.common.code = ErrorCodeConstant.loginSecurityCodeRequired;
     result.common.message = "404啦啦啦";
     result.id = 12345;
-    result.userName = '小陆[已登陆]';
+    result.userName = '小陆';
     result.mail = 'bage@qq.com';
     result.iconUrl = 'https://avatars.githubusercontent.com/u/18094768?v=4';
     Logs.info('mock request result : ${result?.toString()}');

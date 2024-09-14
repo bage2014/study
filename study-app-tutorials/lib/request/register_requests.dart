@@ -1,8 +1,7 @@
 import 'dart:collection';
 
-import 'package:tutorials/component/http/http_requests.dart';
+import 'package:tutorials/component/cache/setting_caches.dart';
 import 'package:tutorials/component/log/logs.dart';
-import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/request/model/register/register_request_param.dart';
 import 'package:tutorials/request/model/register/register_request_result.dart';
 
@@ -10,16 +9,17 @@ class RegisterRequests {
   static Future<RegisterRequestResult> register(
       RegisterRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
+    if(await SettingCaches.getMockSwitch() == 'true'){
+      return Future.delayed(const Duration(seconds: 1), () => mock());
+    }
+
     Map<String, String> param = HashMap();
     param.putIfAbsent("username", () => requestParam?.userName ?? '');
     param.putIfAbsent("password", () => requestParam?.password ?? '');
 
     Map<String, String> header = HashMap();
 
-    // return Future.value(
-    //     HttpRequests.post(HttpConstant.url_login, param, header).then((value) {
-    //       return RegisterRequestResult.fromJson(jsonDecode(value.responseBody));
-    //     }));
+
 
     return Future.delayed(const Duration(seconds: 1), () => mock());
   }
