@@ -33,7 +33,7 @@ class _LoginView extends State<Login> {
   @override
   void initState() {
     super.initState();
-    userNameController.text = ('bage2014@qq.com');
+    userNameController.text = ('bage@qq.com');
     passwordController.text = ('123456');
 
     TokenCaches.getAccessToken().then((token) {

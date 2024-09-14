@@ -1,5 +1,7 @@
+import 'dart:collection';
 import 'dart:convert';
 
+import 'package:tutorials/component/cache/token_caches.dart';
 import 'package:tutorials/component/http/cancel_requests.dart';
 import 'package:tutorials/component/http/http_byte_result.dart';
 import 'package:tutorials/component/http/http_origin_result.dart';
@@ -7,7 +9,9 @@ import 'package:tutorials/component/http/http_progress_callback.dart';
 import 'package:tutorials/component/http/http_result.dart';
 import 'package:tutorials/component/http/network_check_interceptors.dart';
 import 'package:tutorials/component/log/logs.dart';
+import 'package:tutorials/component/sp/shared_preference_helper.dart';
 import 'package:tutorials/constant/http_constant.dart';
+import 'package:tutorials/constant/sp_constant.dart';
 import 'package:tutorials/prop/http_prop.dart';
 import 'package:dio/dio.dart';
 
@@ -187,9 +191,13 @@ class HttpRequests {
     HttpResult result = HttpResult();
     try {
       path = rebuildUrl(path);
+      final token = await SharedPreferenceHelper.get(SpConstant.token_access_key,'');
       Logs.info('_doBaseRequest path = ${path}');
       Logs.info('_doBaseRequest parameters = ${parameters}');
       Logs.info('_doBaseRequest data = ${data}');
+      headers ??= new HashMap();
+      headers?.putIfAbsent("Authorization", () => "Bearer ${token}");
+      Logs.info('_doBaseRequest headers = ${headers}');
       _dio.options = _buildOption(
           parameters ?? {}, data, headers ?? {}, timeoutMilliseconds ?? 6000);
       Response response;
