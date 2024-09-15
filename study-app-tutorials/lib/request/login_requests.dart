@@ -58,8 +58,9 @@ class LoginRequests {
     if(await SettingCaches.getMockSwitch() == 'true'){
       return Future.delayed(const Duration(seconds: 1), () => mock());
     }
+
     AuthOriginResult auth = await _auth(requestParam);
-    Logs.info('request auth : ${auth.toJson()}');
+    Logs.info('request result : ${auth.toJson()}');
     if(auth?.code != 200){
       LoginRequestResult result = LoginRequestResult();
       result.common.code = auth.code??0;
@@ -91,7 +92,7 @@ class LoginRequests {
     result.userName = '小陆';
     result.mail = 'bage@qq.com';
     result.iconUrl = 'https://avatars.githubusercontent.com/u/18094768?v=4';
-    Logs.info('mock request result : ${result?.toString()}');
+    Logs.info('request mock result : ${result?.toString()}');
     return result;
   }
 }

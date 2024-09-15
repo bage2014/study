@@ -1,7 +1,9 @@
 import 'dart:collection';
 
 import 'package:tutorials/component/cache/setting_caches.dart';
+import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/log/logs.dart';
+import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/request/model/register/register_request_param.dart';
 import 'package:tutorials/request/model/register/register_request_result.dart';
 
@@ -19,16 +21,18 @@ class RegisterRequests {
 
     Map<String, String> header = HashMap();
 
-
-
     return Future.delayed(const Duration(seconds: 1), () => mock());
   }
 
   static Future<RegisterRequestResult> validSecurityCode(
       RegisterRequestParam requestParam) async {
     Logs.info('request param : ${requestParam?.toString()}');
+    if(await SettingCaches.getMockSwitch() == 'true'){
+      return Future.delayed(const Duration(seconds: 1), () => mock());
+    }
+
     Map<String, String> param = HashMap();
-    // param.putIfAbsent("param", () => userName);
+    param.putIfAbsent("param", () => requestParam.toJson().toString());
     // return HttpRequests.post(HttpConstant.url_login, param, null);
     return Future.delayed(const Duration(seconds: 1), () => mock());
   }

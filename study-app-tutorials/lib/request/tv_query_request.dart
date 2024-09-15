@@ -21,9 +21,9 @@ class TVRequests {
 
   static Future<TvQueryRequestResult> query(
       TvQueryRequestParam requestParam) async {
-    // if(await SettingCaches.getMockSwitch() == 'true'){
-    //   return Future.delayed(const Duration(seconds: 1), () => mock());
-    // }
+    if(await SettingCaches.getMockSwitch() == 'true'){
+      return Future.delayed(const Duration(seconds: 1), () => mock());
+    }
 
     Logs.info('request param : ${requestParam?.toString()}');
     Map<String, String> param = new HashMap();
