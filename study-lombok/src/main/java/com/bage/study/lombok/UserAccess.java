@@ -12,7 +12,9 @@ public class UserAccess {
 	private String name;
 
 	public static void main(String[] args) {
-		UserAccess bbb = new UserAccess().id(1234).name("bbb");
+		UserAccess bbb = new UserAccess()
+				.id(1234)
+				.name("bbb");
 		System.out.println(bbb.name());
 	}
 }

@@ -2,16 +2,18 @@ package com.bage.study.lombok;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class User {
 
-	private String id;
+	private Long id;
 	private String name;
-	
 
+	@Singular
+	private List<String> hobbies;
 	
 }
