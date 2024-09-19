@@ -1,4 +1,4 @@
-package com.bage;
+package com.bage.study.tess4f;
 
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
