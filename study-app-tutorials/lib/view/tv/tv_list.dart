@@ -7,14 +7,16 @@ import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/log/Logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/constant/route_constant.dart';
-import 'package:tutorials/locale/Translations.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/model/tv_item.dart';
 import 'package:tutorials/request/model/tv/tv_query_request_param.dart';
 import 'package:tutorials/request/tv_query_request.dart';
 import 'package:tutorials/view/tv/tv_caches.dart';
+import 'package:tutorials/locale/translations.dart';
 
 class TVList extends StatefulWidget {
+  const TVList({Key? key}) : super(key: key);
+
   @override
   _TVList createState() => _TVList();
 }

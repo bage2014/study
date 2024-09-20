@@ -204,9 +204,8 @@ android 节点下：
 
 账号：
 
-bage2014@qq.com
-
-123456
+bage2014@qq.com/ 123456
+bage@qq.com/ 123456
 
 
 studio 现有插件
