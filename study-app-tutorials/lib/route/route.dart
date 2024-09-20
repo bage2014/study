@@ -116,7 +116,7 @@ class RouteConfiguration {
 
     RoutePath(
       RouteNameConstant.route_name_tv_list,
-          (context, match) => TVList(),
+          (context, match) => const TVList(),
     ),
     RoutePath(
       RouteNameConstant.route_name_tv_player,

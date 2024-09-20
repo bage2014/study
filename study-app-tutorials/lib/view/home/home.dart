@@ -92,6 +92,10 @@ class _ScaffoldRouteState extends State<Home> {
           MenuItem(
               Icons.person,
               Translations.textOf(context, "home.menu.profile"),
+              RouteNameConstant.route_name_profile),
+          MenuItem(
+              Icons.tv,
+              Translations.textOf(context, "home.menu.tv"),
               RouteNameConstant.route_name_tv_list),
         ]);
       });
