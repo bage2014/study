@@ -77,6 +77,8 @@
   "settings.lang.cancel":"Cancel ",
 
   "settings.devTool.title":"Developer Tool",
+  "settings.devTool.env":"Environment",
+  "settings.devTool.mock":"Mock Switch",
 
   "settings.feedback.input.hint":"Feedback",
   "settings.feedback.all":"All",

@@ -19,7 +19,6 @@ class _Environment extends State<Environment> {
   static List<FMRadioModel> _list = [];
 
   int groupValue = 1;
-  String mock_switch = "false";
 
   @override
   void initState() {
@@ -33,8 +32,6 @@ class _Environment extends State<Environment> {
     _list.add(FMRadioModel(1, "Development"));
     _list.add(FMRadioModel(2, "Test"));
     _list.add(FMRadioModel(3, "Production"));
-
-    mock_switch = await SettingCaches.getMockSwitch();
 
     setState(() {});
   }
@@ -52,43 +49,11 @@ class _Environment extends State<Environment> {
       body: Container(
         alignment: Alignment.center,
         child: Column(children: <Widget>[
-          Container(
-            padding: const EdgeInsets.fromLTRB(20.0, 40.0, 0.0, 0.0),
-            child: Row(
-              children: [
-                Text(
-                  'Mockbale',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                Switch(
-                  // This bool value toggles the switch.
-                  value: mock_switch == "true",
-                  activeColor: Colors.blue,
-                  onChanged: (bool value) {
-                    mock_switch = value ? "true" : "false";
-                    // This is called when the user toggles the switch.
-                    SettingCaches.cacheMockSwitch(value ? "true" : "false")
-                        .then((result) {
-                      setState(() {
-                        Toasts.show(result
-                            ? Translations.textOf(context, "all.save.success")
-                            : Translations.textOf(context, "all.save.failure"));
-                      });
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
+
           Container(
             padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
             child: Text(
-              'Env',
+              Translations.textOf(context, "settings.devTool.env"),
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
