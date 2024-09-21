@@ -76,6 +76,8 @@
   "settings.lang.cancel":"取消 ",
 
   "settings.devTool.title":"开发者工具",
+  "settings.devTool.env":"环境设置",
+  "settings.devTool.mock":"请求模拟",
 
   "settings.feedback.input.hint":"请输入留言内容",
   "settings.feedback.all":"所有留言",
