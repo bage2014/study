@@ -101,6 +101,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                           .pushNamed(RouteNameConstant.route_name_about);
                     },
                   ),
+
                   ListTile(
                     leading: const Icon(Icons.exit_to_app),
                     title:
@@ -119,21 +120,8 @@ class _HomeDrawer extends State<HomeDrawer> {
                       checkLogoutApp();
                     },
                   ),
-//                  ListTile(
-//                    leading: const Icon(Icons.person),
-//                    title: Text(Translations.textOf(context, "home.drawer.profile")),
-//                    onTap: () {
-//                      Navigator.of(context)
-//                          .pushNamed(RouteNameConstant.route_name_profile);
-//                    },
-//                  ),
-//                  ListTile(
-//                    leading: const Icon(Icons.logout),
-//                    title: const Text('Logout'),
-//                    onTap: () {
-//
-//                    },
-//                  ),
+
+
                 ],
               ),
             ),
