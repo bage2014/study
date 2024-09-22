@@ -43,7 +43,7 @@ public class AuthorizationServerApplication implements CommandLineRunner {
     public void run(String... args) {
         // System.out.println(passwordEncoder().encode("secret"));
 
-            String url = "http://localhost:8080/oauth2/token";
+            String url = "http://localhost:8080/oauth/token";
             HttpHeaders header = new HttpHeaders();
             String userAndPass = "client:secret";
             header.add("Authorization", "Basic "+ Base64.encodeBase64String(userAndPass.getBytes()));
@@ -58,10 +58,10 @@ public class AuthorizationServerApplication implements CommandLineRunner {
             HttpEntity<Object> entity = new HttpEntity<Object>(map,header);
 
             try {
-                ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+                ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
                 String sttr = response.getBody();
 
-                System.out.println("retunr:" + sttr);
+                System.out.println("return:" + sttr);
 
             } catch (Exception e){
                 e.printStackTrace();
