@@ -6,6 +6,7 @@ import 'package:tutorials/component/cache/token_caches.dart';
 import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/http/http_result.dart';
 import 'package:tutorials/component/log/logs.dart';
+import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/constant/sp_constant.dart';
 import 'package:tutorials/request/model/login/login_request_param.dart';
@@ -20,6 +21,10 @@ class LoginRequests {
   static Future<LoginRequestResult> tryLogin(
       String token) async {
     Logs.info('request param : ${token}');
+
+    if(await SettingCaches.getMockSwitch() == 'true'){
+      return Future.delayed(const Duration(seconds: 1), () => mock());
+    }
 
     Map<String, String> param = HashMap();
     Map<String, String> header = HashMap();
@@ -85,8 +90,7 @@ class LoginRequests {
 
   static LoginRequestResult mock() {
     LoginRequestResult result = LoginRequestResult();
-    result.common.code = 200;
-    // result.common.code = ErrorCodeConstant.loginSecurityCodeRequired;
+    result.common.code = ErrorCodeConstant.success;
     result.common.message = "404啦啦啦";
     result.id = 12345;
     result.userName = '小陆';
