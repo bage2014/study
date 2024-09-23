@@ -18,7 +18,7 @@ import 'package:tutorials/utils/app_utils.dart';
 
 import 'origin/profile_activity_result.dart';
 
-class ProfileRequests {
+class ProfileActivityRequests {
 
 
   static Future<ProfileActivityResult> query(

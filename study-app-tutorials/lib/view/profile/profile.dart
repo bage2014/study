@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
+import 'package:tutorials/request/profile_activity_request.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -11,6 +12,15 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   List<String> images = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    // showLoading();
+    // _onRefresh();
+    // ProfileActivityRequests.query(requestParam);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -251,3 +261,4 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
+
