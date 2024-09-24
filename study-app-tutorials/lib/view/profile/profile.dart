@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
+import 'package:tutorials/request/model/profile/ProfileAcitvityRequest.dart';
 import 'package:tutorials/request/profile_activity_request.dart';
+import 'package:tutorials/utils/log_utils.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -12,14 +14,43 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   List<String> images = [];
+  bool _isLoading = false;
+  Profile? _profileInfo = null;
 
 
   @override
   void initState() {
     super.initState();
-    // showLoading();
-    // _onRefresh();
-    // ProfileActivityRequests.query(requestParam);
+    _onRefresh();
+  }
+
+
+  void showLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+  void hideLoading() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<Null> _onRefresh() async {
+    showLoading();
+    ProfileAcitvityRequest requestParam = new ProfileAcitvityRequest();
+    ProfileActivityRequests.query(requestParam).then((result) {
+      Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
+      hideLoading();
+      setState(() {
+        if (result.code == 200) {
+          _profileInfo = result.data?.profile;
+        }
+      });
+    }).catchError((error) {
+      LogUtils.info(error.toString());
+      hideLoading();
+    });
   }
 
   @override
@@ -52,7 +83,7 @@ class _ProfileState extends State<Profile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "刘亦菲",
+                        _profileInfo.,
                         style: TextStyle(
                           fontSize: 24,
                           color: Colors.black,
@@ -260,5 +291,6 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
 }
 
