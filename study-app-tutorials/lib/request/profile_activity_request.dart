@@ -16,13 +16,14 @@ import 'package:tutorials/request/model/tv/tv_query_request_param.dart';
 import 'package:tutorials/request/model/tv/tv_query_request_result.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
+import 'model/profile/ProfileAcitvityRequest.dart';
 import 'origin/profile_activity_result.dart';
 
 class ProfileActivityRequests {
 
 
   static Future<ProfileActivityResult> query(
-      TvQueryRequestParam requestParam) async {
+      ProfileAcitvityRequest requestParam) async {
     if(await SettingCaches.getMockSwitch() == 'true'){
       return Future.delayed(const Duration(seconds: 1), () => mock());
     }

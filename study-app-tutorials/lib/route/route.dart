@@ -18,7 +18,7 @@ import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/model/route_path.dart';
 import 'package:tutorials/view/about/about.dart';
 import 'package:tutorials/view/home/home.dart';
-import 'package:tutorials/view/profile/profile.dart';
+import 'package:tutorials/view/profile/profile_activity.dart';
 import 'package:tutorials/view/about/about_author.dart';
 import 'package:tutorials/view/settings/dev_tool.dart';
 import 'package:tutorials/view/settings/settings.dart';
@@ -69,7 +69,7 @@ class RouteConfiguration {
 
     RoutePath(
       RouteNameConstant.route_name_profile,
-          (context, match) => Profile(),
+          (context, match) => ProfileActivity(),
     ),
 
     RoutePath(
