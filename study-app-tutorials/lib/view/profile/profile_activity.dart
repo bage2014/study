@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
-import 'package:tutorials/request/model/profile/ProfileAcitvityRequest.dart';
+import 'package:tutorials/request/model/profile/profile_activity_request.dart';
 import 'package:tutorials/request/origin/profile_activity_result.dart';
 import 'package:tutorials/request/profile_activity_request.dart';
 import 'package:tutorials/utils/log_utils.dart';

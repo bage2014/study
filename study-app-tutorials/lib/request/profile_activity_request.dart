@@ -5,25 +5,15 @@ import 'package:tutorials/component/cache/setting_caches.dart';
 import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
-import 'package:tutorials/request/model/feedback/message_feedback.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_delete_request_param.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_delete_request_result.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_insert_request_param.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_insert_request_result.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_query_request_param.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_query_request_result.dart';
-import 'package:tutorials/request/model/tv/tv_query_request_param.dart';
-import 'package:tutorials/request/model/tv/tv_query_request_result.dart';
-import 'package:tutorials/utils/app_utils.dart';
 
-import 'model/profile/ProfileAcitvityRequest.dart';
+import 'model/profile/profile_activity_request.dart';
 import 'origin/profile_activity_result.dart';
 
 class ProfileActivityRequests {
 
 
   static Future<ProfileActivityResult> query(
-      ProfileAcitvityRequest requestParam) async {
+      ProfileActivityRequest requestParam) async {
     if(await SettingCaches.getMockSwitch() == 'true'){
       return Future.delayed(const Duration(seconds: 1), () => mock());
     }
