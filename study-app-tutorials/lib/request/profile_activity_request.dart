@@ -48,11 +48,12 @@ class ProfileActivityRequests {
         "    \"data\": {\n" +
         "        \"profile\": {\n" +
         "            \"id\": 123,\n" +
-        "            \"name\": \"小陆\",\n" +
-        "            \"location\": \"\",\n" +
+        "            \"name\": \"小陆2014\",\n" +
+        "            \"location\": \"上海\",\n" +
         "            \"starCounts\": 123,\n" +
         "            \"followerCounts\": 1222,\n" +
         "            \"feedbackCounts\": 34,\n" +
+        "            \"imageUrl\": \"https://avatars.githubusercontent.com/u/18094768?v=4\",\n" +
         "            \"desc\": \"看了这组照片,网友们也明白了,为什么很多大牌商品喜欢请神仙姐姐去做代言了,因为她只要站在那里,隔着屏幕都能感受到满满的高级感。 别看这次出游,刘亦菲表现得十分欢脱,吃了很多美食...\"\n" +
         "        },\n" +
         "        \"activities\": [\n" +
