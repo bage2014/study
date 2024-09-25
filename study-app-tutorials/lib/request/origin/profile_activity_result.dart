@@ -65,6 +65,7 @@ class Profile {
   int? starCounts;
   int? followerCounts;
   int? feedbackCounts;
+  String? imageUrl;
   String? desc;
 
   Profile(
@@ -74,6 +75,7 @@ class Profile {
         this.starCounts,
         this.followerCounts,
         this.feedbackCounts,
+        this.imageUrl,
         this.desc});
 
   Profile.fromJson(Map<String, dynamic> json) {
@@ -83,6 +85,7 @@ class Profile {
     starCounts = json['starCounts'];
     followerCounts = json['followerCounts'];
     feedbackCounts = json['feedbackCounts'];
+    imageUrl = json['imageUrl'];
     desc = json['desc'];
   }
 
@@ -94,6 +97,7 @@ class Profile {
     data['starCounts'] = this.starCounts;
     data['followerCounts'] = this.followerCounts;
     data['feedbackCounts'] = this.feedbackCounts;
+    data['imageUrl'] = this.imageUrl;
     data['desc'] = this.desc;
     return data;
   }

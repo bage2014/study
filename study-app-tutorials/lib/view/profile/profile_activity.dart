@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
@@ -77,8 +78,15 @@ class _ProfileActivityState extends State<ProfileActivity> {
                           Logs.info("GetIt.I.get<NavigationService>().back();");
                         },
                         child: ClipOval(
-                          child: Image(
-                              image: AssetImage("assets/images/user_null.png")),
+                          child: CachedNetworkImage(
+                            imageUrl: _profileInfo?.imageUrl ?? '',
+                            placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => const Image(
+                                image: AssetImage("assets/images/user_null.png")),
+                            height: 86,
+                            width: 86,
+                          ),
                         ),
                       ),
                       Column(
@@ -216,7 +224,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
                   padding: EdgeInsets.only(left: 24, right: 25, bottom: 18),
                   child: Text(
                     _profileInfo?.desc ??
-                        "看了这组照片,网友们也明白了,为什么很多大牌商品喜欢请神仙姐姐去做代言了,因为她只要站在那里,隔着屏幕都能感受到满满的高级感。 别看这次出游,刘亦菲表现得十分欢脱,吃了很多美食...",
+                        "看了这组照片,网友们也明白了,为什么很多大牌商品喜欢请神仙姐姐去做代言了,因为她只要站在那里,隔着屏幕都能感受到满满的高级感...",
                     style: TextStyle(
                       fontSize: 14,
                       height: 1.57,
