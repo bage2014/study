@@ -71,7 +71,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
                       children: [
                         SizedBox(height: 8),
                         Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               left: 48, right: 168, top: 16, bottom: 8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,7 +101,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
                                 children: [
                                   Text(
                                     _profileInfo?.name ?? '未登录',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 24,
                                       color: Colors.black,
                                       fontStyle: FontStyle.normal,
