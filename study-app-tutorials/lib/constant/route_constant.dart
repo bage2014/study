@@ -35,6 +35,9 @@ class RouteNameConstant{
   static String route_name_tv_player = "tv/player";
 
 
+  static String route_name_school_card = "school/card";
+  static String route_name_school_card_edit = "school/card/edit";
+
 }
 
 

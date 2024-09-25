@@ -30,7 +30,7 @@ class _TVList extends State<TVList> {
   void initState() {
     super.initState();
     list = [];
-    _isLoading = false;
+    _isLoading = true;
     _onRefresh();
   }
 
@@ -61,7 +61,7 @@ class _TVList extends State<TVList> {
           children: <Widget>[
             RefreshIndicator(
               onRefresh: _onRefresh,
-              child: list.length == 0
+              child: list.length == 0 && !_isLoading
                   ? Center(
                 child: Text(
                   Translations.textOf(context, "all.list.view.no.data"),

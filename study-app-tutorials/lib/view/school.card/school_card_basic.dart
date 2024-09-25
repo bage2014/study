@@ -10,8 +10,8 @@ import 'package:tutorials/component/log/logs.dart';
 /// card matching the spec:
 ///
 /// https://m3.material.io/components/cards/specs#a012d40d-7a5c-4b07-8740-491dec79d58b
-class NameCardBasic extends StatefulWidget {
-  const NameCardBasic(
+class SchoolCardBasic extends StatefulWidget {
+  const SchoolCardBasic(
       {Key? key,
       this.title = "",
       this.subTitle = "",
@@ -26,10 +26,10 @@ class NameCardBasic extends StatefulWidget {
   final GestureTapCallback? onTap;
 
   @override
-  _NameCardBasicState createState() => _NameCardBasicState();
+  _SchoolCardBasicState createState() => _SchoolCardBasicState();
 }
 
-class _NameCardBasicState extends State<NameCardBasic> {
+class _SchoolCardBasicState extends State<SchoolCardBasic> {
   @override
   Widget build(BuildContext context) {
     return Center(

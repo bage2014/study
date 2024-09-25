@@ -8,8 +8,10 @@ import 'package:tutorials/view/login/register.dart';
 import 'package:tutorials/view/login/forget_password.dart';
 import 'package:tutorials/view/login/register_finish.dart';
 import 'package:tutorials/view/login/register_verify.dart';
-import 'package:tutorials/view/name.card/name_card.dart';
 import 'package:tutorials/view/name.card/name_card_edit.dart';
+import 'package:tutorials/view/name.card/name_cart.dart';
+import 'package:tutorials/view/school.card/school_card.dart';
+import 'package:tutorials/view/school.card/school_card_edit.dart';
 import 'package:tutorials/view/settings/env.dart';
 import 'package:tutorials/view/settings/env_edit.dart';
 import 'package:tutorials/view/settings/feedbacks.dart';
@@ -95,6 +97,15 @@ class RouteConfiguration {
     RoutePath(
       RouteNameConstant.route_name_setting_feedbacks,
           (context, match) => Feedbacks(),
+    ),
+
+    RoutePath(
+      RouteNameConstant.route_name_school_card,
+          (context, match) => SchoolCard(),
+    ),
+    RoutePath(
+      RouteNameConstant.route_name_school_card_edit,
+          (context, match) => SchoolCardEdit(),
     ),
 
     RoutePath(
