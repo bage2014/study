@@ -1,28 +1,22 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/image.crop/image_cropper.dart';
 import 'package:tutorials/component/log/logs.dart';
-import 'package:tutorials/component/picker/image_picker.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/file_upload_request.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/utils/app_utils.dart';
-import 'package:tutorials/view/name.card/name_card_basic.dart';
-import 'package:tutorials/view/name.card/name_card_school.dart';
-import 'package:tutorials/widgets/profile_icon_basic.dart';
+import 'package:tutorials/view/school.card/school_card_basic.dart';
 
-class NameCard extends StatefulWidget {
-  const NameCard({Key? key}) : super(key: key);
+class SchoolCard extends StatefulWidget {
+  const SchoolCard({Key? key}) : super(key: key);
 
   @override
-  _NameCardState createState() => _NameCardState();
+  _SchoolCardState createState() => _SchoolCardState();
 }
 
-class _NameCardState extends State<NameCard> {
+class _SchoolCardState extends State<SchoolCard> {
   List<String> list = [];
   bool _isLoading = false;
   String url = "";
@@ -37,7 +31,7 @@ class _NameCardState extends State<NameCard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Translations.textOf(context, "name.card.title")),
+        title: Text(Translations.textOf(context, "school.card.title")),
       ),
       body: SafeArea(
           child: RefreshIndicator(
@@ -62,10 +56,10 @@ class _NameCardState extends State<NameCard> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                             onTap: () {},
-                            child: NameCardBasic(
-                              title: '学校信息',
+                            child: SchoolCardBasic(
+                              title: '2013年-2017年',
                               subTitle: '河海大学',
-                              desc: '2013年-2017年 计算机科学与技术专业！',
+                              desc: '计算机科学与技术',
                               url:
                                   'https://avatars.githubusercontent.com/u/18094768?v=4',
                               onTap: () {
@@ -75,23 +69,44 @@ class _NameCardState extends State<NameCard> {
                               },
                             ));
                       },
-                      separatorBuilder: (context, index) => Divider(height: .0),
+                      separatorBuilder: (context, index) =>
+                          const Divider(height: .0),
                     )),
         ),
       )),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _insertSchoolRecord,
+        tooltip: '+',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
   Future<Null> _onRefresh() async {
     setState(() {
       list.add('value1');
-      list.add('value2');
-      list.add('value3');
-      list.add('value4');
-      list.add('value5');
-      list.add('value6');
-      list.add('value7');
     });
+  }
+
+
+  Future<void> _insertSchoolRecord() async {
+      Logs.info("add to be continue");
+
+    //
+    // MessageFeedbackRequests.insert(param).then((result) {
+    //   Logs.info('_insertFeedback responseBody=' + (result?.toString() ?? ""));
+    //   if (result.common.code == ErrorCodeConstant.success) {
+    //     setState(() {
+    //       FeedbackUpdateEvent event = FeedbackUpdateEvent();
+    //       event.data = result.common.message;
+    //       EventBus.publish(event);
+    //     });
+    //   } else {
+    //     Toasts.show(result.common.message);
+    //   }
+    // }).catchError((error) {
+    //   Logs.info(error.toString());
+    // });
   }
 
   pickBack(String? value) async {

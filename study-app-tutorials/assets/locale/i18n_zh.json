@@ -56,6 +56,8 @@
   "home.menu.family":"家族",
   "home.menu.profile":"我的",
   "home.menu.apks":"应用",
+  "home.menu.name.card":"名片",
+  "home.menu.school.card":"学迹",
 
   "settings.title":"设置 ",
   "settings.checkForUpdate":"检查更新",
@@ -120,6 +122,8 @@
   "component.crop.title":"裁剪",
 
   "name.card.title":"我的名片",
+
+  "school.card.title":"学迹",
 
   "unknown": ""
 }

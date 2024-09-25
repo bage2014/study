@@ -12,14 +12,14 @@ import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/view/school.card/school_card_basic.dart';
 import 'package:tutorials/widgets/profile_icon_basic.dart';
 
-class NameCardEdit extends StatefulWidget {
-  const NameCardEdit({Key? key}) : super(key: key);
+class SchoolCardEdit extends StatefulWidget {
+  const SchoolCardEdit({Key? key}) : super(key: key);
 
   @override
-  _NameCardEditState createState() => _NameCardEditState();
+  _SchoolCardEditState createState() => _SchoolCardEditState();
 }
 
-class _NameCardEditState extends State<NameCardEdit> {
+class _SchoolCardEditState extends State<SchoolCardEdit> {
   String url = "assets/images/user_null.png";
 
   @override
