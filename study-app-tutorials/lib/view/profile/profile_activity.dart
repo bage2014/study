@@ -39,7 +39,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
 
   Future<Null> _onRefresh() async {
     showLoading();
-    ProfileAcitvityRequest requestParam = new ProfileAcitvityRequest();
+    ProfileActivityRequest requestParam = new ProfileActivityRequest();
     ProfileActivityRequests.query(requestParam).then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
       hideLoading();
