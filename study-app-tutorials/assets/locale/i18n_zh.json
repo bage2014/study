@@ -100,6 +100,11 @@
   "about.author.name":"名字",
 
   "profile.title":"我的",
+  "profile.star":"关注",
+  "profile.feedback":"留言",
+  "profile.desc":"签名",
+  "profile.followers":"粉丝",
+  "profile.activities":"动态",
 
   "env.title":"环境设置",
   "env.dev":"开发环境",
