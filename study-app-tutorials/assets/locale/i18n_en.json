@@ -101,6 +101,12 @@
   "about.author.name":"Name",
 
   "profile.title":"Me",
+  "profile.star":"Star",
+  "profile.feedback":"Feedback",
+  "profile.desc":"Description",
+  "profile.followers":"Follower",
+  "profile.activities":"Activity",
+
 
   "env.title":"Environment Setting",
   "env.dev":"Development",
