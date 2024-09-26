@@ -64,7 +64,7 @@ class _SchoolCardState extends State<SchoolCard> {
                                   'https://avatars.githubusercontent.com/u/18094768?v=4',
                               onTap: () {
                                 AppUtils.toPage(context,
-                                    RouteNameConstant.route_name_name_card_edit,
+                                    RouteNameConstant.route_name_school_card_edit,
                                     args: list[index]);
                               },
                             ));
