@@ -5,7 +5,10 @@ import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/file_upload_request.dart';
+import 'package:tutorials/request/model/school/school_card_query_request_param.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
+import 'package:tutorials/request/origin/school_card_query_result.dart';
+import 'package:tutorials/request/school_card_query_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/view/school.card/school_card_basic.dart';
 
@@ -17,7 +20,7 @@ class SchoolCard extends StatefulWidget {
 }
 
 class _SchoolCardState extends State<SchoolCard> {
-  List<String> list = [];
+  List<Data> list = [];
   bool _isLoading = false;
   String url = "";
 
@@ -83,8 +86,22 @@ class _SchoolCardState extends State<SchoolCard> {
   }
 
   Future<Null> _onRefresh() async {
-    setState(() {
-      list.add('value1');
+    SchoolCardQueryRequestParam requestParam = new SchoolCardQueryRequestParam();
+    SchoolCardRequests.query(requestParam).then((result) {
+      Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
+      hideLoading();
+      setState(() {
+        if (result.code == 200) {
+          list.clear();
+          var datas = result.data ?? [];
+          for (var element in datas) {
+            list.add(element);
+          }
+        }
+      });
+    }).catchError((error) {
+      print(error.toString());
+      hideLoading();
     });
   }
 
@@ -131,5 +148,18 @@ class _SchoolCardState extends State<SchoolCard> {
 
   Future<String> _cropImage(String valueCrop) async {
     return await ImageCropper.cropImage(context, valueCrop);
+  }
+
+
+  hideLoading() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  showLoading() {
+    setState(() {
+      _isLoading = true;
+    });
   }
 }
