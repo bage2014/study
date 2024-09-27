@@ -10,6 +10,7 @@ import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/request/origin/school_card_query_result.dart';
 import 'package:tutorials/request/school_card_query_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
+import 'package:tutorials/utils/date_time_utils.dart';
 import 'package:tutorials/view/school.card/school_card_basic.dart';
 
 class SchoolCard extends StatefulWidget {
@@ -57,18 +58,19 @@ class _SchoolCardState extends State<SchoolCard> {
                       itemCount: list.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
+                        Data item = list[index];
+                        String title = formatTime(item);
                         return GestureDetector(
                             onTap: () {},
                             child: SchoolCardBasic(
-                              title: '2013年-2017年',
-                              subTitle: '河海大学',
-                              desc: '计算机科学与技术',
-                              url:
-                                  'https://avatars.githubusercontent.com/u/18094768?v=4',
+                              title: title,
+                              subTitle: item?.name??'',
+                              desc: item?.subject??'',
+                              url: item?.imageUrl??'',
                               onTap: () {
                                 AppUtils.toPage(context,
                                     RouteNameConstant.route_name_school_card_edit,
-                                    args: list[index]);
+                                    args: item);
                               },
                             ));
                       },
@@ -93,8 +95,8 @@ class _SchoolCardState extends State<SchoolCard> {
       setState(() {
         if (result.code == 200) {
           list.clear();
-          var datas = result.data ?? [];
-          for (var element in datas) {
+          var dataList = result.data ?? [];
+          for (var element in dataList) {
             list.add(element);
           }
         }
@@ -161,5 +163,11 @@ class _SchoolCardState extends State<SchoolCard> {
     setState(() {
       _isLoading = true;
     });
+  }
+
+  String formatTime(Data item) {
+    var start = DateTimeUtils.subYear(item.timeStart);
+    var end = DateTimeUtils.subYear(item.timeEnd);
+    return "$start年 - $end年";
   }
 }

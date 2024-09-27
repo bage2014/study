@@ -10,6 +10,16 @@ class DateTimeUtils {
   }
 
   ///
+  /// 2021-07-26 12:31:05
+  ///
+  static String? subYear(String? dateTimeStr) {
+    if (dateTimeStr == null) {
+      return '';
+    }
+    return dateTimeStr.substring(0,4);
+  }
+
+  ///
   /// 2021-07-26T12:31:05
   ///
   static DateTime parseFromJson(String? dateTimeStr) {
