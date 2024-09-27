@@ -48,8 +48,8 @@ class _SchoolCardBasicState extends State<SchoolCardBasic> {
                     const CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Image.file(
                       File(url),
-                      width: 150,
-                      height: 150,
+                      width: 86,
+                      height: 86,
                     ),
                     height: 86,
                     width: 86,
