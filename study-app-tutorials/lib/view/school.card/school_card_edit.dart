@@ -55,18 +55,13 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                         const CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Image.asset(
                       url,
-                      width: 150,
-                      height: 150,
+                      width: 86,
+                      height: 86,
                     ),
                     height: 86,
                     width: 86,
                   ),
                 ),
-                // Image.file(
-                //   File(url),
-                //   width: 150,
-                //   height: 150,
-                // ),
               ),
               title: Text(item?.name??''),
               subtitle: Text(item?.subject??''),
@@ -94,6 +89,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
     if (value != null) {
       String valueCrop = await _cropImage(value);
       setState(() {
+        Logs.info('image picked:  $value');
         url = valueCrop;
       });
 
