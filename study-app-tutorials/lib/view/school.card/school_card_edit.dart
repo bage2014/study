@@ -42,6 +42,21 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
           children: <Widget>[
             ListTile(
               title: Text(title),
+              onTap: () async {
+                final picked = await showDateRangePicker(
+                  context: context,
+                  initialDateRange: DateTimeRange(start: DateTime(2014),end: DateTime(2024)),
+                  lastDate:  DateTime(2024),
+                  firstDate: DateTime(2014),
+                  initialEntryMode: DatePickerEntryMode.inputOnly,
+                );
+                if (picked != null && picked != null) {
+                  print(picked);
+                  setState(() {
+
+                  });
+                }
+              },
             ),
             ListTile(
               leading: GestureDetector(
