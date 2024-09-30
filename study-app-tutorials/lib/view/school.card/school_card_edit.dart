@@ -21,6 +21,7 @@ class SchoolCardEdit extends StatefulWidget {
 class _SchoolCardEditState extends State<SchoolCardEdit> {
   String url = "assets/images/user_null.png";
   Data? item;
+  String title = "";
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
 
     var start = DateTimeUtils.subYear(item?.timeStart);
     var end = DateTimeUtils.subYear(item?.timeEnd);
-    String title =  "$start年 - $end年";
+    title =  "$start年 - $end年";
 
     return Scaffold(
       appBar: AppBar(
@@ -52,8 +53,13 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 );
                 if (picked != null && picked != null) {
                   print(picked);
-                  setState(() {
 
+                  var start = picked.start.year;
+                  var end = picked.end.year;
+                  var newTitle =  "$start年 - $end年";
+                  print(newTitle);
+                  setState(() {
+                    title =  newTitle;
                   });
                 }
               },
