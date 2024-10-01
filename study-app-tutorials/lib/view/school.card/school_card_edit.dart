@@ -20,18 +20,21 @@ class SchoolCardEdit extends StatefulWidget {
 
 class _SchoolCardEditState extends State<SchoolCardEdit> {
   String url = "assets/images/user_null.png";
-  Data? item;
-  String title = "";
+  SchoolCardData item = SchoolCardData();
+  Data? arg = null;
+  TextEditingController subjectController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     //获取路由参数
-    item = ModalRoute.of(context)?.settings?.arguments as Data?;
-    print('SchoolCardEdit args=${item}');
+    arg = ModalRoute.of(context)?.settings?.arguments as Data?;
+    print('SchoolCardEdit args=${arg?.toJson()}');
 
-    var start = DateTimeUtils.subYear(item?.timeStart);
-    var end = DateTimeUtils.subYear(item?.timeEnd);
-    title =  "$start年 - $end年";
+    var start = DateTimeUtils.subYear(arg?.timeStart);
+    var end = DateTimeUtils.subYear(arg?.timeEnd);
+    item?.timeBetween =  "$start年 - $end年";
+    print('SchoolCardEdit timeBetween=${item?.timeBetween}');
 
     return Scaffold(
       appBar: AppBar(
@@ -41,8 +44,32 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            // TextField(
+            //   controller: subjectController,
+            //   decoration: InputDecoration(
+            //     hintText:
+            //     Translations.textOf(context, 'login.account.hint'),
+            //     hintStyle: const TextStyle(
+            //       fontSize: 14,
+            //       fontWeight: FontWeight.w400,
+            //       color: Color(0xFFA8A8A8),
+            //     ),
+            //     prefixIcon:
+            //     const Icon(Icons.person, color: Color(0xFFA8A8A8)),
+            //     contentPadding: const EdgeInsets.symmetric(
+            //         horizontal: 17, vertical: 22),
+            //     border: const OutlineInputBorder(
+            //         borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+            //     focusedBorder: const OutlineInputBorder(
+            //         borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+            //     enabledBorder: const OutlineInputBorder(
+            //         borderSide: BorderSide(color: Color(0xFFD0D0D0))),
+            //   ),
+            // ),
+            // const SizedBox(height: 14),
+
             ListTile(
-              title: Text(title),
+              title: Text(item?.timeBetween??'未知'),
               onTap: () async {
                 final picked = await showDateRangePicker(
                   context: context,
@@ -56,10 +83,13 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
 
                   var start = picked.start.year;
                   var end = picked.end.year;
+                  arg?.timeStart = DateTimeUtils.format(picked.start);
+                  arg?.timeEnd = DateTimeUtils.format(picked.end);
                   var newTitle =  "$start年 - $end年";
                   print(newTitle);
+                  print(arg?.toJson().toString());
                   setState(() {
-                    title =  newTitle;
+                    item?.timeBetween =  newTitle;
                   });
                 }
               },
@@ -71,7 +101,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 },
                 child: ClipOval(
                   child: CachedNetworkImage(
-                    imageUrl: url,
+                    imageUrl: arg?.imageUrl??url,
                     placeholder: (context, url) =>
                         const CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Image.asset(
@@ -84,8 +114,8 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   ),
                 ),
               ),
-              title: Text(item?.name??''),
-              subtitle: Text(item?.subject??''),
+              title: Text(arg?.name??''),
+              subtitle: Text(arg?.subject??''),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -129,4 +159,8 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
   Future<String> _cropImage(String valueCrop) async {
     return await ImageCropper.cropImage(context, valueCrop);
   }
+}
+
+class SchoolCardData {
+  String? timeBetween;
 }

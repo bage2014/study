@@ -74,10 +74,9 @@ class _RegisterState extends State<Register> {
                       fontWeight: FontWeight.w400,
                       color: Color(0xFFA8A8A8),
                     ),
-                    suffixIcon:
-                        const Icon(Icons.email, color: Color(0xFFA8A8A8)),
+                    // suffixIcon: const Icon(Icons.email, color: Color(0xFFA8A8A8)),
                     prefixIcon:
-                        const Icon(Icons.vpn_key, color: Color(0xFFA8A8A8)),
+                        const Icon(Icons.email, color: Color(0xFFA8A8A8)),
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 22),
                     border: const OutlineInputBorder(

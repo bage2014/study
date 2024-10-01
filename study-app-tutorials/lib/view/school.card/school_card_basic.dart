@@ -44,8 +44,11 @@ class _SchoolCardBasicState extends State<SchoolCardBasic> {
                 ListTile(
                   leading: CachedNetworkImage(
                     imageUrl: widget.url,
-                    placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
+                    placeholder: (context, url) => const SizedBox(
+                      child: Center(
+                          child: CircularProgressIndicator(strokeWidth: 2,)
+                      ),
+                    ),
                     errorWidget: (context, url, error) => Image.file(
                       File(url),
                       width: 86,
