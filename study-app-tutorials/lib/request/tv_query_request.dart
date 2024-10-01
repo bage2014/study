@@ -53,6 +53,17 @@ class TVRequests {
         "            \"urls\": [\n" +
         "                \"https://cdn4.skygo.mn/live/disk1/BBC_News/HLSv3-FTA/BBC_News.m3u8\"\n" +
         "            ]\n" +
+        "        }," +
+        "        {\n" +
+        "            \"id\": 100,\n" +
+        "            \"name\": \"CCTV1\",\n" +
+        "            \"logo\": \"XXX\",\n" +
+        "            \"isFavorite\": false,\n" +
+        "            \"favoriteId\": null,\n" +
+        "            \"userId\": null,\n" +
+        "            \"urls\": [\n" +
+        "                \"http://ottrrs.hl.chinamobile.com/PLTV/88888888/224/3221226016/index.m3u8\"\n" +
+        "            ]\n" +
         "        }" +
         "    ],\n" +
         "    \"pagination\": {\n" +

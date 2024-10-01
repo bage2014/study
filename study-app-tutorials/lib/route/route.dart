@@ -105,7 +105,7 @@ class RouteConfiguration {
     ),
     RoutePath(
       RouteNameConstant.route_name_school_card_edit,
-          (context, match) => SchoolCardEdit(),
+          (context, match) => const SchoolCardEdit(),
     ),
 
     RoutePath(

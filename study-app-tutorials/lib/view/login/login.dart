@@ -349,7 +349,7 @@ class _LoginView extends State<Login> {
   }
 
   void envSetting() async {
-    Navigator.of(context).pushNamed(RouteNameConstant.route_name_env);
+    Navigator.of(context).pushNamed(RouteNameConstant.route_name_setting_dev_tool);
   }
 
   bool isOk(LoginRequestParam param) {
