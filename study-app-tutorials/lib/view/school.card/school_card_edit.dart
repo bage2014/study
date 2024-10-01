@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -20,21 +19,16 @@ class SchoolCardEdit extends StatefulWidget {
 
 class _SchoolCardEditState extends State<SchoolCardEdit> {
   String url = "assets/images/user_null.png";
-  SchoolCardData item = SchoolCardData();
+  int select_mode_start = 1;
+  int select_mode_end = 2;
   Data? arg = null;
   TextEditingController subjectController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
     //获取路由参数
     arg = ModalRoute.of(context)?.settings?.arguments as Data?;
     print('SchoolCardEdit args=${arg?.toJson()}');
-
-    var start = DateTimeUtils.subYear(arg?.timeStart);
-    var end = DateTimeUtils.subYear(arg?.timeEnd);
-    item?.timeBetween =  "$start年 - $end年";
-    print('SchoolCardEdit timeBetween=${item?.timeBetween}');
 
     return Scaffold(
       appBar: AppBar(
@@ -44,56 +38,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            // TextField(
-            //   controller: subjectController,
-            //   decoration: InputDecoration(
-            //     hintText:
-            //     Translations.textOf(context, 'login.account.hint'),
-            //     hintStyle: const TextStyle(
-            //       fontSize: 14,
-            //       fontWeight: FontWeight.w400,
-            //       color: Color(0xFFA8A8A8),
-            //     ),
-            //     prefixIcon:
-            //     const Icon(Icons.person, color: Color(0xFFA8A8A8)),
-            //     contentPadding: const EdgeInsets.symmetric(
-            //         horizontal: 17, vertical: 22),
-            //     border: const OutlineInputBorder(
-            //         borderSide: BorderSide(color: Color(0xFFD0D0D0))),
-            //     focusedBorder: const OutlineInputBorder(
-            //         borderSide: BorderSide(color: Color(0xFFD0D0D0))),
-            //     enabledBorder: const OutlineInputBorder(
-            //         borderSide: BorderSide(color: Color(0xFFD0D0D0))),
-            //   ),
-            // ),
-            // const SizedBox(height: 14),
-
-            ListTile(
-              title: Text(item?.timeBetween??'未知'),
-              onTap: () async {
-                final picked = await showDateRangePicker(
-                  context: context,
-                  initialDateRange: DateTimeRange(start: DateTime(2014),end: DateTime(2024)),
-                  lastDate:  DateTime(2024),
-                  firstDate: DateTime(2014),
-                  initialEntryMode: DatePickerEntryMode.inputOnly,
-                );
-                if (picked != null && picked != null) {
-                  print(picked);
-
-                  var start = picked.start.year;
-                  var end = picked.end.year;
-                  arg?.timeStart = DateTimeUtils.format(picked.start);
-                  arg?.timeEnd = DateTimeUtils.format(picked.end);
-                  var newTitle =  "$start年 - $end年";
-                  print(newTitle);
-                  print(arg?.toJson().toString());
-                  setState(() {
-                    item?.timeBetween =  newTitle;
-                  });
-                }
-              },
-            ),
+            const SizedBox(height: 16),
             ListTile(
               leading: GestureDetector(
                 onTap: () {
@@ -101,7 +46,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 },
                 child: ClipOval(
                   child: CachedNetworkImage(
-                    imageUrl: arg?.imageUrl??url,
+                    imageUrl: arg?.imageUrl ?? url,
                     placeholder: (context, url) =>
                         const CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Image.asset(
@@ -114,8 +59,34 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   ),
                 ),
               ),
-              title: Text(arg?.name??''),
-              subtitle: Text(arg?.subject??''),
+              title: Text(arg?.name ?? ''),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(width: 24),
+                  GestureDetector(
+                    onTap: () async {
+                      selectDate(select_mode_start);
+                    },
+                    child: Text("${DateTimeUtils.subYear(arg?.timeStart)}年"),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text("-"),
+                  const SizedBox(width: 4),
+                  GestureDetector(
+                    onTap: () async {
+                      selectDate(select_mode_end);
+                    },
+                    child: Text("${DateTimeUtils.subYear(arg?.timeEnd)}年"),
+                  ),
+                  const SizedBox(width: 16),
+                  Text(arg?.subject??"计算机科学预计技术"),
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -159,8 +130,25 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
   Future<String> _cropImage(String valueCrop) async {
     return await ImageCropper.cropImage(context, valueCrop);
   }
-}
 
-class SchoolCardData {
-  String? timeBetween;
+  Future<void> selectDate(select_mode) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2010),
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2050),
+    );
+    if (picked != null) {
+      print("picked = $picked");
+      setState(() {
+        if (select_mode == select_mode_start) {
+          arg?.timeStart = DateTimeUtils.format(picked);
+          print(arg?.timeStart);
+        } else {
+          arg?.timeEnd = DateTimeUtils.format(picked);
+          print(arg?.timeEnd);
+        }
+      });
+    }
+  }
 }
