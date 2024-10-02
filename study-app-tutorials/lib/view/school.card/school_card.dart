@@ -169,6 +169,6 @@ class _SchoolCardState extends State<SchoolCard> {
   String formatTime(Data item) {
     var start = DateTimeUtils.subYear(item.timeStart);
     var end = DateTimeUtils.subYear(item.timeEnd);
-    return "$start年 - $end年";
+    return "$start - $end";
   }
 }
