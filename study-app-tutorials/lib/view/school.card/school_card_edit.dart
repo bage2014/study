@@ -39,6 +39,37 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const SizedBox(height: 16),
+            Container(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(width: 24),
+                  GestureDetector(
+                    onTap: () async {
+                      selectDate(select_mode_start);
+                    },
+                    child: Text(
+                      "${DateTimeUtils.subYear(arg?.timeStart)}年",
+                      style: const TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text("-"),
+                  const SizedBox(width: 4),
+                  GestureDetector(
+                    onTap: () async {
+                      selectDate(select_mode_end);
+                    },
+                    child: Text(
+                      "${DateTimeUtils.subYear(arg?.timeEnd)}年",
+                      style: const TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             ListTile(
               leading: GestureDetector(
                 onTap: () {
@@ -59,7 +90,10 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   ),
                 ),
               ),
-              title: Text(arg?.name ?? ''),
+              title: Text(
+                arg?.name ?? '',
+                style: const TextStyle(color: Colors.blue),
+              ),
             ),
             const SizedBox(height: 16),
             Container(
@@ -68,23 +102,10 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(width: 24),
-                  GestureDetector(
-                    onTap: () async {
-                      selectDate(select_mode_start);
-                    },
-                    child: Text("${DateTimeUtils.subYear(arg?.timeStart)}年"),
+                  Text(
+                    arg?.subject ?? "计算机科学预计技术",
+                    style: const TextStyle(color: Colors.blue),
                   ),
-                  const SizedBox(width: 4),
-                  const Text("-"),
-                  const SizedBox(width: 4),
-                  GestureDetector(
-                    onTap: () async {
-                      selectDate(select_mode_end);
-                    },
-                    child: Text("${DateTimeUtils.subYear(arg?.timeEnd)}年"),
-                  ),
-                  const SizedBox(width: 16),
-                  Text(arg?.subject??"计算机科学预计技术"),
                 ],
               ),
             ),
