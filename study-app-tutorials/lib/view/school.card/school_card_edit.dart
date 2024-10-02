@@ -9,6 +9,7 @@ import 'package:tutorials/request/file_upload_request.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/request/origin/school_card_query_result.dart';
 import 'package:tutorials/utils/date_time_utils.dart';
+import 'package:tutorials/utils/log_utils.dart';
 
 class SchoolCardEdit extends StatefulWidget {
   const SchoolCardEdit({Key? key}) : super(key: key);
@@ -44,14 +45,14 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(width: 24),
+                  const SizedBox(width: 28),
                   GestureDetector(
                     onTap: () async {
                       selectDate(select_mode_start);
                     },
                     child: Text(
-                      "${DateTimeUtils.subYear(arg?.timeStart)}年",
-                      style: const TextStyle(color: Colors.blue),
+                      "${DateTimeUtils.subYear(arg?.timeStart)}",
+                      style: const TextStyle(color: Colors.blue, fontSize: 18),
                     ),
                   ),
                   const SizedBox(width: 4),
@@ -62,8 +63,8 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                       selectDate(select_mode_end);
                     },
                     child: Text(
-                      "${DateTimeUtils.subYear(arg?.timeEnd)}年",
-                      style: const TextStyle(color: Colors.blue),
+                      "${DateTimeUtils.subYear(arg?.timeEnd)}",
+                      style: const TextStyle(color: Colors.blue, fontSize: 18),
                     ),
                   ),
                 ],
@@ -90,23 +91,23 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   ),
                 ),
               ),
-              title: Text(
-                arg?.name ?? '',
-                style: const TextStyle(color: Colors.blue),
+              title: GestureDetector(
+                onTap: () {
+                  LogUtils.info("onTap111");
+                },
+                child: Text(
+                  arg?.name ?? '',
+                  style: const TextStyle(color: Colors.blue, fontSize: 20),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(width: 24),
-                  Text(
-                    arg?.subject ?? "计算机科学预计技术",
-                    style: const TextStyle(color: Colors.blue),
-                  ),
-                ],
+              subtitle: GestureDetector(
+                onTap: () {
+                  LogUtils.info("onTap222");
+                },
+                child: Text(
+                  arg?.subject ?? "计算机科学预计技术",
+                  style: const TextStyle(color: Colors.blue, fontSize: 14),
+                ),
               ),
             ),
             Row(
@@ -155,6 +156,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
   Future<void> selectDate(select_mode) async {
     DateTime? picked = await showDatePicker(
       context: context,
+      initialEntryMode: DatePickerEntryMode.input,
       initialDate: DateTime(2010),
       firstDate: DateTime(2010),
       lastDate: DateTime(2050),
