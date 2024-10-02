@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/image.crop/image_cropper.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/picker/image_picker.dart';
@@ -92,8 +93,14 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 ),
               ),
               title: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   LogUtils.info("onTap111");
+                  List<String> contents = [];
+                  contents.add("河海大学");
+                  contents.add("清华大学");
+                  // List<Image> icons = {"",""};
+                  var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
+                  LogUtils.info("onTap111 ${selectI}");
                 },
                 child: Text(
                   arg?.name ?? '',
