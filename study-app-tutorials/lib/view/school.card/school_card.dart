@@ -8,7 +8,7 @@ import 'package:tutorials/request/file_upload_request.dart';
 import 'package:tutorials/request/model/school/school_card_query_request_param.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/request/origin/school_card_query_result.dart';
-import 'package:tutorials/request/school_card_query_request.dart';
+import 'package:tutorials/request/school_card_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/utils/date_time_utils.dart';
 import 'package:tutorials/view/school.card/school_card_basic.dart';

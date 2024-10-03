@@ -5,18 +5,9 @@ import 'package:tutorials/component/cache/setting_caches.dart';
 import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
-import 'package:tutorials/request/model/feedback/message_feedback.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_delete_request_param.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_delete_request_result.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_insert_request_param.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_insert_request_result.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_query_request_param.dart';
-import 'package:tutorials/request/model/feedback/message_feedback_query_request_result.dart';
 import 'package:tutorials/request/model/school/school_card_query_request_param.dart';
-import 'package:tutorials/request/model/tv/tv_query_request_param.dart';
-import 'package:tutorials/request/model/tv/tv_query_request_result.dart';
+import 'package:tutorials/request/origin/common_update_result.dart';
 import 'package:tutorials/request/origin/school_card_query_result.dart';
-import 'package:tutorials/utils/app_utils.dart';
 
 class SchoolCardRequests {
 
@@ -44,5 +35,29 @@ class SchoolCardRequests {
     return SchoolCardQueryResult.fromJson(jsonDecode(mock));
 
   }
+
+  static Future<CommonUpdateResult> save(Data arg) async {
+    if(await SettingCaches.getMockSwitch() == 'true'){
+      return Future.delayed(const Duration(seconds: 1), () => mockUpdate());
+    }
+
+    Logs.info('request param : ${arg?.toString()}');
+    Map<String, String> param = HashMap();
+    param.putIfAbsent("param", () => json.encode(arg));
+
+    return Future.value(
+        HttpRequests.get(HttpConstant.url_tv_query_page, param, null).then((value) {
+          Logs.info('request result : ${value.responseBody}');
+          return CommonUpdateResult.fromJson(jsonDecode(value.responseBody));
+        }));
+  }
+
+  static CommonUpdateResult mockUpdate() {
+    String mock = '{"code":200,"originCode":0,"msg":null,"originMsg":null}';
+    Logs.info('request result mock : ${mock}');
+    return CommonUpdateResult.fromJson(jsonDecode(mock));
+
+  }
+
 
 }
