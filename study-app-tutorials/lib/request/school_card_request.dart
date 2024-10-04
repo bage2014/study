@@ -14,11 +14,12 @@ class SchoolCardRequests {
 
   static Future<SchoolCardQueryResult> query(
       SchoolCardQueryRequestParam requestParam) async {
+    Logs.info('request param : ${json.encode(requestParam?.toString())}');
+
     if(await SettingCaches.getMockSwitch() == 'true'){
       return Future.delayed(const Duration(seconds: 1), () => mock());
     }
 
-    Logs.info('request param : ${requestParam?.toString()}');
     Map<String, String> param = new HashMap();
     param.putIfAbsent("param", () => json.encode(requestParam));
 
@@ -37,11 +38,12 @@ class SchoolCardRequests {
   }
 
   static Future<CommonUpdateResult> save(Data arg) async {
+    Logs.info('request param : ${json.encode(arg?.toJson())}');
+
     if(await SettingCaches.getMockSwitch() == 'true'){
       return Future.delayed(const Duration(seconds: 1), () => mockUpdate());
     }
 
-    Logs.info('request param : ${arg?.toString()}');
     Map<String, String> param = HashMap();
     param.putIfAbsent("param", () => json.encode(arg));
 
@@ -53,7 +55,7 @@ class SchoolCardRequests {
   }
 
   static CommonUpdateResult mockUpdate() {
-    String mock = '{"code":200,"originCode":0,"msg":null,"originMsg":null}';
+    String mock = '{"code":200,"originCode":0,"msg":"保存成功","originMsg":"保存成功"}';
     Logs.info('request result mock : ${mock}');
     return CommonUpdateResult.fromJson(jsonDecode(mock));
 

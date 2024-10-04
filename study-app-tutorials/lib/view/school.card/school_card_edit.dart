@@ -5,10 +5,12 @@ import 'package:tutorials/component/dialog/dialogs.dart';
 import 'package:tutorials/component/image.crop/image_cropper.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/picker/image_picker.dart';
+import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/file_upload_request.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/request/origin/school_card_query_result.dart';
+import 'package:tutorials/request/school_card_request.dart';
 import 'package:tutorials/utils/date_time_utils.dart';
 import 'package:tutorials/utils/log_utils.dart';
 
@@ -80,8 +82,11 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 child: ClipOval(
                   child: CachedNetworkImage(
                     imageUrl: arg?.imageUrl ?? url,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                    placeholder: (context, url) => const SizedBox(
+                      child: Center(
+                          child: CircularProgressIndicator(strokeWidth: 2,)
+                      ),
+                    ),
                     errorWidget: (context, url, error) => Image.asset(
                       url,
                       width: 86,
@@ -123,7 +128,10 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 TextButton(
                   child: const Text('保存'),
                   onPressed: () {
-                    /* ... */
+                    SchoolCardRequests.save(arg??Data()).then((result){
+                      LogUtils.info('result.common.message = ${result.msg}');
+                      Toasts.show(result.msg??'成功');
+                    });
                   },
                 ),
                 const SizedBox(width: 8),

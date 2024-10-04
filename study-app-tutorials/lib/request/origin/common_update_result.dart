@@ -1,8 +1,8 @@
 class CommonUpdateResult {
   int? code;
   int? originCode;
-  Null? msg;
-  Null? originMsg;
+  String? msg;
+  String? originMsg;
 
   CommonUpdateResult(
       {this.code,
