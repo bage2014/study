@@ -34,9 +34,6 @@ class DateTimeUtils {
   /// 2021-07-26T12:31:05
   ///
   static String format(DateTime dateTime) {
-    if (dateTime == null) {
-      dateTime = DateTime.now();
-    }
     return dateTime.toIso8601String();
   }
 }
