@@ -113,8 +113,15 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 ),
               ),
               subtitle: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   LogUtils.info("onTap222");
+                  List<String> contents = [];
+                  contents.add("计算机科学预计技术");
+                  contents.add("土木工程");
+                  contents.add("机械工程以及自动化");
+                  // List<Image> icons = {"",""};
+                  var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
+                  LogUtils.info("onTap111 ${selectI}");
                 },
                 child: Text(
                   arg?.subject ?? "计算机科学预计技术",
