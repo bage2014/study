@@ -12,6 +12,7 @@ import 'package:tutorials/view/name.card/name_card_edit.dart';
 import 'package:tutorials/view/name.card/name_cart.dart';
 import 'package:tutorials/view/school.card/school_card.dart';
 import 'package:tutorials/view/school.card/school_card_edit.dart';
+import 'package:tutorials/view/school.card/school_card_select.dart';
 import 'package:tutorials/view/settings/env.dart';
 import 'package:tutorials/view/settings/env_edit.dart';
 import 'package:tutorials/view/settings/feedbacks.dart';
@@ -106,6 +107,10 @@ class RouteConfiguration {
     RoutePath(
       RouteNameConstant.route_name_school_card_edit,
           (context, match) => const SchoolCardEdit(),
+    ),
+    RoutePath(
+      RouteNameConstant.route_name_school_card_select,
+          (context, match) => const SchoolCardSelect(),
     ),
 
     RoutePath(

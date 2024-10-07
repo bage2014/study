@@ -6,11 +6,13 @@ import 'package:tutorials/component/image.crop/image_cropper.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/picker/image_picker.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
+import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/file_upload_request.dart';
 import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/request/origin/school_card_query_result.dart';
 import 'package:tutorials/request/school_card_request.dart';
+import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/utils/date_time_utils.dart';
 import 'package:tutorials/utils/log_utils.dart';
 
@@ -100,12 +102,16 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
               title: GestureDetector(
                 onTap: () async {
                   LogUtils.info("onTap111");
-                  List<String> contents = [];
-                  contents.add("河海大学");
-                  contents.add("清华大学");
-                  // List<Image> icons = {"",""};
-                  var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
-                  LogUtils.info("onTap111 ${selectI}");
+                  AppUtils.toPage(context,
+                      RouteNameConstant.route_name_school_card_select,
+                      args: arg);
+                  //
+                  // List<String> contents = [];
+                  // contents.add("河海大学");
+                  // contents.add("清华大学");
+                  // // List<Image> icons = {"",""};
+                  // var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
+                  // LogUtils.info("onTap111 ${selectI}");
                 },
                 child: Text(
                   arg?.name ?? '',
