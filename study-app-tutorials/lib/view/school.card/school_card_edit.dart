@@ -14,7 +14,6 @@ import 'package:tutorials/request/origin/school_card_query_result.dart';
 import 'package:tutorials/request/school_card_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/utils/date_time_utils.dart';
-import 'package:tutorials/utils/log_utils.dart';
 
 class SchoolCardEdit extends StatefulWidget {
   const SchoolCardEdit({Key? key}) : super(key: key);
@@ -28,13 +27,21 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
   int select_mode_start = 1;
   int select_mode_end = 2;
   Data? arg = null;
+  String school = "";
   TextEditingController subjectController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     //获取路由参数
-    arg = ModalRoute.of(context)?.settings?.arguments as Data?;
-    print('SchoolCardEdit args=${arg?.toJson()}');
+    var args = ModalRoute.of(context)?.settings?.arguments;
+    if(args is Data){
+      arg = args;
+      Logs.info('SchoolCardEdit Data=${arg?.toJson()}');
+    }
+    if(args is String){
+      school = args;
+      Logs.info('SchoolCardEdit school=${school}');
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -101,7 +108,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
               ),
               title: GestureDetector(
                 onTap: () async {
-                  LogUtils.info("onTap111");
+                  Logs.info("onTap111");
                   AppUtils.toPage(context,
                       RouteNameConstant.route_name_school_card_select,
                       args: arg);
@@ -111,23 +118,23 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   // contents.add("清华大学");
                   // // List<Image> icons = {"",""};
                   // var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
-                  // LogUtils.info("onTap111 ${selectI}");
+                  // Logs.info("onTap111 ${selectI}");
                 },
                 child: Text(
-                  arg?.name ?? '',
+                  school!= null ? '河海大学-$school' : (arg?.name ?? ''),
                   style: const TextStyle(color: Colors.blue, fontSize: 20),
                 ),
               ),
               subtitle: GestureDetector(
                 onTap: () async {
-                  LogUtils.info("onTap222");
+                  Logs.info("onTap222");
                   List<String> contents = [];
                   contents.add("计算机科学预计技术");
                   contents.add("土木工程");
                   contents.add("机械工程以及自动化");
                   // List<Image> icons = {"",""};
                   var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
-                  LogUtils.info("onTap111 ${selectI}");
+                  Logs.info("onTap111 ${selectI}");
                 },
                 child: Text(
                   arg?.subject ?? "计算机科学预计技术",
@@ -142,7 +149,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   child: const Text('保存'),
                   onPressed: () {
                     SchoolCardRequests.save(arg??Data()).then((result){
-                      LogUtils.info('result.common.message = ${result.msg}');
+                      Logs.info('result.common.message = ${result.msg}');
                       Toasts.show(result.msg??'成功');
                     });
                   },
@@ -190,14 +197,14 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
       lastDate: DateTime(2050),
     );
     if (picked != null) {
-      print("picked = $picked");
+      Logs.info("picked = $picked");
       setState(() {
         if (select_mode == select_mode_start) {
           arg?.timeStart = DateTimeUtils.format(picked);
-          print(arg?.timeStart);
+          Logs.info(arg?.timeStart);
         } else {
           arg?.timeEnd = DateTimeUtils.format(picked);
-          print(arg?.timeEnd);
+          Logs.info(arg?.timeEnd);
         }
       });
     }

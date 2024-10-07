@@ -87,7 +87,7 @@ class _NameCard extends State<NameCard> {
         }
       });
     }).catchError((error) {
-      print(error.toString());
+      Logs.info(error.toString());
       hideLoading();
     });
   }

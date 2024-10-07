@@ -102,7 +102,7 @@ class _AboutAuthor extends State<AboutAuthor>
 //    paramJson.putIfAbsent("pageSize", () => 100);
 //    Map<String, String> param = new HashMap();
 //    param.putIfAbsent("param", () => json.encode(paramJson));
-//    print(json.encode(paramJson));
+//    Logs.info(json.encode(paramJson));
 //     list.add("hello");
 //    HttpRequests.get(HttpConstant.url_tv_query_page, param, null)
 //        .then((result) {
@@ -115,7 +115,7 @@ class _AboutAuthor extends State<AboutAuthor>
 //        }
 //      });
 //    }).catchError((error) {
-//      print(error.toString());
+//      Logs.info(error.toString());
 //    });
 
 }
