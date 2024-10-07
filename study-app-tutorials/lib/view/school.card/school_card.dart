@@ -103,7 +103,7 @@ class _SchoolCardState extends State<SchoolCard> {
         }
       });
     }).catchError((error) {
-      print(error.toString());
+      Logs.info(error.toString());
       hideLoading();
     });
   }

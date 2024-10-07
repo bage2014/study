@@ -161,7 +161,7 @@ class _TVList extends State<TVList> {
         }
       });
     }).catchError((error) {
-      print(error.toString());
+      Logs.info(error.toString());
       hideLoading();
     });
   }
@@ -171,7 +171,7 @@ class _TVList extends State<TVList> {
     item.userId = UserCaches.getUserId();
     Map<String, String> param = new HashMap();
     param.putIfAbsent("param", () => json.encode(item.toJson()));
-    print(json.encode(item.toJson()));
+    Logs.info(json.encode(item.toJson()));
     HttpRequests.post(HttpConstant.url_tv_set_favorite, param, null)
         .then((result) {
       Logs.info('_setFavorite responseBody=' + (result?.responseBody ?? ""));

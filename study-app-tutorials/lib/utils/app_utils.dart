@@ -6,6 +6,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info/device_info.dart';
+import 'package:tutorials/utils/log_utils.dart';
 
 class AppUtils {
   static Future<Null> exitApp() async {
@@ -24,15 +25,15 @@ class AppUtils {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      print('android Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
-      print('android id ${androidInfo.id}'); //
-      print('android id ${androidInfo.androidId}'); //
+      Logs.info('android Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
+      Logs.info('android id ${androidInfo.id}'); //
+      Logs.info('android id ${androidInfo.androidId}'); //
       return androidInfo.id;
     }
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    print('ios Running on ${iosInfo.utsname.machine}'); // e.g. "iPod7,1"
-    print('ios id ${iosInfo.identifierForVendor}'); // e.g. "iPod7,1"
-    print('ios name ${iosInfo.name}'); // e.g. "iPod7,1"
+    Logs.info('ios Running on ${iosInfo.utsname.machine}'); // e.g. "iPod7,1"
+    Logs.info('ios id ${iosInfo.identifierForVendor}'); // e.g. "iPod7,1"
+    Logs.info('ios name ${iosInfo.name}'); // e.g. "iPod7,1"
     return iosInfo.identifierForVendor;
   }
 

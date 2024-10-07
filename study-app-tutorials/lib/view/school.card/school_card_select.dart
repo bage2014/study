@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/utils/app_utils.dart';
-import 'package:tutorials/utils/log_utils.dart';
 
 
 class SchoolCardSelect extends StatefulWidget {
@@ -59,7 +59,7 @@ class _SchoolCardSelectState extends State<SchoolCardSelect> {
       style: TextStyle(color: Colors.white, fontSize: 16.0),
       onChanged: (value) {
         // place submit function here
-        LogUtils.info("onFieldSubmitted=$value");
+        Logs.info("onFieldSubmitted=$value");
       },
     );
   }
@@ -105,9 +105,9 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var random = Random().nextInt(100).toString();
     return GestureDetector(
-      onTap: () async {
-        // AppUtils.pop(context,random);
-        LogUtils.info("random=$random");
+      onTap: () {
+        AppUtils.pop(context,random);
+        Logs.info("random=$random");
       },
       child: ListTile(
         leading: const CircleAvatar(

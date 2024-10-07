@@ -86,7 +86,7 @@ class _AboutVersions extends State<AboutVersions> {
         }
       });
     }).catchError((error) {
-      print(error.toString());
+      Logs.info(error.toString());
       hideLoading();
     });
   }

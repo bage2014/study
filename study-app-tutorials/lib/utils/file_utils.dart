@@ -7,8 +7,8 @@ import 'package:tutorials/component/log/logs.dart';
 class FileUtils {
   static void openFile(File file) {
     OpenFile.open(file.path)
-        .then((value) => print('openFile then value = ${value.message}'))
-        .catchError((error) => {print('openFile catchError error = $error')});
+        .then((value) => Logs.info('openFile then value = ${value.message}'))
+        .catchError((error) => {Logs.info('openFile catchError error = $error')});
   }
 
   static Future<String> getDownloadDirectory() async {

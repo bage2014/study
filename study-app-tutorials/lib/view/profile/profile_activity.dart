@@ -49,7 +49,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
         }
       });
     }).catchError((error) {
-      LogUtils.info(error.toString());
+      Logs.info(error.toString());
       hideLoading();
     });
   }

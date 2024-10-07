@@ -1,3 +1,4 @@
+import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
@@ -5,7 +6,6 @@ import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/view/home/home_drawer.dart';
 import 'package:tutorials/view/home/menu_item.dart';
-import 'package:tutorials/view/home/statistics.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -28,7 +28,7 @@ class _ScaffoldRouteState extends State<Home> {
   Widget build(BuildContext context) {
     //获取路由参数
     var args = ModalRoute.of(context)?.settings?.arguments;
-    print('args=${args}');
+    Logs.info('args=${args}');
 
     return WillPopScope(
         onWillPop: onWillPop, //重点此举

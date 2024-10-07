@@ -26,7 +26,7 @@ class _NameCardEditState extends State<NameCardEdit> {
   Widget build(BuildContext context) {
     //获取路由参数
     var args = ModalRoute.of(context)?.settings?.arguments;
-    print('NameCardEdit args=${args}');
+    Logs.info('NameCardEdit args=${args}');
 
     return Scaffold(
       appBar: AppBar(
