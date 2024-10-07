@@ -12,6 +12,14 @@ class AppUtils {
     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
   }
 
+  static void pop(BuildContext context,dynamic random) async {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context, random);
+    } else {
+      SystemNavigator.pop();
+    }
+  }
+
   static Future<String> getDeviceId() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
