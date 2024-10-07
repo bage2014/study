@@ -72,6 +72,14 @@ class AppUtils {
     Navigator.of(context).pushNamed(route, arguments: args);
   }
 
+  static Future toPageWithResult(
+    BuildContext context,
+    String route, {
+    Object? args,
+  }) {
+    return Navigator.of(context).pushNamed(route, arguments: args);
+  }
+
   static Object? getArgs(BuildContext context) {
     return ModalRoute.of(context)?.settings?.arguments;
   }

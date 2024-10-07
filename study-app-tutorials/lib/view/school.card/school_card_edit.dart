@@ -27,7 +27,6 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
   int select_mode_start = 1;
   int select_mode_end = 2;
   Data? arg = null;
-  String school = "";
   TextEditingController subjectController = TextEditingController();
 
   @override
@@ -37,10 +36,6 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
     if(args is Data){
       arg = args;
       Logs.info('SchoolCardEdit Data=${arg?.toJson()}');
-    }
-    if(args is String){
-      school = args;
-      Logs.info('SchoolCardEdit school=${school}');
     }
 
     return Scaffold(
@@ -109,19 +104,18 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
               title: GestureDetector(
                 onTap: () async {
                   Logs.info("onTap111");
-                  AppUtils.toPage(context,
+                  var selectSchool = await AppUtils.toPageWithResult(context,
                       RouteNameConstant.route_name_school_card_select,
                       args: arg);
-                  //
-                  // List<String> contents = [];
-                  // contents.add("河海大学");
-                  // contents.add("清华大学");
-                  // // List<Image> icons = {"",""};
-                  // var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
-                  // Logs.info("onTap111 ${selectI}");
+                  Logs.info("selectSchool ${selectSchool}");
+                  if(selectSchool != null) {
+                    setState(() {
+                      arg?.name = "河海大学 ${selectSchool}";
+                    });
+                  }
                 },
                 child: Text(
-                  school!= null ? '河海大学-$school' : (arg?.name ?? ''),
+                  arg?.name ?? '',
                   style: const TextStyle(color: Colors.blue, fontSize: 20),
                 ),
               ),
@@ -132,7 +126,6 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   contents.add("计算机科学预计技术");
                   contents.add("土木工程");
                   contents.add("机械工程以及自动化");
-                  // List<Image> icons = {"",""};
                   var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
                   Logs.info("onTap111 ${selectI}");
                 },
@@ -209,4 +202,5 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
       });
     }
   }
+
 }
