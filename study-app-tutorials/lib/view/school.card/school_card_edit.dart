@@ -105,7 +105,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 onTap: () async {
                   Logs.info("onTap111");
                   var selectSchool = await AppUtils.toPageWithResult(context,
-                      RouteNameConstant.route_name_school_card_select,
+                      RouteNameConstant.route_name_school_card_school_select,
                       args: arg);
                   Logs.info("selectSchool ${selectSchool}");
                   if(selectSchool != null) {
@@ -122,12 +122,15 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
               subtitle: GestureDetector(
                 onTap: () async {
                   Logs.info("onTap222");
-                  List<String> contents = [];
-                  contents.add("计算机科学预计技术");
-                  contents.add("土木工程");
-                  contents.add("机械工程以及自动化");
-                  var selectI = await Dialogs.showButtonSelectDialog(context, contents, null);
-                  Logs.info("onTap111 ${selectI}");
+                  var selectSubject = await AppUtils.toPageWithResult(context,
+                      RouteNameConstant.route_name_school_card_subject_select,
+                      args: arg);
+                  Logs.info("selectSubject ${selectSubject}");
+                  if(selectSubject != null) {
+                    setState(() {
+                      arg?.subject = "专业 ${selectSubject}";
+                    });
+                  }
                 },
                 child: Text(
                   arg?.subject ?? "计算机科学预计技术",
@@ -141,10 +144,10 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 TextButton(
                   child: const Text('保存'),
                   onPressed: () {
-                    SchoolCardRequests.save(arg??Data()).then((result){
-                      Logs.info('result.common.message = ${result.msg}');
-                      Toasts.show(result.msg??'成功');
-                    });
+                      SchoolCardRequests.save(arg??Data()).then((result){
+                        Logs.info('result.common.message = ${result.msg}');
+                        Toasts.show(result.msg??'成功');
+                      });
                   },
                 ),
                 const SizedBox(width: 8),

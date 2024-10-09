@@ -6,15 +6,15 @@ import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/utils/app_utils.dart';
 
 
-class SchoolCardSelect extends StatefulWidget {
-  const SchoolCardSelect({Key? key}) : super(key: key);
+class SchoolCardSchoolSelect extends StatefulWidget {
+  const SchoolCardSchoolSelect({Key? key}) : super(key: key);
 
 
   @override
-  State<SchoolCardSelect> createState() => _SchoolCardSelectState();
+  State<SchoolCardSchoolSelect> createState() => _SchoolCardSchoolSelectState();
 }
 
-class _SchoolCardSelectState extends State<SchoolCardSelect> {
+class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
 
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
