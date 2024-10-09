@@ -142,7 +142,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 TextButton(
-                  child: const Text('保存'),
+                  child: Text(Translations.textOf(context, "all.btn.save")),
                   onPressed: () {
                       SchoolCardRequests.save(arg??Data()).then((result){
                         Logs.info('result.common.message = ${result.msg}');
