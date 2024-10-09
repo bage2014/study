@@ -6,6 +6,10 @@
   "all.delete.confirm":"Confirm to delete?",
   "all.save.success":"Success",
   "all.save.failure":"Failure",
+  "all.search.hint":"Search...",
+  "all.btn.save":"Save",
+  "all.btn.edit":"Edit",
+  "all.btn.share":"Share",
 
   "main.title":"Welcome ",
 
@@ -126,9 +130,9 @@
 
   "name.card.title":"Name Card",
   "school.card.title":"School Card",
-
   "school.card.edit.title":"Edit",
-
+  "school.card.select.school.title":"School",
+  "school.card.select.subject.title":"Subject",
 
   "unknown": ""
 }

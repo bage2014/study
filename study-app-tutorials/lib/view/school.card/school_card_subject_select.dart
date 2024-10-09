@@ -24,7 +24,7 @@ class _SchoolCardSubjectSelectState extends State<SchoolCardSubjectSelect> {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: _isSearching ? _buildSearchField() : Text(Translations.textOf(context, "school.card.edit.title")),
+        title: _isSearching ? _buildSearchField() : Text(Translations.textOf(context, "school.card.select.subject.title")),
         actions: _buildActions(),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
@@ -52,7 +52,7 @@ class _SchoolCardSubjectSelectState extends State<SchoolCardSubjectSelect> {
       controller: _searchQueryController,
       autofocus: true,
       decoration: InputDecoration(
-        hintText: "Search...",
+        hintText: Translations.textOf(context, "all.search.hint"),
         border: InputBorder.none,
         hintStyle: TextStyle(color: Colors.white30),
       ),
@@ -70,11 +70,6 @@ class _SchoolCardSubjectSelectState extends State<SchoolCardSubjectSelect> {
         IconButton(
           icon: const Icon(Icons.clear),
           onPressed: () {
-            if (_searchQueryController == null ||
-                _searchQueryController.text.isEmpty) {
-              Navigator.pop(context);
-              return;
-            }
             setState(() {
               _searchQueryController.clear();
               _isSearching = false;

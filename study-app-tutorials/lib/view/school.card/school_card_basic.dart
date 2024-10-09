@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
+import 'package:tutorials/locale/translations.dart';
 
 /// An example of the elevated card type.
 ///
@@ -65,12 +66,12 @@ class _SchoolCardBasicState extends State<SchoolCardBasic> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     TextButton(
-                      child: const Text('编辑'),
+                      child: Text(Translations.textOf(context, "all.btn.edit")),
                       onPressed: widget.onTap,
                     ),
                     const SizedBox(width: 8),
                     TextButton(
-                      child: const Text('分享'),
+                      child: Text(Translations.textOf(context, "all.btn.share")),
                       onPressed: () {
                         /* ... */
                       },
