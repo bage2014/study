@@ -25,7 +25,6 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _onRefresh();
   }
@@ -41,20 +40,28 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
                 context, "school.card.select.school.title")),
         actions: _buildActions(),
       ),
-      body: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: List.generate(list.length, (index) {
-                  return ListItem(elementAt: list.elementAt(index));
-                }),
-              )
-            ],
-          ),
-        );
-      }),
+      body: Container(
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                backgroundColor: Colors.grey[200],
+                valueColor: const AlwaysStoppedAnimation(Colors.blue),
+              ))
+            : LayoutBuilder(builder: (context, constraints) {
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: List.generate(list.length, (index) {
+                          return ListItem(elementAt: list.elementAt(index));
+                        }),
+                      )
+                    ],
+                  ),
+                );
+              }),
+      ),
     );
   }
 
@@ -142,19 +149,18 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var random = Random().nextInt(100).toString();
     return GestureDetector(
       onTap: () {
-        AppUtils.pop(context, random);
-        Logs.info("random=$random");
+        AppUtils.pop(context, elementAt?.name??'');
       },
       child: ListTile(
         leading: CachedNetworkImage(
-          imageUrl: elementAt?.imageUrl??'',
+          imageUrl: elementAt?.imageUrl ?? '',
           placeholder: (context, url) => const SizedBox(
             child: Center(
-                child: CircularProgressIndicator(strokeWidth: 2,)
-            ),
+                child: CircularProgressIndicator(
+              strokeWidth: 2,
+            )),
           ),
           errorWidget: (context, url, error) => Image.file(
             File(url),
@@ -164,7 +170,7 @@ class ListItem extends StatelessWidget {
           height: 86,
           width: 86,
         ),
-        title: Text(elementAt?.name??''),
+        title: Text(elementAt?.name ?? ''),
       ),
     );
   }

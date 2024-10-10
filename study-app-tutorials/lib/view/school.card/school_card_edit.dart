@@ -110,7 +110,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   Logs.info("selectSchool ${selectSchool}");
                   if(selectSchool != null) {
                     setState(() {
-                      arg?.name = "河海大学 ${selectSchool}";
+                      arg?.name = selectSchool;
                     });
                   }
                 },
