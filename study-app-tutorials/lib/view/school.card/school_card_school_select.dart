@@ -1,30 +1,44 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
+import 'package:tutorials/request/model/common/page_query_request_param.dart';
+import 'package:tutorials/request/origin/school_meta_data_query_result.dart';
+import 'package:tutorials/request/school_subject_select_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
-
 
 class SchoolCardSchoolSelect extends StatefulWidget {
   const SchoolCardSchoolSelect({Key? key}) : super(key: key);
-
 
   @override
   State<SchoolCardSchoolSelect> createState() => _SchoolCardSchoolSelectState();
 }
 
 class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
-
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
+  List<Data> list = [];
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _onRefresh();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: _isSearching ? _buildSearchField() : Text(Translations.textOf(context, "school.card.select.school.title")),
+        title: _isSearching
+            ? _buildSearchField()
+            : Text(Translations.textOf(
+                context, "school.card.select.school.title")),
         actions: _buildActions(),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
@@ -33,8 +47,8 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
-                children: List.generate(20, (index) {
-                  return ListItem();
+                children: List.generate(list.length, (index) {
+                  return ListItem(elementAt: list.elementAt(index));
                 }),
               )
             ],
@@ -42,13 +56,10 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
         );
       }),
     );
-
   }
 
-
   Widget _buildSearchField() {
-    return
-    TextField(
+    return TextField(
       controller: _searchQueryController,
       autofocus: true,
       decoration: InputDecoration(
@@ -90,28 +101,71 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
       ),
     ];
   }
+
+  void _onRefresh() {
+    showLoading();
+    CommonPageQueryRequestParam param = CommonPageQueryRequestParam();
+    SchoolSubjectSelectRequests.querySchool(param).then((result) {
+      Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
+      hideLoading();
+      setState(() {
+        if (result.code == 200) {
+          list.clear();
+          var dataList = result.data ?? [];
+          for (var element in dataList) {
+            list.add(element);
+          }
+        }
+      });
+    }).catchError((error) {
+      Logs.info(error.toString());
+      hideLoading();
+    });
+  }
+
+  hideLoading() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  showLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
 }
 
 class ListItem extends StatelessWidget {
-  const ListItem({Key? key,}) : super(key: key);
-
+  const ListItem({Key? key, this.elementAt}) : super(key: key);
+  final Data? elementAt;
 
   @override
   Widget build(BuildContext context) {
     var random = Random().nextInt(100).toString();
     return GestureDetector(
       onTap: () {
-        AppUtils.pop(context,random);
+        AppUtils.pop(context, random);
         Logs.info("random=$random");
       },
       child: ListTile(
-        leading: const CircleAvatar(
-          backgroundImage: AssetImage('assets/images/school-logo.png'),
+        leading: CachedNetworkImage(
+          imageUrl: elementAt?.imageUrl??'',
+          placeholder: (context, url) => const SizedBox(
+            child: Center(
+                child: CircularProgressIndicator(strokeWidth: 2,)
+            ),
+          ),
+          errorWidget: (context, url, error) => Image.file(
+            File(url),
+            width: 86,
+            height: 86,
+          ),
+          height: 86,
+          width: 86,
         ),
-        title: Text("河海大学${random}" ),
+        title: Text(elementAt?.name??''),
       ),
     );
-
-
   }
 }
