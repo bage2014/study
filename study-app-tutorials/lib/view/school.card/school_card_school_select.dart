@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
   @override
   void initState() {
     super.initState();
-    _onRefresh();
+    _onRefresh('');
   }
 
   @override
@@ -78,6 +77,7 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
       onChanged: (value) {
         // place submit function here
         Logs.info("onFieldSubmitted=$value");
+        _onRefresh(value);
       },
     );
   }
@@ -91,6 +91,7 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
             setState(() {
               _searchQueryController.clear();
               _isSearching = false;
+              _onRefresh('');
             });
           },
         ),
@@ -109,9 +110,10 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
     ];
   }
 
-  void _onRefresh() {
+  void _onRefresh(String keyword) {
     showLoading();
     CommonPageQueryRequestParam param = CommonPageQueryRequestParam();
+    param.keyword = keyword;
     SchoolSubjectSelectRequests.querySchool(param).then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
       hideLoading();
@@ -151,26 +153,30 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppUtils.pop(context, elementAt?.name??'');
+        AppUtils.pop(context, elementAt);
       },
-      child: ListTile(
-        leading: CachedNetworkImage(
-          imageUrl: elementAt?.imageUrl ?? '',
-          placeholder: (context, url) => const SizedBox(
-            child: Center(
-                child: CircularProgressIndicator(
-              strokeWidth: 2,
-            )),
-          ),
-          errorWidget: (context, url, error) => Image.file(
-            File(url),
-            width: 86,
+      child: Column(
+        children: [
+          const SizedBox(height: 16),
+          ListTile(
+          leading: CachedNetworkImage(
+            imageUrl: elementAt?.imageUrl ?? '',
+            placeholder: (context, url) => const SizedBox(
+              child: Center(
+                  child: CircularProgressIndicator(
+                strokeWidth: 2,
+              )),
+            ),
+            errorWidget: (context, url, error) => Image.file(
+              File(url),
+              width: 86,
+              height: 86,
+            ),
             height: 86,
+            width: 86,
           ),
-          height: 86,
-          width: 86,
-        ),
-        title: Text(elementAt?.name ?? ''),
+          title: Text(elementAt?.name ?? ''),
+        )],
       ),
     );
   }

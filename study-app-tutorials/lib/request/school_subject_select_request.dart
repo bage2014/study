@@ -20,7 +20,7 @@ class SchoolSubjectSelectRequests {
     Logs.info('request param : ${json.encode(requestParam?.toString())}');
 
     if(await SettingCaches.getMockSwitch() == 'true'){
-      return Future.delayed(const Duration(seconds: 1), () => mockSchool());
+      return Future.delayed(const Duration(seconds: 1), () => mockSchool(requestParam));
     }
 
     Map<String, String> param = new HashMap();
@@ -33,7 +33,7 @@ class SchoolSubjectSelectRequests {
         }));
   }
 
-  static SchoolMetaDataQueryResult mockSchool() {
+  static SchoolMetaDataQueryResult mockSchool(CommonPageQueryRequestParam param) {
     String json = "{\n" +
         "  \"code\": 200,\n" +
         "  \"originCode\": 0,\n" +
@@ -98,7 +98,13 @@ class SchoolSubjectSelectRequests {
         "  }\n" +
         "}";
     Logs.info('request result mock : ${json}');
-    return SchoolMetaDataQueryResult.fromJson(jsonDecode(json));
+    SchoolMetaDataQueryResult result = SchoolMetaDataQueryResult.fromJson(jsonDecode(json));
+    if(param?.keyword != null && param.keyword.toString().length > 0){
+      result?.data = result?.data?.where((element)=>element?.name?.contains(param?.keyword??'')??true).toList();
+      Logs.info('request result mock2 : ${result.toJson().toString()}');
+    }
+    return result;
+
   }
 
   static Future<SubjectMetaDataQueryResult> querySubject(
@@ -106,7 +112,7 @@ class SchoolSubjectSelectRequests {
     Logs.info('request param : ${json.encode(requestParam?.toString())}');
 
     if(await SettingCaches.getMockSwitch() == 'true'){
-      return Future.delayed(const Duration(seconds: 1), () => mockSubject());
+      return Future.delayed(const Duration(seconds: 1), () => mockSubject(requestParam));
     }
 
     Map<String, String> param = new HashMap();
@@ -119,7 +125,7 @@ class SchoolSubjectSelectRequests {
         }));
   }
 
-  static SubjectMetaDataQueryResult mockSubject() {
+  static SubjectMetaDataQueryResult mockSubject(CommonPageQueryRequestParam param) {
     String json = "{\n" +
         "  \"code\": 200,\n" +
         "  \"originCode\": 0,\n" +
@@ -146,106 +152,106 @@ class SchoolSubjectSelectRequests {
         "      \"schoolId\": 10001,\n" +
         "      \"name\": \"网络工程\"\n" +
         "    },\n" +
-        "    {\n" +
-        "      \"id\": 10004,\n" +
-        "      \"schoolId\": 10001,\n" +
-        "      \"name\": \"物联网工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10005,\n" +
-        "      \"schoolId\": 10002,\n" +
-        "      \"name\": \"计算机科学与技术\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10006,\n" +
-        "      \"schoolId\": 10002,\n" +
-        "      \"name\": \"软件工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10007,\n" +
-        "      \"schoolId\": 10002,\n" +
-        "      \"name\": \"信息安全\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10008,\n" +
-        "      \"schoolId\": 10002,\n" +
-        "      \"name\": \"网络工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10009,\n" +
-        "      \"schoolId\": 10002,\n" +
-        "      \"name\": \"物联网工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10010,\n" +
-        "      \"schoolId\": 10003,\n" +
-        "      \"name\": \"计算机科学与技术\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10011,\n" +
-        "      \"schoolId\": 10003,\n" +
-        "      \"name\": \"软件工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10012,\n" +
-        "      \"schoolId\": 10003,\n" +
-        "      \"name\": \"信息安全\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10013,\n" +
-        "      \"schoolId\": 10003,\n" +
-        "      \"name\": \"网络工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10014,\n" +
-        "      \"schoolId\": 10003,\n" +
-        "      \"name\": \"物联网工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10015,\n" +
-        "      \"schoolId\": 10004,\n" +
-        "      \"name\": \"计算机科学与技术\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10016,\n" +
-        "      \"schoolId\": 10004,\n" +
-        "      \"name\": \"软件工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10017,\n" +
-        "      \"schoolId\": 10004,\n" +
-        "      \"name\": \"信息安全\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10018,\n" +
-        "      \"schoolId\": 10004,\n" +
-        "      \"name\": \"网络工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10019,\n" +
-        "      \"schoolId\": 10004,\n" +
-        "      \"name\": \"物联网工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10020,\n" +
-        "      \"schoolId\": 10005,\n" +
-        "      \"name\": \"计算机科学与技术\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10021,\n" +
-        "      \"schoolId\": 10005,\n" +
-        "      \"name\": \"软件工程\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10022,\n" +
-        "      \"schoolId\": 10005,\n" +
-        "      \"name\": \"信息安全\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "      \"id\": 10023,\n" +
-        "      \"schoolId\": 10005,\n" +
-        "      \"name\": \"网络工程\"\n" +
-        "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10004,\n" +
+        // "      \"schoolId\": 10001,\n" +
+        // "      \"name\": \"物联网工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10005,\n" +
+        // "      \"schoolId\": 10002,\n" +
+        // "      \"name\": \"计算机科学与技术\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10006,\n" +
+        // "      \"schoolId\": 10002,\n" +
+        // "      \"name\": \"软件工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10007,\n" +
+        // "      \"schoolId\": 10002,\n" +
+        // "      \"name\": \"信息安全\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10008,\n" +
+        // "      \"schoolId\": 10002,\n" +
+        // "      \"name\": \"网络工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10009,\n" +
+        // "      \"schoolId\": 10002,\n" +
+        // "      \"name\": \"物联网工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10010,\n" +
+        // "      \"schoolId\": 10003,\n" +
+        // "      \"name\": \"计算机科学与技术\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10011,\n" +
+        // "      \"schoolId\": 10003,\n" +
+        // "      \"name\": \"软件工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10012,\n" +
+        // "      \"schoolId\": 10003,\n" +
+        // "      \"name\": \"信息安全\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10013,\n" +
+        // "      \"schoolId\": 10003,\n" +
+        // "      \"name\": \"网络工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10014,\n" +
+        // "      \"schoolId\": 10003,\n" +
+        // "      \"name\": \"物联网工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10015,\n" +
+        // "      \"schoolId\": 10004,\n" +
+        // "      \"name\": \"计算机科学与技术\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10016,\n" +
+        // "      \"schoolId\": 10004,\n" +
+        // "      \"name\": \"软件工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10017,\n" +
+        // "      \"schoolId\": 10004,\n" +
+        // "      \"name\": \"信息安全\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10018,\n" +
+        // "      \"schoolId\": 10004,\n" +
+        // "      \"name\": \"网络工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10019,\n" +
+        // "      \"schoolId\": 10004,\n" +
+        // "      \"name\": \"物联网工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10020,\n" +
+        // "      \"schoolId\": 10005,\n" +
+        // "      \"name\": \"计算机科学与技术\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10021,\n" +
+        // "      \"schoolId\": 10005,\n" +
+        // "      \"name\": \"软件工程\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10022,\n" +
+        // "      \"schoolId\": 10005,\n" +
+        // "      \"name\": \"信息安全\"\n" +
+        // "    },\n" +
+        // "    {\n" +
+        // "      \"id\": 10023,\n" +
+        // "      \"schoolId\": 10005,\n" +
+        // "      \"name\": \"网络工程\"\n" +
+        // "    },\n" +
         "    {\n" +
         "      \"id\": 10024,\n" +
         "      \"schoolId\": 10005,\n" +
@@ -258,9 +264,13 @@ class SchoolSubjectSelectRequests {
         "    \"total\": 25\n" +
         "  }\n" +
         "}";
-    Logs.info('request result mock : ${json}');
-    return SubjectMetaDataQueryResult.fromJson(jsonDecode(json));
-
+    Logs.info('request result  keyword = ${param?.keyword}, mock : ${json}');
+    SubjectMetaDataQueryResult result = SubjectMetaDataQueryResult.fromJson(jsonDecode(json));
+    if(param?.keyword != null && param.keyword.toString().length > 0){
+      result?.data = result?.data?.where((element)=>element?.name?.contains(param?.keyword??'')??true).toList();
+      Logs.info('request result mock2 : ${result.toJson().toString()}');
+    }
+    return result;
   }
 
 
