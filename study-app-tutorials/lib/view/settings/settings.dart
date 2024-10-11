@@ -135,17 +135,6 @@ class _Settings extends State<Settings> {
                   },
                 ),
               ),
-              Container(
-                alignment: Alignment.center,
-                child: ListTile(
-                  title: Text(
-                      Translations.textOf(context, "settings.name.card")),
-                  trailing: Icon(Icons.chevron_right),
-                  onTap:  () {
-                    _nameCard();
-                  },
-                ),
-              ),
 
             ]),
           ),
