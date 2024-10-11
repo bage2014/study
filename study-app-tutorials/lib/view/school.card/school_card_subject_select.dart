@@ -166,7 +166,6 @@ class ListItem extends StatelessWidget {
       },
       child: Column(
         children: [
-          const SizedBox(height: 16),
           ListTile(
             title: Text(elementAt?.name ?? ''),
           )
