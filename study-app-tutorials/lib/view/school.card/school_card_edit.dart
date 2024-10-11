@@ -13,8 +13,10 @@ import 'package:tutorials/request/origin/school_card_query_result.dart';
 import 'package:tutorials/request/school_card_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:tutorials/utils/date_time_utils.dart';
-import 'package:tutorials/request/origin/school_meta_data_query_result.dart' as SchoolResult;
-import 'package:tutorials/request/origin/subject_meta_data_query_result.dart' as SubjectResult;
+import 'package:tutorials/request/origin/school_meta_data_query_result.dart'
+    as SchoolResult;
+import 'package:tutorials/request/origin/subject_meta_data_query_result.dart'
+    as SubjectResult;
 
 class SchoolCardEdit extends StatefulWidget {
   const SchoolCardEdit({Key? key}) : super(key: key);
@@ -34,7 +36,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
   Widget build(BuildContext context) {
     //获取路由参数
     var args = ModalRoute.of(context)?.settings?.arguments;
-    if(args is Data){
+    if (args is Data) {
       arg = args;
       Logs.info('SchoolCardEdit Data=${arg?.toJson()}');
     }
@@ -89,8 +91,9 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                     imageUrl: arg?.imageUrl ?? url,
                     placeholder: (context, url) => const SizedBox(
                       child: Center(
-                          child: CircularProgressIndicator(strokeWidth: 2,)
-                      ),
+                          child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      )),
                     ),
                     errorWidget: (context, url, error) => Image.asset(
                       url,
@@ -102,42 +105,53 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   ),
                 ),
               ),
-              title: GestureDetector(
-                onTap: () async {
-                  Logs.info("onTap111");
-                  SchoolResult.Data? selectSchool = await AppUtils.toPageWithResult(context,
-                      RouteNameConstant.route_name_school_card_school_select,
-                      args: arg);
-                  Logs.info("selectSchool ${selectSchool}");
-                  if(selectSchool != null) {
-                    setState(() {
-                      arg?.name = selectSchool.name;
-                      arg?.imageUrl = selectSchool.imageUrl;
-                    });
-                  }
-                },
-                child: Text(
-                  arg?.name ?? '',
-                  style: const TextStyle(color: Colors.blue, fontSize: 20),
-                ),
-              ),
-              subtitle: GestureDetector(
-                onTap: () async {
-                  Logs.info("onTap222");
-                  SubjectResult.Data? selectSubject = await AppUtils.toPageWithResult(context,
-                      RouteNameConstant.route_name_school_card_subject_select,
-                      args: arg);
-                  Logs.info("selectSubject ${selectSubject?.name}");
-                  if(selectSubject != null) {
-                    setState(() {
-                      arg?.subject = selectSubject.name;
-                    });
-                  }
-                },
-                child: Text(
-                  arg?.subject ?? "计算机科学预计技术",
-                  style: const TextStyle(color: Colors.blue, fontSize: 14),
-                ),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      Logs.info("onTap111");
+                      SchoolResult.Data? selectSchool =
+                          await AppUtils.toPageWithResult(
+                              context,
+                              RouteNameConstant
+                                  .route_name_school_card_school_select,
+                              args: arg);
+                      Logs.info("selectSchool ${selectSchool}");
+                      if (selectSchool != null) {
+                        setState(() {
+                          arg?.name = selectSchool.name;
+                          arg?.imageUrl = selectSchool.imageUrl;
+                        });
+                      }
+                    },
+                    child: Text(
+                      arg?.name ?? '',
+                      style: const TextStyle(color: Colors.blue, fontSize: 20),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      Logs.info("onTap222");
+                      SubjectResult.Data? selectSubject =
+                          await AppUtils.toPageWithResult(
+                              context,
+                              RouteNameConstant
+                                  .route_name_school_card_subject_select,
+                              args: arg);
+                      Logs.info("selectSubject ${selectSubject?.name}");
+                      if (selectSubject != null) {
+                        setState(() {
+                          arg?.subject = selectSubject.name;
+                        });
+                      }
+                    },
+                    child: Text(
+                      arg?.subject ?? "计算机科学预计技术",
+                      style: const TextStyle(color: Colors.blue, fontSize: 14),
+                    ),
+                  ),
+                ],
               ),
             ),
             Row(
@@ -146,10 +160,10 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                 TextButton(
                   child: Text(Translations.textOf(context, "all.btn.save")),
                   onPressed: () {
-                      SchoolCardRequests.save(arg??Data()).then((result){
-                        Logs.info('result.common.message = ${result.msg}');
-                        Toasts.show(result.msg??'成功');
-                      });
+                    SchoolCardRequests.save(arg ?? Data()).then((result) {
+                      Logs.info('result.common.message = ${result.msg}');
+                      Toasts.show(result.msg ?? '成功');
+                    });
                   },
                 ),
                 const SizedBox(width: 8),
@@ -207,5 +221,4 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
       });
     }
   }
-
 }

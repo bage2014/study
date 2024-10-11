@@ -58,9 +58,15 @@ class _SchoolCardBasicState extends State<SchoolCardBasic> {
                     height: 86,
                     width: 86,
                   ),
-                  title: Text(widget.subTitle),
-                  subtitle:
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.subTitle,
+                        style: const TextStyle(fontSize: 20),
+                      ),
                       Text(widget.desc),
+                    ],
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
