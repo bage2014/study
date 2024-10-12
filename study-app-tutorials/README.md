@@ -3,6 +3,25 @@
 A tutorials project.
 
 ## todo
+
+1、后段接口OK
+
+| 接口     | URL                                                          | 状态 | 备注         |
+| -------- | ------------------------------------------------------------ | ---- | ------------ |
+| 用户登陆 |                                                              |      |              |
+| 用户注册 |                                                              |      |              |
+| 忘记密码 |                                                              |      |              |
+|          |                                                              |      |              |
+| 检查更新 | /ignore/api/version/check/{appVersion}<br />/ignore/api/version/check/123 |      |              |
+| 用户留言 |                                                              |      |              |
+| 历史版本 |                                                              |      |              |
+| 关于作者 |                                                              |      |              |
+| 分享应用 |                                                              |      |              |
+|          |                                                              |      |              |
+| TV 列表  | /ignore/api/tv/query/page                                    | done | 数据是写死的 |
+|          |                                                              |      |              |
+
+
 登陆实效、1个月
 
 今天吃什么！！
@@ -140,9 +159,6 @@ https://pub.flutter-io.cn/packages/device_preview
 代码简化？？
 
 https://pub.flutter-io.cn/packages/freezed
-
-
-
 
 
 
