@@ -18,14 +18,14 @@ import 'package:tutorials/request/origin/school_meta_data_query_result.dart'
 import 'package:tutorials/request/origin/subject_meta_data_query_result.dart'
     as SubjectResult;
 
-class SchoolCardEdit extends StatefulWidget {
-  const SchoolCardEdit({Key? key}) : super(key: key);
+class SchoolCardAdd extends StatefulWidget {
+  const SchoolCardAdd({Key? key}) : super(key: key);
 
   @override
-  _SchoolCardEditState createState() => _SchoolCardEditState();
+  _SchoolCardAddState createState() => _SchoolCardAddState();
 }
 
-class _SchoolCardEditState extends State<SchoolCardEdit> {
+class _SchoolCardAddState extends State<SchoolCardAdd> {
   String url = "assets/images/user_null.png";
   int select_mode_start = 1;
   int select_mode_end = 2;
@@ -38,12 +38,12 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
     var args = ModalRoute.of(context)?.settings?.arguments;
     if (args is Data) {
       arg = args;
-      Logs.info('SchoolCardEdit Data=${arg?.toJson()}');
+      Logs.info('SchoolCardAdd Data=${arg?.toJson()}');
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(Translations.textOf(context, "school.card.edit.title")),
+        title: Text(Translations.textOf(context, "school.card.add.title")),
       ),
       body: SafeArea(
         child: Column(
@@ -83,22 +83,22 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
             const SizedBox(height: 16),
             ListTile(
               leading: ClipOval(
-                  child: CachedNetworkImage(
-                    imageUrl: arg?.imageUrl ?? url,
-                    placeholder: (context, url) => const SizedBox(
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      )),
-                    ),
-                    errorWidget: (context, url, error) => Image.asset(
-                      url,
-                      width: 86,
-                      height: 86,
-                    ),
-                    height: 86,
-                    width: 86,
+                child: CachedNetworkImage(
+                  imageUrl: arg?.imageUrl ?? url,
+                  placeholder: (context, url) => const SizedBox(
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    )),
                   ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    url,
+                    width: 86,
+                    height: 86,
+                  ),
+                  height: 86,
+                  width: 86,
+                ),
               ),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +142,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                       }
                     },
                     child: Text(
-                      arg?.subject ?? "计算机科学预计技术",
+                      arg?.subject ?? "计算机科学与技术",
                       style: const TextStyle(color: Colors.blue, fontSize: 14),
                     ),
                   ),

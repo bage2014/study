@@ -110,23 +110,7 @@ class _SchoolCardState extends State<SchoolCard> {
 
 
   Future<void> _insertSchoolRecord() async {
-      Logs.info("add to be continue");
-
-    //
-    // MessageFeedbackRequests.insert(param).then((result) {
-    //   Logs.info('_insertFeedback responseBody=' + (result?.toString() ?? ""));
-    //   if (result.common.code == ErrorCodeConstant.success) {
-    //     setState(() {
-    //       FeedbackUpdateEvent event = FeedbackUpdateEvent();
-    //       event.data = result.common.message;
-    //       EventBus.publish(event);
-    //     });
-    //   } else {
-    //     Toasts.show(result.common.message);
-    //   }
-    // }).catchError((error) {
-    //   Logs.info(error.toString());
-    // });
+    AppUtils.toPage(context,RouteNameConstant.route_name_school_card_add);
   }
 
   pickBack(String? value) async {

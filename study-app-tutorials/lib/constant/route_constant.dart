@@ -36,6 +36,7 @@ class RouteNameConstant{
 
   static String route_name_school_card = "school/card";
   static String route_name_school_card_edit = "school/card/edit";
+  static String route_name_school_card_add = "school/card/add";
   static String route_name_school_card_school_select = "school/card/school/select";
   static String route_name_school_card_subject_select = "school/card/subject/select";
 
