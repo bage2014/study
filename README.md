@@ -146,8 +146,6 @@ An introductory summary of Java knowledge points across the industry
 | study-common-repo-mysql-mybatisplus | 基于Docker MySQL 数据库的基础组件 |
 | study-java11 | java11特性 |
 
-
-
 ## 其他 ##
 Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-services](https://github.com/bage2014/study-micro-services)
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
@@ -155,9 +153,7 @@ Java体系知识点汇总：https://github.com/bage2014/interview
 
 web资源链接
 https://github.com/tvly/tvly-web
-
 https://www.baeldung.com/aws-s3-java S3 基本使用事件
-
 m3u parser https://github.com/BjoernPetersen/m3u-parser
 
 知识汇总：
