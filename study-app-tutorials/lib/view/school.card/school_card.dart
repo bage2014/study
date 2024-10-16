@@ -82,7 +82,7 @@ class _SchoolCardState extends State<SchoolCard> {
       floatingActionButton: FloatingActionButton(
         onPressed: _insertSchoolRecord,
         tooltip: '+',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.share),
       ),
     );
   }

@@ -76,13 +76,6 @@ class _SchoolCardBasicState extends State<SchoolCardBasic> {
                       onPressed: widget.onTap,
                     ),
                     const SizedBox(width: 8),
-                    TextButton(
-                      child: Text(Translations.textOf(context, "all.btn.share")),
-                      onPressed: () {
-                        /* ... */
-                      },
-                    ),
-                    const SizedBox(width: 8),
                   ],
                 ),
               ],
