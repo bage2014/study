@@ -14,7 +14,7 @@ public class UserController {
 
     @RequestMapping("/user/me")
     public Principal user(Principal principal) {
-        System.out.println(principal);
+        System.out.println(principal.getName());
         return principal;
     }
 
