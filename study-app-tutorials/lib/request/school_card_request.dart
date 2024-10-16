@@ -31,7 +31,10 @@ class SchoolCardRequests {
   }
 
   static SchoolCardQueryResult mock() {
-    String mock = '{"code":200,"originCode":0,"msg":null,"originMsg":null,"data":[{"id":123,"userId":null,"name":"河海大学","subject":"计算机科学与技术","timeStart":"2013-09-06 00:00:00","timeEnd":"2017-06-24 00:00:00","imageUrl":"https://upload.wikimedia.org/wikipedia/zh/thumb/3/3f/Hohai_University_logo.svg/630px-Hohai_University_logo.svg.png?20220328102013"}],"pagination":{"targetPage":0,"pageSize":10,"total":13}}';
+    String mock = '{"code":200,"originCode":0,"msg":null,"originMsg":null,"data":['
+        '{"id":123,"userId":null,"name":"河海大学","subject":"计算机科学与技术","timeStart":"2013-09-06 00:00:00","timeEnd":"2017-06-24 00:00:00","imageUrl":"https://upload.wikimedia.org/wikipedia/zh/thumb/3/3f/Hohai_University_logo.svg/630px-Hohai_University_logo.svg.png?20220328102013"}'
+        ',{"id":124,"userId":null,"name":"清华大学","subject":"计算机科学与技术","timeStart":"2017-09-06 00:00:00","timeEnd":"2019-06-24 00:00:00","imageUrl":"https://www.shanghairanking.cn/_uni/logo/27532357.png"}'
+        '],"pagination":{"targetPage":0,"pageSize":10,"total":13}}';
     Logs.info('request result mock : ${mock}');
     return SchoolCardQueryResult.fromJson(jsonDecode(mock));
 
