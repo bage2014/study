@@ -23,11 +23,11 @@ class SchoolSubjectSelectRequests {
       return Future.delayed(const Duration(seconds: 1), () => mockSchool(requestParam));
     }
 
-    Map<String, String> param = new HashMap();
+    Map<String, String> param = HashMap();
     param.putIfAbsent("param", () => json.encode(requestParam));
 
     return Future.value(
-        HttpRequests.get(HttpConstant.url_tv_query_page, param, null).then((value) {
+        HttpRequests.get(HttpConstant.url_school_card_select, param, null).then((value) {
           Logs.info('request result : ${value.responseBody}');
           return SchoolMetaDataQueryResult.fromJson(jsonDecode(value.responseBody));
         }));
@@ -119,7 +119,7 @@ class SchoolSubjectSelectRequests {
     param.putIfAbsent("param", () => json.encode(requestParam));
 
     return Future.value(
-        HttpRequests.get(HttpConstant.url_tv_query_page, param, null).then((value) {
+        HttpRequests.get(HttpConstant.url_school_card_subject_select, param, null).then((value) {
           Logs.info('request result : ${value.responseBody}');
           return SubjectMetaDataQueryResult.fromJson(jsonDecode(value.responseBody));
         }));
