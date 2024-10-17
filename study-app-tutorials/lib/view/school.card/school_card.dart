@@ -89,7 +89,7 @@ class _SchoolCardState extends State<SchoolCard> {
 
   Future<Null> _onRefresh() async {
     showLoading();
-    SchoolCardQueryRequestParam requestParam = new SchoolCardQueryRequestParam();
+    SchoolCardQueryRequestParam requestParam = SchoolCardQueryRequestParam();
     SchoolCardRequests.query(requestParam).then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
       hideLoading();

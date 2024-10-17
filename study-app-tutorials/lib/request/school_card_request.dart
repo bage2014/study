@@ -14,17 +14,17 @@ class SchoolCardRequests {
 
   static Future<SchoolCardQueryResult> query(
       SchoolCardQueryRequestParam requestParam) async {
-    Logs.info('request param : ${json.encode(requestParam?.toString())}');
+    Logs.info('request param : ${requestParam?.toString()}');
 
     if(await SettingCaches.getMockSwitch() == 'true'){
       return Future.delayed(const Duration(seconds: 1), () => mock());
     }
 
-    Map<String, String> param = new HashMap();
-    param.putIfAbsent("param", () => json.encode(requestParam));
+    Map<String, String> param = HashMap();
+    // param.putIfAbsent("param", () => json.encode(requestParam));
 
     return Future.value(
-        HttpRequests.get(HttpConstant.url_tv_query_page, param, null).then((value) {
+        HttpRequests.get(HttpConstant.url_school_card_query_page, param, null).then((value) {
           Logs.info('request result : ${value.responseBody}');
           return SchoolCardQueryResult.fromJson(jsonDecode(value.responseBody));
         }));

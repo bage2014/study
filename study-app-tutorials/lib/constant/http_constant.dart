@@ -7,7 +7,8 @@ class HttpConstant{
 
   static String url_login = "/oauth/token";
   static String url_register = "/oauth/token";
-  static String url_user_profile = "/api/authUser/profile/detail";
+  static String url_user_profile_detail = "/api/authUser/profile/detail";
+  static String url_user_profile_me = "/api/authUser/profile/me";
   static String url_validate_code = "/validate/code/generate";
 
   static String url_tv_query_page = "/ignore/api/tv/query/page";
@@ -23,6 +24,10 @@ class HttpConstant{
   static String url_settings_app_feedback_delete = "/ignore/feedbackMessage/delete";
 
   static String url_profile_activity = "/ignore/api/profile/query/page";
+
+  static String url_school_card_query_page = "/ignore/api/school/card/query/page";
+  static String url_school_card_select = "/ignore/api/school/meta/data/school/query/page";
+  static String url_school_card_subject_select = "/ignore/api/school/meta/data/subject/query/page";
 
 }
 

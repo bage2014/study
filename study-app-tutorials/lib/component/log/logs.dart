@@ -6,4 +6,8 @@ class Logs {
   static void info(String? msg) {
     print(msg);
   }
+
+  static void error(String? msg) {
+    print(msg);
+  }
 }

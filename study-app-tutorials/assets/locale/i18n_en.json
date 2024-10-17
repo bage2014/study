@@ -20,6 +20,7 @@
   "login.button":"Go ",
   "login.password.reset":"Forget Password ",
   "login.register":"Create New Account ",
+  "login.visitor":"Visitor",
   "login.success.toast":"Login Success ",
   "login.validation.username":"Username can not be hull or empty ",
   "login.validation.password":"Password can not be hull or empty ",

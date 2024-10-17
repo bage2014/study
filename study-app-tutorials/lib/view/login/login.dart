@@ -75,7 +75,7 @@ class _LoginView extends State<Login> {
                         envSetting();
                       },
                     ),
-                    const SizedBox(height: 62),
+                    const SizedBox(height: 48),
                     Text(
                       Translations.textOf(context, 'login.title'),
                       style: const TextStyle(
@@ -250,6 +250,20 @@ class _LoginView extends State<Login> {
           ),
         ),
         Container(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 24, vertical: 24),
+          alignment: Alignment.topRight,
+          child: GestureDetector(
+            onTap: () async {
+              visitorLogin();
+            },
+            child: Text(
+              Translations.textOf(context, 'login.visitor'),
+              style: const TextStyle(color: Colors.blue, fontSize: 18),
+            ),
+          ),
+        ),
+        Container(
           child: _isLoading
               ? Container(
                   color: Colors.black54.withOpacity(0.5),
@@ -340,6 +354,26 @@ class _LoginView extends State<Login> {
     });
   }
 
+  void visitorLogin() {
+    showLoading();
+
+    LoginRequests.visitorLogin(LoginRequestParam()).then((result) {
+      Logs.info('login result=' + (result.toString() ?? ""));
+      hideLoading();
+      if (result.common.code == ErrorCodeConstant.success) {
+        Toasts.show(Translations.textOf(context, "login.success.toast"));
+        UserCaches.cacheUser(User.from(result));
+        AppUtils.toPage(context, RouteNameConstant.route_name_home);
+      } else {
+        Toasts.show(result.common.message);
+      }
+    }).catchError((error) {
+      Toasts.show(error.toString());
+      Logs.error(error.toString());
+      hideLoading();
+    });
+  }
+
   LoginRequestParam buildParam() {
     LoginRequestParam param = LoginRequestParam();
     param.userName = userNameController.text;
@@ -349,7 +383,8 @@ class _LoginView extends State<Login> {
   }
 
   void envSetting() async {
-    Navigator.of(context).pushNamed(RouteNameConstant.route_name_setting_dev_tool);
+    Navigator.of(context)
+        .pushNamed(RouteNameConstant.route_name_setting_dev_tool);
   }
 
   bool isOk(LoginRequestParam param) {
