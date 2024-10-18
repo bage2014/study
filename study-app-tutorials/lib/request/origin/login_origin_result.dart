@@ -36,12 +36,12 @@ class Data {
   String? mail;
   String? password;
   String? sex;
-  Null? iconId;
-  Null? iconUrl;
+  int? iconId;
+  String? iconUrl;
   String? birthday;
   String? createTime;
   String? updateTime;
-  Null? deleteState;
+  int? deleteState;
 
   Data(
       {this.id,

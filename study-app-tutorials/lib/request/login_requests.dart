@@ -33,7 +33,7 @@ class LoginRequests {
     Logs.info('request header : ${header?.toString()}');
 
     return Future.value(
-        HttpRequests.post(HttpConstant.url_user_profile_detail, param, header)
+        HttpRequests.post(HttpConstant.url_user_profile_me, param, header)
             .then((value) => LoginOriginResultMapping.mapping(value)));
 
   }

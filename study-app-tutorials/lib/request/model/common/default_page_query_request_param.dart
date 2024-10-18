@@ -1,11 +1,15 @@
 import 'package:tutorials/request/model/common/common_param.dart';
 import 'package:tutorials/request/model/common/page_query_param.dart';
 
-class CommonPageQueryRequestParam extends PageQueryParam {
+class DefaultPageQueryRequestParam extends PageQueryParam {
 
   String? keyword;
 
-  CommonPageQueryRequestParam.fromJson(Map<String, dynamic> json){
+  DefaultPageQueryRequestParam(){
+
+  }
+
+  DefaultPageQueryRequestParam.fromJson(Map<String, dynamic> json){
     keyword = json['keyword'];
   }
 

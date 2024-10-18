@@ -12,11 +12,14 @@ import 'package:tutorials/request/origin/school_card_query_result.dart';
 import 'package:tutorials/request/origin/school_meta_data_query_result.dart';
 import 'package:tutorials/request/origin/subject_meta_data_query_result.dart';
 
+import 'model/common/default_page_query_request_param.dart';
+import 'model/school/subject_page_query_request_param.dart';
+
 class SchoolSubjectSelectRequests {
 
 
   static Future<SchoolMetaDataQueryResult> querySchool(
-      CommonPageQueryRequestParam requestParam) async {
+      DefaultPageQueryRequestParam requestParam) async {
     Logs.info('request param : ${json.encode(requestParam?.toString())}');
 
     if(await SettingCaches.getMockSwitch() == 'true'){
@@ -33,7 +36,7 @@ class SchoolSubjectSelectRequests {
         }));
   }
 
-  static SchoolMetaDataQueryResult mockSchool(CommonPageQueryRequestParam param) {
+  static SchoolMetaDataQueryResult mockSchool(DefaultPageQueryRequestParam param) {
     String json = "{\n" +
         "  \"code\": 200,\n" +
         "  \"originCode\": 0,\n" +
@@ -108,7 +111,7 @@ class SchoolSubjectSelectRequests {
   }
 
   static Future<SubjectMetaDataQueryResult> querySubject(
-      CommonPageQueryRequestParam requestParam) async {
+      SubjectPageQueryRequestParam requestParam) async {
     Logs.info('request param : ${json.encode(requestParam?.toString())}');
 
     if(await SettingCaches.getMockSwitch() == 'true'){
@@ -125,7 +128,7 @@ class SchoolSubjectSelectRequests {
         }));
   }
 
-  static SubjectMetaDataQueryResult mockSubject(CommonPageQueryRequestParam param) {
+  static SubjectMetaDataQueryResult mockSubject(DefaultPageQueryRequestParam param) {
     String json = "{\n" +
         "  \"code\": 200,\n" +
         "  \"originCode\": 0,\n" +

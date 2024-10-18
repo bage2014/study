@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
+import 'package:tutorials/request/model/common/default_page_query_request_param.dart';
 import 'package:tutorials/request/model/common/page_query_request_param.dart';
 import 'package:tutorials/request/origin/school_meta_data_query_result.dart';
 import 'package:tutorials/request/school_subject_select_request.dart';
@@ -112,7 +113,7 @@ class _SchoolCardSchoolSelectState extends State<SchoolCardSchoolSelect> {
 
   void _onRefresh(String keyword) {
     showLoading();
-    CommonPageQueryRequestParam param = CommonPageQueryRequestParam();
+    DefaultPageQueryRequestParam param = DefaultPageQueryRequestParam();
     param.keyword = keyword;
     SchoolSubjectSelectRequests.querySchool(param).then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
