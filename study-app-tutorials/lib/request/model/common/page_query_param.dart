@@ -1,4 +1,6 @@
-class PageQueryParam {
+import 'common_param.dart';
+
+class PageQueryParam extends CommonParam {
   PageQueryParam();
   int targetPage = 1;
   int pageSize = 10;

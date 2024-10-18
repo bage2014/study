@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
+import 'package:tutorials/request/model/common/default_page_query_request_param.dart';
 import 'package:tutorials/request/model/common/page_query_request_param.dart';
+import 'package:tutorials/request/model/school/subject_page_query_request_param.dart';
 import 'package:tutorials/request/origin/subject_meta_data_query_result.dart';
 import 'package:tutorials/request/school_subject_select_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
@@ -121,8 +123,9 @@ class _SchoolCardSubjectSelectState extends State<SchoolCardSubjectSelect> {
 
   void _onRefresh(String? keyword) {
     showLoading();
-    CommonPageQueryRequestParam param = CommonPageQueryRequestParam();
+    SubjectPageQueryRequestParam param = SubjectPageQueryRequestParam();
     param.keyword = keyword;
+    param.schoolId = arg?.id;
     SchoolSubjectSelectRequests.querySubject(param).then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
       hideLoading();

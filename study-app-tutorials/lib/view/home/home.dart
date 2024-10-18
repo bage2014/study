@@ -1,3 +1,4 @@
+import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,14 @@ class _ScaffoldRouteState extends State<Home> {
     //获取路由参数
     var args = ModalRoute.of(context)?.settings?.arguments;
     Logs.info('args=${args}');
+    var userName = UserCaches.getUser()?.userName;
 
     return WillPopScope(
         onWillPop: onWillPop, //重点此举
         child: Scaffold(
           appBar: AppBar(
             //导航栏
-            title: Text(Translations.textOf(context, "all.app.name")),
+            title: Text(userName??Translations.textOf(context, "all.app.name")),
 //          actions: <Widget>[
 //            //导航栏右侧菜单
 //            IconButton(icon: Icon(Icons.share), onPressed: () {}),
@@ -80,7 +82,7 @@ class _ScaffoldRouteState extends State<Home> {
 
   //模拟异步获取数据
   void _retrieveIcons() {
-    Future.delayed(Duration(milliseconds: 200)).then((e) {
+    Future.delayed(const Duration(milliseconds: 200)).then((e) {
       setState(() {
         menuItems.addAll([
           MenuItem(

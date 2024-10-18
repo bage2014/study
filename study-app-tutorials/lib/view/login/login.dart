@@ -250,19 +250,41 @@ class _LoginView extends State<Login> {
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 24, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 24),
           alignment: Alignment.topRight,
-          child: GestureDetector(
-            onTap: () async {
+          child: ElevatedButton(
+            onPressed: () {
               visitorLogin();
             },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.transparent,
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              fixedSize: const Size(128, 64),
+            ),
             child: Text(
               Translations.textOf(context, 'login.visitor'),
-              style: const TextStyle(color: Colors.blue, fontSize: 18),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF0043CE),
+              ),
             ),
           ),
         ),
+        // Container(
+        //   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        //   alignment: Alignment.topRight,
+        //   child: GestureDetector(
+        //     onTap: () async {
+        //       visitorLogin();
+        //     },
+        //     child: Text(
+        //       Translations.textOf(context, 'login.visitor'),
+        //       style: const TextStyle(color: Colors.blue, fontSize: 18),
+        //     ),
+        //   ),
+        // ),
         Container(
           child: _isLoading
               ? Container(
