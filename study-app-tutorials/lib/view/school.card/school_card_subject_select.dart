@@ -2,13 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
-import 'package:tutorials/request/model/common/default_page_query_request_param.dart';
-import 'package:tutorials/request/model/common/page_query_request_param.dart';
 import 'package:tutorials/request/model/school/subject_page_query_request_param.dart';
 import 'package:tutorials/request/origin/subject_meta_data_query_result.dart';
 import 'package:tutorials/request/school_subject_select_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
-import 'package:tutorials/request/origin/school_meta_data_query_result.dart' as SchoolResult;
+import 'package:tutorials/request/origin/school_card_query_result.dart' as SchoolResult;
 
 class SchoolCardSubjectSelect extends StatefulWidget {
   const SchoolCardSubjectSelect({Key? key}) : super(key: key);
@@ -28,17 +26,20 @@ class _SchoolCardSubjectSelectState extends State<SchoolCardSubjectSelect> {
   @override
   void initState() {
     super.initState();
-    _onRefresh(null);
+    WidgetsBinding.instance?.addPostFrameCallback((param) {
+      _onRefresh(null);
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
     //获取路由参数
     var args = ModalRoute.of(context)?.settings?.arguments;
-    Logs.info('SchoolCardSubjectSelect Data1=${arg?.toJson()}');
+    Logs.info('SchoolCardSubjectSelect Data1=${args?.toString()}');
     if(args is SchoolResult.Data) {
       arg = args;
-      Logs.info('SchoolCardSubjectSelect Data=${arg?.toJson()}');
+      Logs.info('SchoolCardSubjectSelect Data2=${arg?.toJson()}');
     }
 
     return Scaffold(

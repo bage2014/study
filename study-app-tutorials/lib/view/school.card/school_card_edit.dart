@@ -1,14 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:tutorials/component/image.crop/image_cropper.dart';
 import 'package:tutorials/component/log/logs.dart';
-import 'package:tutorials/component/picker/image_picker.dart';
 import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
-import 'package:tutorials/request/file_upload_request.dart';
-import 'package:tutorials/request/model/upload/file_upload_param.dart';
 import 'package:tutorials/request/origin/school_card_query_result.dart';
 import 'package:tutorials/request/school_card_request.dart';
 import 'package:tutorials/utils/app_utils.dart';
@@ -115,6 +110,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                       Logs.info("selectSchool ${selectSchool}");
                       if (selectSchool != null) {
                         setState(() {
+                          arg?.id = selectSchool.id;
                           arg?.name = selectSchool.name;
                           arg?.imageUrl = selectSchool.imageUrl;
                         });
@@ -127,7 +123,7 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      Logs.info("onTap222");
+                      Logs.info("onTap222 ： ${arg?.id}");
                       SubjectResult.Data? selectSubject =
                           await AppUtils.toPageWithResult(
                               context,
