@@ -33,13 +33,18 @@ class _SchoolCardAddState extends State<SchoolCardAdd> {
   TextEditingController subjectController = TextEditingController();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    arg = Data();
+    arg?.id=0;
+    arg?.timeStart='2010';
+    arg?.timeEnd='2014';
+    arg?.name='待选择';
+  }
+  @override
   Widget build(BuildContext context) {
     //获取路由参数
-    var args = ModalRoute.of(context)?.settings?.arguments;
-    if (args is Data) {
-      arg = args;
-      Logs.info('SchoolCardAdd Data=${arg?.toJson()}');
-    }
 
     return Scaffold(
       appBar: AppBar(

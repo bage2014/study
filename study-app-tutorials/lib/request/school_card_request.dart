@@ -51,7 +51,7 @@ class SchoolCardRequests {
     param.putIfAbsent("param", () => json.encode(arg));
 
     return Future.value(
-        HttpRequests.get(HttpConstant.url_tv_query_page, param, null).then((value) {
+        HttpRequests.get(HttpConstant.url_school_card_save, param, null).then((value) {
           Logs.info('request result : ${value.responseBody}');
           return CommonUpdateResult.fromJson(jsonDecode(value.responseBody));
         }));

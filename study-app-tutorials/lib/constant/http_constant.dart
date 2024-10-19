@@ -28,6 +28,7 @@ class HttpConstant{
   static String url_school_card_query_page = "/ignore/api/school/card/query/page";
   static String url_school_card_select = "/ignore/api/school/meta/data/school/query/page";
   static String url_school_card_subject_select = "/ignore/api/school/meta/data/subject/query/page";
+  static String url_school_card_save = "/ignore/api/school/card/save";
 
 }
 

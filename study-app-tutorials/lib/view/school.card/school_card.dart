@@ -28,7 +28,6 @@ class _SchoolCardState extends State<SchoolCard> {
   @override
   void initState() {
     super.initState();
-    _onRefresh();
   }
 
   @override
@@ -36,6 +35,15 @@ class _SchoolCardState extends State<SchoolCard> {
     return Scaffold(
       appBar: AppBar(
         title: Text(Translations.textOf(context, "school.card.title")),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              AppUtils.toPage(context,
+                  RouteNameConstant.route_name_school_card_add);
+            },
+          ),
+        ],
       ),
       body: SafeArea(
           child: RefreshIndicator(
