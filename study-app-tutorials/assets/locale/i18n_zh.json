@@ -50,9 +50,9 @@
 
   "home.drawer.title":"小陆 ",
   "home.drawer.settings":"设置 ",
-  "home.drawer.about":"关于 ",
-  "home.drawer.exit":"退出 ",
-  "home.drawer.logout":"注销 ",
+  "home.drawer.about":"关于应用 ",
+  "home.drawer.exit":"退出应用 ",
+  "home.drawer.logout":"切换账号 ",
   "home.drawer.profile":"我的 ",
   "home.back.confirm":"你确定要退出吗?",
   "home.logout.confirm":"你确定要注销吗?",

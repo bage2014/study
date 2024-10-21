@@ -40,7 +40,6 @@ public class HelloCaffeine {
 
         new Thread(() -> {
             for (int i = 0; i < 30; i++) {
-
                 cache.put(key + i,"value_zhangsan" + i);
                 System.out.println(cache.get(key + i,o -> "none"));
 
