@@ -1,14 +1,15 @@
 import 'dart:collection';
-import 'dart:convert';
 
-import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/component/log/logs.dart';
-import 'package:tutorials/constant/http_constant.dart';
+import 'package:tutorials/component/toast/Toasts.dart';
+import 'package:tutorials/constant/error_code_constant.dart';
 import 'package:tutorials/locale/translations.dart';
-import 'package:tutorials/model/app_version.dart';
-import 'package:tutorials/request/model/AppVersionsResult.dart';
+import 'package:tutorials/request/app_versions_request.dart';
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
+import 'package:tutorials/request/model/app_versions_result.dart';
+import 'package:tutorials/request/model/common/default_page_query_request_param.dart';
+import 'package:tutorials/utils/date_time_utils.dart';
 
 class AboutVersions extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class AboutVersions extends StatefulWidget {
 }
 
 class _AboutVersions extends State<AboutVersions> {
-  List<AppVersion> list = [];
+  List<Data> list = [];
   bool isLoading = true;
 
   @override
@@ -69,22 +70,27 @@ class _AboutVersions extends State<AboutVersions> {
   Future<Null> _onRefresh() async {
     isLoading = true;
     Map<String, String> param = new HashMap();
-    HttpRequests.get(HttpConstant.url_settings_app_versions, param, null)
-        .then((result) {
-      Logs.info('_onRefresh responseBody=' + (result?.responseBody ?? ""));
+
+    AppVersionsRequests.getVersions(DefaultPageQueryRequestParam()).then((result) {
+      Logs.info('getVersions result=' + (result.toString() ?? ""));
       hideLoading();
-      setState(() {
-        AppVersionsResult response =
-            AppVersionsResult.fromJson(json.decode(result?.responseBody ?? ""));
-        if (response.code == 200) {
-          list = response.data ?? [];
-          if (list.length > 0) {
-            AppVersion value = new AppVersion();
-            value.versionName = Translations.textOf(context, 'about.version.start');
-            list.insert(0, value);
-          }
-        }
-      });
+      if (result.code == ErrorCodeConstant.success) {
+        setState(() {
+            list = result.data ?? [];
+        });
+      } else {
+        Toasts.show(result.msg??'未知错误');
+      }
+    }).catchError((error) {
+      Logs.info(error.toString());
+      hideLoading();
+      Toasts.show(error.msg??'未知错误');
+    });
+
+    AppVersionsRequests.getVersions(DefaultPageQueryRequestParam())
+        .then((result) {
+      hideLoading();
+
     }).catchError((error) {
       Logs.info(error.toString());
       hideLoading();
@@ -96,7 +102,7 @@ class _DeliveryProcesses extends StatelessWidget {
   const _DeliveryProcesses({Key? key, required this.processes})
       : super(key: key);
 
-  final List<AppVersion> processes;
+  final List<Data> processes;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +147,7 @@ class _DeliveryProcesses extends StatelessWidget {
                   ),
                 );
 
+              var createTime =  DateTimeUtils.parse(version.createTime);
               return Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: Column(
@@ -157,7 +164,7 @@ class _DeliveryProcesses extends StatelessWidget {
                         ),
                         Spacer(),
                         Text(
-                          '${version.createTime?.year}-${version.createTime?.month}-${version.createTime?.day}',
+                          '${createTime?.year}-${createTime?.month}-${createTime?.day}',
                           style: TextStyle(
                             color: Color(0xffb6b2b2),
                           ),

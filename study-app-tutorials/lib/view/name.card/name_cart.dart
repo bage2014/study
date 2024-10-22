@@ -6,7 +6,7 @@ import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/http_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/model/app_version.dart';
-import 'package:tutorials/request/model/AppVersionsResult.dart';
+import 'package:tutorials/request/model/app_versions_result.dart';
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
 
@@ -78,7 +78,7 @@ class _NameCard extends State<NameCard> {
         AppVersionsResult response =
             AppVersionsResult.fromJson(json.decode(result?.responseBody ?? ""));
         if (response.code == 200) {
-          list = response.data ?? [];
+          list = [];
           if (list.length > 0) {
             AppVersion value = new AppVersion();
             value.versionName = Translations.textOf(context, 'about.version.start');
