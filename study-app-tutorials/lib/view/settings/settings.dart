@@ -196,10 +196,10 @@ class _Settings extends State<Settings> {
     SettingRequests.checkVersion(AppVersionCheckRequestParam()).then((result) {
       Logs.info('checkVersion result=' + (result.toString() ?? ""));
       hideLoading();
-      if (result.common.code == ErrorCodeConstant.success) {
-        showUpdateDialog(result);
+      if (result.code == ErrorCodeConstant.success) {
+        showUpdateDialog(result.data??Data());
       } else {
-        Toasts.show(result.common.message);
+        Toasts.show(result.msg??'未知错误');
       }
     }).catchError((error) {
       Logs.info(error.toString());
@@ -207,7 +207,7 @@ class _Settings extends State<Settings> {
     });
   }
 
-  void showUpdateDialog(AppVersionCheckRequestResult result) async {
+  void showUpdateDialog(Data result) async {
     // 确认框
     String? showConfirmDialog = await Dialogs.showConfirmDialog(
         context,
@@ -220,7 +220,7 @@ class _Settings extends State<Settings> {
     }
   }
 
-  void showUpdateSelector(AppVersionCheckRequestResult result) async {
+  void showUpdateSelector(Data result) async {
     List<String> contents = [
       Translations.textOf(context, "settings.upgrade.open.by.browser"),
       Translations.textOf(context, "settings.upgrade.open.by.app"),
@@ -247,7 +247,7 @@ class _Settings extends State<Settings> {
     }
   }
 
-  void downloadFromApp(AppVersionCheckRequestResult result) async {
+  void downloadFromApp(Data result) async {
     String downloadDir = await FileUtils.getDownloadDirectory();
     String fileName = '${downloadDir}/latest-app-${result?.versionCode}.apk';
     File file = File(fileName);

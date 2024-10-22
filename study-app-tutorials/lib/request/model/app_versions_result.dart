@@ -1,31 +1,69 @@
-
-class AppVersionCheckRequestResult {
+class AppVersionsResult {
+  Pagination? pagination;
+  List<Data>? data;
   int? code;
   int? originCode;
   String? msg;
-  String? originMsg;
-  Data? data;
+  Null? originMsg;
 
-  AppVersionCheckRequestResult(
-      {this.code, this.originCode, this.msg, this.originMsg, this.data});
+  AppVersionsResult(
+      {this.pagination,
+        this.data,
+        this.code,
+        this.originCode,
+        this.msg,
+        this.originMsg});
 
-  AppVersionCheckRequestResult.fromJson(Map<String, dynamic> json) {
+  AppVersionsResult.fromJson(Map<String, dynamic> json) {
+    pagination = json['pagination'] != null
+        ? new Pagination.fromJson(json['pagination'])
+        : null;
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(new Data.fromJson(v));
+      });
+    }
     code = json['code'];
     originCode = json['originCode'];
     msg = json['msg'];
     originMsg = json['originMsg'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.pagination != null) {
+      data['pagination'] = this.pagination!.toJson();
+    }
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
     data['code'] = this.code;
     data['originCode'] = this.originCode;
     data['msg'] = this.msg;
     data['originMsg'] = this.originMsg;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
+    return data;
+  }
+}
+
+class Pagination {
+  int? targetPage;
+  int? pageSize;
+  int? total;
+
+  Pagination({this.targetPage, this.pageSize, this.total});
+
+  Pagination.fromJson(Map<String, dynamic> json) {
+    targetPage = json['targetPage'];
+    pageSize = json['pageSize'];
+    total = json['total'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['targetPage'] = this.targetPage;
+    data['pageSize'] = this.pageSize;
+    data['total'] = this.total;
     return data;
   }
 }
@@ -45,19 +83,20 @@ class Data {
   String? updateStaffId;
   String? deleteState;
 
-  Data({this.id,
-    this.versionCode,
-    this.description,
-    this.fileId,
-    this.fileUrl,
-    this.versionName,
-    this.fileSize,
-    this.updateType,
-    this.createTime,
-    this.updateTime,
-    this.createStaffId,
-    this.updateStaffId,
-    this.deleteState});
+  Data(
+      {this.id,
+        this.versionCode,
+        this.description,
+        this.fileId,
+        this.fileUrl,
+        this.versionName,
+        this.fileSize,
+        this.updateType,
+        this.createTime,
+        this.updateTime,
+        this.createStaffId,
+        this.updateStaffId,
+        this.deleteState});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
