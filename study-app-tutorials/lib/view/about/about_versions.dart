@@ -87,14 +87,6 @@ class _AboutVersions extends State<AboutVersions> {
       Toasts.show(error.msg??'未知错误');
     });
 
-    AppVersionsRequests.getVersions(DefaultPageQueryRequestParam())
-        .then((result) {
-      hideLoading();
-
-    }).catchError((error) {
-      Logs.info(error.toString());
-      hideLoading();
-    });
   }
 }
 
@@ -132,7 +124,7 @@ class _DeliveryProcesses extends StatelessWidget {
               var version = processes[processes.length - 1 - index];
               if (version.versionCode == null)
                 return Padding(
-                  padding: EdgeInsets.only(left: 8.0),
+                  padding: EdgeInsets.only(left: 12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -149,7 +141,7 @@ class _DeliveryProcesses extends StatelessWidget {
 
               var createTime =  DateTimeUtils.parse(version.createTime);
               return Padding(
-                padding: EdgeInsets.only(left: 8.0),
+                padding: EdgeInsets.only(left: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -157,7 +149,7 @@ class _DeliveryProcesses extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '${Translations.textOf(context, 'about.version.name')} ${version.versionName}',
+                          '${version.versionName}',
                           style: DefaultTextStyle.of(context).style.copyWith(
                                 fontSize: 20.0,
                               ),
