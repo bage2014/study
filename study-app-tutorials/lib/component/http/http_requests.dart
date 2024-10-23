@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:tutorials/component/cache/token_caches.dart';
 import 'package:tutorials/component/http/cancel_requests.dart';
 import 'package:tutorials/component/http/http_byte_result.dart';
 import 'package:tutorials/component/http/http_origin_result.dart';
@@ -17,6 +16,17 @@ import 'package:dio/dio.dart';
 
 class HttpRequests {
   static final Dio _dio = Dio();
+
+  static Future<Response<dynamic>> retry(RequestOptions requestOptions) async {
+    final options = Options(
+      method: requestOptions.method,
+      headers: requestOptions.headers,
+    );
+    return _dio.request<dynamic>(requestOptions.path,
+        data: requestOptions.data,
+        queryParameters: requestOptions.queryParameters,
+        options: options);
+  }
 
   static void init() {
     _dio.interceptors.add(NetworkCheckInterceptors());

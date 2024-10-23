@@ -28,49 +28,7 @@ class AppVersionsRequests {
   }
 
   static AppVersionsResult mock() {
-    String json = "{\n" +
-        "    \"pagination\": {\n" +
-        "        \"targetPage\": 1,\n" +
-        "        \"pageSize\": 10,\n" +
-        "        \"total\": 2\n" +
-        "    },\n" +
-        "    \"data\": [\n" +
-        "        {\n" +
-        "            \"id\": 405367500653416,\n" +
-        "            \"versionCode\": 203393314,\n" +
-        "            \"description\": \"版本信息\\n'\\n说明1\\n说明2\\n 哈哈哈哈哈哈哈\",\n" +
-        "            \"fileId\": 405367499731375,\n" +
-        "            \"fileUrl\": \"https://raw.githubusercontent.com/bage2014/study/master/study-app-tutorials/apks/app-release.apk\",\n" +
-        "            \"versionName\": \"N4eFWsYp8D\",\n" +
-        "            \"fileSize\": 405367499968666,\n" +
-        "            \"updateType\": \"FORCE_UPDATE\",\n" +
-        "            \"createTime\": \"2024-10-21T23:26:11.994942\",\n" +
-        "            \"updateTime\": \"2024-10-21T23:26:11.994942\",\n" +
-        "            \"createStaffId\": \"dUvxVaNTQi\",\n" +
-        "            \"updateStaffId\": \"3M8mZZWh9C\",\n" +
-        "            \"deleteState\": \"zmTJ4Syu15\"\n" +
-        "        },\n" +
-        "        {\n" +
-        "            \"id\": 405367500653416,\n" +
-        "            \"versionCode\": 203393314,\n" +
-        "            \"description\": \"版本信息\\n说明11\\n说明22\\n哈哈哈哈哈哈哈\",\n" +
-        "            \"fileId\": 405367499731375,\n" +
-        "            \"fileUrl\": \"https://raw.githubusercontent.com/bage2014/study/master/study-app-tutorials/apks/app-release.apk\",\n" +
-        "            \"versionName\": \"N4eFWsYp8D\",\n" +
-        "            \"fileSize\": 405367499968666,\n" +
-        "            \"updateType\": \"FORCE_UPDATE\",\n" +
-        "            \"createTime\": \"2024-10-21T23:30:07.439\",\n" +
-        "            \"updateTime\": \"2024-10-21T23:26:11.994942\",\n" +
-        "            \"createStaffId\": \"dUvxVaNTQi\",\n" +
-        "            \"updateStaffId\": \"3M8mZZWh9C\",\n" +
-        "            \"deleteState\": \"zmTJ4Syu15\"\n" +
-        "        }\n" +
-        "    ],\n" +
-        "    \"code\": 200,\n" +
-        "    \"originCode\": 0,\n" +
-        "    \"msg\": \"success\",\n" +
-        "    \"originMsg\": null\n" +
-        "}";
+    String json = '{"pagination":{"targetPage":1,"pageSize":10,"total":2},"data":[{"id":123,"versionCode":1,"description":"说明1\n说明2\n说明3\n说明4\n","fileId":123,"fileUrl":"https://raw.githubusercontent.com/bage2014/study/master/study-app-tutorials/apks/app-release.apk","versionName":"V1.0","fileSize":123,"updateType":null,"createTime":"2024-10-22T08:44:43.945","updateTime":"2024-10-22T08:44:43.945","createStaffId":null,"updateStaffId":null,"deleteState":null},{"id":123,"versionCode":1,"description":"说明11\n说明22\n说明33\n","fileId":123,"fileUrl":"https://raw.githubusercontent.com/bage2014/study/master/study-app-tutorials/apks/app-release.apk","versionName":"V1.0","fileSize":123,"updateType":null,"createTime":"2024-10-22T08:44:43.945","updateTime":"2024-10-22T08:44:43.945","createStaffId":null,"updateStaffId":null,"deleteState":null}],"code":200,"originCode":0,"msg":"success","originMsg":null}';
     AppVersionsResult result = AppVersionsResult.fromJson(jsonDecode(json));
     Logs.info('request mock result : ${result?.toString()}');
     return result;
