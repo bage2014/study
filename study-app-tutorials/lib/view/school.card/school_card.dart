@@ -28,6 +28,7 @@ class _SchoolCardState extends State<SchoolCard> {
   @override
   void initState() {
     super.initState();
+    _onRefresh();
   }
 
   @override
