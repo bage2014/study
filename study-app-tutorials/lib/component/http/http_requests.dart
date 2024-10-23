@@ -7,6 +7,7 @@ import 'package:tutorials/component/http/http_origin_result.dart';
 import 'package:tutorials/component/http/http_progress_callback.dart';
 import 'package:tutorials/component/http/http_result.dart';
 import 'package:tutorials/component/http/network_check_interceptors.dart';
+import 'package:tutorials/component/http/refresh_token_interceptors.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/sp/shared_preference_helper.dart';
 import 'package:tutorials/constant/http_constant.dart';
@@ -30,6 +31,7 @@ class HttpRequests {
 
   static void init() {
     _dio.interceptors.add(NetworkCheckInterceptors());
+    _dio.interceptors.add(RefreshTokenInterceptors());
   }
 
   static Future<HttpByteResult> upload(
@@ -279,5 +281,9 @@ class HttpRequests {
       url = url.substring(1);
     }
     return url.startsWith("http") ? url : HttpProp.getBaseUrl() + url;
+  }
+
+  static refreshToken() {
+
   }
 }
