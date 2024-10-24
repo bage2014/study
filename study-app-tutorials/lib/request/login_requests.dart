@@ -131,8 +131,8 @@ class LoginRequests {
       result.common.message = auth.msg??'';
       return result;
     }
-    TokenCaches.cacheAccessToken(auth?.data?.accessToken??'');
-    TokenCaches.cacheRefreshToken(auth?.data?.refreshToken??'');
+    await TokenCaches.cacheAccessToken(auth?.data?.accessToken??'');
+    await TokenCaches.cacheRefreshToken(auth?.data?.refreshToken??'');
 
     Map<String, String> param = HashMap();
     Map<String, String> header = HashMap();
