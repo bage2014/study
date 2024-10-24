@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:tutorials/component/cache/token_caches.dart';
 import 'package:tutorials/component/http/cancel_requests.dart';
 import 'package:tutorials/component/http/http_byte_result.dart';
 import 'package:tutorials/component/http/http_origin_result.dart';
@@ -203,7 +204,7 @@ class HttpRequests {
     HttpResult result = HttpResult();
     try {
       path = rebuildUrl(path);
-      final token = await SharedPreferenceHelper.get(SpConstant.token_access_key,'');
+      String token = await TokenCaches.getAccessToken();
       Logs.info('_doBaseRequest path = ${path}');
       Logs.info('_doBaseRequest parameters = ${parameters}');
       Logs.info('_doBaseRequest data = ${data}');
