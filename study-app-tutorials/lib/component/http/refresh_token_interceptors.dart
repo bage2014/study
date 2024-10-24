@@ -1,3 +1,4 @@
+import 'package:tutorials/component/cache/token_caches.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/http/http_requests.dart';
 import 'package:tutorials/constant/error_code_constant.dart';
@@ -21,6 +22,11 @@ class RefreshTokenInterceptors implements InterceptorsWrapper {
       LoginRequestResult result = await LoginRequests.visitorLogin(LoginRequestParam());
       if (result.common.code == ErrorCodeConstant.success) {
         UserCaches.cacheUser(User.from(result));
+        String token = await TokenCaches.getAccessToken();
+
+        var requestOptions = err?.requestOptions;
+        requestOptions?.headers?.remove("Authorization");
+        requestOptions?.headers?.putIfAbsent("Authorization", ()=>"Bearer ${token}");
         handler.resolve(await HttpRequests.retry(
             err?.requestOptions ?? RequestOptions(path: '')));
       }
