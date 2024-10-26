@@ -212,6 +212,7 @@
       <module>study-spring-boot-jasypt</module>
       <module>study-tess4j</module>
     <module>study-podam</module>
+      <module>study-spring-boot3-security</module>
 
   </modules>
 </project>
