@@ -1,14 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/dialog/dialogs.dart';
-import 'package:tutorials/component/event/event_bus.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/model/user.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:tutorials/view/home/locale_update_event.dart';
 
 class HomeDrawer extends StatefulWidget {
   @override
@@ -26,12 +24,6 @@ class _HomeDrawer extends State<HomeDrawer> {
   @override
   void initState() {
     super.initState();
-    EventBus.consume<LocaleUpdateEvent>((event) {
-      Logs.info('event = ${event.toString()}');
-      setState(() {
-
-      });
-    });
   }
 
   @override

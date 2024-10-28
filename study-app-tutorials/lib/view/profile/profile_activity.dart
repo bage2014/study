@@ -5,7 +5,6 @@ import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/model/profile/profile_activity_request.dart';
 import 'package:tutorials/request/origin/profile_activity_result.dart';
 import 'package:tutorials/request/profile_activity_request.dart';
-import 'package:tutorials/utils/log_utils.dart';
 
 class ProfileActivity extends StatefulWidget {
   const ProfileActivity({Key? key}) : super(key: key);
@@ -39,7 +38,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
 
   Future<Null> _onRefresh() async {
     showLoading();
-    ProfileActivityRequest requestParam = new ProfileActivityRequest();
+    ProfileActivityRequest requestParam = ProfileActivityRequest();
     ProfileActivityRequests.query(requestParam).then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
       hideLoading();
@@ -100,7 +99,7 @@ class _ProfileActivityState extends State<ProfileActivity> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    _profileInfo?.name ?? '未登录',
+                                    ' ${_profileInfo?.name ?? '未登录'}',
                                     style: const TextStyle(
                                       fontSize: 24,
                                       color: Colors.black,

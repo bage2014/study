@@ -69,8 +69,6 @@ class _AboutVersions extends State<AboutVersions> {
 
   Future<Null> _onRefresh() async {
     isLoading = true;
-    Map<String, String> param = new HashMap();
-
     AppVersionsRequests.getVersions(DefaultPageQueryRequestParam()).then((result) {
       Logs.info('getVersions result=' + (result.toString() ?? ""));
       hideLoading();
