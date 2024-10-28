@@ -26,9 +26,9 @@ class _AboutAuthor extends State<AboutAuthor>
     authorInfo.iconUrl = "https://avatars.githubusercontent.com/u/18094768?v=4";
     authorInfo.homePageUrl = "https://github.com/bage2014";
     authorInfo.firstName = "陆";
-    authorInfo.lastName = "瑞华";
+    authorInfo.lastName = "八哥";
     authorInfo.email = "893542907@qq.com";
-    authorInfo.description = "上海某互联网，Java 研发工程师，5年研发服务端经验";
+    authorInfo.description = "上海Java 服务端研发";
     isLoading = false;
   }
 

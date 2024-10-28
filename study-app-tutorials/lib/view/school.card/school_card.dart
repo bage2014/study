@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorials/component/image.crop/image_cropper.dart';
 import 'package:tutorials/component/log/logs.dart';
+import 'package:tutorials/component/toast/Toasts.dart';
 import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/request/file_upload_request.dart';
@@ -89,7 +90,7 @@ class _SchoolCardState extends State<SchoolCard> {
         ),
       )),
       floatingActionButton: FloatingActionButton(
-        onPressed: _insertSchoolRecord,
+        onPressed: _shareSchoolRecord,
         tooltip: '+',
         child: const Icon(Icons.share),
       ),
@@ -118,6 +119,9 @@ class _SchoolCardState extends State<SchoolCard> {
   }
 
 
+  Future<void> _shareSchoolRecord() async {
+    Toasts.show('to be continue');
+  }
   Future<void> _insertSchoolRecord() async {
     AppUtils.toPage(context,RouteNameConstant.route_name_school_card_add);
   }

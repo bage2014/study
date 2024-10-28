@@ -1,4 +1,5 @@
 import 'package:tutorials/component/cache/user_caches.dart';
+import 'package:tutorials/component/event/event_bus.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/utils/app_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:tutorials/constant/route_constant.dart';
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/view/home/home_drawer.dart';
 import 'package:tutorials/view/home/menu_item.dart';
+
+import 'locale_update_event.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -23,6 +26,10 @@ class _ScaffoldRouteState extends State<Home> {
     // 初始化数据
     _retrieveIcons();
     super.initState();
+    EventBus.consume<LocaleUpdateEvent>((event) {
+      Logs.info('event = ${event.toString()}');
+      _retrieveIcons();
+    });
   }
 
   @override
@@ -82,6 +89,7 @@ class _ScaffoldRouteState extends State<Home> {
 
   //模拟异步获取数据
   void _retrieveIcons() {
+    menuItems.clear();
     Future.delayed(const Duration(milliseconds: 200)).then((e) {
       setState(() {
         menuItems.addAll([
@@ -113,5 +121,4 @@ class _ScaffoldRouteState extends State<Home> {
     return true;
   }
 
-  void _onAdd() {}
 }
