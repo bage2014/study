@@ -1,8 +1,8 @@
 class SchoolCardQueryResult {
   int? code;
   int? originCode;
-  Null? msg;
-  Null? originMsg;
+  String? msg;
+  String? originMsg;
   List<Data>? data;
   Pagination? pagination;
 
@@ -48,9 +48,11 @@ class SchoolCardQueryResult {
 
 class Data {
   int? id;
-  Null? userId;
-  String? name;
-  String? subject;
+  int? userId;
+  int? schoolId;
+  String? schoolName;
+  int? subjectId;
+  String? subjectName;
   String? timeStart;
   String? timeEnd;
   String? imageUrl;
@@ -58,8 +60,10 @@ class Data {
   Data(
       {this.id,
         this.userId,
-        this.name,
-        this.subject,
+        this.schoolId,
+        this.schoolName,
+        this.subjectId,
+        this.subjectName,
         this.timeStart,
         this.timeEnd,
         this.imageUrl});
@@ -67,8 +71,10 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['userId'];
-    name = json['name'];
-    subject = json['subject'];
+    schoolId = json['schoolId'];
+    schoolName = json['schoolName'];
+    subjectId = json['subjectId'];
+    subjectName = json['subjectName'];
     timeStart = json['timeStart'];
     timeEnd = json['timeEnd'];
     imageUrl = json['imageUrl'];
@@ -78,8 +84,10 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['userId'] = this.userId;
-    data['name'] = this.name;
-    data['subject'] = this.subject;
+    data['schoolId'] = this.schoolId;
+    data['schoolName'] = this.schoolName;
+    data['subjectId'] = this.subjectId;
+    data['subjectName'] = this.subjectName;
     data['timeStart'] = this.timeStart;
     data['timeEnd'] = this.timeEnd;
     data['imageUrl'] = this.imageUrl;

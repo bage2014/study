@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorials/component/cache/user_caches.dart';
 import 'package:tutorials/component/image.crop/image_cropper.dart';
 import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/component/picker/image_picker.dart';
@@ -38,9 +39,11 @@ class _SchoolCardAddState extends State<SchoolCardAdd> {
     super.initState();
     arg = Data();
     arg?.id=0;
+    arg?.userId= UserCaches.getUserId();
     arg?.timeStart='2010';
     arg?.timeEnd='2014';
-    arg?.name='待选择';
+    arg?.subjectName='待选择';
+    arg?.schoolName='待选择';
   }
   @override
   Widget build(BuildContext context) {
@@ -120,13 +123,14 @@ class _SchoolCardAddState extends State<SchoolCardAdd> {
                       Logs.info("selectSchool ${selectSchool}");
                       if (selectSchool != null) {
                         setState(() {
-                          arg?.name = selectSchool.name;
+                          arg?.schoolId = selectSchool.id;
+                          arg?.schoolName = selectSchool.name;
                           arg?.imageUrl = selectSchool.imageUrl;
                         });
                       }
                     },
                     child: Text(
-                      arg?.name ?? '',
+                      arg?.schoolName ?? '',
                       style: const TextStyle(color: Colors.blue, fontSize: 20),
                     ),
                   ),
@@ -142,12 +146,13 @@ class _SchoolCardAddState extends State<SchoolCardAdd> {
                       Logs.info("selectSubject ${selectSubject?.name}");
                       if (selectSubject != null) {
                         setState(() {
-                          arg?.subject = selectSubject.name;
+                          arg?.subjectId = selectSubject.id;
+                          arg?.subjectName = selectSubject.name;
                         });
                       }
                     },
                     child: Text(
-                      arg?.subject ?? "计算机科学与技术",
+                      arg?.subjectName ?? "计算机科学与技术",
                       style: const TextStyle(color: Colors.blue, fontSize: 14),
                     ),
                   ),

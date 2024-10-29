@@ -74,8 +74,8 @@ class _SchoolCardState extends State<SchoolCard> {
                             onTap: () {},
                             child: SchoolCardBasic(
                               title: title,
-                              subTitle: item?.name??'',
-                              desc: item?.subject??'',
+                              subTitle: item?.schoolName??'',
+                              desc: item?.subjectName??'',
                               url: item?.imageUrl??'',
                               onTap: () {
                                 AppUtils.toPage(context,
@@ -89,11 +89,12 @@ class _SchoolCardState extends State<SchoolCard> {
                     )),
         ),
       )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _shareSchoolRecord,
-        tooltip: '+',
-        child: const Icon(Icons.share),
-      ),
+      // todo bage 支持分享功能
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _shareSchoolRecord,
+      //   tooltip: '+',
+      //   child: const Icon(Icons.share),
+      // ),
     );
   }
 

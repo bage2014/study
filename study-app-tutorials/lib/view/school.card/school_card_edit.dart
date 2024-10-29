@@ -110,14 +110,14 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                       Logs.info("selectSchool ${selectSchool}");
                       if (selectSchool != null) {
                         setState(() {
-                          arg?.id = selectSchool.id;
-                          arg?.name = selectSchool.name;
+                          arg?.schoolId = selectSchool.id;
+                          arg?.schoolName = selectSchool.name;
                           arg?.imageUrl = selectSchool.imageUrl;
                         });
                       }
                     },
                     child: Text(
-                      arg?.name ?? '',
+                      arg?.schoolName ?? '',
                       style: const TextStyle(color: Colors.blue, fontSize: 20),
                     ),
                   ),
@@ -133,12 +133,13 @@ class _SchoolCardEditState extends State<SchoolCardEdit> {
                       Logs.info("selectSubject ${selectSubject?.name}");
                       if (selectSubject != null) {
                         setState(() {
-                          arg?.subject = selectSubject.name;
+                          arg?.subjectId = selectSubject.id;
+                          arg?.subjectName = selectSubject.name;
                         });
                       }
                     },
                     child: Text(
-                      arg?.subject ?? "计算机科学预计技术",
+                      arg?.subjectName ?? "计算机科学预计技术",
                       style: const TextStyle(color: Colors.blue, fontSize: 14),
                     ),
                   ),
