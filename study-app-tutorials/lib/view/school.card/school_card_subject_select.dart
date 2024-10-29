@@ -126,7 +126,7 @@ class _SchoolCardSubjectSelectState extends State<SchoolCardSubjectSelect> {
     showLoading();
     SubjectPageQueryRequestParam param = SubjectPageQueryRequestParam();
     param.keyword = keyword;
-    param.schoolId = arg?.id;
+    param.schoolId = arg?.schoolId;
     SchoolSubjectSelectRequests.querySubject(param).then((result) {
       Logs.info('_onRefresh responseBody=' + (result?.toString() ?? ""));
       hideLoading();

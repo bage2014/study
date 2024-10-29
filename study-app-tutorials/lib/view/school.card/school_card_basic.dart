@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:tutorials/component/log/logs.dart';
 import 'package:tutorials/locale/translations.dart';
 
 /// An example of the elevated card type.
