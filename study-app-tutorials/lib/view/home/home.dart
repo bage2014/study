@@ -98,10 +98,10 @@ class _ScaffoldRouteState extends State<Home> {
               Translations.textOf(context, "home.menu.school.card"),
               RouteNameConstant.route_name_school_card),
 
-          MenuItem(
-              Icons.card_travel_outlined,
-              Translations.textOf(context, "home.menu.name.card"),
-              RouteNameConstant.route_name_name_card),
+          // MenuItem(
+          //     Icons.card_travel_outlined,
+          //     Translations.textOf(context, "home.menu.name.card"),
+          //     RouteNameConstant.route_name_name_card),
 
           MenuItem(Icons.tv, Translations.textOf(context, "home.menu.tv"),
               RouteNameConstant.route_name_tv_list),
