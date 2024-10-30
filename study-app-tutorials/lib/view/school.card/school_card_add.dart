@@ -35,7 +35,6 @@ class _SchoolCardAddState extends State<SchoolCardAdd> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     arg = Data();
     arg?.id=0;
