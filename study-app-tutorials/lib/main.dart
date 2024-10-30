@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tutorials/component/permission/permission_helper.dart';
@@ -10,7 +11,12 @@ import 'package:tutorials/startup/application.dart';
 import 'package:tutorials/component/log/logs.dart';
 
 void main() {
+  //透明沉浸式状态栏
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // transparent status bar
+  ));
   runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
