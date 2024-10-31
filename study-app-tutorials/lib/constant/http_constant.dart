@@ -30,6 +30,8 @@ class HttpConstant{
   static String url_school_card_subject_select = "/ignore/api/school/meta/data/subject/query/page";
   static String url_school_card_save = "/ignore/api/school/card/save";
 
+  static String url_about_author = "/ignore/api/author/query";
+
 }
 
 

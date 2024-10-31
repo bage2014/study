@@ -1,14 +1,14 @@
 import 'package:tutorials/locale/translations.dart';
 import 'package:tutorials/model/about_author_tab.dart';
-import 'package:tutorials/request/model/AuthorInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorials/request/origin/author_query_result.dart';
 
 class AboutAuthorTabView extends StatelessWidget {
   const AboutAuthorTabView({Key? key, required this.tab, required this.authorInfo}) : super(key: key);
 
   final TabTitle tab;
-  final AuthorInfo authorInfo;
+  final Data authorInfo;
   static const String key_basic = 'basic';
   static const String key_activity = 'activity';
 
@@ -33,7 +33,7 @@ class AboutAuthorTabView extends StatelessWidget {
 }
 
 class _AboutAuthorTabViewBasic extends StatelessWidget {
-  final AuthorInfo authorInfo;
+  final Data authorInfo;
 
   const _AboutAuthorTabViewBasic({Key? key,required this.authorInfo}) : super(key: key);
 
