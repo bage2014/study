@@ -557,6 +557,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -872,6 +873,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -1800,8 +1802,6 @@ http://localhost:9104/metrics
 
 https://hub.docker.com/r/clickhouse/clickhouse-server
 
-
-
 Docker Pull Command
 
 ```
@@ -1812,6 +1812,11 @@ Run
 
 ```
 docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickhouse/clickhouse-server
+```
+
+Visit
+
+```
 
 ```
 
