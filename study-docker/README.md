@@ -1811,7 +1811,7 @@ docker pull clickhouse/clickhouse-server
 Run 
 
 ```
-docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickhouse/clickhouse-server
+docker run -d --name bage-clickhouse-server --ulimit nofile=262144:262144 clickhouse/clickhouse-server
 ```
 
 Visit
