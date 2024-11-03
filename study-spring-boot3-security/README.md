@@ -7,6 +7,11 @@
 https://docs.spring.io/spring-boot/how-to/security.html
 https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
 
+
+博客
+https://dzone.com/articles/secure-spring-rest-with-spring-security-and-oauth2
+
+
 ## 快速开始
 
 user/user 登陆
