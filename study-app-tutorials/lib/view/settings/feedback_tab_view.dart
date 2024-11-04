@@ -104,7 +104,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                           onTap: () {},
                           child: Card(
                             clipBehavior: Clip.antiAlias,
-                            elevation: 2,
+                            elevation: 1,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
                             margin: const EdgeInsets.symmetric(
@@ -135,7 +135,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                     flex: 1,
                                     child: Container(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 5, vertical: 10),
+                                            horizontal: 5, vertical: 5),
                                         color: Colors.white,
                                         child: Column(
                                           children: <Widget>[
@@ -188,7 +188,7 @@ class _FeedbackTabState extends State<_FeedbackTabView> {
                                               ],
                                             ),
                                             const SizedBox(
-                                              height: 8,
+                                              height: 4,
                                             ),
                                             Row(
                                               children: <Widget>[
