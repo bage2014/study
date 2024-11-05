@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
  * AfterThrowing ing
  * ---------------->>>>>>>>>>>>>>------------
  * - Around - Before - After - AfterThrowing
+ * 执行顺序，先 Around，然后 Before， 在 After， 最后 AfterReturning｜AfterThrowing
  *
  */
 @Aspect

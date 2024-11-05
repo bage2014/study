@@ -1,6 +1,5 @@
-package com.bage.study.springboot.aop;
+package com.bage.study.springboot.aop.order;
 
-import com.bage.study.springboot.aop.order.HelloAopOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
