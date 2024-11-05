@@ -275,11 +275,23 @@ https://mp.weixin.qq.com/s/Un8pyET2XDXpDY4FnRbwXw
 
 https://www.kancloud.cn/imnotdown1019/java_core_full/2177474
 
+https://xie.infoq.cn/article/e3b46dc2c0125ab812f9aa977
+
 三个缓存 
 
 ![](https://mmbiz.qpic.cn/sz_mmbiz_png/GvtDGKK4uYkMCL2KK3DtAry0FgPGAV5zUtuzhdmu4ML4EKric1pBuLdjmM7Fus6rxnKRrJjicJnFzge53FicxwpFQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
 
 
+
+另外一个说明：
+
+A《-》B 相互依赖情况下：
+
+**一级缓存**，A 实例化，需要B，此时去初始化B，放入一级缓存；然后赋值属性给到A；能解决A-》B问题，但是反过来还没有处理好；
+
+**二级缓存**，A 实例化，放入二级缓存；后续填充属性，发现需要B，此时去初始化B，放入一级缓存；然后赋值属性给到A；能解决A-》B问题；同时，在使用到B过程中，发现依赖A，需要填充A属性，此时，去二级缓存中拿A实例，能解决B-》A问题
+
+**三级缓存**，为解决AOP代理问题
 
 
 
