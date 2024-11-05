@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -26,6 +27,16 @@ public class FlowCopyBeanConfig {
     @Bean
     public FlowCopyLogic flowCopyLogic() {
         return new FlowCopyLogic();
+    }
+    @Bean
+    public FlowCopyConfigService flowCopyConfigService() {
+        return new FlowCopyConfigService(){
+
+            @Override
+            public List<FlowCopyConfig> getFlowCopyConfigList() {
+                return null;
+            }
+        };
     }
 
 
