@@ -214,6 +214,7 @@
     <module>study-podam</module>
       <module>study-spring-boot3-security</module>
     <module>study-clickhouse</module>
+      <module>study-bytebuddy</module>
 
   </modules>
 </project>
