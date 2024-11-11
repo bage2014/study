@@ -5,6 +5,7 @@
 
 官网文档
 https://gitee.com/aizuda/snail-job
+https://snailjob.opensnail.com/docs/guide/service_deployment.html
 
 ## 快速开始
 
