@@ -215,6 +215,7 @@
       <module>study-spring-boot3-security</module>
     <module>study-clickhouse</module>
       <module>study-bytebuddy</module>
+      <module>study-snailjob</module>
 
   </modules>
 </project>
