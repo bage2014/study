@@ -13,6 +13,11 @@ package com.bage.study.java.pattern.chain;
  *
  * https://juejin.cn/post/7122384707697770510?searchId=20241107225601ACF3D170EDFED2D862D1
  *
+ * https://github.com/fuzhengwei/CodeDesignTutorials
+ *
+ * https://github.com/fuzhengwei/itstack-demo-design
+ *
+ * https://github.com/fuzhengwei
  *
  */
 public class HelloChain {
