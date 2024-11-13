@@ -14,6 +14,7 @@ public class OrderRefundFlowStrategy implements OrderFlowStrategy {
                 .setNext(new OrderStepProductRefundHandler())
                 .setNext(new OrderStepNotifyChannelHandler())
                 .setNext(new OrderStepOfflineLogHandler())
+                .setNext(new OrderStepRefundEventHandler())
         ;
         start.execute("hello param");
     }
