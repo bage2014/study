@@ -3,7 +3,7 @@ package com.bage.study.best.practice.biz.steps;
 /**
  * 抽象的订单步骤处理过程
  */
-public abstract class AbstractOrderStepHandler implements OrderStepHandler{
+public abstract class AbstractOrderStepHandler implements OrderStepHandler<Object>{
     /**
      * 配置
      */
@@ -29,6 +29,11 @@ public abstract class AbstractOrderStepHandler implements OrderStepHandler{
         return result;
     }
 
+    @Override
+    public Boolean match(Object context) {
+        return Boolean.TRUE;
+    }
+
     public Object getConfig() {
         return config;
     }
@@ -37,7 +42,11 @@ public abstract class AbstractOrderStepHandler implements OrderStepHandler{
         this.config = config;
     }
 
-    public AbstractOrderStepHandler setNext(AbstractOrderStepHandler next) {
+    public void setNext(AbstractOrderStepHandler next) {
+        this.next = next;
+    }
+
+    public AbstractOrderStepHandler next(AbstractOrderStepHandler next) {
         this.next = next;
         return next;
     }
