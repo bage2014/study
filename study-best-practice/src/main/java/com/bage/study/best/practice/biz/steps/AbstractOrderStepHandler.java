@@ -1,9 +1,11 @@
 package com.bage.study.best.practice.biz.steps;
 
+import com.bage.study.best.practice.biz.model.BaseContext;
+
 /**
  * 抽象的订单步骤处理过程
  */
-public abstract class AbstractOrderStepHandler implements OrderStepHandler<Object>{
+public abstract class AbstractOrderStepHandler<T extends BaseContext> implements OrderStepHandler<T>{
     /**
      * 配置
      */
@@ -18,11 +20,18 @@ public abstract class AbstractOrderStepHandler implements OrderStepHandler<Objec
      * @param context
      * @return
      */
-    protected abstract Boolean process(Object context);
+    protected abstract Boolean process(T context);
 
     @Override
-    public Boolean execute(Object context){
+    public Boolean execute(T context){
         boolean result = process(context);
+        if(result){
+            context.getTransactionStepScopeValueList()
+                    .get()
+                    .add(()->{
+                        transactionStep(context);
+                    });
+        }
         if(result && next != null){
             next.execute(context);
         }
@@ -30,7 +39,7 @@ public abstract class AbstractOrderStepHandler implements OrderStepHandler<Objec
     }
 
     @Override
-    public Boolean match(Object context) {
+    public Boolean match(T context) {
         return Boolean.TRUE;
     }
 
@@ -38,7 +47,7 @@ public abstract class AbstractOrderStepHandler implements OrderStepHandler<Objec
         return config;
     }
 
-    public void setConfig(String config) {
+    public void setConfig(Object config) {
         this.config = config;
     }
 
@@ -53,5 +62,9 @@ public abstract class AbstractOrderStepHandler implements OrderStepHandler<Objec
 
     public AbstractOrderStepHandler getNext() {
         return next;
+    }
+
+    public void submitTransaction() {
+
     }
 }

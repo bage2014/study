@@ -1,5 +1,6 @@
 package com.bage.study.best.practice.biz.flow.impl;
 
+import com.bage.study.best.practice.biz.model.BaseContext;
 import com.bage.study.best.practice.biz.steps.order.place.OrderStepOrderAddHandler;
 import com.bage.study.best.practice.biz.steps.order.place.OrderStepProductAddHandler;
 import com.bage.study.best.practice.biz.steps.order.place.OrderStepSupplierPlaceHandler;
@@ -12,6 +13,6 @@ public class OrderPlaceFlowStrategy extends OrderPlaceBaseFlowStrategy {
                 .next(new OrderStepSupplierPlaceHandler())
                 .next(new OrderStepProductAddHandler())
         ;
-        start.execute("mock");
+        start.execute(new BaseContext());
     }
 }
