@@ -5,7 +5,14 @@ package com.bage.study.best.practice.biz.steps;
  */
 public interface OrderStepHandler<T> {
 
-    Boolean execute(T context);
     Boolean match(T context);
+
+
+    Boolean execute(T context);
+
+    default int transactionStep(T context){
+        return 0;
+    }
+
 
 }
