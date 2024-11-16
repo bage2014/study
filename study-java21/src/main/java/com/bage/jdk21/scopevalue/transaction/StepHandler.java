@@ -17,17 +17,13 @@ public abstract class StepHandler<T extends BaseContext> {
      * @return
      */
     protected abstract Boolean process(T context);
-    protected abstract Integer transaction(T context);
+    public Boolean addTransactionStep(BaseContext context, Runnable runnable){
+        context.getTransactionScopeValueList().get().add(runnable);
+        return true;
+    }
 
     public Boolean execute(T context){
         boolean result = process(context);
-        if(result){
-            context.getTransactionScopeValueList()
-                    .get()
-                    .add(()->{
-                        transaction(context);
-                    });
-        }
         if(result && next != null){
             next.execute(context);
         }
