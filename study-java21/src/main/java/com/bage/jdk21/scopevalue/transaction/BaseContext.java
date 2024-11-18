@@ -3,13 +3,8 @@ package com.bage.jdk21.scopevalue.transaction;
 import java.util.List;
 
 
-public class BaseContext {
-    private final ScopedValue<List<Runnable>> transactionScopeValueList = ScopedValue.newInstance();
+public class BaseContext extends BaseDbContext{
     private Object param;
-
-    public ScopedValue<List<Runnable>> getTransactionScopeValueList() {
-        return transactionScopeValueList;
-    }
 
     public Object getParam() {
         return param;
