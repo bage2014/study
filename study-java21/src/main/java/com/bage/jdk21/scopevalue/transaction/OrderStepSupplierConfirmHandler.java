@@ -7,7 +7,7 @@ public class OrderStepSupplierConfirmHandler extends StepHandler<BaseContext> {
         // 订单流程处理
         domain2Service.process();
 
-        addTransactionStep(context,()->domain2Service.process());
+        addTransactionStep(context,()->domain2Service.transaction(this.getClass().getSimpleName()));
 
         return true;
     }
