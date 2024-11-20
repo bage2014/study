@@ -15,7 +15,6 @@ public class OrderStepOrderConfirmHandler extends AbstractOrderStepHandler<Order
         return result;
     }
 
-    @Override
     public int transactionStep(OrderConfirmContext context) {
         System.out.println(this.getClass().getSimpleName() + "-db transaction");
         return 1;

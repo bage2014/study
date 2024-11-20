@@ -1,5 +1,7 @@
 package com.bage.study.best.practice.biz.steps;
 
+import java.util.List;
+
 /**
  * 抽象的订单步骤处理过程
  * 不足：
@@ -13,9 +15,9 @@ public interface OrderStepHandler<T> {
 
     Boolean execute(T context);
 
-    default int transactionStep(T context){
+    default int transactionStep(T context,Runnable runnable){
         return 0;
     }
 
-
+    int submit(T context);
 }
