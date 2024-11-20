@@ -20,6 +20,9 @@ public class OrderStepProductAddHandler extends AbstractOrderStepHandler<BaseCon
         if (result) {
             productDomainService.add(context);
         }
+        transactionStep(context, () -> {
+            System.out.println("OrderStepProductAddHandler DB operation...");
+        });
         return result;
     }
 

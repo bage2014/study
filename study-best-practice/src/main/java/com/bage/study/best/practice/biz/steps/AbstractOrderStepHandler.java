@@ -2,6 +2,8 @@ package com.bage.study.best.practice.biz.steps;
 
 import com.bage.study.best.practice.biz.model.BaseContext;
 
+import java.util.List;
+
 /**
  * 抽象的订单步骤处理过程
  */
@@ -14,7 +16,10 @@ public abstract class AbstractOrderStepHandler<T extends BaseContext> implements
      * 下一个步骤
      */
     private AbstractOrderStepHandler next;
-
+    /**
+     * 配置
+     */
+    private T context;
     /**
      * 具体的处理操作
      * @param context
@@ -24,14 +29,8 @@ public abstract class AbstractOrderStepHandler<T extends BaseContext> implements
 
     @Override
     public Boolean execute(T context){
+        setContext(context);
         boolean result = process(context);
-        if(result){
-            context.getTransactionStepScopeValueList()
-                    .get()
-                    .add(()->{
-                        transactionStep(context);
-                    });
-        }
         if(result && next != null){
             next.execute(context);
         }
@@ -64,7 +63,31 @@ public abstract class AbstractOrderStepHandler<T extends BaseContext> implements
         return next;
     }
 
-    public void submitTransaction() {
+    public T getContext() {
+        return context;
+    }
 
+    public void setContext(T context) {
+        this.context = context;
+    }
+
+    public int submit(T context) {
+        List<Runnable> runnableList = context.getTransactionStepScopeValueList()
+                .get();
+        // 提交事务
+        int result= 0;
+        if(runnableList != null && !runnableList.isEmpty()){
+            result = doSubmitDb(runnableList);
+        }
+        // 情况事务内容
+        runnableList.clear();
+        return result;
+    }
+
+    private int doSubmitDb(List<Runnable> runnableList) {
+        for (int i = 0; i < runnableList.size(); i++) {
+            runnableList.get(i).run();
+        }
+        return 1;
     }
 }

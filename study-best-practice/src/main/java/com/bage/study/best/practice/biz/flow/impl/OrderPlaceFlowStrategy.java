@@ -8,11 +8,13 @@ import com.bage.study.best.practice.biz.steps.order.place.OrderStepValidCheckHan
 
 public class OrderPlaceFlowStrategy extends OrderPlaceBaseFlowStrategy {
     public static void main(String[] args) {
+        BaseContext context = new BaseContext();
         OrderStepValidCheckHandler start = new OrderStepValidCheckHandler();
         start.next(new OrderStepOrderAddHandler())
                 .next(new OrderStepSupplierPlaceHandler())
                 .next(new OrderStepProductAddHandler())
+                .submit(context)
         ;
-        start.execute(new BaseContext());
+        start.execute(context);
     }
 }
