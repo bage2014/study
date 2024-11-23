@@ -30,6 +30,10 @@ public class SequencedCollectionTest {
         List<Integer> integerList = List.of(11, 33, 66, 8, 9, 13);
         integerList.stream().takeWhile(x -> x < 50).forEach(System.out::println);// 11 33
 
+        // dropWhile
+        List<Integer> integerList2 = List.of(11, 33, 66, 8, 9, 13);
+        integerList2.stream().dropWhile(x -> x < 50).forEach(System.out::println);// 66 8 9 13
+
 
     }
 }
