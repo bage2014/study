@@ -2,27 +2,22 @@ package com.bage.jdk21.npe;
 
 public class NpeTests {
 
-    private String hhh;
-    private NpeTests hello = new NpeTests();
     public static void main(String[] args) {
-        NpeTests hhh = new NpeTests();
-        int length = hhh.getHello().hhh.length();
+        User user = new User();
+        int length = user.getName().length();
         System.out.println(length);
     }
 
-    public String getHhh() {
-        return hhh;
-    }
 
-    public void setHhh(String hhh) {
-        this.hhh = hhh;
-    }
+    private static class User {
+        private String name;
 
-    public NpeTests getHello() {
-        return hello;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public void setHello(NpeTests hello) {
-        this.hello = hello;
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }
