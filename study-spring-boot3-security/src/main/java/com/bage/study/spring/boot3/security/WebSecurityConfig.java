@@ -61,25 +61,25 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public AuthorityAuthorizationManager<RequestAuthorizationContext>
-//    guestAuthorityAuthorizationManager() {
-//        AuthorityAuthorizationManager<RequestAuthorizationContext>
-//                objectAuthorityAuthorizationManager =
-//                AuthorityAuthorizationManager.hasAuthority("GUEST");
-//        objectAuthorityAuthorizationManager.setRoleHierarchy(roleHierarchy());
-//        return objectAuthorityAuthorizationManager;
-//    }
+    @Bean
+    public AuthorityAuthorizationManager<RequestAuthorizationContext>
+    guestAuthorityAuthorizationManager() {
+        AuthorityAuthorizationManager<RequestAuthorizationContext>
+                objectAuthorityAuthorizationManager =
+                AuthorityAuthorizationManager.hasAuthority("GUEST");
+        objectAuthorityAuthorizationManager.setRoleHierarchy(roleHierarchy());
+        return objectAuthorityAuthorizationManager;
+    }
 
-//    public SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
-//        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
-//        defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
-//        return defaultWebSecurityExpressionHandler;
-//    }
-//    @Bean
-//    public RoleHierarchy roleHierarchy() {
-//        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-//        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_STAFF > ROLE_USER > ROLE_GUEST");
-//        return hierarchy;
-//    }
+    public SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
+        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+        defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
+        return defaultWebSecurityExpressionHandler;
+    }
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_STAFF > ROLE_USER > ROLE_GUEST");
+        return hierarchy;
+    }
 }
