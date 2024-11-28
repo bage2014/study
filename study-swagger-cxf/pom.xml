@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cxf.version>3.1.9</cxf.version>
 		<jackson.version>1.9.13</jackson.version>
-		<spring.version>4.1.9.RELEASE</spring.version>
+		<spring.version>6.0.0</spring.version>
 	</properties>
 
 	<dependencies>
