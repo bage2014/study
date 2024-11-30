@@ -12,6 +12,9 @@ public class OrderStepSupplierConfirmHandler extends AbstractOrderStepHandler<Or
         // 订单流程处理
         boolean result = "mock".equals(context) || (new Random().nextInt(100)) > 5;
         System.out.println(this.getClass().getSimpleName() + "-executed-" + result);
+
+
+
         return result;
     }
 

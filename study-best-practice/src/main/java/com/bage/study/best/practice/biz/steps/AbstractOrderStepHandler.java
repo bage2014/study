@@ -20,6 +20,7 @@ public abstract class AbstractOrderStepHandler<T extends BaseContext> implements
      * 配置
      */
     private T context;
+    private ThreadLocal<List<Runnable>> dbOperationList = new ThreadLocal<>();
     /**
      * 具体的处理操作
      * @param context
@@ -71,9 +72,15 @@ public abstract class AbstractOrderStepHandler<T extends BaseContext> implements
         this.context = context;
     }
 
-    public int submit(T context) {
-        List<Runnable> runnableList = context.getTransactionStepScopeValueList()
-                .get();
+    @Override
+    public int addTransactionStep(Runnable runnable) {
+        List<Runnable> runnableList = dbOperationList.get();
+        runnableList.add(runnable);
+        return 0;
+    }
+
+    public int submit() {
+        List<Runnable> runnableList = dbOperationList.get();
         // 提交事务
         int result= 0;
         if(runnableList != null && !runnableList.isEmpty()){

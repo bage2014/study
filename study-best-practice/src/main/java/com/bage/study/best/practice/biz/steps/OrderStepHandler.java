@@ -15,9 +15,7 @@ public interface OrderStepHandler<T> {
 
     Boolean execute(T context);
 
-    default int transactionStep(T context,Runnable runnable){
-        return 0;
-    }
+    int addTransactionStep(Runnable runnable);
 
-    int submit(T context);
+    int submit();
 }
