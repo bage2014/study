@@ -13,7 +13,7 @@ public class OrderPlaceFlowStrategy extends OrderPlaceBaseFlowStrategy {
         start.next(new OrderStepOrderAddHandler())
                 .next(new OrderStepSupplierPlaceHandler())
                 .next(new OrderStepProductAddHandler())
-                .submit(context)
+                .submit()
         ;
         start.execute(context);
     }

@@ -12,15 +12,15 @@ public class OrderConfirmFlowStrategy implements OrderFlowStrategy<Object> {
 
     public static void main(String[] args) {
         OrderConfirmContext context = new OrderConfirmContext();
-        ScopedValue.where(context.getTransactionStepScopeValueList(), new ArrayList<>()).run(() -> {
-            OrderStepOrderConfirmHandler start = new OrderStepOrderConfirmHandler();
-            start.next(new OrderStepSupplierConfirmHandler())
-            ;
-            start.execute(context);
-        });
-        List<Runnable> list = context.getTransactionStepScopeValueList().get();
-        for (Runnable runnable : list) {
-            runnable.run();
-        }
+//        ScopedValue.where(context.getTransactionStepScopeValueList(), new ArrayList<>()).run(() -> {
+//            OrderStepOrderConfirmHandler start = new OrderStepOrderConfirmHandler();
+//            start.next(new OrderStepSupplierConfirmHandler())
+//            ;
+//            start.execute(context);
+//        });
+//        List<Runnable> list = context.getTransactionStepScopeValueList().get();
+//        for (Runnable runnable : list) {
+//            runnable.run();
+//        }
     }
 }
