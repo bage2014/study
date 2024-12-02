@@ -296,7 +296,9 @@ Major GC ，Old GC
 
 Full GC，清理整个堆空间，包括年轻代和老年代，理解
 
+## 垃圾回收 
 
+https://cloud.tencent.com/developer/article/2472162
 
 ## 回收算法
 
