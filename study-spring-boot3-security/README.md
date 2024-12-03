@@ -6,7 +6,8 @@
 官网文档
 https://docs.spring.io/spring-boot/how-to/security.html
 https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
-
+官方样例【重点看看】
+https://github.com/spring-projects/spring-security-samples/
 
 博客
 https://dzone.com/articles/secure-spring-rest-with-spring-security-and-oauth2
