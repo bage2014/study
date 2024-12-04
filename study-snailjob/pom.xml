@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <spring.boot.base.version>3.2.5</spring.boot.base.version>
+        <snail-job.version>1.2.0</snail-job.version>
     </properties>
 
     <dependencies>
