@@ -216,6 +216,7 @@
     <module>study-clickhouse</module>
       <module>study-bytebuddy</module>
       <module>study-snailjob</module>
+      <module>study-canal</module>
 
   </modules>
 </project>
