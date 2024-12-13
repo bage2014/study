@@ -62,41 +62,45 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        AuthorityAuthorizationManager<RequestAuthorizationContext> admin = AuthorityAuthorizationManager.hasRole("ADMIN");
+        admin.setRoleHierarchy(roleHierarchy());
+
+
+        AuthorityAuthorizationManager<RequestAuthorizationContext> user = AuthorityAuthorizationManager.hasRole("USER");
+        user.setRoleHierarchy(roleHierarchy());
+
         http.authorizeHttpRequests(authorize -> authorize
 
                         .requestMatchers("/api/admin/**")
-                        .access(AuthorityAuthorizationManager.hasRole("ADMIN"))
+                        .access(admin)
 
                         .requestMatchers("/api/user/**")
-                        .access(AuthorityAuthorizationManager.hasRole("USER"))
+                        .access(user)
 
                         .requestMatchers("/api/anonymous/**")
                         .anonymous()
 
                         .anyRequest().authenticated()
+
                 )
-//                .expressionHandler(webExpressionHandler())
+
                 .formLogin(withDefaults())
                 .httpBasic(withDefaults())
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+                ;
         return http.build();
     }
 
-    @Bean
-    public AuthorityAuthorizationManager<RequestAuthorizationContext>
-    guestAuthorityAuthorizationManager() {
-        AuthorityAuthorizationManager<RequestAuthorizationContext>
-                objectAuthorityAuthorizationManager =
-                AuthorityAuthorizationManager.hasAuthority("GUEST");
-        objectAuthorityAuthorizationManager.setRoleHierarchy(roleHierarchy());
-        return objectAuthorityAuthorizationManager;
-    }
+//    @Bean
+//    public AuthorityAuthorizationManager<RequestAuthorizationContext>
+//    guestAuthorityAuthorizationManager() {
+//        AuthorityAuthorizationManager<RequestAuthorizationContext>
+//                objectAuthorityAuthorizationManager =
+//                AuthorityAuthorizationManager.hasAuthority("GUEST");
+//        objectAuthorityAuthorizationManager.setRoleHierarchy(roleHierarchy());
+//        return objectAuthorityAuthorizationManager;
+//    }
 
-    public SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
-        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
-        defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
-        return defaultWebSecurityExpressionHandler;
-    }
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
