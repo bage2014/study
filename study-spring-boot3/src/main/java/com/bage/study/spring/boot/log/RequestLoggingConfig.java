@@ -1,4 +1,4 @@
-package com.bage.study.spring.boot;
+package com.bage.study.spring.boot.log;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
