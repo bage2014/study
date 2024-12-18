@@ -1,11 +1,11 @@
 package com.bage.study.spring.boot;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class HelloController {
@@ -16,9 +16,11 @@ public class HelloController {
     }
 
     @GetMapping("/wrapper")
-    public String wrapper(HttpServletRequest request, HttpServletResponse response) {
-        return String.format("Hello %s!", request.getAttribute("X-Signature-request")) +
-                String.format("Hello %s!", response.getHeaders("X-Signature"))
+    public Object wrapper(HttpServletRequest request, HttpServletResponse response) {
+        String hhh = String.format("Hello request = %s!", request.getAttribute("X-Signature-request")) +
+                String.format("Hello response = %s!", response.getHeaders("X-Signature"))
                 ;
+        System.out.println(hhh);
+        return hhh;
     }
 }
