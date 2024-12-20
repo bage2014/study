@@ -2151,6 +2151,36 @@ http://localhost:3100/metrics
 
 
 
+### 安装 KKFileViewer
+
+参考链接 
+
+https://kkfileview.keking.cn/zh-cn/docs/production.html
+
+Docker Pull Command
+
+```
+# 网络环境方便访问docker中央仓库
+docker pull keking/kkfileview:4.1.0
+
+# 网络环境不方便访问docker中央仓库
+wget https://kkfileview.keking.cn/kkFileView-4.1.0-docker.tar
+docker load -i kkFileView-4.1.0-docker.tar
+```
+
+Run 
+
+```
+docker run -it -p 8012:8012 keking/kkfileview:4.1.0
+
+```
+
+Visit
+
+```
+http://127.0.0.1:8012
+```
+
 
 
 ### 网络连接 ###
