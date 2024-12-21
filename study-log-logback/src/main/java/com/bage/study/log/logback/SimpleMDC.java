@@ -13,9 +13,15 @@ import ch.qos.logback.core.ConsoleAppender;
  * https://juejin.cn/post/7348785955510370358
  *
  *
+ *
  */
 public class SimpleMDC {
   static public void main(String[] args) throws Exception {
+
+
+    // MDC（Mapped Diagnostic Context） ：映射诊断上下文，
+    // 是 Logback框架中一个特征。（Logback是 SpringBoot 的默认框架）
+
 
     // You can put values in the MDC at any time. Before anything else
     // we put the first name
