@@ -248,7 +248,7 @@ Start a mysql server instance
     docker exec -it bage-mysql /bin/bash
 在容器内部进行登录
 
-    mysql -u root –p
+    mysql -u root -p
 创建数据库
 
     Create database mydb;
