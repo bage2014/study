@@ -232,7 +232,7 @@ Start a mysql server instance
     docker run --network my-net --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
     
     Mac-pro:	
-    docker run --network myapp --name bage-mysql -v ${HOME}/bage/docker-data/mysql-pro:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    docker run --network myapp --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
 
 
 其中
