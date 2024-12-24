@@ -151,11 +151,6 @@ Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-serv
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
 Java体系知识点汇总：https://github.com/bage2014/interview
 
-web资源链接
-https://github.com/tvly/tvly-web
-https://www.baeldung.com/aws-s3-java S3 基本使用事件
-m3u parser https://github.com/BjoernPetersen/m3u-parser
-
 知识汇总：
 https://github.com/CyC2018/CS-Notes
 https://github.com/xingshaocheng/architect-awesome
@@ -174,8 +169,6 @@ GIT 地址
 https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git
 
 UI 资源 [https://github.com/qyxxjd/UI-Design-Resources](https://github.com/qyxxjd/UI-Design-Resources)、[https://github.com/material-components/material-components-android](https://github.com/material-components/material-components-android)
-
-限流算法参考 [https://github.com/shiyujun/syj-ratelimit](https://github.com/shiyujun/syj-ratelimit)
 
 ## Android ##
 基于 [https://github.com/project-travel-mate/Travel-Mate](https://github.com/project-travel-mate/Travel-Mate)
