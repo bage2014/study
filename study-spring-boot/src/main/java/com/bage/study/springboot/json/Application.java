@@ -17,37 +17,7 @@ public class Application {
     @RestResult
     @RequestMapping("/hello")
     public Object hello(){
-        return new H();
+        return new HelloJsonModel();
     }
 
-}
-class H{
-
-    private Long aa = 12300L;
-    int a = 30;
-    String name = "dsdsd";
-
-    public Long getAa() {
-        return aa;
-    }
-
-    public void setAa(Long aa) {
-        this.aa = aa;
-    }
-
-    public int getA() {
-        return a;
-    }
-
-    public void setA(int a) {
-        this.a = a;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
