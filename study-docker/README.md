@@ -2183,6 +2183,38 @@ http://127.0.0.1:8012
 
 
 
+
+
+### 安装 
+
+参考链接 
+
+https://github.com/n8n-io/n8n
+
+https://docs.n8n.io/
+
+Docker Pull Command
+
+```
+docker run -it --rm --name n8n -p 5678:5678 docker.n8n.io/n8n-io/n8n
+
+```
+
+Run 
+
+```
+docker run -it --rm --name n8n -p 5678:5678 docker.n8n.io/n8n-io/n8n
+
+```
+
+Visit
+
+```
+ http://localhost:5678
+```
+
+
+
 ### 网络连接 ###
 
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
