@@ -217,6 +217,7 @@
       <module>study-bytebuddy</module>
       <module>study-snailjob</module>
       <module>study-canal</module>
+      <module>study-mapstruct-plus</module>
 
   </modules>
 </project>
