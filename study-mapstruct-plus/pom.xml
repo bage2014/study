@@ -24,7 +24,22 @@
             <artifactId>mapstruct-plus</artifactId>
             <version>{mapstruct-plus.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.linpeilie</groupId>
+            <artifactId>mapstruct-plus-spring-boot-starter</artifactId>
+            <version>${mapstruct-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
