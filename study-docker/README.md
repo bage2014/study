@@ -2257,7 +2257,7 @@ https://docs.docker.com/desktop/networking/
 
 ### 常见错误 ###
 
-启动centos镜像报错
+1、启动centos镜像报错
 
     $ docker run centos
     WARNING: IPv4 forwarding is disabled. Networking will not work.
@@ -2273,3 +2273,14 @@ Redis启动后无法进行访问
 
 
 git remote set-url origin git@github.com:bage2014/simple-java-maven-app.git
+
+2、拉取报错
+
+```
+Unable to find image 'docker.n8n.io/n8n-io/n8n:latest' locally
+
+docker: Error response from daemon: Get "https://registry-1.docker.io/v2/": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers).
+
+See 'docker run --help'.
+```
+
