@@ -1838,12 +1838,6 @@ https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-
 
 
 
-vault ?
-
-https://hub.docker.com/_/vault
-
-
-
 Docker Pull Command
 
 ```
@@ -2247,9 +2241,7 @@ docker 配置访问宿主机
 
 ```
 host.docker.internal
-```
 
-```
 https://docs.docker.com/desktop/networking/
 ```
 
@@ -2268,8 +2260,6 @@ Redis启动后无法进行访问
 
 
 访问 io超时问题处理！！
-
-
 
 
 git remote set-url origin git@github.com:bage2014/simple-java-maven-app.git
