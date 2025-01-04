@@ -1,16 +1,12 @@
-package com.bage;
+package com.bage.study.mapstruct.plus;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.linpeilie.Converter;
 
-@SpringBootTest
-public class QuickStartTest {
+public class QuickStart {
 
-    @Autowired
-    private Converter converter;
+    private static Converter converter = new Converter();
 
-    @Test
-    public void test() {
+    public static void main(String[] args) {
         User user = new User();
         user.setUsername("jack");
         user.setAge(23);
