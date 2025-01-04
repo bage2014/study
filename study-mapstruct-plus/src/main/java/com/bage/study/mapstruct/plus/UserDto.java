@@ -1,6 +1,6 @@
-package com.bage;
+package com.bage.study.mapstruct.plus;
 
-public class User {
+public class UserDto {
     private String username;
     private int age;
     private boolean young;
