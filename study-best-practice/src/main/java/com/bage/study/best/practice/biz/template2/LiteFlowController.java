@@ -1,10 +1,6 @@
 package com.bage.study.best.practice.biz.template2;
 
-import com.alibaba.fastjson.JSON;
 import com.bage.study.best.practice.utils.JsonUtils;
-import com.liran.middle.liteflow.component.pattern.chain.ComponentAbstract;
-import com.liran.middle.liteflow.slot.Contxt;
-import com.liran.middle.liteflow.utils.AopProxyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
