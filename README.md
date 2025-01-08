@@ -148,7 +148,9 @@ An introductory summary of Java knowledge points across the industry
 
 ## 其他 ##
 Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-services](https://github.com/bage2014/study-micro-services)
+
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
+
 Java体系知识点汇总：https://github.com/bage2014/interview
 
 知识汇总：
