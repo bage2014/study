@@ -12,5 +12,7 @@ public class SecurityApplication {
         SpringApplication.run(SecurityApplication.class, args);
         long end = System.currentTimeMillis();
         System.out.println("timeCost=" + (end-start));
+
+        // curl -XPOST user:user@localhost:8080/token
     }
 }
