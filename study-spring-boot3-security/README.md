@@ -9,6 +9,8 @@ https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/
 官方样例【重点看看】
 https://github.com/spring-projects/spring-security-samples/
 
+jwt login https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/jwt/login
+
 博客
 https://dzone.com/articles/secure-spring-rest-with-spring-security-and-oauth2
 

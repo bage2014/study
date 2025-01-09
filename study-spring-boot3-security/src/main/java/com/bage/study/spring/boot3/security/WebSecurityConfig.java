@@ -80,7 +80,7 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
 
                 )
-
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/token"))
                 .formLogin(withDefaults())
                 .httpBasic(withDefaults())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
