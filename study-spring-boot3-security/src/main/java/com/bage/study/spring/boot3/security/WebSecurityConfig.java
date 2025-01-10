@@ -15,18 +15,29 @@ import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -39,6 +50,7 @@ public class WebSecurityConfig {
 
     @Value("${jwt.private.key}")
     RSAPrivateKey priv;
+
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
@@ -56,6 +68,67 @@ public class WebSecurityConfig {
         return manager;
     }
 
+    @Bean
+    public RegisteredClientRepository registeredClientRepository() {
+        RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("my-client")
+                .clientSecret("my-secret")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
+                .redirectUri("http://127.0.0.1:8080/authorized")
+                .postLogoutRedirectUri("http://127.0.0.1:8080/logged-out")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                .scope("message.read")
+                .scope("message.write")
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .build();
+
+        List<RegisteredClient> registrations = new ArrayList<>();
+        registrations.add(registeredClient);
+        return new InMemoryRegisteredClientRepository(registrations);
+    }
+
+//    @Bean
+//    public JdbcRegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+//        RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
+//                .clientId("messaging-client")
+//                .clientSecret("{noop}secret")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+//                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
+//                .redirectUri("http://127.0.0.1:8080/authorized")
+//                .postLogoutRedirectUri("http://127.0.0.1:8080/logged-out")
+//                .scope(OidcScopes.OPENID)
+//                .scope(OidcScopes.PROFILE)
+//                .scope("message.read")
+//                .scope("message.write")
+//                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+//                .build();
+//
+//        RegisteredClient deviceClient = RegisteredClient.withId(UUID.randomUUID().toString())
+//                .clientId("device-messaging-client")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+//                .authorizationGrantType(AuthorizationGrantType.DEVICE_CODE)
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                .scope("message.read")
+//                .scope("message.write")
+//                .build();
+//
+//        // Save registered client's in db as if in-memory
+//        JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
+//        registeredClientRepository.save(registeredClient);
+//        registeredClientRepository.save(deviceClient);
+//
+//        return registeredClientRepository;
+//    }
+//    // @formatter:on
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -65,6 +138,10 @@ public class WebSecurityConfig {
 
         AuthorityAuthorizationManager<RequestAuthorizationContext> user = AuthorityAuthorizationManager.hasRole("USER");
         user.setRoleHierarchy(roleHierarchy());
+
+//        DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
+//                new DeviceClientAuthenticationProvider(registeredClientRepository);
+
 
         http.authorizeHttpRequests(authorize -> authorize
 
@@ -84,19 +161,17 @@ public class WebSecurityConfig {
                 .formLogin(withDefaults())
                 .httpBasic(withDefaults())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-                ;
+
+//                .oauth2ResourceServer((oauth2) -> oauth2.jwt(withDefaults()));
+        ;
+//        http.clientAuthentication(clientAuthentication ->
+//                clientAuthentication
+//                        .authenticationConverter(deviceClientAuthenticationConverter)
+//                        .authenticationProvider(deviceClientAuthenticationProvider)
+//        )
         return http.build();
     }
 
-//    @Bean
-//    public AuthorityAuthorizationManager<RequestAuthorizationContext>
-//    guestAuthorityAuthorizationManager() {
-//        AuthorityAuthorizationManager<RequestAuthorizationContext>
-//                objectAuthorityAuthorizationManager =
-//                AuthorityAuthorizationManager.hasAuthority("GUEST");
-//        objectAuthorityAuthorizationManager.setRoleHierarchy(roleHierarchy());
-//        return objectAuthorityAuthorizationManager;
-//    }
 
     @Bean
     public RoleHierarchy roleHierarchy() {
