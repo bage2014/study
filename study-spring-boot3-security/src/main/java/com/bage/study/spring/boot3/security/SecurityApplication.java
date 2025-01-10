@@ -14,5 +14,6 @@ public class SecurityApplication {
         System.out.println("timeCost=" + (end-start));
 
         // curl -XPOST user:user@localhost:8080/token
+        // curl my-client:my-secret@localhost:8080/token -d grant_type=client_credentials
     }
 }

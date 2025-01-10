@@ -10,10 +10,13 @@ https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/
 https://github.com/spring-projects/spring-security-samples/
 
 jwt login https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/jwt/login
+oauth2 https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/oauth2/authorization-server
+https://www.baeldung.com/spring-dynamic-client-registration
 
 博客
 https://dzone.com/articles/secure-spring-rest-with-spring-security-and-oauth2
 
+自定义client https://stackoverflow.com/questions/77969646/how-to-register-oauth2-clients-from-a-persistent-database-in-spring-authorizatio
 
 ## 快速开始
 
