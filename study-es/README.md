@@ -15,6 +15,21 @@ ES 学习笔记
 - 基本原理架构
 - 常见优化
 
+## 环境准备
+
+下载
+
+```
+docker pull elasticsearch:7.16.2
+```
+
+启动
+
+```
+docker run --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.16.2
+```
+
+
 
 
 ## 本地访问 
