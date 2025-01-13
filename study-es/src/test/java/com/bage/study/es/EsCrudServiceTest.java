@@ -19,6 +19,8 @@ public class EsCrudServiceTest {
         long id = System.currentTimeMillis();
         System.out.println("id: " + id);
 
+        // 1736691762857
+
         insert(id);
         query(id);
 
