@@ -51,6 +51,8 @@ ES 特性 https://www.elastic.co/cn/elasticsearch/features
 
 基本API https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html
 
+https://www.elastic.co/guide/cn/elasticsearch/guide/current/_creating_an_index.html
+
 Client 使用 【官网】
 
 https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/index.html
@@ -68,6 +70,37 @@ https://www.elastic.co/guide/cn/elasticsearch/guide/current/running-elasticsearc
 ## 基本命令
 
 ### 增删改查
+
+创建索引
+
+```
+PUT /persons
+{
+  "settings": {
+		"number_of_shards": 1,
+		"number_of_replicas": 1
+	},
+  "mappings": {
+    "properties": {
+      "fullName": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "age": {
+        "type": "long"
+      },
+      "dateOfBirth": {
+        "type": "text"
+      }
+    }
+  }
+}
+```
 
 新增
 
