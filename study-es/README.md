@@ -95,7 +95,7 @@ PUT /persons
         "type": "long"
       },
       "dateOfBirth": {
-        "type": "text"
+        "type": "date"
       }
     }
   }
