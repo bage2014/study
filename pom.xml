@@ -218,6 +218,7 @@
       <module>study-snailjob</module>
       <module>study-canal</module>
       <module>study-mapstruct-plus</module>
+      <module>study-ddd</module>
 
   </modules>
 </project>
