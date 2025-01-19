@@ -12,7 +12,6 @@ public interface OrderStepHandler<T> {
 
     Boolean match(T context);
 
-
     Boolean execute(T context);
 
     int addTransactionStep(Runnable runnable);
