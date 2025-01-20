@@ -28,6 +28,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -50,6 +52,7 @@ public class WebSecurityConfig {
 
     @Value("${jwt.private.key}")
     RSAPrivateKey priv;
+    private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -92,46 +95,12 @@ public class WebSecurityConfig {
         return new InMemoryRegisteredClientRepository(registrations);
     }
 
-//    @Bean
-//    public JdbcRegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-//        RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-//                .clientId("messaging-client")
-//                .clientSecret("{noop}secret")
-//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-//                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-//                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
-//                .redirectUri("http://127.0.0.1:8080/authorized")
-//                .postLogoutRedirectUri("http://127.0.0.1:8080/logged-out")
-//                .scope(OidcScopes.OPENID)
-//                .scope(OidcScopes.PROFILE)
-//                .scope("message.read")
-//                .scope("message.write")
-//                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-//                .build();
-//
-//        RegisteredClient deviceClient = RegisteredClient.withId(UUID.randomUUID().toString())
-//                .clientId("device-messaging-client")
-//                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-//                .authorizationGrantType(AuthorizationGrantType.DEVICE_CODE)
-//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-//                .scope("message.read")
-//                .scope("message.write")
-//                .build();
-//
-//        // Save registered client's in db as if in-memory
-//        JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-//        registeredClientRepository.save(registeredClient);
-//        registeredClientRepository.save(deviceClient);
-//
-//        return registeredClientRepository;
-//    }
-//    // @formatter:on
-
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http
+            , RegisteredClientRepository registeredClientRepository
+                                           , AuthorizationServerSettings authorizationServerSettings
+    ) throws Exception {
         AuthorityAuthorizationManager<RequestAuthorizationContext> admin = AuthorityAuthorizationManager.hasRole("ADMIN");
         admin.setRoleHierarchy(roleHierarchy());
 
@@ -139,11 +108,32 @@ public class WebSecurityConfig {
         AuthorityAuthorizationManager<RequestAuthorizationContext> user = AuthorityAuthorizationManager.hasRole("USER");
         user.setRoleHierarchy(roleHierarchy());
 
-//        DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
-//                new DeviceClientAuthenticationProvider(registeredClientRepository);
+        DeviceClientAuthenticationConverter deviceClientAuthenticationConverter =
+                new DeviceClientAuthenticationConverter(
+                        authorizationServerSettings.getDeviceAuthorizationEndpoint());
+        DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
+                new DeviceClientAuthenticationProvider(registeredClientRepository);
 
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-        http.authorizeHttpRequests(authorize -> authorize
+        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .with(authorizationServerConfigurer, (authorizationServer) ->
+                        authorizationServer
+                                .deviceAuthorizationEndpoint(deviceAuthorizationEndpoint ->
+                                        deviceAuthorizationEndpoint.verificationUri("/activate")
+                                )
+                                .deviceVerificationEndpoint(deviceVerificationEndpoint ->
+                                        deviceVerificationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI)
+                                )
+                                .clientAuthentication(clientAuthentication ->
+                                        clientAuthentication
+                                                .authenticationConverter(deviceClientAuthenticationConverter)
+                                                .authenticationProvider(deviceClientAuthenticationProvider)
+                                )
+                                .authorizationEndpoint(authorizationEndpoint ->
+                                        authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
+                                .oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
+                ).authorizeHttpRequests(authorize -> authorize
 
                         .requestMatchers("/api/admin/**")
                         .access(admin)
@@ -170,6 +160,10 @@ public class WebSecurityConfig {
 //                        .authenticationProvider(deviceClientAuthenticationProvider)
 //        )
         return http.build();
+    }
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings() {
+        return AuthorizationServerSettings.builder().build();
     }
 
 
