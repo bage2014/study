@@ -147,6 +147,9 @@ An introductory summary of Java knowledge points across the industry
 | study-java11 | java11特性 |
 
 ## 其他 ##
+
+AI https://www.trae.ai/
+
 Spring Cloud 微服务学习笔记 [https://github.com/bage2014/study-micro-services](https://github.com/bage2014/study-micro-services)
 
 Spring Boot 项目实践 [https://github.com/bage2014/monitor](https://github.com/bage2014/monitor)
