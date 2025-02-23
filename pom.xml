@@ -219,6 +219,7 @@
       <module>study-canal</module>
       <module>study-mapstruct-plus</module>
       <module>study-ddd</module>
+      <module>study-shadow</module>
 
   </modules>
 </project>
