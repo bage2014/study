@@ -1,4 +1,4 @@
-package com.bage;
+package com.bage.study.shadow;
 
 public final class ShadowConfiguration {
 
