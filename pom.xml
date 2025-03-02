@@ -220,6 +220,7 @@
       <module>study-mapstruct-plus</module>
       <module>study-ddd</module>
       <module>study-shadow</module>
+      <module>study-jasypt</module>
 
   </modules>
 </project>
