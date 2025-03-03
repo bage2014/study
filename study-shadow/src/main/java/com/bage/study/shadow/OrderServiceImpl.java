@@ -17,11 +17,11 @@
 
 package com.bage.study.shadow;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,9 +32,9 @@ import java.util.List;
 @Primary
 public class OrderServiceImpl implements ExampleService {
     
-    @Resource
+    @Autowired
     private OrderRepository orderRepository;
-    @Resource
+    @Autowired
     private OrderItemRepository orderItemRepository;
     @Override
     public void initEnvironment() throws SQLException {

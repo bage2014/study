@@ -394,6 +394,7 @@ connect to it from an application
     docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
     
     Mac 
+    docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
     docker run --network bage-net -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
 
 
@@ -550,6 +551,7 @@ Docker Pull Command
     docker run --network myapp --name elasticsearch -p 9092:9200 -p 8093:9300 -e "discovery.type=single-node" elasticsearch:7.11.1
 
  
+
 
 
 
@@ -874,6 +876,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
