@@ -1,4 +1,4 @@
-package com.bage.study.spring.boot3.security;
+package com.bage.study.spring.boot3.security.advanced;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

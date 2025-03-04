@@ -28,6 +28,11 @@ admin/admin 登陆
 http://localhost:8080/api/admin/hello
 
 http://localhost:8080/api/user/hello
+
+http://localhost:8080/login
+
+http://localhost:8080/logout
+
 ```
 
 ## 原理解析
