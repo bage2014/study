@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bage.study.spring.boot3.security;
+package com.bage.study.spring.boot3.security.advanced;
 
 import jakarta.servlet.http.HttpServletRequest;
 

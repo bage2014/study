@@ -1,5 +1,5 @@
 
-package com.bage.study.spring.boot3.security;
+package com.bage.study.spring.boot3.security.advanced;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package com.bage.study.spring.boot3.security;
+package com.bage.study.spring.boot3.security.advanced;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -15,7 +15,6 @@ import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -98,7 +97,6 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http
-            , RegisteredClientRepository registeredClientRepository
                                            , AuthorizationServerSettings authorizationServerSettings
     ) throws Exception {
         AuthorityAuthorizationManager<RequestAuthorizationContext> admin = AuthorityAuthorizationManager.hasRole("ADMIN");
@@ -111,29 +109,30 @@ public class WebSecurityConfig {
         DeviceClientAuthenticationConverter deviceClientAuthenticationConverter =
                 new DeviceClientAuthenticationConverter(
                         authorizationServerSettings.getDeviceAuthorizationEndpoint());
-        DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
-                new DeviceClientAuthenticationProvider(registeredClientRepository);
+//        DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
+//                new DeviceClientAuthenticationProvider(registeredClientRepository());
 
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
         http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-                .with(authorizationServerConfigurer, (authorizationServer) ->
-                        authorizationServer
-                                .deviceAuthorizationEndpoint(deviceAuthorizationEndpoint ->
-                                        deviceAuthorizationEndpoint.verificationUri("/activate")
-                                )
-                                .deviceVerificationEndpoint(deviceVerificationEndpoint ->
-                                        deviceVerificationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI)
-                                )
-                                .clientAuthentication(clientAuthentication ->
-                                        clientAuthentication
-                                                .authenticationConverter(deviceClientAuthenticationConverter)
-                                                .authenticationProvider(deviceClientAuthenticationProvider)
-                                )
-                                .authorizationEndpoint(authorizationEndpoint ->
-                                        authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
-                                .oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
-                ).authorizeHttpRequests(authorize -> authorize
+//                .with(authorizationServerConfigurer, (authorizationServer) ->
+//                        authorizationServer
+//                                .deviceAuthorizationEndpoint(deviceAuthorizationEndpoint ->
+//                                        deviceAuthorizationEndpoint.verificationUri("/activate")
+//                                )
+//                                .deviceVerificationEndpoint(deviceVerificationEndpoint ->
+//                                        deviceVerificationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI)
+//                                )
+//                                .clientAuthentication(clientAuthentication ->
+//                                        clientAuthentication
+//                                                .authenticationConverter(deviceClientAuthenticationConverter)
+//                                                .authenticationProvider(deviceClientAuthenticationProvider)
+//                                )
+//                                .authorizationEndpoint(authorizationEndpoint ->
+//                                        authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
+//                                .oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
+//                )
+                .authorizeHttpRequests(authorize -> authorize
 
                         .requestMatchers("/api/admin/**")
                         .access(admin)
