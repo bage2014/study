@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -41,7 +42,9 @@ public class MySecurityConfig {
 
     @Value("${jwt.private.key}")
     RSAPrivateKey priv;
+
     @Bean
+    @ConditionalOnMissingBean(UserDetailsService.class)
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User.withDefaultPasswordEncoder()
@@ -57,7 +60,6 @@ public class MySecurityConfig {
                 .build());
         return manager;
     }
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
