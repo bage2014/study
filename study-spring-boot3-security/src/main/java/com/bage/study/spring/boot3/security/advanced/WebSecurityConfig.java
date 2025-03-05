@@ -71,6 +71,61 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http
+                                           , AuthorizationServerSettings authorizationServerSettings
+    ) throws Exception {
+        AuthorityAuthorizationManager<RequestAuthorizationContext> admin = AuthorityAuthorizationManager.hasRole("ADMIN");
+        admin.setRoleHierarchy(roleHierarchy());
+
+
+        AuthorityAuthorizationManager<RequestAuthorizationContext> user = AuthorityAuthorizationManager.hasRole("USER");
+        user.setRoleHierarchy(roleHierarchy());
+
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
+
+        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .authorizeHttpRequests(authorize -> authorize
+
+                        .requestMatchers("/api/admin/**")
+                        .access(admin)
+
+                        .requestMatchers("/api/user/**")
+                        .access(user)
+
+                        .requestMatchers("/api/anonymous/**")
+                        .anonymous()
+
+                        .anyRequest().authenticated()
+
+                )
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/token","/oauth2/token"))
+                .formLogin(withDefaults())
+                .httpBasic(withDefaults())
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+        ;
+
+        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .with(authorizationServerConfigurer, (authorizationServer) ->
+                        authorizationServer
+                                .deviceAuthorizationEndpoint(deviceAuthorizationEndpoint ->
+                                        deviceAuthorizationEndpoint.verificationUri("/activate")
+                                )
+                                .deviceVerificationEndpoint(deviceVerificationEndpoint ->
+                                        deviceVerificationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI)
+                                )
+                                .authorizationEndpoint(authorizationEndpoint ->
+                                        authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
+                                .oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
+                )
+        ;
+        return http.build();
+    }
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings() {
+        return AuthorizationServerSettings.builder().build();
+    }
+
+    @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("my-client")
@@ -92,77 +147,6 @@ public class WebSecurityConfig {
         List<RegisteredClient> registrations = new ArrayList<>();
         registrations.add(registeredClient);
         return new InMemoryRegisteredClientRepository(registrations);
-    }
-
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http
-                                           , AuthorizationServerSettings authorizationServerSettings
-    ) throws Exception {
-        AuthorityAuthorizationManager<RequestAuthorizationContext> admin = AuthorityAuthorizationManager.hasRole("ADMIN");
-        admin.setRoleHierarchy(roleHierarchy());
-
-
-        AuthorityAuthorizationManager<RequestAuthorizationContext> user = AuthorityAuthorizationManager.hasRole("USER");
-        user.setRoleHierarchy(roleHierarchy());
-
-        DeviceClientAuthenticationConverter deviceClientAuthenticationConverter =
-                new DeviceClientAuthenticationConverter(
-                        authorizationServerSettings.getDeviceAuthorizationEndpoint());
-//        DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
-//                new DeviceClientAuthenticationProvider(registeredClientRepository());
-
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
-
-        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-//                .with(authorizationServerConfigurer, (authorizationServer) ->
-//                        authorizationServer
-//                                .deviceAuthorizationEndpoint(deviceAuthorizationEndpoint ->
-//                                        deviceAuthorizationEndpoint.verificationUri("/activate")
-//                                )
-//                                .deviceVerificationEndpoint(deviceVerificationEndpoint ->
-//                                        deviceVerificationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI)
-//                                )
-//                                .clientAuthentication(clientAuthentication ->
-//                                        clientAuthentication
-//                                                .authenticationConverter(deviceClientAuthenticationConverter)
-//                                                .authenticationProvider(deviceClientAuthenticationProvider)
-//                                )
-//                                .authorizationEndpoint(authorizationEndpoint ->
-//                                        authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
-//                                .oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
-//                )
-                .authorizeHttpRequests(authorize -> authorize
-
-                        .requestMatchers("/api/admin/**")
-                        .access(admin)
-
-                        .requestMatchers("/api/user/**")
-                        .access(user)
-
-                        .requestMatchers("/api/anonymous/**")
-                        .anonymous()
-
-                        .anyRequest().authenticated()
-
-                )
-                .csrf((csrf) -> csrf.ignoringRequestMatchers("/token","/oauth2/token"))
-                .formLogin(withDefaults())
-                .httpBasic(withDefaults())
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-
-//                .oauth2ResourceServer((oauth2) -> oauth2.jwt(withDefaults()));
-        ;
-//        http.clientAuthentication(clientAuthentication ->
-//                clientAuthentication
-//                        .authenticationConverter(deviceClientAuthenticationConverter)
-//                        .authenticationProvider(deviceClientAuthenticationProvider)
-//        )
-        return http.build();
-    }
-    @Bean
-    public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
     }
 
 

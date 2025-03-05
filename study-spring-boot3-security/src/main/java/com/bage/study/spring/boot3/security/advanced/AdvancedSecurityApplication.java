@@ -5,11 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SecurityApplication {
+public class AdvancedSecurityApplication {
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        SpringApplication.run(SecurityApplication.class, args);
+        SpringApplication.run(AdvancedSecurityApplication.class, args);
         long end = System.currentTimeMillis();
         System.out.println("timeCost=" + (end-start));
 

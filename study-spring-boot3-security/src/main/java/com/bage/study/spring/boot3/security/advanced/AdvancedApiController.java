@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ApiRequestController {
+public class AdvancedApiController {
 
     @RequestMapping("/api/user/hello")
     public Object roleUser(){
