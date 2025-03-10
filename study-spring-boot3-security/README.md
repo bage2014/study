@@ -18,7 +18,9 @@ https://dzone.com/articles/secure-spring-rest-with-spring-security-and-oauth2
 
 自定义client https://stackoverflow.com/questions/77969646/how-to-register-oauth2-clients-from-a-persistent-database-in-spring-authorizatio
 
-## 快速开始
+## 登陆服务
+
+### 基本登陆
 
 user/user 登陆
 
@@ -34,6 +36,47 @@ http://localhost:8080/login
 http://localhost:8080/logout
 
 ```
+
+
+
+### 自定义用户
+
+自定义用户信息
+
+```
+@Component
+public class MyUserDetailsService implements UserDetailsService {
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if("zhangsan".equals(username)){
+            return User.withDefaultPasswordEncoder()
+                    .username("zhangsan")
+                    .password("admin")
+                    .roles("ADMIN")
+                    .build();
+        }
+        if("lisi".equals(username)){
+            return User.withDefaultPasswordEncoder()
+                    .username("lisi")
+                    .password("admin")
+                    .roles("USER")
+                    .build();
+        }
+        // todo load from database 
+        return null;
+    }
+}
+```
+
+
+
+## 认证服务
+
+参考样例 https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/jwt/login
+
+
+
+
 
 ## 原理解析
 

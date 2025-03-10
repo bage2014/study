@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("prod")
+@ActiveProfiles("auth")
 public class OAuth2AuthorizationServerApplicationITests {
 
 	private static final String CLIENT_ID = "messaging-client";
@@ -52,6 +52,14 @@ public class OAuth2AuthorizationServerApplicationITests {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@Test
+	void testGetToken() throws Exception {
+		// @formatter:off
+		String token = this.getAccessToken();
+		System.out.println(token);
+		// @formatter:on
+	}
 
 	@Test
 	void performTokenRequestWhenValidClientCredentialsThenOk() throws Exception {
