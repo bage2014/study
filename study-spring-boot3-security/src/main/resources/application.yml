@@ -8,15 +8,3 @@ logging:
 jwt:
   private.key: classpath:app.key
   public.key: classpath:app.pub
-
-
-spring:
-  security:
-    user:
-      name: "user"
-      password: "password"
-      roles:
-        - "USER"
-    oauth2:
-      authorizationserver:
-        issuer: http://localhost:8080

@@ -19,14 +19,6 @@ package com.bage.study.spring.boot3.security.advanced;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-
-import java.util.List;
 
 /**
  * OAuth Authorization Server Application.
@@ -38,21 +30,6 @@ public class SpringSecurityApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityApplication.class, args);
-	}
-
-	@Bean
-	public ClientRegistrationRepository clientRegistrationRepository() {
-		ClientRegistration registration = ClientRegistration
-				.withRegistrationId("messaging-client")
-				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.clientId("messaging-client")
-				.clientSecret("secret")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.scope("read","write")
-				.tokenUri("http://127.0.0.1:8080/authorized")
-				.clientName("messaging-client-name")
-				.build();
-		return new InMemoryClientRegistrationRepository(List.of(registration));
 	}
 
 	@Override
