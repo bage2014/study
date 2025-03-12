@@ -42,10 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CustomOAuth2AuthorizationServerApplicationITests {
 
-	private static final String CLIENT_ID = "messagingclient";
-
-	private static final String CLIENT_SECRET = "secret";
-
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Autowired
@@ -54,16 +50,26 @@ public class CustomOAuth2AuthorizationServerApplicationITests {
 	@Test
 	void testGetToken() throws Exception {
 		// @formatter:off
-		String token = this.getAccessToken();
+		String token = this.getAccessToken("client1","secret1");
 		System.out.println(token);
 		// @formatter:on
 	}
-	private String getAccessToken() throws Exception {
+
+
+	@Test
+	void testGetToken2() throws Exception {
+		// @formatter:off
+		String token = this.getAccessToken("client2","secret2");
+		System.out.println(token);
+		// @formatter:on
+	}
+
+	private String getAccessToken(String clientId,String secret) throws Exception {
 		// @formatter:off
 		MvcResult mvcResult = this.mockMvc.perform(post("/oauth2/token")
 				.param("grant_type", "client_credentials")
 				.param("scope", "read")
-				.with(httpBasic(CLIENT_ID, CLIENT_SECRET)))
+				.with(httpBasic(clientId, secret)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.access_token").exists())
 				.andReturn();

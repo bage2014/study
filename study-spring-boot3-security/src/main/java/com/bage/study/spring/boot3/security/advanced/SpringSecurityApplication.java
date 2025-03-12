@@ -35,7 +35,7 @@ public class SpringSecurityApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		// curl -X POST messaging-client:secret@localhost:8080/oauth2/token -d "grant_type=client_credentials" -d "scope=read"
+		// curl -X POST client1:secret1@localhost:8080/oauth2/token -d "grant_type=client_credentials" -d "scope=read"
 
 	}
 
