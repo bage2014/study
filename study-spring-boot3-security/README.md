@@ -22,6 +22,8 @@ https://dzone.com/articles/secure-spring-rest-with-spring-security-and-oauth2
 
 ### 基本登陆
 
+登陆服务 参考样例 https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/jwt/login
+
 user/user 登陆
 
 admin/admin 登陆
@@ -72,7 +74,23 @@ public class MyUserDetailsService implements UserDetailsService {
 
 ## 认证服务
 
-参考样例 https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/jwt/login
+认证服务
+
+https://github.com/spring-projects/spring-security-samples/blob/main/servlet/spring-boot/java/oauth2/authorization-server/
+
+动态配置client
+
+https://docs.spring.io/spring-authorization-server/reference/configuration-model.html
+
+```
+- 请求jwt
+curl -X POST client1:secret1@localhost:8080/oauth2/token -d "grant_type=client_credentials" -d "scope=read"
+
+- 非法请求jwt
+curl -X POST client2:secret2@localhost:8080/oauth2/token -d "grant_type=client_credentials" -d "scope=read"
+
+
+```
 
 
 
