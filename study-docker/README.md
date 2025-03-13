@@ -2180,9 +2180,7 @@ http://127.0.0.1:8012
 
 
 
-
-
-### 安装 
+### 安装 n8n
 
 参考链接 
 
@@ -2209,6 +2207,42 @@ Visit
 ```
  http://localhost:5678
 ```
+
+
+
+### 安装 OpenHands
+
+参考链接 
+
+https://github.com/All-Hands-AI/OpenHands
+
+Docker Pull Command
+
+```
+docker pull docker.all-hands.dev/all-hands-ai/runtime:0.28-nikolaik 
+```
+
+Run 
+
+```
+docker run -it --rm --pull=always \
+    -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.28-nikolaik \
+    -e LOG_ALL_EVENTS=true \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v ~/.openhands-state:/.openhands-state \
+    -p 3000:3000 \
+    --add-host host.docker.internal:host-gateway \
+    --name openhands-app \
+    docker.all-hands.dev/all-hands-ai/openhands:0.28
+```
+
+Visit
+
+```
+ http://localhost:3000
+```
+
+
 
 
 
