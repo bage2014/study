@@ -2216,6 +2216,8 @@ Visit
 
 https://github.com/All-Hands-AI/OpenHands
 
+https://docs.all-hands.dev/zh-Hans/modules/usage/getting-started
+
 Docker Pull Command
 
 ```
@@ -2225,15 +2227,37 @@ docker pull docker.all-hands.dev/all-hands-ai/runtime:0.28-nikolaik
 Run 
 
 ```
+mkdir ${HOME}/bage/docker-data/open-hands
+
+docker run -it --rm --pull=always \
+    -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.28-nikolaik \
+    -e LOG_ALL_EVENTS=true \
+    -v ${HOME}/bage/docker-data/open-hands/docker.sock:/var/run/docker.sock \
+    -v ${HOME}/bage/docker-data/open-hands/.openhands-state:/.openhands-state \
+    -p 3000:3000 \
+    --add-host host.docker.internal:host-gateway \
+    --name bage-openhands-app \
+    docker.all-hands.dev/all-hands-ai/openhands:0.28
+ 
+docker run -it --rm --pull=always \
+    -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.28-nikolaik \
+    -e LOG_ALL_EVENTS=true \
+    -v ${HOME}/bage/docker-data/open-hands/docker.sock:/var/run/docker.sock \
+    -v ${HOME}/bage/docker-data/open-hands/.openhands-state:/.openhands-state \
+    -p 3000:3000 \
+    --add-host host.docker.internal:host-gateway \
+    --name bage-openhands-app \
+    docker.all-hands.dev/all-hands-ai/openhands:0.28-nikolaik 
+    
+    
 docker run -it --rm --pull=always \
     -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.28-nikolaik \
     -e LOG_ALL_EVENTS=true \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v ~/.openhands-state:/.openhands-state \
     -p 3000:3000 \
     --add-host host.docker.internal:host-gateway \
     --name openhands-app \
-    docker.all-hands.dev/all-hands-ai/openhands:0.28
+    docker.all-hands.dev/all-hands-ai/openhands:0.28-nikolaik  
 ```
 
 Visit
