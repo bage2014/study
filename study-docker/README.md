@@ -2247,7 +2247,11 @@ Visit
  http://localhost:3000
 ```
 
+config
 
+```
+配置AI 的Key
+```
 
 
 
