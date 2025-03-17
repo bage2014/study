@@ -19,7 +19,7 @@
 		<servlet.base.version>3.0-alpha-1</servlet.base.version>
 		<jsp.base.version>2.1</jsp.base.version>
 		<jstl.base.version>1.2</jstl.base.version>
-		<hsqldb.base.version>2.3.4</hsqldb.base.version>
+		<hsqldb.base.version>2.7.1</hsqldb.base.version>
 		<aspectjrt.base.version>1.8.13</aspectjrt.base.version>
 		<aspectjweaver.base.version>1.8.10</aspectjweaver.base.version>
 	</properties>
