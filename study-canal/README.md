@@ -5,6 +5,7 @@
 ## 参考链接
 
 官网文档  https://github.com/alibaba/canal
+java https://github.com/alibaba/canal/wiki/ClientExample
 
 
 

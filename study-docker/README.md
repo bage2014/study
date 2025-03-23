@@ -2257,6 +2257,55 @@ config
 
 
 
+### 安装 Canal
+
+参考链接 
+
+https://github.com/alibaba/canal
+
+https://github.com/alibaba/canal/wiki/Docker-QuickStart
+
+Docker Pull Command
+
+```
+docker pull canal/canal-server:v1.1.1
+
+docker pull canal/canal-server
+```
+
+Run 
+
+```
+wget https://raw.githubusercontent.com/alibaba/canal/master/docker/run.sh 
+
+mkdir ${HOME}/bage/docker-data/docker
+
+# 构建一个destination name为test的队列
+sh run.sh -e canal.auto.scan=false \
+		  -e canal.destinations=test \
+		  -e canal.instance.master.address=127.0.0.1:3306  \
+		  -e canal.instance.dbUsername=canal  \
+		  -e canal.instance.dbPassword=canal  \
+		  -e canal.instance.connectionCharset=UTF-8 \
+		  -e canal.instance.tsdb.enable=true \
+		  -e canal.instance.gtidon=false  \
+ 
+```
+
+Visit
+
+```
+
+```
+
+config
+
+```
+
+```
+
+
+
 ### 网络连接 ###
 
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
