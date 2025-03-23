@@ -2268,7 +2268,6 @@ https://github.com/alibaba/canal/wiki/Docker-QuickStart
 Docker Pull Command
 
 ```
-docker pull canal/canal-server:v1.1.1
 
 docker pull canal/canal-server
 ```
@@ -2276,20 +2275,27 @@ docker pull canal/canal-server
 Run 
 
 ```
-wget https://raw.githubusercontent.com/alibaba/canal/master/docker/run.sh 
 
-mkdir ${HOME}/bage/docker-data/docker
+mkdir ${HOME}/bage/docker-conf/canal
 
-# 构建一个destination name为test的队列
-sh run.sh -e canal.auto.scan=false \
-		  -e canal.destinations=test \
-		  -e canal.instance.master.address=127.0.0.1:3306  \
-		  -e canal.instance.dbUsername=canal  \
-		  -e canal.instance.dbPassword=canal  \
-		  -e canal.instance.connectionCharset=UTF-8 \
-		  -e canal.instance.tsdb.enable=true \
-		  -e canal.instance.gtidon=false  \
+# 启动容器（目的是拷贝配置文件）
+docker run --name bage-canal \
+-p 11111:11111  \
+-id canal/canal-server
+
+# 提前创建 /mydata/canal/conf目录，接着来执行拷贝配置文件命令
+docker cp bage-canal:/home/admin/canal-server/conf/example/instance.properties  ${HOME}/bage/docker-conf/canal/
  
+ 
+# 删除原先的canal服务
+docker rm -f bage-canal
+# 启动canal服务
+# -i：让容器的标准输入保持打开（特别特别重要，注意不要是-d，一定要加上i）
+docker run --name bage-canal \
+-p 11111:11111  \
+-v ${HOME}/bage/docker-conf/canal/instance.properties:/home/admin/canal-server/conf/example/instance.properties \
+--link bage-mysq:bage-mysq \
+-id canal/canal-server
 ```
 
 Visit
