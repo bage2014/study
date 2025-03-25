@@ -2257,13 +2257,17 @@ config
 
 
 
-### 安装 Canal
+### 安装 Canal【TODO】
 
 参考链接 
 
 https://github.com/alibaba/canal
 
 https://github.com/alibaba/canal/wiki/Docker-QuickStart
+
+联MySQL  https://developer.aliyun.com/article/1048093
+
+
 
 Docker Pull Command
 
@@ -2275,6 +2279,7 @@ docker pull canal/canal-server
 Run 
 
 ```
+docker network create bage-net
 
 mkdir ${HOME}/bage/docker-conf/canal
 
@@ -2291,17 +2296,25 @@ docker cp bage-canal:/home/admin/canal-server/conf/example/instance.properties  
 docker rm -f bage-canal
 # 启动canal服务
 # -i：让容器的标准输入保持打开（特别特别重要，注意不要是-d，一定要加上i）
-docker run --name bage-canal \
+docker run --network bage-net --name bage-canal \
 -p 11111:11111  \
 -v ${HOME}/bage/docker-conf/canal/instance.properties:/home/admin/canal-server/conf/example/instance.properties \
 --link bage-mysq:bage-mysq \
 -id canal/canal-server
-```
-
-Visit
 
 ```
 
+MySQL
+
+```
+
+docker run --network bage-net --name bage-mysql-for-canal -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server mysqld \
+  --datadir=/var/lib/mysql \
+  --user=mysql \
+  --server-id=1 \
+  --log-bin=${HOME}/bage/docker-data/mysql/mysql-bin.log \
+  --binlog_do_db=test
+  
 ```
 
 config
