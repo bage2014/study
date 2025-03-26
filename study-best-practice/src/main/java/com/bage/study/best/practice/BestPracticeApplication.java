@@ -43,7 +43,7 @@ public class BestPracticeApplication implements CommandLineRunner {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("bage-command-hhhhhh is running:" + i);
+                System.out.println("bage-command is running:" + i);
             }
         });
         thread.setName("bage-command-hhhhhh");
