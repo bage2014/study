@@ -222,6 +222,7 @@
       <module>study-shadow</module>
       <module>study-jasypt</module>
       <module>study-open-hands</module>
+      <module>study-ai</module>
 
   </modules>
 </project>
