@@ -1,3 +1,39 @@
+## Flutter 入门
+
+### 环境搭建
+
+https://docs.flutter.cn/community/china/
+
+下载
+
+https://docs.flutter.cn/release/archive?tab=macos
+
+配置
+
+```
+export PUB_HOSTED_URL="https://pub.flutter-io.cn"
+export FLUTTER_STORAGE_BASE_URL="https://storage.flutter-io.cn"
+```
+
+创建目录
+
+```
+mkdir ~/bage/software/flutter2025/
+
+cd ~/bage/software/flutter2025/bin
+
+```
+
+配置验证
+
+```
+export PATH="$PWD/flutter2025/bin:$PATH"
+
+flutter doctor
+```
+
+
+
 常用命令
 
 ```
@@ -6,8 +42,7 @@ D:\softwares\SDK\emulator\emulator -avd Pixel2XLAPI29 -dns-server 10.0.3.2
 flutter build apk --no-sound-null-safety
 
 ```
-盛情域名？？？
-服务器 ？？
+
 
 
 ## Flutter 入门
@@ -117,19 +152,8 @@ http://laomengit.com/guide/intl/%E6%B7%BB%E5%8A%A0%E5%9B%BD%E9%99%85%E5%8C%96%E6
 
 
 
-### 环境搭建
-
-下载
-
-Get the Flutter SDK
-
-解压
-
-配置Path 指向bin目录
 
 下载安装 Android studio
-
-配置flutter sdk
 
 Android studio 配置flutter 出现“no devices”
 
