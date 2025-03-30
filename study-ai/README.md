@@ -10,7 +10,7 @@ https://spring.io/projects/spring-ai
 https://docs.spring.io/spring-ai/reference/getting-started.html
 
 spring-ai-github
-Github Copilot
+Github Copilot https://juejin.cn/post/7450045521635328012
 
 
 ## 快速开始
