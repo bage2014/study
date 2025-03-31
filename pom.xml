@@ -223,6 +223,7 @@
       <module>study-jasypt</module>
       <module>study-open-hands</module>
       <module>study-ai</module>
+      <module>study-dpf</module>
 
   </modules>
 </project>
