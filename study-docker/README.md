@@ -561,6 +561,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -876,6 +877,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -2321,6 +2323,22 @@ config
 
 ```
 
+```
+
+
+
+### 安装 MetaGPT
+
+参考链接 
+
+https://github.com/geekan/MetaGPT/blob/main/docs/README_CN.md
+
+https://docs.deepwisdom.ai/main/zh/guide/get_started/installation.html#%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85
+
+
+
+```
+docker pull metagpt/metagpt
 ```
 
 

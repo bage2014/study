@@ -12,6 +12,10 @@ https://docs.spring.io/spring-ai/reference/getting-started.html
 spring-ai-github
 Github Copilot https://juejin.cn/post/7450045521635328012
 
+### MetaGPT
+https://github.com/geekan/MetaGPT
+https://github.com/geekan/MetaGPT/blob/main/docs/README_CN.md
+
 
 ## 快速开始
 
