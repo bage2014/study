@@ -2335,10 +2335,44 @@ https://github.com/geekan/MetaGPT/blob/main/docs/README_CN.md
 
 https://docs.deepwisdom.ai/main/zh/guide/get_started/installation.html#%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85
 
-
+Docker Pull Command
 
 ```
 docker pull metagpt/metagpt
+```
+
+Config
+
+```
+mkdir -p ${HOME}/bage/docker-conf/metagpt/{config,workspace}
+
+mkdir ${HOME}/bage/docker-conf/metagpt/config
+mkdir ${HOME}/bage/docker-conf/metagpt/workspace
+
+```
+
+Run 
+
+```
+docker run --rm metagpt/metagpt cat /app/metagpt/config/config2.yaml > ${HOME}/bage/docker-conf/metagpt/config/config2.yaml
+
+vi ${HOME}/bage/docker-conf/metagpt/config/config2.yaml # 修改配置文件
+
+# 你也可以启动一个容器并在其中执行命令
+docker run --name bage-metagpt -d \
+    --privileged \
+    -v ${HOME}/bage/docker-conf/metagpt/config/config2.yaml:/app/metagpt/config/config2.yaml \
+    -v ${HOME}/bage/docker-conf/metagpt/workspace:/app/metagpt/workspace \
+    metagpt/metagpt
+```
+
+Visit
+
+```
+$ docker exec -it bage-metagpt /bin/bash
+
+$ metagpt "Write a cli snake game"
+
 ```
 
 
