@@ -1,5 +1,7 @@
 # study-best-practice
 
+
+
 阿里云性能测试PTS的文档
 https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
 
@@ -13,6 +15,14 @@ https://developer.aliyun.com/article/778128
 juejin 
 https://juejin.cn/post/7355389990530809908
 
+## todo 
+验证各个模块的逻辑
+DB
+Redis
+CPU
+GC
+Memory
+API、
 
 
 ## 瓶颈分析
@@ -56,7 +66,6 @@ https://blog.51cto.com/u_12087147/6225614
 - 压力测试瓶颈分析
 
 https://zhuanlan.zhihu.com/p/486542009
-
 
 
 启动 gzip
