@@ -1,5 +1,29 @@
 # study-best-practice
 
+
+
+## 环境准备 
+
+**基于Docker环境**
+
+### Docker
+
+https://github.com/bage2014/study/tree/master/study-docker
+
+### MySQL
+
+https://github.com/bage2014/study/tree/master/study-docker
+
+### ES 
+
+https://github.com/bage2014/study/tree/master/study-docker
+
+### JVM
+
+https://github.com/bage2014/study/tree/master/study-docker
+
+
+
 ## 机器信息 
 
 ```
