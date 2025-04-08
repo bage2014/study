@@ -1,6 +1,7 @@
 package com.bage.study.pdf;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.common.PDDestinationOrAction;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
@@ -10,15 +11,17 @@ import java.io.IOException;
 public class PdfFormFiller {
     public static void main(String[] args) throws IOException {
         // 加载包含表单的PDF文件
-        PDDocument document = PDDocument.load(new File("form_template.pdf"));
+        PDDocument document = PDDocument.load(new File("/Users/bage/Downloads/STR_Form.pdf"));
         
         // 获取表单
         PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
-        
+        PDDestinationOrAction openAction = document.getDocumentCatalog().getOpenAction();
+        System.out.println(acroForm.getFields());
         if (acroForm != null) {
             // 填写表单字段
-            PDField field = acroForm.getField("name_field"); // 替换为您的字段名
+            PDField field = acroForm.getField("Account"); // 替换为您的字段名
             if (field != null) {
+                System.out.println("phonessss");
                 field.setValue("张三");
             }
             
