@@ -8,7 +8,8 @@ import java.io.IOException;
 public class PdfPageReader {
     public static void main(String[] args) {
         File file = new File("/Users/bage/Downloads/STR_Form.pdf");
-        
+//        File file = new File("/Users/bage/bage/github/study/study-dpf/example.pdf");
+
         try (PDDocument document = PDDocument.load(file)) {
             PDFTextStripper stripper = new PDFTextStripper();
             
