@@ -17,7 +17,8 @@ public class OpenPdfExample {
         try {
             PdfWriter.getInstance(document, new FileOutputStream("/Users/bage/Downloads/STR_Form.pdf"));
             document.open();
-            String hh = document.getDocumentLanguage();
+
+            String language = document.getDocumentLanguage();
 //            document.add(new Paragraph("Hello, OpenPDF!"));
             document.close();
             System.out.println("PDF created successfully!");

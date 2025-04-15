@@ -691,6 +691,20 @@ http://c.biancheng.net/springcloud/nacos.html
 
 
 
+## Chrome 插件 
+
+### Midscene.js
+
+官方网址：
+
+https://github.com/web-infra-dev/midscene
+
+插件地址： 
+
+https://chromewebstore.google.com/detail/midscenejs/gbldofcpkknbggpkmbdaefngejllnief
+
+
+
 ## Idea 插件 
 
 ### SequenceDiagram
