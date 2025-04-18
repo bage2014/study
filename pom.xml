@@ -224,6 +224,7 @@
       <module>study-open-hands</module>
       <module>study-ai</module>
       <module>study-dpf</module>
+      <module>study-calcite</module>
 
   </modules>
 </project>
