@@ -13,6 +13,13 @@ public class CpuController {
     @Autowired
     private HighCpuService service;
 
+    @RequestMapping("/heavy/cpu100")
+    public Object cpu100() {
+        while(true) {
+
+        }
+    }
+
     @RequestMapping("/heavy/start")
     public Object startHeavyProcess() {
         int result = service.startHeavyProcess();
