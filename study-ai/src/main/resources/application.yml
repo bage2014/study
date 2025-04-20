@@ -1,0 +1,10 @@
+
+spring:
+  ai:
+    deepseek:
+      base-url: https://api.deepseek.com/v1
+      api-key: sk-your-api-key-here
+      chat:
+        options:
+          model: deepseek-chat
+          temperature: 0.7
