@@ -1,6 +1,6 @@
 package com.bage.json.compare;
 
-import lombok.extern.slf4j.Slf4j;
+import com.bage.json.JsonUtils;
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
 import org.javers.core.diff.Change;
@@ -9,11 +9,15 @@ import org.javers.core.diff.changetype.ValueChange;
 import org.javers.core.metamodel.object.ValueObjectId;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class JsonCompareHelper {
+
+    ConfigProp configProp = new ConfigProp();
+
     /**
      * 如果存在差异， 返回 list 为空，， 否则 返回 差异的字段路径     *     * @param str1     * @param str2     * @return
      */
@@ -22,7 +26,7 @@ public class JsonCompareHelper {
             // given
             Javers javers = JaversBuilder.javers().build();
             // when
-            Diff diff = javers.compare(JsonUtil.toJsonNode(str1), JsonUtil.toJsonNode(str2));
+            Diff diff = javers.compare(JsonUtils.fromJson(str1, HashMap.class), JsonUtils.fromJson(str2, HashMap.class));
             // then
             List<String> pathList = diff.getChanges().stream()
                     .map(change -> mapping(change))
@@ -34,7 +38,7 @@ public class JsonCompareHelper {
                     .paths(pathList)
                     .build();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            e.printStackTrace();
         }
         return CompareDiffItem.builder()
                 .paths(new ArrayList<>())
@@ -45,7 +49,7 @@ public class JsonCompareHelper {
         if (str == null) {
             return "";
         }
-        String maxLength = QConfigUtil.getString("auto.test.compare.summary.max.length");
+        String maxLength = ConfigProp.getMaxLength();
         if (maxLength == null || maxLength.isEmpty()) {
             maxLength = "1800";
         }
@@ -58,7 +62,7 @@ public class JsonCompareHelper {
     }
 
     private static boolean filterByConfig(String path) {
-        String ignoreFields = QConfigUtil.getString("auto.test.compare.ignore.fields");
+        String ignoreFields = ConfigProp.getIgnoreFields();
         if (ignoreFields == null) {
             return true;
         }
