@@ -8,7 +8,6 @@ import org.javers.core.diff.Diff;
 import org.javers.core.diff.changetype.ValueChange;
 import org.javers.core.metamodel.object.ValueObjectId;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -33,43 +32,41 @@ public class JsonCompareHelper {
                     .map(change -> replaceSomeField(change))
                     .filter(change -> filterByConfig(change))
                     .collect(Collectors.toList());
-            return CompareDiffItem.builder()
-                    .summary(subIfNecessary(replaceSomeField(diff.prettyPrint())))
-                    .paths(pathList)
-                    .build();
+
+            CompareDiffItem item = new CompareDiffItem();
+            item.setSummary(subIfNecessary(replaceSomeField(diff.prettyPrint())));
+            item.setPaths(pathList);
+
+            return item;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return CompareDiffItem.builder()
-                .paths(new ArrayList<>())
-                .build();
+        return new CompareDiffItem();
     }
 
     private static String subIfNecessary(String str) {
         if (str == null) {
             return "";
         }
-        String maxLength = ConfigProp.getMaxLength();
-        if (maxLength == null || maxLength.isEmpty()) {
-            maxLength = "1800";
+        Integer maxLength = ConfigProp.getMaxLength();
+        if (maxLength == null) {
+            maxLength = 1800;
         }
 
-        int parsed = Integer.parseInt(maxLength);
-        if (str.length() >= parsed) {
-            return str.substring(0, parsed) + "...";
+        if (str.length() >= maxLength) {
+            return str.substring(0, maxLength) + "...";
         }
         return str;
     }
 
     private static boolean filterByConfig(String path) {
-        String ignoreFields = ConfigProp.getIgnoreFields();
+        String[] ignoreFields = ConfigProp.getIgnoreFields();
         if (ignoreFields == null) {
             return true;
         }
-        String[] split = ignoreFields.split(",");
-        for (String str : split) {
+        for (String str : ignoreFields) {
             if (Pattern.compile(str).matcher(path).matches()) {
-                log.info("skip by config, config = {}, path = {}", str, path);
+                System.out.println("skip by config, config = {}, path = {}"+ str+ path);
                 return false;
 
             }
