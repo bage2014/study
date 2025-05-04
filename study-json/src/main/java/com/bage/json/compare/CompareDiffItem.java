@@ -22,4 +22,12 @@ public class CompareDiffItem {
     public void setPaths(List<String> paths) {
         this.paths = paths;
     }
+
+    @Override
+    public String toString() {
+        return "CompareDiffItem{" +
+                "summary='" + summary + '\'' +
+                ", paths=" + paths +
+                '}';
+    }
 }
