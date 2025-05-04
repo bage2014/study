@@ -17,6 +17,39 @@ public class JsonCompareHelper {
 
     ConfigProp configProp = new ConfigProp();
 
+    public static void main(String[] args) {
+        String str1 ="{\n" +
+                "            \"id\": 1,\n" +
+                "            \"name\": \"John Doe\",\n" +
+                "            \"age\": 30,\n" +
+                "            \"address\": {\n" +
+                "                \"street\": \"123 Main St\",\n" +
+                "                \"city\": \"New York\",\n" +
+                "                \"state\": \"NY\"\n" +
+                "            },\n" +
+                "            \"children\": {\n" +
+                "                \"value\": {\n" +
+                "                    \"grabDefaultPackagePrice\": 40,\n" +
+                "                    \"rnVersion\": 2.025042401E7,\n" +
+                "                    \"mainRnVersion\": 2.025042401E7,\n" +
+                "                    \"zlRnVersion\": 2.024090401E7,\n" +
+                "                    \"preSaleListV2\": [\n" +
+                "                        {\n" +
+                "                            \"preSaleDateTime\": \"20250421153000\",\n" +
+                "                            \"departDate\": \"20250505\"\n" +
+                "                        },\n" +
+                "                        {\n" +
+                "                            \"preSaleDateTime\": \"20250420153000\",\n" +
+                "                            \"departDate\": \"20250504\"\n" +
+                "                        }\n" +
+                "                    ]\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }";
+        String str2 =str1;
+        CompareDiffItem compareDiffItem = diffDetail(str1, str2);
+        System.out.println(compareDiffItem);
+    }
     /**
      * 如果存在差异， 返回 list 为空，， 否则 返回 差异的字段路径     *     * @param str1     * @param str2     * @return
      */
