@@ -46,7 +46,34 @@ public class JsonCompareHelper {
                 "                }\n" +
                 "            }\n" +
                 "        }";
-        String str2 =str1;
+        String str2 ="{\n" +
+                "            \"id\": 1,\n" +
+                "            \"name\": \"John Doe2\",\n" +
+                "            \"age\": 30,\n" +
+                "            \"address\": {\n" +
+                "                \"street\": \"123 Main St\",\n" +
+                "                \"city\": \"New York2\",\n" +
+                "                \"state\": \"NY\"\n" +
+                "            },\n" +
+                "            \"children\": {\n" +
+                "                \"value\": {\n" +
+                "                    \"grabDefaultPackagePrice\": 40,\n" +
+                "                    \"rnVersion\": 2.025042401E733,\n" +
+                "                    \"mainRnVersion\": 2.025042401E7,\n" +
+                "                    \"zlRnVersion\": 2.024090401E7,\n" +
+                "                    \"preSaleListV2\": [\n" +
+                "                        {\n" +
+                "                            \"preSaleDateTime\": \"20250421153000\",\n" +
+                "                            \"departDate\": \"20250506\"\n" +
+                "                        },\n" +
+                "                        {\n" +
+                "                            \"preSaleDateTime\": \"20250420153000\",\n" +
+                "                            \"departDate\": \"20250507\"\n" +
+                "                        }\n" +
+                "                    ]\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }";
         CompareDiffItem compareDiffItem = diffDetail(str1, str2);
         System.out.println(compareDiffItem);
     }
