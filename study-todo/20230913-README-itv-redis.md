@@ -23,6 +23,7 @@ redis 知识汇总解析 https://pdai.tech/md/db/nosql-redis/db-redis-overview.h
 - 淘汰策略
 - 集群【哨兵、Cluster】
 - Redis 监控 
+- 热点KEY
 
 
 
