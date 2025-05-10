@@ -1,7 +1,6 @@
 package com.bage.json.compare;
 
 import com.bage.json.JsonUtils;
-import com.google.gson.JsonObject;
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
 import org.javers.core.diff.Change;
@@ -9,7 +8,6 @@ import org.javers.core.diff.Diff;
 import org.javers.core.diff.changetype.ValueChange;
 import org.javers.core.metamodel.object.ValueObjectId;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -24,7 +22,7 @@ public class JsonCompareHelper {
     public static void main(String[] args) {
         String str1 = getStr1();
         String str2 = getStr2();
-        CompareDiffItem compareDiffItem = diffDetail(str1, str2);
+        CompareDiffItem compareDiffItem = new JsonCompareHelper().diffDetail(str1, str2);
         System.out.println(compareDiffItem);
     }
 
@@ -32,7 +30,7 @@ public class JsonCompareHelper {
     /**
      * 如果存在差异， 返回 list 为空，， 否则 返回 差异的字段路径     *     * @param str1     * @param str2     * @return
      */
-    public static CompareDiffItem diffDetail(String str1, String str2) {
+    public CompareDiffItem diffDetail(String str1, String str2) {
         try {
             // given
             Javers javers = JaversBuilder.javers().build();
@@ -56,11 +54,11 @@ public class JsonCompareHelper {
         return new CompareDiffItem();
     }
 
-    private static String subIfNecessary(String str) {
+    private String subIfNecessary(String str) {
         if (str == null) {
             return "";
         }
-        Integer maxLength = ConfigProp.getMaxLength();
+        Integer maxLength = configProp.getMaxLength();
         if (maxLength == null) {
             maxLength = 1800;
         }
@@ -71,8 +69,8 @@ public class JsonCompareHelper {
         return str;
     }
 
-    private static boolean filterByConfig(String path) {
-        String[] ignoreFields = ConfigProp.getIgnoreFields();
+    private boolean filterByConfig(String path) {
+        String[] ignoreFields = configProp.getIgnoreFields();
         if (ignoreFields == null) {
             return true;
         }
@@ -86,7 +84,7 @@ public class JsonCompareHelper {
         return true;
     }
 
-    private static String mapping(Change change) {
+    private String mapping(Change change) {
         if (change.getAffectedGlobalId() instanceof ValueObjectId) {
             String fragment = ((ValueObjectId) (change.getAffectedGlobalId())).getFragment();
             return fragment;
@@ -98,7 +96,7 @@ public class JsonCompareHelper {
         return "unknown-unsupported";
     }
 
-    private static String replaceSomeField(String originPath) {
+    private String replaceSomeField(String originPath) {
         // _children/RequestOrder/_children/BackExt => RequestOrder/BackExt
         // 2. ValueChange{globalId:'com.fasterxml.jackson.databind.node.ObjectNode/#_children/RequestOrder/_children/BackExt', property:'_value', oldVal:'{"grabDefaultPackagePrice":40,"rnVersion":2.025042401E7,"mainRnVersion":2.025042401E7,"zlRnVersion":2.024090401E7,"preSaleListV2":[{"preSaleDateTime":"20250421153000","departDate":"20250505"},{"preSaleDateTime":"20250420153000","departDate":"20250504"}],"redeemAlertContent":"","originalTicketInfoV2":{"departStation":"牡丹江","arriveStation":"北京"},"grabProcessType":1,"ticketReimbursePassengerImgKeyList":[]}', newVal:'{"grabDefaultPacddkagePrice":40,"rnVersion":2.025042401E7,"mainRnVersion":2.025042401E7,"zlRnVersion":2.024090401E7,"preSaleListV2":[{"preSaleDateTime":"20250421153000","departDate":"20250505"},{"preSaleDateTime":"20250420153000","departDate":"20250504"}],"redeemAlertContent":"","originalTicketInfoV2":{"departStation":"牡丹江","arriveStation":"北京"},"grabProcessType":1,"ticketReimbursePassengerImgKeyList":[]}'}
         return "/" + originPath.replace("_children/", "")
