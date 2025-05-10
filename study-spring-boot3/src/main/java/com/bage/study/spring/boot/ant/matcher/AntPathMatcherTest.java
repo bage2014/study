@@ -24,6 +24,8 @@ public class AntPathMatcherTest {
         System.out.println("match3 = " + match3);
 
         System.out.println(vars);
+
+
     }
 
 }
