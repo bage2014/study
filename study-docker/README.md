@@ -562,6 +562,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -877,6 +878,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -2377,6 +2379,54 @@ $ metagpt "Write a cli snake game"
 
 
 
+### 安装 Dify
+
+参考链接  https://docs.dify.ai/zh-hans/getting-started/install-self-hosted/docker-compose
+
+Download
+
+```
+// 创建目录
+cd ~/bage/github
+
+// 下载 
+git clone https://github.com/langgenius/dify.git --branch 0.15.3
+
+```
+
+
+
+Build
+
+```
+cd ~/bage/github
+
+cd dify/docker
+
+// cd ~/bage/github/dify/docker
+
+cp .env.example .env
+
+// 如果是docker v2 [docker compose version]
+docker compose up -d
+
+```
+
+
+
+Start
+
+```
+# 本地环境
+http://localhost/install
+```
+
+
+
+
+
+
+
 ### 网络连接 ###
 
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
@@ -2412,6 +2462,8 @@ host.docker.internal
 
 https://docs.docker.com/desktop/networking/
 ```
+
+
 
 
 
