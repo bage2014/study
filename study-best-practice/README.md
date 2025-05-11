@@ -559,6 +559,8 @@ docker run --network bage-net -d --name bage-prometheus -p 9090:9090 -v /Users/b
 ```
 docker run --network bage-net -d --name=bage-grafana -p 3000:3000 grafana/grafana
 
+docker run  -d --name=bage-grafana -p 3000:3000 grafana/grafana
+
 ```
 
 本地指标
