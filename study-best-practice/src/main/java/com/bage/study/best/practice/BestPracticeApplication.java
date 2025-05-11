@@ -62,10 +62,6 @@ public class BestPracticeApplication implements CommandLineRunner {
 //        rules.add(rule);
 
 
-
-        // JHHGHGHGH HSHGSHGJKHGKJ
-
-
         FlowRule log = new FlowRule();
         log.setResource("limit");
         log.setGrade(RuleConstant.FLOW_GRADE_QPS);
