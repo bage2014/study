@@ -2410,6 +2410,8 @@ cp .env.example .env
 // 如果是docker v2 [docker compose version]
 docker compose up -d
 
+// v1
+docker-compose up -d
 ```
 
 
@@ -2417,8 +2419,21 @@ docker compose up -d
 Start
 
 ```
-# 本地环境
+// 如果是docker v2 [docker compose version]
+docker compose up -d
+
+// v1
+docker-compose up -d
+
+// 状态检察 
+docker compose ps
+
+
+# 配置
 http://localhost/install
+
+// 访问
+http://localhost
 ```
 
 
