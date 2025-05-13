@@ -228,11 +228,8 @@ Start a mysql server instance
 
     docker run --name bage-mysql -v ${HOME}/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d bage-mysql
     
-    Mac:
-    docker run --network my-net --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
-    
     Mac-pro:	
-    docker run --network myapp --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    docker run --network bage-net --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
 
 
 其中
@@ -394,7 +391,6 @@ connect to it from an application
     docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
     
     Mac 
-    docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
     docker run --network bage-net -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
 
 
@@ -1266,6 +1262,7 @@ start a instance
 	
 	Mac
 	docker run --network bage-net -d --name=bage-grafana -p 3000:3000 -v /Users/bage/bage/docker-data/grafana:/var/lib/grafana grafana/grafana
+	
 
 visit
 
@@ -1785,11 +1782,7 @@ Run
 ```console
 docker run --name bage-mysqld-exporter -d -p 9104:9104 --network bage-net \
         -e DATA_SOURCE_NAME="bage:bage@(bage-mysql:3306)/mydbpro" prom/mysqld-exporter
-        
-
-docker run --name bage-mysqld-exporter -d -p 9104:9104 \
-        -e DATA_SOURCE_NAME="bage:bage@(bage-mysql:3306)/mydbpro" prom/mysqld-exporter
-              
+                   
 ```
 
 访问
