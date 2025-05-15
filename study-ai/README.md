@@ -15,9 +15,24 @@ https://www.baeldung.com/spring-ai
 spring-ai-github
 Github Copilot https://juejin.cn/post/7450045521635328012
 
-### MetaGPT
+## MetaGPT
 https://github.com/geekan/MetaGPT
 https://github.com/geekan/MetaGPT/blob/main/docs/README_CN.md
+
+
+
+## Dify
+
+https://docs.dify.ai/zh-hans/getting-started/install-self-hosted/docker-compose
+
+
+
+### 知识库
+
+搭建自己的知识库？
+
+如何进行使用
+
 
 
 ## 快速开始
