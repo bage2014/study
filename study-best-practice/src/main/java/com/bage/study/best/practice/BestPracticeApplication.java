@@ -31,8 +31,7 @@ public class BestPracticeApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        System.out.println(("----- BestPracticeApplication is started ------"));
-//        log.info(("----- BestPracticeApplication is started ------"));
+        log.info(("----- BestPracticeApplication is started ------"));
         limitFlow();
 
         Thread thread = new Thread(() -> {
@@ -60,7 +59,6 @@ public class BestPracticeApplication implements CommandLineRunner {
 //        // Set limit QPS to 20.
 //        rule.setCount(600);
 //        rules.add(rule);
-
 
         FlowRule log = new FlowRule();
         log.setResource("limit");
