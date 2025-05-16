@@ -33,6 +33,8 @@ https://docs.dify.ai/zh-hans/getting-started/install-self-hosted/docker-compose
 
 如何进行使用
 
+API调用方式支持
+
 
 
 ## 快速开始
