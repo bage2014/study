@@ -21,6 +21,28 @@ https://github.com/geekan/MetaGPT/blob/main/docs/README_CN.md
 
 
 
+## deepseek
+
+```
+curl https://api.deepseek.com/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <DeepSeek API Key>" \
+  -d '{
+        "model": "deepseek-chat",
+        "messages": [
+          {"role": "system", "content": "You are a helpful assistant."},
+          {"role": "user", "content": "Hello!"}
+        ],
+        "stream": false
+      }'
+
+
+```
+
+
+
+
+
 ## Dify
 
 https://docs.dify.ai/zh-hans/getting-started/install-self-hosted/docker-compose
