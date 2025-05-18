@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -51,6 +52,7 @@ public class RedisService {
         for (int j = 0; j < number; j++) {
             data += UUID.randomUUID().toString();
         }
+        String prefixForBigKey = getBigKeyPrefix();
         String key = "big-key-" + UUID.randomUUID().toString() + "-" + number;
         log.info("bigValve key = {}", key);
         long startTime = System.currentTimeMillis();
@@ -100,7 +102,7 @@ public class RedisService {
         for (int i = 0; i < length; i++) {
             data += UUID.randomUUID().toString();
         }
-        String key = "big-value-" + UUID.randomUUID().toString() + "-";
+        String key = getBigKeyPrefix() + new Random().nextInt(10000);
         log.info("bigValue key = {}", key);
         long startTime = System.currentTimeMillis();
         getService().cache(key, "-big-value-" + data + "-");
