@@ -3,6 +3,7 @@ package com.bage.study.best.practice.trial;
 import com.bage.study.best.practice.metrics.MetricService;
 import com.bage.study.best.practice.rest.RestResult;
 import com.bage.study.best.practice.trial.jdbc.ConnectionUtils;
+import com.bage.study.best.practice.trial.redis.BasicRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class ConnectionController {
     @Autowired
     private MetricService metricService;
     @Autowired
-    private RedisService redisService;
+    private BasicRedisService redisService;
 
     @RequestMapping("/get")
     public Object get(@RequestParam(value = "close", required = false) Boolean close) {
