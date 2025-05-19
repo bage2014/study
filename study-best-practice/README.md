@@ -402,18 +402,12 @@ redis 大key https://juejin.cn/post/7309482256808509459、https://juejin.cn/post
 基础数据准备【往换成添加N个值】
 
 ```
-// set. 初始化 N个
-http://localhost:8000/redis/count/init?max=10000
-
-// get 
-http://localhost:8000/redis/count/get?index=1
-
 
 // set. 初始化 N个BigKey
-http://localhost:8000/redis/count/big/key/init?max=1000
+http://localhost:8000/redis/big/key/init?max=1000
 
 // get 一个 BigKey
-http://localhost:8000/redis/count/big/key/random?index=100
+
 ```
 
 常规查询【bigkey 设置之前】

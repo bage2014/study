@@ -64,22 +64,33 @@ public class BigKeyRedisService {
     }
 
     public String getBigKey(Integer index) {
+        if(index == null){
+            index = new Random().nextInt(maxCount);
+        }
         String prefixForBigKey = getBigKeyPrefix();
         Object value = getService().get(prefixForBigKey + index);
         return value == null ? null : value.toString();
     }
 
     public String setBigKey(Integer index) {
+        if(index == null){
+            index = new Random().nextInt(maxCount);
+        }
         String prefixForBigKey = getBigKeyPrefix();
+        String key = prefixForBigKey + index;
         String value = UUID.randomUUID().toString();
-        getService().cache(prefixForBigKey + index, value);
+        getService().cache(key, value);
         return value;
     }
 
     public String setBigKeyRandom(String key) {
+        if(key == null){
+            key = UUID.randomUUID().toString();
+        }
         String prefixForBigKey = getBigKeyPrefix();
+        key = prefixForBigKey + key;
         String value = UUID.randomUUID().toString();
-        getService().cache(prefixForBigKey + key, value);
+        getService().cache(key, value);
         return value;
     }
 

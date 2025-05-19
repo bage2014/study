@@ -62,11 +62,17 @@ public class BigValueRedisService {
     }
 
     public String getBigValue(Integer index) {
+        if(index == null){
+            index = new Random().nextInt(maxCount);
+        }
         Object value = getService().get(prefix + index);
         return value == null ? null : value.toString();
     }
 
     public String setBigValue(Integer index) {
+        if(index == null){
+            index = new Random().nextInt(maxCount);
+        }
         String valuePrefix = getBigValuePrefix();
         String value = UUID.randomUUID().toString();
         getService().cache(prefix + index, valuePrefix + UUID.randomUUID().toString());
@@ -76,7 +82,7 @@ public class BigValueRedisService {
     public String setBigValueRandom(String key) {
         String valuePrefix = getBigValuePrefix();
         String value = UUID.randomUUID().toString();
-        getService().cache(prefix + new Random().nextInt(maxCount), valuePrefix + UUID.randomUUID().toString());
+        getService().cache(key, valuePrefix + UUID.randomUUID().toString());
         return value;
     }
 
