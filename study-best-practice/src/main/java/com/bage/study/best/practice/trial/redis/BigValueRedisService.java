@@ -15,168 +15,82 @@ import java.util.UUID;
  * 1、value值很长很大
  * 2、集合存储过多的元素
  * 3、key上亿
- *
+ * <p>
  * https://juejin.cn/post/7298989375370166298
- *
+ * <p>
  * https://juejin.cn/post/7303719808880590886
- *
- *
  */
 @Slf4j
 @Component
 public class BigValueRedisService {
     private final String prefix = "redis_cache_big_key_prefix_";
-    private String prefixBigKey = "";
+    private String prefixBigValue = "";
     private Integer maxCount = 100;
+    private Integer forCount = 100;
     private CacheService cacheService;
 
     public BigValueRedisService(CacheService cacheService) {
         this.cacheService = cacheService;
     }
 
-    public int random() {
-        String data = UUID.randomUUID().toString();
-        String key = "random-key-" + UUID.randomUUID().toString() + "-" + 1;
-        log.info("randomKey key = {}", key);
-        getService().cache(data, "-random-key-" + data + "-" + 1);
-        return 1;
-    }
-
-    /**
-     * redis 的 value值很大
-     *
-     * @param number
-     * @return
-     */
-    public int bigValve(int number) {
-        String data = "";
-        for (int j = 0; j < number; j++) {
-            data += UUID.randomUUID().toString();
-        }
-        String prefixForBigKey = getBigKeyPrefix();
-        String key = "big-key-" + UUID.randomUUID().toString() + "-" + number;
-        log.info("bigValve key = {}", key);
-        long startTime = System.currentTimeMillis();
-        getService().cache(key, "-big-value-" + data + "-" + number);
-        log.info("time cost： " + (System.currentTimeMillis() - startTime));
-        return 1;
-    }
-
-    /**
-     * 集合很大
-     *
-     * @param length
-     * @return
-     */
-    public int bigCollection(int length) {
-        List<Object> list = new ArrayList<>(length);
-        for (int i = 0; i < length; i++) {
-            list.add(UUID.randomUUID().toString() + "-" + i);
-        }
-        String key = "big-collection-" + UUID.randomUUID().toString() + "-" + length;
-        log.info("bigCollection key = {}", key);
-        long startTime = System.currentTimeMillis();
-        getService().cache(key, list);
-        log.info("time cost：" + (System.currentTimeMillis() - startTime));
-        return length;
-    }
-
-    /**
-     * 很多的普通的key + value
-     *
-     * @param number
-     * @return
-     */
-    public int bigNumber(int number) {
-        for (int i = 0; i < number; i++) {
-            String data = UUID.randomUUID().toString();
-            String key = "big-number-" + UUID.randomUUID().toString() + "-" + number;
-            if (i == 0) {
-                log.info("bigNumber key = {}", key);
-            }
-            getService().cache(key, "-big-number-" + data + "-" + i);
-        }
-        return number;
-    }
-    public int bigValue(int length) {
-        String data = "";
-        for (int i = 0; i < length; i++) {
-            data += UUID.randomUUID().toString();
-        }
-        String key = getBigKeyPrefix() + new Random().nextInt(10000);
-        log.info("bigValue key = {}", key);
-        long startTime = System.currentTimeMillis();
-        getService().cache(key, "-big-value-" + data + "-");
-        log.info("time cost：" + (System.currentTimeMillis() - startTime));
-        return 1;
-    }
-
-
-    public int bigKey(int length) {
-        String data = "";
-        for (int i = 0; i < length; i++) {
-            data += UUID.randomUUID().toString();
-        }
-        String key = "big-key-" + data;
-        log.info("bigKey key = {}", key);
-        long startTime = System.currentTimeMillis();
-        getService().cache(key, "-big-key-" + UUID.randomUUID().toString() + "-");
-        log.info("time cost：" + (System.currentTimeMillis() - startTime));
-        return 1;
-    }
-
     private CacheService getService() {
         return cacheService;
     }
 
-    public int initBigKey(Integer max) {
-        if (max == null){
+    public int initBigValue(Integer max, Integer forCount) {
+        if (max == null) {
             max = 100;
         }
-        maxCount = max;
+        if (forCount == null) {
+            forCount = 100;
+        }
+        this.forCount = forCount;
+        this.maxCount = max;
         long startTime = System.currentTimeMillis();
-        String prefixForBigKey = getBigKeyPrefix();
+        String valuePrefix = getBigValuePrefix();
         for (int i = 0; i < max; i++) {
-            getService().cache(prefixForBigKey + i, "-init-" + UUID.randomUUID().toString() + "-");
+            getService().cache(prefix + i, valuePrefix + "-init-" + UUID.randomUUID().toString() + "-");
         }
         log.info("time cost：" + (System.currentTimeMillis() - startTime));
         return max;
     }
-    public int init(Integer count) {
-        long startTime = System.currentTimeMillis();
-        for (int i = 0; i < count; i++) {
-            getService().cache(prefix + i, "-init-" + UUID.randomUUID().toString() + "-");
-        }
-        log.info("time cost：" + (System.currentTimeMillis() - startTime));
-        return 1;
-    }
 
-    public String get(Integer index) {
-        Object value = getService().get(prefix + index);
-        return value == null ? null : value.toString();
-    }
 
-    public String get(String key) {
+    public String getBigValue(String key) {
         Object value = getService().get(key);
         return value == null ? null : value.toString();
     }
 
-    public String getBigKey(Integer index) {
-        String prefixForBigKey = getBigKeyPrefix();
-        Object value = getService().get(prefixForBigKey + index);
+    public String getBigValue(Integer index) {
+        Object value = getService().get(prefix + index);
         return value == null ? null : value.toString();
     }
 
-    private String getBigKeyPrefix() {
-        if(prefixBigKey != null && !prefixBigKey.isEmpty()){
-            return prefixBigKey;
+    public String setBigValue(Integer index) {
+        String valuePrefix = getBigValuePrefix();
+        String value = UUID.randomUUID().toString();
+        getService().cache(prefix + index, valuePrefix + UUID.randomUUID().toString());
+        return value;
+    }
+
+    public String setBigValueRandom(String key) {
+        String valuePrefix = getBigValuePrefix();
+        String value = UUID.randomUUID().toString();
+        getService().cache(prefix + new Random().nextInt(maxCount), valuePrefix + UUID.randomUUID().toString());
+        return value;
+    }
+
+
+    private String getBigValuePrefix() {
+        if (prefixBigValue != null && !prefixBigValue.isEmpty()) {
+            return prefixBigValue;
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 1000; i++) {
             sb.append(prefix).append("-");
         }
-        prefixBigKey = sb.toString();
-        return prefixBigKey;
+        prefixBigValue = sb.toString();
+        return prefixBigValue;
     }
 
 
