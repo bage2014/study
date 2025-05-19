@@ -24,12 +24,13 @@ import java.util.UUID;
  */
 @Slf4j
 @Component
-public class RedisService {
-    private static final String prefix = "redis_cache_common_prefix_";
-    private static String prefixBigKey = "";
+public class BigValueRedisService {
+    private final String prefix = "redis_cache_big_key_prefix_";
+    private String prefixBigKey = "";
+    private Integer maxCount = 100;
     private CacheService cacheService;
 
-    public RedisService(CacheService cacheService) {
+    public BigValueRedisService(CacheService cacheService) {
         this.cacheService = cacheService;
     }
 
@@ -128,6 +129,19 @@ public class RedisService {
         return cacheService;
     }
 
+    public int initBigKey(Integer max) {
+        if (max == null){
+            max = 100;
+        }
+        maxCount = max;
+        long startTime = System.currentTimeMillis();
+        String prefixForBigKey = getBigKeyPrefix();
+        for (int i = 0; i < max; i++) {
+            getService().cache(prefixForBigKey + i, "-init-" + UUID.randomUUID().toString() + "-");
+        }
+        log.info("time cost：" + (System.currentTimeMillis() - startTime));
+        return max;
+    }
     public int init(Integer count) {
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < count; i++) {
@@ -147,15 +161,6 @@ public class RedisService {
         return value == null ? null : value.toString();
     }
 
-    public int initBigKey(Integer max) {
-        long startTime = System.currentTimeMillis();
-        String prefixForBigKey = getBigKeyPrefix();
-        for (int i = 0; i < max; i++) {
-            getService().cache(prefixForBigKey + i, "-init-" + UUID.randomUUID().toString() + "-");
-        }
-        log.info("time cost：" + (System.currentTimeMillis() - startTime));
-        return max;
-    }
     public String getBigKey(Integer index) {
         String prefixForBigKey = getBigKeyPrefix();
         Object value = getService().get(prefixForBigKey + index);
