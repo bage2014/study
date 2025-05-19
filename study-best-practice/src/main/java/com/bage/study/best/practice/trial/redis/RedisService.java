@@ -25,8 +25,8 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class RedisService {
-    private static final String prefix = "redis_init_count_index_";
-    private static String prefixCache = null;
+    private static final String prefix = "redis_cache_common_prefix_";
+    private static String prefixBigKey = "";
     private CacheService cacheService;
 
     public RedisService(CacheService cacheService) {
@@ -163,15 +163,15 @@ public class RedisService {
     }
 
     private String getBigKeyPrefix() {
-        if(prefixCache != null && !prefixCache.isEmpty()){
-            return prefixCache;
+        if(prefixBigKey != null && !prefixBigKey.isEmpty()){
+            return prefixBigKey;
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 1000; i++) {
             sb.append(prefix).append("-");
         }
-        prefixCache = sb.toString();
-        return prefixCache;
+        prefixBigKey = sb.toString();
+        return prefixBigKey;
     }
 
 

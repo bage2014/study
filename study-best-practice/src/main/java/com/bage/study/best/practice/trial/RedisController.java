@@ -28,12 +28,14 @@ public class RedisController {
     private MetricService metricService;
     @Autowired
     private RedisService redisService;
+    private int maxCache = 100000;
 
-    @RequestMapping("/count/init")
+    @RequestMapping("/random/init")
     public Object init(@RequestParam(value = "max", required = false) Integer max) {
         metricService.increment("init", "RedisController");
         log.info("RedisController init max = {}", max);
         max = max == null ? 100000 : max;
+        maxCache = max;
         log.info("RedisController init max2 = {}", max);
         long start = System.currentTimeMillis();
         int random = redisService.init(max);
@@ -43,6 +45,36 @@ public class RedisController {
 
         return new RestResult(200, random);
     }
+
+
+    @RequestMapping("/random/set")
+    public Object setRandom() {
+        metricService.increment("setRandom", "RedisController");
+
+        long start = System.currentTimeMillis();
+        int random = redisService.random();
+        long end = System.currentTimeMillis();
+        log.info("RedisController random cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "setRandom", "RedisController");
+
+        return new RestResult(200, random);
+    }
+
+
+    @RequestMapping("/random/get")
+    public Object getRandom() {
+        metricService.increment("getRandom", "RedisController");
+
+        long start = System.currentTimeMillis();
+        String random = redisService.get(new Random().nextInt(maxCache));
+        long end = System.currentTimeMillis();
+        log.info("RedisController random cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "getRandom", "RedisController");
+
+        return new RestResult(200, random);
+    }
+
+
     @RequestMapping("/count/big/key/init")
     public Object initBigKey(@RequestParam(value = "max", required = false) Integer max) {
         metricService.increment("initBigKey", "RedisController");
@@ -118,19 +150,6 @@ public class RedisController {
         metricService.record((end - start), TimeUnit.MILLISECONDS, "getRandom", "RedisController");
 
         return new RestResult(200, value);
-    }
-
-    @RequestMapping("/random/set")
-    public Object random() {
-        metricService.increment("random", "RedisController");
-
-        long start = System.currentTimeMillis();
-        int random = redisService.random();
-        long end = System.currentTimeMillis();
-        log.info("RedisController random cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "random", "RedisController");
-
-        return new RestResult(200, random);
     }
 
     @RequestMapping("/big/number/set")

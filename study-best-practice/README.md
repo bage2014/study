@@ -368,6 +368,23 @@ https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-d
 
 
 
+### 基本
+
+```
+// set. 初始化 N个
+http://localhost:8000/redis/random/init?max=10000
+
+
+// random set
+http://localhost:8000/redis/random/set
+
+
+// random get
+http://localhost:8000/redis/random/get
+```
+
+
+
 ### Big Key
 
 redis 大key https://juejin.cn/post/7309482256808509459、https://juejin.cn/post/7349360925185818635
