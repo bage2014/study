@@ -23,7 +23,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class BigValueRedisService {
-    private final String prefix = "redis_cache_big_key_prefix_";
+    private final String prefix = "redis_cache_big_value_prefix_";
     private String prefixBigValue = "";
     private Integer maxCount = 100;
     private Integer forCount = 100;
@@ -92,7 +92,7 @@ public class BigValueRedisService {
             return prefixBigValue;
         }
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < forCount; i++) {
             sb.append(prefix).append("-");
         }
         prefixBigValue = sb.toString();

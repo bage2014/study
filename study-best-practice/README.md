@@ -383,9 +383,60 @@ http://localhost:8000/redis/random/set
 http://localhost:8000/redis/random/get
 ```
 
-
-
 ### Big Key
+
+```
+// set. 初始化 N个
+http://localhost:8000/redis/big/key/init?max=1000
+
+
+// random set
+http://localhost:8000/redis/big/key/set
+
+
+// random get
+http://localhost:8000/redis/big/key/get
+
+```
+
+
+
+### Big Value
+
+```
+// set. 初始化 N个
+http://localhost:8000/redis/big/value/init?max=1000
+
+
+// random set
+http://localhost:8000/redis/big/value/set
+
+
+// random get
+http://localhost:8000/redis/big/value/get
+```
+
+
+
+
+### Big Collection
+
+```
+// set. 初始化 N个
+http://localhost:8000/redis/big/collection/init?max=1000&collectionCount=1000
+
+
+// random set
+http://localhost:8000/redis/big/collection/set
+
+
+// random get
+http://localhost:8000/redis/big/collection/get
+```
+
+
+
+### 总结
 
 redis 大key https://juejin.cn/post/7309482256808509459、https://juejin.cn/post/7349360925185818635
 
