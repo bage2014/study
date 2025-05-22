@@ -561,7 +561,7 @@ http://localhost:3000/d/RpSjVqWMz/redis?orgId=1&refresh=10s
 
 
 
-## sentinel流
+## Sentinel
 
 访问
 
@@ -607,7 +607,7 @@ http://localhost:8000/mybatis/cache2/phone=1234
 
 
 
-## metrics
+## Metrics
 
 ### 基本使用
 启动 prometheus 挂在 网络bage-net 下  
