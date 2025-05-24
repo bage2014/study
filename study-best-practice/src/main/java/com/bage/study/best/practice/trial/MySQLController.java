@@ -29,6 +29,50 @@ public class MySQLController {
     @Autowired
     private MetricService metricService;
 
+    @RequestMapping("/sql/slow")
+    public Object SqlSlow(@RequestParam("phone") String phone) {
+        long start = System.currentTimeMillis();
+        metricService.increment("SqlSlow", "MySQLController");
+        List<User> users = userService.query(phone);
+        long end = System.currentTimeMillis();
+        log.info("MySQLController SqlSlow cost = {}, users = {}", (end - start),users);
+        metricService.record((end - start), TimeUnit.MILLISECONDS,"SqlSlow", "MySQLController");
+        return users;
+    }
+
+    @RequestMapping("/io/high")
+    public Object memoryIO(@RequestParam("phone") String phone) {
+        long start = System.currentTimeMillis();
+        metricService.increment("memoryIO", "MySQLController");
+        List<User> users = userService.query(phone);
+        long end = System.currentTimeMillis();
+        log.info("MySQLController memoryIO cost = {}, users = {}", (end - start),users);
+        metricService.record((end - start), TimeUnit.MILLISECONDS,"memoryIO", "MySQLController");
+        return users;
+    }
+
+    @RequestMapping("/memory/high")
+    public Object memoryHigh(@RequestParam("phone") String phone) {
+        long start = System.currentTimeMillis();
+        metricService.increment("memoryHigh", "MySQLController");
+        List<User> users = userService.query(phone);
+        long end = System.currentTimeMillis();
+        log.info("MySQLController memoryHigh cost = {}, users = {}", (end - start),users);
+        metricService.record((end - start), TimeUnit.MILLISECONDS,"memoryHigh", "MySQLController");
+        return users;
+    }
+
+    @RequestMapping("/thread/active/high")
+    public Object highActiveThread(@RequestParam("phone") String phone) {
+        long start = System.currentTimeMillis();
+        metricService.increment("highActiveThread", "MySQLController");
+        List<User> users = userService.query(phone);
+        long end = System.currentTimeMillis();
+        log.info("MySQLController highActiveThread cost = {}, users = {}", (end - start),users);
+        metricService.record((end - start), TimeUnit.MILLISECONDS,"highActiveThread", "MySQLController");
+        return users;
+    }
+
     @RequestMapping("/query/key")
     public Object queryByKey(@RequestParam("phone") String phone) {
         long start = System.currentTimeMillis();

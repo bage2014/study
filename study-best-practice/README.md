@@ -103,6 +103,14 @@ java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SN
 
 ## MySQL
 
+### 问题类型
+
+参考链接 https://help.aliyun.com/zh/rds/apsaradb-rds-for-mysql/common-performance-issues/
+
+
+
+### 监控命令
+
 查看负载 
 
 ```
