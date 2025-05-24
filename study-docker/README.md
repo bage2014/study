@@ -2457,7 +2457,11 @@ http://localhost
 
 To connect a running container to an existing user-defined bridge,
       
-    docker network connect my-net my-nginx
+    docker network connect bage-net my-nginx
+    
+    docker network connect bage-net bage-mysql
+    docker network connect bage-net bage-mysqld-exporter
+    docker network connect bage-net bage-mysql
 
 验证，可以在其他容器中，ping myapp-xxx
 
