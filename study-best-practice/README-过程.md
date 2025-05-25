@@ -14,6 +14,14 @@ https://github.com/bage2014/study/tree/master/study-docker
 
 https://github.com/bage2014/study/tree/master/study-docker
 
+启动
+
+```
+docker run --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+```
+
+
+
 ### ES 
 
 https://github.com/bage2014/study/tree/master/study-docker

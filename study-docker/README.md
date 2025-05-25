@@ -229,7 +229,7 @@ Start a mysql server instance
     docker run --name bage-mysql -v ${HOME}/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d bage-mysql
     
     Mac-pro:	
-    docker run --network bage-net --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    docker run --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
 
 
 其中
@@ -391,7 +391,7 @@ connect to it from an application
     docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
     
     Mac 
-    docker run --network bage-net -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
+    docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
 
 
 ​    
@@ -1234,7 +1234,7 @@ start a instance
 	docker run --name prometheus -p 9090:9090 -v /home/bage/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 	
 	Mac 
-	docker run --network bage-net -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-data/prometheus:/prometheus/data -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+	docker run -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-data/prometheus:/prometheus/data -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 
 
 ​	
@@ -1261,12 +1261,12 @@ start a instance
 	docker run -d --name=grafana -p 3000:3000 grafana/grafana
 	
 	Mac
-	docker run --network bage-net -d --name=bage-grafana -p 3000:3000 -v /Users/bage/bage/docker-data/grafana:/var/lib/grafana grafana/grafana
+	docker run -d --name=bage-grafana -p 3000:3000 -v /Users/bage/bage/docker-data/grafana:/var/lib/grafana grafana/grafana
 	
 
 visit
 
-	http://192.168.146.139:3000/
+	http://localhost:3000/
 
 Try it out, default admin user is admin/admin.
 
@@ -2435,7 +2435,7 @@ http://localhost
 
 
 
-### 网络连接 ###
+### 网络连接 network ###
 
 参考链接 [https://docs.docker.com/network/bridge/](https://docs.docker.com/network/bridge/)、[https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container](https://stackoverflow.com/questions/54901581/connect-to-mysql-server-running-in-docker-container-from-another-container)
 
@@ -2461,18 +2461,24 @@ To connect a running container to an existing user-defined bridge,
     
     docker network connect bage-net bage-mysql
     docker network connect bage-net bage-mysqld-exporter
-    docker network connect bage-net bage-mysql
+    docker network connect bage-net bage-prometheus
 
 验证，可以在其他容器中，ping myapp-xxx
 
+```
+http://bage-redis:6379/metrics
 
+http://host.docker.internal:6379/metrics
+```
 
 docker 配置访问宿主机 
+
+https://docs.docker.com/desktop/networking/
 
 ```
 host.docker.internal
 
-https://docs.docker.com/desktop/networking/
+
 ```
 
 
