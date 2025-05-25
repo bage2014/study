@@ -6,6 +6,34 @@
 
 **基于Docker环境**
 
+```
+// mysql 等连接网络
+docker network connect bage-net bage-mysql
+docker network connect bage-net bage-mysqld-exporter
+docker network connect bage-net bage-prometheus
+docker network connect bage-net bage-redis
+
+
+```
+
+
+
+**访问主机**
+
+```
+curl http://gateway.docker.internal:8000/user/insert
+
+curl http://host.docker.internal:8000/user/insert
+
+curl http://docker.for.mac.host.internal:8000/user/insert
+
+curl http://172.17.0.1:8000/user/insert
+
+
+```
+
+
+
 ### Docker
 
 https://github.com/bage2014/study/tree/master/study-docker
@@ -17,7 +45,7 @@ https://github.com/bage2014/study/tree/master/study-docker
 启动
 
 ```
-docker run --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+
 ```
 
 
