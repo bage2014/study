@@ -232,7 +232,7 @@ Start a mysql server instance
     docker run --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
     
     docker run --name bage-mysql --add-host=host.docker.internal:host-gateway -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
-    
+
 
 
 其中
@@ -562,6 +562,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -877,6 +878,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -1265,7 +1267,7 @@ start a instance
 	
 	Mac
 	docker run -d --name=bage-grafana  --add-host=host.docker.internal:host-gateway -p 3000:3000 -v /Users/bage/bage/docker-data/grafana:/var/lib/grafana grafana/grafana
-	
+
 
 visit
 
@@ -2433,6 +2435,44 @@ http://localhost
 ```
 
 
+
+### 安装 Mermaid
+
+参考链接  https://mermaid.js.org/intro/getting-started.html
+
+https://juejin.cn/post/7493792787399770152
+
+Download
+
+```
+
+```
+
+
+
+Start
+
+```
+// 如果是docker v2 [docker compose version]
+docker compose up -d
+
+// 访问
+http://localhost
+```
+
+
+
+
+
+Visit
+
+```
+// 如果是docker v2 [docker compose version]
+docker compose up -d
+
+// 访问
+http://localhost
+```
 
 
 
