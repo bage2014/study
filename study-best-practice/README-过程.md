@@ -4,6 +4,8 @@
 
 ## 环境准备 
 
+https://dev.to/nasrulhazim/how-to-access-your-localhost-api-from-docker-containers-7ai
+
 **基于Docker环境**
 
 ```
@@ -18,7 +20,15 @@ docker network connect bage-net bage-redis
 
 
 
-**访问主机**
+确认Host
+
+```
+cat /etc/hosts
+```
+
+
+
+访问主机**
 
 ```
 curl http://gateway.docker.internal:8000/user/insert
@@ -29,7 +39,7 @@ curl http://docker.for.mac.host.internal:8000/user/insert
 
 curl http://172.17.0.1:8000/user/insert
 
-
+docker.for.mac.host.internal
 ```
 
 

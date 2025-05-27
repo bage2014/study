@@ -230,6 +230,9 @@ Start a mysql server instance
     
     Mac-pro:	
     docker run --name bage-mysql -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    
+    docker run --name bage-mysql --add-host=host.docker.internal:host-gateway -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=bage -p 3306:3306 -d mysql/mysql-server
+    
 
 
 其中
@@ -391,7 +394,7 @@ connect to it from an application
     docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
     
     Mac 
-    docker run -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
+    docker run -p 6379:6379 --name bage-redis  --add-host=host.docker.internal:host-gateway  -d redis --requirepass "bage"
 
 
 ​    
@@ -1234,7 +1237,7 @@ start a instance
 	docker run --name prometheus -p 9090:9090 -v /home/bage/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 	
 	Mac 
-	docker run -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-data/prometheus:/prometheus/data -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+	docker run -d --name bage-prometheus  --add-host=host.docker.internal:host-gateway  -p 9090:9090 -v /Users/bage/bage/docker-data/prometheus:/prometheus/data -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 
 
 ​	
@@ -1261,7 +1264,7 @@ start a instance
 	docker run -d --name=grafana -p 3000:3000 grafana/grafana
 	
 	Mac
-	docker run -d --name=bage-grafana -p 3000:3000 -v /Users/bage/bage/docker-data/grafana:/var/lib/grafana grafana/grafana
+	docker run -d --name=bage-grafana  --add-host=host.docker.internal:host-gateway -p 3000:3000 -v /Users/bage/bage/docker-data/grafana:/var/lib/grafana grafana/grafana
 	
 
 visit
@@ -1780,8 +1783,8 @@ docker pull prom/mysqld-exporter
 Run 
 
 ```console
-docker run --name bage-mysqld-exporter -d -p 9104:9104 --network bage-net \
-        -e DATA_SOURCE_NAME="bage:bage@(bage-mysql:3306)/mydbpro" prom/mysqld-exporter
+
+docker run --name bage-mysqld-exporter --add-host=host.docker.internal:host-gateway  -d -p 9104:9104 -e DATA_SOURCE_NAME="bage:bage@(host.docker.internal:3306)/mydbpro" prom/mysqld-exporter
                    
 ```
 
@@ -2482,6 +2485,20 @@ host.docker.internal
 ```
 
 
+
+### 批量保存
+
+https://www.orchome.com/17100
+
+```
+docker save $(docker images -q) -o 
+
+IDS=$(docker images | awk '{if ($1 ~ /^(debian|centos)/) print $3}')
+docker save $IDS -o ~/bage/images/all.tar
+
+docker load -i /path/to/save/mydockersimages.tar
+
+```
 
 
 
