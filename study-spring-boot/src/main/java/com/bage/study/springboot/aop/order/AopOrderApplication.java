@@ -23,8 +23,11 @@ public class AopOrderApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         helloAopOrderService.hello("world");
+        System.out.println("------hello-end-------");
         helloAopOrderService.hello2("world");
+        System.out.println("------hello2-end-------");
         helloAopOrderService.hello3("world");
+        System.out.println("------hello3-end-------");
     }
 
 }
