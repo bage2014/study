@@ -49,228 +49,228 @@ public class RedisController {
 
 
     @RequestMapping("/random/set")
-    public Object setRandom() {
-        metricService.increment("setRandom", "RedisController");
+    public Object randomSet() {
+        metricService.increment("randomSet", "RedisController");
 
         long start = System.currentTimeMillis();
         int random = basicRedisService.random();
         long end = System.currentTimeMillis();
-        log.info("RedisController random cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "setRandom", "RedisController");
+        log.info("RedisController randomSet cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "randomSet", "RedisController");
 
         return new RestResult(200, random);
     }
 
 
     @RequestMapping("/random/get")
-    public Object getRandom() {
-        metricService.increment("getRandom", "RedisController");
+    public Object randomGet() {
+        metricService.increment("randomGet", "RedisController");
 
         long start = System.currentTimeMillis();
         String random = basicRedisService.get();
         long end = System.currentTimeMillis();
-        log.info("RedisController random cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "getRandom", "RedisController");
+        log.info("RedisController randomGet cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "randomGet", "RedisController");
 
         return new RestResult(200, random);
     }
 
     @RequestMapping("/get/key")
     public Object getKey(@RequestParam(value = "key") String key) {
-        metricService.increment("getRandom", "RedisController");
+        metricService.increment("getKey", "RedisController");
 
         long start = System.currentTimeMillis();
         String random = basicRedisService.get(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController random cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "getRandom", "RedisController");
+        log.info("RedisController getKey cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "getKey", "RedisController");
 
         return new RestResult(200, random);
     }
 
 
     @RequestMapping("/big/key/init")
-    public Object initBigKey(@RequestParam(value = "max", required = false) Integer max,
+    public Object bigKeyInit(@RequestParam(value = "max", required = false) Integer max,
                              @RequestParam(value = "prefixLoop", required = false) Integer prefixLoop) {
-        metricService.increment("initBigKey", "RedisController");
-        log.info("RedisController initBigKey max = {}", max);
+        metricService.increment("bigKeyInit", "RedisController");
+        log.info("RedisController bigKeyInit max = {}", max);
         long start = System.currentTimeMillis();
         int random = bigKeyRedisService.initBigKey(max, prefixLoop);
         long end = System.currentTimeMillis();
-        log.info("RedisController initBigKey cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "initBigKey", "RedisController");
+        log.info("RedisController bigKeyInit cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigKeyInit", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/key/index/set")
-    public Object indexSet(@RequestParam(value = "index", required = false) Integer index) {
-        metricService.increment("indexSet", "RedisController");
-        log.info("RedisController indexSet index = {}", index);
+    public Object bigKeyIndexSet(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("bigKeyIndexSet", "RedisController");
+        log.info("RedisController bigKeyIndexSet index = {}", index);
         long start = System.currentTimeMillis();
         String random = bigKeyRedisService.setBigKey(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController indexSet cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "indexSet", "RedisController");
+        log.info("RedisController bigKeyIndexSet cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigKeyIndexSet", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/key/random/set")
-    public Object randomSet(@RequestParam(value = "key", required = false) String key) {
-        metricService.increment("randomSet", "RedisController");
-        log.info("RedisController randomSet key = {}", key);
+    public Object bigKeyRandomSet(@RequestParam(value = "key", required = false) String key) {
+        metricService.increment("bigKeyRandomSet", "RedisController");
+        log.info("RedisController bigKeyRandomSet key = {}", key);
         long start = System.currentTimeMillis();
         String random = bigKeyRedisService.setBigKeyRandom(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController randomSet cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "randomSet", "RedisController");
+        log.info("RedisController bigKeyRandomSet cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigKeyRandomSet", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/key/random/get")
-    public Object getBigKeyRandom(@RequestParam(value = "index", required = false) Integer index) {
-        metricService.increment("getBigKeyRandom", "RedisController");
-        log.info("RedisController getBigKeyRandom count2 = {}", index);
+    public Object bigKeyRandomGet(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("bigKeyRandomGet", "RedisController");
+        log.info("RedisController bigKeyRandomGet count2 = {}", index);
         long start = System.currentTimeMillis();
         bigKeyRedisService.getBigKey(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController getBigKeyRandom async cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigKeyRandom", "RedisController");
+        log.info("RedisController bigKeyRandomGet async cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigKeyRandomGet", "RedisController");
         return new RestResult(200, "async");
     }
 
 
     @RequestMapping("/big/key/get")
-    public Object getBigKey(@RequestParam(value = "key", required = false) String key) {
-        metricService.increment("getBigKey", "RedisController");
-        log.info("RedisController getBigKey count2 = {}", key);
+    public Object bigKeyGet(@RequestParam(value = "key", required = false) String key) {
+        metricService.increment("bigKeyGet", "RedisController");
+        log.info("RedisController bigKeyGet count2 = {}", key);
         long start = System.currentTimeMillis();
         bigKeyRedisService.getBigKey(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController getBigKey async cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigKey", "RedisController");
+        log.info("RedisController bigKeyGet async cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigKeyGet", "RedisController");
         return new RestResult(200, "async");
     }
 
     @RequestMapping("/big/value/init")
-    public Object initBigValue(@RequestParam(value = "max", required = false) Integer max,
+    public Object bigValueInit(@RequestParam(value = "max", required = false) Integer max,
                                @RequestParam(value = "prefixLoop", required = false) Integer prefixLoop) {
-        metricService.increment("initBigValue", "RedisController");
-        log.info("RedisController initBigValue max = {}", max);
+        metricService.increment("bigValueInit", "RedisController");
+        log.info("RedisController bigValueInit max = {}", max);
         long start = System.currentTimeMillis();
         int random = bigValueRedisService.initBigValue(max, prefixLoop);
         long end = System.currentTimeMillis();
-        log.info("RedisController initBigValue cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "initBigValue", "RedisController");
+        log.info("RedisController bigValueInit cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigValueInit", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/value/index/set")
-    public Object indexSetValue(@RequestParam(value = "index", required = false) Integer index) {
-        metricService.increment("indexSetValue", "RedisController");
-        log.info("RedisController indexSetValue index = {}", index);
+    public Object bigValueIndexSet(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("bigValueIndexSet", "RedisController");
+        log.info("RedisController bigValueIndexSet index = {}", index);
         long start = System.currentTimeMillis();
         String random = bigValueRedisService.setBigValue(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController indexSetValue cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "indexSetValue", "RedisController");
+        log.info("RedisController bigValueIndexSet cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigValueIndexSet", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/value/random/set")
-    public Object randomSetValue(@RequestParam(value = "key", required = false) String key) {
-        metricService.increment("randomSetValue", "RedisController");
-        log.info("RedisController randomSetValue key = {}", key);
+    public Object bigValueRandomSet(@RequestParam(value = "key", required = false) String key) {
+        metricService.increment("bigValueRandomSet", "RedisController");
+        log.info("RedisController bigValueRandomSet key = {}", key);
         long start = System.currentTimeMillis();
         String random = bigValueRedisService.setBigValueRandom(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController randomSetValue cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "randomSetValue", "RedisController");
+        log.info("RedisController bigValueRandomSet cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigValueRandomSet", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/value/random/get")
-    public Object getBigValueRandom(@RequestParam(value = "index", required = false) Integer index) {
-        metricService.increment("getBigValueRandom", "RedisController");
-        log.info("RedisController getBigValueRandom count2 = {}", index);
+    public Object bigValueRandomGet(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("bigValueRandomGet", "RedisController");
+        log.info("RedisController bigValueRandomGet count2 = {}", index);
         long start = System.currentTimeMillis();
         bigValueRedisService.getBigValue(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController getBigValueRandom async cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigValueRandom", "RedisController");
+        log.info("RedisController bigValueRandomGet async cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigValueRandomGet", "RedisController");
         return new RestResult(200, "async");
     }
 
     @RequestMapping("/big/value/get")
-    public Object getBigValue(@RequestParam(value = "key", required = false) String key) {
-        metricService.increment("getBigValue", "RedisController");
-        log.info("RedisController getBigValue key = {}", key);
+    public Object bigValueGet(@RequestParam(value = "key", required = false) String key) {
+        metricService.increment("bigValueGet", "RedisController");
+        log.info("RedisController bigValueGet key = {}", key);
         long start = System.currentTimeMillis();
         String bigValue = bigValueRedisService.getBigValue(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController getBigValue async cost = {},bigValue = {}", (end - start), bigValue);
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigValue", "RedisController");
+        log.info("RedisController bigValueGet async cost = {},bigValue = {}", (end - start), bigValue);
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigValueGet", "RedisController");
         return new RestResult(200, bigValue);
     }
 
 
     @RequestMapping("/big/collection/init")
-    public Object initBigCollection(@RequestParam(value = "max", required = false) Integer max,
+    public Object bigCollectionInit(@RequestParam(value = "max", required = false) Integer max,
                                     @RequestParam(value = "collectionCount", required = false) Integer collectionCount) {
-        metricService.increment("initBigCollection", "RedisController");
-        log.info("RedisController initBigCollection max = {},collectionCount = {}", max, collectionCount);
+        metricService.increment("bigCollectionInit", "RedisController");
+        log.info("RedisController bigCollectionInit max = {},collectionCount = {}", max, collectionCount);
         long start = System.currentTimeMillis();
         int random = bigCollectionRedisService.initBigCollection(max, collectionCount);
         long end = System.currentTimeMillis();
-        log.info("RedisController initBigCollection cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "initBigCollection", "RedisController");
+        log.info("RedisController bigCollectionInit cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigCollectionInit", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/collection/index/set")
-    public Object indexSetCollection(@RequestParam(value = "index", required = false) Integer index) {
-        metricService.increment("indexSetCollection", "RedisController");
-        log.info("RedisController indexSetCollection index = {}", index);
+    public Object bigCollectionIndexSet(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("bigCollectionIndexSet", "RedisController");
+        log.info("RedisController bigCollectionIndexSet index = {}", index);
         long start = System.currentTimeMillis();
         String random = bigCollectionRedisService.setBigCollection(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController indexSetCollection cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "indexSetCollection", "RedisController");
+        log.info("RedisController bigCollectionIndexSet cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigCollectionIndexSet", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/collection/random/set")
-    public Object randomSetCollection(@RequestParam(value = "key", required = false) String key) {
-        metricService.increment("randomSetCollection", "RedisController");
-        log.info("RedisController randomSetCollection key = {}", key);
+    public Object bigCollectionRandomSet(@RequestParam(value = "key", required = false) String key) {
+        metricService.increment("bigCollectionRandomSet", "RedisController");
+        log.info("RedisController bigCollectionRandomSet key = {}", key);
         long start = System.currentTimeMillis();
         String random = bigCollectionRedisService.setBigCollectionRandom(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController randomSetCollection cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "randomSetCollection", "RedisController");
+        log.info("RedisController bigCollectionRandomSet cost = {}", (end - start));
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigCollectionRandomSet", "RedisController");
         return new RestResult(200, random);
     }
 
     @RequestMapping("/big/collection/random/get")
-    public Object getBigCollectionRandom(@RequestParam(value = "index", required = false) Integer index) {
-        metricService.increment("getBigCollectionRandom", "RedisController");
-        log.info("RedisController getBigCollectionRandom count2 = {}", index);
+    public Object bigCollectionRandomGet(@RequestParam(value = "index", required = false) Integer index) {
+        metricService.increment("bigCollectionRandomGet", "RedisController");
+        log.info("RedisController bigCollectionRandomGet count2 = {}", index);
         long start = System.currentTimeMillis();
         String bigCollectionRandom = bigCollectionRedisService.getBigCollectionRandom(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController getBigCollectionRandom async cost = {},bigCollectionRandom = {}", (end - start), bigCollectionRandom);
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigCollectionRandom", "RedisController");
+        log.info("RedisController bigCollectionRandomGet async cost = {},bigCollectionRandom = {}", (end - start), bigCollectionRandom);
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigCollectionRandomGet", "RedisController");
         return new RestResult(200, "async");
     }
 
     @RequestMapping("/big/collection/get")
-    public Object getBigCollection(@RequestParam(value = "key", required = false) String key) {
-        metricService.increment("getBigCollection", "RedisController");
-        log.info("RedisController getBigCollection key = {}", key);
+    public Object bigCollectionGet(@RequestParam(value = "key", required = false) String key) {
+        metricService.increment("bigCollectionGet", "RedisController");
+        log.info("RedisController bigCollectionGet key = {}", key);
         long start = System.currentTimeMillis();
         String bigCollection = bigCollectionRedisService.getBigCollectionRandom(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController getBigCollection async cost = {}, bigCollection = {}", (end - start), bigCollection);
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "getBigCollection", "RedisController");
+        log.info("RedisController bigCollectionGet async cost = {}, bigCollection = {}", (end - start), bigCollection);
+        metricService.record((end - start), TimeUnit.MILLISECONDS, "bigCollectionGet", "RedisController");
         return new RestResult(200, "async");
     }
 

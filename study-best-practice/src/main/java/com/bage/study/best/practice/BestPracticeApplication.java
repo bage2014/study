@@ -3,7 +3,9 @@ package com.bage.study.best.practice;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.bage.study.best.practice.controller.UserController;
 import com.bage.study.best.practice.trial.JvmGcController;
+import com.bage.study.best.practice.trial.RedisController;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,10 @@ import java.util.List;
 public class BestPracticeApplication implements CommandLineRunner {
 
     @Autowired
+    private UserController userController;
+    @Autowired
+    private RedisController redisController;
+    @Autowired
     private JvmGcController jvmGcController;
 
     public static void main(String args[]) {
@@ -31,21 +37,32 @@ public class BestPracticeApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        log.info(("----- BestPracticeApplication is started ------"));
+        log.info(("----- BestPracticeApplication run ------"));
         limitFlow();
 
         Thread thread = new Thread(() -> {
-            for (int i = 0; i < 200; i++) {
+            for (int i = 0; i < 100; i++) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
+
                     jvmGcController.add(1); // 每 N 秒，自动放
+
+                    Thread.sleep(1000);
+                    redisController.randomSet();
+                    Object random = redisController.randomGet();
+                    System.out.println("BestPracticeApplication randomGet random = " + random);
+
+                    Thread.sleep(1000);
+                    userController.insert();
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("bage-command is running:" + i);
+                System.out.println("BestPracticeApplication command is running:" + i);
             }
+            log.info(("----- BestPracticeApplication started ------"));
         });
-        thread.setName("bage-command-hhhhhh");
+        log.info(("----- BestPracticeApplication stared ------"));
         thread.start();
     }
 

@@ -35,7 +35,7 @@ public class BasicRedisService {
 
     public int random() {
         String data = UUID.randomUUID().toString();
-        String key = "random-key-" + UUID.randomUUID().toString() + "-" + 1;
+        String key = prefix + new Random().nextInt(maxCount);
         log.info("randomKey key = {}", key);
         getService().cache(data, "-random-key-" + data + "-" + 1);
         return 1;
