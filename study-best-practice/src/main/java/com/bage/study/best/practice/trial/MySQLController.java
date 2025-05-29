@@ -74,17 +74,6 @@ public class MySQLController {
         return users;
     }
 
-    @RequestMapping("/query/key")
-    public Object queryByKey(@RequestParam("key") String key) {
-        long start = System.currentTimeMillis();
-        metricService.increment("queryByKey", "MySQLController");
-        List<User> users = mySQLService.queryByKey(key);
-        long end = System.currentTimeMillis();
-        log.info("MySQLController queryByKey cost = {}, users = {}", (end - start),users);
-        metricService.record((end - start), TimeUnit.MILLISECONDS,"queryByKey", "MySQLController");
-        return users;
-    }
-
     @RequestMapping("/query/100")
     public Object query100(@RequestParam("key") String key) {
         long start = System.currentTimeMillis();
