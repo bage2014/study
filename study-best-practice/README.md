@@ -383,10 +383,8 @@ https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-d
 // set. 初始化 N个
 http://localhost:8000/redis/random/init?max=10000
 
-
 // random set
 http://localhost:8000/redis/random/set
-
 
 // random get
 http://localhost:8000/redis/random/get
@@ -398,13 +396,11 @@ http://localhost:8000/redis/random/get
 // set. 初始化 N个
 http://localhost:8000/redis/big/key/init?max=1000
 
-
 // random set
-http://localhost:8000/redis/big/key/set
-
+http://localhost:8000/redis/big/key/random/set
 
 // random get
-http://localhost:8000/redis/big/key/get
+http://localhost:8000/redis/big/key/random/get
 
 ```
 
@@ -416,13 +412,11 @@ http://localhost:8000/redis/big/key/get
 // set. 初始化 N个
 http://localhost:8000/redis/big/value/init?max=1000
 
-
 // random set
-http://localhost:8000/redis/big/value/set
-
+http://localhost:8000/redis/big/value/random/set
 
 // random get
-http://localhost:8000/redis/big/value/get
+http://localhost:8000/redis/big/value/random/get
 ```
 
 
@@ -434,10 +428,8 @@ http://localhost:8000/redis/big/value/get
 // set. 初始化 N个
 http://localhost:8000/redis/big/collection/init?max=1000&collectionCount=1000
 
-
 // random set
 http://localhost:8000/redis/big/collection/set
-
 
 // random get
 http://localhost:8000/redis/big/collection/get

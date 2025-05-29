@@ -51,7 +51,7 @@ public class BigKeyRedisService {
         long startTime = System.currentTimeMillis();
         String prefixForBigKey = getBigKeyPrefix();
         for (int i = 0; i < max; i++) {
-            getService().cache(prefixForBigKey + "_"+ i, "-init-" + UUID.randomUUID().toString() + "-");
+            getService().cache(prefixForBigKey + i, "-init-" + UUID.randomUUID().toString() + "-");
         }
         log.info("time cost：" + (System.currentTimeMillis() - startTime));
         return max;

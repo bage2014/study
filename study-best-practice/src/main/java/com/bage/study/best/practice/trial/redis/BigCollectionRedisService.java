@@ -56,7 +56,7 @@ public class BigCollectionRedisService {
     public int initBigCollectionItem(String key,String valuePrefix) {
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < collectionCount; i++) {
-            getService().cacheSet(key, valuePrefix + "-init-" + i + "-");
+            getService().cacheSet(key, valuePrefix +  i + "-");
         }
         log.info("time cost：" + (System.currentTimeMillis() - startTime));
         return 1;
