@@ -55,6 +55,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> queryPhoneLike(String key) {
+        LambdaQueryWrapper<UserEntity> ge = Wrappers.<UserEntity>lambdaQuery().like(UserEntity::getPhone, key + "%");
+        List<UserEntity> list = userMapper.selectList(ge);
+        if (Objects.isNull(list)) {
+            return new ArrayList<>();
+        }
+        return list.stream()
+                .map(item -> userMapping.mapping(item))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public int insert(User user) {
         try (Entry entry = SphU.entry("HelloWorld")) {
             // 被保护的逻辑
