@@ -117,11 +117,11 @@ public class RedisController {
     @RequestMapping("/big/key/random/get")
     public Object bigKeyRandomGet(@RequestParam(value = "index", required = false) Integer index) {
         metricService.increment("bigKeyRandomGet", "RedisController");
-        log.info("RedisController bigKeyRandomGet count2 = {}", index);
+        log.info("RedisController bigKeyRandomGet index = {}", index);
         long start = System.currentTimeMillis();
         String result = bigKeyRedisService.getBigKey(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController bigKeyRandomGet async cost = {}", (end - start));
+        log.info("RedisController bigKeyRandomGet cost = {}", (end - start));
         metricService.record((end - start), TimeUnit.MILLISECONDS, "bigKeyRandomGet", "RedisController");
         return new RestResult(200, result);
     }
@@ -141,11 +141,11 @@ public class RedisController {
     @RequestMapping("/big/key/get")
     public Object bigKeyGet(@RequestParam(value = "key", required = false) String key) {
         metricService.increment("bigKeyGet", "RedisController");
-        log.info("RedisController bigKeyGet count2 = {}", key);
+        log.info("RedisController bigKeyGet key = {}", key);
         long start = System.currentTimeMillis();
         String result = bigKeyRedisService.getBigKey(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController bigKeyGet async cost = {}", (end - start));
+        log.info("RedisController bigKeyGet cost = {}", (end - start));
         metricService.record((end - start), TimeUnit.MILLISECONDS, "bigKeyGet", "RedisController");
         return new RestResult(200, result);
     }
@@ -190,11 +190,11 @@ public class RedisController {
     @RequestMapping("/big/value/random/get")
     public Object bigValueRandomGet(@RequestParam(value = "index", required = false) Integer index) {
         metricService.increment("bigValueRandomGet", "RedisController");
-        log.info("RedisController bigValueRandomGet count2 = {}", index);
+        log.info("RedisController bigValueRandomGet index = {}", index);
         long start = System.currentTimeMillis();
         String result = bigValueRedisService.getBigValue(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController bigValueRandomGet async cost = {}", (end - start));
+        log.info("RedisController bigValueRandomGet cost = {}", (end - start));
         metricService.record((end - start), TimeUnit.MILLISECONDS, "bigValueRandomGet", "RedisController");
         return new RestResult(200, result);
     }
@@ -206,7 +206,7 @@ public class RedisController {
         long start = System.currentTimeMillis();
         String bigValue = bigValueRedisService.getBigValue(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController bigValueGet async cost = {},bigValue = {}", (end - start), bigValue);
+        log.info("RedisController bigValueGet cost = {},bigValue = {}", (end - start), bigValue);
         metricService.record((end - start), TimeUnit.MILLISECONDS, "bigValueGet", "RedisController");
         return new RestResult(200, bigValue);
     }
@@ -252,11 +252,11 @@ public class RedisController {
     @RequestMapping("/big/collection/random/get")
     public Object bigCollectionRandomGet(@RequestParam(value = "index", required = false) Integer index) {
         metricService.increment("bigCollectionRandomGet", "RedisController");
-        log.info("RedisController bigCollectionRandomGet count2 = {}", index);
+        log.info("RedisController bigCollectionRandomGet index = {}", index);
         long start = System.currentTimeMillis();
         String result = bigCollectionRedisService.getBigCollectionRandom(index);
         long end = System.currentTimeMillis();
-        log.info("RedisController bigCollectionRandomGet async cost = {},bigCollectionRandom = {}", (end - start), result);
+        log.info("RedisController bigCollectionRandomGet cost = {},bigCollectionRandom = {}", (end - start), result);
         metricService.record((end - start), TimeUnit.MILLISECONDS, "bigCollectionRandomGet", "RedisController");
         return new RestResult(200, result);
     }
@@ -268,7 +268,7 @@ public class RedisController {
         long start = System.currentTimeMillis();
         String result = bigCollectionRedisService.getBigCollectionRandom(key);
         long end = System.currentTimeMillis();
-        log.info("RedisController bigCollectionGet async cost = {}, bigCollection = {}", (end - start), result);
+        log.info("RedisController bigCollectionGet  cost = {}, bigCollection = {}", (end - start), result);
         metricService.record((end - start), TimeUnit.MILLISECONDS, "bigCollectionGet", "RedisController");
         return new RestResult(200, result);
     }

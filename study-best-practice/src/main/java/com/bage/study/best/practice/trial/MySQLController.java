@@ -5,6 +5,7 @@ import com.bage.study.best.practice.model.User;
 import com.bage.study.best.practice.rest.RestResult;
 import com.bage.study.best.practice.service.UserMockService;
 import com.bage.study.best.practice.service.UserService;
+import com.bage.study.best.practice.trial.mysql.MySQLService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,39 +24,39 @@ import java.util.concurrent.TimeUnit;
 public class MySQLController {
 
     @Autowired
-    private UserService userService;
+    private MySQLService mySQLService;
     @Autowired
     private UserMockService userMockService;
     @Autowired
     private MetricService metricService;
 
     @RequestMapping("/sql/slow")
-    public Object SqlSlow(@RequestParam("phone") String phone) {
+    public Object sqlSlow(@RequestParam("key") String key) {
         long start = System.currentTimeMillis();
-        metricService.increment("SqlSlow", "MySQLController");
-        List<User> users = userService.query(phone);
+        metricService.increment("sqlSlow", "MySQLController");
+        List<User> users = mySQLService.sqlSlow(key);
         long end = System.currentTimeMillis();
-        log.info("MySQLController SqlSlow cost = {}, users = {}", (end - start),users);
-        metricService.record((end - start), TimeUnit.MILLISECONDS,"SqlSlow", "MySQLController");
+        log.info("MySQLController sqlSlow cost = {}, users = {}", (end - start),users);
+        metricService.record((end - start), TimeUnit.MILLISECONDS,"sqlSlow", "MySQLController");
         return users;
     }
 
     @RequestMapping("/io/high")
-    public Object memoryIO(@RequestParam("phone") String phone) {
+    public Object ioHigh(@RequestParam("key") String key) {
         long start = System.currentTimeMillis();
-        metricService.increment("memoryIO", "MySQLController");
-        List<User> users = userService.query(phone);
+        metricService.increment("ioHigh", "MySQLController");
+        List<User> users = mySQLService.ioHigh(key);
         long end = System.currentTimeMillis();
-        log.info("MySQLController memoryIO cost = {}, users = {}", (end - start),users);
-        metricService.record((end - start), TimeUnit.MILLISECONDS,"memoryIO", "MySQLController");
+        log.info("MySQLController ioHigh cost = {}, users = {}", (end - start),users);
+        metricService.record((end - start), TimeUnit.MILLISECONDS,"ioHigh", "MySQLController");
         return users;
     }
 
     @RequestMapping("/memory/high")
-    public Object memoryHigh(@RequestParam("phone") String phone) {
+    public Object memoryHigh(@RequestParam("key") String key) {
         long start = System.currentTimeMillis();
         metricService.increment("memoryHigh", "MySQLController");
-        List<User> users = userService.query(phone);
+        List<User> users = mySQLService.memoryHigh(key);
         long end = System.currentTimeMillis();
         log.info("MySQLController memoryHigh cost = {}, users = {}", (end - start),users);
         metricService.record((end - start), TimeUnit.MILLISECONDS,"memoryHigh", "MySQLController");
@@ -63,10 +64,10 @@ public class MySQLController {
     }
 
     @RequestMapping("/thread/active/high")
-    public Object highActiveThread(@RequestParam("phone") String phone) {
+    public Object highActiveThread(@RequestParam("key") String key) {
         long start = System.currentTimeMillis();
         metricService.increment("highActiveThread", "MySQLController");
-        List<User> users = userService.query(phone);
+        List<User> users = mySQLService.highActiveThread(key);
         long end = System.currentTimeMillis();
         log.info("MySQLController highActiveThread cost = {}, users = {}", (end - start),users);
         metricService.record((end - start), TimeUnit.MILLISECONDS,"highActiveThread", "MySQLController");
@@ -74,10 +75,10 @@ public class MySQLController {
     }
 
     @RequestMapping("/query/key")
-    public Object queryByKey(@RequestParam("phone") String phone) {
+    public Object queryByKey(@RequestParam("key") String key) {
         long start = System.currentTimeMillis();
         metricService.increment("queryByKey", "MySQLController");
-        List<User> users = userService.query(phone);
+        List<User> users = mySQLService.queryByKey(key);
         long end = System.currentTimeMillis();
         log.info("MySQLController queryByKey cost = {}, users = {}", (end - start),users);
         metricService.record((end - start), TimeUnit.MILLISECONDS,"queryByKey", "MySQLController");
@@ -85,10 +86,10 @@ public class MySQLController {
     }
 
     @RequestMapping("/query/100")
-    public Object query100(@RequestParam("phone") String phone) {
+    public Object query100(@RequestParam("key") String key) {
         long start = System.currentTimeMillis();
         metricService.increment("query100", "MySQLController");
-        List<User> users = userService.query(phone);
+        List<User> users = mySQLService.query100(key);
         long end = System.currentTimeMillis();
         log.info("MySQLController query100 cost = {}, users = {}", (end - start),users);
         metricService.record((end - start), TimeUnit.MILLISECONDS,"query100", "MySQLController");
@@ -96,50 +97,14 @@ public class MySQLController {
     }
 
     @RequestMapping("/query/10")
-    public Object query10(@RequestParam("phone") String phone) {
+    public Object query10(@RequestParam("key") String key) {
         long start = System.currentTimeMillis();
         metricService.increment("query10", "MySQLController");
-        List<User> users = userService.query(phone);
+        List<User> users = mySQLService.query10(key);
         long end = System.currentTimeMillis();
         log.info("MySQLController query10 cost = {}, users = {}", (end - start),users);
         metricService.record((end - start), TimeUnit.MILLISECONDS,"query10", "MySQLController");
         return users;
     }
-
-    @RequestMapping("/insert/one")
-    public Object insertOne() {
-        try {
-            metricService.increment("insertOne", "MySQLController");
-            long start = System.currentTimeMillis();
-            User user = userMockService.mockOne();
-            int insert = userService.insert(user);
-            long end = System.currentTimeMillis();
-            log.info("MySQLController insertOne cost = {}", (end - start));
-            metricService.record((end - start), TimeUnit.MILLISECONDS,"insertOne", "MySQLController");
-            return new RestResult(200, insert);
-        } catch (Exception e) {
-            return new RestResult(500, e.getMessage());
-        }
-    }
-
-    @RequestMapping("/insert/batch")
-    public Object insertBatch(@RequestParam(value = "total", required = false, defaultValue = "200") Integer total) {
-        metricService.increment("insertBatch", "MySQLController");
-        try {
-            long start = System.currentTimeMillis();
-            List<User> userList = userMockService.mockBatch(total);
-            log.info("MySQLController insert user = {}", userList);
-            int insert = userService.insertBatch(userList);
-            log.info("MySQLController insert insert = {}", insert);
-            long end = System.currentTimeMillis();
-            log.info("MySQLController insert cost = {}", (end - start));
-            metricService.record((end - start), TimeUnit.MILLISECONDS,"insertBatch", "MySQLController");
-            return new RestResult(200, insert);
-        } catch (Exception e) {
-            return new RestResult(500, e.getMessage());
-        }
-    }
-
-
 
 }
