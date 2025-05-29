@@ -20,27 +20,28 @@ public class MySQLService {
         return userService.queryByAddress(key);
     }
 
-    public List<User> ioHigh(String phone) {
+    public List<User> ioHigh(String key) {
         return null;
     }
 
-    public List<User> memoryHigh(String phone) {
+    public List<User> memoryHigh(String key) {
         return null;
     }
 
-    public List<User> highActiveThread(String phone) {
+    public List<User> highActiveThread(String key) {
         return null;
     }
 
-    public List<User> queryByKey(String phone) {
+    public List<User> queryByKey(String key) {
         return null;
     }
 
-    public List<User> query100(String phone) {
-        return null;
+    public List<User> query100(String key) {
+        // 地址查询 不会命中索引
+        return userService.queryPhoneLike(key);
     }
 
-    public List<User> query10(String phone) {
+    public List<User> query10(String key) {
         return null;
     }
 }

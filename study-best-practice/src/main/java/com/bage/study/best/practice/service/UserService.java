@@ -10,6 +10,8 @@ public interface UserService {
 
     List<User> queryByAddress(String address);
 
+    List<User> queryPhoneLike(String key);
+
     int insert(User user);
 
     int insertBatch(List<User> userList);
