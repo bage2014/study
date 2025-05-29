@@ -1,0 +1,46 @@
+package com.bage.study.best.practice.trial.mysql;
+
+import com.bage.study.best.practice.model.User;
+import com.bage.study.best.practice.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+@Slf4j
+public class MySQLService {
+
+    @Autowired
+    private UserService userService;
+
+    public List<User> sqlSlow(String key) {
+        // 地址查询 不会命中索引
+        return userService.queryByAddress(key);
+    }
+
+    public List<User> ioHigh(String phone) {
+        return null;
+    }
+
+    public List<User> memoryHigh(String phone) {
+        return null;
+    }
+
+    public List<User> highActiveThread(String phone) {
+        return null;
+    }
+
+    public List<User> queryByKey(String phone) {
+        return null;
+    }
+
+    public List<User> query100(String phone) {
+        return null;
+    }
+
+    public List<User> query10(String phone) {
+        return null;
+    }
+}

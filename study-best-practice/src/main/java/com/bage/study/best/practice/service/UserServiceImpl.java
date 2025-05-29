@@ -43,6 +43,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> queryByAddress(String address) {
+        LambdaQueryWrapper<UserEntity> ge = Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAddress, address);
+        List<UserEntity> list = userMapper.selectList(ge);
+        if (Objects.isNull(list)) {
+            return new ArrayList<>();
+        }
+        return list.stream()
+                .map(item -> userMapping.mapping(item))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public int insert(User user) {
         try (Entry entry = SphU.entry("HelloWorld")) {
             // 被保护的逻辑

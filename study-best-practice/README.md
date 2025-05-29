@@ -107,9 +107,15 @@ java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SN
 
 参考链接 https://help.aliyun.com/zh/rds/apsaradb-rds-for-mysql/common-performance-issues/
 
+慢SQL
+
+```
+http://localhost:8000/mysql/sql/slow?key=64415%20Hudson%20Drives
+```
 
 
-### 监控命令
+
+### 监控
 
 查看负载 
 
