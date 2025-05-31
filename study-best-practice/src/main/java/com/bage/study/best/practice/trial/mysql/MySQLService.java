@@ -42,6 +42,7 @@ public class MySQLService {
     }
 
     public List<User> query10(String key) {
-        return null;
+        // 地址查询 不会命中索引
+        return userService.queryPhoneLike(key);
     }
 }
