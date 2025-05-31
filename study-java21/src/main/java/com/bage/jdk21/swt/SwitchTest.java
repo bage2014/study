@@ -7,6 +7,12 @@ public class SwitchTest {
         System.out.println(new SwitchTest().formatterPatternSwitch(Double.parseDouble("13.23")));
     }
 
+    /**
+     * 1、 支持箭头
+     * 2、 支持类型
+     * @param obj
+     * @return
+     */
     public static String formatterPatternSwitch(Object obj) {
         return switch (obj) {
             case Integer i -> String.format("int %d", i);
