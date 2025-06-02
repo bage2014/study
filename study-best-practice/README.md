@@ -685,6 +685,45 @@ docker stats
 ```
 
 ## JVM 
+
+### 常用指标
+
+https://help.aliyun.com/zh/arms/application-monitoring/user-guide/jvm-monitoring
+
+https://help.aliyun.com/zh/edas/user-guide/jvm-monitoring-1
+
+#### GC
+
+- FullGC次数
+
+
+
+- YoungGC次数
+
+
+
+- FullGC耗时
+
+
+
+- YoungGC耗时
+
+
+
+#### Memory
+
+堆内存
+
+#### Thread
+
+线程数量
+
+
+
+
+
+
+
 打开自带的 Jconsole
 
 JVM参数调优：

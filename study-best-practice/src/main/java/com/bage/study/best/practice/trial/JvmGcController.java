@@ -40,6 +40,7 @@ public class JvmGcController {
         }
         return 1;
     }
+
     @RequestMapping("/clean")
     public Object clean() {
         log.debug("JvmGcController gc clean");
