@@ -3,6 +3,7 @@ package com.bage.study.best.practice.trial;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -16,8 +17,8 @@ public class JvmGcController {
     private final int MB = 1024 * 1024;
     private Map<String, Object> map = new HashMap<>();
 
-    @RequestMapping("/gc/{step}")
-    public Object gc(@PathVariable(value = "step", required = false) Integer step) {
+    @RequestMapping("/gc")
+    public Object gc(@RequestParam(value = "step", required = false) Integer step) {
         log.info("JvmGcController gc step = {}", step);
         if (step == null) {
             step = 100;
@@ -29,8 +30,8 @@ public class JvmGcController {
         return 1;
     }
 
-    @RequestMapping("/add/{step}")
-    public Object add(@PathVariable(value = "step", required = false) Integer step) {
+    @RequestMapping("/add")
+    public Object add(@RequestParam(value = "step", required = false) Integer step) {
         log.debug("JvmGcController gc step = {}", step);
         if (step == null) {
             step = 100;
@@ -48,8 +49,8 @@ public class JvmGcController {
         return 1;
     }
 
-    @RequestMapping("/addAndFinish/{step}")
-    public Object addAndFinish(@PathVariable(value = "step", required = false) Integer step) {
+    @RequestMapping("/addAndFinish")
+    public Object addAndFinish(@RequestParam(value = "step", required = false) Integer step) {
         log.debug("JvmGcController addAndFinish step = {}", step);
         if (step == null) {
             step = 100;
