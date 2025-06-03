@@ -563,6 +563,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -878,6 +879,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -2475,6 +2477,31 @@ http://localhost
 ```
 
 
+
+### 安装 
+
+参考链接  https://appwrite.io/docs
+
+https://github.com/appwrite/appwrite
+
+Download & start
+
+```
+docker run -it --rm \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume "$(pwd)"/bage/docker-data/appwrite:/usr/src/code/appwrite:rw \
+    --entrypoint="install" \
+    appwrite/appwrite:1.7.3
+```
+
+
+
+Visit
+
+```
+// go to http://localhost to access the Appwrite console from your browser.
+http://localhost
+```
 
 
 
