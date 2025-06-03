@@ -692,6 +692,14 @@ https://help.aliyun.com/zh/arms/application-monitoring/user-guide/jvm-monitoring
 
 https://help.aliyun.com/zh/edas/user-guide/jvm-monitoring-1
 
+```
+http://localhost:8000/gc/step/5
+http://localhost:8000/jvm/add?step=5
+
+```
+
+
+
 #### GC
 
 - FullGC次数
