@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -19,28 +20,28 @@ public class JvmController {
     private JvmGcService jvmGcService;
 
     @RequestMapping("/gc/full/count")
-    public Object gcFullCount(@PathVariable(value = "times", required = false) Integer times) {
+    public Object gcFullCount(@RequestParam(value = "times", required = false) Integer times) {
         log.info("JvmGcController gc times = {}", times);
         jvmGcService.fullGc(times);
         return 1;
     }
 
     @RequestMapping("/gc/full/cost")
-    public Object gcFullCost(@PathVariable(value = "times", required = false) Integer times) {
+    public Object gcFullCost(@RequestParam(value = "times", required = false) Integer times) {
         log.info("JvmGcController gc times = {}", times);
         Map<String, Object> temp = new HashMap<>();
         return 1;
     }
 
     @RequestMapping("/gc/young/count")
-    public Object gcYoungCount(@PathVariable(value = "times", required = false) Integer times) {
+    public Object gcYoungCount(@RequestParam(value = "times", required = false) Integer times) {
         log.info("JvmGcController gc times = {}", times);
         jvmGcService.youngGc(times);
         return 1;
     }
 
     @RequestMapping("/gc/young/cost")
-    public Object gcYoungCost(@PathVariable(value = "times", required = false) Integer times) {
+    public Object gcYoungCost(@RequestParam(value = "times", required = false) Integer times) {
         log.info("JvmGcController gc times = {}", times);
         Map<String, Object> temp = new HashMap<>();
         return 1;

@@ -1,6 +1,8 @@
 package com.bage.study.best.practice.trial;
 
+import com.bage.study.best.practice.trial.gc.JvmGcService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,8 @@ import java.util.Map;
 @Slf4j
 public class JvmGcController {
 
+    @Autowired
+    private JvmGcService jvmGcService;
     private final int MB = 1024 * 1024;
     private Map<String, Object> map = new HashMap<>();
 
@@ -32,13 +36,7 @@ public class JvmGcController {
 
     @RequestMapping("/add")
     public Object add(@RequestParam(value = "step", required = false) Integer step) {
-        log.debug("JvmGcController gc step = {}", step);
-        if (step == null) {
-            step = 100;
-        }
-        for (int i = 0; i < step; i++) {
-            map.put(System.currentTimeMillis() + "-bage-add-" + i, new byte[MB * 10]);
-        }
+        jvmGcService.step(step);
         return 1;
     }
 
