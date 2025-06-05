@@ -8,12 +8,41 @@ import java.util.List;
 @Component
 public class JvmGcService {
 
+    // Create a list to hold our objects
+    private List<byte[]> list = new ArrayList<>();
+
+    public void step(Integer iterations) {
+        // Print JVM memory information
+        printMemoryInfo();
+
+        // Number of iterations - adjust based on your JVM settings
+        if (iterations == null || iterations <= 0) {
+            iterations = 1000; // Default to 100 iterations if not specified
+        }
+        for (int i = 0; i < iterations; i++) {
+            // Allocate 1MB on each iteration
+            byte[] largeObject = new byte[1024 * 1024];
+            list.add(largeObject);
+
+            // Print memory info every 10 iterations
+            if (i % 10 == 0) {
+                printMemoryInfo();
+                try {
+                    Thread.sleep(100); // Small delay to observe the output
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        System.out.println("Young GC Demo completed");
+    }
     public void youngGc(Integer iterations) {
         // Print JVM memory information
         printMemoryInfo();
 
         // Number of iterations - adjust based on your JVM settings
-        if (iterations <= 0) {
+        if (iterations == null || iterations <= 0) {
             iterations = 1000; // Default to 100 iterations if not specified
         }
         for (int i = 0; i < iterations; i++) {
@@ -33,6 +62,7 @@ public class JvmGcService {
 
         System.out.println("Young GC Demo completed");
     }
+
     /**
      *
      * @param iterations   Number of iterations - adjust based on your JVM settings
@@ -45,7 +75,7 @@ public class JvmGcService {
         List<byte[]> list = new ArrayList<>();
 
         // Number of iterations - adjust based on your JVM settings
-        if (iterations <= 0) {
+        if (iterations == null || iterations <= 0) {
             iterations = 1000; // Default to 100 iterations if not specified
         }
         for (int i = 0; i < iterations; i++) {
