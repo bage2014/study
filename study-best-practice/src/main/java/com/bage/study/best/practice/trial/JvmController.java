@@ -1,6 +1,8 @@
 package com.bage.study.best.practice.trial;
 
+import com.bage.study.best.practice.trial.gc.JvmGcService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,12 +15,13 @@ import java.util.Map;
 @Slf4j
 public class JvmController {
 
-    private Map<String, Object> map = new HashMap<>();
+    @Autowired
+    private JvmGcService jvmGcService;
 
     @RequestMapping("/gc/full/count")
     public Object gcFullCount(@PathVariable(value = "times", required = false) Integer times) {
         log.info("JvmGcController gc times = {}", times);
-        Map<String, Object> temp = new HashMap<>();
+        jvmGcService.fullGc(times);
         return 1;
     }
 
@@ -32,7 +35,7 @@ public class JvmController {
     @RequestMapping("/gc/young/count")
     public Object gcYoungCount(@PathVariable(value = "times", required = false) Integer times) {
         log.info("JvmGcController gc times = {}", times);
-        Map<String, Object> temp = new HashMap<>();
+        jvmGcService.youngGc(times);
         return 1;
     }
 

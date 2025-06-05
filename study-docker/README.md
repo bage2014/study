@@ -564,6 +564,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -879,6 +880,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -2478,7 +2480,7 @@ http://localhost
 
 
 
-### 安装 
+### 安装 AppWrite
 
 参考链接  https://appwrite.io/docs
 
@@ -2487,7 +2489,7 @@ https://github.com/appwrite/appwrite
 Download & start
 
 ```
-docker run -it --rm \
+docker run  --name bage-app-write -it  --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume "$(pwd)"/bage/docker-data/appwrite:/usr/src/code/appwrite:rw \
     --entrypoint="install" \
