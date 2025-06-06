@@ -118,4 +118,7 @@ public class JvmGcService {
         return bytes / (1024 * 1024);
     }
 
+    public void clear() {
+        list.clear();
+    }
 }

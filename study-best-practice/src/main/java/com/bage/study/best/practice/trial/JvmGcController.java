@@ -19,7 +19,6 @@ public class JvmGcController {
     @Autowired
     private JvmGcService jvmGcService;
     private final int MB = 1024 * 1024;
-    private Map<String, Object> map = new HashMap<>();
 
     @RequestMapping("/gc")
     public Object gc(@RequestParam(value = "step", required = false) Integer step) {
@@ -43,7 +42,7 @@ public class JvmGcController {
     @RequestMapping("/clean")
     public Object clean() {
         log.debug("JvmGcController gc clean");
-        map.clear();
+        jvmGcService.clear();
         return 1;
     }
 
