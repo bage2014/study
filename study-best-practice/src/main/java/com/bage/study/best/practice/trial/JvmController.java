@@ -21,29 +21,29 @@ public class JvmController {
 
     @RequestMapping("/gc/full/count")
     public Object gcFullCount(@RequestParam(value = "times", required = false) Integer times) {
-        log.info("JvmGcController gc times = {}", times);
+        log.info("JvmGcController gcFullCount times = {}", times);
         jvmGcService.fullGc(times);
         return 1;
     }
 
     @RequestMapping("/gc/full/cost")
     public Object gcFullCost(@RequestParam(value = "times", required = false) Integer times) {
-        log.info("JvmGcController gc times = {}", times);
-        Map<String, Object> temp = new HashMap<>();
+        log.info("JvmGcController gcFullCost times = {}", times);
+        jvmGcService.fullGc(times);
         return 1;
     }
 
     @RequestMapping("/gc/young/count")
     public Object gcYoungCount(@RequestParam(value = "times", required = false) Integer times) {
-        log.info("JvmGcController gc times = {}", times);
+        log.info("JvmGcController gcYoungCount times = {}", times);
         jvmGcService.youngGc(times);
         return 1;
     }
 
     @RequestMapping("/gc/young/cost")
     public Object gcYoungCost(@RequestParam(value = "times", required = false) Integer times) {
-        log.info("JvmGcController gc times = {}", times);
-        Map<String, Object> temp = new HashMap<>();
+        log.info("JvmGcController gcYoungCost times = {}", times);
+        jvmGcService.youngGc(times);
         return 1;
     }
 
