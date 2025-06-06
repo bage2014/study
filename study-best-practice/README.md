@@ -696,8 +696,9 @@ https://help.aliyun.com/zh/edas/user-guide/jvm-monitoring-1
 http://localhost:8000/gc/step/5
 
 // 分配GC 堆内存
-http://localhost:8000/jvm/add?step=5
+http://localhost:8000/jvm/add?step=5000
 
+http://localhost:8000/jvm/clean
 ```
 
 
