@@ -1,6 +1,5 @@
 package com.bage.study.best.practice.trial;
 
-import com.bage.study.best.practice.metrics.MetricService;
 import com.bage.study.best.practice.rest.RestResult;
 import com.bage.study.best.practice.trial.jdbc.ConnectionUtils;
 import com.bage.study.best.practice.trial.redis.BasicRedisService;
@@ -22,13 +21,10 @@ import java.util.concurrent.TimeUnit;
 public class ConnectionController {
 
     @Autowired
-    private MetricService metricService;
-    @Autowired
     private BasicRedisService redisService;
 
     @RequestMapping("/get")
     public Object get(@RequestParam(value = "close", required = false) Boolean close) {
-        metricService.increment("get", "ConnectionController");
         long start = System.currentTimeMillis();
 
         Connection connection = null;
@@ -57,14 +53,12 @@ public class ConnectionController {
 
         long end = System.currentTimeMillis();
         log.info("ConnectionController get cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "get", "ConnectionController");
         return new RestResult(200, result);
     }
 
     @RequestMapping("/getAndExc")
     public Object getAndExc(@RequestParam(value = "close", required = false) Boolean close,
                             @RequestParam(value = "phone", required = false) String phone) {
-        metricService.increment("get", "ConnectionController");
         long start = System.currentTimeMillis();
 
         Connection connection = null;
@@ -106,7 +100,6 @@ public class ConnectionController {
 
         long end = System.currentTimeMillis();
         log.info("ConnectionController get cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "get", "ConnectionController");
         return new RestResult(200, result);
     }
 

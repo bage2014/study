@@ -29,12 +29,9 @@ public class DataSourceController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private MetricService metricService;
 
     @RequestMapping("/jdbc/get")
     public Object jdbcGet(@RequestParam(value = "phone") String phone) {
-        metricService.increment("jdbcGet", "DataSourceController");
         long start = System.currentTimeMillis();
 
         Connection connection = null;
@@ -76,14 +73,12 @@ public class DataSourceController {
 
         long end = System.currentTimeMillis();
         log.info("DataSourceController jdbcGet cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "jdbcGet", "DataSourceController");
         return new RestResult(result, query);
     }
 
 
     @RequestMapping("/pool/get")
     public Object poolGet(@RequestParam(value = "phone") String phone) {
-        metricService.increment("poolGet", "DataSourceController");
         long start = System.currentTimeMillis();
         List<User> query = new ArrayList<>();
         try {
@@ -92,7 +87,6 @@ public class DataSourceController {
         }
         long end = System.currentTimeMillis();
         log.info("DataSourceController poolGet cost = {}", (end - start));
-        metricService.record((end - start), TimeUnit.MILLISECONDS, "poolGet", "DataSourceController");
         return new RestResult(200, query);
     }
 
