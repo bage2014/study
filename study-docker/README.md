@@ -434,7 +434,7 @@ Docker Pull Command
 
 启动
 
-	docker run -d --hostname my-rabbit --name bage-rabbit -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=bage -e RABBITMQ_DEFAULT_PASS=bage rabbitmq:3-management
+	docker run -d --hostname bage-rabbit --name bage-rabbit -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=bage -e RABBITMQ_DEFAULT_PASS=bage rabbitmq:3-management
 启动过程中会进行下载 rabbitmq:3-management
 
     Unable to find image 'rabbitmq:3-management' locally 
@@ -454,7 +454,14 @@ Docker Pull Command
 
 访问验证(bage/bage)
 
-[http://{ip}:15672/](http://{ip}:15672/)
+Visit
+
+```
+[http://{ip}:15672/]
+
+http://127.0.0.1:15672/
+
+```
 
 
 ### 安装配置shipyard ###

@@ -24,14 +24,14 @@ public class CacheConfig {
     }
 
     @Bean
-    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory) {
+    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         return container;
     }
 
     @Bean
-    public StringRedisTemplate template(RedisConnectionFactory connectionFactory) {
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory connectionFactory) {
         return new StringRedisTemplate(connectionFactory);
     }
 
