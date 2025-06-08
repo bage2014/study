@@ -17,12 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class LimitController {
 
-    @Autowired
-    private MetricService metricService;
-
     @RequestMapping("/query")
     public Object query(@RequestParam("phone") String phone) {
-        metricService.increment("query","LimitController");
         log.info("UserController query users = {}", phone);
         return new RestResult(200, "OK");
     }
@@ -30,16 +26,14 @@ public class LimitController {
     @RequestMapping("/insert")
     public Object insert() {
         int resultCode = 0;
-        metricService.increment("insertOut","LimitController");
         String msg = "Success";
         try (Entry entry = SphU.entry("limit")) {
             // 被保护的逻辑
-            metricService.increment("insertInner","LimitController");
             try {
                 long end = System.currentTimeMillis();
                 log.info("LimitController insert when = {}", (end));
                 resultCode = 200;
-            }catch (Exception e){
+            } catch (Exception e) {
                 resultCode = 300;
                 msg = e.getMessage();
             }

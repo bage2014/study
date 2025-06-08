@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MybatisController {
     @Autowired
     private UserService userService;
+
     @RequestMapping("/cache1")
     public Object cache1(@RequestParam("phone") String phone) {
         log.info("UserController query phone = {}", phone);

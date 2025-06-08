@@ -2409,11 +2409,13 @@ cd dify/docker
 
 cp .env.example .env
 
-// 如果是docker v2 [docker compose version]
+// 启动 ////  如果是 v1 【docker-compose up -d】
 docker compose up -d
 
-// v1
-docker-compose up -d
+关闭
+docker compose down
+
+
 ```
 
 
@@ -2486,14 +2488,26 @@ http://localhost
 
 https://github.com/appwrite/appwrite
 
+https://ipv6.rs/tutorial/macOS/Appwrite/
+
 Download & start
 
 ```
 docker run  --name bage-app-write -it  --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
-    --volume "$(pwd)"/bage/docker-data/appwrite:/usr/src/code/appwrite:rw \
+    --volume ${HOME}/bage/docker-conf/appwrite:/usr/src/code/appwrite:rw \
     --entrypoint="install" \
     appwrite/appwrite:1.7.3
+
+docker run -it --rm --volume /var/run/docker.sock:/var/run/docker.sock --volume ${HOME}/bage/docker-data/appwrite:/usr/src/code/appwrite/data --env "APPWRITE_ENDPOINT=http://localhost:80/v1" --env "APPWRITE_PROJECT_ID=local" --env "APPWRITE_API_KEY=secret" appwrite/appwrite:1.7.3
+
+
+cd ${HOME}/bage/docker-conf/appwrite
+
+
+docker compose up -d --remove-orphans --renew-anon-volumes
+
+
 ```
 
 
