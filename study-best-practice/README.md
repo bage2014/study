@@ -597,6 +597,20 @@ http://localhost:8000/limit/insert
 
 
 
+## MQ
+
+MQ 消息验证 
+
+```
+// 随机发送MQ 
+http://localhost:8000/mq/send/random
+
+
+// 接受MQ消息 
+MQMessageReceiver
+
+```
+
 
 
 ## Mybatis
