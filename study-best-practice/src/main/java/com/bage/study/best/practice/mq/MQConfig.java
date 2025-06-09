@@ -31,7 +31,7 @@ public class MQConfig {
 
     @Bean
     public Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("foo.bar.#");
+        return BindingBuilder.bind(queue).to(exchange).with(queueKey);
     }
 
     @Bean
@@ -45,8 +45,8 @@ public class MQConfig {
     }
 
     @Bean
-    public MessageListenerAdapter listenerAdapter(MQMessageReceiver mqMessageReceiver) {
-        return new MessageListenerAdapter(mqMessageReceiver, "receiveMessage");
+    public MessageListenerAdapter listenerAdapter(UserMessageReceiver userMessageReceiver) {
+        return new MessageListenerAdapter(userMessageReceiver, "receiveMessage");
     }
 
 }

@@ -1,10 +1,13 @@
 package com.bage.study.best.practice.controller;
 
-import com.bage.study.best.practice.metrics.MetricService;
 import com.bage.study.best.practice.model.User;
+import com.bage.study.best.practice.mq.MQConfig;
+import com.bage.study.best.practice.mq.UserMessageSender;
 import com.bage.study.best.practice.rest.RestResult;
 import com.bage.study.best.practice.service.UserMockService;
 import com.bage.study.best.practice.service.UserService;
+import com.bage.study.best.practice.trial.mq.UserMQService;
+import com.bage.study.best.practice.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 @RequestMapping("/user")
 @RestController
@@ -26,24 +28,21 @@ public class UserController {
     @Autowired
     private UserMockService userMockService;
     @Autowired
-    private MetricService metricService;
+    private UserMQService userMQService;
 
     @RequestMapping("/query")
     public Object query(@RequestParam("phone") String phone) {
         long start = System.currentTimeMillis();
-        metricService.increment("query", "UserController");
 //        log.info("UserController query phone = {}", phone);
         List<User> users = userService.query(phone);
         long end = System.currentTimeMillis();
-        log.info("UserController hhh query cost = {}, users = {}", (end - start),users);
-        metricService.record((end - start), TimeUnit.MILLISECONDS,"query", "UserController");
+        log.info("UserController hhh query cost = {}, users = {}", (end - start), users);
         return users;
     }
 
     @RequestMapping("/insert")
     public Object insert() {
         try {
-            metricService.increment("insert", "UserController");
             long start = System.currentTimeMillis();
             User user = userMockService.mockOne();
 //            log.info("UserController insert user = {}", user);
@@ -51,7 +50,6 @@ public class UserController {
 //            log.info("UserController insert insert = {}", insert);
             long end = System.currentTimeMillis();
             log.info("UserController insert cost = {}", (end - start));
-            metricService.record((end - start), TimeUnit.MILLISECONDS,"insert", "UserController");
             return new RestResult(200, insert);
         } catch (Exception e) {
             return new RestResult(500, e.getMessage());
@@ -61,7 +59,6 @@ public class UserController {
     @Async
     @RequestMapping("/insert/async")
     public CompletableFuture<Object> insertAsync() {
-        metricService.increment("insertAsync", "UserController");
         try {
             long start = System.currentTimeMillis();
             User user = userMockService.mockOne();
@@ -70,16 +67,22 @@ public class UserController {
 //            log.info("UserController insert async insert = {}", insert);
             long end = System.currentTimeMillis();
             log.info("UserController insert async cost = {}", (end - start));
-            metricService.record((end - start), TimeUnit.MILLISECONDS,"insertAsync", "UserController");
             return CompletableFuture.completedFuture(new RestResult(200, insert));
         } catch (Exception e) {
             return CompletableFuture.completedFuture(new RestResult(500, e.getMessage()));
         }
     }
 
+
+    @RequestMapping("/insert/async/mq")
+    public Object insertAsyncMQ() {
+        User user = userMockService.mockOne();
+        userMQService.send(user);
+        return new RestResult(200, "async mq send success");
+    }
+
     @RequestMapping("/insert/batch")
     public Object insertBatch(@RequestParam(value = "total", required = false, defaultValue = "200") Integer total) {
-        metricService.increment("insertBatch", "UserController");
         try {
             long start = System.currentTimeMillis();
             List<User> userList = userMockService.mockBatch(total);
@@ -88,7 +91,6 @@ public class UserController {
             log.info("UserController insert insert = {}", insert);
             long end = System.currentTimeMillis();
             log.info("UserController insert cost = {}", (end - start));
-            metricService.record((end - start), TimeUnit.MILLISECONDS,"insertBatch", "UserController");
             return new RestResult(200, insert);
         } catch (Exception e) {
             return new RestResult(500, e.getMessage());
