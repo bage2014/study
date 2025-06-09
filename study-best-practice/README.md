@@ -606,6 +606,10 @@ MQ 消息验证
 http://localhost:8000/mq/send/random
 
 
+// MQ 异步写入 
+http://localhost:8000/user/insert/async/mq
+
+
 // 接受MQ消息 
 MQMessageReceiver
 
