@@ -1485,7 +1485,7 @@
           <doubleProp>
             <name>throughput</name>
             <value>300.0</value>
-            <savedValue>300.0</savedValue>
+            <savedValue>0.0</savedValue>
           </doubleProp>
           <intProp name="calcMode">0</intProp>
         </ConstantThroughputTimer>
@@ -1818,7 +1818,7 @@
           <doubleProp>
             <name>throughput</name>
             <value>300.0</value>
-            <savedValue>300.0</savedValue>
+            <savedValue>0.0</savedValue>
           </doubleProp>
           <intProp name="calcMode">0</intProp>
         </ConstantThroughputTimer>

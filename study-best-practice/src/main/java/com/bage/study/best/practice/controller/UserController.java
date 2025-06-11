@@ -36,7 +36,7 @@ public class UserController {
 //        log.info("UserController query phone = {}", phone);
         List<User> users = userService.query(phone);
         long end = System.currentTimeMillis();
-        log.info("UserController hhh query cost = {}, users = {}", (end - start), users);
+        log.info("UserController query cost = {}, users = {}", (end - start), users);
         return users;
     }
 
