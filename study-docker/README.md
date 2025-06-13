@@ -572,6 +572,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -887,6 +888,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -2412,7 +2414,7 @@ cd ~/bage/github
 
 cd dify/docker
 
-// cd ~/bage/github/dify/docker
+cd ~/bage/github/dify/docker
 
 cp .env.example .env
 
@@ -2445,6 +2447,14 @@ http://localhost/install
 
 // 访问
 http://localhost
+```
+
+
+
+Config with Deepseek
+
+```
+https://docs.dify.ai/en/learn-more/use-cases/integrate-deepseek-to-build-an-ai-app
 ```
 
 
