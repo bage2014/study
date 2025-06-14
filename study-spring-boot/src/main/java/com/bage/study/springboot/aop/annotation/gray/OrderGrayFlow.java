@@ -11,6 +11,6 @@ public @interface OrderGrayFlow {
 
     String keySpEL() default "";
 
-    String copyToMethod() default ""; // 到类对应方法，默认是相同方法
+    String toMethod() default ""; // 到类对应方法，默认是相同方法
 
 }

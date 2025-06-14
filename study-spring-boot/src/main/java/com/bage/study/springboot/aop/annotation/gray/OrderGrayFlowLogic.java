@@ -45,7 +45,7 @@ public class OrderGrayFlowLogic implements ApplicationContextAware {
     public Object invokeSync(Object bean, OrderGrayFlow annotation, Method method, Object[] args) {         // 同步，直接执行
         Object invoke = null;
         try {
-            String methodName = "".equals(annotation.copyToMethod()) ? method.getName() : annotation.copyToMethod();
+            String methodName = "".equals(annotation.toMethod()) ? method.getName() : annotation.toMethod();
             Class grayToClass = annotation.toClass();
             Method toMethod = grayToClass.getMethod(methodName, method.getParameterTypes());
             invoke = toMethod.invoke(bean, args);

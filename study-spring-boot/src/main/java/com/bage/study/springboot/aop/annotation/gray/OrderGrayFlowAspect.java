@@ -21,7 +21,7 @@ public class OrderGrayFlowAspect {
     @Autowired
     private OrderGrayFlowLogic orderGrayFlowLogic;
 
-    @Around(value = "@annotation(com.ctrip.train.trnorder.core.biz.temp.gray.OrderGrayFlow)")
+    @Around(value = "@annotation(com.bage.study.springboot.aop.annotation.gray.OrderGrayFlow)")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         Object[] args = null;
         Object result = null;
