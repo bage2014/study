@@ -44,3 +44,9 @@ buildNumber.properties
 *.iml
 out
 gen
+*.DS_Store
+arthas-output
+study-app-tutorials/.dart_tool
+study-app-tutorials/android/app/build
+study-app-tutorials/build
+study-app-tutorials/android/.gradle
