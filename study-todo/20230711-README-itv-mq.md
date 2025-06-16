@@ -24,12 +24,10 @@
 
 ## 方案选型对比
 
-activeMQ使用不多，没有大规模吞吐量场景，社区不活跃，不建议
+ActiveMQ: 使用不多，没有大规模吞吐量场景，社区不活跃，不建议
 RabbitMQ：小型公司可以考虑，支持稳定，活跃度高
 RocketMQ：大公司，基础架构比较强
 kafka：实时计算，日志采集等场景
-
-
 
 https://blog.csdn.net/qq_38837032/article/details/121205821
 

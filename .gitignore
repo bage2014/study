@@ -48,7 +48,7 @@ buildNumber.properties
 *.iml
 out
 gen
-*DS_Store
+*.DS_Store
 
 study-java/src/.DS_Store
 study-java/src/main/.DS_Store
