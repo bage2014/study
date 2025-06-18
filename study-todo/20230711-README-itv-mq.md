@@ -24,6 +24,12 @@
 
 ## 方案选型对比
 
+https://zhuanlan.zhihu.com/p/32987256150
+
+
+
+
+
 ActiveMQ: 使用不多，没有大规模吞吐量场景，社区不活跃，不建议
 RabbitMQ：小型公司可以考虑，支持稳定，活跃度高
 RocketMQ：大公司，基础架构比较强

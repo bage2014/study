@@ -91,8 +91,6 @@ https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
 
 spring boot启动速度优化
 
-mysql 不使用 连接池 vs 使用连接池 性能对比
-
 mysql 主从赋值
 
 瓶颈体现？
@@ -107,8 +105,6 @@ CPU、DB【connection】、IO、NETWORK
 https://github.com/alibaba/DataX
 
 常见算法 动画演示 https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
-
-Spring3+jdk17
 
 分库分表 https://tech.meituan.com/2016/11/18/dianping-order-db-sharding.html
 
