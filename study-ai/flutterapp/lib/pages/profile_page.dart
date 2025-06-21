@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutterapp/utils/logging_client.dart';
 
 class ProfilePage extends StatefulWidget {
   final String username;
@@ -12,7 +13,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class Activity {
-  final String? id;
+  final int? id;
   final String time;
   final String description;
   final String creator;
@@ -26,14 +27,15 @@ class Activity {
 
   factory Activity.fromJson(Map<String, dynamic> json) {
     return Activity(
-      id: json['id'],
-      time: json['time'],
-      description: json['description'],
-      creator: json['creator'],
+      id: json['id'] as int?,
+      time: json['time'] as String,
+      description: json['description'] as String,
+      creator: json['creator'] as String,
     );
   }
 }
 
+// Remove the original LoggingClient class definition
 class _ProfilePageState extends State<ProfilePage> {
   List<Activity> _posts = [];
   int _page = 1;
@@ -69,23 +71,29 @@ class _ProfilePageState extends State<ProfilePage> {
       _isLoading = true;
     });
 
-    final response = await http.get(Uri.parse('http://127.0.0.1:8080/activities?page=$_page'));
+    try {
+      final client = LoggingClient(http.Client());
+      final response = await client.get(Uri.parse('http://127.0.0.1:8080/activities?page=$_page'));
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> newPostsJson = responseData['content'];
-      final List<Activity> newPosts = newPostsJson.map((json) => Activity.fromJson(json)).toList();
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final List<dynamic> newPostsJson = responseData['content'];
+        final List<Activity> newPosts = newPostsJson.map((json) => Activity.fromJson(json)).toList();
+
+        setState(() {
+          _posts.addAll(newPosts);
+          _page = responseData['pageable']['pageNumber'] + 1;
+        });
+      } else {
+        throw Exception('Failed to load posts');
+      }
+    } catch (e) {
+      print('Fetch posts error: $e');
+    } finally {
       setState(() {
-        _posts.addAll(newPosts);
-        _page = responseData['pageable']['pageNumber'] + 1;
+        _isLoading = false;
       });
-    } else {
-      throw Exception('Failed to load posts');
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
@@ -98,18 +106,18 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           children: <Widget>[ 
             // 个人头像
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: Image.network(
-                  avatarUrl,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.error_outline);
-                  },
-                ).image,
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(16.0),
+            //   child: CircleAvatar(
+            //     radius: 50,
+            //     backgroundImage: Image.network(
+            //       avatarUrl,
+            //       errorBuilder: (context, error, stackTrace) {
+            //         return const Icon(Icons.error_outline);
+            //       },
+            //     ).image,
+            //   ),
+            // ),
             // 用户名
             Text(
               widget.username,

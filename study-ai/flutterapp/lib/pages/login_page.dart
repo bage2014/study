@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutterapp/pages/profile_page.dart';
+import 'package:flutterapp/utils/logging_client.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -50,6 +51,14 @@ class _LoginPageState extends State<LoginPage> {
                 //     'password': _passwordController.text,
                 //   },
                 // );
+                final client = LoggingClient(http.Client());
+                var response = await client.post(
+                  Uri.parse('http://localhost:8080/user/login'),
+                  body: {
+                    'username': _usernameController.text,
+                    'password': _passwordController.text,
+                  },
+                );
                 // if (response.statusCode == 200) {
                 //   Navigator.pushReplacement(
                 //     context,
@@ -67,5 +76,30 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+}
+
+// Remove the original LoggingClient class definition
+class LoggingClient extends http.BaseClient {
+  final http.Client _inner;
+
+  LoggingClient(this._inner);
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    print('Request: ${request.method} ${request.url}');
+    print('Headers: ${request.headers}');
+    if (request is http.Request) {
+      print('Body: ${request.body}');
+    }
+
+    final response = await _inner.send(request);
+
+    final http.Response decodedResponse = await http.Response.fromStream(response);
+    final responseBody = utf8.decode(decodedResponse.bodyBytes);
+    print('Response status: ${response.statusCode}');
+    print('Response body: $responseBody');
+
+    return http.StreamedResponse(Stream.fromIterable([utf8.encode(responseBody)]), response.statusCode, headers: response.headers);
   }
 }
