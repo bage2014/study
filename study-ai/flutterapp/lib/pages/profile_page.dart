@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   List<Activity> _posts = [];
   int _page = 1;
   bool _isLoading = false;
-  final String avatarUrl = 'https://example.com/default_avatar.png'; // 示例头像 URL
+  final String avatarUrl = 'assets/images/default_avatar.png'; // 修改为本地图片路径
   final String signature = '这个人很懒，什么都没留下'; // 示例个性签名
   late ScrollController _scrollController;
 
@@ -72,11 +72,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final response = await http.get(Uri.parse('http://127.0.0.1:8080/activities?page=$_page'));
 
     if (response.statusCode == 200) {
-      final List<dynamic> newPostsJson = json.decode(response.body);
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> newPostsJson = responseData['content'];
       final List<Activity> newPosts = newPostsJson.map((json) => Activity.fromJson(json)).toList();
       setState(() {
         _posts.addAll(newPosts);
-        _page++;
+        _page = responseData['pageable']['pageNumber'] + 1;
       });
     } else {
       throw Exception('Failed to load posts');
