@@ -22,6 +22,7 @@ public class M3uController {
     @PostConstruct
     public void init() throws IOException {
         m3uEntries = M3uParser.parse("m3u/index.m3u");
+        m3uEntries.get(0).setUrl("https://stream-akamai.castr.com/5b9352dbda7b8c769937e459/live_2361c920455111ea85db6911fe397b9e/index.fmp4.m3u8");
     }
 
     @GetMapping("/m3u/query")

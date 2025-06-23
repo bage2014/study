@@ -35,4 +35,8 @@ public class M3uEntry {
     public String getName() {
         return name;
     }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
