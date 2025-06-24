@@ -20,6 +20,6 @@ class LoggingClient extends http.BaseClient {
     print('Response status: ${response.statusCode}');
     print('Response body: $responseBody');
 
-    return http.StreamedResponse(Stream.fromIterable([utf8.encode(responseBody)]), response.statusCode, headers: response.headers);
+    return http.StreamedResponse(Stream.fromIterable([decodedResponse.bodyBytes]), response.statusCode, headers: {...response.headers, 'content-type': 'application/json; charset=utf-8'});
   }
 }
