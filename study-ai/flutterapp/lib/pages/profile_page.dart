@@ -102,76 +102,57 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: const Text('个人信息主页面'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[ 
-            // 个人头像
-            // Padding(
-            //   padding: const EdgeInsets.all(16.0),
-            //   child: CircleAvatar(
-            //     radius: 50,
-            //     backgroundImage: Image.network(
-            //       avatarUrl,
-            //       errorBuilder: (context, error, stackTrace) {
-            //         return const Icon(Icons.error_outline);
-            //       },
-            //     ).image,
-            //   ),
-            // ),
-            // 用户名
-            Text(
-              widget.username,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            // 个性签名
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                signature,
-                style: Theme.of(context).textTheme.bodyLarge,
+      body: ListView.builder(
+        controller: _scrollController,
+        itemCount: _posts.length + (_isLoading ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Column(
+              children: <Widget>[ 
+                Text(
+                  widget.username,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    signature,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text(
+                    '最近动态',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+              ],
+            );
+          }
+          index -= 1;
+          if (index < _posts.length) {
+            final Activity post = _posts[index];
+            return Card(
+              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('时间: ${post.time}', style: Theme.of(context).textTheme.titleMedium),
+                    Text('描述: ${post.description}', style: Theme.of(context).textTheme.bodyMedium),
+                    Text('创建人: ${post.creator}', style: Theme.of(context).textTheme.bodySmall),
+                  ],
+                ),
               ),
-            ),
-            // 最近动态标题
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(
-                '最近动态',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-            // 帖子列表
-            ListView.builder(
-              controller: _scrollController,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _posts.length + (_isLoading ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index < _posts.length) {
-                  final Activity post = _posts[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('时间: ${post.time}', style: Theme.of(context).textTheme.titleMedium),
-                          Text('描述: ${post.description}', style: Theme.of(context).textTheme.bodyMedium),
-                          Text('创建人: ${post.creator}', style: Theme.of(context).textTheme.bodySmall),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            ),
-            // 移除加载更多按钮
-          ],
-        ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
