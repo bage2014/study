@@ -12,8 +12,8 @@ dependencies:
   http: ^0.13.5
   video_player: ^2.7.0
   chewie: ^1.11.3
+  google_maps_flutter: ^2.3.0
+  geolocator: ^9.0.2
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/images/default_avatar.png

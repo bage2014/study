@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/pages/login_page.dart';
-import 'package:flutterapp/pages/profile_page.dart';
+import 'package:flutterapp/pages/map_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,10 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ProfilePage(username: 'hello'),
-    
-            // home: const LoginPage(),
-
+      home: const MapPage(),
     );
   }
 }
