@@ -13,6 +13,8 @@ dependencies:
   video_player: ^2.7.0
   chewie: ^1.11.3
   amap_map_fluttify: ^2.0.2
+  amap_location_fluttify: ^0.22.0
+  permission_handler: ^12.0.0+1
 
 flutter:
   uses-material-design: true
