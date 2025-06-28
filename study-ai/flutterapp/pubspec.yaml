@@ -12,7 +12,8 @@ dependencies:
   http: ^0.13.5
   video_player: ^2.7.0
   chewie: ^1.11.3
-  google_maps_flutter: ^2.3.0
+  flutter_baidu_mapapi_base: ^3.2.0
+  flutter_baidu_mapapi_map: ^3.2.0
   geolocator: ^9.0.2
 
 flutter:

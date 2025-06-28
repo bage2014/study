@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
+import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
 import 'package:geolocator/geolocator.dart';
 
 class MapPage extends StatefulWidget {
@@ -10,8 +11,8 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  late GoogleMapController mapController;
-  LatLng? currentLocation;
+  late BMFMapController mapController;
+  BMFCoordinate? currentLocation;
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _MapPageState extends State<MapPage> {
 
     Position position = await Geolocator.getCurrentPosition();
     setState(() {
-      currentLocation = LatLng(position.latitude, position.longitude);
+      currentLocation = BMFCoordinate(position.latitude, position.longitude);
     });
   }
 
@@ -53,12 +54,12 @@ class _MapPageState extends State<MapPage> {
         title: const Text('地图页面'),
       ),
       body: currentLocation != null
-          ? GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: currentLocation!, 
-                zoom: 15.0,
+          ? BMFMapWidget(
+              mapOptions: BMFMapOptions(
+                center: currentLocation,
+                zoomLevel: 15,
               ),
-              onMapCreated: (controller) {
+              onBMFMapCreated: (controller) {
                 setState(() {
                   mapController = controller;
                 });

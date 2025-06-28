@@ -102,6 +102,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_baidu_mapapi_base:
+    dependency: "direct main"
+    description:
+      name: flutter_baidu_mapapi_base
+      sha256: "94caafb13ce41a5b2736d9b22a2c50c601339aefd74e017d8bb40679bb04accd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.4"
+  flutter_baidu_mapapi_map:
+    dependency: "direct main"
+    description:
+      name: flutter_baidu_mapapi_map
+      sha256: "732bcf7b6a82e454b32ff09dbeb7ec873a9cc74d024bcb23a4ff6af6fe4674d2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.4"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -163,54 +179,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.3"
-  google_maps:
-    dependency: transitive
-    description:
-      name: google_maps
-      sha256: "4d6e199c561ca06792c964fa24b2bac7197bf4b401c2e1d23e345e5f9939f531"
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.1.1"
-  google_maps_flutter:
-    dependency: "direct main"
-    description:
-      name: google_maps_flutter
-      sha256: e1805e5a5885bd14a1c407c59229f478af169bf4d04388586b19f53145a5db3a
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.12.3"
-  google_maps_flutter_android:
-    dependency: transitive
-    description:
-      name: google_maps_flutter_android
-      sha256: ab83128296fbeaa52e8f2b3bf53bcd895e64778edddcdc07bc8f33f4ea78076c
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.16.1"
-  google_maps_flutter_ios:
-    dependency: transitive
-    description:
-      name: google_maps_flutter_ios
-      sha256: d03678415da9de8ce7208c674b264fc75946f326e696b4b7f84c80920fc58df6
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.15.4"
-  google_maps_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: google_maps_flutter_platform_interface
-      sha256: f8293f072ed8b068b092920a72da6693aa8b3d62dc6b5c5f0bc44c969a8a776c
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.12.1"
-  google_maps_flutter_web:
-    dependency: transitive
-    description:
-      name: google_maps_flutter_web
-      sha256: ce2cac714e5462bf761ff2fdfc3564c7e5d7ed0578268dccb0a54dbdb1e6214e
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.12+2"
   html:
     dependency: transitive
     description:
@@ -307,14 +275,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.5"
-  sanitize_html:
-    dependency: transitive
-    description:
-      name: sanitize_html
-      sha256: "12669c4a913688a26555323fb9cec373d8f9fbe091f2d01c40c723b33caa8989"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -336,14 +296,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
-  stream_transform:
-    dependency: transitive
-    description:
-      name: stream_transform
-      sha256: ad47125e588cfd37a9a7f86c7d6356dde8dfe89d071d293f80ca9e9273a33871
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
   string_scanner:
     dependency: transitive
     description:
