@@ -1,6 +1,6 @@
 {
-    "name": "flutterapp",
-    "short_name": "flutterapp",
+    "name": "newflutterapp",
+    "short_name": "newflutterapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

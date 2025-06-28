@@ -1,13 +1,16 @@
-# Flutter App
+# newflutterapp
 
-这是一个新创建的 Flutter 应用。
+A new Flutter project.
 
-## 项目结构
-- `lib/main.dart`: 应用的主入口文件。
-- `pubspec.yaml`: 项目的依赖管理文件。
+## Getting Started
 
-## 运行项目
-确保你已经安装了 Flutter SDK，然后在项目根目录下运行以下命令：
-```bash
-flutter run
-```
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
