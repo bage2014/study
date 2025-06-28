@@ -37,7 +37,7 @@ public class MapTrajectoryController {
         for (int i = 0; i < 25; i++) {
             double latitude = minLat + random.nextDouble() * (maxLat - minLat);
             double longitude = minLng + random.nextDouble() * (maxLng - minLng);
-            LocalDateTime time = LocalDateTime.of(2024, 1, (i % 30) + 1, (i % 24), 0);
+            LocalDateTime time = LocalDateTime.of(2025, 6, (i % 30) + 1, (i % 24), 0, 0);
             String address = addresses[random.nextInt(addresses.length)];
             Trajectory trajectory = new Trajectory(latitude, longitude, time, address);
             trajectoryRepository.save(trajectory);
@@ -45,9 +45,25 @@ public class MapTrajectoryController {
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public Page<Map<String, Object>> getTrajectoryData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+    public Page<Map<String, Object>> getTrajectoryData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, 
+                                                     @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "time"));
-        Page<Trajectory> trajectoryPage = trajectoryRepository.findAll(pageable);
+        Page<Trajectory> trajectoryPage;
+        try {
+            LocalDateTime start = startTime != null ? LocalDateTime.parse(startTime) : null;
+            LocalDateTime end = endTime != null ? LocalDateTime.parse(endTime) : null;
+            if (start != null && end != null) {
+                trajectoryPage = trajectoryRepository.findByTimeBetween(start, end, pageable);
+            } else if (start != null) {
+                trajectoryPage = trajectoryRepository.findByTimeAfter(start, pageable);
+            } else if (end != null) {
+                trajectoryPage = trajectoryRepository.findByTimeBefore(end, pageable);
+            } else {
+                trajectoryPage = trajectoryRepository.findAll(pageable);
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("时间格式不正确，请使用 ISO-8601 格式: yyyy-MM-ddTHH:mm:ss");
+        }
         List<Map<String, Object>> pageContent = new ArrayList<>();
         for (Trajectory trajectory : trajectoryPage.getContent()) {
             Map<String, Object> location = new HashMap<>();
@@ -62,6 +78,7 @@ public class MapTrajectoryController {
 
     @PostMapping("/save")
     public Trajectory saveTrajectory(@RequestBody Trajectory trajectory) {
+        trajectory.setTime(LocalDateTime.now());
         return trajectoryRepository.save(trajectory);
     }
 }
