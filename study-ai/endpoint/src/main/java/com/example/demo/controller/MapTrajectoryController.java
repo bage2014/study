@@ -32,12 +32,14 @@ public class MapTrajectoryController {
         double maxLat = 31.24;
         double minLng = 121.37;
         double maxLng = 121.45;
+        String[] addresses = {"长宁区仙霞路", "长宁区延安西路", "长宁区虹桥路", "长宁区新华路", "长宁区天山路"};
 
         for (int i = 0; i < 25; i++) {
             double latitude = minLat + random.nextDouble() * (maxLat - minLat);
             double longitude = minLng + random.nextDouble() * (maxLng - minLng);
             LocalDateTime time = LocalDateTime.of(2024, 1, (i % 30) + 1, (i % 24), 0);
-            Trajectory trajectory = new Trajectory(latitude, longitude, time);
+            String address = addresses[random.nextInt(addresses.length)];
+            Trajectory trajectory = new Trajectory(latitude, longitude, time, address);
             trajectoryRepository.save(trajectory);
         }
     }
@@ -52,6 +54,7 @@ public class MapTrajectoryController {
             location.put("latitude", trajectory.getLatitude());
             location.put("longitude", trajectory.getLongitude());
             location.put("time", trajectory.getTime());
+            location.put("address", trajectory.getAddress());
             pageContent.add(location);
         }
         return new PageImpl<>(pageContent, pageable, trajectoryPage.getTotalElements());

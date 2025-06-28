@@ -14,14 +14,16 @@ public class Trajectory {
     private double latitude;
     private double longitude;
     private LocalDateTime time;
+    private String address;
 
     public Trajectory() {
     }
 
-    public Trajectory(double latitude, double longitude, LocalDateTime time) {
+    public Trajectory(double latitude, double longitude, LocalDateTime time, String address) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.time = time;
+        this.address = address;
     }
 
     // Getters and Setters
@@ -55,5 +57,13 @@ public class Trajectory {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
