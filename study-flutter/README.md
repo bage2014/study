@@ -33,7 +33,7 @@ flutter doctor
 
 
 
-export EMULATOR_HOME=/Users/bage/Library/Android/sdk/emulator
+export EMULATOR_HOME=${HOME}/Library/Android/sdk/emulator
 export PATH=$EMULATOR_HOME:$PATH
 ```
 
