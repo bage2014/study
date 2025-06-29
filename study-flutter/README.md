@@ -46,6 +46,14 @@ D:\softwares\SDK\emulator\emulator -avd Pixel2XLAPI29 -dns-server 10.0.3.2
 
 flutter build apk --no-sound-null-safety
 
+emulator -list-avds
+
+emulator -avd avd_name
+
+
+查看进度 【项目android目录下】
+./gradlew build --info
+
 ```
 
 

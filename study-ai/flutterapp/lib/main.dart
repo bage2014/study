@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/pages/map_trajectory_page.dart';
+
+import 'package:flutterapp/pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +13,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: const MapTrajectoryPage(),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-
+      initialRoute: '/',
+      routes: {
+        '/': (context) =>
+            const Scaffold(body: Center(child: Text('Home Page'))),
+        '/baidu_map': (context) => const LoginPage(),
+      },
+      theme: ThemeData(primarySwatch: Colors.blue),
     );
   }
 }

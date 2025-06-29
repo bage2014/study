@@ -1,7 +1,8 @@
-package com.example.demo.controller;
+package com.bage.my.app.end.point.controller;
 
-import com.example.demo.entity.Trajectory;
-import com.example.demo.repository.TrajectoryRepository;
+import com.bage.my.app.end.point.entity.Trajectory;
+import com.bage.my.app.end.point.repository.TrajectoryRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,13 +16,10 @@ import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 class MapTrajectoryControllerTest {

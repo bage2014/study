@@ -37,9 +37,11 @@ dependencies:
   http: ^1.4.0
   video_player: ^2.7.0
   chewie: ^1.11.3
-  amap_map_fluttify: ^2.0.2
-  amap_location_fluttify: ^0.22.0
+  # amap_map_fluttify: ^2.0.2
+  # amap_location_fluttify: ^0.22.0
   permission_handler: ^12.0.0+1
+  flutter_baidu_mapapi_utils: ^3.9.4
+  flutter_baidu_mapapi_map: ^3.9.4
   
 dev_dependencies:
   flutter_test:
