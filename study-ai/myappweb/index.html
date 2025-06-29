@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutorials</title>
+    <!-- element css cdn, if you use custom theme, remove it. -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css"
+    /> -->
+     </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+     <!-- 百度地图 API 脚本 -->
+   <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=E0NV1lriEm1YlMtfmWr6ZkGKVNrOlRzA&callback=initBaiduMap"></script>
+    <script>
+      // 全局变量，用于存储地图初始化状态
+      let baiduMapInitialized = false;
+
+      // 百度地图初始化回调函数
+      window.initBaiduMap = function() {
+        console.log('initBaiduMap');
+        baiduMapInitialized = true;
+      };
+    </script>
+  </body>
+  </html>
