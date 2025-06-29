@@ -1,4 +1,4 @@
-package com.bage.my.app.end.interceptor;
+package com.bage.my.app.end.point.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 

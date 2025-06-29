@@ -1,8 +1,10 @@
-package com.bage.my.app.end.repository;
+package com.bage.my.app.end.point.repository;
 
-import com.bage.my.app.end.entity.Trajectory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.bage.my.app.end.point.entity.Trajectory;
+
 import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

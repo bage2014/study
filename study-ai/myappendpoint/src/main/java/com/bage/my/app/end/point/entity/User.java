@@ -1,4 +1,4 @@
-package com.bage.my.app.end.entity;
+package com.bage.my.app.end.point.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

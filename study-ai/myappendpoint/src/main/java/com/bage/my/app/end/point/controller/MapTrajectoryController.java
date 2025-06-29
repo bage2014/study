@@ -1,7 +1,8 @@
-package com.bage.my.app.end.controller;
+package com.bage.my.app.end.point.controller;
 
-import com.bage.my.app.end.entity.Trajectory;
-import com.bage.my.app.end.repository.TrajectoryRepository;
+import com.bage.my.app.end.point.entity.Trajectory;
+import com.bage.my.app.end.point.repository.TrajectoryRepository;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

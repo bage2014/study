@@ -1,7 +1,8 @@
-package com.bage.my.app.end.controller;
+package com.bage.my.app.end.point.controller;
 
-import com.bage.my.app.end.entity.M3uEntry;
-import com.bage.my.app.end.util.M3uParser;
+import com.bage.my.app.end.point.entity.M3uEntry;
+import com.bage.my.app.end.point.util.M3uParser;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

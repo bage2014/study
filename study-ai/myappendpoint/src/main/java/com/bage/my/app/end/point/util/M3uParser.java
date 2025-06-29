@@ -1,6 +1,5 @@
-package com.bage.my.app.end.util;
+package com.bage.my.app.end.point.util;
 
-import com.bage.my.app.end.entity.M3uEntry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +9,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.core.io.ClassPathResource;
+
+import com.bage.my.app.end.point.entity.M3uEntry;
 
 public class M3uParser {
     private static final Pattern EXTINF_PATTERN = Pattern.compile("#EXTINF:-1 tvg-id=\"(.*?)\" tvg-logo=\"(.*?)\" group-title=\"(.*?)\",(.*?)");

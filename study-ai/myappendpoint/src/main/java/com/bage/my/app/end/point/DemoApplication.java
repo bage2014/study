@@ -1,4 +1,4 @@
-package com.bage.my.app.end;
+package com.bage.my.app.end.point;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

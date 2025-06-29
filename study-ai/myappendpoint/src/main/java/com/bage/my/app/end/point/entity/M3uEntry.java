@@ -1,4 +1,4 @@
-package com.bage.my.app.end.entity;
+package com.bage.my.app.end.point.entity;
 
 public class M3uEntry {
     private int id;

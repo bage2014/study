@@ -1,7 +1,8 @@
-package com.bage.my.app.end.controller;
+package com.bage.my.app.end.point.controller;
 
-import com.bage.my.app.end.entity.Activity;
-import com.bage.my.app.end.repository.ActivityRepository;
+import com.bage.my.app.end.point.entity.Activity;
+import com.bage.my.app.end.point.repository.ActivityRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
