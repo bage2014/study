@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newflutterapp/pages/map_trajectory_page.dart';
+import 'package:flutterapp/pages/map_trajectory_page.dart';
 
 void main() {
   runApp(const MyApp());
