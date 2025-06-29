@@ -30,6 +30,11 @@ cd ~/bage/software/flutter2025/bin
 export PATH="$PWD/flutter2025/bin:$PATH"
 
 flutter doctor
+
+
+
+export EMULATOR_HOME=/Users/bage/Library/Android/sdk/emulator
+export PATH=$EMULATOR_HOME:$PATH
 ```
 
 
