@@ -54,3 +54,4 @@ study-java/src/.DS_Store
 study-java/src/main/.DS_Store
 study-ai/.DS_Store
 study-ai/myappflutter/ignore-txt
+study-ai/myappflutter/lib/config/baidu_map_config.dart
