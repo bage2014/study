@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.bage.my.app.flutter"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.2.12479018"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -21,10 +22,10 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.bage.my.app.flutter"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 22
+        // minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -45,6 +46,14 @@ android {
     }
 }
 
+dependencies {
+    implementation("com.baidu.lbsyun:BaiduMapSDK_Map:7.6.1")
+    // implementation("com.baidu.lbsapi:base:7.4.0")
+    // implementation("com.baidu.lbsapi:map:7.4.0")
+}
+
 flutter {
     source = "../.."
 }
+
+// Removed manual Baidu dependencies - handled by Flutter plugins
