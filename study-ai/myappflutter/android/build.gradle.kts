@@ -2,7 +2,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("http://developer.baidu.com/repo/"); isAllowInsecureProtocol = true }
+        maven { url = uri("http://maven.baidu.com/baidu"); isAllowInsecureProtocol = true }
     }
 }
 
