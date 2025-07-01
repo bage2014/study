@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!--
+    相对顺序，不能颠倒
+	properties（属性）
+	settings（设置）
+	typeAliases（类型别名）
+	typeHandlers（类型处理器）
+	objectFactory（对象工厂）
+	plugins（插件）
+	environments（环境配置）
+	environment（环境变量）
+	transactionManager（事务管理器）
+	dataSource（数据源）
+	databaseIdProvider（数据库厂商标识）
+	mappers（映射器）
+	-->
+
+	<!--设置-->
+	<settings>
+		<!-- SESSION：开启一级缓存功能；STATEMENT：缓存只对当前执行的这一个 SQL 语句有效，也就是没有用到一级缓存功能。 -->
+<!--		<setting name="localCacheScope" value="SESSION"/>-->
+
+		<!--开启二级缓存-->
+		<setting name="cacheEnabled" value="true"/>
+
+	</settings>
+
+
+
+	<!--别名-->
+	<typeAliases>
+		<package name="com.bage.study.mybatis.common.domain"/>
+	</typeAliases>
+
+	<!--类型处理-->
+	<typeHandlers>
+		<typeHandler handler="com.bage.study.mybatis.common.typehandler.SexTypeHandler"></typeHandler>
+	</typeHandlers>
+
+	<!-- mybatis-config.xml -->
+	<plugins>
+		<plugin interceptor="com.bage.study.mybatis.common.interceptor.SqlTimeCostPlugin">
+			<property name="someProperty" value="100"/>
+		</plugin>
+	</plugins>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="org.h2.Driver"/>
+				<property name="url" value="jdbc:h2:~/myDb"/>
+				<property name="username" value="sa"/>
+				<property name="password" value="root"/>
+			</dataSource>
+		</environment>
+	</environments>
+
+	<mappers>
+		<mapper resource="com/bage/study/mybatis/UserMapper.xml"/>
+		<mapper resource="com/bage/study/mybatis/UserExtMapper.xml"/>
+		<mapper resource="com/bage/study/mybatis/DepartmentMapper.xml"/>
+		<mapper resource="com/bage/study/mybatis/DepartmentAddressMapper.xml"/>
+	</mappers>
+
+</configuration>

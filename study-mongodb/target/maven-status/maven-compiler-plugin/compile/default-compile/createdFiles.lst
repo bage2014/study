@@ -1,0 +1,6 @@
+com/bage/AccessingDataMongodbApplication.class
+com/bage/AppConfig.class
+com/bage/Customer.class
+com/bage/Person.class
+com/bage/CrudCase.class
+com/bage/CustomerRepository.class

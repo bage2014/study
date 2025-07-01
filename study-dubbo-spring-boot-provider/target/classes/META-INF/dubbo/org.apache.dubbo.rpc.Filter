@@ -1,0 +1,1 @@
+dubboLogger=com.bage.study.dubbo.spring.boot.provider.LoggerFilter

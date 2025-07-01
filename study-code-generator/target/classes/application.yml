@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: code-generator
+  freemarker:
+   templateEncoding: UTF-8
+   templateLoaderPath: classpath:/templates/
+   suffix: .ftl
+   content-type: text/html
+   request-context-attribute: request
+   cache: false

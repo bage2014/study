@@ -1,0 +1,8 @@
+/Users/bage/bage/github/study/study-spring-boot-saml/src/main/java/com/vdenotaris/spring/boot/security/saml/web/controllers/LandingController.java
+/Users/bage/bage/github/study/study-spring-boot-saml/src/main/java/com/vdenotaris/spring/boot/security/saml/web/stereotypes/CurrentUser.java
+/Users/bage/bage/github/study/study-spring-boot-saml/src/main/java/com/vdenotaris/spring/boot/security/saml/web/config/MvcConfig.java
+/Users/bage/bage/github/study/study-spring-boot-saml/src/main/java/com/vdenotaris/spring/boot/security/saml/web/Application.java
+/Users/bage/bage/github/study/study-spring-boot-saml/src/main/java/com/vdenotaris/spring/boot/security/saml/web/config/WebSecurityConfig.java
+/Users/bage/bage/github/study/study-spring-boot-saml/src/main/java/com/vdenotaris/spring/boot/security/saml/web/controllers/SSOController.java
+/Users/bage/bage/github/study/study-spring-boot-saml/src/main/java/com/vdenotaris/spring/boot/security/saml/web/core/CurrentUserHandlerMethodArgumentResolver.java
+/Users/bage/bage/github/study/study-spring-boot-saml/src/main/java/com/vdenotaris/spring/boot/security/saml/web/core/SAMLUserDetailsServiceImpl.java

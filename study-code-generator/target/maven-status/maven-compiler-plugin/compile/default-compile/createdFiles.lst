@@ -1,0 +1,10 @@
+com/bage/codegenerator/generate/util/TableParseUtil.class
+com/bage/codegenerator/generate/controller/GenerateController.class
+com/bage/codegenerator/generate/util/FreemarkerTool.class
+com/bage/codegenerator/HelloController.class
+com/bage/codegenerator/generate/util/FreemarkerUtil.class
+com/bage/codegenerator/generate/util/StringUtils.class
+com/bage/codegenerator/generate/model/FieldInfo.class
+com/bage/codegenerator/generate/util/CodeGeneratorUtils.class
+com/bage/codegenerator/generate/model/ClassInfo.class
+com/bage/codegenerator/CodeGeneratorApplication.class

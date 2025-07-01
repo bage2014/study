@@ -1,0 +1,11 @@
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/temp/user/UserService.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/server/MyAuthorizationServerConfig.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/server/UserController.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/server/MySecurityConfig.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/server/LoginController.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/server/MyResourceServerConfig.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/temp/user/UserDao.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/temp/user/User.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/temp/user/Role.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/server/AuthorizationServerApplication.java
+/Users/bage/bage/github/study/study-spring-boot-sso-oauth2-server/src/main/java/com/bage/study/spring/boot/oauth2/temp/user/MyUserDetailsService.java

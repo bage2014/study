@@ -1,0 +1,341 @@
+2022-05-28 21:56:20.223 [main] INFO  com.bage.ElkApplication - Starting ElkApplication on bagedeMBP with PID 33564 (/Users/bage/bage/github/study/study-spring-boot-elk/target/classes started by bage in /Users/bage/bage/github/study)
+2022-05-28 21:56:20.235 [main] INFO  com.bage.ElkApplication - No active profile set, falling back to default profiles: default
+2022-05-28 21:56:20.548 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@f5acb9d: startup date [Sat May 28 21:56:20 CST 2022]; root of context hierarchy
+2022-05-28 21:56:23.128 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2022-05-28 21:56:23.156 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-05-28 21:56:23.167 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-28 21:56:23.167 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.29
+2022-05-28 21:56:23.207 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/bage/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2022-05-28 21:56:23.377 [localhost-startStop-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-28 21:56:23.377 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2834 ms
+2022-05-28 21:56:23.729 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [/]
+2022-05-28 21:56:23.748 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2022-05-28 21:56:23.748 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2022-05-28 21:56:23.748 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2022-05-28 21:56:23.748 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2022-05-28 21:56:24.064 [main] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2022-05-28 21:56:24.491 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@f5acb9d: startup date [Sat May 28 21:56:20 CST 2022]; root of context hierarchy
+2022-05-28 21:56:24.698 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2022-05-28 21:56:24.704 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2022-05-28 21:56:24.774 [main] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2022-05-28 21:56:24.776 [main] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2022-05-28 21:56:25.348 [main] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+2022-05-28 21:56:25.456 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-05-28 21:56:25.489 [main] INFO  org.apache.tomcat.util.net.NioSelectorPool - Using a shared selector for servlet write/read
+2022-05-28 21:56:25.528 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2022-05-28 21:56:25.536 [main] INFO  com.bage.ElkApplication - Started ElkApplication in 6.292 seconds (JVM running for 7.532)
+2022-05-28 21:56:28.562 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:28.562
+2022-05-28 21:56:31.569 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:31.568
+2022-05-28 21:56:34.571 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:34.571
+2022-05-28 21:56:37.578 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:37.578
+2022-05-28 21:56:40.580 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:40.580
+2022-05-28 21:56:43.586 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:43.586
+2022-05-28 21:56:46.591 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:46.591
+2022-05-28 21:56:49.598 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:49.598
+2022-05-28 21:56:52.603 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:52.603
+2022-05-28 21:56:55.604 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:55.604
+2022-05-28 21:56:58.609 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:56:58.609
+2022-05-28 21:57:01.615 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:01.614
+2022-05-28 21:57:04.618 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:04.618
+2022-05-28 21:57:07.620 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:07.620
+2022-05-28 21:57:10.627 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:10.626
+2022-05-28 21:57:13.633 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:13.633
+2022-05-28 21:57:16.639 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:16.639
+2022-05-28 21:57:19.645 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:19.645
+2022-05-28 21:57:22.652 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:22.651
+2022-05-28 21:57:25.657 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:25.657
+2022-05-28 21:57:28.662 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:28.662
+2022-05-28 21:57:31.667 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:31.667
+2022-05-28 21:57:34.672 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:34.672
+2022-05-28 21:57:37.674 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:37.674
+2022-05-28 21:57:40.680 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:40.679
+2022-05-28 21:57:43.682 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:43.682
+2022-05-28 21:57:46.688 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:46.688
+2022-05-28 21:57:49.703 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:49.703
+2022-05-28 21:57:52.707 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:52.707
+2022-05-28 21:57:55.714 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:55.714
+2022-05-28 21:57:58.717 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:57:58.717
+2022-05-28 21:58:01.724 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:01.723
+2022-05-28 21:58:04.738 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:04.737
+2022-05-28 21:58:07.743 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:07.743
+2022-05-28 21:58:10.752 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:10.750
+2022-05-28 21:58:13.759 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:13.759
+2022-05-28 21:58:16.770 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:16.769
+2022-05-28 21:58:19.776 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:19.776
+2022-05-28 21:58:22.782 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:22.782
+2022-05-28 21:58:25.790 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:25.789
+2022-05-28 21:58:28.798 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:28.795
+2022-05-28 21:58:31.800 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:31.800
+2022-05-28 21:58:34.805 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:34.805
+2022-05-28 21:58:37.810 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:37.810
+2022-05-28 21:58:40.816 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:40.816
+2022-05-28 21:58:43.822 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:43.822
+2022-05-28 21:58:46.828 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:46.827
+2022-05-28 21:58:49.833 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:49.833
+2022-05-28 21:58:52.839 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:52.839
+2022-05-28 21:58:55.845 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:55.845
+2022-05-28 21:58:58.850 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:58:58.850
+2022-05-28 21:59:01.856 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:01.856
+2022-05-28 21:59:04.863 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:04.862
+2022-05-28 21:59:07.871 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:07.871
+2022-05-28 21:59:10.879 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:10.878
+2022-05-28 21:59:13.887 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:13.886
+2022-05-28 21:59:16.894 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:16.894
+2022-05-28 21:59:19.901 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:19.900
+2022-05-28 21:59:22.903 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:22.903
+2022-05-28 21:59:25.908 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:25.908
+2022-05-28 21:59:28.912 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:28.912
+2022-05-28 21:59:31.917 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:31.917
+2022-05-28 21:59:34.921 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:34.921
+2022-05-28 21:59:37.927 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:37.927
+2022-05-28 21:59:40.929 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:40.929
+2022-05-28 21:59:43.934 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:43.934
+2022-05-28 21:59:46.936 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:46.936
+2022-05-28 21:59:49.939 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:49.939
+2022-05-28 21:59:52.941 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:52.941
+2022-05-28 21:59:55.945 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:55.945
+2022-05-28 21:59:58.948 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T21:59:58.948
+2022-05-28 22:00:01.953 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:01.953
+2022-05-28 22:00:04.954 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:04.954
+2022-05-28 22:00:07.960 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:07.959
+2022-05-28 22:00:10.972 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:10.972
+2022-05-28 22:00:13.973 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:13.973
+2022-05-28 22:00:16.974 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:16.974
+2022-05-28 22:00:19.975 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:19.975
+2022-05-28 22:00:22.981 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:22.981
+2022-05-28 22:00:25.984 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:25.983
+2022-05-28 22:00:28.990 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:28.989
+2022-05-28 22:00:31.995 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:31.995
+2022-05-28 22:00:34.997 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:34.996
+2022-05-28 22:00:37.999 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:37.999
+2022-05-28 22:00:41.004 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:41.004
+2022-05-28 22:00:44.008 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:44.008
+2022-05-28 22:00:47.014 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:47.014
+2022-05-28 22:00:50.016 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:50.016
+2022-05-28 22:00:53.017 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:53.017
+2022-05-28 22:00:56.017 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:56.017
+2022-05-28 22:00:59.020 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:00:59.020
+2022-05-28 22:01:02.021 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:02.021
+2022-05-28 22:01:05.022 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:05.022
+2022-05-28 22:01:08.023 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:08.023
+2022-05-28 22:01:11.024 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:11.023
+2022-05-28 22:01:14.026 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:14.026
+2022-05-28 22:01:17.028 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:17.028
+2022-05-28 22:01:20.028 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:20.028
+2022-05-28 22:01:23.034 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:23.034
+2022-05-28 22:01:26.043 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:26.043
+2022-05-28 22:01:29.044 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:29.044
+2022-05-28 22:01:29.935 [Thread-7] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@f5acb9d: startup date [Sat May 28 21:56:20 CST 2022]; root of context hierarchy
+2022-05-28 22:01:29.971 [Thread-7] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+2022-05-28 22:01:37.670 [main] INFO  com.bage.ElkApplication - Starting ElkApplication on bagedeMBP with PID 34046 (/Users/bage/bage/github/study/study-spring-boot-elk/target/classes started by bage in /Users/bage/bage/github/study)
+2022-05-28 22:01:37.702 [main] INFO  com.bage.ElkApplication - No active profile set, falling back to default profiles: default
+2022-05-28 22:01:37.922 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@2c1b194a: startup date [Sat May 28 22:01:37 CST 2022]; root of context hierarchy
+2022-05-28 22:01:40.495 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2022-05-28 22:01:40.542 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-05-28 22:01:40.581 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-05-28 22:01:40.582 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.29
+2022-05-28 22:01:40.596 [localhost-startStop-1] INFO  org.apache.catalina.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/bage/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2022-05-28 22:01:40.777 [localhost-startStop-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-05-28 22:01:40.778 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2858 ms
+2022-05-28 22:01:41.164 [localhost-startStop-1] INFO  o.s.boot.web.servlet.ServletRegistrationBean - Servlet dispatcherServlet mapped to [/]
+2022-05-28 22:01:41.179 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2022-05-28 22:01:41.179 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2022-05-28 22:01:41.179 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2022-05-28 22:01:41.179 [localhost-startStop-1] INFO  o.s.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2022-05-28 22:01:41.677 [main] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2022-05-28 22:01:42.324 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@2c1b194a: startup date [Sat May 28 22:01:37 CST 2022]; root of context hierarchy
+2022-05-28 22:01:42.656 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2022-05-28 22:01:42.665 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2022-05-28 22:01:42.764 [main] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2022-05-28 22:01:42.766 [main] INFO  o.s.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2022-05-28 22:01:43.339 [main] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+2022-05-28 22:01:43.406 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-05-28 22:01:43.429 [main] INFO  org.apache.tomcat.util.net.NioSelectorPool - Using a shared selector for servlet write/read
+2022-05-28 22:01:43.461 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2022-05-28 22:01:43.474 [main] INFO  com.bage.ElkApplication - Started ElkApplication in 6.705 seconds (JVM running for 8.0)
+2022-05-28 22:01:46.491 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:46.490
+2022-05-28 22:01:49.492 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:49.492
+2022-05-28 22:01:52.498 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:52.497
+2022-05-28 22:01:55.499 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:55.499
+2022-05-28 22:01:58.505 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:01:58.504
+2022-05-28 22:02:01.510 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:01.510
+2022-05-28 22:02:04.514 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:04.514
+2022-05-28 22:02:07.521 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:07.520
+2022-05-28 22:02:10.527 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:10.527
+2022-05-28 22:02:13.534 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:13.533
+2022-05-28 22:02:16.540 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:16.539
+2022-05-28 22:02:19.548 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:19.548
+2022-05-28 22:02:22.554 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:22.554
+2022-05-28 22:02:25.559 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:25.558
+2022-05-28 22:02:28.565 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:28.565
+2022-05-28 22:02:31.570 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:31.569
+2022-05-28 22:02:34.573 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:34.573
+2022-05-28 22:02:37.576 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:37.575
+2022-05-28 22:02:40.581 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:40.580
+2022-05-28 22:02:43.587 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:43.587
+2022-05-28 22:02:46.591 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:46.591
+2022-05-28 22:02:49.594 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:49.594
+2022-05-28 22:02:52.600 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:52.599
+2022-05-28 22:02:55.606 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:55.606
+2022-05-28 22:02:58.610 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:02:58.610
+2022-05-28 22:03:01.616 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:01.615
+2022-05-28 22:03:04.622 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:04.622
+2022-05-28 22:03:07.638 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:07.638
+2022-05-28 22:03:10.648 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:10.646
+2022-05-28 22:03:13.660 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:13.658
+2022-05-28 22:03:16.673 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:16.672
+2022-05-28 22:03:19.678 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:19.678
+2022-05-28 22:03:22.681 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:22.681
+2022-05-28 22:03:25.685 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:25.685
+2022-05-28 22:03:28.690 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:28.689
+2022-05-28 22:03:31.696 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:31.696
+2022-05-28 22:03:34.705 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:34.704
+2022-05-28 22:03:37.709 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:37.709
+2022-05-28 22:03:40.716 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:40.715
+2022-05-28 22:03:43.728 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:43.728
+2022-05-28 22:03:46.736 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:46.735
+2022-05-28 22:03:49.744 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:49.743
+2022-05-28 22:03:52.752 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:52.751
+2022-05-28 22:03:55.754 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:55.754
+2022-05-28 22:03:58.758 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:03:58.758
+2022-05-28 22:04:01.765 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:01.764
+2022-05-28 22:04:04.770 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:04.770
+2022-05-28 22:04:07.780 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:07.779
+2022-05-28 22:04:10.789 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:10.789
+2022-05-28 22:04:13.791 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:13.791
+2022-05-28 22:04:16.796 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:16.796
+2022-05-28 22:04:19.800 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:19.799
+2022-05-28 22:04:22.804 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:22.804
+2022-05-28 22:04:25.813 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:25.813
+2022-05-28 22:04:28.816 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:28.816
+2022-05-28 22:04:31.818 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:31.818
+2022-05-28 22:04:34.821 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:34.821
+2022-05-28 22:04:37.828 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:37.828
+2022-05-28 22:04:40.831 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:40.831
+2022-05-28 22:04:43.834 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:43.833
+2022-05-28 22:04:46.840 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:46.840
+2022-05-28 22:04:49.846 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:49.846
+2022-05-28 22:04:52.849 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:52.849
+2022-05-28 22:04:55.857 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:55.857
+2022-05-28 22:04:58.861 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:04:58.861
+2022-05-28 22:05:01.871 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:01.871
+2022-05-28 22:05:04.877 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:04.877
+2022-05-28 22:05:07.882 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:07.882
+2022-05-28 22:05:10.884 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:10.884
+2022-05-28 22:05:13.891 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:13.891
+2022-05-28 22:05:16.898 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:16.898
+2022-05-28 22:05:19.904 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:19.904
+2022-05-28 22:05:22.910 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:22.910
+2022-05-28 22:05:25.916 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:25.916
+2022-05-28 22:05:28.920 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:28.920
+2022-05-28 22:05:31.925 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:31.925
+2022-05-28 22:05:34.931 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:34.931
+2022-05-28 22:05:37.936 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:37.936
+2022-05-28 22:05:40.938 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:40.938
+2022-05-28 22:05:43.944 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:43.944
+2022-05-28 22:05:46.950 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:46.950
+2022-05-28 22:05:49.953 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:49.953
+2022-05-28 22:05:52.958 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:52.958
+2022-05-28 22:05:55.963 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:55.963
+2022-05-28 22:05:58.967 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:05:58.967
+2022-05-28 22:06:01.973 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:01.972
+2022-05-28 22:06:04.979 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:04.979
+2022-05-28 22:06:07.984 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:07.984
+2022-05-28 22:06:10.991 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:10.990
+2022-05-28 22:06:13.998 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:13.998
+2022-05-28 22:06:17.005 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:17.004
+2022-05-28 22:06:20.007 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:20.007
+2022-05-28 22:06:23.008 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:23.008
+2022-05-28 22:06:26.014 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:26.014
+2022-05-28 22:06:29.020 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:29.020
+2022-05-28 22:06:32.029 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:32.029
+2022-05-28 22:06:35.037 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:35.036
+2022-05-28 22:06:38.044 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:38.044
+2022-05-28 22:06:41.045 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:41.045
+2022-05-28 22:06:44.053 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:44.052
+2022-05-28 22:06:47.058 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:47.057
+2022-05-28 22:06:50.069 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:50.069
+2022-05-28 22:06:53.078 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:53.073
+2022-05-28 22:06:56.105 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:56.105
+2022-05-28 22:06:59.118 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:06:59.118
+2022-05-28 22:07:02.125 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:02.125
+2022-05-28 22:07:05.138 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:05.138
+2022-05-28 22:07:08.140 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:08.140
+2022-05-28 22:07:11.147 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:11.145
+2022-05-28 22:07:14.150 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:14.150
+2022-05-28 22:07:17.152 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:17.152
+2022-05-28 22:07:20.153 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:20.153
+2022-05-28 22:07:23.159 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:23.159
+2022-05-28 22:07:26.160 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:26.160
+2022-05-28 22:07:29.164 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:29.163
+2022-05-28 22:07:32.171 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:32.171
+2022-05-28 22:07:35.177 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:35.177
+2022-05-28 22:07:38.178 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:38.178
+2022-05-28 22:07:41.179 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:41.178
+2022-05-28 22:07:44.189 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:44.189
+2022-05-28 22:07:47.196 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:47.195
+2022-05-28 22:07:50.197 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:50.197
+2022-05-28 22:07:53.200 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:53.199
+2022-05-28 22:07:56.205 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:56.204
+2022-05-28 22:07:59.211 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:07:59.210
+2022-05-28 22:08:02.214 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:02.214
+2022-05-28 22:08:05.215 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:05.215
+2022-05-28 22:08:08.216 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:08.216
+2022-05-28 22:08:11.221 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:11.220
+2022-05-28 22:08:14.223 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:14.223
+2022-05-28 22:08:17.229 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:17.229
+2022-05-28 22:08:20.231 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:20.231
+2022-05-28 22:08:23.236 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:23.236
+2022-05-28 22:08:26.241 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:26.241
+2022-05-28 22:08:29.247 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:29.247
+2022-05-28 22:08:32.248 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:32.248
+2022-05-28 22:08:35.254 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:35.254
+2022-05-28 22:08:38.257 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:38.257
+2022-05-28 22:08:41.257 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:41.257
+2022-05-28 22:08:44.258 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:44.258
+2022-05-28 22:08:47.265 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:47.265
+2022-05-28 22:08:50.268 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:50.268
+2022-05-28 22:08:53.270 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:53.269
+2022-05-28 22:08:56.280 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:56.280
+2022-05-28 22:08:59.286 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:08:59.286
+2022-05-28 22:09:02.288 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:02.287
+2022-05-28 22:09:05.296 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:05.295
+2022-05-28 22:09:08.297 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:08.297
+2022-05-28 22:09:11.302 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:11.302
+2022-05-28 22:09:14.313 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:14.313
+2022-05-28 22:09:17.315 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:17.315
+2022-05-28 22:09:20.315 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:20.315
+2022-05-28 22:09:23.317 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:23.316
+2022-05-28 22:09:26.324 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:26.324
+2022-05-28 22:09:29.326 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:29.326
+2022-05-28 22:09:32.332 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:32.331
+2022-05-28 22:09:35.336 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:35.335
+2022-05-28 22:09:38.336 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:38.336
+2022-05-28 22:09:41.340 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:41.340
+2022-05-28 22:09:44.342 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:44.342
+2022-05-28 22:09:47.347 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:47.347
+2022-05-28 22:09:50.350 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:50.350
+2022-05-28 22:09:53.353 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:53.352
+2022-05-28 22:09:56.354 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:56.354
+2022-05-28 22:09:59.359 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:09:59.359
+2022-05-28 22:10:02.362 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:02.362
+2022-05-28 22:10:05.365 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:05.363
+2022-05-28 22:10:08.378 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:08.377
+2022-05-28 22:10:11.382 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:11.382
+2022-05-28 22:10:14.389 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:14.388
+2022-05-28 22:10:17.396 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:17.396
+2022-05-28 22:10:20.400 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:20.400
+2022-05-28 22:10:23.405 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:23.405
+2022-05-28 22:10:26.411 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:26.411
+2022-05-28 22:10:29.416 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:29.416
+2022-05-28 22:10:32.422 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:32.422
+2022-05-28 22:10:35.424 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:35.423
+2022-05-28 22:10:38.427 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:38.427
+2022-05-28 22:10:41.432 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:41.432
+2022-05-28 22:10:44.433 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:44.433
+2022-05-28 22:10:47.438 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:47.438
+2022-05-28 22:10:50.440 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:50.440
+2022-05-28 22:10:53.442 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:53.442
+2022-05-28 22:10:56.443 [main] INFO  com.bage.ElkApplication - run:  2022-05-28T22:10:56.443
+2022-05-28 22:10:59.078 [Thread-7] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@2c1b194a: startup date [Sat May 28 22:01:37 CST 2022]; root of context hierarchy
+2022-05-28 22:10:59.111 [Thread-7] INFO  o.s.jmx.export.annotation.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown

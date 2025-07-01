@@ -1,0 +1,12 @@
+com/bage/PathController.class
+com/bage/SampleRealm.class
+com/bage/DefaultUserService.class
+com/bage/PathDefinition.class
+com/bage/User.class
+com/bage/HelloController.class
+com/bage/LoginController.class
+com/bage/AuthApplication.class
+com/bage/Role.class
+com/bage/AccountInfoController.class
+com/bage/UserService.class
+com/bage/PathDefinitionMapper.class

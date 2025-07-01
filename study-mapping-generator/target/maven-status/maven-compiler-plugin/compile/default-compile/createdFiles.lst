@@ -1,0 +1,13 @@
+com/bage/ClassStructureGenerator.class
+com/bage/util/JsonUtils$MyExclusionStrategy.class
+com/bage/KeyUtils.class
+com/bage/parser/GenericParser.class
+com/bage/CodeGenerator.class
+com/bage/ClassStructureGenerator$1.class
+com/bage/domain/ClassAttribute.class
+com/bage/parser/FieldParser.class
+com/bage/domain/FieldAttribute.class
+com/bage/util/JsonUtils.class
+com/bage/util/PrintUtils.class
+com/bage/util/Logger.class
+com/bage/parser/ClassParser.class

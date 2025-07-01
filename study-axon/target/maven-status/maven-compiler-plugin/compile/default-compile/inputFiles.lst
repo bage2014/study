@@ -1,0 +1,15 @@
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/commands/ConfirmOrderCommand.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/commands/ShipOrderCommand.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/querymodel/OrderedProductsEventHandler.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/GreetingController.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/aggregates/OrderAggregate.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/events/OrderPlacedEvent.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/exceptions/UnconfirmedOrderException.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/commands/PlaceOrderCommand.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/gui/OrderRestEndpoint.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/queries/OrderedProduct.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/events/OrderShippedEvent.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/queries/FindAllOrderedProductsQuery.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/Application.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/queries/OrderStatus.java
+/Users/bage/bage/github/study/study-axon/src/main/java/com/bage/events/OrderConfirmedEvent.java

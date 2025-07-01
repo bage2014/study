@@ -1,0 +1,5 @@
+com/bage/controller/SimpleBookRepository.class
+com/bage/controller/Book.class
+com/bage/controller/BookRepository.class
+com/bage/embedded/Main.class
+com/bage/controller/IndexController.class

@@ -1,0 +1,9 @@
+com/bage/user/dao/UserDao.class
+com/bage/user/controller/UserController.class
+com/bage/user/Application.class
+com/bage/user/service/UserService.class
+com/bage/user/dao/UserMapper.class
+com/bage/user/aop/UserAspect.class
+com/bage/user/domain/User.class
+com/bage/user/service/UserServiceImp.class
+com/bage/user/dao/UserDaoImp.class

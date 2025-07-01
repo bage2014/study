@@ -1,0 +1,10 @@
+org/apache/shiro/samples/spring/web/IndexController.class
+org/apache/shiro/samples/spring/BootstrapDataPopulator.class
+org/apache/shiro/samples/spring/realm/SaltAwareJdbcRealm.class
+org/apache/shiro/samples/spring/web/LogoutController.class
+org/apache/shiro/samples/spring/web/LoginController.class
+org/apache/shiro/samples/spring/web/SessionValueCommand.class
+org/apache/shiro/samples/spring/SampleManager.class
+org/apache/shiro/samples/spring/web/JnlpController.class
+org/apache/shiro/samples/spring/web/LoginCommand.class
+org/apache/shiro/samples/spring/DefaultSampleManager.class

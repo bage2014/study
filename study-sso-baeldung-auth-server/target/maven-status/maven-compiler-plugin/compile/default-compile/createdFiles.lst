@@ -1,0 +1,4 @@
+com/bage/study/sso/baeldung/auth/server/AuthServerConfig.class
+com/bage/study/sso/baeldung/auth/server/SecurityConfig.class
+com/bage/study/sso/baeldung/auth/server/UserController.class
+com/bage/study/sso/baeldung/auth/server/AuthorizationServerApplication.class

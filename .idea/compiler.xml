@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="study-spring-boot-rest-doc" />
+        <module name="study-swagger" />
+        <module name="study-jmockit" />
+        <module name="study-calcite" />
+        <module name="study-gc-jdk11" />
+        <module name="study-regex" />
+        <module name="study-spring-cloud-versions" />
+        <module name="study-security" />
+        <module name="study-spring-boot-building" />
+        <module name="study-java-shell" />
+        <module name="study-sso-baeldung-auth-server" />
+        <module name="study-gc-jdk17" />
+        <module name="study-sentinel" />
+        <module name="study-spring-boot-k8s" />
+        <module name="study-log" />
+        <module name="study-hashids-java" />
+        <module name="study-ddd-domain" />
+        <module name="study-spring-boot-jasypt" />
+        <module name="study-jasypt" />
+        <module name="study-spring-boot" />
+        <module name="study-spring-boot-env" />
+        <module name="study-leancloud" />
+        <module name="study-spring-boot-actuator" />
+        <module name="study-utils" />
+        <module name="study-web" />
+        <module name="study-dpf" />
+        <module name="study-spring-boot-valid" />
+        <module name="study-tidb" />
+        <module name="study-mybatis-plus" />
+        <module name="study-spring-boot-oauth2-auth-server" />
+        <module name="study-mockito" />
+        <module name="study-shiro-spring-boot" />
+        <module name="study-feign" />
+        <module name="study-spring-boot-zipkin" />
+        <module name="study-file-online-preview" />
+        <module name="study-spring-boot-dynamic-datasource" />
+        <module name="study-common-repo-mysql-docker" />
+        <module name="study-jmeter" />
+        <module name="study-cache-memory-springboot" />
+        <module name="bage-spring-boot-starter-ping" />
+        <module name="study-shiro-tutorial" />
+        <module name="study-rabbitmq" />
+        <module name="study-maven-plugin" />
+        <module name="study-mybatis" />
+        <module name="study-zipkin" />
+        <module name="study-spring-boot-elk" />
+        <module name="study-ddd-processor" />
+        <module name="study-pulsar" />
+        <module name="study-websocket" />
+        <module name="bage-spring-boot-starter-ping-test" />
+        <module name="study-spring-boot-redis" />
+        <module name="study-materialize-spring-boot" />
+        <module name="study-best-practice" />
+        <module name="study-gc-jdk21" />
+        <module name="study-gateway" />
+        <module name="study-spring-boot-dependencies" />
+        <module name="study-spring-boot-vault" />
+        <module name="study-json-to-pojo" />
+        <module name="study-domain-generator" />
+        <module name="study-ddd-infrastructure" />
+        <module name="study-canal" />
+        <module name="study-downtime" />
+        <module name="study-sftp" />
+        <module name="study-json" />
+        <module name="study-spring-dependencies" />
+        <module name="study-spring-boot-concurrency" />
+        <module name="study-springmvc-xml" />
+        <module name="study-spring-boot-dev-tools" />
+        <module name="study-hystrix" />
+        <module name="study-jol" />
+        <module name="study-algorithm" />
+        <module name="study-loki" />
+        <module name="study-spring-boot-contract-rest" />
+        <module name="study-spring-boot-mongo" />
+        <module name="study-spring-boot-metrics" />
+        <module name="study-m3u" />
+        <module name="study-sql" />
+        <module name="study-varr" />
+        <module name="study-deep-learning" />
+        <module name="study-oauth" />
+        <module name="study-best-practice-web" />
+        <module name="study-baidu-asr" />
+        <module name="study-dubbo-spring-boot-provider" />
+        <module name="study-open-hands" />
+        <module name="study-dbschema-to-json" />
+        <module name="study-stream-m3u8" />
+        <module name="study-springmvc-nowebxml" />
+        <module name="study-netty" />
+        <module name="study-vue-npm" />
+        <module name="study-itext" />
+        <module name="study-gc-biz" />
+        <module name="study-cache-caffeine" />
+        <module name="study-btrace" />
+        <module name="study-spring-boot-sso-oauth2-server" />
+        <module name="study-socket" />
+        <module name="study-vue" />
+        <module name="study-cglib" />
+        <module name="study-jmh" />
+        <module name="study-cryption" />
+        <module name="study-nacos" />
+        <module name="study-es" />
+        <module name="study-spring-boot-flowable" />
+        <module name="study-itv-pro" />
+        <module name="study-pac4j" />
+        <module name="study-minio" />
+        <module name="study-spring-boot-versions" />
+        <module name="study-sso-baeldung-client2" />
+        <module name="study-sso-baeldung-client1" />
+        <module name="study-quartz" />
+        <module name="study-spring-cloud-circuit-breaker" />
+        <module name="study-linux" />
+        <module name="study-sharedsession" />
+        <module name="study-test" />
+        <module name="study-hanlp" />
+        <module name="study-spring-session" />
+        <module name="study-spring-boot-docker" />
+        <module name="study-podam" />
+        <module name="study-spring-boot-test" />
+        <module name="study-cas-server" />
+        <module name="study-axon" />
+        <module name="study-data-mock" />
+        <module name="study-cache-redis-spring" />
+        <module name="study-tencent-share" />
+        <module name="study-redis" />
+        <module name="study-tomcat" />
+        <module name="study-spring-email" />
+        <module name="study-html2pdf" />
+        <module name="study-docker" />
+        <module name="study-activemq" />
+        <module name="study-snailjob" />
+        <module name="study-mongodb" />
+        <module name="study-loadbalance" />
+        <module name="study-spring-boot3-security" />
+        <module name="study-java11" />
+        <module name="study-java" />
+        <module name="study-spring-boot-jpa" />
+        <module name="study-test-restdoc" />
+        <module name="study-spring-boot3" />
+        <module name="study-shadow" />
+        <module name="study-jpush" />
+        <module name="study-spring-boot-saml" />
+        <module name="study-summary" />
+        <module name="study-spring-boot-web-socket" />
+        <module name="study-spring-boot-sso-oauth2-client2" />
+        <module name="study-spring-boot-trace" />
+        <module name="study-spring-boot-sso-oauth2-client1" />
+        <module name="study-ai" />
+        <module name="study-java21" />
+        <module name="study-mapping-generator" />
+        <module name="study-arthas" />
+        <module name="study-oceanbase" />
+        <module name="study-servlet" />
+        <module name="study-lombok" />
+        <module name="study-cache-memory-spring" />
+        <module name="study-spring-boot-starter" />
+        <module name="study-dubbo-spring-boot-api" />
+        <module name="study-zookeeper" />
+        <module name="study-nginx" />
+        <module name="study-spring-boot-mybatis-oracle" />
+        <module name="study-maven" />
+        <module name="study-crawler" />
+        <module name="study-gc-jdk8" />
+        <module name="study-spring-boot-h2" />
+        <module name="study-spring-boot-sso-oauth2-server-jwt" />
+        <module name="study-spring-boot-starter-test" />
+        <module name="study-svm-sandbox" />
+        <module name="study-jwt" />
+        <module name="study-easyexcel" />
+        <module name="study-shiro-web-tutorial" />
+        <module name="study-spring" />
+        <module name="study-common-repo-h2" />
+        <module name="study-spring-boot-multi-datasource" />
+        <module name="study-spring-boot-security" />
+        <module name="study-spring-boot-wavefront" />
+        <module name="study-log4j2" />
+        <module name="study-dubbo-spring-boot-consumer" />
+        <module name="study-gateway-test" />
+        <module name="study-springmvc-java" />
+        <module name="study-clickhouse" />
+        <module name="study-shiro-web" />
+        <module name="study-log-logback" />
+        <module name="study-xfyun-lfasr" />
+        <module name="study-tess4j" />
+        <module name="study-spring-boot-neo4j" />
+        <module name="study-ews-java-api" />
+        <module name="study-id-generator" />
+        <module name="study-ehcache" />
+        <module name="study-jwe" />
+        <module name="study-ddd-gateway" />
+        <module name="study-code-generator" />
+        <module name="study-jenkins" />
+        <module name="study-skywalking" />
+        <module name="study-call-trace" />
+        <module name="study-mybatis-generator-maven-plugin" />
+        <module name="study-resilience4j" />
+        <module name="study-cxf" />
+        <module name="study-xxl-job" />
+        <module name="study-swagger-cxf" />
+        <module name="study-sentinel-spring" />
+        <module name="study-spring-boot-trace-server" />
+        <module name="study-cas-client" />
+        <module name="study-bytebuddy" />
+        <module name="study-split-db-tb" />
+        <module name="study-code-format" />
+        <module name="study-jvm" />
+      </profile>
+      <profile name="Annotation profile for study" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.4.2.Final/mapstruct-processor-1.4.2.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.4.2.Final/mapstruct-1.4.2.Final.jar" />
+        </processorPath>
+        <module name="study-mapstruct" />
+      </profile>
+      <profile name="Annotation profile for study-mapstruct-plus" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/io/github/linpeilie/mapstruct-plus-processor/1.4.6/mapstruct-plus-processor-1.4.6.jar" />
+          <entry name="$MAVEN_REPOSITORY$/io/github/linpeilie/mapstruct-plus/1.4.6/mapstruct-plus-1.4.6.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/io/github/linpeilie/mapstruct-plus-object-convert/1.4.6/mapstruct-plus-object-convert-1.4.6.jar" />
+          <entry name="$MAVEN_REPOSITORY$/com/baidu/lbsyun/javapoet/1.9.0/javapoet-1.9.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/tools/gem/gem-api/1.0.0.Alpha3/gem-api-1.0.0.Alpha3.jar" />
+        </processorPath>
+        <module name="study-mapstruct-plus" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="21">
+      <module name="study-guava" target="1.8" />
+      <module name="study-java-agent-attach" target="1.8" />
+      <module name="study-java-agent-demo-service" target="1.8" />
+      <module name="study-java-agent-hotload-service" target="1.8" />
+      <module name="study-java-agent-instrument" target="1.8" />
+      <module name="study-java-agent-transform-service" target="1.8" />
+      <module name="study-obj-mapper" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="--enable-preview" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="bage-spring-boot-starter-ping" options="" />
+      <module name="bage-spring-boot-starter-ping-test" options="" />
+      <module name="study" options="" />
+      <module name="study-activemq" options="" />
+      <module name="study-ai" options="" />
+      <module name="study-algorithm" options="" />
+      <module name="study-arthas" options="" />
+      <module name="study-axon" options="" />
+      <module name="study-baidu-asr" options="" />
+      <module name="study-best-practice" options="" />
+      <module name="study-best-practice-web" options="" />
+      <module name="study-btrace" options="" />
+      <module name="study-bytebuddy" options="" />
+      <module name="study-cache-caffeine" options="" />
+      <module name="study-cache-memory-spring" options="" />
+      <module name="study-cache-memory-springboot" options="" />
+      <module name="study-cache-redis-spring" options="" />
+      <module name="study-calcite" options="" />
+      <module name="study-call-trace" options="" />
+      <module name="study-canal" options="" />
+      <module name="study-cas-client" options="" />
+      <module name="study-cas-server" options="" />
+      <module name="study-cglib" options="" />
+      <module name="study-clickhouse" options="" />
+      <module name="study-code-format" options="" />
+      <module name="study-code-generator" options="" />
+      <module name="study-common-repo-h2" options="" />
+      <module name="study-common-repo-mysql-docker" options="" />
+      <module name="study-crawler" options="" />
+      <module name="study-cryption" options="" />
+      <module name="study-cxf" options="" />
+      <module name="study-data-mock" options="" />
+      <module name="study-dbschema-to-json" options="" />
+      <module name="study-ddd" options="" />
+      <module name="study-ddd-domain" options="" />
+      <module name="study-ddd-gateway" options="" />
+      <module name="study-ddd-infrastructure" options="" />
+      <module name="study-ddd-processor" options="" />
+      <module name="study-deep-learning" options="" />
+      <module name="study-docker" options="" />
+      <module name="study-domain-generator" options="" />
+      <module name="study-downtime" options="" />
+      <module name="study-dpf" options="" />
+      <module name="study-dubbo-spring-boot-api" options="" />
+      <module name="study-dubbo-spring-boot-consumer" options="" />
+      <module name="study-dubbo-spring-boot-provider" options="" />
+      <module name="study-easyexcel" options="" />
+      <module name="study-ehcache" options="" />
+      <module name="study-es" options="" />
+      <module name="study-ews-java-api" options="" />
+      <module name="study-feign" options="" />
+      <module name="study-file-online-preview" options="" />
+      <module name="study-gateway" options="" />
+      <module name="study-gateway-test" options="" />
+      <module name="study-gc" options="" />
+      <module name="study-gc-biz" options="" />
+      <module name="study-gc-jdk11" options="" />
+      <module name="study-gc-jdk17" options="" />
+      <module name="study-gc-jdk21" options="" />
+      <module name="study-gc-jdk8" options="" />
+      <module name="study-hanlp" options="" />
+      <module name="study-hashids-java" options="" />
+      <module name="study-html2pdf" options="" />
+      <module name="study-hystrix" options="" />
+      <module name="study-id-generator" options="" />
+      <module name="study-itext" options="" />
+      <module name="study-itv-pro" options="" />
+      <module name="study-jasypt" options="" />
+      <module name="study-java" options="" />
+      <module name="study-java-agent-attach" options="" />
+      <module name="study-java-agent-demo-service" options="" />
+      <module name="study-java-agent-hotload-service" options="" />
+      <module name="study-java-agent-instrument" options="" />
+      <module name="study-java-agent-transform-service" options="" />
+      <module name="study-java-shell" options="" />
+      <module name="study-java11" options="" />
+      <module name="study-java21" options="" />
+      <module name="study-jenkins" options="" />
+      <module name="study-jmeter" options="" />
+      <module name="study-jmh" options="" />
+      <module name="study-jmockit" options="" />
+      <module name="study-jol" options="" />
+      <module name="study-jpush" options="" />
+      <module name="study-json" options="" />
+      <module name="study-json-to-pojo" options="" />
+      <module name="study-jvm" options="" />
+      <module name="study-jwe" options="" />
+      <module name="study-jwt" options="" />
+      <module name="study-leancloud" options="" />
+      <module name="study-linux" options="" />
+      <module name="study-loadbalance" options="" />
+      <module name="study-log" options="" />
+      <module name="study-log-logback" options="" />
+      <module name="study-log4j2" options="" />
+      <module name="study-loki" options="" />
+      <module name="study-lombok" options="" />
+      <module name="study-m3u" options="" />
+      <module name="study-mapping-generator" options="" />
+      <module name="study-mapstruct" options="" />
+      <module name="study-mapstruct-plus" options="" />
+      <module name="study-materialize-spring-boot" options="" />
+      <module name="study-maven" options="" />
+      <module name="study-maven-plugin" options="" />
+      <module name="study-minio" options="" />
+      <module name="study-mockito" options="" />
+      <module name="study-mongodb" options="" />
+      <module name="study-mybatis" options="" />
+      <module name="study-mybatis-generator-maven-plugin" options="" />
+      <module name="study-mybatis-plus" options="" />
+      <module name="study-nacos" options="" />
+      <module name="study-netty" options="" />
+      <module name="study-nginx" options="" />
+      <module name="study-oauth" options="" />
+      <module name="study-obj-mapper" options="" />
+      <module name="study-oceanbase" options="" />
+      <module name="study-open-hands" options="" />
+      <module name="study-pac4j" options="" />
+      <module name="study-podam" options="" />
+      <module name="study-pulsar" options="" />
+      <module name="study-quartz" options="" />
+      <module name="study-rabbitmq" options="" />
+      <module name="study-redis" options="" />
+      <module name="study-regex" options="" />
+      <module name="study-resilience4j" options="" />
+      <module name="study-security" options="" />
+      <module name="study-sentinel" options="" />
+      <module name="study-sentinel-spring" options="" />
+      <module name="study-servlet" options="" />
+      <module name="study-sftp" options="" />
+      <module name="study-shadow" options="" />
+      <module name="study-sharedsession" options="" />
+      <module name="study-shiro-spring-boot" options="" />
+      <module name="study-shiro-tutorial" options="" />
+      <module name="study-shiro-web" options="" />
+      <module name="study-shiro-web-tutorial" options="" />
+      <module name="study-skywalking" options="" />
+      <module name="study-snailjob" options="" />
+      <module name="study-socket" options="" />
+      <module name="study-split-db-tb" options="" />
+      <module name="study-spring" options="" />
+      <module name="study-spring-boot" options="" />
+      <module name="study-spring-boot-actuator" options="" />
+      <module name="study-spring-boot-building" options="" />
+      <module name="study-spring-boot-concurrency" options="" />
+      <module name="study-spring-boot-contract-rest" options="" />
+      <module name="study-spring-boot-dependencies" options="" />
+      <module name="study-spring-boot-dev-tools" options="" />
+      <module name="study-spring-boot-docker" options="" />
+      <module name="study-spring-boot-dynamic-datasource" options="" />
+      <module name="study-spring-boot-elk" options="" />
+      <module name="study-spring-boot-env" options="" />
+      <module name="study-spring-boot-flowable" options="" />
+      <module name="study-spring-boot-h2" options="" />
+      <module name="study-spring-boot-jasypt" options="" />
+      <module name="study-spring-boot-jpa" options="" />
+      <module name="study-spring-boot-k8s" options="" />
+      <module name="study-spring-boot-metrics" options="" />
+      <module name="study-spring-boot-mongo" options="" />
+      <module name="study-spring-boot-multi-datasource" options="" />
+      <module name="study-spring-boot-mybatis-oracle" options="" />
+      <module name="study-spring-boot-neo4j" options="" />
+      <module name="study-spring-boot-oauth2-auth-server" options="" />
+      <module name="study-spring-boot-redis" options="" />
+      <module name="study-spring-boot-rest-doc" options="" />
+      <module name="study-spring-boot-saml" options="" />
+      <module name="study-spring-boot-security" options="" />
+      <module name="study-spring-boot-sso-oauth2-client1" options="" />
+      <module name="study-spring-boot-sso-oauth2-client2" options="" />
+      <module name="study-spring-boot-sso-oauth2-server" options="" />
+      <module name="study-spring-boot-sso-oauth2-server-jwt" options="" />
+      <module name="study-spring-boot-starter" options="" />
+      <module name="study-spring-boot-starter-test" options="" />
+      <module name="study-spring-boot-test" options="" />
+      <module name="study-spring-boot-trace" options="" />
+      <module name="study-spring-boot-trace-server" options="" />
+      <module name="study-spring-boot-valid" options="" />
+      <module name="study-spring-boot-vault" options="" />
+      <module name="study-spring-boot-versions" options="" />
+      <module name="study-spring-boot-wavefront" options="" />
+      <module name="study-spring-boot-web-socket" options="" />
+      <module name="study-spring-boot-zipkin" options="" />
+      <module name="study-spring-boot3" options="" />
+      <module name="study-spring-boot3-security" options="" />
+      <module name="study-spring-cloud-circuit-breaker" options="" />
+      <module name="study-spring-cloud-versions" options="" />
+      <module name="study-spring-dependencies" options="" />
+      <module name="study-spring-email" options="" />
+      <module name="study-spring-session" options="" />
+      <module name="study-springmvc-java" options="" />
+      <module name="study-springmvc-nowebxml" options="" />
+      <module name="study-springmvc-xml" options="" />
+      <module name="study-sql" options="" />
+      <module name="study-sso-baeldung-auth-server" options="" />
+      <module name="study-sso-baeldung-client1" options="" />
+      <module name="study-sso-baeldung-client2" options="" />
+      <module name="study-stream-m3u8" options="" />
+      <module name="study-summary" options="" />
+      <module name="study-svm-sandbox" options="" />
+      <module name="study-swagger" options="" />
+      <module name="study-swagger-cxf" options="" />
+      <module name="study-tencent-share" options="" />
+      <module name="study-tess4j" options="" />
+      <module name="study-test" options="" />
+      <module name="study-test-restdoc" options="" />
+      <module name="study-tidb" options="" />
+      <module name="study-tomcat" options="" />
+      <module name="study-utils" options="" />
+      <module name="study-varr" options="" />
+      <module name="study-vue" options="" />
+      <module name="study-vue-npm" options="" />
+      <module name="study-web" options="" />
+      <module name="study-websocket" options="" />
+      <module name="study-xfyun-lfasr" options="" />
+      <module name="study-xxl-job" options="" />
+      <module name="study-zipkin" options="" />
+      <module name="study-zookeeper" options="" />
+    </option>
+  </component>
+</project>

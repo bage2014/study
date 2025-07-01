@@ -1,0 +1,6 @@
+com/bage/cache/memory/springboot/Application.class
+com/bage/cache/memory/springboot/SimpleBookRepository.class
+com/bage/cache/memory/springboot/PingController.class
+com/bage/cache/memory/springboot/Book.class
+com/bage/cache/memory/springboot/BookRepository.class
+com/bage/cache/memory/springboot/AppRunner.class

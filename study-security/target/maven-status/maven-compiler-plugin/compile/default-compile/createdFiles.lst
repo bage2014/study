@@ -1,0 +1,6 @@
+com/bage/controller/HttpOnlyController.class
+com/bage/filter/HttpOnlyFilter.class
+com/bage/BaseClasses.class
+com/bage/WebAppConfig.class
+com/bage/WebAppInitializer.class
+com/bage/controller/IndexController.class

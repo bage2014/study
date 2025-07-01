@@ -1,0 +1,8 @@
+com/vdenotaris/spring/boot/security/saml/web/core/CurrentUserHandlerMethodArgumentResolver.class
+com/vdenotaris/spring/boot/security/saml/web/controllers/SSOController.class
+com/vdenotaris/spring/boot/security/saml/web/config/WebSecurityConfig.class
+com/vdenotaris/spring/boot/security/saml/web/stereotypes/CurrentUser.class
+com/vdenotaris/spring/boot/security/saml/web/Application.class
+com/vdenotaris/spring/boot/security/saml/web/config/MvcConfig.class
+com/vdenotaris/spring/boot/security/saml/web/controllers/LandingController.class
+com/vdenotaris/spring/boot/security/saml/web/core/SAMLUserDetailsServiceImpl.class

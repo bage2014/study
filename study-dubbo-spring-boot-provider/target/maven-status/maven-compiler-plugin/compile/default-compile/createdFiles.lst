@@ -1,0 +1,7 @@
+com/bage/study/dubbo/spring/boot/provider/HelloServiceImpl.class
+com/bage/study/dubbo/spring/boot/provider/LoggerFilter.class
+com/bage/study/dubbo/spring/boot/provider/UserMapper.class
+com/bage/study/dubbo/spring/boot/provider/OriginUsageTest.class
+com/bage/study/dubbo/spring/boot/provider/UserController.class
+com/bage/study/dubbo/spring/boot/provider/ProviderApplication.class
+com/bage/study/dubbo/spring/boot/provider/UserEntity.class

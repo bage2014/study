@@ -1,0 +1,2 @@
+INSERT INTO scheduler_job_info (cron_expression, job_class, job_group, job_name, cron_job, repeat_time) VALUES ( '0 0/5 * ? * *', 'com.bage.jdbc.springboot.jobs.SampleCronJob', 'Test_Cron', 'Sample Cron', null, '10000');
+INSERT INTO scheduler_job_info (cron_expression, job_class, job_group, job_name, cron_job, repeat_time) VALUES ( NULL, 'com.bage.jdbc.springboot.jobs.SimpleJob', 'Test_Job', 'Simple Job', null, '600000');

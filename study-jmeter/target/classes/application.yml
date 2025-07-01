@@ -1,0 +1,26 @@
+
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+    continue-on-error: false
+    url: jdbc:h2:mem:test
+    username: sa
+    password: bage
+  h2:
+    console:
+        enabled: true
+        path: /h2-console
+        settings:
+            web-allow-others: true
+
+# Logger Config
+logging:
+  level:
+    com.bage: debug
+
+
+server:
+    port: 8080
+

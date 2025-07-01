@@ -1,0 +1,14 @@
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/leak/file/LeakingFileService.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/utils/TypeAdapter.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/leak/memory/LeakingClass.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/cpu/high/LightProcess.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/safe/point/SafePointService.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/gc/JvmGcService.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/cpu/high/HighCpuService.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/leak/memory/LeakyModel.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/GoodsSecKillService.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/leak/memory/LeakingField.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/GcSafePointService.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/cpu/high/HeavyProcess.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/ThreadLocalService.java
+/Users/bage/bage/github/study/study-gc/study-gc-biz/src/main/java/com/bage/study/gc/biz/utils/JsonUtils.java

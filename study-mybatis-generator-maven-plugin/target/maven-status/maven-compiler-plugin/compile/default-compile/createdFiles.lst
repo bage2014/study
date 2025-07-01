@@ -1,0 +1,6 @@
+com/bage/test/mapper/TbUserMapper.class
+com/bage/MyMyBatisGenerator.class
+com/bage/test/entity/TbUser.class
+com/bage/domain/OauthClientDetails.class
+com/bage/dao/OauthClientDetailsMapper.class
+com/bage/JavaConfig.class

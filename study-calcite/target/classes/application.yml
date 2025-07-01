@@ -1,0 +1,21 @@
+
+spring:
+datasource:
+ order-db:
+  url:jdbc:mysql://localhost:3306/order_db?useSSL=false&serverTimezone=UTC
+  username:root
+  password:root
+  driver-class-name:com.mysql.cj.jdbc.Driver
+ user-db:
+  url:jdbc:postgresql://localhost:5432/user_db
+  username:postgres
+  password:postgres
+  driver-class-name:org.postgresql.Driver
+
+jpa:
+ show-sql:true
+ hibernate:
+  ddl-auto:update
+ properties:
+  hibernate:
+   dialect:org.hibernate.dialect.MySQL8Dialect

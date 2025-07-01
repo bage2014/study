@@ -1,0 +1,7 @@
+com/bage/study/spring/boot/oauth2/server/v3/AuthorizationServerApplication.class
+com/bage/study/spring/boot/oauth2/server/v3/MyResourceServerConfig.class
+com/bage/study/spring/boot/oauth2/server/v3/UserController.class
+com/bage/study/spring/boot/oauth2/server/v3/LoginController.class
+com/bage/study/spring/boot/oauth2/server/v3/MyAuthorizationServerConfig.class
+com/bage/study/spring/boot/oauth2/server/v3/MyAuthorizationServerConfig$CustomTokenEnhancer.class
+com/bage/study/spring/boot/oauth2/server/v3/MySecurityConfig.class

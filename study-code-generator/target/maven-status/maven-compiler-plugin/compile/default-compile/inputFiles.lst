@@ -1,0 +1,10 @@
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/CodeGeneratorApplication.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/generate/util/StringUtils.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/generate/util/CodeGeneratorUtils.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/generate/model/FieldInfo.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/generate/util/FreemarkerUtil.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/generate/model/ClassInfo.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/generate/util/FreemarkerTool.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/generate/controller/GenerateController.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/HelloController.java
+/Users/bage/bage/github/study/study-code-generator/src/main/java/com/bage/codegenerator/generate/util/TableParseUtil.java

@@ -1,0 +1,15 @@
+com/bage/queries/OrderStatus.class
+com/bage/queries/FindAllOrderedProductsQuery.class
+com/bage/GreetingController.class
+com/bage/aggregates/OrderAggregate.class
+com/bage/querymodel/OrderedProductsEventHandler.class
+com/bage/exceptions/UnconfirmedOrderException.class
+com/bage/events/OrderConfirmedEvent.class
+com/bage/events/OrderPlacedEvent.class
+com/bage/gui/OrderRestEndpoint.class
+com/bage/commands/ShipOrderCommand.class
+com/bage/events/OrderShippedEvent.class
+com/bage/queries/OrderedProduct.class
+com/bage/Application.class
+com/bage/commands/PlaceOrderCommand.class
+com/bage/commands/ConfirmOrderCommand.class

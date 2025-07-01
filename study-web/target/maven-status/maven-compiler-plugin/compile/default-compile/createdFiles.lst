@@ -1,0 +1,6 @@
+com/bage/web/getpost/GetPost.class
+com/bage/web/reqres/MyRequest.class
+com/bage/web/param/ParamFilter.class
+com/bage/web/param/HelloServlet.class
+com/bage/web/reqres/MyResponse.class
+com/bage/web/reqres/MyFilter.class

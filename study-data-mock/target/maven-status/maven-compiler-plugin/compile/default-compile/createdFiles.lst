@@ -1,0 +1,4 @@
+com/bage/study/data/mock/DataMock.class
+com/bage/study/data/mock/TestDataGeneratorMock.class
+com/bage/study/data/mock/JavaFakerMock.class
+com/bage/study/data/mock/BasicBean.class

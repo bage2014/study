@@ -1,0 +1,10 @@
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/BootstrapDataPopulator.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/web/LoginController.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/DefaultSampleManager.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/web/IndexController.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/web/LoginCommand.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/SampleManager.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/web/LogoutController.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/web/JnlpController.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/web/SessionValueCommand.java
+/Users/bage/bage/github/study/study-shiro-web-tutorial/src/main/java/org/apache/shiro/samples/spring/realm/SaltAwareJdbcRealm.java

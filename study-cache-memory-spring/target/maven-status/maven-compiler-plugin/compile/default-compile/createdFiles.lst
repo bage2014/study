@@ -1,0 +1,7 @@
+com/bage/controller/SimpleBookRepository.class
+com/bage/controller/BookRepository.class
+com/bage/cache/annotation/MyAliasFor.class
+com/bage/controller/Book.class
+com/bage/cache/annotation/MyCacheEvict.class
+com/bage/cache/annotation/MyCacheable.class
+com/bage/controller/IndexController.class

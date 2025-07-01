@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Select you IdP!</title>
+    </head>
+    <body>
+        <h1>Select your IdP:</h1>
+		<form th:action="${idpDiscoReturnURL}" method="get">
+			<div th:each="idp : ${idps}">
+				<input type="radio" th:name="${idpDiscoReturnParam}" th:id="'idp_' + ${idp}" th:value="${idp}" />
+				<label th:for="'idp_' + ${idp}" ><span th:text="${idp}">null</span></label>
+			</div>
+			<p>
+				<input type="submit" value="Login" />
+			</p>
+		</form>
+    </body>
+</html>

@@ -1,0 +1,5 @@
+com/bage/starter/enable/MyService.class
+com/bage/starter/ping/PingService.class
+com/bage/starter/enable/MyServiceConfig.class
+com/bage/starter/ping/PingAutoConfigure.class
+com/bage/starter/enable/EnableMyService.class

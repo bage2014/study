@@ -1,0 +1,12 @@
+
+CREATE TABLE IF NOT EXISTS tb_Order_Item_2019 (order_item_id BIGINT AUTO_INCREMENT, order_id BIGINT, user_id INT NOT NULL, status VARCHAR(50) , PRIMARY KEY (order_item_id));
+CREATE TABLE IF NOT EXISTS tb_Order_Item_2020 (order_item_id BIGINT AUTO_INCREMENT, order_id BIGINT, user_id INT NOT NULL, status VARCHAR(50) , PRIMARY KEY (order_item_id));
+
+
+CREATE TABLE IF NOT EXISTS TB_ORDER_2019 (order_id BIGINT AUTO_INCREMENT, user_id INT NOT NULL, address_id BIGINT NOT NULL, status VARCHAR(50), PRIMARY KEY (order_id));
+CREATE TABLE IF NOT EXISTS TB_ORDER_2020 (order_id BIGINT AUTO_INCREMENT, user_id INT NOT NULL, address_id BIGINT NOT NULL, status VARCHAR(50), PRIMARY KEY (order_id));
+
+
+CREATE TABLE IF NOT EXISTS tb_address_2019 (address_id BIGINT NOT NULL, address_name VARCHAR(100) NOT NULL, PRIMARY KEY (address_id));
+CREATE TABLE IF NOT EXISTS tb_address_2020 (address_id BIGINT NOT NULL, address_name VARCHAR(100) NOT NULL, PRIMARY KEY (address_id));
+

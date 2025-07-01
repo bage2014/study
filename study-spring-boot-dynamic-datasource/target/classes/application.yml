@@ -1,0 +1,9 @@
+mybatis:
+  mapperLocations: classpath:*.xml
+
+logging:
+  level:
+    root : info
+
+
+

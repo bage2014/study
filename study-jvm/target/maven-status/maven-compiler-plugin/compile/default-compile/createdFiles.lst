@@ -1,0 +1,13 @@
+SimpleDebugger.class
+HelloJdiMyDebugger.class
+com/bage/JpsMain.class
+com/bage/dump/GenerateDump.class
+Test.class
+Test$1.class
+HelloJdi.class
+com/bage/safe/point/SafePointDemo.class
+com/bage/App.class
+MethodTrace.class
+HelloJdi2.class
+AttachingDebugger.class
+com/bage/safe/point/SafePointDemo2.class

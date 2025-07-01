@@ -1,0 +1,3 @@
+com/bage/study/agent/transform/service/MyClassFileTransformer.class
+com/bage/study/agent/transform/service/MyClassInfo.class
+com/bage/study/agent/transform/service/MyAgent.class

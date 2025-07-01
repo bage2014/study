@@ -1,0 +1,18 @@
+server:
+  port: 8002
+
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+    initialization-mode: always
+    url: jdbc:h2:mem:test
+    username: root
+    password: test
+
+# Logger Config
+logging:
+  level:
+    com.bage: debug

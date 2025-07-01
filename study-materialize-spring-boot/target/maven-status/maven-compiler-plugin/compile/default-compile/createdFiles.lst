@@ -1,0 +1,10 @@
+com/bage/study/materialize/spring/boot/organization/user/service/UserService.class
+com/bage/study/materialize/spring/boot/organization/user/controller/UserController.class
+com/bage/study/materialize/spring/boot/organization/user/domain/User.class
+com/bage/study/materialize/spring/boot/Application.class
+com/bage/study/materialize/spring/boot/organization/user/dao/UserDaoImp.class
+com/bage/study/materialize/spring/boot/organization/user/aop/UserAspect.class
+com/bage/study/materialize/spring/boot/organization/user/dao/UserDao.class
+com/bage/study/materialize/spring/boot/organization/user/dao/UserMapper.class
+com/bage/study/materialize/spring/boot/organization/user/service/UserServiceImp.class
+com/bage/study/materialize/spring/boot/StarterController.class
