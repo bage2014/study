@@ -12,6 +12,15 @@
         <el-form-item prop="confirmPassword">
           <el-input type="password" v-model="registerForm.confirmPassword" placeholder="请确认密码"></el-input>
         </el-form-item>
+        <el-form-item prop="captcha">
+          <div class="captcha-group">
+            <el-input v-model="registerForm.captcha" placeholder="请输入验证码"></el-input>
+            <div class="captcha-image-container">
+              <img :src="captchaUrl" @click="refreshCaptcha" class="captcha-image" alt="验证码">
+              <el-button type="text" @click="refreshCaptcha" class="refresh-button">刷新</el-button>
+            </div>
+          </div>
+        </el-form-item>
         <el-form-item class="register-button-group">
           <el-button type="primary" @click="handleRegister" class="register-button">注册</el-button>
           <el-button type="text" @click="goToLogin">已有账号？去登录</el-button>
@@ -22,17 +31,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { register } from '../api/auth';
+import API_BASE_URL from '../api/config';
 
 const router = useRouter();
 const registerForm = ref({
   email: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  captcha: ''
 });
+
+const captchaUrl = ref('');
 
 const registerRules = ref({
   email: [
@@ -53,16 +66,33 @@ const registerRules = ref({
         }
       }, trigger: 'blur'
     }
+  ],
+  captcha: [
+    { required: true, message: '请输入验证码', trigger: 'blur' },
+    { min: 4, max: 4, message: '验证码长度为4位', trigger: 'blur' }
   ]
+});
+
+const refreshCaptcha = () => {
+  captchaUrl.value = `${API_BASE_URL}captcha?timestamp=${Date.now()}`;
+};
+
+onMounted(() => {
+  refreshCaptcha();
 });
 
 const handleRegister = async () => {
   try {
-    await register(registerForm.value.email, registerForm.value.password);
+    await register(
+      registerForm.value.email,
+      registerForm.value.password,
+      registerForm.value.captcha
+    );
     ElMessage.success('注册成功，请登录');
     router.push('/login');
   } catch (error) {
-    ElMessage.error('注册失败，请检查信息或稍后重试');
+    ElMessage.error('注册失败，请检查信息或验证码');
+    refreshCaptcha();
   }
 };
 
@@ -102,5 +132,28 @@ const goToLogin = () => {
 
 .register-button {
   width: 60%;
+}
+
+.captcha-group {
+  display: flex;
+  gap: 10px;
+}
+
+.captcha-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.captcha-image {
+  width: 120px;
+  height: 40px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.refresh-button {
+  padding: 0;
+  font-size: 12px;
 }
 </style>
