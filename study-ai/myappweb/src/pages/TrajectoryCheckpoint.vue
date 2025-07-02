@@ -31,7 +31,7 @@ const savePointToBackend = async (point, time, address) => {
     });
 
     if (response.ok) {
-      ElMessage.success('保存成功');
+      ElMessage.success('保存成功【地点信息为：' + address + '】');
     }
   } catch (error) {
     console.error('保存坐标失败:', error);
@@ -43,23 +43,28 @@ onMounted(() => {
     const mapElement = document.getElementById('map')
     if (mapElement && window.BMap) {
       clearInterval(checkMapLoad.value)
-      const map = new window.BMap.Map(mapElement)
+      const map = new window.BMap.Map(mapElement,{ enableMapClick:false})
       const centerPoint = new window.BMap.Point(121.40, 31.23)
       map.centerAndZoom(centerPoint, 13)
+      // 添加点击事件监听并阻止默认弹窗
 
       map.addEventListener('click', (e) => {
         // 阻止默认的信息窗口弹出
-        // e.preventDefault();
-        // e.stopPropagation();
-
+        const point = e.point;
+        console.log('点击经纬度:', `经度: ${point.lng}, 纬度: ${point.lat}`);
+        
         clickedPoint.value = {
           lng: e.point.lng,
-          lat: e.point.lat
+          lat: e.point.lat,
+          address: ''
         }
+
         const date = new Date().toISOString();
-        const geoc = new window.BMap.Geocoder();
-        geoc.getLocation(e.point, (rs) => {
+        const geocoder = new window.BMap.Geocoder();
+        geocoder.getLocation(point, function(rs) {
           const address = rs.address;
+          console.log('地点信息:', address);
+          clickedPoint.value.address = address;
           savePointToBackend(e.point, date, address);
         });
       })
