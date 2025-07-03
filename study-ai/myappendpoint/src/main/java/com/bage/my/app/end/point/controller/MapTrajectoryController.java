@@ -37,7 +37,11 @@ public class MapTrajectoryController {
         for (int i = 0; i < 25; i++) {
             double latitude = minLat + random.nextDouble() * (maxLat - minLat);
             double longitude = minLng + random.nextDouble() * (maxLng - minLng);
-            LocalDateTime time = LocalDateTime.of(2025, 6, (i % 30) + 1, (i % 24), 0, 0);
+            LocalDateTime time = LocalDateTime.now()
+                .minusDays(random.nextInt(7))
+                .withHour(random.nextInt(24))
+                .withMinute(random.nextInt(60))
+                .withSecond(random.nextInt(60));
             String address = addresses[random.nextInt(addresses.length)];
             Trajectory trajectory = new Trajectory(latitude, longitude, time, address);
             trajectoryRepository.save(trajectory);
