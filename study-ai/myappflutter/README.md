@@ -18,4 +18,6 @@ samples, guidance on mobile development, and a full API reference.
 
 
 
+keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
 
+keytool -list -v -keystore ~/upload-keystore.jks -alias upload

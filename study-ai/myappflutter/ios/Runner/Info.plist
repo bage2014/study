@@ -45,5 +45,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- 百度地图API Key -->
+	<key>BaiduMapSDK_API_KEY</key>
+	<string>YOUR_BAIDU_MAP_API_KEY</string>
+	<!-- 位置权限描述 -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>需要获取您的位置以显示当前定位</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>需要持续获取您的位置以更新当前定位</string>
 </dict>
 </plist>

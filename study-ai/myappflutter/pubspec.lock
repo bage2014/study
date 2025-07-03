@@ -62,22 +62,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_baidu_mapapi_base:
-    dependency: "direct main"
-    description:
-      name: flutter_baidu_mapapi_base
-      sha256: "94caafb13ce41a5b2736d9b22a2c50c601339aefd74e017d8bb40679bb04accd"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.9.4"
-  flutter_baidu_mapapi_map:
-    dependency: "direct main"
-    description:
-      name: flutter_baidu_mapapi_map
-      sha256: "732bcf7b6a82e454b32ff09dbeb7ec873a9cc74d024bcb23a4ff6af6fe4674d2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.9.4"
   flutter_bmflocation:
     dependency: "direct main"
     description:
@@ -94,14 +78,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
-    description:
-      name: flutter_plugin_android_lifecycle
-      sha256: f948e346c12f8d5480d2825e03de228d0eb8c3a737e4cdaa122267b89c022b5e
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.28"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -242,4 +218,4 @@ packages:
     version: "15.0.0"
 sdks:
   dart: ">=3.8.1 <4.0.0"
-  flutter: ">=3.27.0"
+  flutter: ">=3.18.0-18.0.pre.54"
