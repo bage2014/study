@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bmflocation/flutter_bmflocation.dart';
 import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
 class CurrentLocationPage extends StatefulWidget {
   const CurrentLocationPage({super.key});
@@ -12,12 +13,34 @@ class CurrentLocationPage extends StatefulWidget {
 class _CurrentLocationPageState extends State<CurrentLocationPage> {
   BaiduLocation? _currentLocation;
   final LocationFlutterPlugin _myLocPlugin = LocationFlutterPlugin();
+  bool _permissionDenied = false;
 
   @override
   void initState() {
     super.initState();
+    _checkLocationPermission().then((granted) {
+      if (granted) {
+        _setupLocationCallbacks();
+      } else {
+        setState(() {
+          _permissionDenied = true;
+        });
+      }
+    });
+  }
 
-    _setupLocationCallbacks();
+  Future<bool> _checkLocationPermission() async {
+    var status = await Permission.location.status;
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      status = await Permission.location.request();
+      return status.isGranted;
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+      return false;
+    }
+    return false;
   }
 
   Future<void> _setupLocationCallbacks() async {
@@ -45,6 +68,9 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
       _myLocPlugin.singleLocationCallback(
         callback: (BaiduLocation result) {
           print(
+            '定位结果: errorCode=${result.errorCode}, errorInfo=${result.errorInfo}',
+          );
+          print(
             '定位结果: 纬度=${result.latitude}, 经度=${result.longitude}, 地址=${result.address}',
           );
           setState(() {
@@ -55,6 +81,9 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
     } else if (Platform.isAndroid) {
       _myLocPlugin.seriesLocationCallback(
         callback: (BaiduLocation result) {
+          print(
+            '定位结果: errorCode=${result.errorCode}, errorInfo=${result.errorInfo}',
+          );
           print(
             '定位结果: 纬度=${result.latitude}, 经度=${result.longitude}, 地址=${result.address}',
           );
@@ -74,7 +103,9 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (_currentLocation != null)
+            if (_permissionDenied)
+              Text('需要位置权限才能获取位置信息，请在设置中启用权限。')
+            else if (_currentLocation != null)
               Column(
                 children: [
                   Text('纬度: ${_currentLocation!.latitude}'),
