@@ -1,4 +1,4 @@
-package com.bage.my.app.end.config;
+package com.bage.my.app.end.point.config;
 
 import com.google.code.kaptcha.Producer;
 import com.google.code.kaptcha.impl.DefaultKaptcha;

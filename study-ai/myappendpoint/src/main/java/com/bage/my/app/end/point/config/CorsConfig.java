@@ -1,4 +1,4 @@
-package com.bage.my.app.end.config;
+package com.bage.my.app.end.point.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

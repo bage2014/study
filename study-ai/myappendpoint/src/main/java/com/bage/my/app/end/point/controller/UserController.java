@@ -1,11 +1,11 @@
-package com.bage.my.app.end.controller;
+package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.User;
 import com.bage.my.app.end.point.repository.UserRepository;
 import com.google.code.kaptcha.Producer;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
