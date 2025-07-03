@@ -46,7 +46,7 @@
         <!-- 百度地图API Key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="NvkHzff8uQ8bINVMNs8Qkn5yRSTIVkIT" />
+            android:value="" />
         <!-- 定位服务配置 -->
         <service
             android:name="com.baidu.location.f"
