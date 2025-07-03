@@ -10,9 +10,22 @@
         </div>
       </div>
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" size="default">
-        <el-form-item prop="email">
+        <el-form-item>
+          <el-radio-group v-model="loginType" class="login-type">
+            <el-radio label="email">邮箱登录</el-radio>
+            <el-radio label="phone">手机登录</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item v-if="loginType === 'email'" prop="email">
           <el-input v-model="loginForm.email" placeholder="请输入邮箱">
-            <template #prefix><Mail class="input-icon" /></template>
+            <template #prefix><el-icon name="mail" class="input-icon" /></template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item v-if="loginType === 'phone'" prop="phone">
+          <el-input v-model="loginForm.phone" placeholder="请输入手机号">
+            <template #prefix><el-icon name="phone" class="input-icon" /></template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -60,8 +73,10 @@ import API_BASE_URL from '../api/config';
 import { User, Lock, Key, Loading } from '@element-plus/icons-vue';
 
 const router = useRouter();
+const loginType = ref('email');
 const loginForm = ref({
   email: '',
+  phone: '',
   password: '',
   captcha: '',
   rememberMe: false
@@ -73,7 +88,12 @@ const captchaUrl = ref('');
 
 const loginRules = ref({
   email: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' }
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+  ],
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号格式', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -96,11 +116,18 @@ onMounted(() => {
 const handleLogin = async () => {
   loginLoading.value = true;
   try {
-    const response = await login(
-      loginForm.value.email,
-      loginForm.value.password,
-      loginForm.value.captcha
-    );
+    const params = loginType.value === 'email' ? {
+  email: loginForm.value.email,
+  password: loginForm.value.password,
+  captcha: loginForm.value.captcha
+} : {
+  phone: loginForm.value.phone,
+  password: loginForm.value.password,
+  captcha: loginForm.value.captcha
+};
+
+const identifier = loginType.value === 'email' ? loginForm.value.email : loginForm.value.phone;
+const response = await login(identifier, loginForm.value.password, loginForm.value.captcha);
     localStorage.setItem('token', response.token);
     if (loginForm.value.rememberMe) {
       localStorage.setItem('rememberedEmail', loginForm.value.email);
@@ -189,6 +216,13 @@ const goToRegister = () => {
   font-weight: 600;
   color: #303133;
   margin: 0;
+}
+
+.login-type {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .login-form {

@@ -3,8 +3,23 @@
     <el-card class="register-card">
       <h2 class="register-title">用户注册</h2>
       <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form">
-        <el-form-item prop="email">
-          <el-input v-model="registerForm.email" placeholder="请输入邮箱"></el-input>
+        <el-form-item>
+          <el-radio-group v-model="registerType" class="register-type">
+            <el-radio label="email">邮箱注册</el-radio>
+            <el-radio label="phone">手机注册</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item v-if="registerType === 'email'" prop="email">
+          <el-input v-model="registerForm.email" placeholder="请输入邮箱">
+            <template #prefix><IconMail class="input-icon" /></template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item v-if="registerType === 'phone'" prop="phone">
+          <el-input v-model="registerForm.phone" placeholder="请输入手机号">
+            <template #prefix><IconPhone class="input-icon" /></template>
+          </el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input type="password" v-model="registerForm.password" placeholder="请输入密码"></el-input>
@@ -32,14 +47,17 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { IconMail, IconPhone, IconKey } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { register } from '../api/auth';
 import API_BASE_URL from '../api/config';
 
 const router = useRouter();
+const registerType = ref('email');
 const registerForm = ref({
   email: '',
+  phone: '',
   password: '',
   confirmPassword: '',
   captcha: ''
@@ -51,6 +69,10 @@ const registerRules = ref({
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
     { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+  ],
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号格式', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -83,11 +105,21 @@ onMounted(() => {
 
 const handleRegister = async () => {
   try {
-    await register(
-      registerForm.value.email,
-      registerForm.value.password,
-      registerForm.value.captcha
-    );
+    const params = registerType.value === 'email' ? {
+  email: registerForm.value.email,
+  password: registerForm.value.password,
+  captcha: registerForm.value.captcha
+} : {
+  phone: registerForm.value.phone,
+  password: registerForm.value.password,
+  captcha: registerForm.value.captcha
+};
+
+await register(
+  registerType.value === 'email' ? registerForm.value.email : registerForm.value.phone,
+  registerForm.value.password,
+  registerForm.value.captcha
+);
     ElMessage.success('注册成功，请登录');
     router.push('/login');
   } catch (error) {
@@ -118,6 +150,17 @@ const goToLogin = () => {
 .register-title {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.register-type {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.input-icon {
+  color: #c0c4cc;
 }
 
 .register-form {
