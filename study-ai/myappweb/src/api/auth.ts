@@ -43,3 +43,19 @@ export const register = async (email: string, password: string, captcha: string)
 
   return response.json();
 };
+
+export const sendVerificationCode = async (email: string, captcha: string): Promise<{ message: string }> => {
+  const response = await fetch(`${API_BASE_URL}send-verification-code`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, captcha }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send verification code');
+  }
+
+  return response.json();
+};
