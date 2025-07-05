@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myappflutter/pages/current_location_page.dart';
 import 'package:myappflutter/pages/history_location_page.dart';
 import 'package:myappflutter/pages/track_location_page.dart';
+import 'package:myappflutter/pages/find_location_page.dart'; // 新增导入
 
 void main() {
   runApp(const MyApp());
@@ -102,6 +103,18 @@ class MainMenuPage extends StatelessWidget {
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const TrackLocationPage()),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // 新增: 查找位置按钮
+                      _buildMenuButton(
+                        context,
+                        label: '查找位置',
+                        icon: Icons.search,
+                        color: const Color(0xFF1565C0),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const FindLocationPage()),
                         ),
                       ),
                     ],

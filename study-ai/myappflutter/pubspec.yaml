@@ -35,18 +35,20 @@ dependencies:
   permission_handler: ^12.0.1
   intl: ^0.19.0
   http: ^0.13.5  # 添加http依赖
+  flutter_baidu_mapapi_map: ^3.8.0 # 百度地图组件
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  flutter_launcher_icons: ^0.13.1  # 添加此行
+  flutter_launcher_icons: ^0.13.1
 
-# 在文件末尾添加
-flutter_launcher_icons:
+flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/logo128.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/logo128.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

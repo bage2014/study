@@ -53,5 +53,9 @@
 	<string>需要获取您的位置以显示当前定位</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>需要持续获取您的位置以更新当前定位</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>ic_launcher</string>
+	</array>
 </dict>
 </plist>
