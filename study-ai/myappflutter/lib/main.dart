@@ -3,6 +3,7 @@ import 'package:myappflutter/pages/current_location_page.dart';
 import 'package:myappflutter/pages/history_location_page.dart';
 import 'package:myappflutter/pages/track_location_page.dart';
 import 'package:myappflutter/pages/find_location_page.dart'; // 新增导入
+import 'package:myappflutter/pages/login_page.dart'; // 添加新导入
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MainMenuPage(),
+      home: const LoginPage(), // 将这里从MainMenuPage改为LoginPage
     );
   }
 }

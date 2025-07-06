@@ -54,7 +54,7 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
       'coorType': 'bd09ll',
     };
     // Agree to privacy policy before setting up location
-    _myLocPlugin.setAgreePrivacy(true);
+    // _myLocPlugin.setAgreePrivacy(true);
 
     // Initialize location client before setting up callbacks
     // 启动定位

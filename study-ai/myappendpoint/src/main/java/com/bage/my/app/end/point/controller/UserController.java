@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @RestController
 public class UserController {
@@ -27,21 +29,50 @@ public class UserController {
     private Producer kaptchaProducer;
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, @RequestParam String captcha, HttpSession session) {
-        // 验证码验证
-        String storedCaptcha = (String) session.getAttribute("captcha");
-        if (storedCaptcha == null || !storedCaptcha.equalsIgnoreCase(captcha)) {
-            return "验证码错误或已过期";
-        }
-        
-        // 用户验证
+    public String login(@RequestParam String username, @RequestParam String password, 
+                       @RequestParam(required = false) String captcha, HttpSession session) {
         User user = userRepository.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
-            // 验证成功后清除验证码
+        if (user == null) {
+            return "用户不存在";
+        }
+
+        // 检查账号是否锁定
+        if (user.getLockTime() != null && LocalDateTime.now().isBefore(user.getLockTime())) {
+            long minutesLeft = ChronoUnit.MINUTES.between(LocalDateTime.now(), user.getLockTime());
+            return "账号已锁定，请" + minutesLeft + "分钟后再试";
+        }
+
+        // 登录失败1次后需要验证码
+        boolean needCaptcha = user.getLoginAttempts() >= 1;
+        if (needCaptcha) {
+            String storedCaptcha = (String) session.getAttribute("captcha");
+            if (storedCaptcha == null || !storedCaptcha.equalsIgnoreCase(captcha)) {
+                return "验证码错误或已过期";
+            }
+        }
+
+        // 验证密码
+        if (user.getPassword().equals(password)) {
+            // 登录成功，重置失败次数
+            user.setLoginAttempts(0);
+            user.setLockTime(null);
+            userRepository.save(user);
             session.removeAttribute("captcha");
             return "登录成功";
         } else {
-            return "用户名或密码错误";
+            // 登录失败，更新失败次数
+            int attempts = user.getLoginAttempts() + 1;
+            user.setLoginAttempts(attempts);
+
+            // 失败5次锁定账号1天
+            if (attempts >= 5) {
+                user.setLockTime(LocalDateTime.now().plusDays(1));
+                userRepository.save(user);
+                return "密码错误次数过多，账号已锁定1天";
+            }
+
+            userRepository.save(user);
+            return "用户名或密码错误，还有" + (5 - attempts) + "次机会";
         }
     }
 
