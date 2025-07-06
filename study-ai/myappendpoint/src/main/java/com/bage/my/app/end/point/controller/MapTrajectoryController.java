@@ -1,6 +1,7 @@
 package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.Trajectory;
+import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.repository.TrajectoryRepository;
 
 import org.springframework.web.bind.annotation.*;
@@ -49,11 +50,11 @@ public class MapTrajectoryController {
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public Page<Map<String, Object>> getTrajectoryData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, 
-                                                     @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "time"));
-        Page<Trajectory> trajectoryPage;
+    public ApiResponse<Page<Map<String, Object>>> getTrajectoryData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, 
+                                                             @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
         try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "time"));
+            Page<Trajectory> trajectoryPage;
             LocalDateTime start = startTime != null ? LocalDateTime.parse(startTime) : null;
             LocalDateTime end = endTime != null ? LocalDateTime.parse(endTime) : null;
             if (start != null && end != null) {
@@ -65,24 +66,25 @@ public class MapTrajectoryController {
             } else {
                 trajectoryPage = trajectoryRepository.findAll(pageable);
             }
+            List<Map<String, Object>> pageContent = new ArrayList<>();
+            for (Trajectory trajectory : trajectoryPage.getContent()) {
+                Map<String, Object> location = new HashMap<>();
+                location.put("latitude", trajectory.getLatitude());
+                location.put("longitude", trajectory.getLongitude());
+                location.put("time", trajectory.getTime());
+                location.put("address", trajectory.getAddress());
+                pageContent.add(location);
+            }
+            return new ApiResponse<>(200, "查询成功", new PageImpl<>(pageContent, pageable, trajectoryPage.getTotalElements()));
         } catch (Exception e) {
-            throw new IllegalArgumentException("时间格式不正确，请使用 ISO-8601 格式: yyyy-MM-ddTHH:mm:ss");
+            return new ApiResponse<>(400, "时间格式不正确，请使用 ISO-8601 格式: yyyy-MM-ddTHH:mm:ss", null);
         }
-        List<Map<String, Object>> pageContent = new ArrayList<>();
-        for (Trajectory trajectory : trajectoryPage.getContent()) {
-            Map<String, Object> location = new HashMap<>();
-            location.put("latitude", trajectory.getLatitude());
-            location.put("longitude", trajectory.getLongitude());
-            location.put("time", trajectory.getTime());
-            location.put("address", trajectory.getAddress());
-            pageContent.add(location);
-        }
-        return new PageImpl<>(pageContent, pageable, trajectoryPage.getTotalElements());
     }
 
     @PostMapping("/save")
-    public Trajectory saveTrajectory(@RequestBody Trajectory trajectory) {
+    public ApiResponse<Trajectory> saveTrajectory(@RequestBody Trajectory trajectory) {
         trajectory.setTime(LocalDateTime.now());
-        return trajectoryRepository.save(trajectory);
+        Trajectory saved = trajectoryRepository.save(trajectory);
+        return new ApiResponse<>(200, "保存成功", saved);
     }
 }

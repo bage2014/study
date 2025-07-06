@@ -134,7 +134,7 @@ class _TrackLocationPageState extends State<TrackLocationPage> {
     try {
       final response = await http.post(
         Uri.parse('https://yingyan.baidu.com/api/v3/track/addpoints'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json'}, 
         body: jsonEncode({
           'ak': baiduAK,
           'service_id': yingYanServiceId,
@@ -154,15 +154,14 @@ class _TrackLocationPageState extends State<TrackLocationPage> {
         }),
       );
 
-      if (response.statusCode == 200) {
-        final result = jsonDecode(response.body);
-        if (result['status'] == 0) {
-          _addLog('轨迹上传成功');
-        } else {
-          _addLog('轨迹上传失败: ${result['message']}');
-        }
+      final responseBody = utf8.decode(response.bodyBytes);
+      final data = jsonDecode(responseBody);
+
+      if (data['code'] == 200) {
+        _addLog('轨迹上传成功');
       } else {
-        _addLog('上传请求失败: ${response.statusCode}');
+        final errorMessage = data['message'] ?? '请求后台异常';
+        _addLog('轨迹上传失败: $errorMessage');
       }
     } catch (e) {
       _addLog('上传异常: ${e.toString()}');

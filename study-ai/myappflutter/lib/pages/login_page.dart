@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert'; // 添加此行导入
 import 'package:myappflutter/utils/constants.dart';
 import 'package:myappflutter/pages/current_location_page.dart';
 
@@ -59,10 +60,13 @@ class _LoginPageState extends State<LoginPage> {
           },
         );
 
+        final responseBody = utf8.decode(response.bodyBytes);
+        final data = json.decode(responseBody);
+
         setState(() {
           _loginAttempts++;
 
-          if (response.statusCode == 200) {
+          if (data['code'] == 200) {
             // 登录成功，重置尝试次数并导航到主菜单
             _loginAttempts = 0;
             _showCaptcha = false;
@@ -74,12 +78,13 @@ class _LoginPageState extends State<LoginPage> {
             );
           } else {
             // 登录失败
+            final errorMessage = data['message'] ?? '请求后台异常';
             if (_loginAttempts >= 5) {
               _accountLocked = true;
             }
 
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('登录失败，剩余尝试次数: ${5 - _loginAttempts}')),
+              SnackBar(content: Text(errorMessage)),
             );
 
             // 三次失败后显示验证码
@@ -91,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
         });
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('网络错误，请检查连接后重试')),
+          SnackBar(content: Text('数据解析失败: ${e.toString()}')),
         );
       }
     }

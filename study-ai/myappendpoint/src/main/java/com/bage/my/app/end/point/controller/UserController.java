@@ -1,6 +1,7 @@
 package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.User;
+import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.repository.UserRepository;
 import com.google.code.kaptcha.Producer;
 import javax.imageio.ImageIO;
@@ -10,12 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -29,17 +25,17 @@ public class UserController {
     private Producer kaptchaProducer;
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, 
-                       @RequestParam(required = false) String captcha, HttpSession session) {
+    public ApiResponse<String> login(@RequestParam String username, @RequestParam String password, 
+                               @RequestParam(required = false) String captcha, HttpSession session) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            return "用户不存在";
+            return new ApiResponse<>(404, "用户不存在", null);
         }
 
         // 检查账号是否锁定
         if (user.getLockTime() != null && LocalDateTime.now().isBefore(user.getLockTime())) {
             long minutesLeft = ChronoUnit.MINUTES.between(LocalDateTime.now(), user.getLockTime());
-            return "账号已锁定，请" + minutesLeft + "分钟后再试";
+            return new ApiResponse<>(403, "账号已锁定，请" + minutesLeft + "分钟后再试", null);
         }
 
         // 登录失败1次后需要验证码
@@ -47,7 +43,7 @@ public class UserController {
         if (needCaptcha) {
             String storedCaptcha = (String) session.getAttribute("captcha");
             if (storedCaptcha == null || !storedCaptcha.equalsIgnoreCase(captcha)) {
-                return "验证码错误或已过期";
+                return new ApiResponse<>(400, "验证码错误或已过期", null);
             }
         }
 
@@ -58,7 +54,7 @@ public class UserController {
             user.setLockTime(null);
             userRepository.save(user);
             session.removeAttribute("captcha");
-            return "登录成功";
+            return new ApiResponse<>(200, "登录成功", null);
         } else {
             // 登录失败，更新失败次数
             int attempts = user.getLoginAttempts() + 1;
@@ -68,11 +64,11 @@ public class UserController {
             if (attempts >= 5) {
                 user.setLockTime(LocalDateTime.now().plusDays(1));
                 userRepository.save(user);
-                return "密码错误次数过多，账号已锁定1天";
+                return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", null);
             }
 
             userRepository.save(user);
-            return "用户名或密码错误，还有" + (5 - attempts) + "次机会";
+            return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", null);
         }
     }
 
@@ -102,14 +98,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
+    public ApiResponse<String> register(@RequestParam String username, @RequestParam String password) {
         if (userRepository.findByUsername(username) != null) {
-            return "用户名已存在";
+            return new ApiResponse<>(400, "用户名已存在", null);
         }
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
         userRepository.save(user);
-        return "注册成功";
+        return new ApiResponse<>(200, "注册成功", null);
     }
 }
