@@ -50,8 +50,8 @@ public class MapTrajectoryController {
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public ApiResponse<Page<Map<String, Object>>> getTrajectoryData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, 
-                                                             @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
+    public Page<Map<String, Object>> getTrajectoryData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, 
+                                                       @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
         try {
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "time"));
             Page<Trajectory> trajectoryPage;
@@ -75,9 +75,9 @@ public class MapTrajectoryController {
                 location.put("address", trajectory.getAddress());
                 pageContent.add(location);
             }
-            return new ApiResponse<>(200, "查询成功", new PageImpl<>(pageContent, pageable, trajectoryPage.getTotalElements()));
+            return new PageImpl<>(pageContent, pageable, trajectoryPage.getTotalElements());
         } catch (Exception e) {
-            return new ApiResponse<>(400, "时间格式不正确，请使用 ISO-8601 格式: yyyy-MM-ddTHH:mm:ss", null);
+            throw new RuntimeException("时间格式不正确，请使用 ISO-8601 格式: yyyy-MM-ddTHH:mm:ss");
         }
     }
 

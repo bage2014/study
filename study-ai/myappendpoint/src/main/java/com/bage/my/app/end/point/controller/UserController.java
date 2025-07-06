@@ -25,28 +25,28 @@ public class UserController {
     private Producer kaptchaProducer;
 
     @PostMapping("/login")
-    public ApiResponse<String> login(@RequestParam String username, @RequestParam String password, 
+    public String login(@RequestParam String username, @RequestParam String password, 
                                @RequestParam(required = false) String captcha, HttpSession session) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            return new ApiResponse<>(404, "用户不存在", null);
+            throw new RuntimeException("用户不存在"); // 将返回500错误
         }
-
+    
         // 检查账号是否锁定
         if (user.getLockTime() != null && LocalDateTime.now().isBefore(user.getLockTime())) {
             long minutesLeft = ChronoUnit.MINUTES.between(LocalDateTime.now(), user.getLockTime());
-            return new ApiResponse<>(403, "账号已锁定，请" + minutesLeft + "分钟后再试", null);
+            throw new RuntimeException("账号已锁定，请" + minutesLeft + "分钟后再试");
         }
-
+    
         // 登录失败1次后需要验证码
         boolean needCaptcha = user.getLoginAttempts() >= 1;
         if (needCaptcha) {
             String storedCaptcha = (String) session.getAttribute("captcha");
             if (storedCaptcha == null || !storedCaptcha.equalsIgnoreCase(captcha)) {
-                return new ApiResponse<>(400, "验证码错误或已过期", null);
+                throw new RuntimeException("验证码错误或已过期");
             }
         }
-
+    
         // 验证密码
         if (user.getPassword().equals(password)) {
             // 登录成功，重置失败次数
@@ -54,21 +54,21 @@ public class UserController {
             user.setLockTime(null);
             userRepository.save(user);
             session.removeAttribute("captcha");
-            return new ApiResponse<>(200, "登录成功", null);
+            return "登录成功";
         } else {
             // 登录失败，更新失败次数
             int attempts = user.getLoginAttempts() + 1;
             user.setLoginAttempts(attempts);
-
+    
             // 失败5次锁定账号1天
             if (attempts >= 5) {
                 user.setLockTime(LocalDateTime.now().plusDays(1));
                 userRepository.save(user);
-                return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", null);
+                throw new RuntimeException("用户名或密码错误，账号已锁定1天");
             }
-
+    
             userRepository.save(user);
-            return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", null);
+            throw new RuntimeException("用户名或密码错误，还有" + (5 - attempts) + "次机会");
         }
     }
 
