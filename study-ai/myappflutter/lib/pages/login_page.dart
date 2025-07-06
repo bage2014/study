@@ -36,12 +36,6 @@ class _LoginPageState extends State<LoginPage> {
     ).join();
   }
 
-  // 模拟登录验证
-  bool _validateLogin(String username, String password) {
-    // 这里使用模拟数据，实际项目中应替换为API调用
-    return username == 'admin' && password == 'password123';
-  }
-
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {

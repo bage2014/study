@@ -1,12 +1,14 @@
 package com.bage.my.app.end.point.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "app_user") // 将表名改为非关键字
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
