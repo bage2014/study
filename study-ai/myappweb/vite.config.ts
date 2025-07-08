@@ -30,6 +30,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${pathSrc}/`,
+      '@/': `${pathSrc}/` // 添加这一行
     },
   },
   css: {
