@@ -23,7 +23,8 @@
       </el-table-column>
       <el-table-column prop="action" label="播放">
         <template #default="{ row }">
-          <el-button @click="playVideo(row.url)">播放</el-button>
+          // 修复：传递正确的参数
+          <el-button @click="playVideo(row.url, row.name)">播放</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -47,8 +48,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { request } from '@/api/request'; // 新增导入
+
+interface VideoItem {
+  id: number;
+  name: string;
+  url: string;
+  // 其他视频相关字段
+}
+
+// 新增响应接口定义
+interface VideoListResponse {
+  content: VideoItem[];
+  totalElements: number;
+}
+
 import API_BASE_URL from '../api/config';
 import Hls from 'hls.js';
 import { useRouter } from 'vue-router';
@@ -67,13 +83,17 @@ const keyword = ref('');
 
 const fetchData = async (page = 1) => {
   try {
-    const response = await fetch(`${API_BASE_URL}m3u/query?size=5&keyword=${keyword.value}&page=${page - 1}`);
-    const data = await response.json();
+    // 修复：使用request<T>替换fetch
+    const data = await request<VideoListResponse>('/m3u/query', {
+      method: 'GET',
+      params: {
+        size: 5,
+        keyword: keyword.value,
+        page: page - 1
+      }
+    });
     videoList.value = data.content;
-    pageable.value = data.pageable;
-    totalPages.value = data.totalPages;
     totalElements.value = data.totalElements;
-    last.value = data.last;
     size.value = data.size;
     number.value = data.number;
   } catch (error) {
@@ -106,20 +126,37 @@ const openDetail = (row) => {
 
 const router = useRouter();
 
-const playVideo = (url, name) => {
-  const newWindow = window.open(``, '_blank');
+// 修复：添加缺失的loading变量定义
+const loading = ref(false);
+
+const playVideo = (url, name = '') => {
+  const newWindow = window.open('', '_blank');
   if (newWindow) {
-    newWindow.location.href = `/video-player?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}`;
+    newWindow.location.href = `/video-player?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name || '视频播放')}`;
   }
-  // 移除多余的路由跳转代码
-  // router.push({
-  //   path: '/video-player',
-  //   query: {
-  //     url: encodeURIComponent(url),
-  //     name: encodeURIComponent(name)
-  //   }
-  // });
 };
+
+// 移除未使用的fetchVideos函数
+const fetchVideos = async () => {
+  try {
+    loading.value = true;
+    // 替换fetch为request<T>
+    const data = await request<VideoListResponse>('/m3u/query', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    videoList.value = data.content;
+    total.value = data.totalElements;
+  } catch (error) {
+    console.error('获取视频列表失败:', error);
+    ElMessage.error('获取视频列表失败，请稍后重试');
+  } finally {
+    loading.value = false;
+  }
+};
+
 onMounted(() => {
   fetchData();
 });

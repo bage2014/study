@@ -20,16 +20,48 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// 修复：添加 computed 导入
 import { ref, onMounted, computed } from 'vue';
 import { ElMessage } from 'element-plus';
-import API_BASE_URL from '../api/config';
+import { request } from '@/api/request';
 
-const activities = ref([]);
+interface ActivityItem {
+  id: number;
+  time: string;
+  description: string;
+  creator: string;
+}
+
+// 新增响应接口定义
+interface ActivitiesResponse {
+  content: ActivityItem[];
+  totalElements: number;
+}
+
+const activities = ref<ActivityItem[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 
+const fetchActivities = async () => {
+  try {
+    // 替换fetch为request<T>
+    const data = await request<ActivitiesResponse>('/activities', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    activities.value = data.content;
+    total.value = data.totalElements;
+  } catch (error) {
+    console.error('获取个人动态信息失败:', error);
+    ElMessage.error('获取个人动态信息失败，请稍后重试');
+  }
+};
+
+// 计算属性现在可以正常工作
 const currentActivities = computed(() => {
   return activities.value;
 });
@@ -42,21 +74,6 @@ const handleViewDetails = (id) => {
 const handleCurrentChange = async (val) => {
   currentPage.value = val;
   await fetchActivities();
-};
-
-const fetchActivities = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}activities?page=${currentPage.value - 1}&size=${pageSize.value}`);
-    if (!response.ok) {
-      throw new Error('网络响应失败');
-    }
-    const data = await response.json();
-    activities.value = data.content;
-    total.value = data.totalElements;
-  } catch (error) {
-    console.error('获取个人动态信息失败:', error);
-    ElMessage.error('获取个人动态信息失败，请稍后重试');
-  }
 };
 
 onMounted(async () => {

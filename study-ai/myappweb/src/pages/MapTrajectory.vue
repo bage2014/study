@@ -32,10 +32,22 @@
   </el-card>
 </template>
 
-<script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
-import { ElPagination, ElDatePicker } from 'element-plus'
-import API_BASE_URL from '../api/config'
+<script setup lang="ts">
+// 修改现有导入行，添加 onUnmounted
+import { ref, onMounted, watch, onUnmounted } from 'vue';
+import { request } from '@/api/request'; // 新增导入
+
+interface TrajectoryPoint {
+  longitude: number;
+  latitude: number;
+  // 其他轨迹相关字段
+}
+
+// 新增响应接口定义
+interface TrajectoryResponse {
+  content: TrajectoryPoint[];
+  totalElements: number;
+}
 
 const checkMapLoad = ref(null)
 const currentPage = ref(1)
@@ -74,53 +86,31 @@ const loadTrajectoryData = async () => {
     // 构建查询参数
     let queryParams = `page=${currentPage.value - 1}&size=${pageSize.value}`
     if (startDate.value && endDate.value) {
-      const start = formatDate(startDate.value)
-      const end = formatDate(endDate.value)
-      queryParams += `&startTime=${start}&endTime=${end}`
-    } else if (startDate.value) {
-      const start = formatDate(startDate.value)
-      queryParams += `&startTime=${start}`
-    } else if (endDate.value) {
-      const end = formatDate(endDate.value)
-      queryParams += `&endTime=${end}`
+      queryParams += `&startDate=${formatDate(startDate.value)}&endDate=${formatDate(endDate.value)}`
     }
-    // 从后台请求数据
-    const response = await fetch(`${API_BASE_URL}trajectorys/query?${queryParams}`)
-    const data = await response.json()
-    totalPages.value = data.totalPages
-    // 倒序处理数据
-    const reversedData = [...data.content].reverse()
-    const trajectoryPoints = reversedData.map(createPoint)
 
-    // 在地图上添加标记点
-    reversedData.forEach((item, index) => {
-      const point = createPoint(item)
-      const label = new window.BMap.Label(`${index + 1}`, { offset: new window.BMap.Size(2, 2) })
-      const marker = new window.BMap.Marker(point)
-      marker.setLabel(label)
-      const infoWindow = new window.BMap.InfoWindow(`地址： ${item.address} </br> 发生时间：${item.time}`)
-      marker.addEventListener('mouseover', () => {
-        map.value.openInfoWindow(infoWindow, point)
+    // 替换fetch为request<T>
+    const data = await request<TrajectoryResponse>(`/trajectorys/query?${queryParams}`, {
+      method: 'GET',
+    });
+
+    const points = data.content.map(item => createPoint(item))
+    if (points.length > 0) {
+      // 添加标记和折线
+      const polyline = new window.BMap.Polyline(points, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5})
+      map.value.addOverlay(polyline)
+      points.forEach(point => {
+        const marker = new window.BMap.Marker(point)
+        map.value.addOverlay(marker)
       })
-      map.value.addOverlay(marker)
-    })
-
-    // 按时间倒序链接这些点
-    const polyline = new window.BMap.Polyline(trajectoryPoints, {
-      strokeColor: "blue",
-      strokeWeight: 2,
-      strokeOpacity: 1
-    })
-    map.value.addOverlay(polyline)
-
-    // 调整地图视野以显示所有坐标点
-    if (trajectoryPoints.length > 0) {
-      map.value.setViewport(trajectoryPoints)
+      map.value.setViewport(points)
     }
+    total.value = data.totalElements
   } catch (error) {
-    console.error('请求轨迹数据失败:', error)
+    console.error('获取轨迹数据失败:', error)
+    ElMessage.error('获取轨迹数据失败，请稍后重试')
   }
-}
+};
 
 onMounted(async () => {
   checkMapLoad.value = setInterval(async () => {

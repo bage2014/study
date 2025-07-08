@@ -7,34 +7,62 @@
   </div>
 </template>
 
-<script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
-import API_BASE_URL from '../api/config'
-import { ElMessage } from 'element-plus'
+<script setup lang="ts">
+// 修复：添加缺失的导入
+import { ref, onMounted, onUnmounted, defineEmits } from 'vue';
+import { ElMessage } from 'element-plus';
+import { request } from '@/api/request';
+
+// 修复：定义缺失的变量
+const checkpointName = ref('');
+const currentPoint = ref(null);
+const dialogVisible = ref(false);
+const emit = defineEmits(['save-success']);
 
 const clickedPoint = ref(null)
 const checkMapLoad = ref(null)
 
-const savePointToBackend = async (point, time, address) => {
+const saveCheckpoint = async () => {
+  if (!checkpointName.value) {
+    ElMessage.warning('请输入 checkpoint 名称');
+    return;
+  }
+
   try {
-    const response = await fetch(`${API_BASE_URL}trajectorys/save`, {
+    // 替换fetch为request<T>
+    await request<{ message: string }>('/trajectorys/save', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
-        latitude: point.lat,
-        longitude: point.lng,
-        time: time,
-        address: address
+        name: checkpointName.value,
+        longitude: currentPoint.value.lng,
+        latitude: currentPoint.value.lat
       }),
     });
+    ElMessage.success('Checkpoint saved successfully');
+    emit('save-success');
+    dialogVisible.value = false;
+  } catch (error) {
+    console.error('保存失败:', error);
+    ElMessage.error('保存失败，请重试');
+  }
+};
 
-    if (response.ok) {
-      ElMessage.success('保存成功【地点信息为：' + address + '】');
-    }
+// 修复：添加缺失的函数定义
+const savePointToBackend = async (point, date, address) => {
+  try {
+    await request<{ message: string }>('/trajectorys/save', {
+      method: 'POST',
+      body: JSON.stringify({
+        longitude: point.lng,
+        latitude: point.lat,
+        address: address,
+        timestamp: date
+      }),
+    });
+    ElMessage.success('坐标已保存');
   } catch (error) {
     console.error('保存坐标失败:', error);
+    ElMessage.error('保存坐标失败');
   }
 };
 
