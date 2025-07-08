@@ -19,29 +19,25 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.8.1  # 保持当前Dart SDK版本
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
-  flutter_bmflocation: ^3.8.0
+  get: ^4.3.8  # 降级GetX以适配Dart 3.8.1
+  flutter_localizations:
+    sdk: flutter
   permission_handler: ^12.0.1
-  intl: ^0.19.0
-  http: ^0.13.5  # 添加http依赖
-  flutter_baidu_mapapi_map: ^3.8.0 # 百度地图组件
+  intl: ^0.20.2
+  http: ^1.4.0  # 稳定版本，兼容Dart 3.8.1
+  flutter_bmflocation: ^3.8.0
+  flutter_baidu_mapapi_map: ^3.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter_icons:
   android: true

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert'; // 添加此行导入
-import 'package:myappflutter/utils/constants.dart';
+import 'package:get/get.dart';
+import '../../api/http_client.dart'; // 确保已添加此导入
+import '../../common/constants.dart';
 import 'package:myappflutter/pages/current_location_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,6 +12,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // Add this declaration for the HttpClient instance
+  late final HttpClient _httpClient;
+
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -25,6 +28,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _generateCaptcha();
+    // Initialize the HttpClient
+    _httpClient = HttpClient();
   }
 
   // 生成随机验证码
@@ -36,6 +41,41 @@ class _LoginPageState extends State<LoginPage> {
     ).join();
   }
 
+  Future<void> _handleLogin() async {
+    final String username = _usernameController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    if (username.isEmpty || password.isEmpty) {
+      Get.snackbar('提示', '请输入用户名和密码');
+      return;
+    }
+
+    try {
+      // 使用自定义HttpClient发送请求
+      final response = await _httpClient.post(
+        '/api/login',
+        body: {'username': username, 'password': password},
+      );
+
+      // 处理响应数据
+      if (response['code'] == 200) {
+        // 登录成功，保存token等操作
+        Get.offNamed('/main');
+      } else {
+        Get.snackbar('登录失败', response['message'] ?? '未知错误');
+      }
+    } catch (e) {
+      Get.snackbar('网络错误', '请求失败：${e.toString()}');
+    }
+  }
+
+  Widget _buildLoginButton() {
+    return ElevatedButton(
+      onPressed: _handleLogin, // 修改为新的登录处理方法
+      child: const Text('登录'),
+    );
+  }
+
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -44,18 +84,14 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       try {
-        final url = Uri.parse('$baseUrl/login');
-        final response = await http.post(
-          url,
+        final data = await _httpClient.post(
+          '/login',
           body: {
             'username': _usernameController.text,
             'password': _passwordController.text,
             if (_showCaptcha) 'captcha': _captchaController.text,
           },
         );
-
-        final responseBody = utf8.decode(response.bodyBytes);
-        final data = json.decode(responseBody);
 
         setState(() {
           _loginAttempts++;
@@ -77,9 +113,9 @@ class _LoginPageState extends State<LoginPage> {
               _accountLocked = true;
             }
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(errorMessage)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(errorMessage)));
 
             // 三次失败后显示验证码
             if (_loginAttempts >= 3) {
@@ -89,9 +125,9 @@ class _LoginPageState extends State<LoginPage> {
           }
         });
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('数据解析失败: ${e.toString()}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('数据解析失败: ${e.toString()}')));
       }
     }
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../utils/constants.dart'; // 添加常量导入
+import '../../common/constants.dart'; // 添加常量导入
 
 // 更新数据模型以匹配API响应格式
 class LocationRecord {
@@ -51,7 +51,7 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
   Future<void> _fetchLocationHistory() async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/trajectorys/query'), // 使用基础URL常量
+        Uri.parse('${Constants.baseUrl}/trajectorys/query'), // 使用基础URL常量
       );
 
       if (response.statusCode == 200) {

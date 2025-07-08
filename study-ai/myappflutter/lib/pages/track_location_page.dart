@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../utils/constants.dart';
+import '../../common/constants.dart';
 
 class TrackLocationPage extends StatefulWidget {
   const TrackLocationPage({super.key});
@@ -126,7 +126,7 @@ class _TrackLocationPageState extends State<TrackLocationPage> {
     BaiduLocation location,
     String timestamp,
   ) async {
-    if (baiduAK.isEmpty || yingYanServiceId <= 0) {
+    if (Constants.baiduAK.isEmpty || Constants.yingYanServiceId <= 0) {
       _addLog('百度鹰眼配置未完成，无法上传');
       return;
     }
@@ -136,8 +136,8 @@ class _TrackLocationPageState extends State<TrackLocationPage> {
         Uri.parse('https://yingyan.baidu.com/api/v3/track/addpoints'),
         headers: {'Content-Type': 'application/json'}, 
         body: jsonEncode({
-          'ak': baiduAK,
-          'service_id': yingYanServiceId,
+          'ak': Constants.baiduAK,
+          'service_id': Constants.yingYanServiceId,
           'entity_name':
               'user_${DateTime.now().millisecondsSinceEpoch % 10000}',
           'points': [
