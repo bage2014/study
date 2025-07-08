@@ -9,12 +9,14 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import com.bage.my.app.end.point.dto.LoginRequest;
+import com.bage.my.app.end.point.dto.RegisterRequest;
 
 @RestController
 public class UserController {
@@ -25,8 +27,10 @@ public class UserController {
     private Producer kaptchaProducer;
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, 
-                               @RequestParam(required = false) String captcha, HttpSession session) {
+    public String login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
+        String captcha = loginRequest.getCaptcha();
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new RuntimeException("用户不存在"); // 将返回500错误
@@ -98,7 +102,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ApiResponse<String> register(@RequestParam String username, @RequestParam String password) {
+    public ApiResponse<String> register(@RequestBody RegisterRequest registerRequest) {
+        String username = registerRequest.getUsername();
+        String password = registerRequest.getPassword();
         if (userRepository.findByUsername(username) != null) {
             return new ApiResponse<>(400, "用户名已存在", null);
         }
