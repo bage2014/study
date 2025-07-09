@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: '位置追踪应用',
-      initialRoute: AppRoutes.LOGIN,
+      initialRoute: AppRoutes.LOGIN, // 应用启动直接进入登录页面
       getPages: AppRoutes.routes,
       theme: Themes.lightBlue,
       darkTheme: Themes.dark,

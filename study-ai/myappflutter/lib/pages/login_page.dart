@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../api/http_client.dart'; // 确保已添加此导入
-import '../../common/constants.dart';
 import 'package:myappflutter/pages/current_location_page.dart';
+import '../config/app_routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -41,42 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     ).join();
   }
 
-  Future<void> _handleLogin() async {
-    final String username = _usernameController.text.trim();
-    final String password = _passwordController.text.trim();
-
-    if (username.isEmpty || password.isEmpty) {
-      Get.snackbar('提示', '请输入用户名和密码');
-      return;
-    }
-
-    try {
-      // 使用自定义HttpClient发送请求
-      final response = await _httpClient.post(
-        '/api/login',
-        body: {'username': username, 'password': password},
-      );
-
-      // 处理响应数据
-      if (response['code'] == 200) {
-        // 登录成功，保存token等操作
-        Get.offNamed('/main');
-      } else {
-        Get.snackbar('登录失败', response['message'] ?? '未知错误');
-      }
-    } catch (e) {
-      Get.snackbar('网络错误', '请求失败：${e.toString()}');
-    }
-  }
-
-  Widget _buildLoginButton() {
-    return ElevatedButton(
-      onPressed: _handleLogin, // 修改为新的登录处理方法
-      child: const Text('登录'),
-    );
-  }
-
-  void _submitForm() async {
+  void _handleLogin() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         // 检查账号是否已锁定
@@ -96,32 +61,22 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _loginAttempts++;
 
+          // 修改正常登录成功后的跳转
           if (data['code'] == 200) {
             // 登录成功，重置尝试次数并导航到主菜单
             _loginAttempts = 0;
             _showCaptcha = false;
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CurrentLocationPage(),
-              ),
-            );
+            // 使用GetX路由导航到主页面
+            Get.offNamed(AppRoutes.HOME);
           } else {
-            // 登录失败
-            final errorMessage = data['message'] ?? '请求后台异常';
-            if (_loginAttempts >= 5) {
-              _accountLocked = true;
-            }
-
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(errorMessage)));
-
-            // 三次失败后显示验证码
-            if (_loginAttempts >= 3) {
-              _showCaptcha = true;
-              _generateCaptcha();
-            }
+            Get.snackbar('登录失败', data['message'] ?? '未知错误');
+          }
+          // 登录失败后的处理
+          if (_loginAttempts >= 3) {
+            _showCaptcha = true;
+            _generateCaptcha();
+            _accountLocked = true;
+            _loginAttempts = 0;
           }
         });
       } catch (e) {
@@ -130,6 +85,19 @@ class _LoginPageState extends State<LoginPage> {
         ).showSnackBar(SnackBar(content: Text('数据解析失败: ${e.toString()}')));
       }
     }
+  }
+
+  // 添加Mock登录处理方法
+  // 修改Mock登录的跳转
+  void _handleMockLogin() {
+    // 直接模拟登录成功，无需网络请求
+    setState(() {
+      _loginAttempts = 0;
+      _showCaptcha = false;
+      _accountLocked = false;
+    });
+    // 使用GetX路由导航到主页面
+    Get.offNamed(AppRoutes.HOME);
   }
 
   @override
@@ -251,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _accountLocked ? null : _submitForm,
+                      onPressed: _accountLocked ? null : _handleLogin,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF1976D2),
                         shape: RoundedRectangleBorder(
@@ -261,6 +229,29 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         '登录',
                         style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                  ),
+
+                  // 添加Mock登录按钮（新增代码）
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: OutlinedButton(
+                      onPressed: _accountLocked ? null : _handleMockLogin,
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Color(0xFF1976D2)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Mock登录',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xFF1976D2),
+                        ),
                       ),
                     ),
                   ),

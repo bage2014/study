@@ -17,17 +17,20 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import com.bage.my.app.end.point.dto.LoginRequest;
 import com.bage.my.app.end.point.dto.RegisterRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private Producer kaptchaProducer;
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+        log.info("loginRequest: {}", loginRequest);
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
         String captcha = loginRequest.getCaptcha();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bmflocation/flutter_bmflocation.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
+import '../common/widgets/base_page.dart'; // 导入基础页面
 
 class CurrentLocationPage extends StatefulWidget {
   const CurrentLocationPage({super.key});
@@ -22,9 +23,7 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
       if (granted) {
         _setupLocationCallbacks();
       } else {
-        setState(() {
-          _permissionDenied = true;
-        });
+        setState(() => _permissionDenied = true);
       }
     });
   }
@@ -97,27 +96,21 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('当前位置')),
+    return BasePage(
+      title: 'current_location', // 使用翻译文本
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_permissionDenied)
-              Text('需要位置权限才能获取位置信息，请在设置中启用权限。')
-            else if (_currentLocation != null)
-              Column(
-                children: [
-                  Text('纬度: ${_currentLocation!.latitude}'),
-                  Text('经度: ${_currentLocation!.longitude}'),
-                  if (_currentLocation!.address != null)
-                    Text('地址: ${_currentLocation!.address}'),
-                ],
-              )
-            else
-              const Text('正在获取位置...'),
-          ],
-        ),
+        child: _permissionDenied
+            ? const Text('需要位置权限才能使用此功能')
+            : _currentLocation != null
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('当前位置: \${_currentLocation!.address}'),
+                      Text('纬度: \${_currentLocation!.latitude}'),
+                      Text('经度: \${_currentLocation!.longitude}'),
+                    ],
+                  )
+                : const CircularProgressIndicator(),
       ),
     );
   }
