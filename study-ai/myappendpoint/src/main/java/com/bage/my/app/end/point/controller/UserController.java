@@ -34,31 +34,32 @@ public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+    public ApiResponse<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         log.info("loginRequest: {}", loginRequest);
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
         String captcha = loginRequest.getCaptcha();
         User user = userRepository.findByUsername(username);
+        
         if (user == null) {
-            throw new RuntimeException("用户不存在"); // 将返回500错误
+            return new ApiResponse<>(404, "用户不存在", null);
         }
-    
+        
         // 检查账号是否锁定
         if (user.getLockTime() != null && LocalDateTime.now().isBefore(user.getLockTime())) {
             long minutesLeft = ChronoUnit.MINUTES.between(LocalDateTime.now(), user.getLockTime());
-            throw new RuntimeException("账号已锁定，请" + minutesLeft + "分钟后再试");
+            return new ApiResponse<>(403, "账号已锁定，请" + minutesLeft + "分钟后再试", null);
         }
-    
+        
         // 登录失败1次后需要验证码
         boolean needCaptcha = user.getLoginAttempts() >= 1;
         if (needCaptcha) {
             String storedCaptcha = (String) session.getAttribute("captcha");
             if (storedCaptcha == null || !storedCaptcha.equalsIgnoreCase(captcha)) {
-                throw new RuntimeException("验证码错误或已过期");
+                return new ApiResponse<>(400, "验证码错误或已过期", null);
             }
         }
-    
+        
         // 验证密码
         if (user.getPassword().equals(password)) {
             // 登录成功，重置失败次数
@@ -66,7 +67,7 @@ public class UserController {
             user.setLockTime(null);
             userRepository.save(user);
             session.removeAttribute("captcha");
-            return "登录成功";
+            return new ApiResponse<>(200, "登录成功", username);
         } else {
             // 登录失败，更新失败次数
             int attempts = user.getLoginAttempts() + 1;
@@ -76,11 +77,11 @@ public class UserController {
             if (attempts >= 5) {
                 user.setLockTime(LocalDateTime.now().plusDays(1));
                 userRepository.save(user);
-                throw new RuntimeException("用户名或密码错误，账号已锁定1天");
+                return new ApiResponse<>(403, "用户名或密码错误，账号已锁定1天", null);
             }
     
             userRepository.save(user);
-            throw new RuntimeException("用户名或密码错误，还有" + (5 - attempts) + "次机会");
+            return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", null);
         }
     }
 

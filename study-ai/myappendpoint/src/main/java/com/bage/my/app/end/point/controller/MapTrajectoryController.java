@@ -50,13 +50,14 @@ public class MapTrajectoryController {
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public Page<Map<String, Object>> getTrajectoryData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, 
-                                                       @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
+    public ApiResponse<Page<Map<String, Object>>> getTrajectoryData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, 
+                                                               @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
         try {
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "time"));
             Page<Trajectory> trajectoryPage;
             LocalDateTime start = startTime != null ? LocalDateTime.parse(startTime) : null;
             LocalDateTime end = endTime != null ? LocalDateTime.parse(endTime) : null;
+            
             if (start != null && end != null) {
                 trajectoryPage = trajectoryRepository.findByTimeBetween(start, end, pageable);
             } else if (start != null) {
@@ -66,6 +67,7 @@ public class MapTrajectoryController {
             } else {
                 trajectoryPage = trajectoryRepository.findAll(pageable);
             }
+            
             List<Map<String, Object>> pageContent = new ArrayList<>();
             for (Trajectory trajectory : trajectoryPage.getContent()) {
                 Map<String, Object> location = new HashMap<>();
@@ -75,9 +77,11 @@ public class MapTrajectoryController {
                 location.put("address", trajectory.getAddress());
                 pageContent.add(location);
             }
-            return new PageImpl<>(pageContent, pageable, trajectoryPage.getTotalElements());
+            
+            Page<Map<String, Object>> resultPage = new PageImpl<>(pageContent, pageable, trajectoryPage.getTotalElements());
+            return new ApiResponse<>(200, "success", resultPage);
         } catch (Exception e) {
-            throw new RuntimeException("时间格式不正确，请使用 ISO-8601 格式: yyyy-MM-ddTHH:mm:ss");
+            return new ApiResponse<>(400, "时间格式不正确，请使用 ISO-8601 格式: yyyy-MM-ddTHH:mm:ss", null);
         }
     }
 
