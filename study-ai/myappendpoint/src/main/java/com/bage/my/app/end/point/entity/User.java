@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "app_user") // 将表名改为非关键字
@@ -17,6 +18,11 @@ public class User {
     private String password;
     private int loginAttempts = 0;
     private LocalDateTime lockTime;
+    // 新增字段
+    private String email;
+    private String gender;
+    private LocalDate birthDate;
+    private String avatarUrl;
 
     public Long getId() {
         return id;
@@ -56,5 +62,38 @@ public class User {
 
     public void setLockTime(LocalDateTime lockTime) {
         this.lockTime = lockTime;
+    }
+
+    // 新增字段的getter/setter
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

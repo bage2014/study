@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../../common/constants.dart'; // 添加常量导入
+import 'package:get/get.dart'; // 添加GetX导入
+import '../../api/http_client.dart'; // 导入统一http client
+import '../../common/constants.dart';
 
 // 更新数据模型以匹配API响应格式
 class LocationRecord {
@@ -40,37 +40,30 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
   final List<LocationRecord> _locationHistory = [];
   bool _isLoading = true;
   String? _errorMessage;
+  final HttpClient _httpClient = HttpClient(); // 创建http client实例
 
   @override
   void initState() {
     super.initState();
-    _fetchLocationHistory(); // 初始化时获取数据
+    _fetchLocationHistory();
   }
 
-  // 从API获取历史轨迹数据
+  // 使用统一http client获取历史轨迹数据
   Future<void> _fetchLocationHistory() async {
     try {
-      final response = await http.get(
-        Uri.parse('${Constants.baseUrl}/trajectorys/query'), // 使用基础URL常量
-      );
+      // 使用统一http client的get方法
+      final response = await _httpClient.get('/trajectorys/query');
 
-      if (response.statusCode == 200) {
-        final body = utf8.decode(response.bodyBytes);
-        print('API Response: ${body}');
-        // 使用utf8.decode显式处理字符编码
-        final data = json.decode(body);
-        final List<dynamic> content = data['content'];
+      // 直接使用响应数据，HttpClient已处理JSON解析
+      final List<dynamic> content = response['content'];
 
-        setState(() {
-          _locationHistory.clear();
-          _locationHistory.addAll(
-            content.map((json) => LocationRecord.fromJson(json)).toList(),
-          );
-          _isLoading = false;
-        });
-      } else {
-        throw Exception('请求失败: ${response.statusCode}');
-      }
+      setState(() {
+        _locationHistory.clear();
+        _locationHistory.addAll(
+          content.map((json) => LocationRecord.fromJson(json)).toList(),
+        );
+        _isLoading = false;
+      });
     } catch (e) {
       setState(() {
         _errorMessage = e.toString();

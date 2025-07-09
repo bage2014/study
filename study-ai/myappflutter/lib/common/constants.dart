@@ -6,6 +6,9 @@ class Constants {
   /// 鹰眼服务ID
   static const int yingYanServiceId = 119375196; // 替换为你的鹰眼服务ID
 
-  /// 网络请求基础URL
-  static const String baseUrl = 'http://10.0.2.2:8080';
+  /// 网络请求基础URL - 生产环境
+  static const String prodBaseUrl = 'http://10.0.2.2:8080';
+
+  /// 网络请求基础URL - 开发环境
+  static const String devBaseUrl = 'http://10.0.2.2:8080';
 }

@@ -1,6 +1,11 @@
 package com.bage.my.app.end.point.controller;
 
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import com.bage.my.app.end.point.entity.User;
+import com.bage.my.app.end.point.repository.UserRepository;
+import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.repository.UserRepository;
 import com.google.code.kaptcha.Producer;
@@ -106,15 +111,33 @@ public class UserController {
 
     @PostMapping("/register")
     public ApiResponse<String> register(@RequestBody RegisterRequest registerRequest) {
-        String username = registerRequest.getUsername();
-        String password = registerRequest.getPassword();
-        if (userRepository.findByUsername(username) != null) {
-            return new ApiResponse<>(400, "用户名已存在", null);
-        }
         User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(registerRequest.getPassword());
+        // 添加新字段赋值
+        user.setEmail(registerRequest.getEmail());
+        user.setGender(registerRequest.getGender());
+        user.setBirthDate(registerRequest.getBirthDate());
+        user.setAvatarUrl(registerRequest.getAvatarUrl());
         userRepository.save(user);
         return new ApiResponse<>(200, "注册成功", null);
+    }
+
+    // 应用启动时自动创建默认用户
+    @PostConstruct
+    public void initDefaultUser() {
+        // 检查用户是否已存在
+        if (userRepository.findByUsername("zhangsan") == null) {
+            User user = new User();
+            user.setUsername("zhangsan");
+            user.setPassword("lisi123");
+            user.setLoginAttempts(0);
+            user.setLockTime(null);
+            // 如果有其他默认字段也可以在这里设置
+            userRepository.save(user);
+            System.out.println("默认用户 zhangsan 创建成功");
+        } else {
+            System.out.println("默认用户 zhangsan 已存在");
+        }
     }
 }

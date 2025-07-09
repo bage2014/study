@@ -4,11 +4,13 @@ import 'config/app_routes.dart';
 import 'config/themes.dart';
 import 'lang/translation.dart';
 import 'controllers/auth_controller.dart';
-import 'controllers/theme_controller.dart'; // 添加ThemeController导入
+import 'controllers/theme_controller.dart';
+import 'controllers/env_controller.dart'; // 添加导入
 
 void main() {
   Get.put(AuthController());
-  Get.put(ThemeController()); // 初始化ThemeController
+  Get.put(ThemeController());
+  Get.put(EnvController()); // 初始化环境控制器
   runApp(const MyApp());
 }
 

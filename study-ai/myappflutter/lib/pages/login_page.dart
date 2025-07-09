@@ -23,6 +23,8 @@ class _LoginPageState extends State<LoginPage> {
   bool _showCaptcha = false;
   bool _accountLocked = false;
   String _generatedCaptcha = '';
+  int _avatarTapCount = 0; // 新增：跟踪头像点击次数
+  DateTime? _lastAvatarTapTime; // 新增：跟踪最后一次点击时间
 
   @override
   void initState() {
@@ -100,6 +102,26 @@ class _LoginPageState extends State<LoginPage> {
     Get.offNamed(AppRoutes.HOME);
   }
 
+  // 新增：处理头像点击事件
+  void _handleAvatarTap() {
+    const int requiredTaps = 3;
+    const Duration tapWindow = Duration(milliseconds: 500);
+    final DateTime now = DateTime.now();
+
+    if (_lastAvatarTapTime == null ||
+        now.difference(_lastAvatarTapTime!) > tapWindow) {
+      _avatarTapCount = 1;
+    } else {
+      _avatarTapCount++;
+      if (_avatarTapCount >= requiredTaps) {
+        // 连续点击三次，导航到设置页面
+        Get.toNamed(AppRoutes.SETTINGS);
+        _avatarTapCount = 0;
+      }
+    }
+    _lastAvatarTapTime = now;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +141,16 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.lock, size: 80, color: Colors.blueAccent),
+                  // 修改：添加InkWell包裹头像图标，实现点击事件
+                  InkWell(
+                    onTap: _handleAvatarTap,
+                    borderRadius: BorderRadius.circular(40), // 圆形点击区域
+                    child: const Icon(
+                      Icons.lock,
+                      size: 80,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
                   const SizedBox(height: 32),
                   const Text(
                     '用户登录',

@@ -187,6 +187,7 @@
         <module name="study-springmvc-java" />
         <module name="study-clickhouse" />
         <module name="study-shiro-web" />
+        <module name="demo" />
         <module name="study-log-logback" />
         <module name="study-xfyun-lfasr" />
         <module name="study-tess4j" />
@@ -213,16 +214,6 @@
         <module name="study-code-format" />
         <module name="study-jvm" />
       </profile>
-      <profile name="Annotation profile for study" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.4.2.Final/mapstruct-processor-1.4.2.Final.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.4.2.Final/mapstruct-1.4.2.Final.jar" />
-        </processorPath>
-        <module name="study-mapstruct" />
-      </profile>
       <profile name="Annotation profile for study-mapstruct-plus" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -237,6 +228,16 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/tools/gem/gem-api/1.0.0.Alpha3/gem-api-1.0.0.Alpha3.jar" />
         </processorPath>
         <module name="study-mapstruct-plus" />
+      </profile>
+      <profile name="Annotation profile for study" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.4.2.Final/mapstruct-processor-1.4.2.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.4.2.Final/mapstruct-1.4.2.Final.jar" />
+        </processorPath>
+        <module name="study-mapstruct" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="21">
@@ -254,6 +255,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="bage-spring-boot-starter-ping" options="" />
       <module name="bage-spring-boot-starter-ping-test" options="" />
+      <module name="demo" options="-parameters" />
       <module name="study" options="" />
       <module name="study-activemq" options="" />
       <module name="study-ai" options="" />

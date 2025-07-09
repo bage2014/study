@@ -22,6 +22,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
-        return new ApiResponse<>(200, "success", body);
+        // com.bage.my.app.end.point.entity.ApiResponse cannot be cast to class java.lang.String (com.bage.my.app.end.point.entity.ApiResponse is in unnamed module of loader 'app'; java.lang.String is in module java.base of loader 'bootstrap')
+         return new ApiResponse<>(200, "success", body);
     }
 }
