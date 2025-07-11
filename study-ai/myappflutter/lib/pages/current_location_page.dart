@@ -13,7 +13,7 @@ class CurrentLocationPage extends StatefulWidget {
 
 class _CurrentLocationPageState extends State<CurrentLocationPage> {
   BaiduLocation? _currentLocation;
-  final LocationFlutterPlugin _myLocPlugin = LocationFlutterPlugin();
+  LocationFlutterPlugin _myLocPlugin = LocationFlutterPlugin();
   bool _permissionDenied = false;
 
   @override
@@ -52,11 +52,11 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
       'reGeocodeTimeout': 20000,
       'coorType': 'bd09ll',
     };
-    // Agree to privacy policy before setting up location
-    // _myLocPlugin.setAgreePrivacy(true);
 
-    // Initialize location client before setting up callbacks
-    // 启动定位
+    // 1. 先同意隐私政策
+    _myLocPlugin.setAgreePrivacy(true);
+
+    // 4. 启动定位
     if (Platform.isIOS) {
       _myLocPlugin.singleLocation(locationOption);
     } else {
@@ -102,15 +102,15 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
         child: _permissionDenied
             ? const Text('需要位置权限才能使用此功能')
             : _currentLocation != null
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('当前位置: \${_currentLocation!.address}'),
-                      Text('纬度: \${_currentLocation!.latitude}'),
-                      Text('经度: \${_currentLocation!.longitude}'),
-                    ],
-                  )
-                : const CircularProgressIndicator(),
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('当前位置: ${_currentLocation!.address}'),
+                  Text('纬度: ${_currentLocation!.latitude}'),
+                  Text('经度: ${_currentLocation!.longitude}'),
+                ],
+              )
+            : const CircularProgressIndicator(),
       ),
     );
   }
