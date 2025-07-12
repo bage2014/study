@@ -12,4 +12,5 @@ const Map<String, String> en = {
   'theme_color': 'Theme Color',
   'current_language': 'Current Language',
   'current_theme': 'Current Theme',
+  'family': 'My Family',
 };

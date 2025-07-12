@@ -13,36 +13,19 @@ class HomePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: GridView.count(
-          crossAxisCount: 2, // 保持2列布局
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
+          crossAxisCount: 2,
           children: [
             _buildMenuCard(
-              icon: Icons.my_location,
-              title: 'current_location',
-              onTap: () => Get.toNamed(AppRoutes.CURRENT_LOCATION),
-            ),
-            _buildMenuCard(
-              icon: Icons.search,
-              title: 'find_location',
-              onTap: () => Get.toNamed(AppRoutes.FIND_LOCATION),
-            ),
-            _buildMenuCard(
-              icon: Icons.history,
-              title: 'history_location',
-              onTap: () => Get.toNamed(AppRoutes.HISTORY_LOCATION),
-            ),
-            _buildMenuCard(
-              icon: Icons.track_changes,
-              title: 'track_location',
-              onTap: () => Get.toNamed(AppRoutes.TRACK_LOCATION),
-            ),
-            // 添加设置按钮
-            _buildMenuCard(
-              icon: Icons.settings,
+              icon: Icons.person,
               title: 'settings',
               onTap: () => Get.toNamed(AppRoutes.SETTINGS),
             ),
+            _buildMenuCard(
+              icon: Icons.family_restroom, 
+              title: 'family', 
+              onTap:  () => Get.toNamed(AppRoutes.FAMILY  ))
+            
+            // 其他菜单项也改为使用_buildMenuCard
           ],
         ),
       ),
@@ -78,4 +61,5 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+ 
 }

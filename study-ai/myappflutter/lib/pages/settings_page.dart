@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
     return BasePage(
       title: '设置',
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(64),
         children: [
           // 语言设置
           ListTile(
@@ -89,9 +89,10 @@ class SettingsPage extends StatelessWidget {
           // 环境设置 - 新增
           ListTile(
             title: Text('环境设置'),
-            subtitle: Obx(() => Text(
-              '当前环境: ${_getEnvName(_envController.currentEnv.value)}',
-            )),
+            subtitle: Obx(
+              () =>
+                  Text('当前环境: ${_getEnvName(_envController.currentEnv.value)}'),
+            ),
             trailing: DropdownButton<String>(
               value: _envController.currentEnv.value,
               items: const [
@@ -120,7 +121,7 @@ class SettingsPage extends StatelessWidget {
 
   // 新增：获取环境显示名称
   String _getEnvName(String env) {
-    switch(env) {
+    switch (env) {
       case 'prod':
         return '生产环境';
       case 'dev':

@@ -8,17 +8,14 @@ import 'lang/translation.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/theme_controller.dart';
 import 'controllers/env_controller.dart'; // 添加导入
+import 'controllers/theme_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 初始化百度地图SDK
-  BMFMapSDK.setApiKeyAndCoordType(
-    Constants.baiduAK, // 替换为实际的百度地图AK
-    BMF_COORD_TYPE.BD09LL,
-  );
-
   // 初始化GetX控制器
+  Get.put(ThemeController());
+  Get.put(AuthController());
   Get.put(EnvController());
 
   runApp(MyApp());
