@@ -42,4 +42,22 @@ class Themes {
       iconTheme: IconThemeData(color: Colors.white),
     ),
   );
+  // 浅白色主题
+  static final light = ThemeData(
+    primarySwatch: Colors.blueGrey,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white,
+      elevation: 1,
+      titleTextStyle: TextStyle(
+        color: Colors.black87,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+      iconTheme: IconThemeData(color: Colors.black87),
+    ),
+    scaffoldBackgroundColor: Colors.white,
+  );
+
+  // 默认主题
+  static final defaultTheme = light; // 使用浅白色主题作为默认
 }

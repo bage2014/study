@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // 添加此行导入SystemUiOverlayStyle
 import 'package:get/get.dart';
-import '../../config/themes.dart';
 
 class BasePage extends StatelessWidget {
   final String title;
@@ -21,17 +20,20 @@ class BasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: showAppBar,
-      appBar: showAppBar ? AppBar(
-        title: Text(title.tr),
-        centerTitle: true,
-        actions: actions,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        // 已添加正确导入，现在可以正常使用SystemUiOverlayStyle
-        systemOverlayStyle: Theme.of(context).brightness == Brightness.dark
-            ? SystemUiOverlayStyle.light
-            : SystemUiOverlayStyle.dark,
-      ) : null,
+      appBar: showAppBar
+          ? AppBar(
+              title: Text(title.tr),
+              centerTitle: true,
+              actions: actions,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              // 已添加正确导入，现在可以正常使用SystemUiOverlayStyle
+              systemOverlayStyle:
+                  Theme.of(context).brightness == Brightness.dark
+                  ? SystemUiOverlayStyle.light
+                  : SystemUiOverlayStyle.dark,
+            )
+          : null,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

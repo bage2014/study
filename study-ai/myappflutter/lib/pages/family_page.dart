@@ -117,9 +117,20 @@ class _FamilyPageState extends State<FamilyPage> {
     };
 
     return Scaffold(
-      appBar: AppBar(title: const Text('家族树')),
-      body: SingleChildScrollView(
-        child: TreeView(nodes: [_buildFamilyTreeNode(familyData)]),
+      appBar: AppBar(
+        title: Text('家族树'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: SingleChildScrollView(
+          child: TreeView(nodes: [_buildFamilyTreeNode(familyData)]),
+        ),
       ),
     );
   }

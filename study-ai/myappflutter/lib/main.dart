@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
+import 'package:myappflutter/config/themes.dart';
+import 'package:myappflutter/pages/home_page.dart';
 import 'package:get/get.dart';
 import 'package:myappflutter/common/constants.dart';
 import 'config/app_routes.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       title: '位置追踪应用',
       initialRoute: AppRoutes.LOGIN, // 应用启动直接进入登录页面
       getPages: AppRoutes.routes,
-      theme: Themes.lightBlue,
+      theme: Themes.light,
       darkTheme: Themes.dark,
       translations: MyTranslations(),
       locale: const Locale('zh', 'CN'),

@@ -21,10 +21,11 @@ class HomePage extends StatelessWidget {
               onTap: () => Get.toNamed(AppRoutes.SETTINGS),
             ),
             _buildMenuCard(
-              icon: Icons.family_restroom, 
-              title: 'family', 
-              onTap:  () => Get.toNamed(AppRoutes.FAMILY  ))
-            
+              icon: Icons.family_restroom,
+              title: 'family',
+              onTap: () => Get.toNamed(AppRoutes.FAMILY),
+            ),
+
             // 其他菜单项也改为使用_buildMenuCard
           ],
         ),
@@ -61,5 +62,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
- 
 }
