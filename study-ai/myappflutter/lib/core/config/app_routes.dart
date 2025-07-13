@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import '../pages/login_page.dart';
-import '../pages/home_page.dart';
-import '../pages/current_location_page.dart';
-import '../pages/find_location_page.dart';
-import '../pages/history_location_page.dart';
-import '../pages/track_location_page.dart';
-import '../pages/settings_page.dart'; // 添加设置页面导入
-import '../pages/family_page.dart'; // 添加家庭关系页面导入
-import '../pages/profile_page.dart'; // 新增导入
+import '../../presentation/pages/login_page.dart';
+import '../../presentation/pages/home_page.dart';
+import '../../presentation/pages/current_location_page.dart';
+import '../../presentation/pages/find_location_page.dart';
+import '../../presentation/pages/history_location_page.dart';
+import '../../presentation/pages/track_location_page.dart';
+import '../../presentation/pages/settings_page.dart'; // 添加设置页面导入
+import '../../presentation/pages/family_page.dart'; // 添加家庭关系页面导入
+import '../../presentation/pages/profile_page.dart'; // 新增导入
 
 class AppRoutes {
   static const String LOGIN = '/login';

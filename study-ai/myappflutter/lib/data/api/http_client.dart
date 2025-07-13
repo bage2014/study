@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import '../common/constants.dart';
-import '../controllers/env_controller.dart'; // 添加导入
+import '../../core/constants/constants.dart';
+import '../../features/controller/env_controller.dart'; // 添加导入
 
 class HttpClient {
   final http.Client _client = http.Client();

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bmflocation/flutter_bmflocation.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
-import '../common/widgets/base_page.dart'; // 导入基础页面
+import '../widgets/base_page.dart'; // 导入基础页面
 
 class CurrentLocationPage extends StatefulWidget {
   const CurrentLocationPage({super.key});

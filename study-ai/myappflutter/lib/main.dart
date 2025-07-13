@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myappflutter/config/themes.dart';
 import 'package:get/get.dart';
-import 'config/app_routes.dart';
-import 'lang/translation.dart';
-import 'controllers/auth_controller.dart';
-import 'controllers/theme_controller.dart';
-import 'controllers/env_controller.dart'; // 添加导入
+import 'core/config/app_routes.dart';
+import 'core/theme/themes.dart';
+import 'localization/translation.dart';
+import 'features/controller/auth_controller.dart';
+import 'features/controller/theme_controller.dart';
+import 'features/controller/env_controller.dart'; // 添加导入
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

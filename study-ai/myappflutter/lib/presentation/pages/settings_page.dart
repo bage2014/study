@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../common/widgets/base_page.dart';
-import '../config/themes.dart';
-import '../controllers/theme_controller.dart';
-import '../controllers/env_controller.dart'; // 添加导入
+import '../widgets/base_page.dart';
+import '../../core/theme/themes.dart';
+import '../../features/controller/theme_controller.dart';
+import '../../features/controller/env_controller.dart'; // 添加导入
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({super.key});

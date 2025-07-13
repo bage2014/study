@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../../common/constants.dart';
+import '../../core/constants/constants.dart';
 
 class TrackLocationPage extends StatefulWidget {
   const TrackLocationPage({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_treeview/flutter_simple_treeview.dart';
-import '../common/widgets/base_page.dart';
+import '../widgets/base_page.dart';
 import 'package:get/get.dart';
-import '../config/app_routes.dart';
-import '../models/family_response.dart';
-import '../models/family_data.dart';
+import '../../core/config/app_routes.dart';
+import '../../data/models/family_response.dart';
+import '../../data/models/family_data.dart';
 
 class FamilyPage extends StatefulWidget {
   const FamilyPage({super.key});

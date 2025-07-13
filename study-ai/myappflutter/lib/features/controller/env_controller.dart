@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../common/constants.dart';
+import '../../core/constants/constants.dart';
 
 class EnvController extends GetxController {
   // 默认生产环境

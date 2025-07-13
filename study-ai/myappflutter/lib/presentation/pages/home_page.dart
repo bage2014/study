@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../config/app_routes.dart';
-import '../common/widgets/base_page.dart'; // 使用基础页面组件
+import '../../core/config/app_routes.dart';
+import '../widgets/base_page.dart'; // 使用基础页面组件
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

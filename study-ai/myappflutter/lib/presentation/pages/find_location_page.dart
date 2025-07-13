@@ -4,7 +4,7 @@ import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
-import '../common/widgets/base_page.dart';
+import '../widgets/base_page.dart';
 
 class FindLocationPage extends StatefulWidget {
   const FindLocationPage({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../api/http_client.dart'; // 确保已添加此导入
-import '../config/app_routes.dart';
+import '../../data/api/http_client.dart'; // 确保已添加此导入
+import '../../core/config/app_routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
