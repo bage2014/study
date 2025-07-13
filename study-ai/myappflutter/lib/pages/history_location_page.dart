@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart'; // 添加GetX导入
 import '../../api/http_client.dart'; // 导入统一http client
-import '../../common/constants.dart';
 
 // 更新数据模型以匹配API响应格式
 class LocationRecord {
