@@ -32,6 +32,7 @@ dependencies:
   http: ^1.4.0  # 稳定版本，兼容Dart 3.8.1
   flutter_bmflocation: ^3.8.0
   flutter_baidu_mapapi_map: ^3.8.0
+  flutter_simple_treeview: ^3.0.2
 
 dev_dependencies:
   flutter_test:
