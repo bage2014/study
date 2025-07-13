@@ -13,4 +13,5 @@ const Map<String, String> zh = {
   'current_language': '当前语言',
   'current_theme': '当前主题',
   'family': '我的家族',
+  'profile': '个人信息',
 };

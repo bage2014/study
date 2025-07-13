@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../api/http_client.dart'; // 确保已添加此导入
-import 'package:myappflutter/pages/current_location_page.dart';
 import '../config/app_routes.dart';
 
 class LoginPage extends StatefulWidget {

@@ -4,7 +4,7 @@ import '../config/themes.dart';
 
 class ThemeController extends GetxController {
   final RxBool isDarkMode = false.obs;
-  final Rx<ThemeData> currentTheme = Themes.lightBlue.obs;
+  final Rx<ThemeData> currentTheme = Themes.light.obs;
 
   void changeTheme(ThemeData theme) {
     currentTheme.value = theme;
@@ -13,7 +13,7 @@ class ThemeController extends GetxController {
 
   void toggleDarkMode() {
     isDarkMode.value = !isDarkMode.value;
-    currentTheme.value = isDarkMode.value ? Themes.dark : Themes.lightBlue;
+    currentTheme.value = isDarkMode.value ? Themes.dark : Themes.light;
     Get.changeTheme(currentTheme.value);
   }
 }

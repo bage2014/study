@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_treeview/flutter_simple_treeview.dart';
+import '../common/widgets/base_page.dart';
+import '../models/family_data.dart';
+import 'package:get/get.dart';
+import '../config/app_routes.dart';
 
 class FamilyPage extends StatefulWidget {
   const FamilyPage({super.key});
@@ -10,6 +14,20 @@ class FamilyPage extends StatefulWidget {
 
 class _FamilyPageState extends State<FamilyPage> {
   final Map<String, bool> _expandedStates = {};
+
+  @override
+  Widget build(BuildContext context) {
+    return BasePage(
+      // 直接使用导入的familyData
+      title: '家族树',
+      body: Padding(
+        padding: EdgeInsets.only(
+          top: kToolbarHeight,
+        ), // 使用kToolbarHeight常量确保与AppBar高度一致
+        child: TreeView(nodes: [_buildFamilyTreeNode(familyData)]),
+      ),
+    );
+  }
 
   TreeNode _buildFamilyTreeNode(dynamic member) {
     try {
@@ -29,7 +47,10 @@ class _FamilyPageState extends State<FamilyPage> {
                     ? Text(memberMap['name'][0])
                     : null,
               ),
-              title: Text(memberMap['name']),
+              title: GestureDetector(
+                onTap: () => _showMemberOptions(memberMap),
+                child: Text(memberMap['name']),
+              ),
               subtitle: Text(memberMap['relationship']),
               onTap: () => setState(() {
                 _expandedStates[nodeKey] = !isExpanded;
@@ -50,88 +71,33 @@ class _FamilyPageState extends State<FamilyPage> {
       return TreeNode(content: Text('Error loading node'));
     }
   }
+}
 
-  @override
-  Widget build(BuildContext context) {
-    final familyData = {
-      "id": "123",
-      "name": "张三",
-      "avatar":
-          "https://avatars.githubusercontent.com/u/18094768?s=400&amp;u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&amp;v=4",
-      "generation": 0,
-      "relationship": "self",
-      "spouses": [
-        {
-          "id": "124",
-          "name": "李四",
-          "avatar":
-              "https://avatars.githubusercontent.com/u/18094768?s=400&amp;u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&amp;v=4",
-          "relationship": "spouse",
-          "generation": 0,
-          "spouses": [],
-          "parents": [],
-        },
-      ],
-      "parents": [
-        {
-          "id": "111",
-          "name": "张父",
-          "avatar":
-              "https://avatars.githubusercontent.com/u/18094768?s=400&amp;u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&amp;v=4",
-          "relationship": "parent",
-          "generation": -1,
-          "spouses": [
-            {
-              "id": "112",
-              "name": "张母",
-              "avatar":
-                  "https://avatars.githubusercontent.com/u/18094768?s=400&amp;u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&amp;v=4",
-              "relationship": "spouse",
-              "generation": -1,
+void _showMemberOptions(Map<String, dynamic> member) {
+  Get.bottomSheet(
+    SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            title: Text('切换到当前用户'),
+            onTap: () {
+              print('切换到用户: ${member['name']}');
+              Get.back();
             },
-          ],
-          "parents": [
-            {
-              "id": "101",
-              "name": "张祖父",
-              "avatar":
-                  "https://avatars.githubusercontent.com/u/18094768?s=400&amp;u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&amp;v=4",
-              "relationship": "parent",
-              "generation": -2,
+          ),
+          ListTile(
+            title: Text('查看该用户信息'),
+            onTap: () {
+              print('查看用户信息: ${member['name']}');
+              Get.toNamed(
+                AppRoutes.PROFILE,
+                arguments: {'userId': member['id']},
+              );
             },
-          ],
-        },
-      ],
-      "children": [
-        {
-          "id": "125",
-          "name": "张小三",
-          "avatar":
-              "https://avatars.githubusercontent.com/u/18094768?s=400&amp;u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&amp;v=4",
-          "relationship": "child",
-          "generation": 1,
-          "spouses": [],
-          "children": [],
-        },
-      ],
-    };
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('家族树'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {},
           ),
         ],
       ),
-      body: Container(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        child: SingleChildScrollView(
-          child: TreeView(nodes: [_buildFamilyTreeNode(familyData)]),
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }

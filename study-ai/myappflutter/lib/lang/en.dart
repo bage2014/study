@@ -13,4 +13,5 @@ const Map<String, String> en = {
   'current_language': 'Current Language',
   'current_theme': 'Current Theme',
   'family': 'My Family',
+  'profile': 'Profile',
 };

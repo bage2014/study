@@ -1,61 +1,32 @@
 import 'package:flutter/material.dart';
 
 class Themes {
-  // 浅蓝色主题
-  static final lightBlue = ThemeData(
-    primarySwatch: Colors.blue,
-    primaryColor: Colors.blue,
-    primaryColorLight: Color(0xFFE3F2FD),
-    primaryColorDark: Color(0xFF1976D2),
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    brightness: Brightness.light,
-    appBarTheme: AppBarTheme(
-      titleTextStyle: TextStyle(color: Colors.black87, fontSize: 20),
-      iconTheme: IconThemeData(color: Colors.black87),
-    ),
-  );
-
-  // 浅绿色主题
-  static final lightGreen = ThemeData(
-    primarySwatch: Colors.green,
-    primaryColor: Colors.green,
-    primaryColorLight: Color(0xFFE8F5E9),
-    primaryColorDark: Color(0xFF2E7D32),
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    brightness: Brightness.light,
-    appBarTheme: AppBarTheme(
-      titleTextStyle: TextStyle(color: Colors.black87, fontSize: 20),
-      iconTheme: IconThemeData(color: Colors.black87),
-    ),
-  );
-
-  // 暗色主题
-  static final dark = ThemeData(
-    primarySwatch: Colors.grey,
-    primaryColor: Colors.grey[800],
-    primaryColorLight: Color(0xFF424242),
-    primaryColorDark: Color(0xFF212121),
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    brightness: Brightness.dark,
-    appBarTheme: AppBarTheme(
-      titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
-      iconTheme: IconThemeData(color: Colors.white),
-    ),
-  );
-  // 浅白色主题
   static final light = ThemeData(
-    primarySwatch: Colors.blueGrey,
-    appBarTheme: AppBarTheme(
-      backgroundColor: Colors.white,
-      elevation: 1,
-      titleTextStyle: TextStyle(
-        color: Colors.black87,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-      iconTheme: IconThemeData(color: Colors.black87),
-    ),
+    brightness: Brightness.light,
+    primaryColor: Colors.blue,
     scaffoldBackgroundColor: Colors.white,
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(color: Colors.black),
+      bodySmall: TextStyle(color: Colors.black),
+    ),
+    appBarTheme: AppBarTheme(
+      color: Colors.blue,
+      titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+    ),
+  );
+
+  static final dark = ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Colors.blueGrey,
+    scaffoldBackgroundColor: Colors.grey[900],
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(color: Colors.white),
+      bodySmall: TextStyle(color: Colors.white),
+    ),
+    appBarTheme: AppBarTheme(
+      color: Colors.blueGrey,
+      titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+    ),
   );
 
   // 默认主题

@@ -16,7 +16,6 @@ class SettingsPage extends StatelessWidget {
     return BasePage(
       title: '设置',
       body: ListView(
-        padding: const EdgeInsets.all(64),
         children: [
           // 语言设置
           ListTile(
@@ -48,22 +47,12 @@ class SettingsPage extends StatelessWidget {
               value: _themeController.currentTheme.value,
               items: [
                 DropdownMenuItem(
-                  value: Themes.lightBlue,
+                  value: Themes.light,
                   child: Row(
                     children: [
                       Container(width: 16, height: 16, color: Colors.blue),
                       SizedBox(width: 8),
-                      Text('蓝色'),
-                    ],
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: Themes.lightGreen,
-                  child: Row(
-                    children: [
-                      Container(width: 16, height: 16, color: Colors.green),
-                      SizedBox(width: 8),
-                      Text('绿色'),
+                      Text('浅色'),
                     ],
                   ),
                 ),
@@ -71,7 +60,7 @@ class SettingsPage extends StatelessWidget {
                   value: Themes.dark,
                   child: Row(
                     children: [
-                      Container(width: 16, height: 16, color: Colors.grey[800]),
+                      Container(width: 16, height: 16, color: Colors.green),
                       SizedBox(width: 8),
                       Text('深色'),
                     ],
@@ -113,8 +102,7 @@ class SettingsPage extends StatelessWidget {
   }
 
   String _getThemeName(ThemeData theme) {
-    if (theme == Themes.lightBlue) return '蓝色';
-    if (theme == Themes.lightGreen) return '绿色';
+    if (theme == Themes.light) return '浅色';
     if (theme == Themes.dark) return '深色';
     return '默认';
   }

@@ -9,7 +9,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: 'home', // 使用翻译文本
+      title: 'home',
+      actions: [
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () => Get.toNamed(AppRoutes.SETTINGS),
+        ),
+      ],
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: GridView.count(
@@ -17,16 +23,14 @@ class HomePage extends StatelessWidget {
           children: [
             _buildMenuCard(
               icon: Icons.person,
-              title: 'settings',
-              onTap: () => Get.toNamed(AppRoutes.SETTINGS),
+              title: 'profile',
+              onTap: () => Get.toNamed(AppRoutes.PROFILE),
             ),
             _buildMenuCard(
               icon: Icons.family_restroom,
               title: 'family',
               onTap: () => Get.toNamed(AppRoutes.FAMILY),
             ),
-
-            // 其他菜单项也改为使用_buildMenuCard
           ],
         ),
       ),
