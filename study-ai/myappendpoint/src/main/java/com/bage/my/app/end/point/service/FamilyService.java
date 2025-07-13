@@ -62,10 +62,9 @@ public class FamilyService {
                     : rel.getMember1().getId();
                 
                 // 如果发现环形关系
-                // todo fix
-                // if (relatedId.equals(relationship.getMember1().getId())) {
-                //     throw new IllegalArgumentException("检测到环形关系");
-                // }
+//                if (relatedId.equals(relationship.getMember1().getId())) {
+//                    throw new IllegalArgumentException("检测到环形关系");
+//                }
                 
                 if (!visited.contains(relatedId)) {
                     visited.add(relatedId);
@@ -107,10 +106,52 @@ public class FamilyService {
             throw new IllegalArgumentException("根成员不存在");
         }
         
-        return buildTree(rootMember, generations,"");
+        // 先构建完整树
+        FamilyMemberTree fullTree = buildTree(rootMember,rootMember, generations, "self");
+        
+        // 去重并重构树结构
+        return rebuildTreeWithoutDuplicates(fullTree);
     }
     
-    private FamilyMemberTree buildTree(FamilyMember member, int remainingGenerations, String relationship) {
+    private FamilyMemberTree rebuildTreeWithoutDuplicates(FamilyMemberTree node) {
+        Set<Long> visitedIds = new HashSet<>();
+        return rebuildTree(node, visitedIds);
+    }
+    
+    private FamilyMemberTree rebuildTree(FamilyMemberTree node, Set<Long> visitedIds) {
+        if (node == null || visitedIds.contains(node.getId())) {
+            return null;
+        }
+        
+        visitedIds.add(node.getId());
+        
+        // 创建新节点
+        FamilyMemberTree newNode = new FamilyMemberTree(
+            node.getId(), 
+            node.getName(),
+            node.getAvatar(),
+            node.getGeneration(),
+            node.getRelationship()
+        );
+        
+        // 递归处理子节点
+        if (node.getChildren() != null) {
+            for (FamilyMemberTree child : node.getChildren()) {
+                FamilyMemberTree newChild = rebuildTree(child, visitedIds);
+                if (newChild != null) {
+                    if(newNode.getChildren() == null){
+                        newNode.setChildren(new ArrayList<>());
+                    }
+                    newNode.getChildren().add(newChild);
+                }
+            }
+        }
+        
+        return newNode;
+    }
+    
+    private FamilyMemberTree buildTree(FamilyMember rootMember,FamilyMember member, int remainingGenerations, String relationship) {
+        
         FamilyMemberTree node = new FamilyMemberTree(
             member.getId(), 
             member.getName(),
@@ -131,7 +172,11 @@ public class FamilyService {
                 if(node.getChildren() == null){
                     node.setChildren(new ArrayList<>());
                 }
-                node.getChildren().add(buildTree(relatedMember, remainingGenerations - 1, relType));
+                if(rootMember.getId().equals(relatedMember.getId())){
+                    log.info("continue skip, rootMember.getId()={},relatedMember.getId()={}",rootMember.getId(),relatedMember.getId());
+                    continue;
+                }
+                node.getChildren().add(buildTree(rootMember, relatedMember, remainingGenerations - 1, relType));
             }
         }
         
@@ -140,6 +185,6 @@ public class FamilyService {
     
     private String determineRelationshipType(FamilyMember current, FamilyMember related, FamilyRelationship rel) {
         // 实现关系类型判断逻辑
-        return "parent"; // 示例返回值
+        return rel == null ? "parent":rel.getType().name(); // 示例返回值
     }
 }
