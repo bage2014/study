@@ -6,6 +6,7 @@ INSERT INTO APP_USER (
 SELECT 
     'zhangsan', 'lisi123', 0, NULL,
     'zhangsan@example.com', 'male', '1990-01-01', 'https://example.com/avatars/zhangsan.jpg'
+
 WHERE NOT EXISTS (
     SELECT 1 FROM APP_USER WHERE username = 'zhangsan'
 );

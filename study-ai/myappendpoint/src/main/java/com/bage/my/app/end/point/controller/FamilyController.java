@@ -128,32 +128,32 @@ public class FamilyController {
     public ApiResponse<String> initFamilyTree() {
         try {
             // 创建并保存所有成员
-            FamilyMember zhangSan = createAndSaveMember("张三", "https://example.com/avatars/zhangsan.jpg", 0);
+            FamilyMember zhangSan = createAndSaveMember("张三", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", 0);
             log.info("initFamilyTree zhangSan: {}", zhangSan);
-            FamilyMember liSi = createAndSaveMember("李四", "https://example.com/avatars/lisi.jpg", 0);
-            log.info("initFamilyTree liSi: {}", liSi);
-            FamilyMember father = createAndSaveMember("张父", "https://example.com/avatars/father.jpg", -1);
-            log.info("initFamilyTree father: {}", father);
-            FamilyMember mother = createAndSaveMember("张母", "https://example.com/avatars/mother.jpg", -1);
-            log.info("initFamilyTree mother: {}", mother);
-            FamilyMember grandfather = createAndSaveMember("张祖父", "https://example.com/avatars/grandfather.jpg", -2);
-            log.info("initFamilyTree grandfather: {}", grandfather);
-            FamilyMember xiaoSan = createAndSaveMember("张小三", "https://example.com/avatars/xiaosan.jpg", 1);
-            log.info("initFamilyTree xiaoSan: {}", xiaoSan);
+            FamilyMember liSi = createAndSaveMember("李四", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", 0);
+            // log.info("initFamilyTree liSi: {}", liSi);
+            FamilyMember father = createAndSaveMember("张父", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", -1);
+            // log.info("initFamilyTree father: {}", father);
+            FamilyMember mother = createAndSaveMember("张母", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", -1);
+            // log.info("initFamilyTree mother: {}", mother);
+            FamilyMember grandfather = createAndSaveMember("张祖父", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", -2);
+            // log.info("initFamilyTree grandfather: {}", grandfather);
+            FamilyMember xiaoSan = createAndSaveMember("张小三", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", 1);
+            // log.info("initFamilyTree xiaoSan: {}", xiaoSan);
 
             // 建立配偶关系
             createAndSaveRelationship(zhangSan, liSi, RelationshipType.SPOUSE);
-            log.info("initFamilyTree zhangSan and liSi: {}", zhangSan);
+            // log.info("initFamilyTree zhangSan and liSi: {}", zhangSan);
             createAndSaveRelationship(father, mother, RelationshipType.SPOUSE);
-            log.info("initFamilyTree father and mother: {}", father);
+            // log.info("initFamilyTree father and mother: {}", father);
     
             // 建立父子关系
             createAndSaveRelationship(father, zhangSan, RelationshipType.PARENT_CHILD);
-            log.info("initFamilyTree father and zhangSan: {}", father);
+            // log.info("initFamilyTree father and zhangSan: {}", father);
             createAndSaveRelationship(grandfather, father, RelationshipType.PARENT_CHILD);
-            log.info("initFamilyTree grandfather and father: {}", grandfather);
+            // log.info("initFamilyTree grandfather and father: {}", grandfather);
             createAndSaveRelationship(zhangSan, xiaoSan, RelationshipType.PARENT_CHILD);
-            log.info("initFamilyTree zhangSan and xiaoSan: {}", zhangSan);
+            // log.info("initFamilyTree zhangSan and xiaoSan: {}", zhangSan);
     
             return ApiResponse.success("家族树初始化成功");
         } catch (Exception e) {

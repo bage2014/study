@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/api/http_client.dart'; // 确保已添加此导入
 import '../../core/config/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,9 +12,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Add this declaration for the HttpClient instance
-  late final HttpClient _httpClient;
-
+  final HttpClient _httpClient = HttpClient();
+  late SharedPreferences _prefs;
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -21,31 +21,34 @@ class _LoginPageState extends State<LoginPage> {
   int _loginAttempts = 0;
   bool _showCaptcha = false;
   bool _accountLocked = false;
-  String _generatedCaptcha = '';
-  int _avatarTapCount = 0; // 新增：跟踪头像点击次数
-  DateTime? _lastAvatarTapTime; // 新增：跟踪最后一次点击时间
+  int _avatarTapCount = 0;
+  DateTime? _lastAvatarTapTime;
 
   @override
   void initState() {
     super.initState();
-    _generateCaptcha();
-    // Initialize the HttpClient
-    _httpClient = HttpClient();
+    _initPreferences();
   }
 
-  // 生成随机验证码
-  void _generateCaptcha() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-    _generatedCaptcha = List.generate(
-      4,
-      (index) => chars[DateTime.now().microsecond % chars.length],
-    ).join();
+  Future<void> _initPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    _checkAutoLogin();
+  }
+
+  void _checkAutoLogin() {
+    final token = _prefs.getString('token');
+    final expireTime = _prefs.getInt('expire_time');
+
+    if (token != null &&
+        expireTime != null &&
+        DateTime.now().millisecondsSinceEpoch < expireTime) {
+      Get.offNamed(AppRoutes.HOME);
+    }
   }
 
   void _handleLogin() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        // 检查账号是否已锁定
         if (_accountLocked) return;
       });
 
@@ -59,46 +62,35 @@ class _LoginPageState extends State<LoginPage> {
           },
         );
 
+        if (data['code'] == 200) {
+          await _prefs.setString('token', data['token']);
+          await _prefs.setString('username', _usernameController.text);
+          await _prefs.setInt(
+            'expire_time',
+            DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch,
+          );
+
+          Get.offNamed(AppRoutes.HOME);
+        } else {
+          Get.snackbar('登录失败', data['message'] ?? '未知错误');
+        }
+
         setState(() {
           _loginAttempts++;
-
-          // 修改正常登录成功后的跳转
-          if (data['code'] == 200) {
-            // 登录成功，重置尝试次数并导航到主菜单
-            _loginAttempts = 0;
-            _showCaptcha = false;
-            // 使用GetX路由导航到主页面
-            Get.offNamed(AppRoutes.HOME);
-          } else {
-            Get.snackbar('登录失败', data['message'] ?? '未知错误');
-          }
-          // 登录失败后的处理
           if (_loginAttempts >= 3) {
             _showCaptcha = true;
-            _generateCaptcha();
             _accountLocked = true;
             _loginAttempts = 0;
           }
         });
       } catch (e) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('数据解析失败: ${e.toString()}')));
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('数据解析失败: ${e.toString()}')));
+        }
       }
     }
-  }
-
-  // 添加Mock登录处理方法
-  // 修改Mock登录的跳转
-  void _handleMockLogin() {
-    // 直接模拟登录成功，无需网络请求
-    setState(() {
-      _loginAttempts = 0;
-      _showCaptcha = false;
-      _accountLocked = false;
-    });
-    // 使用GetX路由导航到主页面
-    Get.offNamed(AppRoutes.HOME);
   }
 
   // 新增：处理头像点击事件
@@ -216,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
-                                _generatedCaptcha,
+                                '这个是验证码',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   letterSpacing: 4,
@@ -269,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 56,
                     child: OutlinedButton(
-                      onPressed: _accountLocked ? null : _handleMockLogin,
+                      onPressed: null,
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Color(0xFF1976D2)),
                         shape: RoundedRectangleBorder(

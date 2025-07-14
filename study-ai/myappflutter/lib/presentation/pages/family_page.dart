@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_treeview/flutter_simple_treeview.dart';
-import '../widgets/base_page.dart';
 import 'package:get/get.dart';
 import '../../core/config/app_routes.dart';
 import '../../data/models/family_response.dart';
-import '../../data/models/family_data.dart';
+import '../../data/api/http_client.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
 
 class FamilyPage extends StatefulWidget {
   const FamilyPage({super.key});
@@ -14,25 +14,49 @@ class FamilyPage extends StatefulWidget {
 }
 
 class _FamilyPageState extends State<FamilyPage> {
+  final HttpClient _httpClient = HttpClient(); // 创建http client实例
+  FamilyData? _familyData; // 改为可空类型
+  bool _isLoading = true;
   final Map<String, bool> _expandedStates = {};
 
   @override
+  void initState() {
+    super.initState();
+    _loadFamilyData();
+  }
+
+  Future<void> _loadFamilyData() async {
+    try {
+      final response = await _httpClient.get('/family/tree/1');
+      final familyResponse = FamilyResponse.fromJson(response);
+      setState(() {
+        _familyData = familyResponse.data; // 直接使用可空data
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      Get.snackbar('错误', '加载家族数据失败: ${e.toString()}');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    FamilyData familyData = FamilyResponse.fromJson(familyDataMap).data;
-    return BasePage(
-      // 直接使用导入的familyData
-      title: '家族树',
-      body: Padding(
-        padding: EdgeInsets.only(
-          top: kToolbarHeight,
-        ), // 使用kToolbarHeight常量确保与AppBar高度一致
-        child: TreeView(nodes: [_buildFamilyTreeNode(familyData)]),
-      ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('家族树')),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _familyData == null
+          ? const Center(child: Text('暂无数据'))
+          : SingleChildScrollView(
+              child: TreeView(nodes: [_buildFamilyTreeNode(_familyData!)]),
+            ),
     );
   }
 
   TreeNode _buildFamilyTreeNode(FamilyData member) {
-    final nodeKey = member.id.toString();
+    final nodeKey = member.id?.toString() ?? 'unknown';
     final isExpanded = _expandedStates[nodeKey] ?? false;
 
     return TreeNode(
@@ -42,14 +66,18 @@ class _FamilyPageState extends State<FamilyPage> {
           constraints: BoxConstraints(maxWidth: 300),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(member.avatar),
-              child: member.avatar.isEmpty ? Text(member.name[0]) : null,
+              backgroundImage: member.avatar != null
+                  ? NetworkImage(member.avatar!)
+                  : null,
+              child: member.avatar == null || member.avatar!.isEmpty
+                  ? Text(member.name?[0] ?? '?')
+                  : null,
             ),
             title: GestureDetector(
               onTap: () => _showMemberOptions(member),
-              child: Text(member.name),
+              child: Text(member.name ?? '未知成员'),
             ),
-            subtitle: Text(member.relationship),
+            subtitle: Text(member.relationship ?? '未知关系'),
             onTap: () => setState(() {
               _expandedStates[nodeKey] = !isExpanded;
             }),
@@ -72,7 +100,8 @@ void _showMemberOptions(FamilyData member) {
           ListTile(
             title: Text('切换到当前用户'),
             onTap: () {
-              print('切换到用户: ${member.name}');
+              LogUtil.info('切换到用户: \${member.name}');
+              LogUtil.info('查看用户信息: \${member.name}');
               Get.back();
             },
           ),

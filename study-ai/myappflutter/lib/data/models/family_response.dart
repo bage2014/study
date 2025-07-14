@@ -1,37 +1,33 @@
 class FamilyResponse {
   final int code;
   final String message;
-  final FamilyData data;
+  final FamilyData? data;
 
-  FamilyResponse({
-    required this.code,
-    required this.message,
-    required this.data,
-  });
+  FamilyResponse({required this.code, required this.message, this.data});
 
   factory FamilyResponse.fromJson(Map<String, dynamic> json) {
     return FamilyResponse(
       code: json['code'],
       message: json['message'],
-      data: FamilyData.fromJson(json['data']),
+      data: json['data'] != null ? FamilyData.fromJson(json['data']) : null,
     );
   }
 }
 
 class FamilyData {
-  final int id;
-  final String name;
-  final String avatar;
-  final int generation;
-  final String relationship;
+  final int? id;
+  final String? name;
+  final String? avatar;
+  final int? generation;
+  final String? relationship;
   final List<FamilyData>? children;
 
   FamilyData({
-    required this.id,
-    required this.name,
-    required this.avatar,
-    required this.generation,
-    required this.relationship,
+    this.id,
+    this.name,
+    this.avatar,
+    this.generation,
+    this.relationship,
     this.children,
   });
 

@@ -1,15 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/base_page.dart';
 import '../../core/theme/themes.dart';
 import '../../features/controller/theme_controller.dart';
-import '../../features/controller/env_controller.dart'; // 添加导入
+import '../../features/controller/env_controller.dart';
 
-class SettingsPage extends StatelessWidget {
-  SettingsPage({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   final ThemeController _themeController = Get.find<ThemeController>();
-  final EnvController _envController = Get.find<EnvController>(); // 添加环境控制器
+  final EnvController _envController = Get.find<EnvController>();
+  late SharedPreferences _prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _initPreferences();
+  }
+
+  Future<void> _initPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    // 从SharedPreferences加载设置
+    _loadSettings();
+  }
+
+  void _loadSettings() {
+    // 语言设置
+    final language = _prefs.getString('language');
+    LogUtil.info('language: $language');
+    if (language != null) {
+      Get.updateLocale(Locale(language));
+    }
+
+    // 主题设置
+    final theme = _prefs.getString('theme');
+    LogUtil.info('theme: $theme');
+    if (theme == 'light') {
+      _themeController.changeTheme(Themes.light);
+    } else if (theme == 'dark') {
+      _themeController.changeTheme(Themes.dark);
+    }
+
+    // 环境设置
+    final env = _prefs.getString('env');
+    LogUtil.info('env: $env');
+    if (env != null) {
+      _envController.changeEnv(env);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +74,14 @@ class SettingsPage extends StatelessWidget {
                 DropdownMenuItem(value: 'zh', child: Text('中文')),
                 DropdownMenuItem(value: 'en', child: Text('英文')),
               ],
-              onChanged: (value) {
+              onChanged: (value) async {
                 if (value != null) {
+                  LogUtil.info('language: $value');
                   Get.updateLocale(Locale(value));
+                  await _prefs.setString(
+                    'language',
+                    value,
+                  ); // 保存到SharedPreferences
                 }
               },
             ),
@@ -67,15 +117,21 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
               ],
-              onChanged: (value) {
+              onChanged: (value) async {
                 if (value != null) {
+                  final theme = value == Themes.light ? 'light' : 'dark';
+                  LogUtil.info('theme: $theme.');
                   _themeController.changeTheme(value);
+                  await _prefs.setString(
+                    'theme',
+                    theme,
+                  ); // 保存到SharedPreferences
                 }
               },
             ),
           ),
 
-          // 环境设置 - 新增
+          // 环境设置
           ListTile(
             title: Text('环境设置'),
             subtitle: Obx(
@@ -89,9 +145,11 @@ class SettingsPage extends StatelessWidget {
                 DropdownMenuItem(value: 'dev', child: Text('开发环境')),
                 DropdownMenuItem(value: 'mock', child: Text('Mock环境')),
               ],
-              onChanged: (value) {
+              onChanged: (value) async {
                 if (value != null) {
+                  LogUtil.info('env: $value');
                   _envController.changeEnv(value);
+                  await _prefs.setString('env', value); // 保存到SharedPreferences
                 }
               },
             ),
@@ -107,7 +165,6 @@ class SettingsPage extends StatelessWidget {
     return '默认';
   }
 
-  // 新增：获取环境显示名称
   String _getEnvName(String env) {
     switch (env) {
       case 'prod':

@@ -1,0 +1,54 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "id": 1,
+    "name": "张三",
+    "avatar": "https://example.com/avatars/zhangsan.jpg",
+    "generation": 0,
+    "relationship": "self",
+    "children": [
+      {
+        "id": 2,
+        "name": "李四",
+        "avatar": "https://example.com/avatars/lisi.jpg",
+        "generation": 0,
+        "relationship": "SPOUSE",
+        "children": null
+      },
+      {
+        "id": 3,
+        "name": "张父",
+        "avatar": "https://example.com/avatars/father.jpg",
+        "generation": -1,
+        "relationship": "PARENT_CHILD",
+        "children": [
+          {
+            "id": 4,
+            "name": "张母",
+            "avatar": "https://example.com/avatars/mother.jpg",
+            "generation": -1,
+            "relationship": "SPOUSE",
+            "children": null
+          },
+          {
+            "id": 5,
+            "name": "张祖父",
+            "avatar": "https://example.com/avatars/grandfather.jpg",
+            "generation": -2,
+            "relationship": "PARENT_CHILD",
+            "children": null
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "张小三",
+        "avatar": "https://example.com/avatars/xiaosan.jpg",
+        "generation": 1,
+        "relationship": "PARENT_CHILD",
+        "children": null
+      }
+    ]
+  }
+}

@@ -23,6 +23,8 @@ public class User {
     private String gender;
     private LocalDate birthDate;
     private String avatarUrl;
+    private String token;
+    private LocalDateTime tokenExpireTime;
 
     public Long getId() {
         return id;
@@ -95,5 +97,21 @@ public class User {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public LocalDateTime getTokenExpireTime() {
+        return tokenExpireTime;
+    }
+
+    public void setTokenExpireTime(LocalDateTime tokenExpireTime) {
+        this.tokenExpireTime = tokenExpireTime;
     }
 }

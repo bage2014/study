@@ -5,6 +5,7 @@ import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import '../widgets/base_page.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
 
 class FindLocationPage extends StatefulWidget {
   const FindLocationPage({super.key});
@@ -82,7 +83,7 @@ class _FindLocationPageState extends State<FindLocationPage> {
   }
 
   void _updateLocation(BaiduLocation result) {
-    print('定位结果: 纬度=${result.latitude}, 经度=${result.longitude}');
+    LogUtil.info('定位结果: 纬度=\${result.latitude}, 经度=\${result.longitude}');
     setState(() {
       _currentLocation = result;
     });

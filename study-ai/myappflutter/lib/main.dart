@@ -5,15 +5,13 @@ import 'core/theme/themes.dart';
 import 'localization/translation.dart';
 import 'features/controller/auth_controller.dart';
 import 'features/controller/theme_controller.dart';
-import 'features/controller/env_controller.dart'; // 添加导入
+import 'features/controller/env_controller.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // 初始化GetX控制器
-  Get.put(ThemeController());
-  Get.put(AuthController());
+void main() {
+  // 注册HttpClient和EnvController
   Get.put(EnvController());
+  Get.put(AuthController());
+  Get.put(ThemeController());
 
   runApp(MyApp());
 }
