@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS APP_USER (
     email VARCHAR(100),
     gender VARCHAR(10),
     birth_date DATE,
-    avatar_url VARCHAR(255)
+    avatar_url VARCHAR(255),
+    token VARCHAR(255),
+    token_expire_time TIMESTAMP NULL
 );
 
 CREATE TABLE IF NOT EXISTS family_member (

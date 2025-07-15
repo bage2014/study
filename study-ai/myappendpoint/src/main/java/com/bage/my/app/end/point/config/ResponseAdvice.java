@@ -8,8 +8,11 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import lombok.extern.slf4j.Slf4j;
+import com.bage.my.app.end.point.util.JsonUtil;
 
 @ControllerAdvice
+@Slf4j
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
@@ -23,6 +26,8 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
         // com.bage.my.app.end.point.entity.ApiResponse cannot be cast to class java.lang.String (com.bage.my.app.end.point.entity.ApiResponse is in unnamed module of loader 'app'; java.lang.String is in module java.base of loader 'bootstrap')
-         return new ApiResponse<>(200, "success", body);
+        ApiResponse<Object> apiResponse = new ApiResponse<>(200, "success", body);
+        log.info("beforeBodyWrite apiResponse: {}", JsonUtil.toJson(apiResponse));
+        return apiResponse;
     }
 }

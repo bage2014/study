@@ -36,7 +36,7 @@ public class UserController {
     private JavaMailSender mailSender;
     
     @PostMapping("/login")
-    public ApiResponse<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+    public ApiResponse<User> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         log.info("loginRequest: {}", loginRequest);
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
@@ -79,14 +79,14 @@ public class UserController {
             // 更新用户token信息
             user.setToken(token);
             user.setTokenExpireTime(expireTime);
-            
-            // 登录成功，重置失败次数
             user.setLoginAttempts(0);
             user.setLockTime(null);
             userRepository.save(user);
             
+            // 构建返回数据
             session.removeAttribute("captcha");
-            return new ApiResponse<>(200, "登录成功", token); // 返回token给前端
+            user.setPassword("");
+            return new ApiResponse<>(200, "登录成功", user);
         } else {
             // 登录失败，更新失败次数
             int attempts = user.getLoginAttempts() + 1;
