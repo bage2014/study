@@ -1,8 +1,17 @@
 {
-  "code": 200,  
-  "msg": "success",
+  "code": 200,
+  "message": "登录成功",
   "data": {
-    "token": "mock_token",
-    "user_id": "123"
+    "id": 1,
+    "username": "zhangsan",
+    "password": "",
+    "loginAttempts": 0,
+    "lockTime": null,
+    "email": null,
+    "gender": null,
+    "birthDate": null,
+    "avatarUrl": null,
+    "token": "87afbba9-7939-44c2-bcf6-eb48fa9b7f63",
+    "tokenExpireTime": "2025-07-22T23:37:11.615829"
   }
 }

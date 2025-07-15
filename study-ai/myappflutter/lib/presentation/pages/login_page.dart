@@ -27,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    _usernameController.text = 'zhangsan';
+    _passwordController.text = 'zhangsan123';
     _initPreferences();
   }
 
@@ -53,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       try {
-        final data = await _httpClient.post(
+        final response = await _httpClient.post(
           '/login',
           body: {
             'username': _usernameController.text,
@@ -62,17 +64,20 @@ class _LoginPageState extends State<LoginPage> {
           },
         );
 
-        if (data['code'] == 200) {
-          await _prefs.setString('token', data['token']);
-          await _prefs.setString('username', _usernameController.text);
+        if (response['code'] == 200) {
+          // 保存token和用户信息
+          await _prefs.setString('token', response['data']['token']);
+          await _prefs.setString('username', response['data']['username']);
           await _prefs.setInt(
             'expire_time',
-            DateTime.now().add(Duration(days: 7)).millisecondsSinceEpoch,
+            DateTime.parse(
+              response['data']['tokenExpireTime'],
+            ).millisecondsSinceEpoch,
           );
 
           Get.offNamed(AppRoutes.HOME);
         } else {
-          Get.snackbar('登录失败', data['message'] ?? '未知错误');
+          Get.snackbar('登录失败', response['message'] ?? '未知错误');
         }
 
         setState(() {
