@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import '../../core/utils/log_util.dart';
 
 class HttpMockService {
   static const Map<String, String> _mockFilePaths = {
-    '/api/login': 'mock/responses/login_mock.json',
-    '/api/locations': 'mock/responses/locations_mock.json',
+    '/login': 'mock/responses/login_mock.json',
+    '/locations': 'mock/responses/locations_mock.json',
     '/family/tree/1': 'mock/responses/family_tree_mock.json',
   };
 
   static Future<Map<String, dynamic>> getMockResponse(String path) async {
     try {
       final jsonString = await getMockResponseJsonString(path);
+      LogUtil.info('getMockResponseJsonString jsonString = $jsonString');
       return json.decode(jsonString);
     } catch (e) {
       return {"code": 999, "msg": "mock json match failed"};

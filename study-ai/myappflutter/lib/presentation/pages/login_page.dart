@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myappflutter/core/constants/prefs_constants.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
+import 'package:myappflutter/core/utils/prefs_util.dart';
 import '../../data/api/http_client.dart'; // 确保已添加此导入
 import '../../core/config/app_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +16,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final HttpClient _httpClient = HttpClient();
-  late SharedPreferences _prefs;
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -33,17 +35,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _initPreferences() async {
-    _prefs = await SharedPreferences.getInstance();
     _checkAutoLogin();
   }
 
-  void _checkAutoLogin() {
-    final token = _prefs.getString('token');
-    final expireTime = _prefs.getInt('expire_time');
-
+  void _checkAutoLogin() async {
+    final token = await PrefsUtil.getString(PrefsConstants.token);
+    final expireTime = await PrefsUtil.getString(PrefsConstants.tokenExpireTime);
+    LogUtil.info(
+      'LoginPage _checkAutoLogin token = $token, expireTime = $expireTime',
+    );
     if (token != null &&
         expireTime != null &&
-        DateTime.now().millisecondsSinceEpoch < expireTime) {
+        DateTime.now().millisecondsSinceEpoch < DateTime.parse(expireTime).millisecondsSinceEpoch) {
       Get.offNamed(AppRoutes.HOME);
     }
   }
@@ -66,13 +69,17 @@ class _LoginPageState extends State<LoginPage> {
 
         if (response['code'] == 200) {
           // 保存token和用户信息
-          await _prefs.setString('token', response['data']['token']);
-          await _prefs.setString('username', response['data']['username']);
-          await _prefs.setInt(
-            'expire_time',
-            DateTime.parse(
-              response['data']['tokenExpireTime'],
-            ).millisecondsSinceEpoch,
+          await PrefsUtil.setString(
+            PrefsConstants.token,
+            response['data']['token'],
+          );
+          await PrefsUtil.setString(
+            PrefsConstants.username,
+            response['data']['username'],
+          );
+          await PrefsUtil.setString(
+            PrefsConstants.tokenExpireTime,
+            response['data']['tokenExpireTime'],
           );
 
           Get.offNamed(AppRoutes.HOME);

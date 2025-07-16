@@ -10,8 +10,8 @@
     "email": null,
     "gender": null,
     "birthDate": null,
-    "avatarUrl": null,
+    "avatarUrl": "https://example.com/avatars/zhangsan.jpg",
     "token": "87afbba9-7939-44c2-bcf6-eb48fa9b7f63",
-    "tokenExpireTime": "2025-07-22T23:37:11.615829"
+    "tokenExpireTime": "2025-07-22 23:37:11"
   }
 }

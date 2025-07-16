@@ -6,6 +6,7 @@ import '../widgets/base_page.dart';
 import '../../core/theme/themes.dart';
 import '../../features/controller/theme_controller.dart';
 import '../../features/controller/env_controller.dart';
+import '../../core/utils/prefs_util.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -153,6 +154,35 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               },
             ),
+          ),
+          // 清空缓存选项
+          ListTile(
+            title: Text('清空缓存'),
+            subtitle: Text('清除所有本地存储的数据'),
+            trailing: Icon(Icons.delete),
+            onTap: () async {
+              final confirmed = await Get.dialog<bool>(
+                AlertDialog(
+                  title: Text('确认'),
+                  content: Text('确定要清空所有缓存数据吗？此操作不可撤销。'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Get.back(result: false),
+                      child: Text('取消'),
+                    ),
+                    TextButton(
+                      onPressed: () => Get.back(result: true),
+                      child: Text('确定'),
+                    ),
+                  ],
+                ),
+              );
+
+              if (confirmed == true) {
+                await PrefsUtil.clearAll();
+                Get.snackbar('成功', '缓存已清空');
+              }
+            },
           ),
         ],
       ),

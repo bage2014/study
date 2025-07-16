@@ -3,17 +3,17 @@ import 'package:get/get.dart';
 import 'core/config/app_routes.dart';
 import 'core/theme/themes.dart';
 import 'localization/translation.dart';
+import 'features/controller/env_controller.dart';
 import 'features/controller/auth_controller.dart';
 import 'features/controller/theme_controller.dart';
-import 'features/controller/env_controller.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   // 注册HttpClient和EnvController
   Get.put(EnvController());
   Get.put(AuthController());
   Get.put(ThemeController());
-
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
