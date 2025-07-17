@@ -1,5 +1,6 @@
 package com.bage.my.app.end.point.service;
 
+import com.bage.my.app.end.point.dto.FamilyMemberTree;
 import com.bage.my.app.end.point.entity.FamilyMember;
 import com.bage.my.app.end.point.entity.FamilyRelationship;
 import com.bage.my.app.end.point.repository.FamilyMemberRepository;
@@ -9,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.bage.my.app.end.point.model.FamilyMemberTree;
 
 import java.util.*;
 

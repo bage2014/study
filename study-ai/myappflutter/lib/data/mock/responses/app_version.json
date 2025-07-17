@@ -1,0 +1,17 @@
+{
+  "code": 200,
+  "message": "登录成功",
+  "data": {
+    "id": 1,
+    "username": "zhangsan",
+    "password": "",
+    "loginAttempts": 0,
+    "lockTime": null,
+    "email": null,
+    "gender": null,
+    "birthDate": null,
+    "avatarUrl": "https://example.com/avatars/zhangsan.jpg",
+    "token": "87afbba9-7939-44c2-bcf6-eb48fa9b7f63",
+    "tokenExpireTime": "2025-07-22 23:37:11"
+  }
+}

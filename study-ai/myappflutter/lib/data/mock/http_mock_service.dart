@@ -7,6 +7,7 @@ class HttpMockService {
     '/login': 'mock/responses/login_mock.json',
     '/locations': 'mock/responses/locations_mock.json',
     '/family/tree/1': 'mock/responses/family_tree_mock.json',
+    '/app/check': 'mock/responses/app_check_mock.json',
   };
 
   static Future<Map<String, dynamic>> getMockResponse(String path) async {

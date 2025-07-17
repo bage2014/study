@@ -7,6 +7,7 @@ import '../../core/theme/themes.dart';
 import '../../features/controller/theme_controller.dart';
 import '../../features/controller/env_controller.dart';
 import '../../core/utils/prefs_util.dart';
+import '../../data/api/http_client.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -184,6 +185,12 @@ class _SettingsPageState extends State<SettingsPage> {
               }
             },
           ),
+          ListTile(
+            title: Text('检查更新'),
+            subtitle: Text('检查是否有新版本可用'),
+            trailing: Icon(Icons.system_update),
+            onTap: _checkForUpdates,
+          ),
         ],
       ),
     );
@@ -206,5 +213,72 @@ class _SettingsPageState extends State<SettingsPage> {
       default:
         return '未知环境';
     }
+  }
+
+  Future<void> _checkForUpdates() async {
+    try {
+      // 获取当前版本
+      final currentVersion = 1;
+
+      // 使用统一的HttpClient组件检查新版本
+      final httpClient = HttpClient();
+      final response = await httpClient.get(
+        '/app/check?currentVersion=$currentVersion',
+      );
+
+      if (response['code'] != 200) {
+        throw Exception(response['message'] ?? '检查更新失败');
+      }
+
+      final data = response['data'];
+      if (data['needUpdate'] == true) {
+        final versionInfo = data['version'];
+
+        // 显示更新对话框
+        Get.dialog(
+          AlertDialog(
+            title: Text('发现新版本 ${versionInfo['version']}'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('发布日期: ${versionInfo['releaseDate']}'),
+                SizedBox(height: 8),
+                Text('更新内容:'),
+                Text(versionInfo['releaseNotes']),
+                if (versionInfo['forceUpdate'])
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: Text(
+                      '* 此版本必须更新',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+              ],
+            ),
+            actions: [
+              if (!versionInfo['forceUpdate'])
+                TextButton(onPressed: () => Get.back(), child: Text('取消')),
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                  _startUpdate(versionInfo['version']);
+                },
+                child: Text('更新'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        Get.snackbar('提示', '当前已是最新版本');
+      }
+    } catch (e) {
+      Get.snackbar('错误', '检查更新失败: ${e.toString()}');
+    }
+  }
+
+  void _startUpdate(String version) {
+    // 跳转到更新页面
+    Get.to(UpdatePage(version: version));
   }
 }

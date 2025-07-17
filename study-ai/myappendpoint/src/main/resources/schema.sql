@@ -35,3 +35,12 @@ CREATE TABLE IF NOT EXISTS family_relationship (
     start_date DATE,
     end_date DATE
 );
+
+CREATE TABLE IF NOT EXISTS APP_VERSION (
+    id BIGINT PRIMARY KEY,
+    version VARCHAR(20),
+    release_date DATE,
+    release_notes VARCHAR(255),
+    download_url VARCHAR(255),
+    force_update BOOLEAN DEFAULT false
+);

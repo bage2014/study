@@ -1,4 +1,4 @@
-package com.bage.my.app.end.point.model;
+package com.bage.my.app.end.point.dto;
 
 import java.util.List;
 

@@ -8,13 +8,13 @@ import com.bage.my.app.end.point.service.FamilyService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
+import com.bage.my.app.end.point.dto.FamilyMemberTree;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.bage.my.app.end.point.entity.RelationshipType;
 import java.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
-import com.bage.my.app.end.point.model.FamilyMemberTree;
 
 @RestController
 @RequestMapping("/family")
