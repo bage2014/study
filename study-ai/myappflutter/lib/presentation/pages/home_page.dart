@@ -73,6 +73,11 @@ class HomePage extends StatelessWidget {
                   title: 'family',
                   onTap: () => Get.toNamed(AppRoutes.FAMILY),
                 ),
+                _buildMenuCard(
+                  icon: Icons.message,
+                  title: 'messages',
+                  onTap: () => Get.toNamed(AppRoutes.MESSAGES),
+                ),
               ],
             ),
           ),
