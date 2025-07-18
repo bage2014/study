@@ -14,4 +14,6 @@ const Map<String, String> en = {
   'current_theme': 'Current Theme',
   'family': 'My Family',
   'profile': 'Profile',
+  'logout': 'Logout',
+  'message': 'Message Center',
 };

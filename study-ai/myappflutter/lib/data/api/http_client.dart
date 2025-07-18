@@ -19,7 +19,7 @@ class HttpClient {
       return HttpMockService.getMockResponse(path);
     }
 
-    final uri = _buildUri(path, queryParameters);
+    final uri = buildUri(path, queryParameters);
     final requestHeaders = _buildHeaders(headers);
 
     _logRequest('GET', uri.toString(), requestHeaders, null);
@@ -38,7 +38,7 @@ class HttpClient {
       return HttpMockService.getMockResponse(path);
     }
 
-    final uri = _buildUri(path, queryParameters);
+    final uri = buildUri(path, queryParameters);
     final requestHeaders = _buildHeaders(headers);
     final requestBody = jsonEncode(body);
 
@@ -52,7 +52,7 @@ class HttpClient {
   }
 
   // 构建请求URL
-  Uri _buildUri(String path, Map<String, dynamic>? queryParameters) {
+  Uri buildUri(String path, Map<String, dynamic>? queryParameters) {
     return Uri.parse(
       '${_envController.getBaseUrl()}$path',
     ).replace(queryParameters: queryParameters as Map<String, String>?);

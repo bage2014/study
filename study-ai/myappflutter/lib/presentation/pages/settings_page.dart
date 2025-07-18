@@ -9,6 +9,7 @@ import '../../features/controller/env_controller.dart';
 import '../../core/utils/prefs_util.dart';
 import '../../data/api/http_client.dart';
 import '../../core/config/app_routes.dart';
+import 'package:flutter/services.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -191,6 +192,27 @@ class _SettingsPageState extends State<SettingsPage> {
             subtitle: Text('检查是否有新版本可用'),
             trailing: Icon(Icons.system_update),
             onTap: _checkForUpdates,
+          ),
+          // 新增退出应用按钮
+          ListTile(
+            title: Text('退出应用'),
+            subtitle: Text('退出应用程序'),
+            trailing: Icon(Icons.exit_to_app),
+            onTap: () {
+              Get.dialog(
+                AlertDialog(
+                  title: Text('确认退出'),
+                  content: Text('确定要退出应用吗？'),
+                  actions: [
+                    TextButton(onPressed: () => Get.back(), child: Text('取消')),
+                    TextButton(
+                      onPressed: () => SystemNavigator.pop(),
+                      child: Text('确定'),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),

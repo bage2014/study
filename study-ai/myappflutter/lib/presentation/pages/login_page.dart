@@ -24,6 +24,8 @@ class _LoginPageState extends State<LoginPage> {
   bool _accountLocked = false;
   int _avatarTapCount = 0;
   DateTime? _lastAvatarTapTime;
+  String _captchaUrl = '/captcha';
+  Map<String, dynamic>? queryParameters;
 
   @override
   void initState() {
@@ -57,6 +59,12 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() {
         if (_accountLocked) return;
+        _loginAttempts++;
+        _showCaptcha = _loginAttempts > 0; // 修改为只要尝试次数>0就显示验证码
+        if (_loginAttempts >= 5) {
+          _accountLocked = true;
+          _loginAttempts = 0;
+        }
       });
 
       try {
@@ -125,6 +133,12 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
     _lastAvatarTapTime = now;
+  }
+
+  Future<void> _refreshCaptcha() async {
+    setState(() {
+      _captchaUrl = '/captcha?t=${DateTime.now().millisecondsSinceEpoch}';
+    });
   }
 
   @override
@@ -200,43 +214,41 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 16),
 
-                  // 验证码输入框 (错误3次后显示)
                   if (_showCaptcha && !_accountLocked)
                     Column(
                       children: [
-                        TextFormField(
-                          controller: _captchaController,
-                          decoration: InputDecoration(
-                            labelText: '验证码',
-                            prefixIcon: const Icon(Icons.security),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            suffix: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                '这个是验证码',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  letterSpacing: 4,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blueGrey,
-                                ),
-                              ),
-                            ),
-                          ),
-                          validator: (value) =>
-                              value!.isEmpty ? '请输入验证码' : null,
-                          maxLength: 4,
-                        ),
                         const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: _captchaController,
+                                decoration: InputDecoration(
+                                  labelText: '验证码',
+                                  prefixIcon: const Icon(Icons.verified_user),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                validator: (value) =>
+                                    value!.isEmpty ? '请输入验证码' : null,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: _refreshCaptcha,
+                              child: Image.network(
+                                _httpClient
+                                    .buildUri(_captchaUrl, queryParameters)
+                                    .toString(),
+                                height: 50,
+                                width: 100,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.refresh, size: 50),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
 

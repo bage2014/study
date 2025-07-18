@@ -5,7 +5,7 @@
     "id": 1,
     "username": "zhangsan",
     "password": "",
-    "loginAttempts": 0,
+    "loginAttempts": 1,
     "lockTime": null,
     "email": null,
     "gender": null,

@@ -46,7 +46,6 @@ public class UserController {
         if (user == null) {
             return new ApiResponse<>(404, "用户不存在", null);
         }
-        
         // 检查账号是否锁定
         if (user.getLockTime() != null && LocalDateTime.now().isBefore(user.getLockTime())) {
             long minutesLeft = ChronoUnit.MINUTES.between(LocalDateTime.now(), user.getLockTime());
@@ -62,16 +61,21 @@ public class UserController {
             // 检查验证码是否过期（5分钟）
             if (storedCaptcha == null || captchaTime == null || 
                 ChronoUnit.MINUTES.between(captchaTime, LocalDateTime.now()) > 5) {
-                return new ApiResponse<>(400, "验证码已过期，请重新获取", null);
+                User rtn = new User();
+                rtn.setLoginAttempts(user.getLoginAttempts());
+                return new ApiResponse<>(400, "验证码已过期，请重新获取", rtn);
             }
             
             if (!storedCaptcha.equalsIgnoreCase(captcha)) {
-                return new ApiResponse<>(400, "验证码错误", null);
+                User rtn = new User();
+                rtn.setLoginAttempts(user.getLoginAttempts());
+                return new ApiResponse<>(400, "验证码错误", rtn);
             }
         }
         
         // 验证密码
         if (user.getPassword().equals(password)) {
+            // 登录成功逻辑
             // 生成token
             String token = UUID.randomUUID().toString();
             LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
@@ -85,7 +89,6 @@ public class UserController {
             
             // 构建返回数据
             session.removeAttribute("captcha");
-            user.setPassword("");
             return new ApiResponse<>(200, "登录成功", user);
         } else {
             // 登录失败，更新失败次数
@@ -96,11 +99,16 @@ public class UserController {
             if (attempts >= 5) {
                 user.setLockTime(LocalDateTime.now().plusDays(1));
                 userRepository.save(user);
-                return new ApiResponse<>(403, "用户名或密码错误，账号已锁定1天", null);
+                User rtn = new User();
+                rtn.setLoginAttempts(user.getLoginAttempts());
+                return new ApiResponse<>(403, "用户名或密码错误，账号已锁定1天", rtn);
             }
     
             userRepository.save(user);
-            return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", null);
+
+            User rtn = new User();
+            rtn.setLoginAttempts(user.getLoginAttempts());
+            return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", rtn );
         }
     }
 
