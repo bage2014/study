@@ -1,0 +1,16 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "needUpdate": true,
+    "message": "new version available",
+    "version": {
+      "id": 5,
+      "version": "2.1.0",
+      "releaseDate": "2025-07-17",
+      "releaseNotes": "性能优化:\n修复1\n修复2\n修复3",
+      "downloadUrl": "https://github.com/mdbootstrap/mdb-ui-kit/archive/refs/tags/9.1.0.tar.gz",
+      "forceUpdate": false
+    }
+  }
+}

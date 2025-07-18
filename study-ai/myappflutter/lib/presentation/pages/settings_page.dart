@@ -8,6 +8,7 @@ import '../../features/controller/theme_controller.dart';
 import '../../features/controller/env_controller.dart';
 import '../../core/utils/prefs_util.dart';
 import '../../data/api/http_client.dart';
+import '../../core/config/app_routes.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -279,6 +280,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _startUpdate(String version) {
     // 跳转到更新页面
-    Get.to(UpdatePage(version: version));
+    Get.offNamed(AppRoutes.UPDATE, arguments: {'version': version});
   }
 }

@@ -5,7 +5,6 @@ import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/core/utils/prefs_util.dart';
 import '../../data/api/http_client.dart'; // 确保已添加此导入
 import '../../core/config/app_routes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,13 +39,16 @@ class _LoginPageState extends State<LoginPage> {
 
   void _checkAutoLogin() async {
     final token = await PrefsUtil.getString(PrefsConstants.token);
-    final expireTime = await PrefsUtil.getString(PrefsConstants.tokenExpireTime);
+    final expireTime = await PrefsUtil.getString(
+      PrefsConstants.tokenExpireTime,
+    );
     LogUtil.info(
       'LoginPage _checkAutoLogin token = $token, expireTime = $expireTime',
     );
     if (token != null &&
         expireTime != null &&
-        DateTime.now().millisecondsSinceEpoch < DateTime.parse(expireTime).millisecondsSinceEpoch) {
+        DateTime.now().millisecondsSinceEpoch <
+            DateTime.parse(expireTime).millisecondsSinceEpoch) {
       Get.offNamed(AppRoutes.HOME);
     }
   }
@@ -263,29 +265,6 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         '登录',
                         style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
-                    ),
-                  ),
-
-                  // 添加Mock登录按钮（新增代码）
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: OutlinedButton(
-                      onPressed: null,
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Color(0xFF1976D2)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Mock登录',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xFF1976D2),
-                        ),
                       ),
                     ),
                   ),
