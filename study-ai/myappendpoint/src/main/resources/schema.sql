@@ -44,3 +44,16 @@ CREATE TABLE IF NOT EXISTS APP_VERSION (
     download_url VARCHAR(255),
     force_update BOOLEAN DEFAULT false
 );
+
+CREATE TABLE message (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    sender_id BIGINT NOT NULL,
+    receiver_id BIGINT NOT NULL,
+    content TEXT NOT NULL,
+    email VARCHAR(255),
+    is_email BOOLEAN DEFAULT FALSE,
+    is_read BOOLEAN DEFAULT FALSE,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    create_time DATETIME NOT NULL,
+    read_time DATETIME
+);
