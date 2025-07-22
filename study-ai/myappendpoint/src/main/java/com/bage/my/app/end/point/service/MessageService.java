@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
 @Service
 public class MessageService {
     @Autowired
@@ -16,6 +20,15 @@ public class MessageService {
     @Autowired
     private JavaMailSender mailSender;
     
+
+    public Page<Message> findAll(Specification<Message> spec, Pageable pageable){
+        return messageRepository.findAll(spec, pageable);
+    }
+
+    public Message save(Message message){
+        return messageRepository.save(message);
+    }
+
     public Message sendMessage(Long senderId, Long receiverId, String content) {
         Message message = new Message();
         message.setSenderId(senderId);

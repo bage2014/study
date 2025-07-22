@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
+import '../../data/api/http_client.dart';
+import '../../data/models/message_model.dart';
 
 class MessagePage extends StatefulWidget {
   const MessagePage({super.key});
@@ -9,33 +12,100 @@ class MessagePage extends StatefulWidget {
 }
 
 class _MessagePageState extends State<MessagePage> {
-  final List<Map<String, dynamic>> _messages = [];
+  final HttpClient _httpClient = HttpClient();
+  final List<Message> _messages = [];
+  int _currentPage = 0;
+  final int _pageSize = 10;
+  bool _isLoading = false;
+  bool _hasMore = true;
+  DateTime? _startDate;
+  DateTime? _endDate;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    // TODO: 初始化消息监听
+    _fetchMessages();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  Future<void> _fetchMessages({bool refresh = false}) async {
+    if (_isLoading || !_hasMore) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final response = await _httpClient.post(
+        '/message/query',
+        body: {
+          'page': refresh ? 0 : _currentPage,
+          'size': _pageSize,
+          if (_startDate != null) 'startTime': _startDate!.toIso8601String(),
+          if (_endDate != null) 'endTime': _endDate!.toIso8601String(),
+        },
+      );
+      final pageResponse = MessageResponse.fromJson(response['data']);
+      setState(() {
+        if (refresh) {
+          _messages.clear();
+          _currentPage = 0;
+          _hasMore = true;
+        }
+        _messages.addAll(pageResponse.data?.content ?? []);
+        _currentPage++;
+        _hasMore = pageResponse?.data?.last ?? false;
+      });
+    } catch (e) {
+      LogUtil.error(e.toString(), error: e);
+      Get.snackbar('错误', '获取消息失败: ${e.toString()}');
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _fetchMessages();
+    }
+  }
+
+  Future<void> _refreshMessages() async {
+    await _fetchMessages(refresh: true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('消息中心')),
-      body: ListView.builder(
-        itemCount: _messages.length,
-        itemBuilder: (context, index) {
-          final message = _messages[index];
-          return ListTile(
-            leading: const Icon(Icons.message),
-            title: Text(message['title'] ?? '无标题'),
-            subtitle: Text(message['content'] ?? '无内容'),
-            trailing: Text(message['time'] ?? ''),
-            onTap: () {
-              // TODO: 处理消息点击
-            },
-          );
-        },
+      body: RefreshIndicator(
+        onRefresh: () => _fetchMessages(refresh: true),
+        child: ListView.builder(
+          itemCount: _messages.length + (_hasMore ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index == _messages.length) {
+              return _buildLoadMoreIndicator();
+            }
+
+            final message = _messages[index];
+            return ListTile(
+              leading: const Icon(Icons.message),
+              title: Text(message.content ?? ''),
+              subtitle: Text('发件人: ${message.senderId}'),
+              trailing: Text(message.createTime ?? ''),
+              onTap: () {
+                // TODO: 处理消息点击
+              },
+            );
+          },
+        ),
       ),
     );
+  }
+
+  Widget _buildLoadMoreIndicator() {
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : const SizedBox();
   }
 }
