@@ -1,0 +1,153 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "content": [
+      {
+        "id": 1,
+        "senderId": 2,
+        "receiverId": 6,
+        "content": "项目进展如何？",
+        "email": null,
+        "isEmail": null,
+        "isRead": false,
+        "isDeleted": null,
+        "createTime": "2025-07-08T10:41:24.354706",
+        "readTime": null
+      },
+      {
+        "id": 2,
+        "senderId": 9,
+        "receiverId": 10,
+        "content": "项目进展如何？",
+        "email": null,
+        "isEmail": null,
+        "isRead": false,
+        "isDeleted": null,
+        "createTime": "2025-07-19T10:41:24.359074",
+        "readTime": null
+      },
+      {
+        "id": 3,
+        "senderId": 8,
+        "receiverId": 6,
+        "content": "项目进展如何？",
+        "email": null,
+        "isEmail": null,
+        "isRead": false,
+        "isDeleted": null,
+        "createTime": "2025-07-16T10:41:24.360556",
+        "readTime": null
+      },
+      {
+        "id": 4,
+        "senderId": 6,
+        "receiverId": 1,
+        "content": "紧急：服务器需要维护",
+        "email": null,
+        "isEmail": null,
+        "isRead": false,
+        "isDeleted": null,
+        "createTime": "2025-07-16T10:41:24.361875",
+        "readTime": null
+      },
+      {
+        "id": 5,
+        "senderId": 1,
+        "receiverId": 7,
+        "content": "请查收附件",
+        "email": null,
+        "isEmail": null,
+        "isRead": false,
+        "isDeleted": null,
+        "createTime": "2025-06-28T10:41:24.362906",
+        "readTime": null
+      },
+      {
+        "id": 6,
+        "senderId": 5,
+        "receiverId": 2,
+        "content": "项目进展如何？",
+        "email": null,
+        "isEmail": null,
+        "isRead": true,
+        "isDeleted": null,
+        "createTime": "2025-07-03T10:41:24.363544",
+        "readTime": "2025-07-03T10:41:24.363544"
+      },
+      {
+        "id": 7,
+        "senderId": 6,
+        "receiverId": 7,
+        "content": "你好，最近怎么样？",
+        "email": null,
+        "isEmail": null,
+        "isRead": true,
+        "isDeleted": null,
+        "createTime": "2025-06-25T10:41:24.364931",
+        "readTime": "2025-06-26T00:41:24.364931"
+      },
+      {
+        "id": 8,
+        "senderId": 1,
+        "receiverId": 4,
+        "content": "你好，最近怎么样？",
+        "email": null,
+        "isEmail": null,
+        "isRead": false,
+        "isDeleted": null,
+        "createTime": "2025-06-29T10:41:24.365967",
+        "readTime": null
+      },
+      {
+        "id": 9,
+        "senderId": 4,
+        "receiverId": 5,
+        "content": "你好，最近怎么样？",
+        "email": null,
+        "isEmail": null,
+        "isRead": true,
+        "isDeleted": null,
+        "createTime": "2025-07-04T10:41:24.367206",
+        "readTime": "2025-07-04T17:41:24.367206"
+      },
+      {
+        "id": 10,
+        "senderId": 1,
+        "receiverId": 5,
+        "content": "会议安排在明天10点",
+        "email": null,
+        "isEmail": null,
+        "isRead": false,
+        "isDeleted": null,
+        "createTime": "2025-07-20T10:41:24.368167",
+        "readTime": null
+      }
+    ],
+    "pageable": {
+      "pageNumber": 0,
+      "pageSize": 10,
+      "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+      },
+      "offset": 0,
+      "paged": true,
+      "unpaged": false
+    },
+    "totalElements": 50,
+    "totalPages": 5,
+    "last": false,
+    "size": 10,
+    "number": 0,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "first": true,
+    "numberOfElements": 10,
+    "empty": false
+  }
+}

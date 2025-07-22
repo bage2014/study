@@ -6,8 +6,9 @@ class HttpMockService {
   static const Map<String, String> _mockFilePaths = {
     '/login': 'mock/responses/login_mock.json',
     '/locations': 'mock/responses/locations_mock.json',
-    '/family/tree/1': 'mock/responses/family_tree_mock.json',
+    '/family/tree': 'mock/responses/family_tree_mock.json',
     '/app/check': 'mock/responses/app_check_mock.json',
+    '/message/query': 'mock/responses/messages_mock.json',
   };
 
   static Future<Map<String, dynamic>> getMockResponse(String path) async {
@@ -25,12 +26,14 @@ class HttpMockService {
       // 优先尝试精确匹配
       final exactMatch = _mockFilePaths[path];
       if (exactMatch != null) {
+        LogUtil.info('getMockResponseJsonString exactMatch = $exactMatch');
         return await rootBundle.loadString('lib/data/$exactMatch');
       }
 
       // 模糊匹配：检查路径是否包含mock路径中的关键字
       for (final entry in _mockFilePaths.entries) {
         if (path.contains(entry.key)) {
+          LogUtil.info('getMockResponseJsonString fuzzyMatch = ${entry.value}');
           return await rootBundle.loadString('lib/data/${entry.value}');
         }
       }

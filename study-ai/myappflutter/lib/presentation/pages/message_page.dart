@@ -44,7 +44,7 @@ class _MessagePageState extends State<MessagePage> {
           if (_endDate != null) 'endTime': _endDate!.toIso8601String(),
         },
       );
-      final pageResponse = MessageResponse.fromJson(response['data']);
+      final pageResponse = MessageResponse.fromJson(response);
       setState(() {
         if (refresh) {
           _messages.clear();
@@ -54,6 +54,7 @@ class _MessagePageState extends State<MessagePage> {
         _messages.addAll(pageResponse.data?.content ?? []);
         _currentPage++;
         _hasMore = pageResponse?.data?.last ?? false;
+        LogUtil.info('length: ${_messages.length}');
       });
     } catch (e) {
       LogUtil.error(e.toString(), error: e);
@@ -81,6 +82,7 @@ class _MessagePageState extends State<MessagePage> {
       body: RefreshIndicator(
         onRefresh: () => _fetchMessages(refresh: true),
         child: ListView.builder(
+          padding: const EdgeInsets.all(12.0),
           itemCount: _messages.length + (_hasMore ? 1 : 0),
           itemBuilder: (context, index) {
             if (index == _messages.length) {
@@ -88,14 +90,44 @@ class _MessagePageState extends State<MessagePage> {
             }
 
             final message = _messages[index];
-            return ListTile(
-              leading: const Icon(Icons.message),
-              title: Text(message.content ?? ''),
-              subtitle: Text('发件人: ${message.senderId}'),
-              trailing: Text(message.createTime ?? ''),
-              onTap: () {
-                // TODO: 处理消息点击
-              },
+            return Card(
+              elevation: 3.0,
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '发件人: ${message.senderId}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        Text(
+                          message.createTime ?? '',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      message.content ?? '',
+                      style: const TextStyle(fontSize: 16.0),
+                    ),
+                  ],
+                ),
+              ),
             );
           },
         ),
