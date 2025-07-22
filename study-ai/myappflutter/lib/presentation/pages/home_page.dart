@@ -76,7 +76,7 @@ class HomePage extends StatelessWidget {
                 _buildMenuCard(
                   icon: Icons.message,
                   title: 'message',
-                  onTap: () => Get.toNamed(AppRoutes.MESSAGES),
+                  onTap: () => Get.toNamed(AppRoutes.MESSAGE),
                 ),
               ],
             ),

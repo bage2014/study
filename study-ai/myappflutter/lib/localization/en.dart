@@ -9,7 +9,7 @@ const Map<String, String> en = {
   'track_location': 'Track Location',
   'settings': 'Settings',
   'language_settings': 'Language Settings',
-  'theme_color': 'Theme Color',
+  'theme_color': 'Theme Mode',
   'current_language': 'Current Language',
   'current_theme': 'Current Theme',
   'family': 'My Family',

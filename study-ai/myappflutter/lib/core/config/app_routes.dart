@@ -10,6 +10,7 @@ import '../../presentation/pages/family_page.dart'; // 添加家庭关系页面�
 import '../../presentation/pages/profile_page.dart'; // 新增导入
 import '../../presentation/pages/update_page.dart'; // 新增导入
 import '../../presentation/pages/message_page.dart';
+import '../../presentation/pages/register_page.dart';
 
 class AppRoutes {
   static const String LOGIN = '/login';
@@ -22,7 +23,9 @@ class AppRoutes {
   static const String FAMILY = '/family'; // 添加家庭关系页面路由
   static const String PROFILE = '/profile';
   static const String UPDATE = '/update';
-  static const MESSAGES = '/messages';
+  static const MESSAGE = '/message';
+  // 在 app_routes.dart 中添加
+  static const String REGISTER = '/register';
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -41,9 +44,7 @@ class AppRoutes {
         return UpdatePage(version: args['version']);
       },
     ),
-    GetPage(
-      name: MESSAGES,
-      page: () => const MessagePage(),
-    ),
+    GetPage(name: MESSAGE, page: () => const MessagePage()),
+    GetPage(name: REGISTER, page: () => const RegisterPage()),
   ];
 }

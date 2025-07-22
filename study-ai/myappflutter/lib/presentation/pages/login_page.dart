@@ -280,6 +280,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  // 新增：注册按钮
+                  TextButton(
+                    onPressed: () {
+                      Get.toNamed(AppRoutes.REGISTER);
+                    },
+                    child: const Text(
+                      '还没有账号？立即注册',
+                      style: TextStyle(color: Color(0xFF1976D2), fontSize: 16),
+                    ),
+                  ),
                 ],
               ),
             ),

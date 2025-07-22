@@ -9,7 +9,7 @@ const Map<String, String> zh = {
   'track_location': '轨迹跟踪',
   'settings': '设置',
   'language_settings': '语言设置',
-  'theme_color': '主题颜色',
+  'theme_color': '主题模式',
   'current_language': '当前语言',
   'current_theme': '当前主题',
   'family': '我的家族',

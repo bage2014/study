@@ -114,16 +114,33 @@ class _SettingsPageState extends State<SettingsPage> {
                   value: Themes.dark,
                   child: Row(
                     children: [
-                      Container(width: 16, height: 16, color: Colors.green),
+                      Container(width: 16, height: 16, color: Colors.grey),
                       SizedBox(width: 8),
                       Text('深色'),
                     ],
                   ),
                 ),
+                // DropdownMenuItem(
+                //   value: Themes.system(context),
+                //   child: Row(
+                //     children: [
+                //       Icon(Icons.settings_system_daydream),
+                //       SizedBox(width: 8),
+                //       Text('跟随系统'),
+                //     ],
+                //   ),
+                // ),
               ],
               onChanged: (value) async {
                 if (value != null) {
-                  final theme = value == Themes.light ? 'light' : 'dark';
+                  String theme;
+                  if (value == Themes.light) {
+                    theme = 'light';
+                  } else if (value == Themes.dark) {
+                    theme = 'dark';
+                  } else {
+                    theme = 'system';
+                  }
                   LogUtil.info('theme: $theme.');
                   _themeController.changeTheme(value);
                   await _prefs.setString(
@@ -158,6 +175,13 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
           ),
+
+          ListTile(
+            title: Text('检查更新'),
+            subtitle: Text('检查是否有新版本可用'),
+            trailing: Icon(Icons.system_update),
+            onTap: _checkForUpdates,
+          ),
           // 清空缓存选项
           ListTile(
             title: Text('清空缓存'),
@@ -186,12 +210,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 Get.snackbar('成功', '缓存已清空');
               }
             },
-          ),
-          ListTile(
-            title: Text('检查更新'),
-            subtitle: Text('检查是否有新版本可用'),
-            trailing: Icon(Icons.system_update),
-            onTap: _checkForUpdates,
           ),
           // 新增退出应用按钮
           ListTile(
