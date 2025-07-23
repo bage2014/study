@@ -171,7 +171,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       : const Text('下一步', style: TextStyle(fontSize: 16.0)),
                 ),
               ] else if (_step == 2) ...[
-                // 第二步：密码、确认密码
+                // 第二步：显示邮箱(不可编辑)、邮箱验证码、密码、确认密码
+                TextFormField(
+                  controller: _emailController,
+                  enabled: false, // 禁用编辑
+                  decoration: const InputDecoration(
+                    labelText: '邮箱',
+                    hintText: '已验证的邮箱',
+                    prefixIcon: Icon(Icons.email),
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+
+                // 原有密码输入框
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
@@ -192,6 +204,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 20.0),
 
+                // 原有确认密码输入框
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: true,
@@ -211,6 +224,23 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                 ),
                 const SizedBox(height: 30.0),
+
+                // 新增邮箱验证码输入框
+                TextFormField(
+                  controller: _captchaController,
+                  decoration: const InputDecoration(
+                    labelText: '邮箱验证码',
+                    hintText: '请输入邮箱收到的验证码',
+                    prefixIcon: Icon(Icons.security),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '请输入邮箱验证码';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
 
                 // 注册按钮
                 ElevatedButton(
@@ -276,6 +306,7 @@ class _RegisterPageState extends State<RegisterPage> {
           setState(() {
             _step = 2;
             _emailVerified = true;
+            _captchaController.clear();
           });
         } else {
           Get.snackbar('发送失败', response['message'] ?? '发送失败，请重试');
@@ -305,7 +336,7 @@ class _RegisterPageState extends State<RegisterPage> {
           body: {
             'email': _emailController.text,
             'password': _passwordController.text,
-            'confirmPassword': _confirmPasswordController.text,
+            'captcha': _captchaController.text, // 添加邮箱验证码
           },
         );
 

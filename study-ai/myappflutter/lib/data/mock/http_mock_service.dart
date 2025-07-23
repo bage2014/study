@@ -9,6 +9,8 @@ class HttpMockService {
     '/family/tree': 'mock/responses/family_tree_mock.json',
     '/app/check': 'mock/responses/app_check_mock.json',
     '/message/query': 'mock/responses/message_query_mock.json',
+    '/sendEmailCaptcha': 'mock/responses/send_email_captcha_mock.json',
+    '/register': 'mock/responses/register_mock.json',
   };
 
   static Future<Map<String, dynamic>> getMockResponse(String path) async {
@@ -34,7 +36,7 @@ class HttpMockService {
       for (final entry in _mockFilePaths.entries) {
         if (path.contains(entry.key)) {
           LogUtil.info('getMockResponseJsonString fuzzyMatch = ${entry.value}');
-          return await rootBundle.loadString('lib/data/${entry.value}');
+          return await entry.value;
         }
       }
 

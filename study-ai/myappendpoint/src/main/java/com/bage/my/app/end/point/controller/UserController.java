@@ -229,13 +229,10 @@ public class UserController {
         
         // 2. 验证通过后，创建用户并保存到数据库
         User user = new User();
-        user.setUsername(registerRequest.getUsername());
+        user.setUsername(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
         // 添加新字段赋值
         user.setEmail(registerRequest.getEmail());
-        user.setGender(registerRequest.getGender());
-        user.setBirthDate(registerRequest.getBirthDate());
-        user.setAvatarUrl(registerRequest.getAvatarUrl());
         userRepository.save(user);
         
         return new ApiResponse<>(200, "注册成功", null);
@@ -262,7 +259,9 @@ public class UserController {
         message.setTo(request.getEmail());
         message.setSubject("您的验证码");
         message.setText("您的验证码是: " + emailCaptcha + "，有效期为5分钟");
-        mailSender.send(message);
+        log.info("sendEmailCaptcha emailCaptcha:{}", emailCaptcha);
+        // todo bage fix 邮件发送
+        // mailSender.send(message);
         
         // 存储邮箱验证码到缓存
         cacheMailCaptcha(request.getEmail(), emailCaptcha);

@@ -42,7 +42,7 @@ public class UserControllerTest {
     void testLoginSuccess() throws Exception {
         // 先注册用户
         RegisterRequest registerRequest = new RegisterRequest();
-        registerRequest.setUsername("testuser");
+        registerRequest.setEmail("testuser");
         registerRequest.setPassword("password123");
         mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,12 +78,8 @@ public class UserControllerTest {
     @Test
     void testRegister() throws Exception {
         RegisterRequest registerRequest = new RegisterRequest();
-        registerRequest.setUsername("newuser");
         registerRequest.setPassword("newpassword");
         registerRequest.setEmail("test@example.com");
-        registerRequest.setGender("male");
-        registerRequest.setBirthDate(LocalDate.of(1990, 1, 1));
-        registerRequest.setAvatarUrl("https://example.com/avatar.jpg");
 
         mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)

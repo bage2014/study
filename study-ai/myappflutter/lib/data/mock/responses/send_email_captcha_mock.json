@@ -1,0 +1,8 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "captchaId": "123456",
+    "captchaUrl": "https://bpic.51yuansu.com/pic3/cover/01/56/79/594c97a9ae150_610.jpg?x-oss-process=image/resize,w_260/sharpen,100"
+  }
+}
