@@ -25,6 +25,10 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestParam;
 
+// 首先在类级别添加一个缓存容器
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 @RestController
 @Slf4j
 public class UserController {
@@ -55,18 +59,16 @@ public class UserController {
         // 登录失败1次后需要验证码
         boolean needCaptcha = user.getLoginAttempts() >= 1;
         if (needCaptcha) {
-            String storedCaptcha = (String) session.getAttribute("captcha");
-            LocalDateTime captchaTime = (LocalDateTime) session.getAttribute("captcha_time");
+            CaptchaInfo captchaInfo = getCaptcha(loginRequest.getRequestId());
             
             // 检查验证码是否过期（5分钟）
-            if (storedCaptcha == null || captchaTime == null || 
-                ChronoUnit.MINUTES.between(captchaTime, LocalDateTime.now()) > 5) {
+            if (captchaInfo == null || captchaInfo.getCaptcha() == null) {
                 User rtn = new User();
                 rtn.setLoginAttempts(user.getLoginAttempts());
                 return new ApiResponse<>(400, "验证码已过期，请重新获取", rtn);
             }
             
-            if (!storedCaptcha.equalsIgnoreCase(captcha)) {
+            if (!captchaInfo.getCaptcha().equalsIgnoreCase(captcha)) {
                 User rtn = new User();
                 rtn.setLoginAttempts(user.getLoginAttempts());
                 return new ApiResponse<>(400, "验证码错误", rtn);
@@ -112,8 +114,48 @@ public class UserController {
         }
     }
 
+    // 用于存储验证码的内存缓存
+    private final Map<String, CaptchaInfo> captchaCache = new ConcurrentHashMap<>();
+    
+    // 内部类用于存储验证码信息
+    private static class CaptchaInfo {
+        private String captcha;
+        private LocalDateTime expireTime;
+        
+        public CaptchaInfo(String captcha, LocalDateTime expireTime) {
+            this.captcha = captcha;
+            this.expireTime = expireTime;
+        }
+        
+        public String getCaptcha() {
+            return captcha;
+        }
+        
+        public boolean isExpired() {
+            return LocalDateTime.now().isAfter(expireTime);
+        }
+    }
+    
+    // 定时清理过期的验证码（可以选择添加）
+    @PostConstruct
+    public void init() {
+        // 每10分钟清理一次过期验证码
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(600000); // 10分钟
+                    captchaCache.entrySet().removeIf(entry -> entry.getValue().isExpired());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }).start();
+    }
+    
     @GetMapping("/captcha")
-    public void getCaptcha(HttpServletResponse response, HttpSession session) throws Exception {
+    public void getCaptcha(HttpServletResponse response, HttpSession session, 
+                          @RequestParam String requestId) throws Exception {
         // 设置响应头
         response.setContentType("image/jpeg");
         response.setHeader("Pragma", "no-cache");
@@ -122,7 +164,11 @@ public class UserController {
     
         // 生成验证码文本
         String captchaText = kaptchaProducer.createText();
-        // 存储验证码到session，设置5分钟有效期
+        // 存储验证码到内存缓存，设置5分钟有效期
+        LocalDateTime expireTime = LocalDateTime.now().plusMinutes(5);
+        captchaCache.put(requestId, new CaptchaInfo(captchaText, expireTime));
+        
+        // 同时存储到session以便兼容现有代码
         session.setAttribute("captcha", captchaText);
         session.setAttribute("captcha_time", LocalDateTime.now());
     
@@ -136,6 +182,22 @@ public class UserController {
         } finally {
             out.close();
         }
+    }
+    
+    // 新增一个方法用于验证验证码
+    public boolean validateCaptcha(String requestId, String captcha) {
+        CaptchaInfo captchaInfo = captchaCache.get(requestId);
+        if (captchaInfo == null || captchaInfo.isExpired()) {
+            return false;
+        }
+        return captchaInfo.getCaptcha().equalsIgnoreCase(captcha);
+    }
+
+
+    // 新增一个方法用于验证验证码
+    public CaptchaInfo getCaptcha(String requestId) {
+        CaptchaInfo captchaInfo = captchaCache.get(requestId);
+       return captchaInfo;
     }
 
     @PostMapping("/register")
