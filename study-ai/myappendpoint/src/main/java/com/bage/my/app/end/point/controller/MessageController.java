@@ -20,7 +20,6 @@ import java.util.List;
 import com.bage.my.app.end.point.dto.MessageQueryRequest;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 

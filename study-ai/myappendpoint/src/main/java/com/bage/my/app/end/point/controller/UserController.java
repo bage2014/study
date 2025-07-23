@@ -40,7 +40,7 @@ public class UserController {
     private JavaMailSender mailSender;
     
     @PostMapping("/login")
-    public ApiResponse<User> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+    public ApiResponse<User> login(@RequestBody LoginRequest loginRequest) {
         log.info("loginRequest: {}", loginRequest);
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
@@ -90,7 +90,6 @@ public class UserController {
             userRepository.save(user);
             
             // 构建返回数据
-            session.removeAttribute("captcha");
             return new ApiResponse<>(200, "登录成功", user);
         } else {
             // 登录失败，更新失败次数
@@ -154,7 +153,7 @@ public class UserController {
     }
     
     @GetMapping("/captcha")
-    public void getCaptcha(HttpServletResponse response, HttpSession session, 
+    public void getCaptcha(HttpServletResponse response, 
                           @RequestParam String requestId) throws Exception {
         // 设置响应头
         response.setContentType("image/jpeg");
@@ -167,10 +166,6 @@ public class UserController {
         // 存储验证码到内存缓存，设置5分钟有效期
         LocalDateTime expireTime = LocalDateTime.now().plusMinutes(5);
         captchaCache.put(requestId, new CaptchaInfo(captchaText, expireTime));
-        
-        // 同时存储到session以便兼容现有代码
-        session.setAttribute("captcha", captchaText);
-        session.setAttribute("captcha_time", LocalDateTime.now());
     
         // 生成验证码图片
         ServletOutputStream out = response.getOutputStream();
@@ -200,8 +195,39 @@ public class UserController {
        return captchaInfo;
     }
 
+
+
+    // 新增一个方法用于验证验证码
+    public CaptchaInfo getMailCaptcha(String requestId) {
+        CaptchaInfo captchaInfo = captchaCache.get("email_" + requestId);
+       return captchaInfo;
+    }
+
+    public void cacheMailCaptcha(String requestId, String captcha) {
+        captchaCache.put("email_" + requestId, new CaptchaInfo(captcha, LocalDateTime.now().plusMinutes(5)));
+    }
+
+
     @PostMapping("/register")
     public ApiResponse<String> register(@RequestBody RegisterRequest registerRequest) {
+        // 1. 验证验证码
+        String captcha = registerRequest.getCaptcha();
+        
+        if (captcha == null) {
+            return new ApiResponse<>(400, "验证码不能为空", null);
+        }
+        
+        CaptchaInfo captchaInfo = getMailCaptcha(registerRequest.getEmail());
+        
+        if (captchaInfo == null || captchaInfo.isExpired()) {
+            return new ApiResponse<>(400, "验证码已过期，请重新获取", null);
+        }
+        
+        if (!captchaInfo.getCaptcha().equalsIgnoreCase(captcha)) {
+            return new ApiResponse<>(400, "验证码错误", null);
+        }
+        
+        // 2. 验证通过后，创建用户并保存到数据库
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(registerRequest.getPassword());
@@ -211,21 +237,20 @@ public class UserController {
         user.setBirthDate(registerRequest.getBirthDate());
         user.setAvatarUrl(registerRequest.getAvatarUrl());
         userRepository.save(user);
+        
         return new ApiResponse<>(200, "注册成功", null);
     }
 
     @PostMapping("/sendEmailCaptcha")
-    public ApiResponse<String> sendEmailCaptcha(@RequestBody EmailCaptchaRequest request, HttpSession session) {
+    public ApiResponse<String> sendEmailCaptcha(@RequestBody EmailCaptchaRequest request) {
         // 验证码校验
-        String storedCaptcha = (String) session.getAttribute("captcha");
-        LocalDateTime captchaTime = (LocalDateTime) session.getAttribute("captcha_time");
+        CaptchaInfo captchaInfo = getCaptcha(request.getRequestId());
         
-        if (storedCaptcha == null || captchaTime == null || 
-            ChronoUnit.MINUTES.between(captchaTime, LocalDateTime.now()) > 5) {
+        if (captchaInfo == null || captchaInfo.isExpired()) {
             return new ApiResponse<>(400, "验证码已过期，请重新获取", null);
         }
         
-        if (!storedCaptcha.equalsIgnoreCase(request.getCaptcha())) {
+        if (!captchaInfo.getCaptcha().equalsIgnoreCase(request.getCaptcha())) {
             return new ApiResponse<>(400, "验证码错误", null);
         }
         
@@ -239,10 +264,8 @@ public class UserController {
         message.setText("您的验证码是: " + emailCaptcha + "，有效期为5分钟");
         mailSender.send(message);
         
-        // 存储邮箱验证码到session
-        session.setAttribute("email_captcha", emailCaptcha);
-        session.setAttribute("email_captcha_time", LocalDateTime.now());
-        session.setAttribute("email", request.getEmail());
+        // 存储邮箱验证码到缓存
+        cacheMailCaptcha(request.getEmail(), emailCaptcha);
         
         return new ApiResponse<>(200, "验证码已发送", null);
     }
@@ -305,8 +328,8 @@ public class UserController {
         }
         
         // 生成新token（可选）
-        // String newToken = UUID.randomUUID().toString();
-        // user.setToken(newToken);
+        String newToken = UUID.randomUUID().toString();
+        user.setToken(newToken);
         
         // 延长有效期7天
         user.setTokenExpireTime(LocalDateTime.now().plusDays(7));

@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   int _avatarTapCount = 0;
   DateTime? _lastAvatarTapTime;
   String _captchaUrl = '/captcha';
+  String? _requestId; // 新增requestId字段
   Map<String, dynamic>? queryParameters;
 
   @override
@@ -74,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
             'username': _usernameController.text,
             'password': _passwordController.text,
             if (_showCaptcha) 'captcha': _captchaController.text,
+            if (_showCaptcha && _requestId != null) 'requestId': _requestId,
           },
         );
 
@@ -99,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
 
         setState(() {
           _loginAttempts++;
-          if (_loginAttempts >= 3) {
+          if (_loginAttempts > 5) {
             _showCaptcha = true;
             _accountLocked = true;
             _loginAttempts = 0;
@@ -136,8 +138,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _refreshCaptcha() async {
+    // 生成requestId
+    _requestId = DateTime.now().millisecondsSinceEpoch.toString();
     setState(() {
-      _captchaUrl = '/captcha?t=${DateTime.now().millisecondsSinceEpoch}';
+      _captchaUrl =
+          '/captcha?t=${DateTime.now().millisecondsSinceEpoch}&requestId=$_requestId';
     });
   }
 

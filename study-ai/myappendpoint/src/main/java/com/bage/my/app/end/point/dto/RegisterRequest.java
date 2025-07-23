@@ -5,6 +5,9 @@ import java.time.LocalDate;
 
 @Data
 public class RegisterRequest {
+
+    private String captcha;
+
     private String username;
     private String password;
     // 新增字段
