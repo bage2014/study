@@ -36,7 +36,7 @@ class HttpMockService {
       for (final entry in _mockFilePaths.entries) {
         if (path.contains(entry.key)) {
           LogUtil.info('getMockResponseJsonString fuzzyMatch = ${entry.value}');
-          return await entry.value;
+          return await rootBundle.loadString('lib/data/${entry.value}');
         }
       }
 

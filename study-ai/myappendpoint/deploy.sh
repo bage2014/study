@@ -2,7 +2,7 @@
 
 # 配置远程服务器信息 - 请修改以下参数
 REMOTE_USER="bage"
-REMOTE_HOST=""
+REMOTE_HOST="101.34.78.152"
 REMOTE_PATH="/home/bage/docker-images"
 
 # 配置Docker信息
@@ -43,7 +43,7 @@ else
   echo "成功: 已修改Dockerfile使用JDK 21"
 fi
 
-docker build -t ${DOCKER_IMAGE} .
+docker build  -t ${DOCKER_IMAGE} .
 
 # 检查Docker镜像构建是否成功
 if [ $? -ne 0 ]; then

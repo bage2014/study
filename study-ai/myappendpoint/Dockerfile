@@ -1,5 +1,6 @@
 # 使用官方 OpenJDK 21 作为基础镜像
-FROM openjdk:21-jdk-slim
+# FROM openjdk:21-jdk-slim
+FROM --platform=linux/amd64 openjdk:21-jdk-slim
 
 # 设置工作目录
 WORKDIR /app

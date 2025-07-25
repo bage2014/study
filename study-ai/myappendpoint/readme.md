@@ -63,3 +63,7 @@ Content-Type: application/json
   "code": "123456"
 }
 ```
+
+
+
+docker run -d -p 8000:8080 --name myappendpoint myappendpoint:20250725
