@@ -98,6 +98,7 @@
         <module name="study-vue-npm" />
         <module name="study-itext" />
         <module name="study-gc-biz" />
+        <module name="myappendpoint" />
         <module name="study-cache-caffeine" />
         <module name="study-btrace" />
         <module name="study-spring-boot-sso-oauth2-server" />
@@ -187,7 +188,6 @@
         <module name="study-springmvc-java" />
         <module name="study-clickhouse" />
         <module name="study-shiro-web" />
-        <module name="demo" />
         <module name="study-log-logback" />
         <module name="study-xfyun-lfasr" />
         <module name="study-tess4j" />
@@ -241,6 +241,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="21">
+      <module name="demo" target="21" />
       <module name="study-guava" target="1.8" />
       <module name="study-java-agent-attach" target="1.8" />
       <module name="study-java-agent-demo-service" target="1.8" />
@@ -256,6 +257,7 @@
       <module name="bage-spring-boot-starter-ping" options="" />
       <module name="bage-spring-boot-starter-ping-test" options="" />
       <module name="demo" options="-parameters" />
+      <module name="myappendpoint" options="-parameters" />
       <module name="study" options="" />
       <module name="study-activemq" options="" />
       <module name="study-ai" options="" />

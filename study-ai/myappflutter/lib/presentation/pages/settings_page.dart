@@ -232,6 +232,32 @@ class _SettingsPageState extends State<SettingsPage> {
               );
             },
           ),
+          // 新增退出登录按钮
+          ListTile(
+            title: Text('退出登录'),
+            subtitle: Text('清除登录信息并返回登录页面'),
+            trailing: Icon(Icons.logout),
+            onTap: () {
+              Get.dialog(
+                AlertDialog(
+                  title: Text('确认退出登录'),
+                  content: Text('确定要退出登录吗？'),
+                  actions: [
+                    TextButton(onPressed: () => Get.back(), child: Text('取消')),
+                    TextButton(
+                      onPressed: () async {
+                        // 清除登录信息
+                        await PrefsUtil.clearAll();
+                        // 跳转到登录页面
+                        Get.offAllNamed(AppRoutes.LOGIN);
+                      },
+                      child: Text('确定'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

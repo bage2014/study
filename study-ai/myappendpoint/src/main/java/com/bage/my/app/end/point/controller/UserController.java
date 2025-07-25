@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.bage.my.app.end.point.entity.CaptchaInfo;
+import com.bage.my.app.end.point.dto.ResetPasswordRequest;
 
 @RestController
 @Slf4j
@@ -38,7 +39,7 @@ public class UserController {
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
         String captcha = loginRequest.getCaptcha();
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByEmail(username);
 
         if (user == null) {
             return new ApiResponse<>(404, "用户不存在", null);
@@ -159,7 +160,7 @@ public class UserController {
         message.setText("您的验证码是: " + emailCaptcha + "，有效期为5分钟");
         log.info("sendEmailCaptcha emailCaptcha:{}", emailCaptcha);
         // todo bage fix 邮件发送
-        // mailSender.send(message);
+        mailSender.send(message);
 
         // 存储邮箱验证码到缓存
         captchaController.cacheMailCaptcha(request.getEmail(), emailCaptcha);
@@ -175,6 +176,7 @@ public class UserController {
             User user = new User();
             user.setUsername("zhangsan");
             user.setPassword("zhangsan123");
+            user.setEmail("zhangsan@qq.com");
             user.setLoginAttempts(0);
             user.setLockTime(null);
             userRepository.save(user);
@@ -185,6 +187,7 @@ public class UserController {
         if (userRepository.findByUsername("lisi") == null) {
             User user = new User();
             user.setUsername("lisi");
+            user.setEmail("lisi@qq.com");
             user.setPassword("lisi1234");
             user.setLoginAttempts(0);
             user.setLockTime(null);
@@ -196,6 +199,7 @@ public class UserController {
         if (userRepository.findByUsername("wangwu") == null) {
             User user = new User();
             user.setUsername("wangwu");
+            user.setEmail("wangwu@qq.com");
             user.setPassword("wangwu12345");
             user.setLoginAttempts(0);
             user.setLockTime(null);
@@ -234,5 +238,63 @@ public class UserController {
 
         return new ApiResponse<>(200, "token刷新成功", user.getToken());
     }
-    
+
+    // 新增方法：完善用户信息
+    @PostMapping("/updateUserInfo")
+    public ApiResponse<User> updateUserInfo(@RequestBody User userInfo) {
+        // 1. 检查用户是否存在
+        User user = userRepository.findById(userInfo.getId()).orElse(null);
+        if (user == null) {
+            return new ApiResponse<>(404, "用户不存在", null);
+        }
+
+        // 2. 更新用户信息
+        if (userInfo.getUsername() != null) {
+            user.setUsername(userInfo.getUsername());
+        }
+        if (userInfo.getGender() != null) {
+            user.setGender(userInfo.getGender());
+        }
+        if (userInfo.getBirthDate() != null) {
+            user.setBirthDate(userInfo.getBirthDate());
+        }
+
+        // 3. 保存更新后的用户信息
+        User updatedUser = userRepository.save(user);
+
+        // 4. 返回更新后的用户信息
+        return new ApiResponse<>(200, "用户信息更新成功", updatedUser);
+    }
+
+    // 新增方法：重置密码
+    @PostMapping("/resetPassword")
+    public ApiResponse<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        // 1. 检查参数是否有效
+        if (request.getEmail() == null || request.getCaptcha() == null || request.getNewPassword() == null) {
+            return new ApiResponse<>(400, "参数不能为空", null);
+        }
+
+        // 2. 根据邮箱查找用户
+        User user = userRepository.findByEmail(request.getEmail());
+        if (user == null) {
+            return new ApiResponse<>(404, "用户不存在", null);
+        }
+
+        // 3. 验证验证码
+        CaptchaInfo captchaInfo = captchaController.getMailCaptcha(request.getEmail());
+        if (captchaInfo == null || captchaInfo.isExpired()) {
+            return new ApiResponse<>(400, "验证码已过期，请重新获取", null);
+        }
+
+        if (!captchaInfo.getCaptcha().equalsIgnoreCase(request.getCaptcha())) {
+            return new ApiResponse<>(400, "验证码错误", null);
+        }
+
+        // 4. 重置密码
+        user.setPassword(request.getNewPassword());
+        userRepository.save(user);
+
+        return new ApiResponse<>(200, "密码重置成功", null);
+    }
+
 }

@@ -1,15 +1,34 @@
+// 首先，我们需要导入额外的包
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myappflutter/data/api/http_client.dart';
 import '../widgets/base_page.dart';
+import 'package:myappflutter/core/utils/date_util.dart';
 
-class ProfilePage extends StatelessWidget {
+// 将StatelessWidget改为StatefulWidget
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  // 初始化HttpClient
+  final HttpClient _httpClient = HttpClient();
+
+  // 状态变量
+  String _gender = '男'; // 初始性别
+  DateTime? _birthDate; // 初始出生日期
+  bool _isEditing = false; // 编辑状态
+  bool _isLoading = false; // 加载状态
 
   @override
   Widget build(BuildContext context) {
     final arguments = Get.arguments ?? {};
     final userId = arguments['userId'];
     print('用户ID: $userId');
+
     return BasePage(
       title: 'profile',
       body: Center(
@@ -47,7 +66,9 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         _buildProfileItem(Icons.person, '姓名', '张三'),
                         const Divider(),
-                        _buildProfileItem(Icons.male, '性别', '男'),
+                        _buildGenderItem(), // 替换为可编辑的性别项
+                        const Divider(),
+                        _buildBirthDateItem(), // 替换为可编辑的出生日期项
                         const Divider(),
                         _buildProfileItem(Icons.location_on, '位置', '北京'),
                       ],
@@ -56,7 +77,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _isLoading ? null : _toggleEditing,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 40,
@@ -66,7 +87,10 @@ class ProfilePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text('编辑资料', style: TextStyle(fontSize: 16)),
+                  child: Text(
+                    _isEditing ? '保存修改' : '编辑资料',
+                    style: const TextStyle(fontSize: 16),
+                  ),
                 ),
 
                 // 学校信息卡片
@@ -124,12 +148,13 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // 构建普通的资料项
   Widget _buildProfileItem(IconData icon, String title, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
-          Icon(icon, color: Theme.of(Get.context!).primaryColor),
+          Icon(icon, color: Theme.of(context).primaryColor),
           const SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,6 +178,170 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // 构建性别选择项
+  Widget _buildGenderItem() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          Icon(Icons.male, color: Theme.of(context).primaryColor),
+          const SizedBox(width: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '性别',
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              ),
+              const SizedBox(height: 5),
+              if (_isEditing) ...[
+                Row(
+                  children: [
+                    Radio(
+                      value: '男',
+                      groupValue: _gender,
+                      onChanged: (value) {
+                        setState(() {
+                          _gender = value!;
+                        });
+                      },
+                    ),
+                    const Text('男'),
+                    Radio(
+                      value: '女',
+                      groupValue: _gender,
+                      onChanged: (value) {
+                        setState(() {
+                          _gender = value!;
+                        });
+                      },
+                    ),
+                    const Text('女'),
+                  ],
+                ),
+              ] else ...[
+                Text(
+                  _gender,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 构建出生日期项
+  Widget _buildBirthDateItem() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          Icon(Icons.calendar_today, color: Theme.of(context).primaryColor),
+          const SizedBox(width: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '出生日期',
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              ),
+              const SizedBox(height: 5),
+              if (_isEditing) ...[
+                ElevatedButton(
+                  onPressed: () async {
+                    final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: _birthDate ?? DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+                    if (picked != null) {
+                      setState(() {
+                        _birthDate = picked;
+                      });
+                    }
+                  },
+                  child: Text(
+                    _birthDate == null
+                        ? '选择出生日期'
+                        : '${_birthDate!.year}-${_birthDate!.month}-${_birthDate!.day}',
+                  ),
+                ),
+              ] else ...[
+                Text(
+                  _birthDate == null
+                      ? '未设置'
+                      : '${_birthDate!.year}-${_birthDate!.month}-${_birthDate!.day}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 切换编辑状态
+  void _toggleEditing() {
+    if (_isEditing) {
+      // 保存修改
+      _saveUserInfo();
+    } else {
+      // 进入编辑状态
+      setState(() {
+        _isEditing = true;
+      });
+    }
+  }
+
+  // 保存用户信息
+  void _saveUserInfo() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // 准备请求参数
+      final Map<String, dynamic> params = {'gender': _gender};
+
+      // 如果出生日期不为空，则添加到参数中
+      if (_birthDate != null) {
+        params['birthDate'] =
+            '${_birthDate!.year}-${_birthDate!.month}-${_birthDate!.day}';
+        params['birthDate'] = DateUtil.formatDate(params['birthDate']);
+      }
+
+      // 发送请求
+      final response = await _httpClient.post('/updateUserInfo', body: params);
+
+      if (response['code'] == 200) {
+        Get.snackbar('更新成功', '用户信息更新成功');
+        setState(() {
+          _isEditing = false;
+        });
+      } else {
+        Get.snackbar('更新失败', response['message'] ?? '更新失败，请重试');
+      }
+    } catch (e) {
+      print('更新用户信息失败: $e');
+      Get.snackbar('更新失败', '网络异常，请稍后重试');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  // 其余方法保持不变
   Widget _buildInfoCard({
     required String title,
     required IconData icon,

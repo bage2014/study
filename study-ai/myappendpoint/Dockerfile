@@ -2,6 +2,9 @@
 # FROM openjdk:21-jdk-slim
 FROM --platform=linux/amd64 openjdk:21-jdk-slim
 
+# 安装缺失的 libfreetype6 库
+RUN apt-get update && apt-get install -y libfreetype6
+
 # 设置工作目录
 WORKDIR /app
 

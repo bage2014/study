@@ -128,9 +128,9 @@ public class FamilyController {
     public ApiResponse<String> initFamilyTree() {
         try {
             // 创建并保存所有成员
-            FamilyMember zhangSan = createAndSaveMember("张三", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", 0);
+            FamilyMember zhangSan = createAndSaveMember("张三", "https://avatars.githubusercontent.com/u/18094768?v=4", 0);
             log.info("initFamilyTree zhangSan: {}", zhangSan);
-            FamilyMember liSi = createAndSaveMember("李四", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", 0);
+            FamilyMember liSi = createAndSaveMember("李四", "https://avatars.githubusercontent.com/u/18094768?v=4", 0);
             // log.info("initFamilyTree liSi: {}", liSi);
             FamilyMember father = createAndSaveMember("张父", "https://avatars.githubusercontent.com/u/18094768?s=48&v=4", -1);
             // log.info("initFamilyTree father: {}", father);
