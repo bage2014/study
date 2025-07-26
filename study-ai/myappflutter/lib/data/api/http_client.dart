@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import '../../features/controller/env_controller.dart'; // 添加导入
+import '../../features/controller/env_controller.dart';
 import '../mock/http_mock_service.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
+import 'package:myappflutter/core/utils/http_interceptor.dart';
 
 class HttpClient {
   final http.Client _client = http.Client();
-  final EnvController _envController = Get.find<EnvController>(); // 获取环境控制器
+  final EnvController _envController = Get.find<EnvController>();
 
   // GET请求
   Future<Map<String, dynamic>> get(
@@ -20,11 +21,11 @@ class HttpClient {
     }
 
     final uri = buildUri(path, queryParameters);
-    final requestHeaders = _buildHeaders(headers);
+    final requestHeaders = await HttpInterceptor.interceptRequest(headers);
 
     _logRequest('GET', uri.toString(), requestHeaders, null);
     final response = await _client.get(uri, headers: requestHeaders);
-    return _handleResponse(response);
+    return HttpInterceptor.interceptResponse(response);
   }
 
   // POST请求
@@ -39,7 +40,7 @@ class HttpClient {
     }
 
     final uri = buildUri(path, queryParameters);
-    final requestHeaders = _buildHeaders(headers);
+    final requestHeaders = await HttpInterceptor.interceptRequest(headers);
     final requestBody = jsonEncode(body);
 
     _logRequest('POST', uri.toString(), requestHeaders, body);
@@ -48,7 +49,7 @@ class HttpClient {
       headers: requestHeaders,
       body: requestBody,
     );
-    return _handleResponse(response);
+    return HttpInterceptor.interceptResponse(response);
   }
 
   // 构建请求URL
@@ -56,32 +57,6 @@ class HttpClient {
     return Uri.parse(
       '${_envController.getBaseUrl()}$path',
     ).replace(queryParameters: queryParameters as Map<String, String>?);
-  }
-
-  // 构建请求头
-  Map<String, String> _buildHeaders(Map<String, String>? customHeaders) {
-    final headers = <String, String>{
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    };
-
-    if (customHeaders != null) {
-      headers.addAll(customHeaders);
-    }
-
-    return headers;
-  }
-
-  // 处理响应
-  Map<String, dynamic> _handleResponse(http.Response response) {
-    // 打印响应日志
-    _logResponse(response);
-
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return response.body.isEmpty ? {} : jsonDecode(response.body);
-    } else {
-      throw Exception('HTTP请求失败: ${response.statusCode}');
-    }
   }
 
   // 打印请求日志

@@ -8,9 +8,15 @@ CREATE TABLE IF NOT EXISTS APP_USER (
     email VARCHAR(100),
     gender VARCHAR(10),
     birth_date DATE,
-    avatar_url VARCHAR(255),
-    token VARCHAR(255),
-    token_expire_time TIMESTAMP NULL
+    avatar_url VARCHAR(255)
+);
+
+CREATE TABLE user_token (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    token_expire_time TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES app_user(id)
 );
 
 CREATE TABLE IF NOT EXISTS family_member (
@@ -45,7 +51,7 @@ CREATE TABLE IF NOT EXISTS APP_VERSION (
     force_update BOOLEAN DEFAULT false
 );
 
-CREATE TABLE message (
+CREATE TABLE app_message (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     sender_id BIGINT NOT NULL,
     receiver_id BIGINT NOT NULL,
@@ -57,3 +63,4 @@ CREATE TABLE message (
     create_time DATETIME NOT NULL,
     read_time DATETIME
 );
+

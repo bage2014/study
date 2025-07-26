@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:myappflutter/core/constants/prefs_constants.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/core/utils/prefs_util.dart';
-import '../../data/api/http_client.dart'; // 确保已添加此导入
+import '../../data/api/http_client.dart';
 import '../../core/config/app_routes.dart';
+import '../../data/models/login_response.dart'; // 导入LoginResponse类
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -79,24 +80,30 @@ class _LoginPageState extends State<LoginPage> {
           },
         );
 
-        if (response['code'] == 200) {
+        // 使用LoginResponse类解析响应数据
+        final loginResponse = LoginResponse.fromJson(response);
+
+        if (loginResponse.code == 200 &&
+            loginResponse.data?.userToken?.token != null &&
+            loginResponse.data?.user?.username != null &&
+            loginResponse.data?.userToken?.tokenExpireTime != null) {
           // 保存token和用户信息
           await PrefsUtil.setString(
             PrefsConstants.token,
-            response['data']['token'],
+            loginResponse.data!.userToken!.token!,
           );
           await PrefsUtil.setString(
             PrefsConstants.username,
-            response['data']['username'],
+            loginResponse.data!.user!.username!,
           );
           await PrefsUtil.setString(
             PrefsConstants.tokenExpireTime,
-            response['data']['tokenExpireTime'],
+            loginResponse.data!.userToken!.tokenExpireTime!,
           );
 
           Get.offNamed(AppRoutes.HOME);
         } else {
-          Get.snackbar('登录失败', response['message'] ?? '未知错误');
+          Get.snackbar('登录失败', loginResponse.message ?? '未知错误');
         }
 
         setState(() {

@@ -3,6 +3,7 @@ package com.bage.my.app.end.point.controller;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.bage.my.app.end.point.entity.User;
+import com.bage.my.app.end.point.entity.UserToken;
 import com.bage.my.app.end.point.repository.UserRepository;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.bage.my.app.end.point.entity.CaptchaInfo;
 import com.bage.my.app.end.point.dto.ResetPasswordRequest;
+import com.bage.my.app.end.point.dto.LoginResponse;
+import com.bage.my.app.end.point.repository.UserTokenRepository;
 
 @RestController
 @Slf4j
@@ -29,12 +32,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private UserTokenRepository userTokenRepository;
+    @Autowired
     private JavaMailSender mailSender;
     @Autowired
     private CaptchaController captchaController;
 
     @PostMapping("/login")
-    public ApiResponse<User> login(@RequestBody LoginRequest loginRequest) {
+    public ApiResponse<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         log.info("loginRequest: {}", loginRequest);
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
@@ -42,11 +47,13 @@ public class UserController {
         User user = userRepository.findByEmail(username);
 
         if (user == null) {
+            log.info("user not found");
             return new ApiResponse<>(404, "用户不存在", null);
         }
         // 检查账号是否锁定
         if (user.getLockTime() != null && LocalDateTime.now().isBefore(user.getLockTime())) {
             long minutesLeft = ChronoUnit.MINUTES.between(LocalDateTime.now(), user.getLockTime());
+            log.info("account is locked, {} minutes left", minutesLeft);
             return new ApiResponse<>(403, "账号已锁定，请" + minutesLeft + "分钟后再试", null);
         }
 
@@ -59,13 +66,21 @@ public class UserController {
             if (captchaInfo == null || captchaInfo.getCaptcha() == null) {
                 User rtn = new User();
                 rtn.setLoginAttempts(user.getLoginAttempts());
-                return new ApiResponse<>(400, "验证码已过期，请重新获取", rtn);
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setUser(user);
+                loginResponse.setUserToken(null);
+                log.info("captcha is expired");
+                return new ApiResponse<>(400, "验证码已过期，请重新获取", loginResponse);   
             }
 
             if (!captchaInfo.getCaptcha().equalsIgnoreCase(captcha)) {
                 User rtn = new User();
                 rtn.setLoginAttempts(user.getLoginAttempts());
-                return new ApiResponse<>(400, "验证码错误", rtn);
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setUser(user);
+                loginResponse.setUserToken(null);
+                log.info("captcha is not match");
+                return new ApiResponse<>(400, "验证码错误", loginResponse);
             }
         }
 
@@ -77,14 +92,22 @@ public class UserController {
             LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
 
             // 更新用户token信息
-            user.setToken(token);
-            user.setTokenExpireTime(expireTime);
+            UserToken userToken = new UserToken();
+
+            userToken.setToken(token);
+            userToken.setTokenExpireTime(expireTime);
+            userToken.setUserId(user.getId());
+            userTokenRepository.save(userToken);
+
             user.setLoginAttempts(0);
             user.setLockTime(null);
             userRepository.save(user);
 
             // 构建返回数据
-            return new ApiResponse<>(200, "登录成功", user);
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setUser(user);
+            loginResponse.setUserToken(userToken);
+            return new ApiResponse<>(200, "登录成功", loginResponse);
         } else {
             // 登录失败，更新失败次数
             int attempts = user.getLoginAttempts() + 1;
@@ -96,14 +119,22 @@ public class UserController {
                 userRepository.save(user);
                 User rtn = new User();
                 rtn.setLoginAttempts(user.getLoginAttempts());
-                return new ApiResponse<>(403, "用户名或密码错误，账号已锁定1天", rtn);
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setUser(user);
+                loginResponse.setUserToken(null);
+                log.info("login failed 5 times, account is locked");
+                return new ApiResponse<>(403, "用户名或密码错误，账号已锁定1天", loginResponse);
             }
 
             userRepository.save(user);
 
             User rtn = new User();
             rtn.setLoginAttempts(user.getLoginAttempts());
-            return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", rtn );
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setUser(user);
+            loginResponse.setUserToken(null);
+            log.info("login failed, {} times", attempts);
+            return new ApiResponse<>(401, "用户名或密码错误，还有" + (5 - attempts) + "次机会", loginResponse );
         }
     }
 
@@ -211,7 +242,7 @@ public class UserController {
     // 校验token是否有效
     @GetMapping("/checkToken")
     public ApiResponse<Boolean> checkToken(@RequestParam String token) {
-        User user = userRepository.findByToken(token);
+        UserToken user = userTokenRepository.findByToken(token);
         if (user == null || user.getTokenExpireTime() == null) {
             return new ApiResponse<>(401, "无效token", false);
         }
@@ -223,7 +254,7 @@ public class UserController {
     // 刷新token有效期
     @PostMapping("/refreshToken")
     public ApiResponse<String> refreshToken(@RequestParam String token) {
-        User user = userRepository.findByToken(token);
+        UserToken user = userTokenRepository.findByToken(token);
         if (user == null) {
             return new ApiResponse<>(401, "无效token", null);
         }
@@ -234,7 +265,7 @@ public class UserController {
 
         // 延长有效期7天
         user.setTokenExpireTime(LocalDateTime.now().plusDays(7));
-        userRepository.save(user);
+        userTokenRepository.save(user);
 
         return new ApiResponse<>(200, "token刷新成功", user.getToken());
     }

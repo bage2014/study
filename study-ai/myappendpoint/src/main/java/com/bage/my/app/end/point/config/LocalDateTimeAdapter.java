@@ -28,12 +28,19 @@ public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
     @Override
     public void write(JsonWriter out, LocalDateTime value) throws IOException {
         // 输出仍保持为标准格式 "yyyy-MM-dd HH:mm:ss"
+        if(value == null){
+            out.value("");
+            return;
+        }
         out.value(value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 
     @Override
     public LocalDateTime read(JsonReader in) throws IOException {
         String dateTimeString = in.nextString();
+        if(dateTimeString == null || dateTimeString.isEmpty()){
+            return null;
+        }
         return LocalDateTime.parse(dateTimeString, formatter);
     }
 }

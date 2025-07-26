@@ -6,6 +6,7 @@ import 'localization/translation.dart';
 import 'features/controller/env_controller.dart';
 import 'features/controller/auth_controller.dart';
 import 'features/controller/theme_controller.dart';
+import 'core/utils/app_init_util.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,7 @@ void main() async {
   Get.put(EnvController());
   Get.put(AuthController());
   Get.put(ThemeController());
+  AppInitUtil.initialize();
   runApp(const MyApp());
 }
 
