@@ -11,6 +11,11 @@ class PrefsUtil {
     }
   }
 
+  static Future<void> remove(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key);
+  }
+
   // 获取SharedPreferences中的字符串值
   static Future<String?> getString(String key) async {
     final _prefs = await SharedPreferences.getInstance();

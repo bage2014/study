@@ -84,7 +84,11 @@ public class MessageController {
     }
     
     @RequestMapping("/query")
-    public ApiResponse<Page<Message>> queryMessages(@RequestBody MessageQueryRequest params) {
+    public ApiResponse<List<Message>> queryMessages(@RequestBody(required = false) MessageQueryRequest param) {
+        log.info("queryMessages: {}", param);
+        // 如果参数为null，创建一个默认的参数对象
+        MessageQueryRequest params = param == null ? new MessageQueryRequest() : param;
+        
         Pageable pageable = PageRequest.of(params.getPage(), params.getSize());
         
         Specification<Message> spec = (root, query, cb) -> {
@@ -111,6 +115,8 @@ public class MessageController {
             return cb.and(predicates.toArray(new Predicate[0]));
         };
         
-        return ApiResponse.success(messageService.findAll(spec, pageable));
+        Page<Message> messages = messageService.findAll(spec, pageable);
+        // log.info("queryMessages: {}", messages.getContent());
+        return ApiResponse.success(messages.getContent(), messages.getTotalElements(), (long) messages.getPageable().getPageNumber(), (long) messages.getPageable().getPageSize());
     }
 }

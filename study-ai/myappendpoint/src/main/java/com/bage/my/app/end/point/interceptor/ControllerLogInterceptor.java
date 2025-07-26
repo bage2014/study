@@ -4,6 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+
+import com.bage.my.app.end.point.util.JsonUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,14 +20,27 @@ public class ControllerLogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        // 使用 ContentCachingRequestWrapper 包装原始请求
+        ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
+
         String timestamp = LocalDateTime.now().format(formatter);
         String params = "";
+
         if ("POST".equalsIgnoreCase(request.getMethod()) || "PUT".equalsIgnoreCase(request.getMethod())) {
             try {
-                // 简化处理，实际项目中可使用流读取请求体
-                params = "POST/PUT body: 请使用 @RequestBody 解析"; 
+                params = "Post unsupported log info ";
+                // 读取请求体
+                // String body = wrappedRequest.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+                // if (body.length() > 0) {
+                //     params = body;
+                // } else {
+                //     // 如果请求体为空，尝试使用参数映射
+                //     params = JsonUtil.toJson(request.getParameterMap());
+                // }
             } catch (Exception e) {
                 log.error("读取请求体失败", e);
+                // 发生异常时，尝试使用参数映射
+                params = JsonUtil.toJson(request.getParameterMap());
             }
         } else {
             Map<String, String[]> parameterMap = request.getParameterMap();
@@ -32,6 +48,7 @@ public class ControllerLogInterceptor implements HandlerInterceptor {
                     .map(entry -> entry.getKey() + "=" + String.join(",", entry.getValue()))
                     .collect(Collectors.joining(", "));
         }
+
         log.info("[{}] 请求路径: {}, 请求方法: {}, 请求参数: {}", timestamp, request.getRequestURI(), request.getMethod(), params);
         return true;
     }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myappflutter/core/constants/prefs_constants.dart';
@@ -27,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   DateTime? _lastAvatarTapTime;
   String _captchaUrl = '/captcha';
   String? _requestId; // 新增requestId字段
-  Map<String, dynamic>? queryParameters;
+  Map<String, String> queryParameters = {};
 
   @override
   void initState() {
@@ -43,17 +45,30 @@ class _LoginPageState extends State<LoginPage> {
 
   void _checkAutoLogin() async {
     final token = await PrefsUtil.getString(PrefsConstants.token);
-    final expireTime = await PrefsUtil.getString(
-      PrefsConstants.tokenExpireTime,
-    );
-    LogUtil.info(
-      'LoginPage _checkAutoLogin token = $token, expireTime = $expireTime',
-    );
-    if (token != null &&
-        expireTime != null &&
-        DateTime.now().millisecondsSinceEpoch <
-            DateTime.parse(expireTime).millisecondsSinceEpoch) {
-      Get.offNamed(AppRoutes.HOME);
+    LogUtil.info('LoginPage _checkAutoLogin token = $token');
+
+    if (token != null) {
+      try {
+        queryParameters.putIfAbsent('token', () => token);
+        // 使用http client请求后台/checkToken接口
+        final response = await _httpClient.post(
+          '/checkToken',
+          queryParameters: queryParameters,
+        );
+
+        // 检查响应
+        if (response['code'] == 200 && response['valid'] == true) {
+          Get.offNamed(AppRoutes.HOME);
+        } else {
+          // 令牌无效，清除本地存储
+          await PrefsUtil.remove(PrefsConstants.token);
+          await PrefsUtil.remove(PrefsConstants.userInfo);
+          await PrefsUtil.remove(PrefsConstants.tokenExpireTime);
+        }
+      } catch (e) {
+        LogUtil.error('检查token失败: $e');
+        // 网络错误时，可以选择保留本地token，下次再试
+      }
     }
   }
 
@@ -61,12 +76,6 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() {
         if (_accountLocked) return;
-        _loginAttempts++;
-        _showCaptcha = _loginAttempts > 0; // 修改为只要尝试次数>0就显示验证码
-        if (_loginAttempts >= 5) {
-          _accountLocked = true;
-          _loginAttempts = 0;
-        }
       });
 
       try {
@@ -85,16 +94,18 @@ class _LoginPageState extends State<LoginPage> {
 
         if (loginResponse.code == 200 &&
             loginResponse.data?.userToken?.token != null &&
-            loginResponse.data?.user?.username != null &&
+            loginResponse.data?.user != null &&
             loginResponse.data?.userToken?.tokenExpireTime != null) {
           // 保存token和用户信息
           await PrefsUtil.setString(
             PrefsConstants.token,
             loginResponse.data!.userToken!.token!,
           );
+          // 移除单独缓存username的代码
+          // 改为缓存整个用户信息
           await PrefsUtil.setString(
-            PrefsConstants.username,
-            loginResponse.data!.user!.username!,
+            PrefsConstants.userInfo,
+            jsonEncode(loginResponse.data!.user!.toJson()),
           );
           await PrefsUtil.setString(
             PrefsConstants.tokenExpireTime,
@@ -108,10 +119,9 @@ class _LoginPageState extends State<LoginPage> {
 
         setState(() {
           _loginAttempts++;
-          if (_loginAttempts > 5) {
-            _showCaptcha = true;
+          _showCaptcha = _loginAttempts > 0; // 修改为只要尝试次数>0就显示验证码
+          if (_loginAttempts >= 5) {
             _accountLocked = true;
-            _loginAttempts = 0;
           }
         });
       } catch (e) {

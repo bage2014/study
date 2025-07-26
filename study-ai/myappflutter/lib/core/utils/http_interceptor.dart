@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:myappflutter/core/config/app_routes.dart';
 import '../constants/prefs_constants.dart';
 import 'prefs_util.dart';
 import 'log_util.dart';
@@ -38,13 +39,16 @@ class HttpInterceptor {
     // LogUtil.info('body  : ${response.body}');
 
     // 处理403错误
-    if (response.statusCode == 403) {
+    if (response.statusCode == 403 || response.statusCode == 401) {
       LogUtil.info('收到403错误，跳转到登录页面');
       // 清除登录信息
       await PrefsUtil.setString(PrefsConstants.token, '');
       await PrefsUtil.setString(PrefsConstants.tokenExpireTime, '');
-      // 跳转到登录页面
-      Get.offAllNamed('/login');
+      // 检查当前是否已经是登录页面
+      if (Get.currentRoute != AppRoutes.LOGIN) {
+        // 跳转到登录页面
+        Get.offAllNamed(AppRoutes.LOGIN);
+      }
       throw Exception('用户未登录或登录已过期');
     }
 

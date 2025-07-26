@@ -29,7 +29,7 @@ public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
     public void write(JsonWriter out, LocalDateTime value) throws IOException {
         // 输出仍保持为标准格式 "yyyy-MM-dd HH:mm:ss"
         if(value == null){
-            out.value("");
+            out.nullValue();
             return;
         }
         out.value(value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));

@@ -27,4 +27,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return converter;
     }
 
+    // @Bean
+    // public FilterRegistrationBean<AuthFilter> authFilter(AuthFilter authFilter) {
+    //     FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
+    //     registrationBean.setFilter(authFilter);
+    //     registrationBean.addUrlPatterns("/*");
+    //     // 设置不拦截的请求
+    //     registrationBean.addInitParameter("excludedPaths", "/login,/captcha");
+    //     registrationBean.setOrder(1);
+    //     return registrationBean;
+    // }
+
 }

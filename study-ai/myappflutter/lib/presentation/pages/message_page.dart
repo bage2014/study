@@ -14,7 +14,7 @@ class MessagePage extends StatefulWidget {
 class _MessagePageState extends State<MessagePage> {
   final HttpClient _httpClient = HttpClient();
   final List<Message> _messages = [];
-  int _currentPage = 0;
+  int _currentPage = 1;
   final int _pageSize = 10;
   bool _isLoading = false;
   bool _hasMore = true;
@@ -38,7 +38,7 @@ class _MessagePageState extends State<MessagePage> {
       final response = await _httpClient.post(
         '/message/query',
         body: {
-          'page': refresh ? 0 : _currentPage,
+          'page': refresh ? 1 : _currentPage,
           'size': _pageSize,
           if (_startDate != null) 'startTime': _startDate!.toIso8601String(),
           if (_endDate != null) 'endTime': _endDate!.toIso8601String(),
@@ -51,9 +51,9 @@ class _MessagePageState extends State<MessagePage> {
           _currentPage = 0;
           _hasMore = true;
         }
-        _messages.addAll(pageResponse.data?.content ?? []);
+        _messages.addAll(pageResponse.data ?? []);
         _currentPage++;
-        _hasMore = pageResponse?.data?.last ?? false;
+        _hasMore = (pageResponse.total ?? 0) > _currentPage * _pageSize;
         LogUtil.info('length: ${_messages.length}');
       });
     } catch (e) {

@@ -8,6 +8,6 @@ public class MessageQueryRequest {
     private Boolean isRead;
     private String startTime;
     private String endTime;
-    private int page = 0;
+    private int page = 1;
     private int size = 10;
 }

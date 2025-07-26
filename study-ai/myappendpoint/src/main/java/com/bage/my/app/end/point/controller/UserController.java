@@ -10,7 +10,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
@@ -19,12 +18,13 @@ import com.bage.my.app.end.point.dto.LoginRequest;
 import com.bage.my.app.end.point.dto.RegisterRequest;
 import com.bage.my.app.end.point.dto.EmailCaptchaRequest;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.bage.my.app.end.point.entity.CaptchaInfo;
 import com.bage.my.app.end.point.dto.ResetPasswordRequest;
 import com.bage.my.app.end.point.dto.LoginResponse;
 import com.bage.my.app.end.point.repository.UserTokenRepository;
+import com.bage.my.app.end.point.util.AuthUtil;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @Slf4j
@@ -38,7 +38,32 @@ public class UserController {
     @Autowired
     private CaptchaController captchaController;
 
-    @PostMapping("/login")
+    @RequestMapping("/profile")
+    public ApiResponse<User> profile() {
+        try {
+            // 获取当前登录用户ID
+            Long userId = AuthUtil.getCurrentUserId();
+            if (userId == null) {
+                return new ApiResponse<>(401, "未登录", null);
+            }
+
+            // 查询用户信息
+            User user = userRepository.findById(userId).orElse(null);
+            if (user == null) {
+                return new ApiResponse<>(404, "用户不存在", null);
+            }
+
+            // 清除密码字段
+            user.setPassword(null);
+
+            return new ApiResponse<>(200, "成功", user);
+        } catch (Exception e) {
+            log.error("获取用户信息失败: {}", e.getMessage());
+            return new ApiResponse<>(500, "获取用户信息失败", null);
+        }
+    }
+
+    @RequestMapping("/login")
     public ApiResponse<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         log.info("loginRequest: {}", loginRequest);
         String username = loginRequest.getUsername();
@@ -88,7 +113,7 @@ public class UserController {
         if (user.getPassword().equals(password)) {
             // 登录成功逻辑
             // 生成token
-            String token = UUID.randomUUID().toString();
+            String token = user.getId() + "-" + UUID.randomUUID().toString();
             LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
 
             // 更新用户token信息
@@ -138,7 +163,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/register")
+    @RequestMapping("/register")
     public ApiResponse<String> register(@RequestBody RegisterRequest registerRequest) {
         // 1. 验证验证码
         String captcha = registerRequest.getCaptcha();
@@ -168,7 +193,7 @@ public class UserController {
         return new ApiResponse<>(200, "注册成功", null);
     }
 
-    @PostMapping("/sendEmailCaptcha")
+    @RequestMapping("/sendEmailCaptcha")
     public ApiResponse<String> sendEmailCaptcha(@RequestBody EmailCaptchaRequest request) {
         // 验证码校验
         CaptchaInfo captchaInfo = captchaController.getCaptcha(request.getRequestId());
@@ -240,7 +265,7 @@ public class UserController {
     }
 
     // 校验token是否有效
-    @GetMapping("/checkToken")
+    @RequestMapping("/checkToken")
     public ApiResponse<Boolean> checkToken(@RequestParam String token) {
         UserToken user = userTokenRepository.findByToken(token);
         if (user == null || user.getTokenExpireTime() == null) {
@@ -252,7 +277,7 @@ public class UserController {
     }
 
     // 刷新token有效期
-    @PostMapping("/refreshToken")
+    @RequestMapping("/refreshToken")
     public ApiResponse<String> refreshToken(@RequestParam String token) {
         UserToken user = userTokenRepository.findByToken(token);
         if (user == null) {
@@ -271,10 +296,12 @@ public class UserController {
     }
 
     // 新增方法：完善用户信息
-    @PostMapping("/updateUserInfo")
+    @RequestMapping("/updateUserInfo")
     public ApiResponse<User> updateUserInfo(@RequestBody User userInfo) {
+        Long userId = AuthUtil.getCurrentUserId();
+        log.info("updateUserInfo userId:{}", userId);
         // 1. 检查用户是否存在
-        User user = userRepository.findById(userInfo.getId()).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
             return new ApiResponse<>(404, "用户不存在", null);
         }
@@ -298,7 +325,7 @@ public class UserController {
     }
 
     // 新增方法：重置密码
-    @PostMapping("/resetPassword")
+    @RequestMapping("/resetPassword")
     public ApiResponse<String> resetPassword(@RequestBody ResetPasswordRequest request) {
         // 1. 检查参数是否有效
         if (request.getEmail() == null || request.getCaptcha() == null || request.getNewPassword() == null) {

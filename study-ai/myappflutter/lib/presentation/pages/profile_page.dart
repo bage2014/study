@@ -1,9 +1,9 @@
 // 首先，我们需要导入额外的包
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
-import '../widgets/base_page.dart';
-import 'package:myappflutter/core/utils/date_util.dart';
+import 'package:myappflutter/presentation/widgets/base_page.dart';
 
 // 将StatelessWidget改为StatefulWidget
 class ProfilePage extends StatefulWidget {
@@ -17,18 +17,59 @@ class _ProfilePageState extends State<ProfilePage> {
   // 初始化HttpClient
   final HttpClient _httpClient = HttpClient();
 
-  // 状态变量
-  String _gender = '男'; // 初始性别
+  // 用户信息变量
+  String _name = ''; // 姓名
+  String _gender = ''; // 初始性别
   DateTime? _birthDate; // 初始出生日期
+
+  // 状态变量
   bool _isEditing = false; // 编辑状态
   bool _isLoading = false; // 加载状态
 
+  TextEditingController _nameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // 初始化时获取用户信息
+    _fetchUserProfile();
+  }
+
+  // 从后台获取用户信息
+  Future<void> _fetchUserProfile() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final response = await _httpClient.get('/profile');
+      LogUtil.info('response: $response');
+
+      // 解析响应数据
+      setState(() {
+        // 适配新格式，从data字段中获取数据
+        final data = response['data'] ?? {};
+        _name = data['username'] ?? '';
+        _nameController.text = _name;
+        _gender = data['gender'] ?? '';
+
+        // 解析出生日期
+        if (data['birthDate'] != null) {
+          _birthDate = DateTime.parse(data['birthDate']);
+        }
+      });
+    } catch (e) {
+      print('获取用户信息失败: $e');
+      Get.snackbar('错误', '获取用户信息失败');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final arguments = Get.arguments ?? {};
-    final userId = arguments['userId'];
-    print('用户ID: $userId');
-
     return BasePage(
       title: 'profile',
       body: Center(
@@ -64,13 +105,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        _buildProfileItem(Icons.person, '姓名', '张三'),
+                        _buildNameItem(),
                         const Divider(),
-                        _buildGenderItem(), // 替换为可编辑的性别项
+                        _buildGenderItem(),
                         const Divider(),
-                        _buildBirthDateItem(), // 替换为可编辑的出生日期项
-                        const Divider(),
-                        _buildProfileItem(Icons.location_on, '位置', '北京'),
+                        _buildBirthDateItem(),
                       ],
                     ),
                   ),
@@ -93,52 +132,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
 
-                // 学校信息卡片
-                _buildInfoCard(
-                  title: '学校信息',
-                  icon: Icons.school,
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildInfoItem('学校名称', '北京大学'),
-                      _buildInfoItem('专业', '计算机科学'),
-                      _buildInfoItem('入学年份', '2018'),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // 工作信息卡片
-                _buildInfoCard(
-                  title: '工作信息',
-                  icon: Icons.work,
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildInfoItem('公司名称', '腾讯科技'),
-                      _buildInfoItem('职位', '高级工程师'),
-                      _buildInfoItem('入职时间', '2022'),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // 家庭信息卡片
-                _buildInfoCard(
-                  title: '家庭信息',
-                  icon: Icons.family_restroom,
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildInfoItem('婚姻状况', '已婚'),
-                      _buildInfoItem('子女数量', '1'),
-                      _buildInfoItem('家庭住址', '北京市朝阳区'),
-                    ],
-                  ),
-                ),
-
                 const SizedBox(height: 30),
               ],
             ),
@@ -148,29 +141,41 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // 构建普通的资料项
-  Widget _buildProfileItem(IconData icon, String title, String value) {
+  // 构建姓名项
+  Widget _buildNameItem() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
-          Icon(icon, color: Theme.of(context).primaryColor),
+          Icon(Icons.person, color: Theme.of(context).primaryColor),
           const SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                '姓名',
                 style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
               const SizedBox(height: 5),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              if (_isEditing) ...[
+                SizedBox(
+                  width: 200,
+                  child: TextField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                 ),
-              ),
+              ] else ...[
+                Text(
+                  _name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ],
           ),
         ],
@@ -275,7 +280,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ] else ...[
                 Text(
                   _birthDate == null
-                      ? '未设置'
+                      ? ''
                       : '${_birthDate!.year}-${_birthDate!.month}-${_birthDate!.day}',
                   style: const TextStyle(
                     fontSize: 18,
@@ -296,7 +301,6 @@ class _ProfilePageState extends State<ProfilePage> {
       // 保存修改
       _saveUserInfo();
     } else {
-      // 进入编辑状态
       setState(() {
         _isEditing = true;
       });
@@ -311,7 +315,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       // 准备请求参数
-      final Map<String, dynamic> params = {'gender': _gender};
+      final Map<String, dynamic> params = {
+        'username': _nameController.text,
+        'gender': _gender,
+      };
 
       // 如果出生日期不为空，则添加到参数中
       if (_birthDate != null) {
@@ -326,6 +333,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Get.snackbar('更新成功', '用户信息更新成功');
         setState(() {
           _isEditing = false;
+          _name = _nameController.text;
         });
       } else {
         Get.snackbar('更新失败', response['message'] ?? '更新失败，请重试');
@@ -338,61 +346,5 @@ class _ProfilePageState extends State<ProfilePage> {
         _isLoading = false;
       });
     }
-  }
-
-  // 其余方法保持不变
-  Widget _buildInfoCard({
-    required String title,
-    required IconData icon,
-    required Widget content,
-  }) {
-    return Card(
-      elevation: 4,
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(icon, color: Theme.of(Get.context!).primaryColor),
-                const SizedBox(width: 10),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            const Divider(),
-            const SizedBox(height: 10),
-            content,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoItem(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Text(
-            '$label: ',
-            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-          ),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
   }
 }

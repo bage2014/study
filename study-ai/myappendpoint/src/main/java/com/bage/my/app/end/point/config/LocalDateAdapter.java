@@ -26,7 +26,7 @@ public class LocalDateAdapter extends TypeAdapter<LocalDate> {
     public void write(JsonWriter out, LocalDate value) throws IOException {
         // 输出仍保持为标准格式 "yyyy-MM-dd"
         if(value == null){
-            out.value("");
+            out.nullValue();
             return;
         }
         out.value(value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));

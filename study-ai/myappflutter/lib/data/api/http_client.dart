@@ -25,6 +25,7 @@ class HttpClient {
 
     _logRequest('GET', uri.toString(), requestHeaders, null);
     final response = await _client.get(uri, headers: requestHeaders);
+    _logResponse(response);
     return HttpInterceptor.interceptResponse(response);
   }
 
@@ -41,6 +42,9 @@ class HttpClient {
 
     final uri = buildUri(path, queryParameters);
     final requestHeaders = await HttpInterceptor.interceptRequest(headers);
+    if (queryParameters != null && body == null) {
+      requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded';
+    }
     final requestBody = jsonEncode(body);
 
     _logRequest('POST', uri.toString(), requestHeaders, body);
@@ -49,6 +53,7 @@ class HttpClient {
       headers: requestHeaders,
       body: requestBody,
     );
+    _logResponse(response);
     return HttpInterceptor.interceptResponse(response);
   }
 
@@ -76,10 +81,11 @@ class HttpClient {
 
   // 打印响应日志
   void _logResponse(http.Response response) {
+    String body = response.body;
     LogUtil.info('\n📥 [HTTP Response] ==============================');
     LogUtil.info('Status: ${response.statusCode}');
     LogUtil.info('Headers: ${_formatJson(response.headers)}');
-    LogUtil.info('Body: ${_formatJson(jsonDecode(response.body))}');
+    LogUtil.info('Body: $body');
     LogUtil.info('==============================================\n');
   }
 

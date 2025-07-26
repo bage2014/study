@@ -5,6 +5,7 @@ import '../../core/config/app_routes.dart';
 import '../../data/models/family_response.dart';
 import '../../data/api/http_client.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
+import '../widgets/base_page.dart'; // 导入base_page组件
 
 class FamilyPage extends StatefulWidget {
   const FamilyPage({super.key});
@@ -43,14 +44,29 @@ class _FamilyPageState extends State<FamilyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('家族树')),
+    // 使用BasePage组件
+    return BasePage(
+      title: '家族树',
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 20),
+                  Text('加载家族数据中...'), // 增加加载提示文本
+                ],
+              ),
+            )
           : _familyData == null
           ? const Center(child: Text('暂无数据'))
-          : SingleChildScrollView(
-              child: TreeView(nodes: [_buildFamilyTreeNode(_familyData!)]),
+          : Column(
+              children: [
+                SizedBox(height: 64), // 在这里添加SizedBox
+                SingleChildScrollView(
+                  child: TreeView(nodes: [_buildFamilyTreeNode(_familyData!)]),
+                ),
+              ],
             ),
     );
   }
