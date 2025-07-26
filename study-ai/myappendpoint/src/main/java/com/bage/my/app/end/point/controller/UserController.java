@@ -25,6 +25,7 @@ import com.bage.my.app.end.point.dto.LoginResponse;
 import com.bage.my.app.end.point.repository.UserTokenRepository;
 import com.bage.my.app.end.point.util.AuthUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.bage.my.app.end.point.dto.CheckTokenRequest;
 
 @RestController
 @Slf4j
@@ -266,8 +267,8 @@ public class UserController {
 
     // 校验token是否有效
     @RequestMapping("/checkToken")
-    public ApiResponse<Boolean> checkToken(@RequestParam String token) {
-        UserToken user = userTokenRepository.findByToken(token);
+    public ApiResponse<Boolean> checkToken(@RequestBody CheckTokenRequest request) {
+        UserToken user = userTokenRepository.findByToken(request.getToken());
         if (user == null || user.getTokenExpireTime() == null) {
             return new ApiResponse<>(401, "无效token", false);
         }

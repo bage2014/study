@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/config/app_routes.dart';
 import '../widgets/base_page.dart'; // 使用基础页面组件
 import '../widgets/loading_wrapper.dart';
+import 'package:myappflutter/core/utils/user_util.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   Future<Map<String, dynamic>> _loadHomeData() async {
-    final prefs = await SharedPreferences.getInstance();
-    return {
-      'username': prefs.getString('username') ?? '未登录',
-      'avatarUrl': prefs.getString('avatarUrl'),
-    };
+    String username = await UserUtil.getUserName() ?? '未登录';
+    String avatarUrl = await UserUtil.getUserAvatar() ?? '';
+    return {'username': username, 'avatarUrl': avatarUrl};
   }
 
   @override
@@ -39,6 +37,7 @@ class HomePage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
+          const SizedBox(height: 86),
           // 用户头像和名称
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +56,6 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
           // 原有的GridView.count
           Expanded(
             child: GridView.count(

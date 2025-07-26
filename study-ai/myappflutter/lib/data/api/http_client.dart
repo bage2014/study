@@ -42,9 +42,7 @@ class HttpClient {
 
     final uri = buildUri(path, queryParameters);
     final requestHeaders = await HttpInterceptor.interceptRequest(headers);
-    if (queryParameters != null && body == null) {
-      requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded';
-    }
+
     final requestBody = jsonEncode(body);
 
     _logRequest('POST', uri.toString(), requestHeaders, body);

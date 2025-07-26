@@ -13,7 +13,7 @@ class EnvController extends GetxController {
 
   // 获取当前环境对应的baseUrl
   String getBaseUrl() {
-    switch(currentEnv.value) {
+    switch (currentEnv.value) {
       case 'dev':
         return Constants.devBaseUrl;
       case 'mock':

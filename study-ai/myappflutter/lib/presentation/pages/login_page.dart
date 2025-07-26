@@ -36,6 +36,9 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _usernameController.text = 'zhangsan@qq.com';
     _passwordController.text = 'zhangsan123';
+    _requestId = DateTime.now().millisecondsSinceEpoch.toString();
+    _captchaUrl =
+        '/captcha?t=${DateTime.now().millisecondsSinceEpoch}&requestId=$_requestId';
     _initPreferences();
   }
 
@@ -49,15 +52,14 @@ class _LoginPageState extends State<LoginPage> {
 
     if (token != null) {
       try {
-        queryParameters.putIfAbsent('token', () => token);
         // 使用http client请求后台/checkToken接口
         final response = await _httpClient.post(
           '/checkToken',
-          queryParameters: queryParameters,
+          body: {'token': token},
         );
 
         // 检查响应
-        if (response['code'] == 200 && response['valid'] == true) {
+        if (response['code'] == 200) {
           Get.offNamed(AppRoutes.HOME);
         } else {
           // 令牌无效，清除本地存储

@@ -14,7 +14,7 @@ void main() async {
   Get.put(EnvController());
   Get.put(AuthController());
   Get.put(ThemeController());
-  AppInitUtil.initialize();
+  await AppInitUtil.initialize();
   runApp(const MyApp());
 }
 
