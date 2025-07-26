@@ -2,7 +2,6 @@ package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.Trajectory;
 import com.bage.my.app.end.point.repository.TrajectoryRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,8 @@ import java.time.LocalDateTime;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.bage.my.app.end.point.util.JsonUtil;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MapTrajectoryControllerTest {
@@ -23,9 +24,6 @@ public class MapTrajectoryControllerTest {
 
     @Autowired
     private TrajectoryRepository trajectoryRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -51,7 +49,7 @@ public class MapTrajectoryControllerTest {
 
         mockMvc.perform(post("/trajectorys/save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(trajectory)))
+                .content(JsonUtil.getGson().toJson(trajectory)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.data.address").value("保存测试地址"));

@@ -317,7 +317,6 @@ class _ProfilePageState extends State<ProfilePage> {
       if (_birthDate != null) {
         params['birthDate'] =
             '${_birthDate!.year}-${_birthDate!.month}-${_birthDate!.day}';
-        params['birthDate'] = DateUtil.formatDate(params['birthDate']);
       }
 
       // 发送请求

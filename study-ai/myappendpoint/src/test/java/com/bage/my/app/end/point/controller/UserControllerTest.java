@@ -3,7 +3,6 @@ package com.bage.my.app.end.point.controller;
 import com.bage.my.app.end.point.dto.LoginRequest;
 import com.bage.my.app.end.point.dto.RegisterRequest;
 import com.bage.my.app.end.point.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.bage.my.app.end.point.util.JsonUtil;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest {
@@ -25,9 +26,6 @@ public class UserControllerTest {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private MockHttpSession session;
 
@@ -45,7 +43,7 @@ public class UserControllerTest {
         registerRequest.setPassword("password123");
         mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registerRequest)));
+                .content(JsonUtil.getGson().toJson(registerRequest)));
 
         // 登录测试
         LoginRequest loginRequest = new LoginRequest();
@@ -55,7 +53,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/login")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(loginRequest)))
+                .content(JsonUtil.getGson().toJson(loginRequest)))
                 .andExpect(status().isOk());
 //                .andExpect(content().string("登录成功".contains()));
     }
@@ -69,7 +67,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/login")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(loginRequest)))
+                .content(JsonUtil.getGson().toJson(loginRequest)))
                 .andExpect(status().is5xxServerError())
                 .andExpect(jsonPath("$.message").value("用户不存在"));
     }
@@ -82,7 +80,7 @@ public class UserControllerTest {
 
         mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registerRequest)))
+                .content(JsonUtil.getGson().toJson(registerRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.message").value("注册成功"));

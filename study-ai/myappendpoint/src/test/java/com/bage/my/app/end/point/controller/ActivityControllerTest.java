@@ -2,7 +2,6 @@ package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.Activity;
 import com.bage.my.app.end.point.repository.ActivityRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.bage.my.app.end.point.util.JsonUtil;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ActivityControllerTest {
@@ -22,9 +23,6 @@ public class ActivityControllerTest {
 
     @Autowired
     private ActivityRepository activityRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -51,7 +49,7 @@ public class ActivityControllerTest {
 
         mockMvc.perform(post("/activities")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(activity)))
+                .content(JsonUtil.getGson().toJson(activity)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.description").value("新增活动"));
     }

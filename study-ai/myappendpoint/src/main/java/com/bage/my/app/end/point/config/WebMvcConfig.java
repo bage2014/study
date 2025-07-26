@@ -8,16 +8,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Bean;
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // 创建 GsonHttpMessageConverter
-        GsonHttpMessageConverter converter = new GsonHttpMessageConverter();
-        // 设置我们自定义的 Gson 实例
-        converter.setGson(JsonUtil.getGson());
         // 添加到转换器列表
-        converters.add(converter);
+        converters.clear();
+        converters.add(gsonHttpMessageConverter());
     }
+
+    @Bean
+    public GsonHttpMessageConverter gsonHttpMessageConverter() {
+        GsonHttpMessageConverter converter = new GsonHttpMessageConverter();
+        converter.setGson(JsonUtil.getGson());
+        return converter;
+    }
+
 }
