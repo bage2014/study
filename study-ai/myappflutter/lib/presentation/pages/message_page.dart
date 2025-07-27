@@ -21,18 +21,35 @@ class _MessagePageState extends State<MessagePage> {
   DateTime? _startDate;
   DateTime? _endDate;
   final ScrollController _scrollController = ScrollController();
+  int _retryCount = 0;
+  final int _maxRetries = 1;
+  // 上拉加载阈值
+  final double _loadMoreThreshold = 100.0;
+  // 添加时间间隔限制 (毫秒)
+  final int _minRefreshInterval = 1000; // 1秒
+  // 上次请求时间
+  DateTime? _lastRequestTime;
 
   @override
   void initState() {
     super.initState();
-    _fetchMessages();
+    _fetchMessages(refresh: true);
     _scrollController.addListener(_scrollListener);
   }
 
   Future<void> _fetchMessages({bool refresh = false}) async {
-    if (_isLoading || !_hasMore) return;
+    // 检查时间间隔
+    if (_lastRequestTime != null &&
+        DateTime.now().difference(_lastRequestTime!).inMilliseconds <
+            _minRefreshInterval) {
+      return;
+    }
+
+    if (_isLoading) return;
 
     setState(() => _isLoading = true);
+    // 记录请求时间
+    _lastRequestTime = DateTime.now();
 
     try {
       final response = await _httpClient.post(
@@ -48,31 +65,48 @@ class _MessagePageState extends State<MessagePage> {
       setState(() {
         if (refresh) {
           _messages.clear();
-          _currentPage = 0;
-          _hasMore = true;
+          _currentPage = 1;
         }
-        _messages.addAll(pageResponse.data ?? []);
-        _currentPage++;
-        _hasMore = (pageResponse.total ?? 0) > _currentPage * _pageSize;
-        LogUtil.info('length: ${_messages.length}');
+        // 避免添加重复数据
+        final newMessages = pageResponse.data ?? [];
+        if (newMessages.isNotEmpty) {
+          _messages.addAll(newMessages);
+        }
+        _hasMore = (pageResponse.total ?? 0) > _messages.length;
+        if (!refresh && _hasMore) {
+          _currentPage++;
+        }
+        // 重置重试计数
+        _retryCount = 0;
+        LogUtil.info('消息总数: ${_messages.length}');
       });
     } catch (e) {
       LogUtil.error(e.toString(), error: e);
-      Get.snackbar('错误', '获取消息失败: ${e.toString()}');
+      // 重试机制
+      if (_retryCount < _maxRetries) {
+        _retryCount++;
+        LogUtil.info('获取消息失败，正在重试($_retryCount/$_maxRetries)...');
+        // 延迟重试
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          _fetchMessages(refresh: refresh);
+        });
+      } else {
+        Get.snackbar('错误', '获取消息失败: ${e.toString()}');
+        // 重置重试计数
+        _retryCount = 0;
+      }
     } finally {
       setState(() => _isLoading = false);
     }
   }
 
   void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      _fetchMessages();
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - _loadMoreThreshold &&
+        !_isLoading &&
+        _hasMore) {
+      _fetchMessages(refresh: false);
     }
-  }
-
-  Future<void> _refreshMessages() async {
-    await _fetchMessages(refresh: true);
   }
 
   @override
@@ -82,6 +116,7 @@ class _MessagePageState extends State<MessagePage> {
       body: RefreshIndicator(
         onRefresh: () => _fetchMessages(refresh: true),
         child: ListView.builder(
+          controller: _scrollController,
           padding: const EdgeInsets.all(12.0),
           itemCount: _messages.length + (_hasMore ? 1 : 0),
           itemBuilder: (context, index) {
@@ -137,7 +172,24 @@ class _MessagePageState extends State<MessagePage> {
 
   Widget _buildLoadMoreIndicator() {
     return _isLoading
-        ? const Center(child: CircularProgressIndicator())
+        ? const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Column(
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 8.0),
+                  Text('加载更多...'),
+                ],
+              ),
+            ),
+          )
         : const SizedBox();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

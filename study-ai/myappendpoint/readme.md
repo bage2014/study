@@ -67,3 +67,9 @@ Content-Type: application/json
 
 
 docker run -d -p 8000:8080 --name myappendpoint myappendpoint:20250725
+
+
+docker run -d -p 8000:8080 --name myappendpoint myappendpoint:20250727
+
+
+
