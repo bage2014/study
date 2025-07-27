@@ -15,7 +15,7 @@ class _MessagePageState extends State<MessagePage> {
   final HttpClient _httpClient = HttpClient();
   final List<Message> _messages = [];
   int _currentPage = 1;
-  final int _pageSize = 10;
+  final int _pageSize = 5;
   bool _isLoading = false;
   bool _hasMore = true;
   DateTime? _startDate;

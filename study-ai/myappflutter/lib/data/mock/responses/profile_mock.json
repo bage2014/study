@@ -1,0 +1,12 @@
+{
+    "code": 200,
+    "message": "成功",
+    "data": {
+        "id": 1,
+        "username": "zhangsan",
+        "loginAttempts": 0,
+        "email": "zhangsan@qq.com",
+        "gender": "女",
+        "birthDate": "2025-07-27"
+    }
+}
