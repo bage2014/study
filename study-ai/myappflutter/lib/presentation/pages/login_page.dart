@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   DateTime? _lastAvatarTapTime;
   String _captchaUrl = '/captcha';
   String? _requestId; // 新增requestId字段
-  Map<String, String> queryParameters = {};
+  Map<String, String>? queryParameters;
 
   @override
   void initState() {
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
             'username': _usernameController.text,
             'password': _passwordController.text,
             if (_showCaptcha) 'captcha': _captchaController.text,
-            if (_showCaptcha && _requestId != null) 'requestId': _requestId,
+            'requestId': _requestId,
           },
         );
 
@@ -122,6 +122,11 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _loginAttempts++;
           _showCaptcha = _loginAttempts > 0; // 修改为只要尝试次数>0就显示验证码
+          if (_showCaptcha) {
+            // 刷新验证码
+            _captchaUrl =
+                '/captcha?t=${DateTime.now().millisecondsSinceEpoch}&requestId=$_requestId';
+          }
           if (_loginAttempts >= 5) {
             _accountLocked = true;
           }
