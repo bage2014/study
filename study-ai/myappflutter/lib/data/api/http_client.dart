@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import '../../features/controller/env_controller.dart';
@@ -53,6 +54,60 @@ class HttpClient {
     );
     _logResponse(response);
     return HttpInterceptor.interceptResponse(response);
+  }
+
+  // 文件上传请求
+  Future<Map<String, dynamic>> uploadFile(
+    String path,
+    File file, {
+    String fieldName = 'file',
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? extraFields,
+  }) async {
+    if (_envController.currentEnv.value == 'mock') {
+      return HttpMockService.getMockResponse(path);
+    }
+
+    final uri = buildUri(path, queryParameters);
+    final requestHeaders = await HttpInterceptor.interceptRequest(headers);
+
+    // 创建multipart请求
+    final request = http.MultipartRequest('POST', uri);
+
+    // 添加请求头
+    request.headers.addAll(requestHeaders);
+
+    // 添加文件
+    final multipartFile = await http.MultipartFile.fromPath(
+      fieldName,
+      file.path,
+    );
+    request.files.add(multipartFile);
+
+    // 添加额外字段
+    if (extraFields != null) {
+      request.fields.addAll(
+        extraFields.map((key, value) => MapEntry(key, value.toString())),
+      );
+    }
+
+    _logRequest('POST', uri.toString(), requestHeaders, {
+      'file': file.path,
+      ...?extraFields,
+    });
+    final response = await _client.send(request);
+    final responseBody = await response.stream.bytesToString();
+
+    // 构建响应对象
+    final httpResponse = http.Response(
+      responseBody,
+      response.statusCode,
+      headers: response.headers,
+    );
+
+    _logResponse(httpResponse);
+    return HttpInterceptor.interceptResponse(httpResponse);
   }
 
   // 构建请求URL

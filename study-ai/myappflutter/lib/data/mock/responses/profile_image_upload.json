@@ -1,0 +1,9 @@
+{
+    "code": 200,
+    "message": "文件上传成功",
+    "data": {
+        "originalFileName": "scaled_IMG_20220709_082838.jpg",
+        "fileName": "scaled_IMG_20220709_082838.jpg",
+        "fileId": "b25151b4-aa10-47c8-bb4b-11816bd37ced"
+    }
+}

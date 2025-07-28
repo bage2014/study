@@ -37,6 +37,7 @@ dependencies:
   flutter_simple_treeview: ^3.0.2
   package_info_plus: ^4.0.0
   path_provider: ^2.1.1
+  image_picker: ^1.0.0
 
 dev_dependencies:
   flutter_test:

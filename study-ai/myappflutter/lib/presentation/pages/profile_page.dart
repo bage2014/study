@@ -1,9 +1,11 @@
 // 首先，我们需要导入额外的包
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 import 'package:myappflutter/presentation/widgets/base_page.dart';
+import 'dart:io';
 
 // 将StatelessWidget改为StatefulWidget
 class ProfilePage extends StatefulWidget {
@@ -16,17 +18,21 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   // 初始化HttpClient
   final HttpClient _httpClient = HttpClient();
+  Map<String, String>? queryParameters;
 
   // 用户信息变量
   String _name = ''; // 姓名
   String _gender = ''; // 初始性别
   DateTime? _birthDate; // 初始出生日期
+  String _avatarUrl = 'assets/images/user_null.png'; // 头像路径
 
   // 状态变量
   bool _isEditing = false; // 编辑状态
   bool _isLoading = false; // 加载状态
+  bool _isUploading = false; // 上传状态
 
   TextEditingController _nameController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -57,6 +63,11 @@ class _ProfilePageState extends State<ProfilePage> {
         if (data['birthDate'] != null) {
           _birthDate = DateTime.parse(data['birthDate']);
         }
+
+        // 解析头像URL
+        if (data['avatar'] != null && data['avatar'].isNotEmpty) {
+          _avatarUrl = data['avatar'];
+        }
       });
     } catch (e) {
       print('获取用户信息失败: $e');
@@ -66,6 +77,107 @@ class _ProfilePageState extends State<ProfilePage> {
         _isLoading = false;
       });
     }
+  }
+
+  // 选择图片
+  Future<void> _selectImage() async {
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
+
+    if (image != null) {
+      // 上传图片
+      _uploadImage(File(image.path));
+    }
+  }
+
+  // 拍照
+  Future<void> _takePhoto() async {
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 80,
+    );
+
+    if (image != null) {
+      // 上传图片
+      _uploadImage(File(image.path));
+    }
+  }
+
+  // 上传图片
+  Future<void> _uploadImage(File imageFile) async {
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      // 调用HttpClient的上传方法
+      final response = await _httpClient.uploadFile('/app/upload', imageFile);
+
+      // 适配新的数据格式
+      if (response['code'] == 200) {
+        // 提取data字段
+        final data = response['data'] ?? {};
+        final fileId = data['fileId'] ?? '';
+        final fileName = data['fileName'] ?? '';
+
+        // 这里可以根据实际需求使用fileId和fileName
+        // 例如，更新用户头像
+        setState(() {
+          // 假设后端提供了一个获取图片的URL格式
+          _avatarUrl = _httpClient
+              .buildUri('/app/files/$fileName', queryParameters)
+              .toString();
+          LogUtil.info('上传成功，_avatarUrl: $_avatarUrl');
+        });
+
+        Get.snackbar('成功', '修改头像成功');
+        LogUtil.info('上传成功，文件ID: $fileId, 文件名: $fileName');
+      } else {
+        Get.snackbar('错误', '修改头像失败: ${response['message'] ?? '未知错误'}');
+      }
+    } catch (e) {
+      print('上传头像失败: $e');
+      Get.snackbar('错误', '上传头像失败');
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
+    }
+  }
+
+  // 显示选择对话框
+  void _showImageSourceDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('选择图片来源'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: const Text('从相册选择'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _selectImage();
+                  },
+                ),
+                const Padding(padding: EdgeInsets.all(8.0)),
+                GestureDetector(
+                  child: const Text('拍照'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _takePhoto();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -83,13 +195,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Theme.of(context).primaryColor,
+                  child: GestureDetector(
+                    onTap: _showImageSourceDialog,
                     child: CircleAvatar(
-                      radius: 55,
-                      backgroundImage: AssetImage(
-                        'assets/images/user_null.png',
+                      radius: 60,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: CircleAvatar(
+                        radius: 55,
+                        backgroundImage: _avatarUrl.startsWith('http')
+                            ? NetworkImage(_avatarUrl)
+                            : AssetImage(_avatarUrl) as ImageProvider,
                       ),
                     ),
                   ),

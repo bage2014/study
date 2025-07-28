@@ -12,9 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bage.my.app.end.point.dto.AppVersionResponse;
 import com.bage.my.app.end.point.entity.AppVersion;
+import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.service.AppVersionService;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,6 +28,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/app/")
+@Slf4j
 public class AppUpdateController {
 
     @Value("${app.update.file-dir:./app-updates}")
@@ -41,7 +44,7 @@ public class AppUpdateController {
 
     // 上传文件
     @PostMapping("/upload")
-    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ApiResponse<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             // 创建存储目录
             Path uploadPath = Paths.get(fileDir);
@@ -58,10 +61,12 @@ public class AppUpdateController {
             // 返回文件ID
             Map<String, String> response = new HashMap<>();
             response.put("fileId", fileId);
-            response.put("fileName", file.getOriginalFilename());
-            return ResponseEntity.ok(response);
+            response.put("originalFileName", file.getOriginalFilename());
+            response.put("fileName", fileName);
+            return new ApiResponse<>(200, "文件上传成功", response);
         } catch (IOException e) {
-            throw new RuntimeException("文件上传失败", e);
+            log.error("文件上传失败: {}", e.getMessage());
+            return new ApiResponse<>(500, "文件上传失败", null);
         }
     }
 
@@ -96,6 +101,28 @@ public class AppUpdateController {
             return ResponseEntity.ok(AppVersionResponse.latestVersion(currentVersion));
         } else {
             return ResponseEntity.ok(AppVersionResponse.updateAvailable(appVersion));
+        }
+    }
+    
+    // 访问文件
+    @GetMapping("/files/{fileName}")
+    public ResponseEntity<Resource> getFile(@PathVariable String fileName) {
+        try {
+            Path uploadPath = Paths.get(fileDir);
+            Path filePath = uploadPath.resolve(fileName);
+            log.info("文件路径: {}", filePath);
+            if (!Files.exists(filePath)) {
+                throw new RuntimeException("文件不存在");
+            }
+
+            Resource resource = new UrlResource(filePath.toUri());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                    .body(resource);
+        } catch (Exception e) {
+            log.error("文件访问失败: {}", e.getMessage());
+            throw new RuntimeException("文件访问失败", e);
         }
     }
 }
