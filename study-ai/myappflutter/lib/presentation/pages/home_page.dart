@@ -1,17 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/config/app_routes.dart';
-import '../widgets/base_page.dart'; // 使用基础页面组件
+import '../widgets/base_page.dart';
 import '../widgets/loading_wrapper.dart';
 import 'package:myappflutter/core/utils/user_util.dart';
+// 新增必要导入
+import 'package:myappflutter/core/utils/prefs_util.dart';
+import 'package:myappflutter/core/constants/prefs_constants.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
+import 'package:myappflutter/data/api/http_client.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  // 新增HttpClient实例
+  final HttpClient _httpClient = HttpClient();
 
   Future<Map<String, dynamic>> _loadHomeData() async {
-    String username = await UserUtil.getUserName() ?? '未登录';
-    String avatarUrl = await UserUtil.getUserAvatar() ?? '';
-    return {'username': username, 'avatarUrl': avatarUrl};
+    try {
+      // 获取token并构建请求参数
+      final String token =
+          (await PrefsUtil.getString(PrefsConstants.token)) ?? '';
+      final Map<String, String> queryParameters = {
+        'Authorization': token.toString(),
+      };
+
+      // 调用后端API获取用户信息
+      final response = await _httpClient.get(
+        '/profile', // 与ProfilePage共用用户信息接口
+        queryParameters: queryParameters,
+      );
+
+      // 处理后端响应数据
+      if (response['code'] == 200 && response['data'] != null) {
+        final data = response['data'];
+        String username = data['username'] ?? '未登录';
+        String avatarUrl = '';
+
+        // 构建完整头像URL（包含认证参数）
+        if (data['avatarUrl'] != null && data['avatarUrl'].isNotEmpty) {
+          avatarUrl = _httpClient
+              .buildUri(data['avatarUrl'], queryParameters)
+              .toString();
+          LogUtil.info('HomePage头像URL: $avatarUrl');
+        }
+
+        return {'username': username, 'avatarUrl': avatarUrl};
+      } else {
+        Get.snackbar('错误', '获取用户信息失败: ${response['message'] ?? '未知错误'}');
+        return {'username': '未登录', 'avatarUrl': ''};
+      }
+    } catch (e) {
+      LogUtil.error('获取用户信息异常: $e');
+      Get.snackbar('错误', '获取用户信息失败，请稍后重试');
+      return {'username': '未登录', 'avatarUrl': ''};
+    }
   }
 
   @override
@@ -44,7 +87,7 @@ class HomePage extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 24,
-                backgroundImage: avatarUrl != null
+                backgroundImage: avatarUrl != null && avatarUrl.isNotEmpty
                     ? NetworkImage(avatarUrl)
                     : const AssetImage('assets/images/user_null.png')
                           as ImageProvider,

@@ -29,7 +29,7 @@ class AppRoutes {
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
-    GetPage(name: HOME, page: () => const HomePage()),
+    GetPage(name: HOME, page: () => HomePage()), // 移除 const 关键字
     GetPage(name: CURRENT_LOCATION, page: () => const CurrentLocationPage()),
     GetPage(name: FIND_LOCATION, page: () => const FindLocationPage()),
     GetPage(name: HISTORY_LOCATION, page: () => const HistoryLocationPage()),

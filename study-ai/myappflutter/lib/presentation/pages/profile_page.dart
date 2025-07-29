@@ -1,4 +1,6 @@
 // 首先，我们需要导入额外的包
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,6 +8,8 @@ import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 import 'package:myappflutter/presentation/widgets/base_page.dart';
 import 'dart:io';
+import 'package:myappflutter/core/utils/prefs_util.dart';
+import 'package:myappflutter/core/constants/prefs_constants.dart';
 
 // 将StatelessWidget改为StatefulWidget
 class ProfilePage extends StatefulWidget {
@@ -37,8 +41,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    // 初始化时获取用户信息
-    _fetchUserProfile();
+    // 先初始化queryParameters
+    PrefsUtil.getString(PrefsConstants.token).then((value) {
+      queryParameters = {'Authorization': '$value'};
+      // 然后再获取用户信息
+      _fetchUserProfile();
+    });
   }
 
   // 从后台获取用户信息
@@ -65,8 +73,11 @@ class _ProfilePageState extends State<ProfilePage> {
         }
 
         // 解析头像URL
-        if (data['avatar'] != null && data['avatar'].isNotEmpty) {
-          _avatarUrl = data['avatar'];
+        if (data['avatarUrl'] != null && data['avatarUrl'].isNotEmpty) {
+          _avatarUrl = _httpClient
+              .buildUri('${data["avatarUrl"]}', queryParameters)
+              .toString();
+          LogUtil.info('头像URL: $_avatarUrl');
         }
       });
     } catch (e) {
@@ -113,7 +124,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       // 调用HttpClient的上传方法
-      final response = await _httpClient.uploadFile('/app/upload', imageFile);
+      final response = await _httpClient.uploadFile(
+        '/images/upload',
+        imageFile,
+      );
 
       // 适配新的数据格式
       if (response['code'] == 200) {
@@ -127,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           // 假设后端提供了一个获取图片的URL格式
           _avatarUrl = _httpClient
-              .buildUri('/app/files/$fileName', queryParameters)
+              .buildUri('/images/item/$fileName', queryParameters)
               .toString();
           LogUtil.info('上传成功，_avatarUrl: $_avatarUrl');
         });

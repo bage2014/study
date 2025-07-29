@@ -42,6 +42,12 @@ public class AuthFilter implements Filter {
 
         // 尝试获取Authorization头
         String authorization = request.getHeader("Authorization");
+        log.info("getHeader Authorization: {}", authorization);
+        if (authorization == null || authorization.isEmpty()) {
+            // 认证失败，返回401错误
+            authorization = request.getParameter("Authorization");
+            log.warn("getParameter Authorization from parameter, {}", authorization);
+        }
 
         // 清除之前可能存在的用户上下文
         UserContext.clear();
@@ -50,6 +56,7 @@ public class AuthFilter implements Filter {
             try {
                 // 校验token
                 UserToken userToken = userTokenRepository.findByToken(authorization);
+                log.info("findByToken: {}", userToken);
                 if (userToken != null) {
                     // 检查token是否过期
                     if (userToken.getTokenExpireTime().isAfter(LocalDateTime.now())) {
@@ -67,6 +74,7 @@ public class AuthFilter implements Filter {
             }
         }
 
+        log.warn("Authorization is empty, Authentication failed");
         // 认证失败，返回401错误
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("Authentication failed");
