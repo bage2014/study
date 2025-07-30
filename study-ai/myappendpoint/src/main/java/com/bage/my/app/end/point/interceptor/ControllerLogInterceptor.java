@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import com.bage.my.app.end.point.util.JsonUtil;
 
@@ -21,8 +20,6 @@ public class ControllerLogInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 使用 ContentCachingRequestWrapper 包装原始请求
-        ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
-
         String timestamp = LocalDateTime.now().format(formatter);
         String params = "";
 
@@ -30,13 +27,6 @@ public class ControllerLogInterceptor implements HandlerInterceptor {
             try {
                 params = "Post unsupported log info ";
                 // 读取请求体
-                // String body = wrappedRequest.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-                // if (body.length() > 0) {
-                //     params = body;
-                // } else {
-                //     // 如果请求体为空，尝试使用参数映射
-                //     params = JsonUtil.toJson(request.getParameterMap());
-                // }
             } catch (Exception e) {
                 log.error("读取请求体失败", e);
                 // 发生异常时，尝试使用参数映射

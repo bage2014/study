@@ -25,6 +25,8 @@ public class UserToken {
 
     private String token;
 
+    private String refreshToken;
+
     private LocalDateTime tokenExpireTime;
 
 }

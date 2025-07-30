@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserTokenRepository extends JpaRepository<UserToken, Long> {
     UserToken findByToken(String token);
+    UserToken findByRefreshToken(String refreshToken);
     UserToken findByUserId(Long userId);
     void deleteByUserId(Long userId);
 }

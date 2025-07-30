@@ -15,6 +15,7 @@ CREATE TABLE user_token (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT NOT NULL,
     token VARCHAR(255) NOT NULL,
+    refresh_token VARCHAR(255) NOT NULL,
     token_expire_time TIMESTAMP NULL,
     FOREIGN KEY (user_id) REFERENCES app_user(id)
 );

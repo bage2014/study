@@ -114,13 +114,15 @@ public class UserController {
         if (user.getPassword().equals(password)) {
             // 登录成功逻辑
             // 生成token
-            String token = user.getId() + "-" + UUID.randomUUID().toString();
+            String token = user.getId() + "-refresh-" + UUID.randomUUID().toString();
+            String refreshToken = user.getId() + "-refresh-" + UUID.randomUUID().toString();
             LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
 
             // 更新用户token信息
             UserToken userToken = new UserToken();
 
             userToken.setToken(token);
+            userToken.setRefreshToken(refreshToken);
             userToken.setTokenExpireTime(expireTime);
             userToken.setUserId(user.getId());
             userTokenRepository.save(userToken);
@@ -279,21 +281,24 @@ public class UserController {
 
     // 刷新token有效期
     @RequestMapping("/refreshToken")
-    public ApiResponse<String> refreshToken(@RequestParam String token) {
-        UserToken user = userTokenRepository.findByToken(token);
+    public ApiResponse<UserToken> refreshToken(@RequestParam String refreshToken) {
+        UserToken user = userTokenRepository.findByRefreshToken(refreshToken);
         if (user == null) {
             return new ApiResponse<>(401, "无效token", null);
         }
 
         // 生成新token
-        String newToken = UUID.randomUUID().toString();
-        user.setToken(newToken);
+        String token = user.getId() + "-refresh-" + UUID.randomUUID().toString();
+        String newRefreshToken = user.getId() + "-refresh-" + UUID.randomUUID().toString();
+        LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
 
-        // 延长有效期7天
-        user.setTokenExpireTime(LocalDateTime.now().plusDays(7));
+        user.setToken(token);
+        user.setRefreshToken(newRefreshToken);
+        user.setTokenExpireTime(expireTime);
+
         userTokenRepository.save(user);
 
-        return new ApiResponse<>(200, "token刷新成功", user.getToken());
+        return new ApiResponse<>(200, "token刷新成功", user);
     }
 
     // 新增方法：完善用户信息

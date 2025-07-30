@@ -4,6 +4,7 @@ class PrefsConstants {
   static const String userInfo = 'user_info';
   static const String avatarUrl = 'avatar_url';
   static const String token = 'token';
+  static const String refreshToken = 'refresh_token';
   static const String tokenExpireTime = 'token_expire_time';
 
   // 设置相关
