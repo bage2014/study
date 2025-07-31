@@ -3,11 +3,7 @@ class LoginResponse {
   final String? message;
   final Data? data;
 
-  LoginResponse({
-    this.code,
-    this.message,
-    this.data,
-  });
+  LoginResponse({this.code, this.message, this.data});
 
   factory LoginResponse.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -21,11 +17,7 @@ class LoginResponse {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'message': message,
-      'data': data?.toJson(),
-    };
+    return {'code': code, 'message': message, 'data': data?.toJson()};
   }
 }
 
@@ -33,10 +25,7 @@ class Data {
   final User? user;
   final UserToken? userToken;
 
-  Data({
-    this.user,
-    this.userToken,
-  });
+  Data({this.user, this.userToken});
 
   factory Data.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
@@ -44,15 +33,14 @@ class Data {
     }
     return Data(
       user: json['user'] != null ? User.fromJson(json['user']) : null,
-      userToken: json['userToken'] != null ? UserToken.fromJson(json['userToken']) : null,
+      userToken: json['userToken'] != null
+          ? UserToken.fromJson(json['userToken'])
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'user': user?.toJson(),
-      'userToken': userToken?.toJson(),
-    };
+    return {'user': user?.toJson(), 'userToken': userToken?.toJson()};
   }
 }
 
@@ -107,12 +95,14 @@ class UserToken {
   final int? id;
   final int? userId;
   final String? token;
+  final String? refreshToken;
   final String? tokenExpireTime;
 
   UserToken({
     this.id,
     this.userId,
     this.token,
+    this.refreshToken,
     this.tokenExpireTime,
   });
 
@@ -124,6 +114,7 @@ class UserToken {
       id: json['id'],
       userId: json['userId'],
       token: json['token'],
+      refreshToken: json['refreshToken'],
       tokenExpireTime: json['tokenExpireTime'],
     );
   }
@@ -133,6 +124,7 @@ class UserToken {
       'id': id,
       'userId': userId,
       'token': token,
+      'refreshToken': refreshToken,
       'tokenExpireTime': tokenExpireTime,
     };
   }

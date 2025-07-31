@@ -116,7 +116,8 @@ public class UserController {
             // 生成token
             String token = user.getId() + "-refresh-" + UUID.randomUUID().toString();
             String refreshToken = user.getId() + "-refresh-" + UUID.randomUUID().toString();
-            LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
+            // LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
+            LocalDateTime expireTime = LocalDateTime.now().plusMinutes(1);
 
             // 更新用户token信息
             UserToken userToken = new UserToken();
@@ -270,18 +271,24 @@ public class UserController {
     // 校验token是否有效
     @RequestMapping("/checkToken")
     public ApiResponse<Boolean> checkToken(@RequestBody CheckTokenRequest request) {
+        log.info("checkToken request:{}", request);
         UserToken user = userTokenRepository.findByToken(request.getToken());
         if (user == null || user.getTokenExpireTime() == null) {
             return new ApiResponse<>(401, "无效token", false);
         }
 
         boolean isValid = LocalDateTime.now().isBefore(user.getTokenExpireTime());
+        log.info("checkToken isValid:{}", isValid);
+        if (!isValid) {
+            return new ApiResponse<>(401, "token已过期", false);
+        }
         return new ApiResponse<>(200, "校验成功", isValid);
     }
 
     // 刷新token有效期
     @RequestMapping("/refreshToken")
     public ApiResponse<UserToken> refreshToken(@RequestParam String refreshToken) {
+        log.info("refreshToken refreshToken:{}", refreshToken);
         UserToken user = userTokenRepository.findByRefreshToken(refreshToken);
         if (user == null) {
             return new ApiResponse<>(401, "无效token", null);
@@ -295,7 +302,7 @@ public class UserController {
         user.setToken(token);
         user.setRefreshToken(newRefreshToken);
         user.setTokenExpireTime(expireTime);
-
+        log.info("refreshToken user:{}", user);
         userTokenRepository.save(user);
 
         return new ApiResponse<>(200, "token刷新成功", user);

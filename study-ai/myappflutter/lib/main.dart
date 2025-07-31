@@ -7,25 +7,65 @@ import 'features/controller/env_controller.dart';
 import 'features/controller/auth_controller.dart';
 import 'features/controller/theme_controller.dart';
 import 'core/utils/app_init_util.dart';
+import 'core/utils/prefs_util.dart';
+import 'core/utils/log_util.dart';
+import 'data/api/http_client.dart';
+import 'core/constants/prefs_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // 注册HttpClient和EnvController
+  // 注册控制器
   Get.put(EnvController());
   Get.put(AuthController());
   Get.put(ThemeController());
   await AppInitUtil.initialize();
-  runApp(const MyApp());
+
+  // 调用抽取的方法获取初始路由
+  final initialRoute = await _determineInitialRoute();
+  runApp(MyApp(initialRoute: initialRoute));
+}
+
+// 抽取的自动登录检查方法
+Future<String> _determineInitialRoute() async {
+  // 默认路由为登录页
+  String initialRoute = AppRoutes.LOGIN;
+  final token = await PrefsUtil.getString(PrefsConstants.token);
+  LogUtil.info('Main auto login check token = $token');
+
+  if (token != null) {
+    try {
+      final httpClient = HttpClient();
+      final response = await httpClient.post(
+        '/checkToken',
+        body: {'token': token},
+      );
+
+      if (response['code'] == 200) {
+        initialRoute = AppRoutes.HOME;
+        // 更新AuthController登录状态
+        Get.find<AuthController>().login();
+      } else {
+        // 令牌无效，清除本地存储
+        await PrefsUtil.remove(PrefsConstants.token);
+        await PrefsUtil.remove(PrefsConstants.userInfo);
+        await PrefsUtil.remove(PrefsConstants.tokenExpireTime);
+      }
+    } catch (e) {
+      LogUtil.error('Main check token failed: $e');
+    }
+  }
+  return initialRoute;
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+  const MyApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: '我的应用',
-      initialRoute: AppRoutes.LOGIN, // 应用启动直接进入登录页面
+      initialRoute: initialRoute, // 使用动态确定的初始路由
       getPages: AppRoutes.routes,
       theme: Themes.light,
       darkTheme: Themes.dark,

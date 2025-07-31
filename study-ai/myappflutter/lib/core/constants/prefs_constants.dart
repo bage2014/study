@@ -20,6 +20,7 @@ class PrefsConstants {
     userInfo,
     avatarUrl,
     token,
+    refreshToken,
     tokenExpireTime,
     theme,
     language,

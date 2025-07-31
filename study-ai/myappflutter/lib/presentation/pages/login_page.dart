@@ -39,39 +39,6 @@ class _LoginPageState extends State<LoginPage> {
     _requestId = DateTime.now().millisecondsSinceEpoch.toString();
     _captchaUrl =
         '/captcha?t=${DateTime.now().millisecondsSinceEpoch}&requestId=$_requestId';
-    _initPreferences();
-  }
-
-  Future<void> _initPreferences() async {
-    _checkAutoLogin();
-  }
-
-  void _checkAutoLogin() async {
-    final token = await PrefsUtil.getString(PrefsConstants.token);
-    LogUtil.info('LoginPage _checkAutoLogin token = $token');
-
-    if (token != null) {
-      try {
-        // 使用http client请求后台/checkToken接口
-        final response = await _httpClient.post(
-          '/checkToken',
-          body: {'token': token},
-        );
-
-        // 检查响应
-        if (response['code'] == 200) {
-          Get.offNamed(AppRoutes.HOME);
-        } else {
-          // 令牌无效，清除本地存储
-          await PrefsUtil.remove(PrefsConstants.token);
-          await PrefsUtil.remove(PrefsConstants.userInfo);
-          await PrefsUtil.remove(PrefsConstants.tokenExpireTime);
-        }
-      } catch (e) {
-        LogUtil.error('检查token失败: $e');
-        // 网络错误时，可以选择保留本地token，下次再试
-      }
-    }
   }
 
   void _handleLogin() async {
@@ -112,6 +79,10 @@ class _LoginPageState extends State<LoginPage> {
           await PrefsUtil.setString(
             PrefsConstants.tokenExpireTime,
             loginResponse.data!.userToken!.tokenExpireTime!,
+          );
+          await PrefsUtil.setString(
+            PrefsConstants.refreshToken,
+            loginResponse.data!.userToken!.refreshToken!,
           );
 
           Get.offNamed(AppRoutes.HOME);

@@ -14,7 +14,8 @@ public class AuthConfig {
             "/sendEmailCaptcha",
             "/resetPassword",
 
-
+            "/checkToken",
+            "/refreshToken",
 
             "/h2-console/**",
             "/actuator/**"
