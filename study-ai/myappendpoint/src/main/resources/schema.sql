@@ -17,6 +17,7 @@ CREATE TABLE user_token (
     token VARCHAR(255) NOT NULL,
     refresh_token VARCHAR(255) NOT NULL,
     token_expire_time TIMESTAMP NULL,
+    refresh_token_expire_time TIMESTAMP NULL,
     FOREIGN KEY (user_id) REFERENCES app_user(id)
 );
 

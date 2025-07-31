@@ -26,6 +26,7 @@ import com.bage.my.app.end.point.repository.UserTokenRepository;
 import com.bage.my.app.end.point.util.AuthUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.bage.my.app.end.point.dto.CheckTokenRequest;
+import com.bage.my.app.end.point.dto.RefreshTokenRequest;
 
 @RestController
 @Slf4j
@@ -117,7 +118,8 @@ public class UserController {
             String token = user.getId() + "-refresh-" + UUID.randomUUID().toString();
             String refreshToken = user.getId() + "-refresh-" + UUID.randomUUID().toString();
             // LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
-            LocalDateTime expireTime = LocalDateTime.now().plusMinutes(1);
+            LocalDateTime expireTime = LocalDateTime.now().plusMinutes(7);
+            LocalDateTime refreshExpireTime = LocalDateTime.now().plusDays(14);
 
             // 更新用户token信息
             UserToken userToken = new UserToken();
@@ -125,6 +127,7 @@ public class UserController {
             userToken.setToken(token);
             userToken.setRefreshToken(refreshToken);
             userToken.setTokenExpireTime(expireTime);
+            userToken.setRefreshTokenExpireTime(refreshExpireTime);
             userToken.setUserId(user.getId());
             userTokenRepository.save(userToken);
 
@@ -287,8 +290,9 @@ public class UserController {
 
     // 刷新token有效期
     @RequestMapping("/refreshToken")
-    public ApiResponse<UserToken> refreshToken(@RequestParam String refreshToken) {
-        log.info("refreshToken refreshToken:{}", refreshToken);
+    public ApiResponse<UserToken> refreshToken(@RequestBody RefreshTokenRequest request) {
+        // 将原有代码中直接使用refreshToken的地方替换为request.getRefreshToken()
+        String refreshToken = request.getRefreshToken();
         UserToken user = userTokenRepository.findByRefreshToken(refreshToken);
         if (user == null) {
             return new ApiResponse<>(401, "无效token", null);

@@ -29,4 +29,6 @@ public class UserToken {
 
     private LocalDateTime tokenExpireTime;
 
+    private LocalDateTime refreshTokenExpireTime;
+
 }
