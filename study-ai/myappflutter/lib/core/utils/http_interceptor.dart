@@ -62,7 +62,7 @@ class HttpInterceptor {
               refreshResponse['data'] != null) {
             final newToken = refreshResponse['data']['token'];
             final newRefreshToken = refreshResponse['data']['refreshToken'];
-            final expireTime = refreshResponse['data']['expireTime'];
+            final expireTime = refreshResponse['data']['tokenExpireTime'];
 
             // 4. 更新本地存储的Token
             await PrefsUtil.setString(PrefsConstants.token, newToken);

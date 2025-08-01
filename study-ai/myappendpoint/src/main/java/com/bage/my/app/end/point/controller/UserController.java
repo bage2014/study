@@ -115,7 +115,7 @@ public class UserController {
         if (user.getPassword().equals(password)) {
             // 登录成功逻辑
             // 生成token
-            String token = user.getId() + "-refresh-" + UUID.randomUUID().toString();
+            String token = user.getId() + "-" + UUID.randomUUID().toString();
             String refreshToken = user.getId() + "-refresh-" + UUID.randomUUID().toString();
             // LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
             LocalDateTime expireTime = LocalDateTime.now().plusMinutes(7);
@@ -297,9 +297,17 @@ public class UserController {
         if (user == null) {
             return new ApiResponse<>(401, "无效token", null);
         }
+        if (user.getRefreshTokenExpireTime() == null) {
+            return new ApiResponse<>(401, "无效token", null);
+        }
+
+        // 校验刷新token是否过期
+        if (LocalDateTime.now().isAfter(user.getRefreshTokenExpireTime())) {
+            return new ApiResponse<>(401, "刷新token已过期", null);
+        }
 
         // 生成新token
-        String token = user.getId() + "-refresh-" + UUID.randomUUID().toString();
+        String token = user.getId() + "-" + UUID.randomUUID().toString();
         String newRefreshToken = user.getId() + "-refresh-" + UUID.randomUUID().toString();
         LocalDateTime expireTime = LocalDateTime.now().plusDays(7);
 
