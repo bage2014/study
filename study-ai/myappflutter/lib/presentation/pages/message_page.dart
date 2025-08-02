@@ -91,7 +91,7 @@ class _MessagePageState extends State<MessagePage> {
           _fetchMessages(refresh: refresh);
         });
       } else {
-        Get.snackbar('错误', '获取消息失败: ${e.toString()}');
+        Get.snackbar('error', '${'fetch_message_failed'}: ${e.toString()}');
         // 重置重试计数
         _retryCount = 0;
       }
@@ -112,7 +112,7 @@ class _MessagePageState extends State<MessagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('消息中心')),
+      appBar: AppBar(title: Text('message_center')),
       body: RefreshIndicator(
         onRefresh: () => _fetchMessages(refresh: true),
         child: ListView.builder(
@@ -140,7 +140,7 @@ class _MessagePageState extends State<MessagePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '发件人: ${message.senderId}',
+                          '${'sender'}: ${message.senderId}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
@@ -179,7 +179,7 @@ class _MessagePageState extends State<MessagePage> {
                 children: [
                   CircularProgressIndicator(),
                   SizedBox(height: 8.0),
-                  Text('加载更多...'),
+                  Text('loading_more'),
                 ],
               ),
             ),

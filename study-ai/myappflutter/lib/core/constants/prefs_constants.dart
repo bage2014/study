@@ -10,6 +10,7 @@ class PrefsConstants {
   // 设置相关
   static const String theme = 'theme';
   static const String language = 'language';
+  static const String env = 'env';
 
   // 其他
   static const String lastLoginTime = 'last_login_time';
@@ -24,6 +25,7 @@ class PrefsConstants {
     tokenExpireTime,
     theme,
     language,
+    env,
     lastLoginTime,
   ];
 }

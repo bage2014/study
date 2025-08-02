@@ -38,7 +38,7 @@ class _FamilyPageState extends State<FamilyPage> {
       setState(() {
         _isLoading = false;
       });
-      Get.snackbar('错误', '加载家族数据失败: ${e.toString()}');
+      Get.snackbar('error', '加载家族数据失败: ${e.toString()}');
     }
   }
 
@@ -46,7 +46,7 @@ class _FamilyPageState extends State<FamilyPage> {
   Widget build(BuildContext context) {
     // 使用BasePage组件
     return BasePage(
-      title: '家族树',
+      title: 'family_title',
       body: _isLoading
           ? const Center(
               child: Column(
@@ -54,12 +54,12 @@ class _FamilyPageState extends State<FamilyPage> {
                 children: [
                   CircularProgressIndicator(),
                   SizedBox(height: 20),
-                  Text('加载家族数据中...'), // 增加加载提示文本
+                  Text('loading_family_data'), // 增加加载提示文本
                 ],
               ),
             )
           : _familyData == null
-          ? const Center(child: Text('暂无数据'))
+          ? Center(child: Text('no_data'))
           : Column(
               children: [
                 SizedBox(height: 64), // 在这里添加SizedBox
@@ -91,9 +91,9 @@ class _FamilyPageState extends State<FamilyPage> {
             ),
             title: GestureDetector(
               onTap: () => _showMemberOptions(member),
-              child: Text(member.name ?? '未知成员'),
+              child: Text(member.name ?? 'unknown_member'),
             ),
-            subtitle: Text(member.relationship ?? '未知关系'),
+            subtitle: Text(member.relationship ?? 'unknown_relationship'),
             onTap: () => setState(() {
               _expandedStates[nodeKey] = !isExpanded;
             }),
@@ -114,7 +114,7 @@ void _showMemberOptions(FamilyData member) {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: Text('切换到当前用户'),
+            title: Text('switch_to_user'),
             onTap: () {
               LogUtil.info('切换到用户: \${member.name}');
               LogUtil.info('查看用户信息: \${member.name}');
@@ -122,7 +122,7 @@ void _showMemberOptions(FamilyData member) {
             },
           ),
           ListTile(
-            title: Text('查看该用户信息'),
+            title: Text('view_member_info'),
             onTap: () {
               print('查看用户信息: ${member.name}');
               Get.toNamed(AppRoutes.PROFILE, arguments: {'userId': member.id});

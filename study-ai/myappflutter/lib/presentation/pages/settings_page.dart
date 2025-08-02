@@ -10,6 +10,7 @@ import '../../core/utils/prefs_util.dart';
 import '../../data/api/http_client.dart';
 import '../../core/config/app_routes.dart';
 import 'package:flutter/services.dart';
+import '../../core/constants/prefs_constants.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -83,7 +84,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   LogUtil.info('language: $value');
                   Get.updateLocale(Locale(value));
                   await _prefs.setString(
-                    'language',
+                    PrefsConstants.language,
                     value,
                   ); // 保存到SharedPreferences
                 }
@@ -170,7 +171,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 if (value != null) {
                   LogUtil.info('env: $value');
                   _envController.changeEnv(value);
-                  await _prefs.setString('env', value); // 保存到SharedPreferences
+                  await _prefs.setString(
+                    PrefsConstants.env,
+                    value,
+                  ); // 保存到SharedPreferences
                 }
               },
             ),
