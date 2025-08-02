@@ -19,10 +19,10 @@ class AppInitUtil {
     await _initializeTheme(prefs);
 
     // 初始化语言
-    _initializeLanguage(prefs);
+    await _initializeLanguage(prefs);
 
     // 初始化环境
-    _initializeEnvironment(prefs);
+    await _initializeEnvironment(prefs);
 
     LogUtil.info('应用设置初始化完成');
   }
@@ -46,7 +46,7 @@ class AppInitUtil {
   }
 
   // 初始化语言
-  static void _initializeLanguage(SharedPreferences prefs) {
+  static Future<void> _initializeLanguage(SharedPreferences prefs) async {
     final language = prefs.getString(PrefsConstants.language);
 
     LogUtil.info('初始化语言: $language');
@@ -64,7 +64,7 @@ class AppInitUtil {
   }
 
   // 初始化环境
-  static void _initializeEnvironment(SharedPreferences prefs) {
+  static Future<void> _initializeEnvironment(SharedPreferences prefs) async {
     final envController = Get.put(EnvController());
     final env = prefs.getString('env');
 

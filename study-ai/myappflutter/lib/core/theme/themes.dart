@@ -3,29 +3,79 @@ import 'package:flutter/material.dart';
 class Themes {
   static final light = ThemeData(
     brightness: Brightness.light,
-    primaryColor: Colors.blue,
-    scaffoldBackgroundColor: Colors.white,
+    // Updated primary color with better visual hierarchy
+    primaryColor: const Color(0xFF2196F3),
+    primaryColorLight: const Color(0xFF64B5F6),
+    primaryColorDark: const Color(0xFF0D47A1),
+    secondaryHeaderColor: const Color(0xFF81C784),
+    scaffoldBackgroundColor: const Color(0xFFF5F7FA),
+    // Enhanced text theme with proper contrast
     textTheme: TextTheme(
-      bodyMedium: TextStyle(color: Colors.black),
-      bodySmall: TextStyle(color: Colors.black),
+      bodyMedium: const TextStyle(color: Color(0xFF2D3243), fontSize: 16),
+      bodySmall: TextStyle(
+        color: const Color(0xFF2D3243).withOpacity(0.7),
+        fontSize: 14,
+      ),
+      titleLarge: const TextStyle(
+        color: Color(0xFF1A1D26),
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),
     ),
     appBarTheme: AppBarTheme(
-      color: Colors.blue,
-      titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+      color: const Color(0xFF2196F3),
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+      elevation: 4,
+    ),
+    // Added accent color for interactive elements
+    colorScheme: ColorScheme.light(
+      primary: const Color(0xFF2196F3),
+      secondary: const Color(0xFF00BCD4),
+      surface: Colors.white,
+      error: const Color(0xFFB00020),
     ),
   );
 
   static final dark = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.blueGrey,
-    scaffoldBackgroundColor: Colors.grey[900],
+    // Deeper primary color for dark theme
+    primaryColor: const Color(0xFF3949AB),
+    primaryColorLight: const Color(0xFF7986CB),
+    primaryColorDark: const Color(0xFF1A237E),
+    secondaryHeaderColor: const Color(0xFF4CAF50),
+    scaffoldBackgroundColor: const Color(0xFF121212),
+    // Improved text contrast for dark backgrounds
     textTheme: TextTheme(
-      bodyMedium: TextStyle(color: Colors.white),
-      bodySmall: TextStyle(color: Colors.white),
+      bodyMedium: const TextStyle(color: Color(0xFFE0E0E0), fontSize: 16),
+      bodySmall: TextStyle(
+        color: const Color(0xFFE0E0E0).withOpacity(0.7),
+        fontSize: 14,
+      ),
+      titleLarge: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),
     ),
     appBarTheme: AppBarTheme(
-      color: Colors.blueGrey,
-      titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+      color: const Color(0xFF3949AB),
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+      elevation: 4,
+    ),
+    // Added accent color for interactive elements
+    colorScheme: ColorScheme.dark(
+      primary: const Color(0xFF3949AB),
+      secondary: const Color(0xFFFFC107),
+      surface: const Color(0xFF1E1E1E),
+      error: const Color(0xFFCF6679),
     ),
   );
 
