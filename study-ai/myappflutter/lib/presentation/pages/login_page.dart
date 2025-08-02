@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myappflutter/core/constants/prefs_constants.dart';
-import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/core/utils/prefs_util.dart';
 import '../../data/api/http_client.dart';
 import '../../core/config/app_routes.dart';
@@ -87,7 +86,10 @@ class _LoginPageState extends State<LoginPage> {
 
           Get.offNamed(AppRoutes.HOME);
         } else {
-          Get.snackbar('登录失败', loginResponse.message ?? '未知错误');
+          Get.snackbar(
+            'login_failed',
+            loginResponse.message ?? 'unknown_error',
+          );
         }
 
         setState(() {
@@ -171,9 +173,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Text(
-                    '用户登录',
-                    style: TextStyle(
+                  Text(
+                    'user_login',
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1A237E),
@@ -185,14 +187,15 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: _usernameController,
                     decoration: InputDecoration(
-                      labelText: '账号',
+                      labelText: 'account',
                       prefixIcon: const Icon(Icons.person),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       enabled: !_accountLocked,
                     ),
-                    validator: (value) => value!.isEmpty ? '请输入账号' : null,
+                    validator: (value) =>
+                        value!.isEmpty ? 'enter_account' : null,
                     enabled: !_accountLocked,
                   ),
                   const SizedBox(height: 16),
@@ -201,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                      labelText: '密码',
+                      labelText: 'password',
                       prefixIcon: const Icon(Icons.lock),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -209,7 +212,8 @@ class _LoginPageState extends State<LoginPage> {
                       enabled: !_accountLocked,
                     ),
                     obscureText: true,
-                    validator: (value) => value!.isEmpty ? '请输入密码' : null,
+                    validator: (value) =>
+                        value!.isEmpty ? 'enter_password' : null,
                     enabled: !_accountLocked,
                   ),
                   const SizedBox(height: 16),
@@ -224,14 +228,14 @@ class _LoginPageState extends State<LoginPage> {
                               child: TextFormField(
                                 controller: _captchaController,
                                 decoration: InputDecoration(
-                                  labelText: '验证码',
+                                  labelText: 'captcha',
                                   prefixIcon: const Icon(Icons.verified_user),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
                                 validator: (value) =>
-                                    value!.isEmpty ? '请输入验证码' : null,
+                                    value!.isEmpty ? 'enter_captcha' : null,
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -254,11 +258,11 @@ class _LoginPageState extends State<LoginPage> {
 
                   // 账号锁定提示
                   if (_accountLocked)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Text(
-                        '账号已锁定，请10分钟后再试',
-                        style: TextStyle(color: Colors.red, fontSize: 16),
+                        'account_locked',
+                        style: const TextStyle(color: Colors.red, fontSize: 16),
                       ),
                     ),
 
@@ -274,21 +278,27 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        '登录',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      child: Text(
+                        'login',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // 新增：注册按钮
+                  // 注册按钮
                   TextButton(
                     onPressed: () {
                       Get.toNamed(AppRoutes.REGISTER);
                     },
-                    child: const Text(
-                      '还没有账号？立即注册',
-                      style: TextStyle(color: Color(0xFF1976D2), fontSize: 16),
+                    child: Text(
+                      'register_prompt',
+                      style: const TextStyle(
+                        color: Color(0xFF1976D2),
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ],

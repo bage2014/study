@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../core/config/app_routes.dart';
 import '../widgets/base_page.dart';
 import '../widgets/loading_wrapper.dart';
-import 'package:myappflutter/core/utils/user_util.dart';
 // 新增必要导入
 import 'package:myappflutter/core/utils/prefs_util.dart';
 import 'package:myappflutter/core/constants/prefs_constants.dart';
