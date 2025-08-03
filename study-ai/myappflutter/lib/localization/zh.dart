@@ -14,6 +14,7 @@ const Map<String, String> zh = {
   'current_theme': '当前主题',
   'family': '我的家族',
   'profile': '个人信息',
+  'message': '消息中心',
   'logout': '退出登录',
   'message_center': '消息中心',
   'sender': '发件人',

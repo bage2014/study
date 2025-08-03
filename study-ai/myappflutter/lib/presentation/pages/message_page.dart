@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import '../../data/api/http_client.dart';
 import '../../data/models/message_model.dart';
+import '../../presentation/widgets/base_page.dart';
 
 class MessagePage extends StatefulWidget {
   const MessagePage({super.key});
@@ -111,13 +112,18 @@ class _MessagePageState extends State<MessagePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('message_center')),
+    return BasePage(
+      title: 'message_center',
       body: RefreshIndicator(
         onRefresh: () => _fetchMessages(refresh: true),
         child: ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.fromLTRB(
+            12.0,
+            64.0,
+            12.0,
+            12.0,
+          ), // 增加顶部内边距以预留appear位置
           itemCount: _messages.length + (_hasMore ? 1 : 0),
           itemBuilder: (context, index) {
             if (index == _messages.length) {

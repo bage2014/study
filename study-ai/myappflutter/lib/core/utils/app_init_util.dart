@@ -52,12 +52,12 @@ class AppInitUtil {
     LogUtil.info('初始化语言: $language');
 
     if (language != null) {
-      Get.updateLocale(Locale(language));
+      await Get.updateLocale(Locale(language));
     } else {
       // 默认使用系统语言
       final systemLocale = Get.deviceLocale;
       if (systemLocale != null) {
-        Get.updateLocale(systemLocale);
+        await Get.updateLocale(systemLocale);
         prefs.setString(PrefsConstants.language, systemLocale.languageCode);
       }
     }
