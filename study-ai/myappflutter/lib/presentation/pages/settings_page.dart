@@ -121,16 +121,16 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 ),
-                // DropdownMenuItem(
-                //   value: Themes.system(context),
-                //   child: Row(
-                //     children: [
-                //       Icon(Icons.settings_system_daydream),
-                //       SizedBox(width: 8),
-                //       Text('跟随系统'),
-                //     ],
-                //   ),
-                // ),
+                DropdownMenuItem(
+                  value: Themes.system(context),
+                  child: Row(
+                    children: [
+                      Icon(Icons.settings_system_daydream),
+                      SizedBox(width: 8),
+                      Text('跟随系统'),
+                    ],
+                  ),
+                ),
               ],
               onChanged: (value) async {
                 if (value != null) {
