@@ -83,7 +83,7 @@ class _FindLocationPageState extends State<FindLocationPage> {
   }
 
   void _updateLocation(BaiduLocation result) {
-    LogUtil.info('定位结果: 纬度=\${result.latitude}, 经度=\${result.longitude}');
+    LogUtil.info('定位结果: 纬度=${result.latitude}, 经度=${result.longitude}');
     setState(() {
       _currentLocation = result;
     });
