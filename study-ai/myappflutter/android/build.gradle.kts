@@ -2,6 +2,12 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // 添加百度地图SDK的Maven仓库
+        // maven { url = uri("https://maven.aliyun.com/repository/google") }
+        // maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+        // maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
+        // 替换为百度官方仓库解决401错误
+        // maven { url = uri("https://maven.baidu.com/repository/releases") }
     }
 }
 

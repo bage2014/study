@@ -10,7 +10,7 @@ import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+ HomePage({super.key});
 
   // 新增HttpClient实例
   final HttpClient _httpClient = HttpClient();
@@ -129,6 +129,10 @@ class HomePage extends StatelessWidget {
                   icon: Icons.location_on,
                   title: 'find_location',
                   onTap: () => Get.toNamed(AppRoutes.FIND_LOCATION),
+                ),
+                ElevatedButton(
+                  onPressed: () => Get.toNamed(AppRoutes.tvPlayer),
+                  child: const Text('Open TV Player'),
                 ),
               ],
             ),

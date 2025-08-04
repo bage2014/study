@@ -38,6 +38,7 @@ dependencies:
   package_info_plus: ^4.0.0
   path_provider: ^2.1.1
   image_picker: ^1.0.0
+  better_player: ^0.0.63  # 添加better_player支持m3u8
 
 dev_dependencies:
   flutter_test:

@@ -47,6 +47,13 @@ android {
 
 }
 
+// 添加百度地图SDK依赖
+//  dependencies {
+//     implementation("com.baidu.mapapi:base:7.4.0")
+//     implementation("com.baidu.mapapi:map:7.4.0")
+//     implementation("com.baidu.mapapi:location:7.4.0")
+// }
+
 flutter {
     source = "../.."
 }
