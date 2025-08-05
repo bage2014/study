@@ -35,10 +35,10 @@ dependencies:
   flutter_bmflocation: ^3.8.0
   flutter_baidu_mapapi_map: ^3.8.0
   flutter_simple_treeview: ^3.0.2
-  package_info_plus: ^4.0.0
+  package_info_plus: ^8.3.0  # 升级到最新兼容版本
   path_provider: ^2.1.1
   image_picker: ^1.0.0
-  better_player: ^0.0.63  # 添加better_player支持m3u8
+  better_player: ^0.0.84     # 保持最新版本
 
 dev_dependencies:
   flutter_test:

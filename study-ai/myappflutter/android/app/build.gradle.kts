@@ -47,6 +47,11 @@ android {
 
 }
 
+dependencies {
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Map:7.5.4'
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Search:7.5.4'
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Util:7.5.4'
+}
 // 添加百度地图SDK依赖
 //  dependencies {
 //     implementation("com.baidu.mapapi:base:7.4.0")
