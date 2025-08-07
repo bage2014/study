@@ -7,6 +7,7 @@ const Map<String, String> zh = {
   'find_location': '查找位置',
   'history_location': '位置记录',
   'track_location': '轨迹跟踪',
+  'tv_player': '电视播放器',
   'settings': '设置',
   'language_settings': '语言设置',
   'theme_color': '主题模式',

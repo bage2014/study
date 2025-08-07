@@ -58,40 +58,66 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      title: 'home',
-      actions: [
-        IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () => Get.toNamed(AppRoutes.SETTINGS),
-        ),
-      ],
-      body: LoadingWrapper<Map<String, dynamic>>(
-        loader: _loadHomeData,
-        builder: (data) =>
-            _buildHomeContent(data['username'], data['avatarUrl']),
-      ),
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _loadHomeData(),
+      builder: (context, snapshot) {
+        // 加载中显示空的AppBar
+        if (!snapshot.hasData) {
+          return BasePage(
+            title: 'home',
+            actions: [
+              IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () => Get.toNamed(AppRoutes.SETTINGS),
+              ),
+            ],
+            body: LoadingWrapper<Map<String, dynamic>>(
+              loader: _loadHomeData,
+              builder: (data) => _buildHomeContent(data['username']),
+            ),
+          );
+        }
+
+        // 数据加载完成后显示带头像的AppBar
+        final data = snapshot.data!;
+        return BasePage(
+          title: 'home',
+          actions: [
+            // 用户头像
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundImage: data['avatarUrl'].isNotEmpty
+                    ? NetworkImage(data['avatarUrl'])
+                    : const AssetImage('assets/images/user_null.png')
+                          as ImageProvider,
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () => Get.toNamed(AppRoutes.SETTINGS),
+            ),
+          ],
+          body: LoadingWrapper<Map<String, dynamic>>(
+            loader: _loadHomeData,
+            builder: (data) => _buildHomeContent(data['username']),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildHomeContent(String username, String? avatarUrl) {
+  Widget _buildHomeContent(String username) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           const SizedBox(height: 86),
-          // 用户头像和名称
+          // 只保留用户名，移除头像
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundImage: avatarUrl != null && avatarUrl.isNotEmpty
-                    ? NetworkImage(avatarUrl)
-                    : const AssetImage('assets/images/user_null.png')
-                          as ImageProvider,
-              ),
-              const SizedBox(width: 12),
               Text(
                 username,
                 style: Theme.of(Get.context!).textTheme.titleLarge,
@@ -130,9 +156,11 @@ class HomePage extends StatelessWidget {
                   title: 'find_location',
                   onTap: () => Get.toNamed(AppRoutes.FIND_LOCATION),
                 ),
-                ElevatedButton(
-                  onPressed: () => Get.toNamed(AppRoutes.TV_PLAYER),
-                  child: const Text('Open TV Player'),
+                // 添加TV菜单卡片
+                _buildMenuCard(
+                  icon: Icons.tv,
+                  title: 'tv_player',
+                  onTap: () => Get.toNamed(AppRoutes.TV_PLAYER),
                 ),
               ],
             ),

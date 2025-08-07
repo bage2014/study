@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 @EnableTransactionManagement
@@ -38,9 +39,9 @@ public class DataSourceConfig {
     public DataSource dataSource(
             @Qualifier("mysqlDataSource") DataSource mysqlDataSource,
             @Qualifier("h2DataSource") DataSource h2DataSource,
-            DataSourceProperties dataSourceProperties) {
+            // 使用@Value直接注入默认数据源配置
+            @Value("${spring.datasource.default:h2}") String defaultDataSource) {
         // 根据配置选择默认数据源
-        String defaultDataSource = dataSourceProperties.getProperty("default");
         if ("h2".equals(defaultDataSource)) {
             return h2DataSource;
         }

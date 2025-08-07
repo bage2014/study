@@ -7,6 +7,7 @@ const Map<String, String> en = {
   'find_location': 'Find Location',
   'history_location': 'Location History',
   'track_location': 'Track Location',
+  'tv_player': 'TV Player',
   'settings': 'Settings',
   'language_settings': 'Language Settings',
   'theme_color': 'Theme Mode',
