@@ -1,3 +1,7 @@
+// 添加必要的导入
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -31,33 +35,60 @@ android {
         versionName = flutter.versionName
     }
 
+    // 加载签名配置
+    
+
     signingConfigs {
         create("release") {
-            storeFile = file("upload-keystore.jks")
+            storeFile = rootProject.file("app/release-keystore.jks")
             storePassword = "myappflutter"
-            keyAlias = "upload"
+            keyAlias = "release"
             keyPassword = "myappflutter"
+        }
+        getByName("debug") {
+            storeFile = rootProject.file("app/debug.keystore")
+            storePassword = "myappflutter"
+            keyAlias = "debug"
+            keyPassword = "myappflutter"
+            // 修正属性名称
+            isV1SigningEnabled = true
+            isV2SigningEnabled = true
         }
     }
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
         }
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
+        }
+        release {
+            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
+        }
     }
 
 }
 
-dependencies {
-    implementation 'com.baidu.lbsyun:BaiduMapSDK_Map:7.5.4'
-    implementation 'com.baidu.lbsyun:BaiduMapSDK_Search:7.5.4'
-    implementation 'com.baidu.lbsyun:BaiduMapSDK_Util:7.5.4'
-}
-// 添加百度地图SDK依赖
-//  dependencies {
-//     implementation("com.baidu.mapapi:base:7.4.0")
-//     implementation("com.baidu.mapapi:map:7.4.0")
-//     implementation("com.baidu.mapapi:location:7.4.0")
+// dependencies {
+//     implementation ("com.baidu.lbsyun:BaiduMapSDK_Map:7.4.0")
+//     implementation ("com.baidu.lbsyun:BaiduMapSDK_Search:7.4.0")
+//     implementation ("com.baidu.lbsyun:BaiduMapSDK_Util:7.4.0")
 // }
+// 注释掉错误的依赖配置
+// dependencies {
+//    implementation("com.baidu.mapapi:base:7.4.0")
+//    implementation("com.baidu.mapapi:map:7.4.0")
+//    implementation("com.baidu.mapapi:location:7.4.0")
+// }
+
+// 添加正确的百度地图SDK依赖
+ dependencies {
+    implementation ("com.baidu.lbsyun:BaiduMapSDK_Map:7.4.0")
+    implementation ("com.baidu.lbsyun:BaiduMapSDK_Search:7.4.0")
+    implementation ("com.baidu.lbsyun:BaiduMapSDK_Util:7.4.0")
+}
 
 flutter {
     source = "../.."
