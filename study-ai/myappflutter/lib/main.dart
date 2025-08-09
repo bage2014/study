@@ -20,6 +20,9 @@ void main() async {
   Get.put(ThemeController());
   await AppInitUtil.initialize();
 
+  // 初始化百度地图 SDK
+  // await BaiduMapSDK.init(ak: '你的百度地图AK密钥');
+
   // 调用抽取的方法获取初始路由
   final initialRoute = await _determineInitialRoute();
   runApp(MyApp(initialRoute: initialRoute));
