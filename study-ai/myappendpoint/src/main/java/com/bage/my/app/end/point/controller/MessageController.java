@@ -128,8 +128,9 @@ public class MessageController {
                 item.setId(message.getId());
                 item.setSenderId(message.getSenderId());
                 item.setReceiverId(message.getReceiverId());
+                item.setSenderName("发送者名称");
                 // 设置头像字段（示例中设为null，实际应用中可能需要从其他服务获取）
-                item.setReceiverAvatar("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
+                item.setSenderAvatar("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
                 item.setContent(message.getContent());
                 item.setEmail(message.getEmail());
                 item.setIsEmail(message.getIsEmail());

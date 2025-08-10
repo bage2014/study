@@ -112,8 +112,15 @@ class HttpClient {
 
   // 构建请求URL
   Uri buildUri(String path, Map<String, dynamic>? queryParameters) {
+    if (path.startsWith("http")) {
+      return Uri.parse(path);
+    }
+
+    if (path.startsWith("/")) {
+      path = path.substring(1);
+    }
     return Uri.parse(
-      '${_envController.getBaseUrl()}$path',
+      '${_envController.getBaseUrl()}/$path',
     ).replace(queryParameters: queryParameters as Map<String, String>?);
   }
 

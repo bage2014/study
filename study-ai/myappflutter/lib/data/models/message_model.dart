@@ -35,6 +35,7 @@ class Message {
   final int? id;
   final int? senderId;
   final int? receiverId;
+  final String? senderName; // 添加发送者姓名字段
   final String? senderAvatar; // 添加头像URL字段
   final String? content;
   final bool? isRead;
@@ -44,6 +45,7 @@ class Message {
   Message({
     this.id,
     this.senderId,
+    this.senderName, // 添加到构造函数
     this.receiverId,
     this.senderAvatar, // 添加到构造函数
     this.content,
@@ -56,6 +58,7 @@ class Message {
     return Message(
       id: json['id'],
       senderId: json['senderId'],
+      senderName: json['senderName'], // 添加到工厂方法
       receiverId: json['receiverId'],
       senderAvatar: json['senderAvatar'],
       content: json['content'],

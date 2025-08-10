@@ -62,7 +62,16 @@ class _MessagePageState extends State<MessagePage> {
           if (_endDate != null) 'endTime': _endDate!.toIso8601String(),
         },
       );
-      final pageResponse = MessageResponse.fromJson(response);
+      // 从response中提取data字段，再获取messages数组
+      // 直接解析messages数组
+      final messages = List<Message>.from(
+        response['data']['messages'].map((x) => Message.fromJson(x)),
+      );
+      // 如果需要分页信息，可以创建一个新的对象存储
+      final pageResponse = MessageResponse(
+        data: messages,
+        // 可以添加其他分页相关字段
+      );
       setState(() {
         if (refresh) {
           _messages.clear();
@@ -131,6 +140,7 @@ class _MessagePageState extends State<MessagePage> {
             }
 
             final message = _messages[index];
+            LogUtil.info('senderAvatar: ${message.senderAvatar}');
             return Card(
               elevation: 3.0,
               margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -164,7 +174,7 @@ class _MessagePageState extends State<MessagePage> {
                             ),
                             const SizedBox(width: 12.0),
                             Text(
-                              '${'sender'}: ${message.senderId}',
+                              '${message.senderName}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue,

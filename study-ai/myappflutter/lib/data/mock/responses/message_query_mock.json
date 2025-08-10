@@ -1,26 +1,40 @@
 {
     "code": 200,
     "message": "success",
-    "data": [
-        {
-            "id": 3,
-            "senderId": 2,
-            "receiverId": 5,
-            "content": "请查收附件",
-            "isRead": true,
-            "createTime": "2025-06-30 01:28:00",
-            "readTime": "2025-06-30 21:28:00"
-        },
-        {
-            "id": 4,
-            "senderId": 9,
-            "receiverId": 9,
-            "content": "你好，最近怎么样？",
-            "isRead": false,
-            "createTime": "2025-07-22 01:28:00"
-        }
-    ],
-    "total": 50,
-    "page": 1,
-    "size": 2
+    "data": {
+        "messages": [
+            {
+                "id": 6,
+                "senderId": 7,
+                "receiverId": 7,
+                "senderName": "张三",
+                "senderAvatar": "https://avatars.githubusercontent.com/u/18094768?s\u003d400\u0026u\u003d1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4\u0026v\u003d4",
+                "content": "你好，最近怎么样？",
+                "isRead": true,
+                "createTime": "2025-07-30 14:03:53",
+                "readTime": "2025-07-30 18:03:53"
+            },
+            {
+                "id": 7,
+                "senderId": 9,
+                "receiverId": 6,
+                "senderName": "李四",
+                "senderAvatar": "https://avatars.githubusercontent.com/u/18094768?s\u003d400\u0026u\u003d1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4\u0026v\u003d4",
+                "content": "项目进展如何？",
+                "isRead": false,
+                "createTime": "2025-07-17 14:03:53"
+            },
+            {
+                "id": 8,
+                "senderId": 6,
+                "receiverId": 5,
+                "senderName": "王五",
+                "senderAvatar": "https://avatars.githubusercontent.com/u/18094768?s\u003d400\u0026u\u003d1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4\u0026v\u003d4",
+                "content": "会议安排在明天10点",
+                "isRead": true,
+                "createTime": "2025-08-09 14:03:53",
+                "readTime": "2025-08-09 15:03:53"
+            }
+        ]
+    }
 }

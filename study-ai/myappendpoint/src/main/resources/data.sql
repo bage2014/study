@@ -4,7 +4,7 @@ INSERT INTO APP_USER (
     email, gender, birth_date, avatar_url
 )
 SELECT 
-    'zhangsan', 'lisi123', 0, NULL,
+    'zhangsan', 'zhangsan123', 0, NULL,
     'zhangsan@qq.com', 'male', '1990-01-01', 'https://avatars.githubusercontent.com/u/18094768?v=4'
 
 WHERE NOT EXISTS (
