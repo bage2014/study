@@ -22,7 +22,7 @@ CREATE TABLE user_token (
 );
 
 CREATE TABLE IF NOT EXISTS family_member (
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     gender VARCHAR(10),
     birth_date DATE,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS family_member (
 );
 
 CREATE TABLE IF NOT EXISTS family_relationship (
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     member1_id BIGINT REFERENCES family_member(id),
     member2_id BIGINT REFERENCES family_member(id),
     relationship_type VARCHAR(20),
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS family_relationship (
 );
 
 CREATE TABLE IF NOT EXISTS APP_VERSION (
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     version VARCHAR(20),
     release_date DATE,
     release_notes VARCHAR(255),

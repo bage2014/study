@@ -34,20 +34,18 @@ class MessageResponse {
 }
 
 class Message {
-  final int? id;
-  final int? senderId;
-  final int? receiverId;
+  final String? id;
+  final String? senderId;
+  final String? senderAvatar;  // 添加头像URL字段
   final String? content;
-  final bool? isRead;
   final String? createTime;
   final String? readTime;
 
   Message({
     this.id,
     this.senderId,
-    this.receiverId,
+    this.senderAvatar,  // 添加到构造函数
     this.content,
-    this.isRead,
     this.createTime,
     this.readTime,
   });
@@ -56,9 +54,8 @@ class Message {
     return Message(
       id: json['id'],
       senderId: json['senderId'],
-      receiverId: json['receiverId'],
+      senderAvatar: json['senderAvatar'],  // 从JSON解析头像URL
       content: json['content'],
-      isRead: json['isRead'],
       createTime: json['createTime'],
       readTime: json['readTime'],
     );

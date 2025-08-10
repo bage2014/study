@@ -27,37 +27,37 @@ import org.springframework.beans.factory.annotation.Value;
 )
 public class DataSourceConfig {
 
-    @Bean
-    @Primary
-    @ConfigurationProperties("spring.datasource")
-    public DataSourceProperties dataSourceProperties() {
-        return new DataSourceProperties();
-    }
+    // @Bean
+    // @Primary
+    // @ConfigurationProperties("spring.datasource")
+    // public DataSourceProperties dataSourceProperties() {
+    //     return new DataSourceProperties();
+    // }
 
-    @Bean
-    @Primary
-    public DataSource dataSource(
-            @Qualifier("mysqlDataSource") DataSource mysqlDataSource,
-            @Qualifier("h2DataSource") DataSource h2DataSource,
-            // 使用@Value直接注入默认数据源配置
-            @Value("${spring.datasource.default:h2}") String defaultDataSource) {
-        // 根据配置选择默认数据源
-        if ("h2".equals(defaultDataSource)) {
-            return h2DataSource;
-        }
-        return mysqlDataSource;
-    }
+    // @Bean
+    // @Primary
+    // public DataSource dataSource(
+    //         @Qualifier("mysqlDataSource") DataSource mysqlDataSource,
+    //         @Qualifier("h2DataSource") DataSource h2DataSource,
+    //         // 使用@Value直接注入默认数据源配置
+    //         @Value("${spring.datasource.default:h2}") String defaultDataSource) {
+    //     // 根据配置选择默认数据源
+    //     if ("h2".equals(defaultDataSource)) {
+    //         return h2DataSource;
+    //     }
+    //     return mysqlDataSource;
+    // }
 
-    @Bean
-    @ConfigurationProperties("spring.datasource.mysql")
-    public DataSourceProperties mysqlDataSourceProperties() {
-        return new DataSourceProperties();
-    }
+    // @Bean
+    // @ConfigurationProperties("spring.datasource.mysql")
+    // public DataSourceProperties mysqlDataSourceProperties() {
+    //     return new DataSourceProperties();
+    // }
 
-    @Bean(name = "mysqlDataSource")
-    public DataSource mysqlDataSource() {
-        return mysqlDataSourceProperties().initializeDataSourceBuilder().build();
-    }
+    // @Bean(name = "mysqlDataSource")
+    // public DataSource mysqlDataSource() {
+    //     return mysqlDataSourceProperties().initializeDataSourceBuilder().build();
+    // }
 
     @Bean
     @ConfigurationProperties("spring.datasource.h2")

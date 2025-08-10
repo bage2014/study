@@ -145,12 +145,28 @@ class _MessagePageState extends State<MessagePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '${'sender'}: ${message.senderId}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
+                        Row(
+                          children: [
+                            // 添加用户头像
+                            CircleAvatar(
+                              backgroundImage: message.senderAvatar != null && message.senderAvatar!.isNotEmpty
+                                  ? NetworkImage(message.senderAvatar!)
+                                  : null,
+                              radius: 20.0,
+                              // 如果没有头像URL，显示默认图标
+                              child: message.senderAvatar == null || message.senderAvatar!.isEmpty
+                                  ? const Icon(Icons.person)
+                                  : null,
+                            ),
+                            const SizedBox(width: 12.0),
+                            Text(
+                              '${'sender'}: ${message.senderId}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
                           message.createTime ?? '',
