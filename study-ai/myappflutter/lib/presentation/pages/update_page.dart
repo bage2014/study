@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
-import '../../data/api/http_client.dart';
+import 'package:url_launcher/url_launcher.dart';  // 添加这一行
 
 class UpdatePage extends StatefulWidget {
   final String version;
@@ -14,30 +12,25 @@ class UpdatePage extends StatefulWidget {
 }
 
 class _UpdatePageState extends State<UpdatePage> {
-  double _progress = 0;
   bool _isDownloading = false;
 
   Future<void> _downloadUpdate() async {
     setState(() {
       _isDownloading = true;
-      _progress = 0;
     });
 
     try {
-      final httpClient = HttpClient();
-      final response = await httpClient.get('/download/${widget.version}');
+      // 构建下载URL
+      final downloadUrl = 'https://your-api-domain.com/download/${widget.version}';
 
-      final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/app_update.apk');
-
-      await file.writeAsBytes(response['data']);
-
-      // 安装APK (Android only)
-      if (Platform.isAndroid) {
-        // 使用插件如 'open_file' 或 'install_plugin' 来安装APK
+      // 打开浏览器下载
+      final uri = Uri.parse(downloadUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+        Get.snackbar('成功', '浏览器已打开，开始下载更新');
+      } else {
+        throw Exception('无法打开浏览器');
       }
-
-      Get.snackbar('成功', '更新已下载并安装');
     } catch (e) {
       Get.snackbar('错误', '下载失败: ${e.toString()}');
     } finally {
@@ -55,10 +48,10 @@ class _UpdatePageState extends State<UpdatePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (_isDownloading) CircularProgressIndicator(value: _progress),
+            if (_isDownloading) const CircularProgressIndicator(),
             ElevatedButton(
               onPressed: _isDownloading ? null : _downloadUpdate,
-              child: Text(_isDownloading ? '下载中...' : '开始下载'),
+              child: Text(_isDownloading ? '处理中...' : '开始下载'),
             ),
           ],
         ),
