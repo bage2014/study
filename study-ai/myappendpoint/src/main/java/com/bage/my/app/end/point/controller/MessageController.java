@@ -17,8 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import com.bage.my.app.end.point.dto.MessageItem;
 import com.bage.my.app.end.point.dto.MessageQueryRequest;
 import com.bage.my.app.end.point.entity.ApiResponse;
+import com.bage.my.app.end.point.model.response.MessageListResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -84,13 +86,13 @@ public class MessageController {
     }
     
     @RequestMapping("/query")
-    public ApiResponse<List<Message>> queryMessages(@RequestBody(required = false) MessageQueryRequest param) {
+    public ApiResponse<MessageListResponse> queryMessages(@RequestBody(required = false) MessageQueryRequest param) {
         log.info("queryMessages: {}", param);
         // 如果参数为null，创建一个默认的参数对象
         MessageQueryRequest params = param == null ? new MessageQueryRequest() : param;
-        
+    
         Pageable pageable = PageRequest.of(params.getPage(), params.getSize());
-        
+    
         Specification<Message> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             
@@ -114,9 +116,40 @@ public class MessageController {
             
             return cb.and(predicates.toArray(new Predicate[0]));
         };
-        
-        Page<Message> messages = messageService.findAll(spec, pageable);
-        // log.info("queryMessages: {}", messages.getContent());
-        return ApiResponse.success(messages.getContent(), messages.getTotalElements(), (long) messages.getPageable().getPageNumber(), (long) messages.getPageable().getPageSize());
+    
+        // 执行分页查询
+        Page<Message> messagePage = messageService.findAll(spec, pageable);
+        List<Message> content = messagePage.getContent();
+
+        // 将 Message 列表转换为 MessageItem 列表
+        List<MessageItem> messageItems = content.stream()
+            .map(message -> {
+                MessageItem item = new MessageItem();
+                item.setId(message.getId());
+                item.setSenderId(message.getSenderId());
+                item.setReceiverId(message.getReceiverId());
+                // 设置头像字段（示例中设为null，实际应用中可能需要从其他服务获取）
+                item.setReceiverAvatar("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
+                item.setContent(message.getContent());
+                item.setEmail(message.getEmail());
+                item.setIsEmail(message.getIsEmail());
+                item.setIsRead(message.getIsRead());
+                item.setIsDeleted(message.getIsDeleted());
+                item.setCreateTime(message.getCreateTime());
+                item.setReadTime(message.getReadTime());
+                return item;
+            })
+            .collect(java.util.stream.Collectors.toList());
+    
+        // 包装查询结果到MessageListResponse对象
+        MessageListResponse response = new MessageListResponse(
+            messageItems,
+            messagePage.getTotalElements(),
+            messagePage.getTotalPages(),
+            messagePage.getNumber(),
+            messagePage.getSize()
+        );
+    
+        return ApiResponse.success(response);
     }
 }

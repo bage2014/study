@@ -149,12 +149,16 @@ class _MessagePageState extends State<MessagePage> {
                           children: [
                             // 添加用户头像
                             CircleAvatar(
-                              backgroundImage: message.senderAvatar != null && message.senderAvatar!.isNotEmpty
+                              backgroundImage:
+                                  message.senderAvatar != null &&
+                                      message.senderAvatar!.isNotEmpty
                                   ? NetworkImage(message.senderAvatar!)
                                   : null,
                               radius: 20.0,
                               // 如果没有头像URL，显示默认图标
-                              child: message.senderAvatar == null || message.senderAvatar!.isEmpty
+                              child:
+                                  message.senderAvatar == null ||
+                                      message.senderAvatar!.isEmpty
                                   ? const Icon(Icons.person)
                                   : null,
                             ),

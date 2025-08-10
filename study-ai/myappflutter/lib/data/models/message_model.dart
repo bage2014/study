@@ -22,9 +22,7 @@ class MessageResponse {
       code: json['code'],
       message: json['message'],
       data: json['data'] != null
-          ? List<Message>.from(
-              json['data'].map((x) => Message.fromJson(x)),
-            )
+          ? List<Message>.from(json['data'].map((x) => Message.fromJson(x)))
           : null,
       total: json['total'],
       page: json['page'],
@@ -34,18 +32,22 @@ class MessageResponse {
 }
 
 class Message {
-  final String? id;
-  final String? senderId;
-  final String? senderAvatar;  // 添加头像URL字段
+  final int? id;
+  final int? senderId;
+  final int? receiverId;
+  final String? senderAvatar; // 添加头像URL字段
   final String? content;
+  final bool? isRead;
   final String? createTime;
   final String? readTime;
 
   Message({
     this.id,
     this.senderId,
-    this.senderAvatar,  // 添加到构造函数
+    this.receiverId,
+    this.senderAvatar, // 添加到构造函数
     this.content,
+    this.isRead,
     this.createTime,
     this.readTime,
   });
@@ -54,8 +56,10 @@ class Message {
     return Message(
       id: json['id'],
       senderId: json['senderId'],
-      senderAvatar: json['senderAvatar'],  // 从JSON解析头像URL
+      receiverId: json['receiverId'],
+      senderAvatar: json['senderAvatar'],
       content: json['content'],
+      isRead: json['isRead'],
       createTime: json['createTime'],
       readTime: json['readTime'],
     );

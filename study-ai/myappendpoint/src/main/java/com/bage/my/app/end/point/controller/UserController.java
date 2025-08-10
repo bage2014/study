@@ -17,7 +17,6 @@ import java.time.temporal.ChronoUnit;
 import com.bage.my.app.end.point.dto.LoginRequest;
 import com.bage.my.app.end.point.dto.RegisterRequest;
 import com.bage.my.app.end.point.dto.EmailCaptchaRequest;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bage.my.app.end.point.entity.CaptchaInfo;
 import com.bage.my.app.end.point.dto.ResetPasswordRequest;
@@ -240,6 +239,7 @@ public class UserController {
             user.setUsername("zhangsan");
             user.setPassword("zhangsan123");
             user.setEmail("zhangsan@qq.com");
+            user.setAvatarUrl("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
             user.setLoginAttempts(0);
             user.setLockTime(null);
             userRepository.save(user);
@@ -253,6 +253,7 @@ public class UserController {
             user.setEmail("lisi@qq.com");
             user.setPassword("lisi1234");
             user.setLoginAttempts(0);
+            user.setAvatarUrl("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
             user.setLockTime(null);
             userRepository.save(user);
             System.out.println("默认用户 lisi 创建成功");
@@ -264,6 +265,7 @@ public class UserController {
             user.setUsername("wangwu");
             user.setEmail("wangwu@qq.com");
             user.setPassword("wangwu12345");
+            user.setAvatarUrl("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
             user.setLoginAttempts(0);
             user.setLockTime(null);
             userRepository.save(user);
