@@ -251,7 +251,7 @@ public class UserController {
             User user = new User();
             user.setUsername("lisi");
             user.setEmail("lisi@qq.com");
-            user.setPassword("lisi1234");
+            user.setPassword("lisi123");
             user.setLoginAttempts(0);
             user.setAvatarUrl("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
             user.setLockTime(null);
@@ -264,12 +264,24 @@ public class UserController {
             User user = new User();
             user.setUsername("wangwu");
             user.setEmail("wangwu@qq.com");
-            user.setPassword("wangwu12345");
+            user.setPassword("wangwu123");
             user.setAvatarUrl("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
             user.setLoginAttempts(0);
             user.setLockTime(null);
             userRepository.save(user);
             System.out.println("默认用户 wangwu 创建成功");
+        }
+
+        if(userRepository.findByUsername("hello") == null){
+            User user = new User();
+            user.setUsername("hello");
+            user.setEmail("hello@qq.com");
+            user.setPassword("hello123");
+            user.setAvatarUrl("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
+            user.setLoginAttempts(0);
+            user.setLockTime(null);
+            userRepository.save(user);
+            System.out.println("默认用户 hello 创建成功");
         }
     }
 

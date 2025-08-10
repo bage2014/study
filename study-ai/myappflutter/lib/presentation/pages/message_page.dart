@@ -122,7 +122,7 @@ class _MessagePageState extends State<MessagePage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: 'message_center',
+      title: 'message_center'.tr,
       body: RefreshIndicator(
         onRefresh: () => _fetchMessages(refresh: true),
         child: ListView.builder(

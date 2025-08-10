@@ -38,4 +38,8 @@ const Map<String, String> en = {
   'unknown_relationship': 'Unknown Relationship',
   'switch_to_user': 'Switch to current user',
   'view_member_info': 'View member information',
+  'error': 'Error',
+  'confirm': 'Confirm',
+  'cancel': 'Cancel',
+  // 添加其他需要的翻译键
 };

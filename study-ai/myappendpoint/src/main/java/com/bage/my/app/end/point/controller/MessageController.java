@@ -21,6 +21,8 @@ import com.bage.my.app.end.point.dto.MessageItem;
 import com.bage.my.app.end.point.dto.MessageQueryRequest;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.model.response.MessageListResponse;
+import com.bage.my.app.end.point.repository.UserRepository;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MessageController {
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private UserRepository userRepository;
     
     @PostConstruct
     public void initDefaultMessages() {
@@ -128,9 +132,14 @@ public class MessageController {
                 item.setId(message.getId());
                 item.setSenderId(message.getSenderId());
                 item.setReceiverId(message.getReceiverId());
-                item.setSenderName("发送者名称");
-                // 设置头像字段（示例中设为null，实际应用中可能需要从其他服务获取）
-                item.setSenderAvatar("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
+                userRepository.findById(message.getSenderId()).ifPresent(user -> {
+                    item.setSenderName(user.getUsername());
+                    item.setSenderAvatar(user.getAvatarUrl());
+                });
+                
+                // // 设置头像字段（示例中设为null，实际应用中可能需要从其他服务获取）
+                // item.setSenderName("发送者名称");
+                // item.setSenderAvatar("https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4");
                 item.setContent(message.getContent());
                 item.setEmail(message.getEmail());
                 item.setIsEmail(message.getIsEmail());

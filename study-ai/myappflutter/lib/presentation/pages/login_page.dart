@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    'user_login',
+                    'user_login'.tr,
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -187,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: _usernameController,
                     decoration: InputDecoration(
-                      labelText: 'account',
+                      labelText: 'account'.tr,
                       prefixIcon: const Icon(Icons.person),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                      labelText: 'password',
+                      labelText: 'password'.tr,
                       prefixIcon: const Icon(Icons.lock),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -261,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Text(
-                        'account_locked',
+                        'account_locked'.tr,
                         style: const TextStyle(color: Colors.red, fontSize: 16),
                       ),
                     ),
@@ -279,7 +279,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       child: Text(
-                        'login',
+                        'login'.tr,
                         style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -294,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
                       Get.toNamed(AppRoutes.REGISTER);
                     },
                     child: Text(
-                      'register_prompt',
+                      'register_prompt'.tr,
                       style: const TextStyle(
                         color: Color(0xFF1976D2),
                         fontSize: 16,
