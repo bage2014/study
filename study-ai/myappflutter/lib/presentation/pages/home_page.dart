@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
         // 加载中显示空的AppBar
         if (!snapshot.hasData) {
           return BasePage(
-            title: 'home',
+            title: '加载中...', // 修改加载时的标题
             actions: [
               IconButton(
                 icon: Icon(Icons.settings),
@@ -73,15 +73,15 @@ class HomePage extends StatelessWidget {
             ],
             body: LoadingWrapper<Map<String, dynamic>>(
               loader: _loadHomeData,
-              builder: (data) => _buildHomeContent(data['username']),
+              builder: (data) => _buildHomeContent(),
             ),
           );
         }
 
-        // 数据加载完成后显示带头像的AppBar
+        // 数据加载完成后显示带用户名和头像的AppBar
         final data = snapshot.data!;
         return BasePage(
-          title: 'home',
+          title: data['username'], // 将标题设置为用户名
           actions: [
             // 用户头像
             Padding(
@@ -101,30 +101,21 @@ class HomePage extends StatelessWidget {
           ],
           body: LoadingWrapper<Map<String, dynamic>>(
             loader: _loadHomeData,
-            builder: (data) => _buildHomeContent(data['username']),
+            builder: (data) => _buildHomeContent(), // 移除username参数
           ),
         );
       },
     );
   }
 
-  Widget _buildHomeContent(String username) {
+  // 修改_buildHomeContent方法，移除username参数和显示
+  Widget _buildHomeContent() {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           const SizedBox(height: 86),
-          // 只保留用户名，移除头像
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                username,
-                style: Theme.of(Get.context!).textTheme.titleLarge,
-              ),
-            ],
-          ),
-          // 原有的GridView.count
+          // 保留原有的GridView.count
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
@@ -170,6 +161,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // 保留_buildMenuCard方法
   Widget _buildMenuCard({
     required IconData icon,
     required String title,

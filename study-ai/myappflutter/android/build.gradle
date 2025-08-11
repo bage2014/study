@@ -1,0 +1,16 @@
+// ... existing code ...
+allprojects {
+    repositories {
+        // 添加阿里云Maven镜像
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+
+        // 保留原有的仓库
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+// ... existing code ...
