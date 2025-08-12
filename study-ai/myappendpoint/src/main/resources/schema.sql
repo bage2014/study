@@ -66,12 +66,21 @@ CREATE TABLE app_message (
     read_time DATETIME
 );
 
-CREATE TABLE app_like (
+-- 先创建m3u_entry表（如果不存在）
+CREATE TABLE IF NOT EXISTS m3u_entry (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    logo VARCHAR(255),
+    title VARCHAR(100),
+    url VARCHAR(255),
+    name VARCHAR(100)
+);
+
+-- 然后创建app_like表（修改后的语句）
+CREATE TABLE IF NOT EXISTS app_like (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT NOT NULL,
     m3u_entry_id INT NOT NULL,
     create_time TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES app_user(id),
-    UNIQUE KEY uk_user_m3u_entry (user_id, m3u_entry_id)
+    CONSTRAINT uk_user_m3u_entry UNIQUE (user_id, m3u_entry_id)
 );
 
