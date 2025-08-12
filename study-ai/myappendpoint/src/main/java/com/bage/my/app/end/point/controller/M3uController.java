@@ -1,24 +1,33 @@
 package com.bage.my.app.end.point.controller;
 
+import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.entity.M3uEntry;
+import com.bage.my.app.end.point.entity.User;
+import com.bage.my.app.end.point.repository.UserRepository;
+import com.bage.my.app.end.point.service.LikeService;
+import com.bage.my.app.end.point.util.AuthUtil;
 import com.bage.my.app.end.point.util.M3uParser;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 import jakarta.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class M3uController {
     private List<M3uEntry> m3uEntries = new ArrayList<>();
+
+    @Autowired
+    private LikeService likeService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostConstruct
     public void init() throws IOException {
@@ -47,5 +56,65 @@ public class M3uController {
         }
         List<M3uEntry> pageContent = filteredEntries.subList(start, end);
         return new PageImpl<>(pageContent, pageable, filteredEntries.size());
+    }
+
+    /**
+     * 添加喜欢
+     */
+    @PostMapping("/m3u/{id}/like")
+    public ApiResponse<String> addLike(@PathVariable int id) {
+        try {
+            Long userId = AuthUtil.getCurrentUserId();
+            if (userId == null) {
+                return new ApiResponse<>(401, "未登录", null);
+            }
+
+            likeService.addLike(userId, id);
+            return new ApiResponse<>(200, "添加喜欢成功", null);
+        } catch (RuntimeException e) {
+            return new ApiResponse<>(400, e.getMessage(), null);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "服务器错误", null);
+        }
+    }
+
+    /**
+     * 移除喜欢
+     */
+    @DeleteMapping("/m3u/{id}/like")
+    public ApiResponse<String> removeLike(@PathVariable int id) {
+        try {
+            Long userId = AuthUtil.getCurrentUserId();
+            if (userId == null) {
+                return new ApiResponse<>(401, "未登录", null);
+            }
+
+            likeService.removeLike(userId, id);
+            return new ApiResponse<>(200, "移除喜欢成功", null);
+        } catch (RuntimeException e) {
+            return new ApiResponse<>(400, e.getMessage(), null);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "服务器错误", null);
+        }
+    }
+
+    /**
+     * 检查是否喜欢
+     */
+    @GetMapping("/m3u/{id}/isliked")
+    public ApiResponse<Boolean> isLiked(@PathVariable int id) {
+        try {
+            Long userId = AuthUtil.getCurrentUserId();
+            if (userId == null) {
+                return new ApiResponse<>(401, "未登录", null);
+            }
+
+            boolean isLiked = likeService.isLiked(userId, id);
+            return new ApiResponse<>(200, "查询成功", isLiked);
+        } catch (RuntimeException e) {
+            return new ApiResponse<>(400, e.getMessage(), null);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "服务器错误", null);
+        }
     }
 }

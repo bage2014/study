@@ -66,3 +66,12 @@ CREATE TABLE app_message (
     read_time DATETIME
 );
 
+CREATE TABLE app_like (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    m3u_entry_id INT NOT NULL,
+    create_time TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES app_user(id),
+    UNIQUE KEY uk_user_m3u_entry (user_id, m3u_entry_id)
+);
+
