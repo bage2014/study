@@ -1,27 +1,16 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
+import { createApp } from 'vue'
+import './style.css'
+import App from './App.vue'
+import router from './router'
+import i18n from './i18n'
+import { initTheme } from './utils/theme'
 
-import ElementPlus from "element-plus";
-import "element-plus/dist/index.css";
+// 初始化主题
+initTheme()
 
-import "~/styles/index.scss";
-import 'uno.css'
+const app = createApp(App)
 
-// If you want to use ElMessage, import it.
-import "element-plus/theme-chalk/src/message.scss"
+app.use(router)
+app.use(i18n)
 
-// 全局变量，用于存储地图初始化状态
-let baiduMapInitialized = false;
-
-// 百度地图初始化回调函数
-window.initBaiduMap = function() {
-  console.log('initBaiduMap-2');
-  baiduMapInitialized = true;
-};
-
-// 5. 创建并挂载根实例
-const app = createApp(App);
-app.use(ElementPlus);
-app.use(router); //确保 _use_ 路由实例使 整个应用支持路由。
-app.mount("#app");
+app.mount('#app')

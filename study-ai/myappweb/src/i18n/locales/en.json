@@ -1,0 +1,16 @@
+{
+  "menu": {
+    "home": "Home",
+    "login": "Login",
+    "mapTrajectory": "Map Trajectory"
+  },
+  "title": {
+    "appName": "Vue Application"
+  },
+  "button": {
+    "login": "Login",
+    "logout": "Logout",
+    "changeLanguage": "Change Language",
+    "changeTheme": "Change Theme"
+  }
+}

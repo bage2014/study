@@ -1,0 +1,16 @@
+{
+  "menu": {
+    "home": "首页",
+    "login": "登录",
+    "mapTrajectory": "地图轨迹"
+  },
+  "title": {
+    "appName": "Vue应用"
+  },
+  "button": {
+    "login": "登录",
+    "logout": "退出",
+    "changeLanguage": "切换语言",
+    "changeTheme": "切换主题"
+  }
+}
