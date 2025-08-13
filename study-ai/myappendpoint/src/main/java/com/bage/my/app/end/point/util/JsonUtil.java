@@ -5,8 +5,11 @@ import com.bage.my.app.end.point.config.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import com.bage.my.app.end.point.config.PageAdapter;
 import org.springframework.data.domain.Pageable;
@@ -34,5 +37,10 @@ public class JsonUtil {
 
     public static <T> T fromJson(String json, Class<T> classOfT) {
         return gson.fromJson(json, classOfT);
+    }
+
+    // 新增方法：将JSON数组转换为Java List
+    public static <T> List<T> fromJsonList(String json, Type type) {
+        return gson.fromJson(json, type);
     }
 }
