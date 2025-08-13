@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.bage.my.app.flutter"
+    
     >
     <!-- 百度地图SDK所需权限 -->
     <uses-permission android:name="android.permission.INTERNET"/>
