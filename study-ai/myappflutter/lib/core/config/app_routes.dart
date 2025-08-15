@@ -54,7 +54,13 @@ class AppRoutes {
     // 修改路由定义
     GetPage(
       name: TV_PLAYER,
-      page: () => TvPlayer(), // 移除参数传递，直接使用TvPlayer组件
+      page: () {
+        // 提供默认的 m3u8 直播流 URL 作为参数
+        return TvPlayerPage(
+          streamUrl:
+              'https://stream-akamai.castr.com/5b9352dbda7b8c769937e459/live_2361c920455111ea85db6911fe397b9e/index.fmp4.m3u8',
+        );
+      },
     ),
   ];
 }

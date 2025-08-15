@@ -148,11 +148,11 @@ class HomePage extends StatelessWidget {
                   onTap: () => Get.toNamed(AppRoutes.FIND_LOCATION),
                 ),
                 // 添加TV菜单卡片
-                // _buildMenuCard(
-                //   icon: Icons.tv,
-                //   title: 'tv_player',
-                //   onTap: () => Get.toNamed(AppRoutes.TV_PLAYER),
-                // ),
+                _buildMenuCard(
+                  icon: Icons.tv,
+                  title: 'tv_player',
+                  onTap: () => Get.toNamed(AppRoutes.TV_PLAYER),
+                ),
               ],
             ),
           ),
