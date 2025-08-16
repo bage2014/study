@@ -20,6 +20,7 @@ const Map<String, String> zh = {
   'message_center': '消息中心',
   'sender': '发件人',
   'loading_more': '加载更多...',
+  'load_more': '加载更多', // 添加这个翻译键
   'fetch_message_failed': '获取消息失败',
   'user_login': '用户登录',
   'account': '账号',

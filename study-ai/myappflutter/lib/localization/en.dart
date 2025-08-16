@@ -20,6 +20,7 @@ const Map<String, String> en = {
   'message_center': 'Message Center',
   'sender': 'Sender',
   'loading_more': 'Loading more...',
+  'load_more': 'Load more', // 添加这个翻译键
   'fetch_message_failed': 'Failed to fetch messages',
   'user_login': 'User Login',
   'account': 'Account',
