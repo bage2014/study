@@ -11,9 +11,8 @@ import '../../presentation/pages/profile_page.dart'; // 新增导入
 import '../../presentation/pages/update_page.dart'; // 新增导入
 import '../../presentation/pages/message_page.dart';
 import '../../presentation/pages/register_page.dart';
-import '../../presentation/pages/tv_player_page.dart'; // 新增导入
-// 修改导入路径
-import '../../presentation/pages/tv/TvPlayer.dart';
+import '../../presentation/pages/tv_player_page.dart';
+import '../../presentation/pages/tv_list_page.dart'; // 新增导入
 
 class AppRoutes {
   static const String LOGIN = '/login';
@@ -30,6 +29,7 @@ class AppRoutes {
   // 在 app_routes.dart 中添加
   static const String REGISTER = '/register';
   static const String TV_PLAYER = '/tv_player'; // 定义TV播放器路由
+  static const String TV_LIST = '/tv_list'; // 新增路由常量
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -57,10 +57,15 @@ class AppRoutes {
       page: () {
         // 提供默认的 m3u8 直播流 URL 作为参数
         return TvPlayerPage(
-          streamUrl:
+          streamUrl: 
               'https://stream-akamai.castr.com/5b9352dbda7b8c769937e459/live_2361c920455111ea85db6911fe397b9e/index.fmp4.m3u8',
         );
       },
+    ),
+    GetPage(
+      name: TV_LIST,
+      page: () => const TvListPage(),
+      transition: Transition.fadeIn,
     ),
   ];
 }

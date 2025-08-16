@@ -6,7 +6,8 @@ import '../widgets/base_page.dart';
 class TvPlayerPage extends StatefulWidget {
   final String streamUrl;
 
-  const TvPlayerPage({super.key, required this.streamUrl});
+  const TvPlayerPage
+  ({super.key, required this.streamUrl});
 
   @override
   State<TvPlayerPage> createState() => _TvPlayerPageState();

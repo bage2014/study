@@ -118,7 +118,9 @@ class HomePage extends StatelessWidget {
           // 保留原有的GridView.count
           Expanded(
             child: GridView.count(
-              crossAxisCount: 2,
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildMenuCard(
                   icon: Icons.person,
@@ -152,6 +154,11 @@ class HomePage extends StatelessWidget {
                   icon: Icons.tv,
                   title: 'tv_player',
                   onTap: () => Get.toNamed(AppRoutes.TV_PLAYER),
+                ),
+                _buildMenuCard(
+                  icon: Icons.tv,
+                  title: 'TV 列表',
+                  onTap: () => Get.toNamed(AppRoutes.TV_LIST),
                 ),
               ],
             ),
