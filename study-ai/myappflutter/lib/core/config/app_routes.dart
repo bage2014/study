@@ -57,7 +57,8 @@ class AppRoutes {
       page: () {
         // 提供默认的 m3u8 直播流 URL 作为参数
         return TvPlayerPage(
-          streamUrl: 
+          channel: Get.arguments,
+          streamUrl:
               'https://stream-akamai.castr.com/5b9352dbda7b8c769937e459/live_2361c920455111ea85db6911fe397b9e/index.fmp4.m3u8',
         );
       },

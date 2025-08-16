@@ -41,5 +41,14 @@ const Map<String, String> zh = {
   'error': '错误',
   'confirm': '确认',
   'cancel': '取消',
-  // 添加其他需要的翻译键
+  // 添加TV列表页面的翻译键
+  'tv_list': 'TV 列表',
+  'loading_tv_channels': '加载电视频道中...',
+  'search_channels': '搜索频道',
+  'no_tv_channels_found': '没有找到频道',
+  'unknown_channel': '未知频道',
+  'signal_sources': '个信号源',
+  'page': '第',
+  'total': '共',
+  'channels': '个频道',
 };

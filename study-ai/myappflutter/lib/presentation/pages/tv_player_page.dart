@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:async'; // 添加这行导入语句
 import '../widgets/base_page.dart';
+import '../../data/models/tv_model.dart'; // 导入 TvChannel 模型
 
 class TvPlayerPage extends StatefulWidget {
-  final String streamUrl;
+  final TvChannel? channel; // 接收 TV Channel 对象，设为可选
+  final String? streamUrl; // 保留原有的 streamUrl 参数，也设为可选
 
-  const TvPlayerPage
-  ({super.key, required this.streamUrl});
+  const TvPlayerPage({super.key, this.channel, this.streamUrl});
 
   @override
   State<TvPlayerPage> createState() => _TvPlayerPageState();
@@ -17,20 +19,47 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
   late VideoPlayerController _controller;
   bool _isInitialized = false;
   bool _isLoading = true;
+  String? _effectiveStreamUrl;
+  String _channelTitle = 'TV Player'; // 默认标题
 
   @override
   void initState() {
     super.initState();
+    // 确定要使用的流URL
+    _determineStreamUrl();
     _initializePlayer();
+  }
+
+  void _determineStreamUrl() {
+    // 优先使用传入的 channel 对象中的第一个 URL
+    if (widget.channel != null &&
+        widget.channel!.channelUrls != null &&
+        widget.channel!.channelUrls!.isNotEmpty) {
+      _effectiveStreamUrl = widget.channel!.channelUrls![0].url;
+      _channelTitle = widget.channel!.title ?? 'TV Player';
+      LogUtil.info('Channel Title: $_channelTitle');
+      LogUtil.info('Effective Stream URL: $_effectiveStreamUrl');
+    } else if (widget.streamUrl != null) {
+      // 其次使用直接传入的 streamUrl
+      _effectiveStreamUrl = widget.streamUrl;
+      _channelTitle = 'TV Player';
+      LogUtil.info('Effective Stream URL: $_effectiveStreamUrl');
+    } else {
+      // 如果都没有传入，则使用一个默认的示例 URL 或显示错误
+      _effectiveStreamUrl =
+          'https://cctvakhwh5ca-cntv.akamaized.net/clive/cctv1_2/index.m3u8';
+      LogUtil.info('default Effective Stream URL: $_effectiveStreamUrl');
+    }
   }
 
   Future<void> _initializePlayer() async {
     try {
       // 初始化视频控制器
       _controller = VideoPlayerController.networkUrl(
-        Uri.parse(widget.streamUrl),
+        Uri.parse(_effectiveStreamUrl ?? ''),
         httpHeaders: {
-          'User-Agent': 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Mobile Safari/537.36',
+          'User-Agent':
+              'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Mobile Safari/537.36',
         },
       );
 
@@ -58,9 +87,9 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
         _isLoading = false;
       });
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('无法加载视频: $error')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('无法加载视频: $error')));
       }
     }
   }
@@ -68,23 +97,23 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: 'TV Player',
+      title: _channelTitle, // 使用频道标题
       body: Column(
         children: [
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _isInitialized
-                    ? AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: Stack(
-                          children: [
-                            VideoPlayer(_controller),
-                            VideoControlsOverlay(controller: _controller),
-                          ],
-                        ),
-                      )
-                    : const Center(child: Text('无法初始化播放器')),
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: Stack(
+                      children: [
+                        VideoPlayer(_controller),
+                        VideoControlsOverlay(controller: _controller),
+                      ],
+                    ),
+                  )
+                : const Center(child: Text('无法初始化播放器')),
           ),
         ],
       ),
@@ -184,5 +213,3 @@ class _VideoControlsOverlayState extends State<VideoControlsOverlay> {
     super.dispose();
   }
 }
-
-

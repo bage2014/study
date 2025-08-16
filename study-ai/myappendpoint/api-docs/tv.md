@@ -16,45 +16,29 @@
 ### 响应格式
 ```json
 {
-  "content": [
-    {
-      "title": "CCTV 1",
-      "logo": "https://i.imgur.com/BHUh7hq.jpg",
-      "channelUrls": [
-        {
-          "title": "信号源 1",
-          "url": "https://cctvakhwh5ca-cntv.akamaized.net/clive/cctv1_2/index.m3u8"
-        }
-      ]
-    },
-    // 更多频道...
-  ],
-  "pageable": {
-    "pageNumber": 0,
-    "pageSize": 10,
-    "sort": {
-      "empty": true,
-      "sorted": false,
-      "unsorted": true
-    },
-    "offset": 0,
-    "paged": true,
-    "unpaged": false
-  },
-  "totalPages": 5,
-  "totalElements": 45,
-  "last": false,
-  "size": 10,
-  "number": 0,
-  "sort": {
-    "empty": true,
-    "sorted": false,
-    "unsorted": true
-  },
-  "numberOfElements": 10,
-  "first": true,
-  "empty": false
+  "code": 200,
+  "message": "成功",
+  "data": {
+    "channels": [
+      {
+        "title": "CCTV 1",
+        "logo": "https://i.imgur.com/BHUh7hq.jpg",
+        "channelUrls": [
+          {
+            "title": "信号源 1",
+            "url": "https://cctvakhwh5ca-cntv.akamaized.net/clive/cctv1_2/index.m3u8"
+          }
+        ]
+      },
+      // 更多频道...
+    ],
+    "totalElements": 45,
+    "totalPages": 5,
+    "currentPage": 0,
+    "pageSize": 10
+  }
 }
+
 ```
 
 ### 请求示例
