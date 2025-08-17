@@ -2,7 +2,10 @@
   "menu": {
     "home": "Home",
     "login": "Login",
-    "mapTrajectory": "Map Trajectory"
+    "mapTrajectory": "Map Trajectory",
+    "tvList": "TV List",
+    "tvListDescription": "View and search TV channels",
+    "mapTrajectoryDescription": "View and analyze map trajectory data"
   },
   "title": {
     "appName": "Vue Application"
@@ -12,5 +15,12 @@
     "logout": "Logout",
     "changeLanguage": "Change Language",
     "changeTheme": "Change Theme"
+  },
+  "message": {
+    "noChannelsFound": "No channels found"
+  },
+  "welcome": {
+    "title": "Welcome",
+    "subtitle": "Please select a module below to get started"
   }
 }

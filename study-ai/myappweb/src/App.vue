@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// 原有导入保持不变
 import { RouterLink, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
@@ -42,9 +43,8 @@ const logout = () => {
       </div>
       <nav class="menu">
         <ul>
-          <li><RouterLink to="/">{{ t('menu.home') }}</RouterLink></li>
-          <li v-if="!isLoggedIn"><RouterLink to="/login">{{ t('menu.login') }}</RouterLink></li>
-          <li v-if="isLoggedIn"><RouterLink to="/map-trajectory">{{ t('menu.mapTrajectory') }}</RouterLink></li>
+          <!-- 添加首页菜单项 -->
+          <li v-if="isLoggedIn"><RouterLink to="/home">{{ t('menu.home') }}</RouterLink></li>
           <li v-if="isLoggedIn"><a href="#" @click.prevent="logout">{{ t('button.logout') }}</a></li>
           <li><a href="#" @click.prevent="toggleLanguage">{{ t('button.changeLanguage') }}</a></li>
           <li>
@@ -69,6 +69,7 @@ const logout = () => {
   </div>
 </template>
 
+<!-- 样式部分保持不变 -->
 <style scoped>
 .header {
   display: flex;

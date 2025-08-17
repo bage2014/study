@@ -1,18 +1,18 @@
 <script setup lang="ts">
+// 原有导入保持不变
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import http from '../components/http'
-// 在文件顶部导入
 import { AuthStorage } from '../utils/authStorage'
 
 const { t } = useI18n()
 const router = useRouter()
-const username = ref('zhangsan@qq.com') // 设置默认用户名
-const password = ref('zhangsan123') // 设置默认密码
-const captcha = ref('') // 验证码输入
-const captchaImage = ref('') // 验证码图片URL
+const username = ref('zhangsan@qq.com')
+const password = ref('zhangsan123')
+const captcha = ref('')
+const captchaImage = ref('')
 const loading = ref(false)
 const error = ref('')
 const captchaLoading = ref(false)
@@ -39,8 +39,6 @@ const fetchCaptcha = async () => {
 }
 
 // 处理登录
-
-// 然后在handleLogin方法中替换localStorage操作
 const handleLogin = async () => {
   // 表单验证部分保持不变
   if (!username.value.trim()) {
@@ -78,9 +76,8 @@ const handleLogin = async () => {
         
         ElMessage.success(response.message || '登录成功')
         
-        // 重定向到之前想要访问的页面，或者首页
-        const redirect = router.currentRoute.value.query.redirect || '/'
-        router.push(redirect as string)
+        // 重定向到首页
+        router.push('/home')
       } else {
         throw new Error('登录响应数据不完整')
       }
@@ -105,6 +102,7 @@ onMounted(() => {
 })
 </script>
 
+<!-- 模板和样式部分保持不变 -->
 <template>
   <div class="login-page">
     <div class="login-container card">
@@ -175,6 +173,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* 样式部分保持不变 */
 .login-page {
   display: flex;
   justify-content: center;

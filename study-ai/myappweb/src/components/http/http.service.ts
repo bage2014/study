@@ -1,3 +1,4 @@
+import { STORAGE_KEYS } from '../../utils/storageKeys';
 import type {
   HttpRequestConfig,
   HttpResponse,
@@ -42,11 +43,11 @@ class HttpService implements HttpServiceType {
   // 请求拦截器
   private requestInterceptor(config: HttpRequestConfig): HttpRequestConfig {
     // 添加认证 token
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
     if (token) {
       config.headers = {
         ...config.headers,
-        'Authorization': `Bearer ${token}`
+        'Authorization': `${token}`
       };
     }
     return config;

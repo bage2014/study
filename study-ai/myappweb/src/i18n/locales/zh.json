@@ -2,7 +2,10 @@
   "menu": {
     "home": "首页",
     "login": "登录",
-    "mapTrajectory": "地图轨迹"
+    "mapTrajectory": "地图轨迹",
+    "tvList": "TV列表",
+    "tvListDescription": "查看和搜索电视频道列表",
+    "mapTrajectoryDescription": "查看和分析地图轨迹数据"
   },
   "title": {
     "appName": "Vue应用"
@@ -12,5 +15,12 @@
     "logout": "退出",
     "changeLanguage": "切换语言",
     "changeTheme": "切换主题"
+  },
+  "message": {
+    "noChannelsFound": "未找到相关频道"
+  },
+  "welcome": {
+    "title": "欢迎使用",
+    "subtitle": "请选择下方功能模块开始使用"
   }
 }
