@@ -1,3 +1,5 @@
+import { STORAGE_KEYS } from './storageKeys'
+
 // 定义主题类型
 export type Theme = 'light' | 'dark' | 'blue' | 'green'
 
@@ -55,12 +57,12 @@ export function applyTheme(theme: Theme) {
   }
 
   // 保存主题到本地存储
-  localStorage.setItem('theme', theme)
+  localStorage.setItem(STORAGE_KEYS.THEME, theme)
 }
 
 // 初始化主题
 export function initTheme() {
-  const savedTheme = localStorage.getItem('theme') as Theme || 'light'
+  const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as Theme || 'light'
   applyTheme(savedTheme)
   return savedTheme
 }
