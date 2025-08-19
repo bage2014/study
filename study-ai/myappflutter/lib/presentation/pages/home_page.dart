@@ -118,7 +118,7 @@ class HomePage extends StatelessWidget {
           // 保留原有的GridView.count
           Expanded(
             child: GridView.count(
-              crossAxisCount: 3,
+              crossAxisCount: 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
