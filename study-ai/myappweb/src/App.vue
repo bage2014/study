@@ -45,6 +45,9 @@ const logout = () => {
         <ul>
           <!-- 添加首页菜单项 -->
           <li v-if="isLoggedIn"><RouterLink to="/home">{{ t('menu.home') }}</RouterLink></li>
+          <li v-if="isLoggedIn"><RouterLink to="/app-list">{{ t('menu.appList') }}</RouterLink></li>
+          <li v-if="isLoggedIn"><RouterLink to="/map-trajectory">{{ t('menu.mapTrajectory') }}</RouterLink></li>
+          <li v-if="isLoggedIn"><RouterLink to="/tv-list">{{ t('menu.tvList') }}</RouterLink></li>
           <li v-if="isLoggedIn"><a href="#" @click.prevent="logout">{{ t('button.logout') }}</a></li>
           <li><a href="#" @click.prevent="toggleLanguage">{{ t('button.changeLanguage') }}</a></li>
           <li>

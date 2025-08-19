@@ -4,6 +4,7 @@
     "login": "Login",
     "mapTrajectory": "Map Trajectory",
     "tvList": "TV List",
+    "appList": "App List",
     "tvListDescription": "View and search TV channels",
     "mapTrajectoryDescription": "View and analyze map trajectory data"
   },
@@ -14,13 +15,27 @@
     "login": "Login",
     "logout": "Logout",
     "changeLanguage": "Change Language",
-    "changeTheme": "Change Theme"
+    "changeTheme": "Change Theme",
+    "search": "Search",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "download": "Download"
   },
   "message": {
-    "noChannelsFound": "No channels found"
+    "noChannelsFound": "No channels found",
+    "loading": "Loading",
+    "noAppVersionsFound": "No app versions found",
+    "noDownloadUrl": "No download URL"
   },
   "welcome": {
     "title": "Welcome",
     "subtitle": "Please select a module below to get started"
+  },
+  "placeholder": {
+    "searchAppVersion": "Search app versions..."
+  },
+  "label": {
+    "pageSize": "Page size",
+    "forceUpdate": "Force Update"
   }
 }

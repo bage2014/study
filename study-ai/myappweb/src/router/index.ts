@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/Login.vue'
 import MapTrajectoryView from '../views/MapTrajectory.vue'
 import TvListView from '../views/TvList.vue'
-import HomeView from '../views/Home.vue' // 导入首页组件
+import HomeView from '../views/Home.vue'
+import AppListView from '../views/AppList.vue' // 导入APP列表组件
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +41,15 @@ const router = createRouter({
       path: '/tv-list',
       name: 'tvList',
       component: TvListView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    // 添加APP列表路由
+    {
+      path: '/app-list',
+      name: 'appList',
+      component: AppListView,
       meta: {
         requiresAuth: true
       }
