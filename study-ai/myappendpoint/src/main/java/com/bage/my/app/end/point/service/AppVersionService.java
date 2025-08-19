@@ -3,6 +3,9 @@ package com.bage.my.app.end.point.service;
 import com.bage.my.app.end.point.entity.AppVersion;
 import com.bage.my.app.end.point.repository.AppVersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,18 @@ public class AppVersionService {
 
     public AppVersion getLatestVersion() {
         return appVersionRepository.findTopByOrderByVersionDesc();
+    }
+    
+    // 分页获取版本列表
+    public Page<AppVersion> getVersionsByPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return appVersionRepository.findAll(pageable);
+    }
+    
+    // 根据关键词分页搜索版本
+    public Page<AppVersion> searchVersionsByKeyword(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return appVersionRepository.findByKeyword(keyword, pageable);
     }
 
     @Transactional

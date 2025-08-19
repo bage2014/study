@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bage.my.app.end.point.dto.AppVersionResponse;
 import com.bage.my.app.end.point.entity.AppVersion;
 import com.bage.my.app.end.point.entity.ApiResponse;
+import com.bage.my.app.end.point.model.response.AppVersionListResponse;
 import com.bage.my.app.end.point.service.AppVersionService;
 
 import jakarta.annotation.PostConstruct;
@@ -41,6 +43,31 @@ public class AppUpdateController {
         appVersionService.initDefaultVersions();
     }
 
+    // 查看版本列表（支持分页）
+    @GetMapping("/versions")
+    public ApiResponse<AppVersionListResponse> getVersions(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword) {
+        
+        Page<AppVersion> versionsPage;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            log.info("Searching versions with keyword: {}", keyword);
+            versionsPage = appVersionService.searchVersionsByKeyword(keyword, page, size);
+        } else {
+            versionsPage = appVersionService.getVersionsByPage(page, size);
+        }
+        
+        AppVersionListResponse response = new AppVersionListResponse(
+                versionsPage.getContent(),
+                versionsPage.getTotalElements(),
+                versionsPage.getTotalPages(),
+                versionsPage.getNumber(),
+                versionsPage.getSize()
+        );
+        
+        return ApiResponse.success(response);
+    }
 
     // 上传文件
     @PostMapping("/upload")

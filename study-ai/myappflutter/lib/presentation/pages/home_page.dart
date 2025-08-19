@@ -120,7 +120,6 @@ class HomePage extends StatelessWidget {
             child: GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildMenuCard(
                   icon: Icons.person,
