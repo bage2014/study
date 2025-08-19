@@ -136,18 +136,18 @@ class HomePage extends StatelessWidget {
                   title: 'message',
                   onTap: () => Get.toNamed(AppRoutes.MESSAGE),
                 ),
-                // 添加位置页面菜单卡片
-                _buildMenuCard(
-                  icon: Icons.location_on,
-                  title: 'current_location',
-                  onTap: () => Get.toNamed(AppRoutes.CURRENT_LOCATION),
-                ),
-                // 添加位置页面菜单卡片
-                _buildMenuCard(
-                  icon: Icons.location_on,
-                  title: 'find_location',
-                  onTap: () => Get.toNamed(AppRoutes.FIND_LOCATION),
-                ),
+                // // 添加位置页面菜单卡片
+                // _buildMenuCard(
+                //   icon: Icons.location_on,
+                //   title: 'current_location',
+                //   onTap: () => Get.toNamed(AppRoutes.CURRENT_LOCATION),
+                // ),
+                // // 添加位置页面菜单卡片
+                // _buildMenuCard(
+                //   icon: Icons.location_on,
+                //   title: 'find_location',
+                //   onTap: () => Get.toNamed(AppRoutes.FIND_LOCATION),
+                // ),
                 // 添加TV菜单卡片
                 _buildMenuCard(
                   icon: Icons.tv,
