@@ -15,13 +15,29 @@ interface AppVersion {
   forceUpdate: boolean;
 }
 
-// 定义API响应接口
-interface AppVersionResponse {
+// 定义API响应接口 - 更新以匹配实际的API响应结构
+interface ApiResponse<T> {
+  code: number;
+  message: string;
+  data: T;
+  total: null;
+  page: null;
+  size: null;
+}
+
+interface PaginationData {
   versions: AppVersion[];
   totalElements: number;
   totalPages: number;
   currentPage: number;
   pageSize: number;
+}
+
+// 定义文件上传响应接口
+interface UploadResponseData {
+  fileId: string;
+  originalFileName: string;
+  fileName: string;
 }
 
 // 定义搜索和分页状态
@@ -33,11 +49,18 @@ const totalPages = ref(0);
 const appVersions = ref<AppVersion[]>([]);
 const isLoading = ref(false);
 
-// 查询应用版本列表
+// 文件上传相关状态
+const selectedFile = ref<File | null>(null);
+const fileName = ref('');
+const isUploading = ref(false);
+const uploadMessage = ref('');
+const uploadSuccess = ref(false);
+
+// 查询应用版本列表 - 修改以正确处理嵌套的数据结构
 const searchAppVersions = async () => {
   isLoading.value = true;
   try {
-    const response = await http.get<AppVersionResponse>('/app/versions', {
+    const response = await http.get<ApiResponse<PaginationData>>('/app/versions', {
       params: {
         keyword: keyword.value,
         page: currentPage.value,
@@ -45,16 +68,85 @@ const searchAppVersions = async () => {
       }
     });
     
-    // 处理响应数据
-    appVersions.value = response.versions || [];
-    totalElements.value = response.totalElements || 0;
-    totalPages.value = response.totalPages || 0;
-    currentPage.value = response.currentPage || 0;
-    pageSize.value = response.pageSize || 10;
+    // 处理响应数据 - 正确访问嵌套的数据结构
+    if (response && response.data) {
+      appVersions.value = response.data.versions || [];
+      totalElements.value = response.data.totalElements || 0;
+      totalPages.value = response.data.totalPages || 0;
+      currentPage.value = response.data.currentPage || 0;
+      pageSize.value = response.data.pageSize || 10;
+    } else {
+      appVersions.value = [];
+      totalElements.value = 0;
+      totalPages.value = 0;
+      currentPage.value = 0;
+      pageSize.value = 10;
+    }
   } catch (error) {
     console.error('Failed to fetch app versions:', error);
+    // 发生错误时重置数据
+    appVersions.value = [];
+    totalElements.value = 0;
+    totalPages.value = 0;
+    currentPage.value = 0;
+    pageSize.value = 10;
   } finally {
     isLoading.value = false;
+  }
+};
+
+// 处理文件选择
+const handleFileChange = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+    // 检查文件类型是否为.apk
+    selectedFile.value = file;
+    fileName.value = file.name;
+    uploadMessage.value = '';
+    
+  }
+};
+
+// 上传文件
+const uploadFile = async () => {
+  if (!selectedFile.value) {
+    uploadMessage.value = t('message.selectFileFirst');
+    uploadSuccess.value = false;
+    return;
+  }
+
+  isUploading.value = true;
+  uploadMessage.value = '';
+  
+  try {
+    // 创建FormData对象
+    const formData = new FormData();
+    formData.append('file', selectedFile.value);
+    
+    // 发送文件上传请求 - 修改类型定义以匹配实际响应格式
+    const response = await http.post<ApiResponse<UploadResponseData>>('/app/upload', formData, { 
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    
+    // 处理上传成功 - 修改以正确获取message
+    uploadMessage.value = response.message || t('message.fileUploadSuccess');
+    uploadSuccess.value = true;
+    
+    // 清空选择的文件
+    selectedFile.value = null;
+    fileName.value = '';
+    
+    // 重新加载应用版本列表
+    searchAppVersions();
+  } catch (error) {
+    console.error('Failed to upload file:', error);
+    uploadMessage.value = t('message.fileUploadFailed');
+    uploadSuccess.value = false;
+  } finally {
+    isUploading.value = false;
   }
 };
 
@@ -81,13 +173,43 @@ onMounted(() => {
   <div class="app-list-container">
     <h1>{{ t('menu.appList') }}</h1>
     
+    <!-- 文件上传区域 -->
+    <div class="upload-section">
+      <div class="file-upload-container">
+        <input
+          type="file"
+          id="fileUpload"
+          @change="handleFileChange"
+          style="display: none;"
+        />
+        <label for="fileUpload" class="browse-button">
+          {{ t('button.browse') }}
+        </label>
+        <span class="file-name">
+          {{ fileName || t('placeholder.noFileSelected') }}
+        </span>
+        <button 
+          class="upload-button"
+          @click="uploadFile"
+          :disabled="isUploading"
+        >
+          {{ isUploading ? t('button.searching') : t('button.upload') }}
+        </button>
+      </div>
+      
+      <!-- 上传消息提示 -->
+      <div v-if="uploadMessage" :class="['upload-message', uploadSuccess ? 'success' : 'error']">
+        {{ uploadMessage }}
+      </div>
+    </div>
+    
     <!-- 搜索和分页控制 -->
     <div class="search-controls">
       <div class="search-input-group">
         <input
           type="text"
           v-model="keyword"
-          placeholder="{{ t('placeholder.searchAppVersion') }}"
+          :placeholder="t('placeholder.searchAppVersion')"
           @keyup.enter="searchAppVersions()"
         />
         <button @click="searchAppVersions()">
@@ -144,7 +266,8 @@ onMounted(() => {
     <div v-if="totalElements > 0" class="pagination">
       <button
         :disabled="currentPage <= 0"
-        @click="changePage(currentPage - 1)">
+        @click="changePage(currentPage - 1)"
+      >
         {{ t('button.prevPage') }}
       </button>
       
@@ -154,7 +277,8 @@ onMounted(() => {
       
       <button
         :disabled="currentPage >= totalPages - 1"
-        @click="changePage(currentPage + 1)">
+        @click="changePage(currentPage + 1)"
+      >
         {{ t('button.nextPage') }}
       </button>
     </div>
@@ -166,6 +290,74 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
+}
+
+/* 文件上传区域样式 */
+.upload-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: var(--bg-light);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+}
+
+.file-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.browse-button,
+.upload-button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.browse-button:hover,
+.upload-button:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+}
+
+.upload-button:disabled {
+  background-color: var(--bg-light);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.file-name {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-color);
+}
+
+.upload-message {
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+
+.upload-message.success {
+  background-color: #f6ffed;
+  color: #389e0d;
+  border: 1px solid #b7eb8f;
+}
+
+.upload-message.error {
+  background-color: #fff2f0;
+  color: #cf1322;
+  border: 1px solid #ffccc7;
 }
 
 .search-controls {

@@ -19,13 +19,25 @@
     "changeLanguage": "Change Language",
     "login": "Login",
     "search": "Search",
-    "searching": "Searching..."
+    "searching": "Searching...",
+    "upload": "Upload APK",
+    "browse": "Browse",
+    "download": "Download",
+    "prevPage": "Previous Page",
+    "nextPage": "Next Page"
   },
   "message": {
     "loginSuccess": "Login Success",
     "loginFailed": "Login Failed",
     "logoutSuccess": "Logout Success",
-    "noChannelsFound": "No channels found"
+    "noChannelsFound": "No channels found",
+    "fileUploadSuccess": "File uploaded successfully",
+    "fileUploadFailed": "File upload failed",
+    "selectFileFirst": "Please select a file first",
+    "onlyApkAllowed": "Only .apk files are allowed",
+    "loading": "Loading",
+    "noAppVersionsFound": "No app versions found",
+    "noDownloadUrl": "No download URL"
   },
   "welcome": {
     "title": "Welcome to My Application",
@@ -33,9 +45,11 @@
   },
   "placeholder": {
     "searchAppVersion": "Search app version",
-    "searchKeyword": "Search keyword"
+    "searchKeyword": "Search keyword",
+    "noFileSelected": "No file selected"
   },
   "label": {
-    "pageSize": "Page Size"
+    "pageSize": "Page Size",
+    "forceUpdate": "Force Update"
   }
 }

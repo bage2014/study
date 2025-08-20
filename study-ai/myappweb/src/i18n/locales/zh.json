@@ -19,13 +19,25 @@
     "changeLanguage": "切换语言",
     "login": "登录",
     "search": "搜索",
-    "searching": "搜索中..."
+    "searching": "搜索中...",
+    "upload": "上传APK",
+    "browse": "浏览",
+    "download": "下载",
+    "prevPage": "上一页",
+    "nextPage": "下一页"
   },
   "message": {
     "loginSuccess": "登录成功",
     "loginFailed": "登录失败",
     "logoutSuccess": "退出成功",
-    "noChannelsFound": "未找到频道"
+    "noChannelsFound": "未找到频道",
+    "fileUploadSuccess": "文件上传成功",
+    "fileUploadFailed": "文件上传失败",
+    "selectFileFirst": "请先选择文件",
+    "onlyApkAllowed": "仅支持.apk文件",
+    "loading": "加载中",
+    "noAppVersionsFound": "未找到应用版本",
+    "noDownloadUrl": "无下载链接"
   },
   "welcome": {
     "title": "欢迎使用我的应用",
@@ -33,9 +45,11 @@
   },
   "placeholder": {
     "searchAppVersion": "搜索应用版本",
-    "searchKeyword": "搜索关键词"
+    "searchKeyword": "搜索关键词",
+    "noFileSelected": "未选择文件"
   },
   "label": {
-    "pageSize": "每页条数"
+    "pageSize": "每页条数",
+    "forceUpdate": "强制更新"
   }
 }

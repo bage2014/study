@@ -22,10 +22,7 @@
     "fileId": "uuid-123456",
     "originalFileName": "app-update.apk",
     "fileName": "uuid-123456_app-update.apk"
-  },
-  "total": null,
-  "page": null,
-  "size": null
+  }
 }
 ```
 
