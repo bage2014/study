@@ -7,6 +7,7 @@ import { applyTheme, Theme } from './utils/theme'
 
 const { t, locale } = useI18n()
 const currentTheme = ref<Theme>(localStorage.getItem('theme') as Theme || 'light')
+const openSubmenu = ref<string | null>(null)
 
 // 切换语言
 const toggleLanguage = () => {
@@ -28,10 +29,20 @@ const logout = () => {
   localStorage.removeItem('token')
   isLoggedIn.value = false
 }
+
+// 切换子菜单显示状态
+const toggleSubmenu = (menuKey: string) => {
+  openSubmenu.value = openSubmenu.value === menuKey ? null : menuKey
+}
+
+// 点击页面其他地方关闭子菜单
+const closeSubmenuOnClickOutside = () => {
+  openSubmenu.value = null
+}
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" @click="closeSubmenuOnClickOutside">
     <header class="header">
       <div class="logo">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -43,20 +54,60 @@ const logout = () => {
       </div>
       <nav class="menu">
         <ul>
-          <!-- 添加首页菜单项 -->
-          <li v-if="isLoggedIn"><RouterLink to="/home">{{ t('menu.home') }}</RouterLink></li>
-          <li v-if="isLoggedIn"><RouterLink to="/app-list">{{ t('menu.appList') }}</RouterLink></li>
-          <li v-if="isLoggedIn"><RouterLink to="/map-trajectory">{{ t('menu.mapTrajectory') }}</RouterLink></li>
-          <li v-if="isLoggedIn"><RouterLink to="/tv-list">{{ t('menu.tvList') }}</RouterLink></li>
-          <li v-if="isLoggedIn"><a href="#" @click.prevent="logout">{{ t('button.logout') }}</a></li>
-          <li><a href="#" @click.prevent="toggleLanguage">{{ t('button.changeLanguage') }}</a></li>
-          <li>
-            <select v-model="currentTheme" @change="changeTheme(currentTheme)">
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-              <option value="blue">Blue</option>
-              <option value="green">Green</option>
-            </select>
+          <!-- 首页菜单 -->
+          <li ><RouterLink to="/home">{{ t('menu.home') }}</RouterLink></li>
+          
+          <!-- 应用管理二级菜单 -->
+          <li  class="dropdown" @click.stop="toggleSubmenu('app')">
+            <a href="#" class="dropdown-toggle">
+              {{ t('menu.appManagement') }}
+              <span class="dropdown-arrow">{{ openSubmenu === 'app' ? '▼' : '▶' }}</span>
+            </a>
+            <ul class="dropdown-menu" v-if="openSubmenu === 'app'">
+              <li><RouterLink to="/app-list">{{ t('menu.appList') }}</RouterLink></li>
+            </ul>
+          </li>
+          
+          <!-- 数据可视化二级菜单 -->
+          <li  class="dropdown" @click.stop="toggleSubmenu('data')">
+            <a href="#" class="dropdown-toggle">
+              {{ t('menu.dataVisualization') }}
+              <span class="dropdown-arrow">{{ openSubmenu === 'data' ? '▼' : '▶' }}</span>
+            </a>
+            <ul class="dropdown-menu" v-if="openSubmenu === 'data'">
+              <li><RouterLink to="/map-trajectory">{{ t('menu.mapTrajectory') }}</RouterLink></li>
+            </ul>
+          </li>
+          
+          <!-- 媒体中心二级菜单 -->
+          <li  class="dropdown" @click.stop="toggleSubmenu('media')">
+            <a href="#" class="dropdown-toggle">
+              {{ t('menu.mediaCenter') }}
+              <span class="dropdown-arrow">{{ openSubmenu === 'media' ? '▼' : '▶' }}</span>
+            </a>
+            <ul class="dropdown-menu" v-if="openSubmenu === 'media'">
+              <li><RouterLink to="/tv-list">{{ t('menu.tvList') }}</RouterLink></li>
+            </ul>
+          </li>
+          
+          <!-- 系统设置二级菜单 -->
+          <li class="dropdown" @click.stop="toggleSubmenu('system')">
+            <a href="#" class="dropdown-toggle">
+              {{ t('menu.system') }}
+              <span class="dropdown-arrow">{{ openSubmenu === 'system' ? '▼' : '▶' }}</span>
+            </a>
+            <ul class="dropdown-menu" v-if="openSubmenu === 'system'">
+              <li v-if="isLoggedIn"><a href="#" @click.prevent="logout">{{ t('button.logout') }}</a></li>
+              <li><a href="#" @click.prevent="toggleLanguage">{{ t('button.changeLanguage') }}</a></li>
+              <li>
+                <select v-model="currentTheme" @change="changeTheme(currentTheme)">
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                  <option value="blue">Blue</option>
+                  <option value="green">Green</option>
+                </select>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>
@@ -72,7 +123,7 @@ const logout = () => {
   </div>
 </template>
 
-<!-- 样式部分保持不变 -->
+<!-- 样式部分 -->
 <style scoped>
 .header {
   display: flex;
@@ -97,10 +148,13 @@ const logout = () => {
 .menu ul {
   display: flex;
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .menu li {
   margin-left: 1.5rem;
+  position: relative;
 }
 
 .menu a {
@@ -109,12 +163,59 @@ const logout = () => {
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius);
   transition: var(--transition);
+  display: inline-block;
+  text-decoration: none;
 }
 
 .menu a:hover,
 .menu a.router-link-active {
   color: var(--primary-color);
   background-color: var(--bg-light);
+}
+
+/* 二级菜单样式 */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dropdown-arrow {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 0.5rem 0;
+  margin: 0.25rem 0 0;
+  min-width: 150px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-menu li {
+  margin: 0;
+  width: 100%;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  text-align: left;
+  box-sizing: border-box;
 }
 
 .content {

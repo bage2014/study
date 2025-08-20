@@ -1,41 +1,41 @@
 {
+  "title": {
+    "appName": "My Application"
+  },
   "menu": {
     "home": "Home",
-    "login": "Login",
-    "mapTrajectory": "Map Trajectory",
-    "tvList": "TV List",
     "appList": "App List",
+    "mapTrajectory": "Map Trajectory",
+    "mapTrajectoryDescription": "View and track movement paths on map",
+    "tvList": "TV List",
     "tvListDescription": "View and search TV channels",
-    "mapTrajectoryDescription": "View and analyze map trajectory data"
-  },
-  "title": {
-    "appName": "Vue Application"
+    "appManagement": "App Management",
+    "dataVisualization": "Data Visualization",
+    "mediaCenter": "Media Center",
+    "system": "System"
   },
   "button": {
-    "login": "Login",
     "logout": "Logout",
     "changeLanguage": "Change Language",
-    "changeTheme": "Change Theme",
+    "login": "Login",
     "search": "Search",
-    "prevPage": "Previous",
-    "nextPage": "Next",
-    "download": "Download"
+    "searching": "Searching..."
   },
   "message": {
-    "noChannelsFound": "No channels found",
-    "loading": "Loading",
-    "noAppVersionsFound": "No app versions found",
-    "noDownloadUrl": "No download URL"
+    "loginSuccess": "Login Success",
+    "loginFailed": "Login Failed",
+    "logoutSuccess": "Logout Success",
+    "noChannelsFound": "No channels found"
   },
   "welcome": {
-    "title": "Welcome",
-    "subtitle": "Please select a module below to get started"
+    "title": "Welcome to My Application",
+    "subtitle": "Select a feature below to get started"
   },
   "placeholder": {
-    "searchAppVersion": "Search app versions..."
+    "searchAppVersion": "Search app version",
+    "searchKeyword": "Search keyword"
   },
   "label": {
-    "pageSize": "Page size",
-    "forceUpdate": "Force Update"
+    "pageSize": "Page Size"
   }
 }

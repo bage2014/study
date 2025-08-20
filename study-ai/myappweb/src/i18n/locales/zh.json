@@ -1,41 +1,41 @@
 {
+  "title": {
+    "appName": "我的应用"
+  },
   "menu": {
     "home": "首页",
-    "login": "登录",
+    "appList": "应用列表",
     "mapTrajectory": "地图轨迹",
+    "mapTrajectoryDescription": "在地图上查看和追踪移动路径",
     "tvList": "TV列表",
-    "appList": "APP列表",
-    "tvListDescription": "查看和搜索电视频道列表",
-    "mapTrajectoryDescription": "查看和分析地图轨迹数据"
-  },
-  "title": {
-    "appName": "Vue应用"
+    "tvListDescription": "查看和搜索电视频道",
+    "appManagement": "应用管理",
+    "dataVisualization": "数据可视化",
+    "mediaCenter": "媒体中心",
+    "system": "系统设置"
   },
   "button": {
-    "login": "登录",
-    "logout": "退出",
+    "logout": "退出登录",
     "changeLanguage": "切换语言",
-    "changeTheme": "切换主题",
+    "login": "登录",
     "search": "搜索",
-    "prevPage": "上一页",
-    "nextPage": "下一页",
-    "download": "下载"
+    "searching": "搜索中..."
   },
   "message": {
-    "noChannelsFound": "未找到相关频道",
-    "loading": "加载中",
-    "noAppVersionsFound": "未找到相关应用版本",
-    "noDownloadUrl": "无下载链接"
+    "loginSuccess": "登录成功",
+    "loginFailed": "登录失败",
+    "logoutSuccess": "退出成功",
+    "noChannelsFound": "未找到频道"
   },
   "welcome": {
-    "title": "欢迎使用",
-    "subtitle": "请选择下方功能模块开始使用"
+    "title": "欢迎使用我的应用",
+    "subtitle": "选择下方功能开始使用"
   },
   "placeholder": {
-    "searchAppVersion": "搜索应用版本..."
+    "searchAppVersion": "搜索应用版本",
+    "searchKeyword": "搜索关键词"
   },
   "label": {
-    "pageSize": "每页显示",
-    "forceUpdate": "强制更新"
+    "pageSize": "每页条数"
   }
 }

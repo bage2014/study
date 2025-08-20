@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from '../../utils/storageKeys';
+import router from '../../router'; // 导入router实例
 import type {
   HttpRequestConfig,
   HttpResponse,
@@ -67,18 +68,29 @@ class HttpService implements HttpServiceType {
       // 服务器返回了错误状态码
       errorCode = error.response.status.toString();
       errorMessage = error.response.data?.message || error.response.statusText || errorMessage;
+      
+      // 处理401未授权错误
+      if (error.response.status === 401) {
+        // 清除本地存储中的token
+        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+        // 跳转到登录页面，并保存当前页面路径用于登录后重定向
+        router.push({
+          name: 'login',
+          query: { redirect: window.location.pathname }
+        });
+      }
     } else if (error.request) {
       // 请求发出但没有收到响应
       errorMessage = '服务器无响应，请检查网络连接';
     }
 
-    // const customError: HttpError = new Error(errorMessage);
-    // customError.config = error.config;
-    // customError.response = error.response;
-    // customError.request = error.request;
-    // customError.code = errorCode;
+    const customError: HttpError = new Error(errorMessage);
+    customError.config = error.config;
+    customError.response = error.response;
+    customError.request = error.request;
+    customError.code = errorCode;
 
-    // throw customError;
+    throw customError;
   }
 
   // 构建 URL
