@@ -97,7 +97,7 @@ const closeSubmenuOnClickOutside = () => {
               <span class="dropdown-arrow">{{ openSubmenu === 'system' ? '▼' : '▶' }}</span>
             </a>
             <ul class="dropdown-menu" v-if="openSubmenu === 'system'">
-              <li v-if="isLoggedIn"><a href="#" @click.prevent="logout">{{ t('button.logout') }}</a></li>
+              <li><a href="#" @click.prevent="logout">{{ t('button.logout') }}</a></li>
               <li><a href="#" @click.prevent="toggleLanguage">{{ t('button.changeLanguage') }}</a></li>
               <li>
                 <select v-model="currentTheme" @change="changeTheme(currentTheme)">

@@ -12,7 +12,8 @@
     "appManagement": "应用管理",
     "dataVisualization": "数据可视化",
     "mediaCenter": "媒体中心",
-    "system": "系统设置"
+    "system": "系统设置",
+    "uploadAppVersion": "上传应用版本"
   },
   "button": {
     "logout": "退出登录",
@@ -21,6 +22,9 @@
     "search": "搜索",
     "searching": "搜索中...",
     "upload": "上传APK",
+    "uploadNewVersion": "上传新版本",
+    "uploading": "上传中...",
+    "cancel": "取消",
     "browse": "浏览",
     "download": "下载",
     "prevPage": "上一页",
@@ -38,10 +42,6 @@
     "loading": "加载中",
     "noAppVersionsFound": "未找到应用版本",
     "noDownloadUrl": "无下载链接"
-  },
-  "welcome": {
-    "title": "欢迎使用我的应用",
-    "subtitle": "选择下方功能开始使用"
   },
   "placeholder": {
     "searchAppVersion": "搜索应用版本",

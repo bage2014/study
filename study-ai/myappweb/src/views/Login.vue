@@ -16,6 +16,10 @@ const captchaImage = ref('')
 const loading = ref(false)
 const error = ref('')
 const captchaLoading = ref(false)
+// 添加登录尝试次数计数器
+const loginAttempts = ref<number>(0)
+var requestId = ''
+
 
 // 生成请求ID
 const generateRequestId = () => {
@@ -26,7 +30,7 @@ const generateRequestId = () => {
 const fetchCaptcha = async () => {
   try {
     captchaLoading.value = true
-    const requestId = generateRequestId()
+    requestId = generateRequestId()
     const imageUrl = http.rebuildURL('/captcha');
     captchaImage.value = `${imageUrl}?requestId=${requestId}`;
     captcha.value = '' // 清空验证码输入
@@ -40,7 +44,7 @@ const fetchCaptcha = async () => {
 
 // 处理登录
 const handleLogin = async () => {
-  // 表单验证部分保持不变
+  // 表单验证部分
   if (!username.value.trim()) {
     error.value = '请输入用户名'
     return
@@ -51,7 +55,8 @@ const handleLogin = async () => {
     return
   }
 
-  if (!captcha.value.trim()) {
+  // 只有当loginAttempts > 1时才验证验证码
+  if (loginAttempts.value > 0 && !captcha.value.trim()) {
     error.value = '请输入验证码'
     return
   }
@@ -64,10 +69,12 @@ const handleLogin = async () => {
     const response = await http.post('/login', {
       username: username.value.trim(),
       password: password.value,
-      captcha: captcha.value.trim()
+      requestId: requestId,
+      // 只有当loginAttempts > 1时才发送验证码
+      ...(loginAttempts.value > 0 && { captcha: captcha.value.trim() })
     })
 
-    // 登录成功处理
+    // 登录成功处理 - 适配新的响应格式
     if (response && response.code === 200) {
       // 保存用户信息和认证信息
       if (response.data && response.data.userToken) {
@@ -76,33 +83,52 @@ const handleLogin = async () => {
         
         ElMessage.success(response.message || '登录成功')
         
+        // 登录成功后重置登录尝试次数
+        loginAttempts.value = 0
+        localStorage.setItem('loginAttempts', '0')
+        
         // 重定向到首页
         router.push('/home')
       } else {
         throw new Error('登录响应数据不完整')
       }
     } else {
+      // 增加登录尝试次数
+      loginAttempts.value += 1
+      
+      // 如果达到显示验证码的条件，获取验证码
+      if (loginAttempts.value > 0) {
+        await fetchCaptcha()
+      }
+      
       throw new Error(response?.message || '登录失败')
     }
   } catch (err) {
     console.error('登录失败:', err)
+    // 增加登录尝试次数
+    loginAttempts.value += 1
+    localStorage.setItem('loginAttempts', loginAttempts.value.toString())
+    
+    // 如果达到显示验证码的条件，获取验证码
+    if (loginAttempts.value > 0) {
+      await fetchCaptcha()
+    }
+    
     error.value = err instanceof Error ? err.message : '登录失败，请检查您的网络连接或稍后重试'
     ElMessage.error(error.value)
-    
-    // 登录失败后刷新验证码
-    await fetchCaptcha()
   } finally {
     loading.value = false
   }
 }
 
-// 页面加载时获取验证码
+// 页面加载时，如果已经达到显示验证码的条件，则获取验证码
 onMounted(() => {
-  fetchCaptcha()
+  if (loginAttempts.value > 0) {
+    fetchCaptcha()
+  }
 })
 </script>
 
-<!-- 模板和样式部分保持不变 -->
 <template>
   <div class="login-page">
     <div class="login-container card">
@@ -131,7 +157,8 @@ onMounted(() => {
             autocomplete="current-password"
           >
         </div>
-        <div class="form-group">
+        <!-- 只有当loginAttempts > 1时才显示验证码 -->
+        <div class="form-group" v-if="loginAttempts > 0">
           <label for="captcha">验证码</label>
           <div class="captcha-container">
             <input

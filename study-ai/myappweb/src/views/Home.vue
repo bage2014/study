@@ -18,10 +18,6 @@ const goToMapTrajectory = () => {
 
 <template>
   <div class="home-page">
-    <div class="welcome-section">
-      <h1>{{ t('welcome.title') }}</h1>
-      <p>{{ t('welcome.subtitle') }}</p>
-    </div>
     
     <div class="menu-cards">
       <div class="card" @click="goToTvList">

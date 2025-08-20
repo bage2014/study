@@ -12,7 +12,8 @@
     "appManagement": "App Management",
     "dataVisualization": "Data Visualization",
     "mediaCenter": "Media Center",
-    "system": "System"
+    "system": "System",
+    "uploadAppVersion": "Upload App Version"
   },
   "button": {
     "logout": "Logout",
@@ -21,6 +22,9 @@
     "search": "Search",
     "searching": "Searching...",
     "upload": "Upload APK",
+    "uploadNewVersion": "Upload New Version",
+    "uploading": "Uploading...",
+    "cancel": "Cancel",
     "browse": "Browse",
     "download": "Download",
     "prevPage": "Previous Page",
@@ -38,10 +42,6 @@
     "loading": "Loading",
     "noAppVersionsFound": "No app versions found",
     "noDownloadUrl": "No download URL"
-  },
-  "welcome": {
-    "title": "Welcome to My Application",
-    "subtitle": "Select a feature below to get started"
   },
   "placeholder": {
     "searchAppVersion": "Search app version",

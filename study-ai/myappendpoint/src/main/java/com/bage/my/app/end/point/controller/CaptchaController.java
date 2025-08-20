@@ -49,11 +49,17 @@ public class CaptchaController {
 
     // 方法用于获取验证码
     public CaptchaInfo getCaptcha(String requestId) {
+        if(requestId == null){
+            return null;
+        }
         return captchaService.getCaptcha(requestId);
     }
 
     // 方法用于获取邮箱验证码
     public CaptchaInfo getMailCaptcha(String requestId) {
+        if(requestId == null){
+            return null;
+        }
         return captchaService.getMailCaptcha(requestId);
     }
 

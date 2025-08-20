@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -31,7 +32,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/app/")
 @Slf4j
-public class AppUpdateController {
+public class AppVersionController {
 
     @Value("${app.update.file-dir:./app-updates}")
     private String fileDir;
@@ -69,9 +70,13 @@ public class AppUpdateController {
         return ApiResponse.success(response);
     }
 
-    // 上传文件
+    // 上传文件并保存AppVersion信息
     @RequestMapping("/upload")
-    public ApiResponse<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ApiResponse<Map<String, Object>> uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("version") String version,
+            @RequestParam(value = "forceUpdate", defaultValue = "false") boolean forceUpdate,
+            @RequestParam(value = "releaseNotes", required = false) String releaseNotes) {
         try {
             // 创建存储目录
             Path uploadPath = Paths.get(fileDir);
@@ -85,12 +90,28 @@ public class AppUpdateController {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath);
 
-            // 返回文件ID
-            Map<String, String> response = new HashMap<>();
+            // 构建并保存AppVersion
+            String downloadUrl = "/app/files/" + fileName;
+            AppVersion appVersion = new AppVersion(
+                    version, 
+                    LocalDate.now(), 
+                    releaseNotes != null ? releaseNotes : "", 
+                    downloadUrl, 
+                    forceUpdate
+            );
+            appVersion = appVersionService.saveVersion(appVersion);
+            Long id = appVersion.getId();
+
+            // 返回结果
+            Map<String, Object> response = new HashMap<>();
             response.put("fileId", fileId);
             response.put("originalFileName", file.getOriginalFilename());
             response.put("fileName", fileName);
-            return new ApiResponse<>(200, "文件上传成功", response);
+            response.put("versionId", appVersion.getId());
+            response.put("version", appVersion.getVersion());
+            response.put("downloadUrl", appVersion.getDownloadUrl());
+            
+            return new ApiResponse<>(200, "文件上传和版本保存成功", response);
         } catch (IOException e) {
             log.error("文件上传失败: {}", e.getMessage());
             return new ApiResponse<>(500, "文件上传失败", null);
