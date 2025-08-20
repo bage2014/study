@@ -31,9 +31,9 @@ interface TvSearchResponse {
 
 const { t } = useI18n()
 const channels = ref<Channel[]>([])
-const keyword = ref('cctv')
+const keyword = ref('')
 const currentPage = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(9)
 const total = ref(0)
 const loading = ref(false)
 

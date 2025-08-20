@@ -44,7 +44,7 @@ public class AppUpdateController {
     }
 
     // 查看版本列表（支持分页）
-    @GetMapping("/versions")
+    @RequestMapping("/versions")
     public ApiResponse<AppVersionListResponse> getVersions(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -70,7 +70,7 @@ public class AppUpdateController {
     }
 
     // 上传文件
-    @PostMapping("/upload")
+    @RequestMapping("/upload")
     public ApiResponse<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             // 创建存储目录
@@ -98,7 +98,7 @@ public class AppUpdateController {
     }
 
     // 下载文件
-    @GetMapping("/download/{fileId}")
+    @RequestMapping("/download/{fileId}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
         try {
             Path uploadPath = Paths.get(fileDir);
@@ -119,7 +119,7 @@ public class AppUpdateController {
     }
 
     // 检查版本更新
-    @GetMapping("/check")
+    @RequestMapping("/check")
     public ResponseEntity<AppVersionResponse> checkUpdate(@RequestParam String currentVersion) {
         AppVersion appVersion = appVersionService.getLatestVersion();
         String latestVersion = appVersion == null ? "" : appVersion.getVersion();
@@ -132,7 +132,7 @@ public class AppUpdateController {
     }
     
     // 访问文件
-    @GetMapping("/files/{fileName}")
+    @RequestMapping("/files/{fileName}")
     public ResponseEntity<Resource> getFile(@PathVariable String fileName) {
         try {
             Path uploadPath = Paths.get(fileDir);

@@ -26,7 +26,7 @@ public class TvController {
         this.tvService = tvService;
     }
 
-    @GetMapping
+    @GetMapping("/channels")
     public ResponseEntity<TvChannelListResponse> getAllTvChannels(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
