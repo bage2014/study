@@ -2,9 +2,10 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage, ElPagination } from 'element-plus'
+import { useRouter } from 'vue-router' // 导入useRouter
 import http from '../components/http'
 
-// 定义频道接口
+// 定义接口保持不变
 interface ChannelUrl {
   title: string
   url: string
@@ -16,11 +17,10 @@ interface Channel {
   channelUrls: ChannelUrl[]
 }
 
-// 定义TV搜索响应接口
 interface TvSearchResponse {
   code: number
   message: string
-  data: {
+  data: { 
     channels: Channel[]
     totalElements: number
     totalPages: number
@@ -30,6 +30,7 @@ interface TvSearchResponse {
 }
 
 const { t } = useI18n()
+const router = useRouter() // 初始化router
 const channels = ref<Channel[]>([])
 const keyword = ref('')
 const currentPage = ref(1)
@@ -37,18 +38,18 @@ const pageSize = ref(9)
 const total = ref(0)
 const loading = ref(false)
 
-// 搜索TV频道
+// 其他函数保持不变
 const searchTvChannels = async () => {
   loading.value = true
   try {
     const response: TvSearchResponse = await http.get('/tv/search', {
-      params: {
+      params: { 
         keyword: keyword.value,
-        page: currentPage.value - 1, // 接口使用0-based页码
-        size: pageSize.value
+        page: currentPage.value - 1,
+        size: pageSize.value 
       }
     })
-
+    
     if (response && response.code === 200 && response.data) {
       channels.value = response.data.channels
       total.value = response.data.totalElements
@@ -63,20 +64,28 @@ const searchTvChannels = async () => {
   }
 }
 
-// 切换页码
 const changePage = (page: number) => {
   currentPage.value = page
   searchTvChannels()
 }
 
-// 切换每页显示条数
 const changeSize = (size: number) => {
   pageSize.value = size
   currentPage.value = 1
   searchTvChannels()
 }
 
-// 页面加载时执行搜索
+// 添加导航到播放器页面的函数
+const navigateToPlayer = (channelTitle: string, url: string) => {
+  router.push({
+    name: 'tvPlayer',
+    query: { 
+      title: channelTitle,
+      url: url 
+    }
+  })
+}
+
 onMounted(() => {
   searchTvChannels()
 })
@@ -84,10 +93,11 @@ onMounted(() => {
 
 <template>
   <div class="tv-list-page">
+    <!-- 头部和搜索部分保持不变 -->
     <div class="tv-list-header">
       <h2>{{ t('menu.tvList') }}</h2>
       <div class="search-container">
-        <input
+        <input 
           type="text"
           v-model="keyword"
           placeholder="搜索关键词"
@@ -98,7 +108,8 @@ onMounted(() => {
         </button>
       </div>
     </div>
-
+    
+    <!-- 频道列表部分保持不变，仅修改URL点击事件 -->
     <div class="tv-channels-grid">
       <div v-if="loading" class="loading-container">
         <div class="loading-spinner"></div>
@@ -118,7 +129,8 @@ onMounted(() => {
             <h3>{{ channel.title }}</h3>
             <div class="channel-urls">
               <div v-for="(url, urlIndex) in channel.channelUrls" :key="urlIndex" class="url-item">
-                <a :href="url.url" target="_blank" rel="noopener noreferrer">
+                <!-- 修改这里，使用@click代替href -->
+                <a href="#" @click.prevent="navigateToPlayer(channel.title, url.url)">
                   {{ url.title }}
                 </a>
               </div>
@@ -127,7 +139,8 @@ onMounted(() => {
         </div>
       </div>
     </div>
-
+    
+    <!-- 分页部分保持不变 -->
     <div v-if="total > 0" class="pagination-container">
       <ElPagination
         v-model:current-page="currentPage"
@@ -142,8 +155,9 @@ onMounted(() => {
   </div>
 </template>
 
+<!-- 样式部分保持不变 -->
 <style scoped>
-.tv-list-page {
+tv-list-page {
   padding: 2rem;
 }
 
@@ -308,4 +322,5 @@ onMounted(() => {
     justify-content: center;
   }
 }
+/* 现有样式保持不变 */
 </style>

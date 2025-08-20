@@ -41,7 +41,8 @@
     "onlyApkAllowed": "仅支持.apk文件",
     "loading": "加载中",
     "noAppVersionsFound": "未找到应用版本",
-    "noDownloadUrl": "无下载链接"
+    "noDownloadUrl": "无下载链接",
+    "playbackTips": "如果自动播放失败，请手动点击播放按钮。"
   },
   "placeholder": {
     "searchAppVersion": "搜索应用版本",
@@ -50,6 +51,7 @@
   },
   "label": {
     "pageSize": "每页条数",
-    "forceUpdate": "强制更新"
+    "forceUpdate": "强制更新",
+    "currentUrl": "当前URL"
   }
 }

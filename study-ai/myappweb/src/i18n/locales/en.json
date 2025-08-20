@@ -41,7 +41,8 @@
     "onlyApkAllowed": "Only .apk files are allowed",
     "loading": "Loading",
     "noAppVersionsFound": "No app versions found",
-    "noDownloadUrl": "No download URL"
+    "noDownloadUrl": "No download URL",
+    "playbackTips": "If auto-play doesn't work, please click the play button manually."
   },
   "placeholder": {
     "searchAppVersion": "Search app version",
@@ -50,6 +51,7 @@
   },
   "label": {
     "pageSize": "Page Size",
-    "forceUpdate": "Force Update"
+    "forceUpdate": "Force Update",
+    "currentUrl": "Current URL"
   }
 }
