@@ -52,4 +52,14 @@ const Map<String, String> zh = {
   'page': '第',
   'total': '共',
   'channels': '个频道',
+  // 添加发送消息功能的翻译键
+  'send_message': '发送消息',
+  'message_sent_successfully': '消息发送成功',
+  'message_sent_failed': '消息发送失败',
+  'receiver_id': '接收者ID',
+  'enter_receiver_id': '请输入接收者ID',
+  'message_content': '消息内容',
+  'enter_message_content': '请输入消息内容',
+  'user_not_logged_in': '用户未登录',
+  'please_enter_all_fields': '请填写所有字段',
 };

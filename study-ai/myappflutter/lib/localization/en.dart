@@ -52,4 +52,15 @@ const Map<String, String> en = {
   'page': 'Page',
   'total': 'Total',
   'channels': 'channels',
+
+  // 添加发送消息功能的翻译键
+  'send_message': 'Send Message',
+  'message_sent_successfully': 'Message sent successfully',
+  'message_sent_failed': 'Message sent failed',
+  'receiver_id': 'Receiver ID',
+  'enter_receiver_id': 'Please enter receiver ID',
+  'message_content': 'Message Content',
+  'enter_message_content': 'Please enter message content',
+  'user_not_logged_in': 'User not logged in',
+  'please_enter_all_fields': 'Please fill in all fields',
 };

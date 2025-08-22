@@ -110,6 +110,111 @@ class _MessagePageState extends State<MessagePage> {
     }
   }
 
+  // 添加发送消息的方法
+  Future<void> _sendMessage(int receiverId, String content) async {
+    try {
+      // 调用发送消息接口
+      Map<String, String>? queryParameters = {
+        'receiverId': receiverId.toString(),
+        'content': content,
+      };
+      final response = await _httpClient.get(
+        '/message/send',
+        queryParameters: queryParameters,
+      );
+
+      if (response['code'] == 200) {
+        // 发送成功提示
+        Get.snackbar('success', 'message_sent_successfully'.tr);
+        // 刷新消息列表
+        await _fetchMessages(refresh: true);
+      } else {
+        // 发送失败提示
+        Get.snackbar('error', response['message'] ?? 'message_sent_failed'.tr);
+      }
+    } catch (e) {
+      LogUtil.error('发送消息失败: $e');
+      Get.snackbar('error', 'message_sent_failed'.tr);
+    }
+  }
+
+  // 添加显示发送消息弹窗的方法
+  void _showSendMessageDialog() {
+    final TextEditingController receiverIdController = TextEditingController();
+    final TextEditingController contentController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('send_message'.tr),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // 移除接收者ID输入框
+              TextField(
+                controller: contentController,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  labelText: 'message_content'.tr,
+                  hintText: 'enter_message_content'.tr,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('cancel'.tr),
+          ),
+          TextButton(
+            onPressed: () async {
+              final String content = contentController.text;
+
+              if (content.isEmpty) {
+                Get.snackbar('error', 'enter_message_content'.tr);
+                return;
+              }
+
+              // 直接设置接收者ID为0，不再从输入获取
+              final int receiverId = 0;
+
+              // 关闭弹窗
+              Navigator.pop(context);
+
+              // 发送消息
+              await _sendMessage(receiverId, content);
+            },
+            child: Text('send'.tr),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 实现加载更多指示器
+  Widget _buildLoadMoreIndicator() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Center(
+        child: _isLoading
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  const SizedBox(height: 8),
+                  Text('loading_more'.tr),
+                ],
+              )
+            : TextButton(
+                onPressed: () => _fetchMessages(refresh: false),
+                child: Text('load_more'.tr),
+              ),
+      ),
+    );
+  }
+
   void _scrollListener() {
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent - _loadMoreThreshold &&
@@ -123,6 +228,14 @@ class _MessagePageState extends State<MessagePage> {
   Widget build(BuildContext context) {
     return BasePage(
       title: 'message_center'.tr,
+      actions: [
+        // 添加发送消息按钮
+        IconButton(
+          icon: const Icon(Icons.send),
+          onPressed: _showSendMessageDialog,
+          tooltip: 'send_message'.tr,
+        ),
+      ],
       body: RefreshIndicator(
         onRefresh: () => _fetchMessages(refresh: true),
         child: ListView.builder(
@@ -204,23 +317,6 @@ class _MessagePageState extends State<MessagePage> {
         ),
       ),
     );
-  }
-
-  Widget _buildLoadMoreIndicator() {
-    return _isLoading
-        ? const Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Column(
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 8.0),
-                  Text('loading_more'),
-                ],
-              ),
-            ),
-          )
-        : const SizedBox();
   }
 
   @override

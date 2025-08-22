@@ -2,6 +2,8 @@ package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.Message;
 import com.bage.my.app.end.point.service.MessageService;
+import com.bage.my.app.end.point.util.AuthUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,9 +67,11 @@ public class MessageController {
     }
     
     @RequestMapping("/send")
-    public ApiResponse<Message> sendMessage(@RequestParam Long senderId, 
-                             @RequestParam Long receiverId,
+    public ApiResponse<Message> sendMessage( 
+                             @RequestParam(value = "receiverId",required = false) Long receiverId,
                              @RequestParam String content) {
+        Long senderId = AuthUtil.getCurrentUserId();
+        receiverId = receiverId == null ? 0 : receiverId;
         return ApiResponse.success(messageService.sendMessage(senderId, receiverId, content));
     }
     
@@ -102,6 +106,9 @@ public class MessageController {
             
             if (params.getReceiverId() != null) {
                 predicates.add(cb.equal(root.get("receiverId"), params.getReceiverId()));
+            } else {
+                // 默认查询 自己相关的 消息 
+                predicates.add(cb.equal(root.get("receiverId"), 0L));
             }
             
             if (params.getIsRead() != null) {
