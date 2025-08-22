@@ -52,6 +52,8 @@ const Map<String, String> en = {
   'page': 'Page',
   'total': 'Total',
   'channels': 'channels',
+  'previous_page': 'Previous Page',
+  'next_page': 'Next Page',
 
   // 添加发送消息功能的翻译键
   'send_message': 'Send Message',

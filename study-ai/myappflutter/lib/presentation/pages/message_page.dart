@@ -15,7 +15,7 @@ class MessagePage extends StatefulWidget {
 class _MessagePageState extends State<MessagePage> {
   final HttpClient _httpClient = HttpClient();
   final List<Message> _messages = [];
-  int _currentPage = 1;
+  int _currentPage = 0;
   final int _pageSize = 5;
   bool _isLoading = false;
   bool _hasMore = true;
@@ -38,6 +38,27 @@ class _MessagePageState extends State<MessagePage> {
     _scrollController.addListener(_scrollListener);
   }
 
+  // 添加上一页处理方法
+  Future<void> _goToPreviousPage() async {
+    if (_currentPage > 1 && !_isLoading) {
+      setState(() {
+        _currentPage--;
+        _messages.clear();
+      });
+      await _fetchMessages(refresh: false);
+    }
+  }
+
+  // 添加下一页处理方法
+  Future<void> _goToNextPage() async {
+    if (_hasMore && !_isLoading) {
+      _currentPage++;
+      _messages.clear();
+      await _fetchMessages(refresh: false);
+    }
+  }
+
+  // 修改_fetchMessages方法，适配后台返回结构
   Future<void> _fetchMessages({bool refresh = false}) async {
     // 检查时间间隔
     if (_lastRequestTime != null &&
@@ -56,39 +77,55 @@ class _MessagePageState extends State<MessagePage> {
       final response = await _httpClient.post(
         '/message/query',
         body: {
-          'page': refresh ? 1 : _currentPage,
+          'page': refresh ? 0 : _currentPage,
           'size': _pageSize,
           if (_startDate != null) 'startTime': _startDate!.toIso8601String(),
           if (_endDate != null) 'endTime': _endDate!.toIso8601String(),
         },
       );
+
       // 从response中提取data字段，再获取messages数组
-      // 直接解析messages数组
       final messages = List<Message>.from(
         response['data']['messages'].map((x) => Message.fromJson(x)),
       );
-      // 如果需要分页信息，可以创建一个新的对象存储
+
+      // 根据后台返回结构创建分页响应对象
       final pageResponse = MessageResponse(
         data: messages,
-        // 可以添加其他分页相关字段
+        total: response['data']['totalElements'], // 适配totalElements字段
+        page: response['data']['currentPage'], // 适配currentPage字段
+        size: response['data']['pageSize'], // 适配pageSize字段
       );
+
+      // 获取总页数用于判断是否还有更多数据
+      final int totalPages = response['data']['totalPages'] ?? 0;
+
       setState(() {
         if (refresh) {
           _messages.clear();
-          _currentPage = 1;
+          // 当刷新时，使用返回的当前页码
+          _currentPage = response['data']['currentPage'] ?? 0;
         }
+
         // 避免添加重复数据
         final newMessages = pageResponse.data ?? [];
         if (newMessages.isNotEmpty) {
           _messages.addAll(newMessages);
         }
-        _hasMore = (pageResponse.total ?? 0) > _messages.length;
+
+        // 根据总页数和当前页码判断是否有更多数据
+        _hasMore = _currentPage < totalPages;
+
+        // 更新当前页码
         if (!refresh && _hasMore) {
-          _currentPage++;
+          _currentPage = response['data']['currentPage'] ?? (_currentPage + 1);
         }
+
         // 重置重试计数
         _retryCount = 0;
-        LogUtil.info('消息总数: ${_messages.length}');
+        LogUtil.info(
+          '消息总数: ${_messages.length}, 当前页: $_currentPage, 总页数: $totalPages',
+        );
       });
     } catch (e) {
       LogUtil.error(e.toString(), error: e);
@@ -236,85 +273,113 @@ class _MessagePageState extends State<MessagePage> {
           tooltip: 'send_message'.tr,
         ),
       ],
-      body: RefreshIndicator(
-        onRefresh: () => _fetchMessages(refresh: true),
-        child: ListView.builder(
-          controller: _scrollController,
-          padding: const EdgeInsets.fromLTRB(
-            12.0,
-            64.0,
-            12.0,
-            12.0,
-          ), // 增加顶部内边距以预留appear位置
-          itemCount: _messages.length + (_hasMore ? 1 : 0),
-          itemBuilder: (context, index) {
-            if (index == _messages.length) {
-              return _buildLoadMoreIndicator();
-            }
-
-            final message = _messages[index];
-            LogUtil.info('senderAvatar: ${message.senderAvatar}');
-            return Card(
-              elevation: 3.0,
-              margin: const EdgeInsets.symmetric(vertical: 8.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            // 添加用户头像
-                            CircleAvatar(
-                              backgroundImage:
-                                  message.senderAvatar != null &&
-                                      message.senderAvatar!.isNotEmpty
-                                  ? NetworkImage(message.senderAvatar!)
-                                  : null,
-                              radius: 20.0,
-                              // 如果没有头像URL，显示默认图标
-                              child:
-                                  message.senderAvatar == null ||
-                                      message.senderAvatar!.isEmpty
-                                  ? const Icon(Icons.person)
-                                  : null,
-                            ),
-                            const SizedBox(width: 12.0),
-                            Text(
-                              '${message.senderName}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          message.createTime ?? '',
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      message.content ?? '',
-                      style: const TextStyle(fontSize: 16.0),
-                    ),
-                  ],
+      body: Column(
+        children: [
+          // 添加分页控制按钮
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 64.0, 8.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _currentPage > 1 && !_isLoading
+                      ? _goToPreviousPage
+                      : null,
+                  child: Text('previous_page'.tr),
                 ),
+                const SizedBox(width: 16.0),
+                Text('page'.trParams({'current': '$_currentPage'})),
+                const SizedBox(width: 16.0),
+                ElevatedButton(
+                  onPressed: _hasMore && !_isLoading ? _goToNextPage : null,
+                  child: Text('next_page'.tr),
+                ),
+              ],
+            ),
+          ),
+          // 原有内容：下拉刷新和消息列表
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () => _fetchMessages(refresh: true),
+              child: ListView.builder(
+                controller: _scrollController,
+                padding: const EdgeInsets.fromLTRB(
+                  12.0,
+                  8.0, // 减少顶部内边距
+                  12.0,
+                  12.0,
+                ),
+                itemCount: _messages.length + (_hasMore ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == _messages.length) {
+                    return _buildLoadMoreIndicator();
+                  }
+
+                  final message = _messages[index];
+                  return Card(
+                    elevation: 3.0,
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  // 添加用户头像
+                                  CircleAvatar(
+                                    backgroundImage:
+                                        message.senderAvatar != null &&
+                                            message.senderAvatar!.isNotEmpty
+                                        ? NetworkImage(message.senderAvatar!)
+                                        : null,
+                                    radius: 20.0,
+                                    // 如果没有头像URL，显示默认图标
+                                    child:
+                                        message.senderAvatar == null ||
+                                            message.senderAvatar!.isEmpty
+                                        ? const Icon(Icons.person)
+                                        : null,
+                                  ),
+                                  const SizedBox(width: 12.0),
+                                  Text(
+                                    '${message.senderName}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                message.createTime ?? '',
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            message.content ?? '',
+                            style: const TextStyle(fontSize: 16.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

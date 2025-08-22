@@ -52,6 +52,8 @@ const Map<String, String> zh = {
   'page': '第',
   'total': '共',
   'channels': '个频道',
+  'previous_page': '上一页',
+  'next_page': '下一页',
   // 添加发送消息功能的翻译键
   'send_message': '发送消息',
   'message_sent_successfully': '消息发送成功',

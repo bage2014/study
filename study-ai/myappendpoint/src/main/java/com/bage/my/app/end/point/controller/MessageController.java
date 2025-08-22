@@ -3,6 +3,7 @@ package com.bage.my.app.end.point.controller;
 import com.bage.my.app.end.point.entity.Message;
 import com.bage.my.app.end.point.service.MessageService;
 import com.bage.my.app.end.point.util.AuthUtil;
+import com.bage.my.app.end.point.util.JsonUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,11 +50,11 @@ public class MessageController {
             "紧急：服务器需要维护"
         };
         
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 24; i++) {
             Message message = new Message();
             message.setSenderId((long) random.nextInt(10) + 1);
             message.setReceiverId((long) random.nextInt(10) + 1);
-            message.setContent(messageContents[random.nextInt(messageContents.length)]);
+            message.setContent(messageContents[random.nextInt(messageContents.length)] + "--" + i);
             message.setIsRead(random.nextBoolean());
             message.setCreateTime(LocalDateTime.now().minusDays(random.nextInt(30)));
             
@@ -99,17 +100,19 @@ public class MessageController {
         // 如果参数为null，创建一个默认的参数对象
         MessageQueryRequest params = param == null ? new MessageQueryRequest() : param;
     
-        Pageable pageable = PageRequest.of(params.getPage(), params.getSize());
-    
+        // 将页码从1-indexed转换为0-indexed
+        int page = Math.max(0, params.getPage() - 1); // 确保页码不会小于0
+        Pageable pageable = PageRequest.of(page, params.getSize());
+        // if(params.getReceiverId() == null){
+        //     params.setReceiverId(0L);
+        // }
+
         Specification<Message> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             
             if (params.getReceiverId() != null) {
                 predicates.add(cb.equal(root.get("receiverId"), params.getReceiverId()));
-            } else {
-                // 默认查询 自己相关的 消息 
-                predicates.add(cb.equal(root.get("receiverId"), 0L));
-            }
+            } 
             
             if (params.getIsRead() != null) {
                 predicates.add(cb.equal(root.get("isRead"), params.getIsRead()));
@@ -131,6 +134,7 @@ public class MessageController {
         // 执行分页查询
         Page<Message> messagePage = messageService.findAll(spec, pageable);
         List<Message> content = messagePage.getContent();
+        log.info("queryMessages content: {}", JsonUtil.toJson(content));
 
         // 将 Message 列表转换为 MessageItem 列表
         List<MessageItem> messageItems = content.stream()
@@ -163,7 +167,7 @@ public class MessageController {
             messageItems,
             messagePage.getTotalElements(),
             messagePage.getTotalPages(),
-            messagePage.getNumber(),
+            messagePage.getNumber()+1,
             messagePage.getSize()
         );
     
