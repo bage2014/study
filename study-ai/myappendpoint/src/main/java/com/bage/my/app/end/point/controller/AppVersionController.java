@@ -78,6 +78,10 @@ public class AppVersionController {
             @RequestParam(value = "forceUpdate", defaultValue = "false") boolean forceUpdate,
             @RequestParam(value = "releaseNotes", required = false) String releaseNotes) {
         try {
+            log.info("fileDir: {}", fileDir);
+            log.info("version: {}", version);
+            log.info("forceUpdate: {}", forceUpdate);
+            log.info("releaseNotes: {}", releaseNotes);
             // 创建存储目录
             Path uploadPath = Paths.get(fileDir);
             if (!Files.exists(uploadPath)) {

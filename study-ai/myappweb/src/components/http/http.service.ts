@@ -238,6 +238,34 @@ class HttpService implements HttpServiceType {
     return this.responseInterceptor(response);
   }
 
+  // 文件上传方法
+  public async upload<T = any>(url: string, file: File, data?: Record<string, any>, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>): Promise<T> {
+    // 创建FormData对象
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    // 添加额外数据
+    if (data) {
+      for (const [key, value] of Object.entries(data)) {
+        formData.append(key, String(value));
+      }
+    }
+    
+    // 发送请求，设置正确的Content-Type为multipart/form-data
+    const response = await this.request<T>({
+      url,
+      method: 'POST',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...config?.headers
+      },
+      ...config
+    });
+    
+    return this.responseInterceptor(response);
+  }
+
   // 获取验证码图片
   public rebuildURL(url: string): string {
     try {

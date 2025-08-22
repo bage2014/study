@@ -129,21 +129,18 @@ const uploadFile = async () => {
   uploadMessage.value = '';
   
   try {
-    // 创建FormData对象并添加所有字段
-    const formData = new FormData();
-    formData.append('file', selectedFile.value);
-    formData.append('version', version.value.trim());
-    formData.append('forceUpdate', String(forceUpdate.value));
+    // 准备额外数据
+    const additionalData: Record<string, any> = {
+      version: version.value.trim(),
+      forceUpdate: String(forceUpdate.value)
+    };
+    
     if (releaseNotes.value.trim()) {
-      formData.append('releaseNotes', releaseNotes.value.trim());
+      additionalData.releaseNotes = releaseNotes.value.trim();
     }
     
-    // 发送文件上传请求
-    const response = await http.post<ApiResponse<UploadResponseData>>('/app/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+    // 使用新的upload方法发送文件上传请求
+    const response = await http.upload<ApiResponse<UploadResponseData>>('/app/upload', selectedFile.value, additionalData);
     
     // 处理上传成功
     uploadMessage.value = response.message || t('message.fileUploadSuccess');

@@ -48,6 +48,9 @@ export interface HttpServiceType {
   delete<T = any>(url: string, config?: Omit<HttpRequestConfig, 'url' | 'method'>): Promise<T>;
   patch<T = any>(url: string, data?: any, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>): Promise<T>;
   
+  // 文件上传方法
+  upload<T = any>(url: string, file: File, data?: Record<string, any>, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>): Promise<T>;
+  
   // 验证码图片获取方法
   getCaptchaImageURL(requestId?: string): string;
   
