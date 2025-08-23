@@ -57,3 +57,27 @@ export interface HttpServiceType {
   // 环境切换方法
   setEnvironment(env: 'development' | 'production' | 'test' | 'mock'): void;
 }
+
+// 消息相关接口
+export interface Message {
+  id: number;
+  senderId: number;
+  receiverId: number;
+  content: string;
+  type: number;
+  isRead: boolean;
+  createTime: string;
+  readTime: string | null;
+  senderName: string;
+  senderAvatar: string;
+  receiverName: string;
+  receiverAvatar: string;
+}
+
+export interface MessageResponse {
+  messages: Message[];
+  totalElements: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+}

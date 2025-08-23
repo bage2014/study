@@ -5,6 +5,7 @@ import TvListView from '../views/TvList.vue'
 import HomeView from '../views/Home.vue'
 import AppListView from '../views/AppList.vue'
 import TvPlayerView from '../views/TvPlayer.vue' // 导入TV播放器组件
+import MessagesView from '../views/MessagesView.vue' // 导入消息页面组件
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,13 @@ const router = createRouter({
       path: '/tv-player',
       name: 'tvPlayer',
       component: TvPlayerView,
+      meta: { requiresAuth: true }
+    },
+    // 添加消息页面路由
+    { 
+      path: '/messages',
+      name: 'messages',
+      component: MessagesView,
       meta: { requiresAuth: true }
     }
   ]

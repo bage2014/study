@@ -66,3 +66,15 @@ button:hover {
   box-shadow: var(--shadow);
   padding: 1.5rem;
 }
+
+/* 添加到现有样式变量中 */
+:root {
+  /* 现有变量保持不变 */
+  --error-color: #ff4d4f;
+}
+
+/* 暗色主题等其他主题下的变量也需要相应添加 */
+.dark {
+  /* 现有变量保持不变 */
+  --error-color: #ff7875;
+}

@@ -90,6 +90,9 @@ const closeSubmenuOnClickOutside = () => {
             </ul>
           </li>
           
+          <!-- 消息页面菜单 -->
+          <li><RouterLink to="/messages">{{ t('menu.messages') }}</RouterLink></li>
+          
           <!-- 系统设置二级菜单 -->
           <li class="dropdown" @click.stop="toggleSubmenu('system')">
             <a href="#" class="dropdown-toggle">

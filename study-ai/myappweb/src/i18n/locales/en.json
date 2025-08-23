@@ -13,7 +13,9 @@
     "dataVisualization": "Data Visualization",
     "mediaCenter": "Media Center",
     "system": "System",
-    "uploadAppVersion": "Upload App Version"
+    "uploadAppVersion": "Upload App Version",
+    "messages": "Messages",
+    "sendMessage": "Send Message"
   },
   "button": {
     "logout": "Logout",
@@ -28,7 +30,12 @@
     "browse": "Browse",
     "download": "Download",
     "prevPage": "Previous Page",
-    "nextPage": "Next Page"
+    "nextPage": "Next Page",
+    "firstPage": "First Page",
+    "lastPage": "Last Page",
+    "sendMessage": "Send Message",
+    "send": "Send",
+    "sending": "Sending..."
   },
   "message": {
     "loginSuccess": "Login Success",
@@ -42,16 +49,23 @@
     "loading": "Loading",
     "noAppVersionsFound": "No app versions found",
     "noDownloadUrl": "No download URL",
-    "playbackTips": "If auto-play doesn't work, please click the play button manually."
+    "playbackTips": "If auto-play doesn't work, please click the play button manually.",
+    "noMessagesFound": "No messages found",
+    "incompleteFields": "Please fill in all required fields",
+    "sendMessageFailed": "Failed to send message"
   },
   "placeholder": {
     "searchAppVersion": "Search app version",
     "searchKeyword": "Search keyword",
-    "noFileSelected": "No file selected"
+    "noFileSelected": "No file selected",
+    "receiverId": "Enter receiver ID",
+    "messageContent": "Enter message content"
   },
   "label": {
-    "pageSize": "Page Size",
-    "forceUpdate": "Force Update",
-    "currentUrl": "Current URL"
+    "unread": "Unread",
+    "showingResults": "Showing {current} of {total} results",
+    "page": "Page {page} of {total}",
+    "receiverId": "Receiver ID",
+    "messageContent": "Message Content"
   }
 }
