@@ -71,16 +71,6 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="receiverId">{{ t('label.receiverId') }}:</label>
-            <input 
-              type="text" 
-              id="receiverId" 
-              v-model="receiverId"
-              placeholder="{{ t('placeholder.receiverId') }}"
-              :disabled="isSending"
-            />
-          </div>
-          <div class="form-group">
             <label for="messageContent">{{ t('label.messageContent') }}:</label>
             <textarea 
               id="messageContent" 
@@ -98,7 +88,7 @@
           <button @click="showSendModal = false" :disabled="isSending">
             {{ t('button.cancel') }}
           </button>
-          <button @click="sendMessage" :disabled="isSending || !receiverId || !messageContent.trim()">
+          <button @click="sendMessage" :disabled="isSending || !messageContent.trim()">
             {{ isSending ? t('button.sending') : t('button.send') }}
           </button>
         </div>
@@ -119,7 +109,6 @@ const { t } = useI18n();
 interface Message {
   id: number;
   senderId: number;
-  receiverId: number;
   content: string;
   type: number;
   isRead: boolean;
@@ -149,7 +138,6 @@ const totalPages = ref(0);
 
 // 发送消息弹窗状态
 const showSendModal = ref(false);
-const receiverId = ref('');
 const messageContent = ref('');
 const isSending = ref(false);
 const sendMessageError = ref('');
@@ -158,11 +146,9 @@ const sendMessageError = ref('');
 const fetchMessages = async () => {
   isLoading.value = true;
   try {
-    const response = await http.get<ApiResponse<MessageResponse>>('/message/query', {
-      params: {
+    const response = await http.post<ApiResponse<MessageResponse>>('/message/query', {
         page: currentPage.value,
-        pageSize: pageSize.value
-      }
+        size: pageSize.value
     });
     
     messages.value = response.data.messages;
@@ -180,7 +166,7 @@ const fetchMessages = async () => {
 
 // 发送消息
 const sendMessage = async () => {
-  if (!receiverId.value || !messageContent.value.trim()) {
+  if (!messageContent.value.trim()) {
     sendMessageError.value = t('message.incompleteFields');
     return;
   }
@@ -191,13 +177,11 @@ const sendMessage = async () => {
   try {
     await http.get<ApiResponse<any>>('/message/send', {
       params: {
-        receiverId: receiverId.value,
         content: messageContent.value.trim()
       }
     });
     
     // 发送成功后重置表单并关闭弹窗
-    receiverId.value = '';
     messageContent.value = '';
     showSendModal.value = false;
     

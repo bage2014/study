@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.criteria.Predicate;
@@ -102,7 +103,8 @@ public class MessageController {
     
         // 将页码从1-indexed转换为0-indexed
         int page = Math.max(0, params.getPage() - 1); // 确保页码不会小于0
-        Pageable pageable = PageRequest.of(page, params.getSize());
+        // 添加按主键ID逆序排序
+        Pageable pageable = PageRequest.of(page, params.getSize(), Sort.by(Sort.Direction.DESC, "id"));
         // if(params.getReceiverId() == null){
         //     params.setReceiverId(0L);
         // }
