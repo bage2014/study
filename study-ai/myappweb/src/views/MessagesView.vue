@@ -75,7 +75,7 @@
             <textarea 
               id="messageContent" 
               v-model="messageContent"
-              placeholder="{{ t('placeholder.messageContent') }}"
+              :placeholder="t('placeholder.messageContent')"
               rows="4"
               :disabled="isSending"
             ></textarea>
