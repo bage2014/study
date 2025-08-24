@@ -14,6 +14,16 @@ const goToTvList = () => {
 const goToMapTrajectory = () => {
   router.push('/map-trajectory')
 }
+
+// 新增：跳转到消息中心页面
+const goToMessages = () => {
+  router.push('/messages')
+}
+
+// 新增：跳转到应用版本页面
+const goToAppList = () => {
+  router.push('/app-list')
+}
 </script>
 
 <template>
@@ -50,6 +60,46 @@ const goToMapTrajectory = () => {
         <div class="card-content">
           <h3>{{ t('menu.mapTrajectory') }}</h3>
           <p>{{ t('menu.mapTrajectoryDescription') }}</p>
+        </div>
+        <div class="card-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
+      </div>
+      
+      <!-- 新增：消息中心菜单项 -->
+      <div class="card" @click="goToMessages">
+        <div class="card-icon message-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3>{{ t('menu.messages') }}</h3>
+          <p>{{ t('menu.sendMessage') }}</p>
+        </div>
+        <div class="card-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
+      </div>
+      
+      <!-- 新增：应用版本菜单项 -->
+      <div class="card" @click="goToAppList">
+        <div class="card-icon app-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3>{{ t('menu.appList') }}</h3>
+          <p>{{ t('menu.uploadAppVersion') }}</p>
         </div>
         <div class="card-arrow">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -133,6 +183,16 @@ const goToMapTrajectory = () => {
 
 .map-icon {
   background-color: rgba(100, 108, 255, 0.1);
+}
+
+/* 新增：消息中心图标样式 */
+.message-icon {
+  background-color: rgba(255, 159, 64, 0.1);
+}
+
+/* 新增：应用版本图标样式 */
+.app-icon {
+  background-color: rgba(236, 72, 153, 0.1);
 }
 
 .card-content h3 {
