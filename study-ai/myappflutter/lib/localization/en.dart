@@ -50,6 +50,7 @@ const Map<String, String> en = {
   'unknown_channel': 'Unknown channel',
   'signal_sources': 'signal sources',
   'page': 'Page',
+  'current_page': 'Current Page',
   'total': 'Total',
   'channels': 'channels',
   'previous_page': 'Previous Page',

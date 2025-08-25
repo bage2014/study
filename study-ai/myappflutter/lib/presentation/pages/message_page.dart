@@ -230,7 +230,7 @@ class _MessagePageState extends State<MessagePage> {
     );
   }
 
-  // 实现加载更多指示器
+  // 实现加载更多指示器 - 移除加载更多按钮
   Widget _buildLoadMoreIndicator() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -244,10 +244,7 @@ class _MessagePageState extends State<MessagePage> {
                   Text('loading_more'.tr),
                 ],
               )
-            : TextButton(
-                onPressed: () => _fetchMessages(refresh: false),
-                child: Text('load_more'.tr),
-              ),
+            : Container(), // 加载完成时显示空容器
       ),
     );
   }

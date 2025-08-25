@@ -50,6 +50,7 @@ const Map<String, String> zh = {
   'unknown_channel': '未知频道',
   'signal_sources': '个信号源',
   'page': '第',
+  'current_page': '当前页',
   'total': '共',
   'channels': '个频道',
   'previous_page': '上一页',
