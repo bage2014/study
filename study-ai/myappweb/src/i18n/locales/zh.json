@@ -12,7 +12,7 @@
     "appManagement": "应用管理",
     "dataVisualization": "数据可视化",
     "mediaCenter": "媒体中心",
-    "system": "系统设置",
+    "system": "设置",
     "uploadAppVersion": "上传应用版本",
     "messages": "消息",
     "sendMessage": "发送消息"
@@ -66,6 +66,8 @@
     "showingResults": "显示 {current} 条，共 {total} 条",
     "page": "第 {page} 页，共 {total} 页",
     "receiverId": "接收者ID",
-    "messageContent": "消息内容"
+    "messageContent": "消息内容",
+    "forceUpdate": "强制更新",
+    "pageSize": "每页条数"
   }
 }

@@ -12,7 +12,7 @@
     "appManagement": "App Management",
     "dataVisualization": "Data Visualization",
     "mediaCenter": "Media Center",
-    "system": "System",
+    "system": "Settings",
     "uploadAppVersion": "Upload App Version",
     "messages": "Messages",
     "sendMessage": "Send Message"
@@ -66,6 +66,8 @@
     "showingResults": "Showing {current} of {total} results",
     "page": "Page {page} of {total}",
     "receiverId": "Receiver ID",
-    "messageContent": "Message Content"
+    "messageContent": "Message Content",
+    "forceUpdate": "Force Update",
+    "pageSize": "页面大小"
   }
 }

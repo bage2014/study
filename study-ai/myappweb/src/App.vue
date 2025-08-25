@@ -58,7 +58,7 @@ const closeSubmenuOnClickOutside = () => {
           <li ><RouterLink to="/home">{{ t('menu.home') }}</RouterLink></li>
           
           <!-- 应用管理二级菜单 -->
-          <li  class="dropdown" @click.stop="toggleSubmenu('app')">
+          <!-- <li  class="dropdown" @click.stop="toggleSubmenu('app')">
             <a href="#" class="dropdown-toggle">
               {{ t('menu.appManagement') }}
               <span class="dropdown-arrow">{{ openSubmenu === 'app' ? '▼' : '▶' }}</span>
@@ -66,10 +66,10 @@ const closeSubmenuOnClickOutside = () => {
             <ul class="dropdown-menu" v-if="openSubmenu === 'app'">
               <li><RouterLink to="/app-list">{{ t('menu.appList') }}</RouterLink></li>
             </ul>
-          </li>
+          </li> -->
           
           <!-- 数据可视化二级菜单 -->
-          <li  class="dropdown" @click.stop="toggleSubmenu('data')">
+          <!-- <li  class="dropdown" @click.stop="toggleSubmenu('data')">
             <a href="#" class="dropdown-toggle">
               {{ t('menu.dataVisualization') }}
               <span class="dropdown-arrow">{{ openSubmenu === 'data' ? '▼' : '▶' }}</span>
@@ -77,10 +77,10 @@ const closeSubmenuOnClickOutside = () => {
             <ul class="dropdown-menu" v-if="openSubmenu === 'data'">
               <li><RouterLink to="/map-trajectory">{{ t('menu.mapTrajectory') }}</RouterLink></li>
             </ul>
-          </li>
+          </li> -->
           
           <!-- 媒体中心二级菜单 -->
-          <li  class="dropdown" @click.stop="toggleSubmenu('media')">
+          <!-- <li  class="dropdown" @click.stop="toggleSubmenu('media')">
             <a href="#" class="dropdown-toggle">
               {{ t('menu.mediaCenter') }}
               <span class="dropdown-arrow">{{ openSubmenu === 'media' ? '▼' : '▶' }}</span>
@@ -88,10 +88,10 @@ const closeSubmenuOnClickOutside = () => {
             <ul class="dropdown-menu" v-if="openSubmenu === 'media'">
               <li><RouterLink to="/tv-list">{{ t('menu.tvList') }}</RouterLink></li>
             </ul>
-          </li>
+          </li> -->
           
           <!-- 消息页面菜单 -->
-          <li><RouterLink to="/messages">{{ t('menu.messages') }}</RouterLink></li>
+          <!-- <li><RouterLink to="/messages">{{ t('menu.messages') }}</RouterLink></li> -->
           
           <!-- 系统设置二级菜单 -->
           <li class="dropdown" @click.stop="toggleSubmenu('system')">
