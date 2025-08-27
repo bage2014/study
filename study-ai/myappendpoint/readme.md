@@ -72,4 +72,4 @@ docker run -d -p 8000:8080 --name myappendpoint myappendpoint:20250725
 docker run -d -p 8000:8080 --name myappendpoint myappendpoint:20250727
 
 
-
+bage@192 myappendpoint % ./mvnw spring-boot:run               

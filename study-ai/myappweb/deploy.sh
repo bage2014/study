@@ -4,7 +4,7 @@
 IMAGE_NAME="myappweb"
 IMAGE_TAG="latest"
 REMOTE_USER="bage"
-REMOTE_HOST="101.34.78.152"
+REMOTE_HOST="127.0.0.1"
 REMOTE_PATH="/home/bage/docker-images"
 CONTAINER_NAME="myappweb-container"
 
