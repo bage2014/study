@@ -1,8 +1,8 @@
 // HTTP 请求方法类型
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
 
-// HTTP 请求配置接口
-export interface HttpRequestConfig<T = any> {
+// HTTP 请求配置接口 - 移除未使用的泛型参数T
+export interface HttpRequestConfig {
   url: string;
   method?: HttpMethod;
   data?: any;

@@ -54,6 +54,14 @@ curl -X POST 'http://localhost:8080/app/upload' \
   -F 'version=2.0.0' \
   -F 'forceUpdate=true' \
   -F 'releaseNotes=全新UI设计，性能优化'
+
+
+# 上传文件并保存版本信息
+curl -X POST 'http://localhost:8080/app/upload' \
+  -F 'file=@/Users/bage/bage/github/study/study-ai/myappflutter/build/app/outputs/flutter-apk/app-release.apk' \
+  -F 'version=2.0.0' \
+  -F 'forceUpdate=true' \
+  -F 'releaseNotes=全新UI设计，性能优化'  
 ```
 
 ## 2. 下载文件

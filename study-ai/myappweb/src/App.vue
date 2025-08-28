@@ -3,7 +3,8 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import { applyTheme, Theme } from './utils/theme'
+import { applyTheme } from './utils/theme'
+import type { Theme } from './utils/theme'
 
 const { t, locale } = useI18n()
 const currentTheme = ref<Theme>(localStorage.getItem('theme') as Theme || 'light')

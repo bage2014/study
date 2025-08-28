@@ -34,7 +34,8 @@ onMounted(() => {
   document.head.appendChild(script)
 
   // 定义初始化地图的全局函数
-  window.initMap = () => {
+  // Replace window.initMap with:
+  (window as any).initMap = () => {
     if (mapRef.value) {
       // 创建地图实例
       map = new BMap.Map(mapRef.value)
@@ -55,6 +56,10 @@ onMounted(() => {
       // 启动动画
       startAnimation()
     }
+  }
+  // And for the cleanup:
+  if ((window as any).initMap) {
+    delete (window as any).initMap
   }
 })
 

@@ -72,4 +72,14 @@ docker run -d -p 8000:8080 --name myappendpoint myappendpoint:20250725
 docker run -d -p 8000:8080 --name myappendpoint myappendpoint:20250727
 
 
-bage@192 myappendpoint % ./mvnw spring-boot:run               
+bage@192 myappendpoint % ./mvnw spring-boot:run        
+
+
+
+1、 基于markdown 格式，给 XXX 生成  API文档，
+2、 使用命令行将结果自动写入到 xxx.md文件中， 
+3、 至少包括请求入参、响应的 请求样例、响应格式、错误响应 ;
+
+1、 基于markdown 格式，给 AppVersionController 生成  API文档，
+2、 使用命令行将结果自动写入到 app-versions.md文件中， 
+3、 至少包括请求入参、响应的 请求样例、响应格式、错误响应 ;

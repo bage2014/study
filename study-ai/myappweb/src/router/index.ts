@@ -4,8 +4,8 @@ import MapTrajectoryView from '../views/MapTrajectory.vue'
 import TvListView from '../views/TvList.vue'
 import HomeView from '../views/Home.vue'
 import AppListView from '../views/AppList.vue'
-import TvPlayerView from '../views/TvPlayer.vue' // 导入TV播放器组件
-import MessagesView from '../views/MessagesView.vue' // 导入消息页面组件
+import TvPlayerView from '../views/TvPlayer.vue'
+import MessagesView from '../views/MessagesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,14 +44,12 @@ const router = createRouter({
       component: AppListView,
       meta: { requiresAuth: true }
     },
-    // 添加TV播放器路由
     { 
       path: '/tv-player',
       name: 'tvPlayer',
       component: TvPlayerView,
       meta: { requiresAuth: true }
     },
-    // 添加消息页面路由
     { 
       path: '/messages',
       name: 'messages',
@@ -61,8 +59,7 @@ const router = createRouter({
   ]
 })
 
-// 路由守卫保持不变
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const isLoggedIn = !!localStorage.getItem('token')
   
   if (to.meta.guest && isLoggedIn) {

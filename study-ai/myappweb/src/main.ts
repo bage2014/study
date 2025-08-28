@@ -11,16 +11,15 @@ import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 // 初始化主题
-const theme = initTheme()
+initTheme()
 
 const app = createApp(App)
 
 app.use(router)
 app.use(i18n)
+// 修复ElementPlus配置，移除不支持的dark参数
 app.use(ElementPlus, {
-  locale: zhCn,
-  // 配置 Element Plus 主题模式
-  dark: theme === 'dark'
+  locale: zhCn
 })
 
 app.mount('#app')

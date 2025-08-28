@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import Hls from 'hls.js'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const videoRef = ref<HTMLVideoElement | null>(null)
 const hls = ref<Hls | null>(null)
-const channelTitle = ref('')
+// 移除未使用的channelTitle变量
 const loading = ref(true)
 
 // 从路由参数中获取视频URL和标题
@@ -43,7 +43,7 @@ const initPlayer = () => {
       })
     })
     
-    hls.value.on(Hls.Events.ERROR, (event, data) => {
+    hls.value.on(Hls.Events.ERROR, (_event, data) => {
       loading.value = false
       console.error('HLS播放错误:', data)
       ElMessage.error(`播放失败: ${data.details || '未知错误'}`)

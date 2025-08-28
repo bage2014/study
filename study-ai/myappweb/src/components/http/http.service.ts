@@ -4,7 +4,6 @@ import type {
   HttpRequestConfig,
   HttpResponse,
   HttpError,
-  ApiResponse,
   HttpServiceType
 } from './types';
 
@@ -15,17 +14,19 @@ class HttpService implements HttpServiceType {
 
   constructor() {
     // 从环境变量获取 baseURL，支持多环境配置
-    // 默认使用开发环境的 baseURL
     this.baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
-    this.timeout = 30000; // 默认超时时间 30 秒
+    this.timeout = 30000;
     this.defaultHeaders = {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     };
-    
-    // 打印当前环境信息，便于调试
-    console.log(`当前环境: ${import.meta.env.VITE_ENV || 'unknown'}`);
-    console.log(`API Base URL: ${this.baseURL}`);
+  }
+
+  // 添加缺失的getCaptchaImageURL方法
+  public getCaptchaImageURL(requestId?: string): string {
+    const baseUrl = this.baseURL.replace(/\/+$/, '');
+    const query = requestId ? `?requestId=${requestId}` : '';
+    return `${baseUrl}/captcha/image${query}`;
   }
 
   // 动态切换环境的方法
@@ -60,32 +61,29 @@ class HttpService implements HttpServiceType {
   }
 
   // 错误处理
+  // 修复HttpError类型定义
   private handleError(error: any) {
     let errorMessage = '网络请求失败，请稍后重试';
     let errorCode = 'NETWORK_ERROR';
 
     if (error.response) {
-      // 服务器返回了错误状态码
       errorCode = error.response.status.toString();
       errorMessage = error.response.data?.message || error.response.statusText || errorMessage;
       
-      // 处理401未授权错误
       if (error.response.status === 401) {
-        // 清除本地存储中的token
         localStorage.removeItem(STORAGE_KEYS.TOKEN);
-        // 跳转到登录页面，并保存当前页面路径用于登录后重定向
         router.push({
           name: 'login',
           query: { redirect: window.location.pathname }
         });
       }
     } else if (error.request) {
-      // 请求发出但没有收到响应
       errorMessage = '服务器无响应，请检查网络连接';
     }
 
-    const customError: HttpError = new Error(errorMessage);
-    customError.config = error.config;
+    // 修复HttpError类型
+    const customError = new Error(errorMessage) as HttpError;
+    customError.config = error.config || {};
     customError.response = error.response;
     customError.request = error.request;
     customError.code = errorCode;
@@ -192,10 +190,9 @@ class HttpService implements HttpServiceType {
       method: 'GET',
       ...config
     });
-    return this.responseInterceptor(response);
+    return response.data;
   }
 
-  // POST 请求
   public async post<T = any>(url: string, data?: any, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>): Promise<T> {
     const response = await this.request<T>({
       url,
@@ -203,10 +200,9 @@ class HttpService implements HttpServiceType {
       data,
       ...config
     });
-    return this.responseInterceptor(response);
+    return response.data;
   }
 
-  // PUT 请求
   public async put<T = any>(url: string, data?: any, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>): Promise<T> {
     const response = await this.request<T>({
       url,
@@ -214,20 +210,18 @@ class HttpService implements HttpServiceType {
       data,
       ...config
     });
-    return this.responseInterceptor(response);
+    return response.data;
   }
 
-  // DELETE 请求
   public async delete<T = any>(url: string, config?: Omit<HttpRequestConfig, 'url' | 'method'>): Promise<T> {
     const response = await this.request<T>({
       url,
       method: 'DELETE',
       ...config
     });
-    return this.responseInterceptor(response);
+    return response.data;
   }
 
-  // PATCH 请求
   public async patch<T = any>(url: string, data?: any, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>): Promise<T> {
     const response = await this.request<T>({
       url,
@@ -235,48 +229,37 @@ class HttpService implements HttpServiceType {
       data,
       ...config
     });
-    return this.responseInterceptor(response);
+    return response.data;
   }
 
-  // 文件上传方法
   public async upload<T = any>(url: string, file: File, data?: Record<string, any>, config?: Omit<HttpRequestConfig, 'url' | 'method' | 'data'>): Promise<T> {
-    // 创建FormData对象
     const formData = new FormData();
     formData.append('file', file);
     
-    // 添加额外数据
     if (data) {
-      for (const [key, value] of Object.entries(data)) {
+      Object.entries(data).forEach(([key, value]) => {
         formData.append(key, String(value));
-      }
+      });
     }
-    
-    // 发送请求，设置正确的Content-Type为multipart/form-data
+
     const response = await this.request<T>({
       url,
       method: 'POST',
       data: formData,
       headers: {
-        'Content-Type': 'multipart/form-data',
-        ...config?.headers
+        'Content-Type': 'multipart/form-data'
       },
       ...config
     });
-    
-    return this.responseInterceptor(response);
+    return response.data;
   }
 
-  // 获取验证码图片
+  // 添加rebuildURL方法
   public rebuildURL(url: string): string {
-    try {
-        if (url?.startsWith('/')) {
-          return `${this.baseURL}${url?.slice(1)}`;
-        }
-      return `${this.baseURL}${url}`;
-    } catch (error) {
-      console.error('获取验证码失败:', error);
-      throw error;
+    if (url?.startsWith('/')) {
+      url = url.slice(1);
     }
+    return `${this.baseURL}${url}`;
   }
 }
 
