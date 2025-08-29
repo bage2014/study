@@ -4,11 +4,14 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { applyTheme } from './utils/theme'
+// 使用type-only导入Theme类型
 import type { Theme } from './utils/theme'
 
 const { t, locale } = useI18n()
 const currentTheme = ref<Theme>(localStorage.getItem('theme') as Theme || 'light')
 const openSubmenu = ref<string | null>(null)
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 // 切换语言
 const toggleLanguage = () => {
@@ -40,12 +43,17 @@ const toggleSubmenu = (menuKey: string) => {
 const closeSubmenuOnClickOutside = () => {
   openSubmenu.value = null
 }
+
+const goToHome = () => {
+  router.push('/home');
+};
+
 </script>
 
 <template>
   <div class="container" @click="closeSubmenuOnClickOutside">
     <header class="header">
-      <div class="logo">
+      <div class="logo"  @click="goToHome">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
           <path d="M2 17l10 5 10-5"></path>
