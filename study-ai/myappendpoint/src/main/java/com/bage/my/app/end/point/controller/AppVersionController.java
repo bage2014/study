@@ -71,29 +71,45 @@ public class AppVersionController {
     }
 
     // 上传文件并保存AppVersion信息
-    @RequestMapping("/upload")
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<Map<String, Object>> uploadFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam("version") String version,
             @RequestParam(value = "forceUpdate", defaultValue = "false") boolean forceUpdate,
             @RequestParam(value = "releaseNotes", required = false) String releaseNotes) {
         try {
-            log.info("fileDir: {}", fileDir);
-            log.info("version: {}", version);
-            log.info("forceUpdate: {}", forceUpdate);
-            log.info("releaseNotes: {}", releaseNotes);
+            // 验证文件
+            if (file == null || file.isEmpty()) {
+                log.error("上传文件为空");
+                return new ApiResponse<>(400, "上传文件不能为空", null);
+            }
+            
+            // 验证版本号
+            if (version == null || version.trim().isEmpty()) {
+                log.error("版本号为空");
+                return new ApiResponse<>(400, "版本号不能为空", null);
+            }
+            
+            log.info("开始上传文件 - 版本: {}, 强制更新: {}, 更新说明: {}", version, forceUpdate, releaseNotes);
+            log.info("文件信息 - 名称: {}, 大小: {}, 类型: {}", 
+                    file.getOriginalFilename(), file.getSize(), file.getContentType());
+            
             // 创建存储目录
             Path uploadPath = Paths.get(fileDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
+                log.info("创建上传目录: {}", uploadPath);
             }
-
+        
             // 生成唯一文件名
             String fileId = UUID.randomUUID().toString();
-            String fileName = fileId + "_" + file.getOriginalFilename();
+            String originalFilename = file.getOriginalFilename();
+            String fileName = fileId + "_" + originalFilename;
             Path filePath = uploadPath.resolve(fileName);
+            
+            log.info("保存文件到: {}", filePath);
             Files.copy(file.getInputStream(), filePath);
-
+        
             // 构建并保存AppVersion
             String downloadUrl = "/app/files/" + fileName;
             AppVersion appVersion = new AppVersion(
@@ -104,12 +120,13 @@ public class AppVersionController {
                     forceUpdate
             );
             appVersion = appVersionService.saveVersion(appVersion);
-            Long id = appVersion.getId();
-
+            
+            log.info("版本保存成功 - ID: {}, 版本: {}", appVersion.getId(), appVersion.getVersion());
+        
             // 返回结果
             Map<String, Object> response = new HashMap<>();
             response.put("fileId", fileId);
-            response.put("originalFileName", file.getOriginalFilename());
+            response.put("originalFileName", originalFilename);
             response.put("fileName", fileName);
             response.put("versionId", appVersion.getId());
             response.put("version", appVersion.getVersion());
@@ -117,8 +134,11 @@ public class AppVersionController {
             
             return new ApiResponse<>(200, "文件上传和版本保存成功", response);
         } catch (IOException e) {
-            log.error("文件上传失败: {}", e.getMessage());
-            return new ApiResponse<>(500, "文件上传失败", null);
+            log.error("文件上传失败 - IO异常: {}", e.getMessage(), e);
+            return new ApiResponse<>(500, "文件上传失败: " + e.getMessage(), null);
+        } catch (Exception e) {
+            log.error("文件上传失败 - 系统异常: {}", e.getMessage(), e);
+            return new ApiResponse<>(500, "系统错误: " + e.getMessage(), null);
         }
     }
 

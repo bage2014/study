@@ -2,7 +2,6 @@ package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.entity.M3uEntry;
-import com.bage.my.app.end.point.entity.User;
 import com.bage.my.app.end.point.repository.UserRepository;
 import com.bage.my.app.end.point.service.LikeService;
 import com.bage.my.app.end.point.util.AuthUtil;

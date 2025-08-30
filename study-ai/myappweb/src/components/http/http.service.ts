@@ -32,7 +32,7 @@ class HttpService implements HttpServiceType {
   // 动态切换环境的方法
   public setEnvironment(env: 'development' | 'production' | 'test' | 'mock'): void {
     const envConfigs = {
-      development: '/api',
+      development: '/',
       production: 'https://api.yourdomain.com',
       test: 'https://api.test.yourdomain.com',
       mock: 'https://api.mock.yourdomain.com'
