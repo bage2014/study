@@ -29,8 +29,8 @@ const showToast = (msg: string, type: 'error' | 'warning' | 'success' = 'error')
 }
 
 // 从路由参数中获取视频URL和标题
-const videoUrl = ref(route.query.url as string || '')
-const title = ref(route.query.title as string || 'TV Channel')
+const videoUrl = ref(route.query.url as string || 'https://stream-akamai.castr.com/5b9352dbda7b8c769937e459/live_2361c920455111ea85db6911fe397b9e/index.fmp4.m3u8')
+const title = ref(route.query.title as string || 'XX-TV')
 
 // 初始化播放器
 const initPlayer = () => {
