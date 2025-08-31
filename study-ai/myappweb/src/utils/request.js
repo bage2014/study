@@ -2,11 +2,16 @@ import axios from 'axios'
 import { getAuthToken, removeAuthToken } from './auth'
 import { useRouter } from 'vue-router'
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+// 使用环境变量中的API基础URL
+const baseURL = import.meta.env.VITE_API_BASE_URL || '/api'
 
 const request = axios.create({
   baseURL,
-  timeout: 10000
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  }
 })
 
 request.interceptors.request.use(

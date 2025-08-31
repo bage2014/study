@@ -27,3 +27,20 @@ npm run dev
 ```sh
 npm run build
 ```
+
+
+
+# 开发环境（默认）
+npm run dev
+
+# 指定开发环境
+npm run dev -- --mode development
+
+# 测试环境
+npm run dev -- --mode test
+
+# 预发布环境  
+npm run dev -- --mode staging
+
+# 生产环境
+npm run build -- --mode production
