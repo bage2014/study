@@ -78,7 +78,7 @@ const changeSize = (size: number) => {
 // 添加导航到播放器页面的函数
 const navigateToPlayer = (channelTitle: string, url: string) => {
   router.push({
-    name: 'tvPlayer',
+    name: 'tv-player',
     query: { 
       title: channelTitle,
       url: url 

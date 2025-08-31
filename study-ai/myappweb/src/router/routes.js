@@ -50,7 +50,14 @@ const routes = [
     name: 'MapTrajectory',
     component: () => import('@/views/map/MapTrajectory.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/app-list',
+    name: 'AppList',
+    component: () => import('@/views/app/AppList.vue'),
+    meta: { requiresAuth: true }
   }
+
 ]
 
 export default routes

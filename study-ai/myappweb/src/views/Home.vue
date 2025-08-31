@@ -28,11 +28,6 @@ const goToAppList = () => {
 
 <template>
   <div class="home-page">
-    <div class="welcome-section">
-      <h1>功能中心</h1>
-      <p>欢迎使用多功能应用平台，选择您需要的功能模块</p>
-    </div>
-    
     <div class="menu-cards">
       <div class="card" @click="goToTvList">
         <div class="card-icon tv-icon">

@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header-content">
         <div class="logo" @click="goToHome">
-          <h1>{{ $t('common.home') }}</h1>
+          <h1>{{ $t('common.appName') }}</h1>
         </div>
         <div class="header-actions">
           <ThemeSwitcher />

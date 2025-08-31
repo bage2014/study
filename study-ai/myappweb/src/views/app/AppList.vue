@@ -83,11 +83,11 @@ const searchAppVersions = async () => {
     })
     
     if (response && response.data) {
-      appVersions.value = response.data.data.versions || []
-      totalElements.value = response.data.data.totalElements || 0
-      totalPages.value = response.data.data.totalPages || 0
-      currentPage.value = response.data.data.currentPage || 0
-      pageSize.value = response.data.data.pageSize || 10
+      appVersions.value = response.data.versions || []
+      totalElements.value = response.data.totalElements || 0
+      totalPages.value = response.data.totalPages || 0
+      currentPage.value = response.data.currentPage || 0
+      pageSize.value = response.data.pageSize || 10
     } else {
       appVersions.value = []
       totalElements.value = 0

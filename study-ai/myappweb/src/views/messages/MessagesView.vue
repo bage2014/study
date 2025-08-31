@@ -63,11 +63,13 @@
     </div>
 
     <!-- 发送消息弹窗 -->
-    <div v-if="showSendModal" class="modal-overlay" @click="showSendModal = false">
+    <div v-if="showSendModal" class="modal-overlay" @click.self="showSendModal = false">
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h2>{{ t('menu.sendMessage') }}</h2>
-          <button class="close-btn" @click="showSendModal = false">×</button>
+          <button class="close-btn" @click="showSendModal = false" :disabled="isSending">
+            ×
+          </button>
         </div>
         <div class="modal-body">
           <div class="form-group">
@@ -78,6 +80,8 @@
               :placeholder="t('placeholder.messageContent')"
               rows="4"
               :disabled="isSending"
+              @keydown.enter.prevent="sendMessage"
+              ref="messageTextarea"
             ></textarea>
           </div>
           <div v-if="sendMessageError" class="error-message">
@@ -88,7 +92,7 @@
           <button @click="showSendModal = false" :disabled="isSending">
             {{ t('button.cancel') }}
           </button>
-          <button @click="sendMessage" :disabled="isSending || !messageContent.trim()">
+          <button @click="sendMessage" :disabled="isSending || !messageContent.trim()" class="send-btn">
             {{ isSending ? t('button.sending') : t('button.send') }}
           </button>
         </div>
@@ -385,39 +389,61 @@ onMounted(() => {
   border-radius: var(--radius);
 }
 
-/* 弹窗样式 */
+/* 弹窗样式增强 */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
 }
 
 .modal-content {
   background-color: var(--bg-color);
-  border-radius: var(--radius);
+  border-radius: 12px;
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease;
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 1.5rem 1.5rem 1rem;
   border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h2 {
   margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .close-btn {
@@ -426,10 +452,42 @@ onMounted(() => {
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--text-light);
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+
+.close-btn:hover:not(:disabled) {
+  background-color: var(--bg-light);
+}
+
+.close-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .modal-body {
-  padding: 1rem;
+  padding: 1.5rem;
+}
+
+.form-group textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.send-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.send-btn:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.modal-body {
+  padding: 1.5rem;
 }
 
 .form-group {
