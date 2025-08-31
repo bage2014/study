@@ -15,12 +15,12 @@ const goToMapTrajectory = () => {
   router.push('/map-trajectory')
 }
 
-// 新增：跳转到消息中心页面
+// 跳转到消息中心页面
 const goToMessages = () => {
   router.push('/messages')
 }
 
-// 新增：跳转到应用版本页面
+// 跳转到应用版本页面
 const goToAppList = () => {
   router.push('/app-list')
 }
@@ -28,6 +28,10 @@ const goToAppList = () => {
 
 <template>
   <div class="home-page">
+    <div class="welcome-section">
+      <h1>功能中心</h1>
+      <p>欢迎使用多功能应用平台，选择您需要的功能模块</p>
+    </div>
     
     <div class="menu-cards">
       <div class="card" @click="goToTvList">
@@ -69,7 +73,6 @@ const goToAppList = () => {
         </div>
       </div>
       
-      <!-- 新增：消息中心菜单项 -->
       <div class="card" @click="goToMessages">
         <div class="card-icon message-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -88,7 +91,6 @@ const goToAppList = () => {
         </div>
       </div>
       
-      <!-- 新增：应用版本菜单项 -->
       <div class="card" @click="goToAppList">
         <div class="card-icon app-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -185,12 +187,10 @@ const goToAppList = () => {
   background-color: rgba(100, 108, 255, 0.1);
 }
 
-/* 新增：消息中心图标样式 */
 .message-icon {
   background-color: rgba(255, 159, 64, 0.1);
 }
 
-/* 新增：应用版本图标样式 */
 .app-icon {
   background-color: rgba(236, 72, 153, 0.1);
 }

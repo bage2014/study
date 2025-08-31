@@ -1,0 +1,8 @@
+[data-theme="light"] {
+  --primary-color: #3b82f6;
+  --secondary-color: #64748b;
+  --background-color: #ffffff;
+  --surface-color: #f8fafc;
+  --text-color: #1e293b;
+  --border-color: #e2e8f0;
+}

@@ -1,0 +1,85 @@
+{
+  "common": {
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "home": "Home",
+    "profile": "Profile",
+    "appName": "My Application"
+  },
+  "auth": {
+    "username": "Username",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "loginSuccess": "Login Success",
+    "loginFailed": "Login Failed"
+  },
+  "menu": {
+    "home": "Home",
+    "appList": "App List",
+    "mapTrajectory": "Map Trajectory",
+    "mapTrajectoryDescription": "View and track movement paths on map",
+    "tvList": "TV List",
+    "tvListDescription": "View and search TV channels",
+    "appManagement": "App Management",
+    "dataVisualization": "Data Visualization",
+    "mediaCenter": "Media Center",
+    "system": "Settings",
+    "uploadAppVersion": "Upload App Version",
+    "messages": "Messages",
+    "sendMessage": "Send Message"
+  },
+  "button": {
+    "logout": "Logout",
+    "changeLanguage": "Change Language",
+    "login": "Login",
+    "search": "Search",
+    "searching": "Searching...",
+    "upload": "Upload APK",
+    "uploadNewVersion": "Upload New Version",
+    "uploading": "Uploading...",
+    "cancel": "Cancel",
+    "browse": "Browse",
+    "download": "Download",
+    "prevPage": "Previous Page",
+    "nextPage": "Next Page",
+    "firstPage": "First Page",
+    "lastPage": "Last Page",
+    "sendMessage": "Send Message",
+    "send": "Send",
+    "sending": "Sending..."
+  },
+  "message": {
+    "loginSuccess": "Login Success",
+    "loginFailed": "Login Failed",
+    "logoutSuccess": "Logout Success",
+    "noChannelsFound": "No channels found",
+    "fileUploadSuccess": "File uploaded successfully",
+    "fileUploadFailed": "File upload failed",
+    "selectFileFirst": "Please select a file first",
+    "onlyApkAllowed": "Only .apk files are allowed",
+    "loading": "Loading",
+    "noAppVersionsFound": "No app versions found",
+    "noDownloadUrl": "No download URL",
+    "playbackTips": "If auto-play doesn't work, please click the play button manually.",
+    "noMessagesFound": "No messages found",
+    "incompleteFields": "Please fill in all required fields",
+    "sendMessageFailed": "Failed to send message"
+  },
+  "placeholder": {
+    "searchAppVersion": "Search app version",
+    "searchKeyword": "Search keyword",
+    "noFileSelected": "No file selected",
+    "receiverId": "Enter receiver ID",
+    "messageContent": "Enter message content"
+  },
+  "label": {
+    "unread": "Unread",
+    "showingResults": "Showing {current} of {total} results",
+    "page": "Page {page} of {total}",
+    "receiverId": "Receiver ID",
+    "messageContent": "Message Content",
+    "forceUpdate": "Force Update",
+    "pageSize": "页面大小"
+  }
+}
