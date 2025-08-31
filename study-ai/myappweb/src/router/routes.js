@@ -46,8 +46,8 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/map',
-    name: 'Map',
+    path: '/map-trajectory',
+    name: 'MapTrajectory',
     component: () => import('@/views/map/MapTrajectory.vue'),
     meta: { requiresAuth: true }
   }
