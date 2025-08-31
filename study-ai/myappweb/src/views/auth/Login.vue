@@ -117,7 +117,7 @@ async function handleLogin() {
       authStore.login(response.data.user, response.data.userToken)
       
       alert(t('auth.loginSuccess'))
-      router.push('/dashboard')
+      router.push('/home')
     } else {
       alert(response.message || t('auth.loginFailed'))
       // 检查是否需要显示验证码
