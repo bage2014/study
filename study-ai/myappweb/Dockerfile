@@ -1,6 +1,8 @@
 # 多阶段构建
 # 第一阶段：构建应用
-FROM node:18-alpine AS builder
+FROM node:18 AS builder  
+
+# 改为完整Node.js镜像，非Alpine
 
 # 设置工作目录
 WORKDIR /app
@@ -8,14 +10,14 @@ WORKDIR /app
 # 复制package.json和package-lock.json
 COPY package*.json ./
 
-# 安装依赖
-RUN npm install
+# 安装依赖（包含devDependencies）
+RUN npm install --include=dev
 
 # 复制源代码
 COPY . .
 
-# 构建应用
-RUN npm run build
+# 使用npx运行vite构建
+RUN npx vite build
 
 # 第二阶段：生产环境
 FROM nginx:alpine

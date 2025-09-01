@@ -44,3 +44,21 @@ npm run dev -- --mode staging
 
 # 生产环境
 npm run build -- --mode production
+
+
+
+
+
+
+# 在项目根目录执行
+docker build -t myappweb:latest .
+
+docker run -d \
+  --name myappweb-container \
+  -p 80:80 \
+  --restart unless-stopped \
+  myappweb:latest
+
+  curl http://localhost
+
+  
