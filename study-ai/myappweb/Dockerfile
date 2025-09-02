@@ -10,8 +10,12 @@ WORKDIR /app
 # 复制package.json和package-lock.json
 COPY package*.json ./
 
-# 安装依赖（包含devDependencies）
-RUN npm install --include=dev
+# 清理缓存并安装依赖
+RUN npm cache clean --force && \
+    npm install --include=dev --legacy-peer-deps
+
+# 验证vite是否可用
+RUN npx vite --version
 
 # 复制源代码
 COPY . .
