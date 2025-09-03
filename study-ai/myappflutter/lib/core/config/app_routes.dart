@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:myappflutter/presentation/pages/family_edit_page.dart';
 import '../../presentation/pages/login_page.dart';
 import '../../presentation/pages/home_page.dart';
 import '../../presentation/pages/current_location_page.dart';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String TRACK_LOCATION = '/track_location';
   static const String SETTINGS = '/settings'; // 添加设置页面路由
   static const String FAMILY = '/family'; // 添加家庭关系页面路由
+  static const String FAMILY_EDIT = '/family_edit'; // 添加家庭关系编辑页面路由
   static const String PROFILE = '/profile';
   static const String UPDATE = '/update';
   static const MESSAGE = '/message';
@@ -40,6 +42,7 @@ class AppRoutes {
     GetPage(name: TRACK_LOCATION, page: () => const TrackLocationPage()),
     GetPage(name: SETTINGS, page: () => SettingsPage()), // 移除const关键字
     GetPage(name: FAMILY, page: () => FamilyPage()),
+    GetPage(name: FAMILY_EDIT, page: () => FamilyEditPage()),
     GetPage(name: PROFILE, page: () => const ProfilePage()),
     GetPage(
       name: UPDATE,

@@ -42,11 +42,22 @@ class _FamilyPageState extends State<FamilyPage> {
     }
   }
 
+  void _navigateToEditPage() {
+    // 跳转到编辑页面，这里需要根据你的路由配置来设置
+    Get.toNamed(AppRoutes.FAMILY_EDIT); // 假设编辑页面的路由名为FAMILY_EDIT
+  }
+
   @override
   Widget build(BuildContext context) {
     // 使用BasePage组件
     return BasePage(
       title: 'family_title',
+      actions: [
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: _navigateToEditPage,
+        ),
+      ],
       body: _isLoading
           ? const Center(
               child: Column(
@@ -54,7 +65,7 @@ class _FamilyPageState extends State<FamilyPage> {
                 children: [
                   CircularProgressIndicator(),
                   SizedBox(height: 20),
-                  Text('loading_family_data'), // 增加加载提示文本
+                  Text('loading_family_data'),
                 ],
               ),
             )
@@ -62,7 +73,7 @@ class _FamilyPageState extends State<FamilyPage> {
           ? Center(child: Text('no_data'))
           : Column(
               children: [
-                SizedBox(height: 64), // 在这里添加SizedBox
+                SizedBox(height: 64),
                 SingleChildScrollView(
                   child: TreeView(nodes: [_buildFamilyTreeNode(_familyData!)]),
                 ),

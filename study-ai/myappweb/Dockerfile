@@ -1,53 +1,47 @@
-# 多阶段构建
-# 第一阶段：构建应用
-FROM node:18 AS builder  
-
-# 改为完整Node.js镜像，非Alpine
+# 多阶段构建：构建阶段
+FROM node:18 AS builder
 
 # 设置工作目录
 WORKDIR /app
 
-# 复制package.json和package-lock.json
+# 复制package文件
 COPY package*.json ./
 
-# 清理缓存并安装依赖
-RUN npm cache clean --force && \
-    npm config set registry https://registry.npmmirror.com
-
-# 清理缓存并安装依赖
-RUN npm cache clean --force && \
-    npm install --include=dev --legacy-peer-deps --verbose
-
-# 验证vite是否可用
-RUN npx --no-install vite --version
+# 使用可靠的镜像源并安装依赖
+RUN npm config set registry https://registry.npmmirror.com && \
+    npm install --include=dev --legacy-peer-deps
 
 # 复制源代码
 COPY . .
 
-# 使用npx运行vite构建
+# 构建应用（使用本地vite，避免网络请求）
 RUN npx vite build
 
-# 第二阶段：生产环境
+# 多阶段构建：生产阶段
 FROM nginx:alpine
 
-# 复制构建产物到nginx默认目录
+# 复制构建产物
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 创建nginx配置文件
 RUN echo 'server { \
     listen 80; \
     server_name localhost; \
+    \
+    # 静态文件服务 \
     location / { \
         root /usr/share/nginx/html; \
         index index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
+        try_files \$uri \$uri/ /index.html; \
     } \
+    \
+    # API代理配置 \
     location /api { \
         proxy_pass http://host.docker.internal:8080; \
-        proxy_set_header Host $host; \
-        proxy_set_header X-Real-IP $remote_addr; \
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; \
-        proxy_set_header X-Forwarded-Proto $scheme; \
+        proxy_set_header Host \$host; \
+        proxy_set_header X-Real-IP \$remote_addr; \
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for; \
+        proxy_set_header X-Forwarded-Proto \$scheme; \
     } \
 }' > /etc/nginx/conf.d/default.conf
 
