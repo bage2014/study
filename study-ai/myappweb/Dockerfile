@@ -12,10 +12,14 @@ COPY package*.json ./
 
 # 清理缓存并安装依赖
 RUN npm cache clean --force && \
-    npm install --include=dev --legacy-peer-deps
+    npm config set registry https://registry.npmmirror.com
+
+# 清理缓存并安装依赖
+RUN npm cache clean --force && \
+    npm install --include=dev --legacy-peer-deps --verbose
 
 # 验证vite是否可用
-RUN npx vite --version
+RUN npx --no-install vite --version
 
 # 复制源代码
 COPY . .
