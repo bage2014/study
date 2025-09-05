@@ -8,14 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # 使用可靠的镜像源并安装依赖
-RUN npm config set registry https://registry.npmmirror.com && \
-    npm install --include=dev --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 # 复制源代码
 COPY . .
 
-# 构建应用（使用本地vite，避免网络请求）
-RUN npx vite build
+# 构建应用
+RUN ./node_modules/.bin/vite build
 
 # 多阶段构建：生产阶段
 FROM nginx:alpine
