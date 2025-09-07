@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS family_relationship (
     member1_id BIGINT REFERENCES family_member(id),
     member2_id BIGINT REFERENCES family_member(id),
     relationship_type VARCHAR(20),
+    verification_status VARCHAR(20),
     start_date DATE,
     end_date DATE
 );

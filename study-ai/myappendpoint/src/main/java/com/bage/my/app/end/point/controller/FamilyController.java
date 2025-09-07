@@ -113,11 +113,6 @@ public class FamilyController {
         }
     }
 
-    private String randomName() {
-        String[] names = {"张", "李", "王", "赵", "刘"};
-        return names[(int)(Math.random() * names.length)] + (int)(Math.random() * 100);
-    }
-    
     private String randomOccupation() {
         String[] occupations = {"工程师", "医生", "教师", "农民", "商人"};
         return occupations[(int)(Math.random() * occupations.length)];
