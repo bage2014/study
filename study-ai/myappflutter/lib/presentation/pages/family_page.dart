@@ -54,7 +54,7 @@ class _FamilyPageState extends State<FamilyPage> {
       title: 'family_title',
       actions: [
         IconButton(
-          icon: Icon(Icons.edit),
+          icon: Icon(Icons.add_circle),
           onPressed: _navigateToEditPage,
         ),
       ],

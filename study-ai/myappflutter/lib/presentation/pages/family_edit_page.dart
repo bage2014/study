@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
 import '../widgets/base_page.dart';
 
 class FamilyEditPage extends StatefulWidget {
@@ -10,7 +11,6 @@ class FamilyEditPage extends StatefulWidget {
 }
 
 class _FamilyEditPageState extends State<FamilyEditPage> {
-  final List<Map<String, dynamic>> _addedRelationships = [];
   String? _selectedRelationship;
   final List<String> _relationshipOptions = [
     'father',
@@ -30,7 +30,7 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
     'nephew',
     'niece',
   ];
-  
+
   // 新增：选中的用户信息
   Map<String, dynamic>? _selectedUser;
 
@@ -239,39 +239,22 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
     // 处理选择结果
     if (selectedUser != null) {
       setState(() {
-        _addedRelationships.add({
-          'user': selectedUser,
-          'relationship': null, // 初始关系为空
-        });
+        _selectedUser = selectedUser;
       });
     }
   }
 
   // 保存关联关系
   void _saveRelationships() {
-    if (_addedRelationships.isEmpty) {
+    LogUtil.info(_selectedUser.toString());
+    if (_selectedUser == null) {
       Get.snackbar('error', 'please_add_at_least_one_relationship'.tr);
       return;
-    }
-
-    // 检查所有关系是否都已选择
-    for (final relationship in _addedRelationships) {
-      if (relationship['relationship'] == null) {
-        Get.snackbar('error', 'please_select_relationship_for_all_users'.tr);
-        return;
-      }
     }
 
     // 保存关联关系逻辑
     Get.snackbar('success', 'relationships_saved'.tr);
     Get.back();
-  }
-
-  // 删除关联关系
-  void _removeRelationship(int index) {
-    setState(() {
-      _addedRelationships.removeAt(index);
-    });
   }
 
   @override
@@ -289,9 +272,9 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
                 Expanded(
                   child: TextField(
                     controller: TextEditingController(
-                      text: _selectedUser != null 
-                          ? '${_selectedUser!['name']} (ID: ${_selectedUser!['id']})' 
-                          : ''
+                      text: _selectedUser != null
+                          ? '${_selectedUser!['name']} (ID: ${_selectedUser!['id']})'
+                          : '',
                     ),
                     decoration: InputDecoration(
                       labelText: 'selected_user'.tr,
@@ -340,92 +323,6 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
             ),
 
             SizedBox(height: 16),
-
-            // 已添加的关联关系列表
-            if (_addedRelationships.isNotEmpty)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'added_relationships'.tr,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 16),
-                  ..._addedRelationships.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final relationship = entry.value;
-                    final user = relationship['user'];
-
-                    return Card(
-                      margin: EdgeInsets.only(bottom: 16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // 用户信息
-                            Text(
-                              '${user['name']} (ID: ${user['id']})',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            if (user['phone'] != null)
-                              Text('Phone: ${user['phone']}'),
-                            if (user['email'] != null)
-                              Text('Email: ${user['email']}'),
-
-                            SizedBox(height: 12),
-
-                            // 关系选择下拉框
-                            DropdownButtonFormField<String>(
-                              value: relationship['relationship'],
-                              decoration: InputDecoration(
-                                labelText: 'select_relationship'.tr,
-                                border: OutlineInputBorder(),
-                              ),
-                              items: _relationshipOptions.map((relation) {
-                                return DropdownMenuItem<String>(
-                                  value: relation,
-                                  child: Text(relation.tr),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _addedRelationships[index]['relationship'] =
-                                      value;
-                                });
-                              },
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'relationship_required'.tr;
-                                }
-                                return null;
-                              },
-                            ),
-
-                            SizedBox(height: 12),
-
-                            // 删除按钮
-                            ElevatedButton(
-                              onPressed: () => _removeRelationship(index),
-                              child: Text('remove'.tr),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ],
-              ),
-
-            if (_addedRelationships.isEmpty)
-              Text(
-                'no_relationships_added'.tr,
-                style: TextStyle(color: Colors.grey),
-              ),
 
             Spacer(),
 
