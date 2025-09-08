@@ -190,3 +190,45 @@ curl -X POST 'http://localhost:8080/register' -H 'Content-Type: application/json
 | --------- | --------- | -------- |
 | user      | User      | 用户信息 |
 | userToken | UserToken | 令牌信息 |
+
+
+
+## 4. 用户查询
+
+### 请求信息
+
+- **URL**: `/query
+- **方法**: `POST`
+- **描述**: 注册新用户
+
+```
+{
+  "code": 200,
+  "message": "查询成功",
+  "data": {
+    "users": {
+      "content": [
+        {
+          "id": 1,
+          "username": "zhangsan",
+          "email": "zhangsan@qq.com",
+          "avatarUrl": "https://...",
+          "loginAttempts": 0,
+          "lockTime": null
+        }
+      ],
+      "pageable": { /* 分页信息 */ },
+      "totalElements": 1,
+      "totalPages": 1,
+      "last": true,
+      "size": 10,
+      "number": 0
+    },
+    "totalElements": 1,
+    "totalPages": 1,
+    "currentPage": 0,
+    "pageSize": 10
+  }
+}
+```
+

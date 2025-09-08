@@ -24,8 +24,14 @@ import com.bage.my.app.end.point.dto.LoginResponse;
 import com.bage.my.app.end.point.repository.UserTokenRepository;
 import com.bage.my.app.end.point.util.AuthUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.bage.my.app.end.point.dto.CheckTokenRequest;
 import com.bage.my.app.end.point.dto.RefreshTokenRequest;
+import com.bage.my.app.end.point.dto.QueryUserResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @Slf4j
@@ -395,4 +401,25 @@ public class UserController {
         return new ApiResponse<>(200, "密码重置成功", null);
     }
 
+    /**
+     * 查询用户列表（支持分页和关键词搜索）
+     */
+    @RequestMapping("/queryUsers")
+    public ApiResponse<QueryUserResponse> queryUsers(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<User> userPage = userRepository.findByKeyword(keyword, pageable);
+            
+            QueryUserResponse response = new QueryUserResponse(userPage);
+            return new ApiResponse<>(200, "查询成功", response);
+            
+        } catch (Exception e) {
+            log.error("查询用户列表失败: {}", e.getMessage());
+            return new ApiResponse<>(500, "查询用户列表失败", null);
+        }
+    }
 }
