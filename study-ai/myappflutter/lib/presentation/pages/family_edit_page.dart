@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
+import 'package:myappflutter/data/api/http_client.dart';
 import '../widgets/base_page.dart';
 
 class FamilyEditPage extends StatefulWidget {
@@ -34,23 +35,20 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
   // 新增：选中的用户信息
   Map<String, dynamic>? _selectedUser;
 
-  // 搜索相关状态
-  final TextEditingController _searchController = TextEditingController();
-  final List<Map<String, dynamic>> _searchResults = [];
-  int _currentPage = 1;
-  int _totalPages = 1;
-  bool _isSearching = false;
+  // 创建HttpClient实例
+  final HttpClient _httpClient = HttpClient();
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
   // 显示用户搜索弹框
   Future<void> _showUserSearchDialog() async {
     final dialogSearchController = TextEditingController();
-    int dialogCurrentPage = 1;
+    int dialogCurrentPage = 0; // API使用0-based页码
+    int dialogTotalPages = 1;
+    int dialogPageSize = 10;
     List<Map<String, dynamic>> dialogSearchResults = [];
     bool dialogIsSearching = false;
 
@@ -58,6 +56,73 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
     final selectedUser = await Get.dialog(
       StatefulBuilder(
         builder: (context, setDialogState) {
+          // 搜索用户方法
+          Future<void> searchUsers(String keyword, int page) async {
+            if (keyword.isEmpty) return;
+
+            setDialogState(() {
+              dialogIsSearching = true;
+            });
+
+            try {
+              // 使用HttpClient组件发送POST请求
+              final response = await _httpClient.post(
+                'queryUsers',
+                body: {
+                  'keyword': keyword,
+                  'page': page,
+                  'pageSize': dialogPageSize,
+                },
+              );
+
+              // 检查响应格式
+              if (response['code'] == 200 && response['data'] != null) {
+                final usersData = response['data'];
+
+                // 格式化用户数据以适配现有UI
+                final formattedUsers = usersData['users']
+                    .map<Map<String, dynamic>>((user) {
+                      return {
+                        'id': user['id'],
+                        'name': user['username'],
+                        'phone': user['phone'] ?? '',
+                        'email': user['email'],
+                        'avatarUrl': user['avatarUrl'],
+                      };
+                    })
+                    .toList();
+
+                setDialogState(() {
+                  dialogSearchResults = formattedUsers;
+                  dialogCurrentPage = page;
+                  dialogTotalPages = response['data']['totalPages'];
+                  dialogIsSearching = false;
+                });
+              } else {
+                Get.snackbar(
+                  'error',
+                  response['message'] ?? 'search_failed'.tr,
+                );
+                setDialogState(() {
+                  dialogIsSearching = false;
+                });
+              }
+            } catch (e) {
+              LogUtil.error('Search error: $e');
+              Get.snackbar('error', 'search_failed'.tr);
+              setDialogState(() {
+                dialogIsSearching = false;
+              });
+            }
+          }
+
+          // 分页查询方法
+          void handlePagination(int page) {
+            if (page >= 0 && page < dialogTotalPages) {
+              searchUsers(dialogSearchController.text.trim(), page);
+            }
+          }
+
           return AlertDialog(
             title: Text('search_user'.tr),
             content: SizedBox(
@@ -75,89 +140,13 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
                         border: OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(Icons.search),
-                          onPressed: () async {
-                            final searchText = dialogSearchController.text
-                                .trim();
-                            if (searchText.isEmpty) return;
-
-                            setDialogState(() {
-                              dialogIsSearching = true;
-                            });
-
-                            // 模拟搜索API调用
-                            await Future.delayed(Duration(milliseconds: 500));
-
-                            // 模拟分页数据
-                            final mockData = [
-                              {
-                                'id': 1,
-                                'name': '用户111',
-                                'phone': '13800138001',
-                                'email': 'user1@example.com',
-                              },
-                              {
-                                'id': 2,
-                                'name': '用户112',
-                                'phone': '13800138002',
-                                'email': 'user2@example.com',
-                              },
-                              {
-                                'id': 3,
-                                'name': '用户113',
-                                'phone': '13800138003',
-                                'email': 'user3@example.com',
-                              },
-                              {
-                                'id': 4,
-                                'name': '用户114',
-                                'phone': '13800138004',
-                                'email': 'user4@example.com',
-                              },
-                              {
-                                'id': 5,
-                                'name': '用户1122',
-                                'phone': '极速5G',
-                                'email': 'user5@example.com',
-                              },
-                            ];
-
-                            setDialogState(() {
-                              dialogSearchResults = mockData;
-                              dialogCurrentPage = 1;
-                              dialogIsSearching = false;
-                            });
+                          onPressed: () {
+                            searchUsers(dialogSearchController.text.trim(), 0);
                           },
                         ),
                       ),
-                      onFieldSubmitted: (value) async {
-                        if (value.isEmpty) return;
-
-                        setDialogState(() {
-                          dialogIsSearching = true;
-                        });
-
-                        await Future.delayed(Duration(milliseconds: 500));
-
-                        final mockData = [
-                          {
-                            'id': 1,
-                            'name': '用户112',
-                            'phone': '13800138001',
-                            'email': 'user1@example.com',
-                          },
-                          {
-                            'id': 2,
-                            'name': '用户113',
-                            'phone': '13800138002',
-                            'email': 'user2@example.com',
-                          },
-                        ];
-
-                        setDialogState(() {
-                          dialogSearchResults = mockData;
-                          dialogCurrentPage = 1;
-                          dialogIsSearching = false;
-                        });
+                      onFieldSubmitted: (value) {
+                        searchUsers(value.trim(), 0);
                       },
                     ),
 
@@ -179,6 +168,15 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
                               SizedBox(height: 8),
                               ...dialogSearchResults.map((user) {
                                 return ListTile(
+                                  leading: user['avatarUrl'] != null
+                                      ? CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                            user['avatarUrl'],
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          child: Text(user['name'][0]),
+                                        ),
                                   title: Text(user['name']),
                                   subtitle: Text(
                                     user['phone'] ?? user['email'] ?? '',
@@ -190,28 +188,32 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
                               }).toList(),
 
                               // 分页控件
-                              if (_totalPages > 1)
+                              if (dialogTotalPages > 1)
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     IconButton(
                                       icon: Icon(Icons.arrow_back),
-                                      onPressed: dialogCurrentPage > 1
+                                      onPressed: dialogCurrentPage > 0
                                           ? () {
-                                              setDialogState(() {
-                                                dialogCurrentPage--;
-                                              });
+                                              handlePagination(
+                                                dialogCurrentPage - 1,
+                                              );
                                             }
                                           : null,
                                     ),
-                                    Text('$dialogCurrentPage / $_totalPages'),
+                                    Text(
+                                      '${dialogCurrentPage + 1} / $dialogTotalPages',
+                                    ), // 显示1-based页码
                                     IconButton(
                                       icon: Icon(Icons.arrow_forward),
-                                      onPressed: dialogCurrentPage < _totalPages
+                                      onPressed:
+                                          dialogCurrentPage <
+                                              dialogTotalPages - 1
                                           ? () {
-                                              setDialogState(() {
-                                                dialogCurrentPage++;
-                                              });
+                                              handlePagination(
+                                                dialogCurrentPage + 1,
+                                              );
                                             }
                                           : null,
                                     ),

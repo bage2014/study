@@ -414,7 +414,13 @@ public class UserController {
             Pageable pageable = PageRequest.of(page, size);
             Page<User> userPage = userRepository.findByKeyword(keyword, pageable);
             
-            QueryUserResponse response = new QueryUserResponse(userPage);
+            QueryUserResponse response = new QueryUserResponse(
+                userPage.getContent(),
+                userPage.getTotalElements(),
+                userPage.getTotalPages(),
+                userPage.getNumber(),
+                userPage.getSize()
+            );
             return new ApiResponse<>(200, "查询成功", response);
             
         } catch (Exception e) {

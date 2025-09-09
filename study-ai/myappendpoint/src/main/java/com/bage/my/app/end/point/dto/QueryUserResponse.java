@@ -1,10 +1,10 @@
 package com.bage.my.app.end.point.dto;
 
 import com.bage.my.app.end.point.entity.User;
-import org.springframework.data.domain.Page;
+import java.util.List;
 
 public class QueryUserResponse {
-    private Page<User> users;
+    private List<User> users;
     private long totalElements;
     private int totalPages;
     private int currentPage;
@@ -12,17 +12,17 @@ public class QueryUserResponse {
 
     public QueryUserResponse() {}
 
-    public QueryUserResponse(Page<User> users) {
+    public QueryUserResponse(List<User> users, long totalElements, int totalPages, int currentPage, int pageSize) {
         this.users = users;
-        this.totalElements = users.getTotalElements();
-        this.totalPages = users.getTotalPages();
-        this.currentPage = users.getNumber();
-        this.pageSize = users.getSize();
+        this.totalElements = totalElements;
+        this.totalPages = totalPages;
+        this.currentPage = currentPage;
+        this.pageSize = pageSize;
     }
 
     // Getter和Setter方法
-    public Page<User> getUsers() { return users; }
-    public void setUsers(Page<User> users) { this.users = users; }
+    public List<User> getUsers() { return users; }
+    public void setUsers(List<User> users) { this.users = users; }
     public long getTotalElements() { return totalElements; }
     public void setTotalElements(long totalElements) { this.totalElements = totalElements; }
     public int getTotalPages() { return totalPages; }
