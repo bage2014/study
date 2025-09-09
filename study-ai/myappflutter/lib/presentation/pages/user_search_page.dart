@@ -93,7 +93,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
       title: 'search_user'.tr,
       showAppBar: true,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 64, 16, 0),
+        padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

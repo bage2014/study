@@ -203,7 +203,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(
               children: [
-                const SizedBox(height: 20),
                 Card(
                   elevation: 8,
                   shape: RoundedRectangleBorder(

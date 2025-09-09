@@ -19,13 +19,15 @@ class BasePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: showAppBar,
+      // 移除extendBodyBehindAppBar属性，这样内容就不会延伸到AppBar后面
+      // extendBodyBehindAppBar: showAppBar,
       appBar: showAppBar
           ? AppBar(
               title: Text(title.tr),
               centerTitle: true,
               actions: actions,
-              backgroundColor: Colors.transparent,
+              // 移除透明背景设置，使用主题默认背景色
+              // backgroundColor: Colors.transparent,
               elevation: 0,
               // 已添加正确导入，现在可以正常使用SystemUiOverlayStyle
               systemOverlayStyle:

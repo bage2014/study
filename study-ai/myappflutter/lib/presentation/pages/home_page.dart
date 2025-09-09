@@ -114,7 +114,6 @@ class HomePage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          const SizedBox(height: 86),
           // 保留原有的GridView.count
           Expanded(
             child: GridView.count(

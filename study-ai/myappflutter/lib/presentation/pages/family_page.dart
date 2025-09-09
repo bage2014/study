@@ -73,7 +73,6 @@ class _FamilyPageState extends State<FamilyPage> {
           ? Center(child: Text('no_data'))
           : Column(
               children: [
-                SizedBox(height: 64),
                 SingleChildScrollView(
                   child: TreeView(nodes: [_buildFamilyTreeNode(_familyData!)]),
                 ),

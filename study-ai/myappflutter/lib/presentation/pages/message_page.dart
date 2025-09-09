@@ -274,7 +274,7 @@ class _MessagePageState extends State<MessagePage> {
         children: [
           // 添加分页控制按钮
           Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 64.0, 8.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

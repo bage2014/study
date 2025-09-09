@@ -132,7 +132,7 @@ class _TvListPageState extends State<TvListPage> {
               children: [
                 // 搜索框
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 64.0, 8.0, 0),
+                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
