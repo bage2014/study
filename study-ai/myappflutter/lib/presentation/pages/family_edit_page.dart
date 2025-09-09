@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myappflutter/core/config/app_routes.dart';
+import 'package:myappflutter/core/constants/prefs_constants.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
+import 'package:myappflutter/core/utils/prefs_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 import '../widgets/base_page.dart';
 
@@ -15,22 +17,27 @@ class FamilyEditPage extends StatefulWidget {
 class _FamilyEditPageState extends State<FamilyEditPage> {
   String? _selectedRelationship;
   final List<String> _relationshipOptions = [
-    'father',
-    'mother',
-    'son',
-    'daughter',
-    'husband',
-    'wife',
-    'brother',
-    'sister',
-    'grandfather',
-    'grandmother',
-    'grandson',
-    'granddaughter',
-    'uncle',
-    'aunt',
-    'nephew',
-    'niece',
+    'PARENT_CHILD',
+    'SPOUSE',
+    'SIBLING',
+    'GRANDPARENT_GRANDCHILD',
+    'FATHER',
+    'MOTHER',
+    'SON',
+    'DAUGHTER',
+    'HUSBAND',
+    'WIFE',
+    'BROTHER',
+    'SISTER',
+    'GRANDFATHER',
+    'GRANDMOTHER',
+    'GRANDSON',
+    'GRANDDAUGHTER',
+    'UNCLE',
+    'AUNT',
+    'NEPHEW',
+    'NIECE',
+    'OTHER',
   ];
 
   // 新增：选中的用户信息
@@ -66,9 +73,51 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
       return;
     }
 
-    // 保存关联关系逻辑
-    Get.snackbar('success', 'relationships_saved'.tr);
-    Get.back();
+    if (_selectedRelationship == null) {
+      Get.snackbar('error', 'relationship_required'.tr);
+      return;
+    }
+
+    // 补全存储逻辑
+    _saveRelationshipData();
+  }
+
+  // 新增：保存关系数据的异步方法
+  Future<void> _saveRelationshipData() async {
+    try {
+      // 构建请求参数
+      final requestBody = {
+        "member1": {
+          // "id": PrefsUtil.getString(PrefsConstants.userInfo)?.id, // 这里假设当前登录用户ID为1，实际应用中应从全局状态或本地存储获取
+        },
+        "member2": {
+          "id": _selectedUser!['id'], // 从选中的用户信息中获取ID
+        },
+        "type": _selectedRelationship!.toUpperCase(), // 将关系类型转换为大写
+        "verificationStatus": "PENDING",
+        "startDate": DateTime.now().toIso8601String().split('T')[0], // 使用当前日期
+        "endDate": DateTime.now().toIso8601String().split('T')[0], // 使用当前日期
+      };
+
+      // 发送POST请求到指定URL
+      final response = await _httpClient.post(
+        '/family/relationships',
+        body: requestBody,
+      );
+
+      // 处理响应结果
+      if (response['code'] == 200) {
+        // 请求成功
+        Get.snackbar('success', 'relationships_saved'.tr);
+        Get.back();
+      } else {
+        // 请求失败
+        Get.snackbar('error', response['message'] ?? 'unknown_error'.tr);
+      }
+    } catch (e) {
+      LogUtil.error('Save relationship error: $e');
+      Get.snackbar('error', 'unknown_error'.tr);
+    }
   }
 
   @override
@@ -102,7 +151,7 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
                   onPressed: _showUserSearchDialog,
                   child: Text('select_user'.tr),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16),
+                    padding: EdgeInsets.symmetric(vertical: 8),
                   ),
                 ),
               ],

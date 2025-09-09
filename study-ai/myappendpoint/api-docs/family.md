@@ -144,7 +144,7 @@ curl -X GET 'http://localhost:8080/family/save/mock'
 curl -X GET 'http://localhost:8080/family/members/1'\极n```
 
 ### 响应格式
-```json
+​```json
 {
   "code": 200,
   "message": "success",
@@ -219,21 +219,7 @@ curl -X POST 'http://localhost:8080/family/relationships' \
 ```json
 {
   "code": 200,
-  "message": "success",
-  "极data": {
-    "极id": 1,
-    "member1": {
-      "id": 1,
-      "name": "张三"
-    },
-    "member2": {
-      "id": 2,
-      "name": "李四"
-    },
-    "type": "SPOUSE",
-    "verificationStatus": "PENDING",
-    "startDate": "2020-01-01",\极n    "endDate": null
-  }\极
+  "message": "success"
 }
 ```
 

@@ -4,6 +4,7 @@ import com.bage.my.app.end.point.entity.FamilyMember;
 import com.bage.my.app.end.point.entity.FamilyRelationship;
 import com.bage.my.app.end.point.entity.Gender;
 import com.bage.my.app.end.point.service.FamilyService;
+import com.bage.my.app.end.point.util.AuthUtil;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -84,6 +85,12 @@ public class FamilyController {
     @PostMapping("/relationships")
     public ApiResponse<FamilyRelationship> addRelationship(@RequestBody FamilyRelationship relationship) {
         try {
+            if(relationship != null && relationship.getMember1() != null){
+                Long id = relationship.getMember1().getId();
+                if(id == null){
+                    relationship.getMember1().setId(AuthUtil.getCurrentUserId());
+                }
+            }
             familyService.validateRelationship(relationship);
             FamilyRelationship savedRelationship = familyService.saveRelationship(relationship);
             return ApiResponse.success(savedRelationship);

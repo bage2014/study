@@ -66,4 +66,39 @@ const Map<String, String> en = {
   'enter_message_content': 'Please enter message content',
   'user_not_logged_in': 'User not logged in',
   'please_enter_all_fields': 'Please fill in all fields',
+  
+  // 添加家族编辑页面的翻译键
+  'add_family_relationships': 'Add Relationships',
+  'selected_user': 'Selected User',
+  'select_user': 'Select User',
+  'select_relationship': 'Select Relationship',
+  'relationship_required': 'Relationship is required',
+  'save_relationships': 'Save Relationships',
+  'please_add_at_least_one_relationship': 'Please add at least one relationship',
+  'success': 'Success',
+  'relationships_saved': 'Relationships saved successfully',
+  
+  // 关系类型翻译
+  'father': 'Father',
+  'mother': 'Mother',
+  'son': 'Son',
+  'daughter': 'Daughter',
+  'husband': 'Husband',
+  'wife': 'Wife',
+  'brother': 'Brother',
+  'sister': 'Sister',
+  'grandfather': 'Grandfather',
+  'grandmother': 'Grandmother',
+  'grandson': 'Grandson',
+  'granddaughter': 'Granddaughter',
+  'uncle': 'Uncle',
+  'aunt': 'Aunt',
+  'nephew': 'Nephew',
+  'niece': 'Niece',
+  
+  // 用户搜索页面的翻译键
+  'search_user': 'Search User',
+  'enter_phone_or_email': 'Enter phone or email',
+  'search_results': 'Search Results',
+  'search_failed': 'Search failed',
 };

@@ -411,8 +411,13 @@ public class UserController {
             @RequestParam(defaultValue = "10") int size) {
         
         try {
+            Page<User> userPage = null;
             Pageable pageable = PageRequest.of(page, size);
-            Page<User> userPage = userRepository.findByKeyword(keyword, pageable);
+            if (keyword != null && !keyword.isEmpty()) {
+                userPage = userRepository.findByKeyword(keyword, pageable);
+            } else {
+                userPage = userRepository.findAll(pageable);
+            }
             
             QueryUserResponse response = new QueryUserResponse(
                 userPage.getContent(),

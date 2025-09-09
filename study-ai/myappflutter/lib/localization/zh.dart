@@ -65,4 +65,39 @@ const Map<String, String> zh = {
   'enter_message_content': '请输入消息内容',
   'user_not_logged_in': '用户未登录',
   'please_enter_all_fields': '请填写所有字段',
+  
+  // 添加家族编辑页面的翻译键
+  'add_family_relationships': '添加关系',
+  'selected_user': '已选用户',
+  'select_user': '选择用户',
+  'select_relationship': '选择关系',
+  'relationship_required': '请选择关系',
+  'save_relationships': '保存关系',
+  'please_add_at_least_one_relationship': '请至少添加一个关系',
+  'success': '成功',
+  'relationships_saved': '关系保存成功',
+  
+  // 关系类型翻译
+  'father': '父亲',
+  'mother': '母亲',
+  'son': '儿子',
+  'daughter': '女儿',
+  'husband': '丈夫',
+  'wife': '妻子',
+  'brother': '兄弟',
+  'sister': '姐妹',
+  'grandfather': '祖父',
+  'grandmother': '祖母',
+  'grandson': '孙子',
+  'granddaughter': '孙女',
+  'uncle': '叔叔/伯父',
+  'aunt': '姑姑/阿姨',
+  'nephew': '侄子',
+  'niece': '侄女',
+  
+  // 用户搜索页面的翻译键
+  'search_user': '搜索用户',
+  'enter_phone_or_email': '请输入手机号或邮箱',
+  'search_results': '搜索结果',
+  'search_failed': '搜索失败',
 };
