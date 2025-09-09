@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:myappflutter/presentation/pages/family_edit_page.dart';
+import 'package:myappflutter/presentation/pages/user_search_page.dart';
 import '../../presentation/pages/login_page.dart';
 import '../../presentation/pages/home_page.dart';
 import '../../presentation/pages/current_location_page.dart';
@@ -32,6 +33,7 @@ class AppRoutes {
   static const String REGISTER = '/register';
   static const String TV_PLAYER = '/tv_player'; // 定义TV播放器路由
   static const String TV_LIST = '/tv_list'; // 新增路由常量
+  static const String USER_SEARCH = '/user/search';
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -53,6 +55,7 @@ class AppRoutes {
     ),
     GetPage(name: MESSAGE, page: () => const MessagePage()),
     GetPage(name: REGISTER, page: () => const RegisterPage()),
+    GetPage(name: USER_SEARCH, page: () => const UserSearchPage()),
 
     // 修改路由定义
     GetPage(
