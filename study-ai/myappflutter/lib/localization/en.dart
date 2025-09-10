@@ -66,7 +66,7 @@ const Map<String, String> en = {
   'enter_message_content': 'Please enter message content',
   'user_not_logged_in': 'User not logged in',
   'please_enter_all_fields': 'Please fill in all fields',
-  
+
   // 添加家族编辑页面的翻译键
   'add_family_relationships': 'Add Relationships',
   'selected_user': 'Selected User',
@@ -74,10 +74,11 @@ const Map<String, String> en = {
   'select_relationship': 'Select Relationship',
   'relationship_required': 'Relationship is required',
   'save_relationships': 'Save Relationships',
-  'please_add_at_least_one_relationship': 'Please add at least one relationship',
+  'please_add_at_least_one_relationship':
+      'Please add at least one relationship',
   'success': 'Success',
   'relationships_saved': 'Relationships saved successfully',
-  
+
   // 关系类型翻译
   'father': 'Father',
   'mother': 'Mother',
@@ -95,10 +96,71 @@ const Map<String, String> en = {
   'aunt': 'Aunt',
   'nephew': 'Nephew',
   'niece': 'Niece',
-  
+
   // 用户搜索页面的翻译键
   'search_user': 'Search User',
   'enter_phone_or_email': 'Enter phone or email',
   'search_results': 'Search Results',
   'search_failed': 'Search failed',
+
+  // Profile Page translations
+  'select_image_source': 'Select Image Source',
+  'select_from_gallery': 'Select from Gallery',
+  'take_photo': 'Take Photo',
+  'save_changes': 'Save Changes',
+  'edit_profile': 'Edit Profile',
+  'name': 'Name',
+  'gender': 'Gender',
+  'male': 'Male',
+  'female': 'Female',
+  'birth_date': 'Birth Date',
+  'select_birth_date': 'Select Birth Date',
+  'update_success': 'Update Success',
+  'user_info_updated': 'User information updated successfully',
+  'update_failed': 'Update Failed',
+  'network_exception': 'Network exception, please try again later',
+  'failed_to_fetch_user_info': 'Failed to fetch user information',
+  'avatar_updated': 'Avatar updated successfully',
+  'avatar_update_failed': 'Failed to update avatar',
+  'avatar_upload_failed': 'Failed to upload avatar',
+  // 在文件末尾添加以下内容
+  // 补全Settings Page缺失的翻译键
+  'check_new_version': 'Check if a new version is available',
+  'confirm_clear_cache': 'Are you sure you want to clear all cache data? This operation cannot be undone.',
+  'cache_cleared': 'Cache cleared',
+  'confirm_exit': 'Confirm Exit',
+  'confirm_exit_app': 'Are you sure you want to exit the app?',
+  'confirm_logout': 'Confirm Logout',
+  'confirm_logout_msg': 'Are you sure you want to logout?',
+  'found_new_version': 'Found new version ',
+  'release_date': 'Release Date: ',
+  'update_content': 'Update Content:',
+  'force_update': '* This version must be updated',
+  'no_update_needed': 'Current version is up to date',
+  'current_env': 'Current Environment',
+  'update': 'Update',
+  'prod_env': 'Production Environment',
+  'dev_env': 'Development Environment',
+  'mock_env': 'Mock Environment',
+  'unknown_environment': 'Unknown Environment',
+  'default': 'Default',
+  'light': 'Light',
+  'dark': 'Dark',
+  'english': 'English',
+  'chinese': 'Chinese',
+  'clear_login_info_and_return_to_login_page':
+      'Clear login information and return to login page',
+  'prompt': 'Prompt',
+  'env_settings': 'Environment Settings',
+  'check_updates': 'Check Updates',
+  'clear_cache': 'Clear Cache',
+  'clear_cache_confirm': 'Confirm clear cache?',
+  'clear_cache_success': 'Cache cleared successfully',
+  'clear_cache_failed': 'Failed to clear cache',
+  'clear_all_data': 'Clear All Data',
+  'exit_app': 'Exit App',
+  'exit_application': 'Exit the app',
+  'prod': 'Production',
+  'dev': 'Development',
+  'mock': 'Mock',
 };

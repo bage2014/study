@@ -105,11 +105,22 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
         body: requestBody,
       );
 
+      LogUtil.info('API response code: ${response['code']}');
+      LogUtil.info('Response data: $response');
+
       // 处理响应结果
       if (response['code'] == 200) {
         // 请求成功
-        Get.snackbar('success', 'relationships_saved'.tr);
-        Get.back();
+        Get.snackbar(
+          'success'.tr,
+          'relationships_saved'.tr,
+          duration: Duration(seconds: 2), // 设置显示时间
+          onTap: (_) => Get.back(), // 点击后返回
+        );
+        // 延迟返回，确保用户能看到提示
+        Future.delayed(Duration(seconds: 2), () {
+          Get.back();
+        });
       } else {
         // 请求失败
         Get.snackbar('error', response['message'] ?? 'unknown_error'.tr);
@@ -185,9 +196,7 @@ class _FamilyEditPageState extends State<FamilyEditPage> {
               },
             ),
 
-            SizedBox(height: 16),
-
-            Spacer(),
+            SizedBox(height: 32),
 
             // 保存按钮
             ElevatedButton(

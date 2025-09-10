@@ -41,7 +41,7 @@ Future<String> _determineInitialRoute() async {
       final response = await httpClient.post(
         '/checkToken',
         body: {'token': token},
-      );
+      ).timeout(Duration(seconds: 1)); // 添加1秒超时设置
 
       if (response['code'] == 200) {
         initialRoute = AppRoutes.HOME;
@@ -54,7 +54,8 @@ Future<String> _determineInitialRoute() async {
         await PrefsUtil.remove(PrefsConstants.tokenExpireTime);
       }
     } catch (e) {
-      LogUtil.error('Main check token failed: $e');
+      // 这里会捕获超时异常以及其他异常
+      LogUtil.error('Auto login check token failed: $e');
     }
   }
   return initialRoute;

@@ -1,0 +1,33 @@
+{
+  "code": 200,
+  "message": "查询成功",
+  "data": {
+    "users": [
+        {
+          "id": 1,
+          "username": "zhangsan",
+          "email": "zhangsan@qq.com",
+          "avatarUrl": "https://avatars.githubusercontent.com/u/18094768?s=400&u=1a2cacb3972a01fc3592f3c314b6e6b8e41d59b4&v=4",
+          "loginAttempts": 0,
+          "lockTime": null
+        }
+      ],
+      "totalElements": 1,
+      "totalPages": 1,
+      "last": true,
+      "size": 10,
+      "number": 0,
+      "sort": {
+        "sorted": false,
+        "unsorted": true,
+        "empty": true
+      },
+      "first": true,
+      "numberOfElements": 1,
+      "empty": false
+    },
+    "totalElements": 1,
+    "totalPages": 1,
+    "currentPage": 0,
+    "pageSize": 10
+  }

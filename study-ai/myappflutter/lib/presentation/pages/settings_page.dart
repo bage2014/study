@@ -64,20 +64,21 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: '设置',
+      title: 'settings'.tr,
       body: ListView(
         children: [
           // 语言设置
+          // 语言设置
           ListTile(
-            title: Text('语言设置'),
+            title: Text('language_settings'.tr),
             subtitle: Text(
-              '当前语言: ${Get.locale?.languageCode == 'en' ? '英文' : '中文'}',
+              '${'current_language'.tr}: ${Get.locale?.languageCode == 'en' ? 'english'.tr : 'chinese'.tr}',
             ),
             trailing: DropdownButton<String>(
               value: Get.locale?.languageCode,
-              items: const [
-                DropdownMenuItem(value: 'zh', child: Text('中文')),
-                DropdownMenuItem(value: 'en', child: Text('英文')),
+              items: [
+                DropdownMenuItem(value: 'zh', child: Text('chinese'.tr)),
+                DropdownMenuItem(value: 'en', child: Text('english'.tr)),
               ],
               onChanged: (value) async {
                 if (value != null) {
@@ -86,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   await _prefs.setString(
                     PrefsConstants.language,
                     value,
-                  ); // 保存到SharedPreferences
+                  );
                 }
               },
             ),
@@ -94,9 +95,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // 主题设置
           ListTile(
-            title: Text('主题颜色'),
+            title: Text('theme_color'.tr),
             subtitle: Text(
-              '当前主题: ${_getThemeName(_themeController.currentTheme.value)}',
+              '${'current_theme'.tr}: ${_getThemeName(_themeController.currentTheme.value)}',
             ),
             trailing: DropdownButton<ThemeData>(
               value: _themeController.currentTheme.value,
@@ -107,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       Container(width: 16, height: 16, color: Colors.blue),
                       SizedBox(width: 8),
-                      Text('浅色'),
+                      Text('light'.tr),
                     ],
                   ),
                 ),
@@ -117,20 +118,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       Container(width: 16, height: 16, color: Colors.grey),
                       SizedBox(width: 8),
-                      Text('深色'),
+                      Text('dark'.tr),
                     ],
                   ),
                 ),
-                // DropdownMenuItem(
-                //   value: Themes.system(context),
-                //   child: Row(
-                //     children: [
-                //       Icon(Icons.settings_system_daydream),
-                //       SizedBox(width: 8),
-                //       Text('跟随系统'),
-                //     ],
-                //   ),
-                // ),
               ],
               onChanged: (value) async {
                 if (value != null) {
@@ -147,7 +138,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   await _prefs.setString(
                     'theme',
                     theme,
-                  ); // 保存到SharedPreferences
+                  );
                 }
               },
             ),
@@ -155,17 +146,17 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // 环境设置
           ListTile(
-            title: Text('环境设置'),
+            title: Text('env_settings'.tr),
             subtitle: Obx(
               () =>
-                  Text('当前环境: ${_getEnvName(_envController.currentEnv.value)}'),
+                  Text('${'current_env'.tr}: ${_getEnvName(_envController.currentEnv.value)}'),
             ),
             trailing: DropdownButton<String>(
               value: _envController.currentEnv.value,
-              items: const [
-                DropdownMenuItem(value: 'prod', child: Text('生产环境')),
-                DropdownMenuItem(value: 'dev', child: Text('开发环境')),
-                DropdownMenuItem(value: 'mock', child: Text('Mock环境')),
+              items: [
+                DropdownMenuItem(value: 'prod', child: Text('prod'.tr)),
+                DropdownMenuItem(value: 'dev', child: Text('dev'.tr)),
+                DropdownMenuItem(value: 'mock', child: Text('mock'.tr)),
               ],
               onChanged: (value) async {
                 if (value != null) {
@@ -174,36 +165,36 @@ class _SettingsPageState extends State<SettingsPage> {
                   await _prefs.setString(
                     PrefsConstants.env,
                     value,
-                  ); // 保存到SharedPreferences
+                  );
                 }
               },
             ),
           ),
 
           ListTile(
-            title: Text('检查更新'),
-            subtitle: Text('检查是否有新版本可用'),
+            title: Text('check_updates'.tr),
+            subtitle: Text('check_new_version'.tr),
             trailing: Icon(Icons.system_update),
             onTap: _checkForUpdates,
           ),
           // 清空缓存选项
           ListTile(
-            title: Text('清空缓存'),
-            subtitle: Text('清除所有本地存储的数据'),
+            title: Text('clear_cache'.tr),
+            subtitle: Text('clear_all_data'.tr),
             trailing: Icon(Icons.delete),
             onTap: () async {
               final confirmed = await Get.dialog<bool>(
                 AlertDialog(
-                  title: Text('确认'),
-                  content: Text('确定要清空所有缓存数据吗？此操作不可撤销。'),
+                  title: Text('confirm'.tr),
+                  content: Text('confirm_clear_cache'.tr),
                   actions: [
                     TextButton(
                       onPressed: () => Get.back(result: false),
-                      child: Text('取消'),
+                      child: Text('cancel'.tr),
                     ),
                     TextButton(
                       onPressed: () => Get.back(result: true),
-                      child: Text('确定'),
+                      child: Text('confirm'.tr),
                     ),
                   ],
                 ),
@@ -211,25 +202,25 @@ class _SettingsPageState extends State<SettingsPage> {
 
               if (confirmed == true) {
                 await PrefsUtil.clearAll();
-                Get.snackbar('成功', '缓存已清空');
+                Get.snackbar('success'.tr, 'cache_cleared'.tr);
               }
             },
           ),
           // 新增退出应用按钮
           ListTile(
-            title: Text('退出应用'),
-            subtitle: Text('退出应用程序'),
+            title: Text('exit_app'.tr),
+            subtitle: Text('exit_application'.tr),
             trailing: Icon(Icons.exit_to_app),
             onTap: () {
               Get.dialog(
                 AlertDialog(
-                  title: Text('确认退出'),
-                  content: Text('确定要退出应用吗？'),
+                  title: Text('confirm_exit'.tr),
+                  content: Text('confirm_exit_app'.tr),
                   actions: [
-                    TextButton(onPressed: () => Get.back(), child: Text('取消')),
+                    TextButton(onPressed: () => Get.back(), child: Text('cancel'.tr)),
                     TextButton(
                       onPressed: () => SystemNavigator.pop(),
-                      child: Text('确定'),
+                      child: Text('confirm'.tr),
                     ),
                   ],
                 ),
@@ -238,16 +229,16 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           // 新增退出登录按钮
           ListTile(
-            title: Text('退出登录'),
-            subtitle: Text('清除登录信息并返回登录页面'),
+            title: Text('logout'.tr),
+            subtitle: Text('clear_login_info_and_return_to_login_page'.tr),
             trailing: Icon(Icons.logout),
             onTap: () {
               Get.dialog(
                 AlertDialog(
-                  title: Text('确认退出登录'),
-                  content: Text('确定要退出登录吗？'),
+                  title: Text('confirm_logout'.tr),
+                  content: Text('confirm_logout_msg'.tr),
                   actions: [
-                    TextButton(onPressed: () => Get.back(), child: Text('取消')),
+                    TextButton(onPressed: () => Get.back(), child: Text('cancel'.tr)),
                     TextButton(
                       onPressed: () async {
                         // 清除登录信息
@@ -255,7 +246,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         // 跳转到登录页面
                         Get.offAllNamed(AppRoutes.LOGIN);
                       },
-                      child: Text('确定'),
+                      child: Text('confirm'.tr),
                     ),
                   ],
                 ),
@@ -268,21 +259,21 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   String _getThemeName(ThemeData theme) {
-    if (theme == Themes.light) return '浅色';
-    if (theme == Themes.dark) return '深色';
-    return '默认';
+    if (theme == Themes.light) return 'light'.tr;
+    if (theme == Themes.dark) return 'dark'.tr;
+    return 'default'.tr;
   }
 
   String _getEnvName(String env) {
     switch (env) {
       case 'prod':
-        return '生产环境';
+        return 'prod_env'.tr;
       case 'dev':
-        return '开发环境';
+        return 'dev_env'.tr;
       case 'mock':
-        return 'Mock环境';
+        return 'mock_env'.tr;
       default:
-        return '未知环境';
+        return 'unknown_environment'.tr;
     }
   }
 
@@ -298,7 +289,7 @@ class _SettingsPageState extends State<SettingsPage> {
       );
 
       if (response['code'] != 200) {
-        throw Exception(response['message'] ?? '检查更新失败');
+        throw Exception(response['message'] ?? 'update_failed'.tr);
       }
 
       final data = response['data'];
@@ -308,20 +299,20 @@ class _SettingsPageState extends State<SettingsPage> {
         // 显示更新对话框
         Get.dialog(
           AlertDialog(
-            title: Text('发现新版本 ${versionInfo['version']}'),
+            title: Text('${'found_new_version'.tr}${versionInfo['version']}'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('发布日期: ${versionInfo['releaseDate']}'),
+                Text('${'release_date'.tr}${versionInfo['releaseDate']}'),
                 SizedBox(height: 8),
-                Text('更新内容:'),
+                Text('${'update_content'.tr}'),
                 Text(versionInfo['releaseNotes']),
                 if (versionInfo['forceUpdate'])
                   Padding(
                     padding: EdgeInsets.only(top: 8),
                     child: Text(
-                      '* 此版本必须更新',
+                      '${'force_update'.tr}',
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
@@ -329,22 +320,22 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             actions: [
               if (!versionInfo['forceUpdate'])
-                TextButton(onPressed: () => Get.back(), child: Text('取消')),
+                TextButton(onPressed: () => Get.back(), child: Text('cancel'.tr)),
               TextButton(
                 onPressed: () {
                   Get.back();
                   _startUpdate(versionInfo['version']);
                 },
-                child: Text('更新'),
+                child: Text('update'.tr),
               ),
             ],
           ),
         );
       } else {
-        Get.snackbar('提示', '当前已是最新版本');
+        Get.snackbar('prompt'.tr, 'no_update_needed'.tr);
       }
     } catch (e) {
-      Get.snackbar('错误', '检查更新失败: ${e.toString()}');
+      Get.snackbar('error'.tr, '${'update_failed'.tr}${e.toString()}');
     }
   }
 

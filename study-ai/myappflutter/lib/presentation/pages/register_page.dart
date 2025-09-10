@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('用户注册')),
+      appBar: AppBar(title: Text('user_registration'.tr)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -62,9 +62,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: _step == 1 ? Colors.blue : Colors.grey,
                     ),
                     alignment: Alignment.center,
-                    child: const Text(
-                      '1',
-                      style: TextStyle(color: Colors.white),
+                    child: Text(
+                      'step_1'.tr,
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   Container(
@@ -80,9 +80,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: _step == 2 ? Colors.blue : Colors.grey,
                     ),
                     alignment: Alignment.center,
-                    child: const Text(
-                      '2',
-                      style: TextStyle(color: Colors.white),
+                    child: Text(
+                      'step_2'.tr,
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ],
@@ -93,18 +93,18 @@ class _RegisterPageState extends State<RegisterPage> {
               if (_step == 1) ...[
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: '邮箱',
-                    hintText: '请输入邮箱',
-                    prefixIcon: Icon(Icons.email),
+                  decoration: InputDecoration(
+                    labelText: 'email'.tr,
+                    hintText: 'enter_email'.tr,
+                    prefixIcon: const Icon(Icons.email),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入邮箱';
+                      return 'enter_email'.tr;
                     }
                     // 简单的邮箱格式验证
                     if (!value.contains('@')) {
-                      return '请输入有效的邮箱地址';
+                      return 'valid_email_required'.tr;
                     }
                     return null;
                   },
@@ -117,14 +117,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     Expanded(
                       child: TextFormField(
                         controller: _captchaController,
-                        decoration: const InputDecoration(
-                          labelText: '验证码',
-                          hintText: '请输入验证码',
-                          prefixIcon: Icon(Icons.security),
+                        decoration: InputDecoration(
+                          labelText: 'captcha'.tr,
+                          hintText: 'enter_captcha'.tr,
+                          prefixIcon: const Icon(Icons.security),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return '请输入验证码';
+                            return 'enter_captcha'.tr;
                           }
                           return null;
                         },
@@ -168,17 +168,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('下一步', style: TextStyle(fontSize: 16.0)),
+                      : Text('next_step'.tr, style: const TextStyle(fontSize: 16.0)),
                 ),
               ] else if (_step == 2) ...[
                 // 第二步：显示邮箱(不可编辑)、邮箱验证码、密码、确认密码
                 TextFormField(
                   controller: _emailController,
                   enabled: false, // 禁用编辑
-                  decoration: const InputDecoration(
-                    labelText: '邮箱',
-                    hintText: '已验证的邮箱',
-                    prefixIcon: Icon(Icons.email),
+                  decoration: InputDecoration(
+                    labelText: 'email'.tr,
+                    hintText: 'verified_email'.tr,
+                    prefixIcon: const Icon(Icons.email),
                   ),
                 ),
                 const SizedBox(height: 20.0),
@@ -187,17 +187,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: '密码',
-                    hintText: '请输入密码',
-                    prefixIcon: Icon(Icons.lock),
+                  decoration: InputDecoration(
+                    labelText: 'password'.tr,
+                    hintText: 'enter_password'.tr,
+                    prefixIcon: const Icon(Icons.lock),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入密码';
+                      return 'enter_password'.tr;
                     }
                     if (value.length < 6) {
-                      return '密码长度至少为6位';
+                      return 'password_min_length'.tr;
                     }
                     return null;
                   },
@@ -208,17 +208,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: '确认密码',
-                    hintText: '请再次输入密码',
-                    prefixIcon: Icon(Icons.lock_outline),
+                  decoration: InputDecoration(
+                    labelText: 'confirm_password'.tr,
+                    hintText: 'enter_confirm_password'.tr,
+                    prefixIcon: const Icon(Icons.lock_outline),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入确认密码';
+                      return 'enter_confirm_password'.tr;
                     }
                     if (value != _passwordController.text) {
-                      return '两次输入的密码不一致';
+                      return 'passwords_not_match'.tr;
                     }
                     return null;
                   },
@@ -228,14 +228,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 // 新增邮箱验证码输入框
                 TextFormField(
                   controller: _captchaController,
-                  decoration: const InputDecoration(
-                    labelText: '邮箱验证码',
-                    hintText: '请输入邮箱收到的验证码',
-                    prefixIcon: Icon(Icons.security),
+                  decoration: InputDecoration(
+                    labelText: 'email_captcha'.tr,
+                    hintText: 'enter_email_captcha'.tr,
+                    prefixIcon: const Icon(Icons.security),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入邮箱验证码';
+                      return 'enter_email_captcha'.tr;
                     }
                     return null;
                   },
@@ -253,7 +253,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('立即注册', style: TextStyle(fontSize: 16.0)),
+                      : Text('register_now'.tr, style: const TextStyle(fontSize: 16.0)),
                 ),
               ],
               const SizedBox(height: 20.0),
@@ -263,9 +263,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 onPressed: () {
                   Get.offNamed(AppRoutes.LOGIN);
                 },
-                child: const Text(
-                  '已有账号？去登录',
-                  style: TextStyle(color: Colors.blue),
+                child: Text(
+                  'already_have_account'.tr,
+                  style: const TextStyle(color: Colors.blue),
                 ),
               ),
             ],
@@ -279,8 +279,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _refreshCaptcha() {
     _generateRequestId(); // 生成新的requestId
     setState(() {
-      _captchaUrl =
-          '/captcha?timestamp=${DateTime.now().millisecondsSinceEpoch}&requestId=$_requestId';
+      _captchaUrl = '/captcha?timestamp=${DateTime.now().millisecondsSinceEpoch}&requestId=$_requestId';
     });
   }
 
@@ -302,20 +301,20 @@ class _RegisterPageState extends State<RegisterPage> {
         );
 
         if (response['code'] == 200) {
-          Get.snackbar('发送成功', response['message'] ?? '验证码发送成功');
+          Get.snackbar('captcha_sent'.tr, response['message'] ?? 'captcha_send_success'.tr);
           setState(() {
             _step = 2;
             _emailVerified = true;
             _captchaController.clear();
           });
         } else {
-          Get.snackbar('发送失败', response['message'] ?? '发送失败，请重试');
+          Get.snackbar('captcha_send_failed'.tr, response['message'] ?? 'captcha_send_failed'.tr);
           // 刷新验证码
           _refreshCaptcha();
         }
       } catch (e) {
         LogUtil.error(e.toString(), error: e);
-        Get.snackbar('发送失败', '网络异常，请稍后重试');
+        Get.snackbar('captcha_send_failed'.tr, 'network_exception'.tr);
       } finally {
         setState(() {
           _isLoading = false;
@@ -341,17 +340,17 @@ class _RegisterPageState extends State<RegisterPage> {
         );
 
         if (response['code'] == 200) {
-          Get.snackbar('注册成功', '恭喜您，注册成功！');
+          Get.snackbar('registration_success'.tr, 'registration_successful'.tr);
           // 延迟跳转到登录页面
           Future.delayed(const Duration(seconds: 2), () {
             Get.offNamed(AppRoutes.LOGIN);
           });
         } else {
-          Get.snackbar('注册失败', response['message'] ?? '未知错误');
+          Get.snackbar('registration_failed'.tr, response['message'] ?? 'unknown_error'.tr);
         }
       } catch (e) {
         LogUtil.error(e.toString(), error: e);
-        Get.snackbar('注册失败', '网络异常，请稍后重试');
+        Get.snackbar('registration_failed'.tr, 'network_exception'.tr);
       } finally {
         setState(() {
           _isLoading = false;

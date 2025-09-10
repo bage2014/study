@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     } catch (e) {
       print('获取用户信息失败: $e');
-      Get.snackbar('错误', '获取用户信息失败');
+      Get.snackbar('error'.tr, 'failed_to_fetch_user_info'.tr);
     } finally {
       setState(() {
         _isLoading = false;
@@ -146,14 +146,14 @@ class _ProfilePageState extends State<ProfilePage> {
           LogUtil.info('上传成功，_avatarUrl: $_avatarUrl');
         });
 
-        Get.snackbar('成功', '修改头像成功');
+        Get.snackbar('success'.tr, 'avatar_updated'.tr);
         LogUtil.info('上传成功，文件ID: $fileId, 文件名: $fileName');
       } else {
-        Get.snackbar('错误', '修改头像失败: ${response['message'] ?? '未知错误'}');
+        Get.snackbar('error'.tr, 'avatar_update_failed'.tr);
       }
     } catch (e) {
       print('上传头像失败: $e');
-      Get.snackbar('错误', '上传头像失败');
+      Get.snackbar('error'.tr, 'avatar_upload_failed'.tr);
     } finally {
       setState(() {
         _isUploading = false;
@@ -167,12 +167,12 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('选择图片来源'),
+          title: Text('select_image_source'.tr),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 GestureDetector(
-                  child: const Text('从相册选择'),
+                  child: Text('select_from_gallery'.tr),
                   onTap: () {
                     Navigator.of(context).pop();
                     _selectImage();
@@ -180,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const Padding(padding: EdgeInsets.all(8.0)),
                 GestureDetector(
-                  child: const Text('拍照'),
+                  child: Text('take_photo'.tr),
                   onTap: () {
                     Navigator.of(context).pop();
                     _takePhoto();
@@ -197,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: 'profile',
+      title: 'profile'.tr,
       body: Center(
         child: SingleChildScrollView(
           child: Center(
@@ -255,7 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   child: Text(
-                    _isEditing ? '保存修改' : '编辑资料',
+                    _isEditing ? 'save_changes'.tr : 'edit_profile'.tr,
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
@@ -281,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '姓名',
+                'name'.tr,
                 style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
               const SizedBox(height: 5),
@@ -323,7 +323,7 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '性别',
+                'gender'.tr,
                 style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
               const SizedBox(height: 5),
@@ -331,7 +331,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Row(
                   children: [
                     Radio(
-                      value: '男',
+                      value: 'male',
                       groupValue: _gender,
                       onChanged: (value) {
                         setState(() {
@@ -339,9 +339,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         });
                       },
                     ),
-                    const Text('男'),
+                    Text('male'.tr),
                     Radio(
-                      value: '女',
+                      value: 'female',
                       groupValue: _gender,
                       onChanged: (value) {
                         setState(() {
@@ -349,12 +349,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         });
                       },
                     ),
-                    const Text('女'),
+                    Text('female'.tr),
                   ],
                 ),
               ] else ...[
                 Text(
-                  _gender,
+                  _gender == 'male'
+                      ? 'male'.tr
+                      : (_gender == 'female' ? 'female'.tr : ''),
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -380,7 +382,7 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '出生日期',
+                'birth_date'.tr,
                 style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
               const SizedBox(height: 5),
@@ -401,7 +403,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: Text(
                     _birthDate == null
-                        ? '选择出生日期'
+                        ? 'select_birth_date'.tr
                         : '${_birthDate!.year}-${_birthDate!.month}-${_birthDate!.day}',
                   ),
                 ),
@@ -458,17 +460,20 @@ class _ProfilePageState extends State<ProfilePage> {
       final response = await _httpClient.post('/updateUserInfo', body: params);
 
       if (response['code'] == 200) {
-        Get.snackbar('更新成功', '用户信息更新成功');
+        Get.snackbar('update_success'.tr, 'user_info_updated'.tr);
         setState(() {
           _isEditing = false;
           _name = _nameController.text;
         });
       } else {
-        Get.snackbar('更新失败', response['message'] ?? '更新失败，请重试');
+        Get.snackbar(
+          'update_failed'.tr,
+          response['message'] ?? 'update_failed'.tr,
+        );
       }
     } catch (e) {
       print('更新用户信息失败: $e');
-      Get.snackbar('更新失败', '网络异常，请稍后重试');
+      Get.snackbar('update_failed'.tr, 'network_exception'.tr);
     } finally {
       setState(() {
         _isLoading = false;

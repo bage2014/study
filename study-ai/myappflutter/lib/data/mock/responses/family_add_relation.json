@@ -1,0 +1,21 @@
+{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "id": 7,
+        "member1": {
+            "id": 1,
+            "deceased": false,
+            "generation": 0
+        },
+        "member2": {
+            "id": 1,
+            "deceased": false,
+            "generation": 0
+        },
+        "type": "SIBLING",
+        "verificationStatus": "PENDING",
+        "startDate": "2025-09-10",
+        "endDate": "2025-09-10"
+    }
+}

@@ -15,7 +15,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
   final TextEditingController _searchController = TextEditingController();
   int _currentPage = 0; // API使用0-based页码
   int _totalPages = 1;
-  int _pageSize = 10;
+  int _pageSize = 5;
   List<Map<String, dynamic>> _searchResults = [];
   bool _isSearching = false;
 
@@ -31,7 +31,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
     try {
       // 使用HttpClient组件发送POST请求
       final response = await _httpClient.post(
-        'queryUsers',
+        '/queryUsers',
         body: {'keyword': keyword, 'page': page, 'pageSize': _pageSize},
       );
 
