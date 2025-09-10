@@ -24,8 +24,6 @@ class _UserSearchPageState extends State<UserSearchPage> {
 
   // 搜索用户方法
   Future<void> searchUsers(String keyword, int page) async {
-    if (keyword.isEmpty) return;
-
     setState(() {
       _isSearching = true;
     });
