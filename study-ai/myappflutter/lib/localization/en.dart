@@ -126,7 +126,8 @@ const Map<String, String> en = {
   // 在文件末尾添加以下内容
   // 补全Settings Page缺失的翻译键
   'check_new_version': 'Check if a new version is available',
-  'confirm_clear_cache': 'Are you sure you want to clear all cache data? This operation cannot be undone.',
+  'confirm_clear_cache':
+      'Are you sure you want to clear all cache data? This operation cannot be undone.',
   'cache_cleared': 'Cache cleared',
   'confirm_exit': 'Confirm Exit',
   'confirm_exit_app': 'Are you sure you want to exit the app?',

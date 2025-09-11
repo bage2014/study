@@ -124,15 +124,15 @@ void _showMemberOptions(FamilyData member) {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: Text('switch_to_user'),
+            title: Text('switch_to_user'.tr),
             onTap: () {
-              LogUtil.info('切换到用户: \${member.name}');
-              LogUtil.info('查看用户信息: \${member.name}');
+              LogUtil.info('切换到用户: ${member.name}');
+              LogUtil.info('查看用户信息: ${member.name}');
               Get.back();
             },
           ),
           ListTile(
-            title: Text('view_member_info'),
+            title: Text('view_member_info'.tr),
             onTap: () {
               print('查看用户信息: ${member.name}');
               Get.toNamed(AppRoutes.PROFILE, arguments: {'userId': member.id});
