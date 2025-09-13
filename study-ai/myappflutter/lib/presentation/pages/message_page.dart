@@ -285,7 +285,7 @@ class _MessagePageState extends State<MessagePage> {
                   child: Text('previous_page'.tr),
                 ),
                 const SizedBox(width: 16.0),
-                Text('page'.trParams({'current': '$_currentPage'})),
+                Text('$_currentPage'),
                 const SizedBox(width: 16.0),
                 ElevatedButton(
                   onPressed: _hasMore && !_isLoading ? _goToNextPage : null,
