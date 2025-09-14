@@ -5,10 +5,13 @@ import com.bage.my.app.end.point.entity.FamilyMember;
 import com.bage.my.app.end.point.entity.FamilyRelationship;
 import com.bage.my.app.end.point.repository.FamilyMemberRepository;
 import com.bage.my.app.end.point.repository.FamilyRelationshipRepository;
+import com.bage.my.app.end.point.util.JsonUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -162,7 +165,7 @@ public class FamilyService {
         if (remainingGenerations > 0) {
             List<FamilyRelationship> relationships = relationshipRepository
                 .findByMember1IdOrMember2Id(member.getId(), member.getId());
-                
+            log.info("buildTree relationships: {}", JsonUtil.toJson(relationships));
             for (FamilyRelationship rel : relationships) {
                 FamilyMember relatedMember = rel.getMember1().getId().equals(member.getId())
                     ? rel.getMember2() : rel.getMember1();
@@ -185,5 +188,14 @@ public class FamilyService {
     private String determineRelationshipType(FamilyMember current, FamilyMember related, FamilyRelationship rel) {
         // 实现关系类型判断逻辑
         return rel == null ? "parent":rel.getType().name(); // 示例返回值
+    }
+    
+    // 在类中添加以下方法
+    public Page<FamilyMember> queryMembers(String keyword, Pageable pageable) {
+        if (keyword != null && !keyword.isEmpty()) {
+            return memberRepository.findByKeyword(keyword, pageable);
+        } else {
+            return memberRepository.findAll(pageable);
+        }
     }
 }

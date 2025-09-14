@@ -5,6 +5,7 @@ import com.bage.my.app.end.point.entity.FamilyRelationship;
 import com.bage.my.app.end.point.entity.Gender;
 import com.bage.my.app.end.point.service.FamilyService;
 import com.bage.my.app.end.point.util.AuthUtil;
+import com.bage.my.app.end.point.util.JsonUtil;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +13,17 @@ import lombok.extern.slf4j.Slf4j;
 import com.bage.my.app.end.point.dto.FamilyMemberTree;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import com.bage.my.app.end.point.entity.RelationshipType;
+import com.bage.my.app.end.point.repository.FamilyMemberRepository;
+
 import java.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.bage.my.app.end.point.dto.QueryFamilyResponse;
 
 @RestController
 @RequestMapping("/family")
@@ -25,6 +33,42 @@ public class FamilyController {
     @Autowired
     private FamilyService familyService;
     
+    @Autowired
+    private FamilyMemberRepository memberRepository;
+    
+    /**
+     * 查询成员列表（支持关键词搜索和分页）
+     */
+    @GetMapping("/members/query")
+    public ApiResponse<QueryFamilyResponse> queryMembers(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            Page<FamilyMember> memberPage = null;
+            Pageable pageable = PageRequest.of(page, size);
+            if (keyword != null && !keyword.isEmpty()) {
+                memberPage = memberRepository.findByKeyword(keyword, pageable);
+            } else {
+                memberPage = memberRepository.findAll(pageable);
+            }
+            
+            QueryFamilyResponse response = new QueryFamilyResponse(
+                memberPage.getContent(),
+                memberPage.getTotalElements(),
+                memberPage.getTotalPages(),
+                memberPage.getNumber(),
+                memberPage.getSize()
+            );
+            return ApiResponse.success(response);
+            
+        } catch (Exception e) {
+            log.error("查询成员列表失败: {}", e.getMessage(), e);
+            return ApiResponse.fail(500, "查询成员列表失败");
+        }
+    }
+    
+    // 原有方法保持不变
     @PostMapping("/members")
     public ApiResponse<FamilyMember> addMember(@RequestBody FamilyMember member) {
         try {
@@ -92,6 +136,7 @@ public class FamilyController {
                 }
             }
             familyService.validateRelationship(relationship);
+            log.info("addRelationship relationship: {}", JsonUtil.toJson(relationship));
             FamilyRelationship savedRelationship = familyService.saveRelationship(relationship);
             return ApiResponse.success(savedRelationship);
         } catch (IllegalArgumentException e) {
@@ -109,6 +154,7 @@ public class FamilyController {
             @RequestParam(defaultValue = "3") int generations) {
         try {
             FamilyMemberTree familyTree = familyService.getFamilyTree(rootId, generations);
+            log.info("getFamilyTree familyTree: {}", JsonUtil.toJson(familyTree));
             if (familyTree == null) {
                 log.error("获取家族树为空, rootId: {}, generations: {}", rootId, generations);
                 return ApiResponse.fail(404, "未找到家族树");
