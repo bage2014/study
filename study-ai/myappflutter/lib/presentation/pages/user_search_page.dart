@@ -15,7 +15,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
   final TextEditingController _searchController = TextEditingController();
   int _currentPage = 0; // API使用0-based页码
   int _totalPages = 1;
-  int _pageSize = 5;
+  int _pageSize = 10; // 调整为与后台一致的分页大小
   List<Map<String, dynamic>> _searchResults = [];
   bool _isSearching = false;
 
@@ -29,33 +29,32 @@ class _UserSearchPageState extends State<UserSearchPage> {
     });
 
     try {
-      // 使用HttpClient组件发送POST请求
+      // 使用HttpClient组件发送POST请求，修改URL为family/members/query
       final response = await _httpClient.post(
-        '/queryUsers',
+        '/family/members/query',
         body: {'keyword': keyword, 'page': page, 'pageSize': _pageSize},
       );
 
       // 检查响应格式
       if (response['code'] == 200 && response['data'] != null) {
-        final usersData = response['data'];
+        final data = response['data'];
 
-        // 格式化用户数据以适配现有UI
-        final formattedUsers = usersData['users'].map<Map<String, dynamic>>((
-          user,
-        ) {
+        // 格式化用户数据以适配现有UI，先检查content是否为null
+        final contentList = data['members'] ?? [];
+        final formattedUsers = contentList.map<Map<String, dynamic>>((user) {
           return {
             'id': user['id'],
-            'name': user['username'],
-            'phone': user['phone'] ?? '',
-            'email': user['email'],
-            'avatarUrl': user['avatarUrl'],
+            'name': user['name'],
+            'phone': user['contactInfo'] ?? '',
+            'email': '', // 新数据结构中没有email字段
+            'avatarUrl': user['avatar'] ?? '',
           };
         }).toList();
 
         setState(() {
           _searchResults = formattedUsers;
           _currentPage = page;
-          _totalPages = response['data']['totalPages'];
+          _totalPages = data['totalPages'] ?? 0;
           _isSearching = false;
         });
       } else {
@@ -130,7 +129,9 @@ class _UserSearchPageState extends State<UserSearchPage> {
                       SizedBox(height: 8),
                       ..._searchResults.map((user) {
                         return ListTile(
-                          leading: user['avatarUrl'] != null
+                          leading:
+                              user['avatarUrl'] != null &&
+                                  user['avatarUrl'].isNotEmpty
                               ? CircleAvatar(
                                   backgroundImage: NetworkImage(
                                     user['avatarUrl'],
@@ -138,7 +139,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
                                 )
                               : CircleAvatar(child: Text(user['name'][0])),
                           title: Text(user['name']),
-                          subtitle: Text(user['phone'] ?? user['email'] ?? ''),
+                          subtitle: Text(user['phone'] ?? ''),
                           onTap: () {
                             selectUser(user);
                           },

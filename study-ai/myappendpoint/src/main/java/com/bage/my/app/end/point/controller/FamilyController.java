@@ -39,7 +39,7 @@ public class FamilyController {
     /**
      * 查询成员列表（支持关键词搜索和分页）
      */
-    @GetMapping("/members/query")
+    @RequestMapping("/members/query")
     public ApiResponse<QueryFamilyResponse> queryMembers(
             @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "0") int page,
@@ -200,7 +200,7 @@ public class FamilyController {
             // log.info("initFamilyTree father and zhangSan: {}", father);
             createAndSaveRelationship(grandfather, father, RelationshipType.PARENT_CHILD);
             // log.info("initFamilyTree grandfather and father: {}", grandfather);
-            createAndSaveRelationship(zhangSan, xiaoSan, RelationshipType.PARENT_CHILD);
+            // createAndSaveRelationship(zhangSan, xiaoSan, RelationshipType.PARENT_CHILD);
             // log.info("initFamilyTree zhangSan and xiaoSan: {}", zhangSan);
     
             return ApiResponse.success("家族树初始化成功");
