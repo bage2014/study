@@ -109,7 +109,7 @@ public class FamilyService {
         }
         
         // 先构建完整树
-        FamilyMemberTree fullTree = buildTree(rootMember,rootMember, generations, "self");
+        FamilyMemberTree fullTree = buildTree(rootMember,rootMember, generations, "self", -1);
         
         // 去重并重构树结构
         return rebuildTreeWithoutDuplicates(fullTree);
@@ -133,7 +133,8 @@ public class FamilyService {
             node.getName(),
             node.getAvatar(),
             node.getGeneration(),
-            node.getRelationship()
+            node.getRelationship(),
+            node.getRelatedId()
         );
         
         // 递归处理子节点
@@ -152,14 +153,15 @@ public class FamilyService {
         return newNode;
     }
     
-    private FamilyMemberTree buildTree(FamilyMember rootMember,FamilyMember member, int remainingGenerations, String relationship) {
+    private FamilyMemberTree buildTree(FamilyMember rootMember,FamilyMember member, int remainingGenerations, String relationship, long relatedId) {
         
         FamilyMemberTree node = new FamilyMemberTree(
             member.getId(), 
             member.getName(),
             member.getAvatar(),
             member.getGeneration(),
-            relationship
+            relationship,
+            relatedId
         );
         
         if (remainingGenerations > 0) {
@@ -178,7 +180,7 @@ public class FamilyService {
                     log.info("continue skip, rootMember.getId()={},relatedMember.getId()={}",rootMember.getId(),relatedMember.getId());
                     continue;
                 }
-                node.getChildren().add(buildTree(rootMember, relatedMember, remainingGenerations - 1, relType));
+                node.getChildren().add(buildTree(rootMember, relatedMember, remainingGenerations - 1, relType, rel.getId()));
             }
         }
         
@@ -197,5 +199,43 @@ public class FamilyService {
         } else {
             return memberRepository.findAll(pageable);
         }
+    
+    }
+
+    // 在类的末尾，queryMembers 方法之后添加
+    public void deleteMember(FamilyMember member) {
+        if (member == null || member.getId() == null) {
+            throw new IllegalArgumentException("成员信息或ID不能为空");
+        }
+        
+        // 检查成员是否存在
+        FamilyMember existingMember = memberRepository.findById(member.getId()).orElse(null);
+        if (existingMember == null) {
+            throw new IllegalArgumentException("要删除的成员不存在");
+        }
+        
+        // 删除与该成员相关的所有关系
+        List<FamilyRelationship> relationships = relationshipRepository.findByMember1IdOrMember2Id(
+                member.getId(), member.getId());
+        if (!relationships.isEmpty()) {
+            relationshipRepository.deleteAll(relationships);
+        }
+        
+        // 删除成员本身
+        // memberRepository.delete(existingMember);
+    }
+    // 在类的末尾，deleteMember方法之后添加
+    public void deleteRelationship(Long relationshipId) {
+        if (relationshipId == null) {
+            throw new IllegalArgumentException("关系ID不能为空");
+        }
+        
+        // 检查关系是否存在
+        if (!relationshipRepository.existsById(relationshipId)) {
+            throw new IllegalArgumentException("要删除的关系不存在");
+        }
+        
+        // 删除关系
+        relationshipRepository.deleteById(relationshipId);
     }
 }

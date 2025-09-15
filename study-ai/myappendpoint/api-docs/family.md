@@ -18,7 +18,7 @@
 ## 1. 添加家族成员
 
 ### 基本信息
-- **URL**: `/family/members`
+- **URL**: `/family/members/add`
 - **方法**: `POST`
 - **描述**: 添加一个新的家族成员
 
@@ -46,7 +46,7 @@
 
 ### 请求示例
 ```bash
-curl -X POST 'http://localhost:8080/family/members' \
+curl -X POST 'http://localhost:8080/family/members/add' \
   -H 'Content-Type: application/json' \
   -d '{
     "name": "张三",
@@ -373,6 +373,42 @@ curl -X GET 'http://localhost:8080/family/members/query?keyword=张三&page=0&si
 
 ---
 
+
+
+## 7. 删除成员
+
+### 基本信息
+- URL : /family/members/delete
+- 方法 : POST
+- 描述 : 删除指定的家族成员
+### 请求参数
+参数名 类型 必需 默认值 描述 member FamilyMember 是 无 包含ID的家族成员对象
+
+### 请求示例
+```
+curl -X POST 'http://localhost:8080/
+family/members/delete' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": 1
+  }'
+```
+### 响应格式
+```
+{
+  "code": 200,
+  "message": "success",
+  "data": "ok"
+}
+```
+### 错误响应
+```
+{
+  "code": 400,
+  "message": "参数错误信息",
+  "data": null
+}
+```
 ## 通用错误响应
 
 所有接口都可能返回以下错误响应：

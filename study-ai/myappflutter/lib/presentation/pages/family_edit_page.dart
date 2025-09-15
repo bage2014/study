@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myappflutter/core/config/app_routes.dart';
-import 'package:myappflutter/core/constants/prefs_constants.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
-import 'package:myappflutter/core/utils/prefs_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 import '../widgets/base_page.dart';
 

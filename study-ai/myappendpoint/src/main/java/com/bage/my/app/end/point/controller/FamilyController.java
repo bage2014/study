@@ -69,7 +69,7 @@ public class FamilyController {
     }
     
     // 原有方法保持不变
-    @PostMapping("/members")
+    @PostMapping("/members/add")
     public ApiResponse<FamilyMember> addMember(@RequestBody FamilyMember member) {
         try {
             FamilyMember savedMember = familyService.saveMember(member);
@@ -79,6 +79,21 @@ public class FamilyController {
             return ApiResponse.fail(400, e.getMessage());
         } catch (Exception e) {
             log.error("添加成员系统错误", e);
+            return ApiResponse.fail(500, "服务器内部错误");
+        }
+    }
+
+    // 原有方法保持不变
+    @PostMapping("/members/delete")
+    public ApiResponse<String> deleteMember(@RequestBody FamilyMember member) {
+        try {
+            familyService.deleteMember(member);
+            return ApiResponse.success("ok");
+        } catch (IllegalArgumentException e) {
+            log.error("删除成员参数错误: {}", e.getMessage(), e);
+            return ApiResponse.fail(400, e.getMessage());
+        } catch (Exception e) {
+            log.error("删除成员系统错误", e);
             return ApiResponse.fail(500, "服务器内部错误");
         }
     }
@@ -144,6 +159,24 @@ public class FamilyController {
             return ApiResponse.fail(400, e.getMessage());
         } catch (Exception e) {
             log.error("添加关系系统错误", e);
+            return ApiResponse.fail(500, "服务器内部错误");
+        }
+    }
+    
+    // 在addRelationship方法之后添加
+    /**
+     * 删除家族关系
+     */
+    @RequestMapping("/relationships/delete")
+    public ApiResponse<String> deleteRelationship(@RequestBody FamilyRelationship relationship) {
+        try {
+            familyService.deleteRelationship(relationship.getId());
+            return ApiResponse.success("ok");
+        } catch (IllegalArgumentException e) {
+            log.error("删除关系参数错误: {}", e.getMessage(), e);
+            return ApiResponse.fail(400, e.getMessage());
+        } catch (Exception e) {
+            log.error("删除关系系统错误", e);
             return ApiResponse.fail(500, "服务器内部错误");
         }
     }

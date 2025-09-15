@@ -37,7 +37,7 @@ const Map<String, String> en = {
   'no_data': 'No data available',
   'unknown_member': 'Unknown Member',
   'unknown_relationship': 'Unknown Relationship',
-  'switch_to_user': 'unbind user',
+  'delete_relationship': 'unbind user',
   'view_member_info': 'View information',
   'error': 'Error',
   'confirm': 'Confirm',

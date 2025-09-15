@@ -37,7 +37,7 @@ const Map<String, String> zh = {
   'no_data': '暂无数据',
   'unknown_member': '未知成员',
   'unknown_relationship': '未知关系',
-  'switch_to_user': '解除关系',
+  'delete_relationship': '解除关系',
   'view_member_info': '查看信息',
   'error': '错误',
   'confirm': '确认',

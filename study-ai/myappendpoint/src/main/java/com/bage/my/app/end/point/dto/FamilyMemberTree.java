@@ -15,14 +15,16 @@ public class FamilyMemberTree {
     private String avatar;
     private Integer generation;
     private String relationship;
+    private Long relatedId;
     private List<FamilyMemberTree> children;
     
-    public FamilyMemberTree(Long id, String name, String avatar, Integer generation, String relationship) {
+    public FamilyMemberTree(Long id, String name, String avatar, Integer generation, String relationship, Long relatedId) {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
         this.generation = generation;
         this.relationship = relationship;
+        this.relatedId = relatedId;
     }
     
     // 省略getter/setter

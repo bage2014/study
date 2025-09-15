@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class FamilyResponse {
   final int code;
   final String message;
@@ -20,6 +22,7 @@ class FamilyData {
   final String? avatar;
   final int? generation;
   final String? relationship;
+  final int? relatedId;
   final List<FamilyData>? children;
 
   FamilyData({
@@ -28,6 +31,7 @@ class FamilyData {
     this.avatar,
     this.generation,
     this.relationship,
+    this.relatedId,
     this.children,
   });
 
@@ -38,6 +42,7 @@ class FamilyData {
       avatar: json['avatar'],
       generation: json['generation'],
       relationship: json['relationship'],
+      relatedId: json['relatedId'],
       children: json['children'] != null
           ? (json['children'] as List)
                 .map((e) => FamilyData.fromJson(e))
