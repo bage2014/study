@@ -20,9 +20,6 @@ void main() async {
   Get.put(ThemeController());
   await AppInitUtil.initialize();
 
-  // 初始化百度地图 SDK
-  // await BaiduMapSDK.init(ak: '你的百度地图AK密钥');
-
   // 调用抽取的方法获取初始路由
   final initialRoute = await _determineInitialRoute();
   runApp(MyApp(initialRoute: initialRoute));
@@ -38,10 +35,9 @@ Future<String> _determineInitialRoute() async {
   if (token != null) {
     try {
       final httpClient = HttpClient();
-      final response = await httpClient.post(
-        '/checkToken',
-        body: {'token': token},
-      ).timeout(Duration(seconds: 1)); // 添加1秒超时设置
+      final response = await httpClient
+          .post('/checkToken', body: {'token': token})
+          .timeout(Duration(seconds: 1)); // 添加1秒超时设置
 
       if (response['code'] == 200) {
         initialRoute = AppRoutes.HOME;
