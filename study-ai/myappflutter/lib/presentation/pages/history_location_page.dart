@@ -3,7 +3,6 @@ import 'package:flutter_bmflocation/flutter_bmflocation.dart';
 import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 
-import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import '../widgets/base_page.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
@@ -109,7 +108,6 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
     _httpClient = HttpClient();
     _checkLocationPermission().then((granted) {
       if (granted) {
-        _setupLocationCallbacks();
         _fetchTrajectoryData();
       } else {
         setState(() => _permissionDenied = true);
@@ -129,61 +127,6 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
       return false;
     }
     return false;
-  }
-
-  Future<void> _setupLocationCallbacks() async {
-    final Map locationOption = {
-      'isNeedAddress': true,
-      'isNeedLocationDescribe': true,
-      'isNeedNewVersionRgc': true,
-      'locationTimeout': 20000,
-      'reGeocodeTimeout': 20000,
-      'coorType': 'bd09ll',
-    };
-
-    _myLocPlugin.setAgreePrivacy(true);
-
-    if (Platform.isIOS) {
-      _myLocPlugin.singleLocationCallback(
-        callback: (BaiduLocation result) {
-          _updateLocation(result);
-        },
-      );
-      _myLocPlugin.singleLocation(locationOption);
-    } else {
-      _myLocPlugin.seriesLocationCallback(
-        callback: (BaiduLocation result) {
-          _updateLocation(result);
-        },
-      );
-      _myLocPlugin.startLocation();
-    }
-  }
-
-  void _updateLocation(BaiduLocation result) {
-    LogUtil.info('定位结果: 纬度=${result.latitude}, 经度=${result.longitude}');
-    setState(() {
-      _currentLocation = result;
-    });
-
-    // 更新地图中心点
-    if (_mapController != null &&
-        result.latitude != null &&
-        result.longitude != null) {
-      _mapController?.setCenterCoordinate(
-        BMFCoordinate(result.latitude!, result.longitude!),
-        true,
-      );
-
-      // 添加当前位置标记点
-      _mapController?.addMarker(
-        BMFMarker.icon(
-          position: BMFCoordinate(result.latitude!, result.longitude!),
-          title: 'history_location',
-          icon: 'assets/images/user_null.png', // 使用自定义图标
-        ),
-      );
-    }
   }
 
   Future<void> _fetchTrajectoryData() async {
@@ -233,10 +176,28 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
 
     List<BMFCoordinate> coordinates = [];
 
+    /// 颜色集
+    List<Color> colors = [Colors.blue, Colors.orange, Colors.red, Colors.green];
+
+    /// 颜色索引
+    List<int> indexs = [];
+
     for (int i = 0; i < _trajectoryPoints.length; i++) {
       final point = _trajectoryPoints[i];
-      final coordinate = BMFCoordinate(point.latitude, point.longitude);
+
+      // 检查坐标是否有效，避免null值
+      if (point.latitude == null || point.longitude == null) {
+        LogUtil.info(
+          '跳过无效轨迹点 $i: latitude=${point.latitude}, longitude=${point.longitude}',
+        );
+        continue;
+      }
+
+      final coordinate = BMFCoordinate(point.latitude!, point.longitude!);
       coordinates.add(coordinate);
+      if (i > 0) {
+        indexs.add(colors.indexOf(colors[i % colors.length]));
+      }
 
       // 格式化时间
       String formattedTime = '';
@@ -263,35 +224,91 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
       );
     }
 
-    // 如果有2个以上的点，绘制轨迹线
+    LogUtil.info('绘制轨迹线, 有效点: ${coordinates.length}');
+
+    // 如果有2个以上的有效点，绘制轨迹线
     if (coordinates.length >= 2) {
-      // 创建轨迹线
-      final BMFPolyline polyline = BMFPolyline(
-        coordinates: coordinates,
-        width: 8, // 线宽
-        lineJoinType: BMFLineJoinType.LineJoinRound, // 线连接类型
-        lineCapType: BMFLineCapType.LineCapRound, // 线端点类型
-      );
-
-      // 添加轨迹线到地图
-      _mapController?.addPolyline(polyline);
-
-      // 计算所有坐标的中心点
-      double centerLat = 0;
-      double centerLng = 0;
-      for (final coord in coordinates) {
-        centerLat += coord.latitude;
-        centerLng += coord.longitude;
+      try {
+        // 创建轨迹线 - 优化样式
+        BMFPolyline colorsPolyline = BMFPolyline(
+          coordinates: coordinates,
+          indexs: indexs,
+          colors: colors,
+          width: 16,
+          dottedLine: true,
+          lineDashType: BMFLineDashType.LineDashTypeDot,
+        );
+        // 添加轨迹线到地图
+        _mapController?.addPolyline(colorsPolyline);
+        
+        setCenter(coordinates);
+      } catch (e) {
+        LogUtil.error('绘制轨迹线失败: $e');
+        // 即使绘制轨迹线失败，仍然显示标记点
       }
-      centerLat /= coordinates.length;
-      centerLng /= coordinates.length;
-
-      // 设置地图中心点
+    } else if (coordinates.length == 1) {
+      // 如果只有一个有效点，只设置中心点
       _mapController?.setCenterCoordinate(
-        BMFCoordinate(centerLat, centerLng),
+        BMFCoordinate(coordinates[0].latitude, coordinates[0].longitude),
         true,
       );
+    } else {
+      LogUtil.info('没有足够的有效坐标点来绘制轨迹线 (有效点: ${coordinates.length})');
     }
+
+    // coordinates = resetLocations();
+    // setCenter(coordinates);
+  }
+
+  List<BMFCoordinate> resetLocations() {
+    /// 坐标点
+    List<BMFCoordinate> coordinates = [
+      BMFCoordinate(39.865, 116.304),
+      BMFCoordinate(39.825, 116.354),
+      BMFCoordinate(39.855, 116.394),
+      BMFCoordinate(39.805, 116.454),
+      BMFCoordinate(39.865, 116.504),
+    ];
+
+    /// 颜色索引
+    List<int> indexs = [2, 3, 2, 3];
+
+    /// 颜色集
+    List<Color> colors = [Colors.blue, Colors.orange, Colors.red, Colors.green];
+
+    BMFPolyline colorsPolyline = BMFPolyline(
+      coordinates: coordinates,
+      indexs: indexs,
+      colors: colors,
+      width: 16,
+      dottedLine: true,
+      lineDashType: BMFLineDashType.LineDashTypeDot,
+    );
+
+    /// 添加polyline
+    _mapController?.addPolyline(colorsPolyline);
+    return coordinates;
+  }
+
+  void setCenter(List<BMFCoordinate> coordinates) {
+    if (coordinates.isEmpty) {
+      return;
+    }
+
+    double centerLat = 0;
+    double centerLng = 0;
+    for (final coord in coordinates) {
+      centerLat += coord.latitude;
+      centerLng += coord.longitude;
+    }
+    centerLat /= coordinates.length;
+    centerLng /= coordinates.length;
+
+    // 设置地图中心点
+    _mapController?.setCenterCoordinate(
+      BMFCoordinate(centerLat, centerLng),
+      true,
+    );
   }
 
   @override

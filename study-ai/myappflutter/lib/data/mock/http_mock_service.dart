@@ -15,6 +15,7 @@ class HttpMockService {
     '/tv/search': 'mock/responses/tv_search_mock.json',
     '/queryUsers': 'mock/responses/user_search_mock.json',
     '/family/relationships': 'mock/responses/family_add_relation.json',
+    '/trajectorys/query': 'mock/responses/map-trajectory.json',
   };
 
   static Future<Map<String, dynamic>> getMockResponse(String path) async {
