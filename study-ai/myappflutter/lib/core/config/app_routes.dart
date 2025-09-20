@@ -4,7 +4,6 @@ import 'package:myappflutter/presentation/pages/user_search_page.dart';
 import '../../presentation/pages/login_page.dart';
 import '../../presentation/pages/home_page.dart';
 import '../../presentation/pages/current_location_page.dart';
-import '../../presentation/pages/find_location_page.dart';
 import '../../presentation/pages/history_location_page.dart';
 import '../../presentation/pages/track_location_page.dart';
 import '../../presentation/pages/settings_page.dart'; // 添加设置页面导入
@@ -39,7 +38,6 @@ class AppRoutes {
     GetPage(name: LOGIN, page: () => const LoginPage()),
     GetPage(name: HOME, page: () => HomePage()), // 移除 const 关键字
     GetPage(name: CURRENT_LOCATION, page: () => const CurrentLocationPage()),
-    GetPage(name: FIND_LOCATION, page: () => const FindLocationPage()),
     GetPage(name: HISTORY_LOCATION, page: () => const HistoryLocationPage()),
     GetPage(name: TRACK_LOCATION, page: () => const TrackLocationPage()),
     GetPage(name: SETTINGS, page: () => SettingsPage()), // 移除const关键字

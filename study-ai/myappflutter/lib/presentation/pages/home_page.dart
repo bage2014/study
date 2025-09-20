@@ -141,15 +141,16 @@ class HomePage extends StatelessWidget {
                   title: 'current_location',
                   onTap: () => Get.toNamed(AppRoutes.CURRENT_LOCATION),
                 ),
+
                 // 添加位置页面菜单卡片
                 _buildMenuCard(
                   icon: Icons.location_on,
-                  title: 'find_location',
-                  onTap: () => Get.toNamed(AppRoutes.FIND_LOCATION),
+                  title: 'history_location',
+                  onTap: () => Get.toNamed(AppRoutes.HISTORY_LOCATION),
                 ),
                 _buildMenuCard(
                   icon: Icons.tv,
-                  title: 'TV 列表',
+                  title: 'tv_list',
                   onTap: () => Get.toNamed(AppRoutes.TV_LIST),
                 ),
               ],
