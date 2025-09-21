@@ -14,6 +14,14 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.2.12479018"
 
+    // 读取local.properties文件中的百度地图API Key
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+    val baiduMapApiKey = localProperties.getProperty("baidu_map_api_key") ?: ""
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -33,6 +41,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // 添加百度地图API Key到manifest占位符
+        manifestPlaceholders["baiduMapApiKey"] = baiduMapApiKey
     }
 
     // 加载签名配置

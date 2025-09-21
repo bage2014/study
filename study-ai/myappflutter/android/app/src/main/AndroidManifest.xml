@@ -12,12 +12,17 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     
-            <!-- android:name=".MyApplication" -->
     <application
         android:label="Tutorials"
-        android:name="${applicationName}"
+        android:name=".MyApplication"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher">
+        android:roundIcon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true" >
+
+        <!-- <activity
+            android:name=".MainActivity" -->
+
+            <!-- android:name=".MyApplication" -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -51,12 +56,14 @@
         <!-- 百度地图API Key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="" />
+            android:value="${baiduMapApiKey}" />
         <!-- 定位服务配置 -->
         <service
             android:name="com.baidu.location.f"
+            android:authorities="com.bage.my.app.flutter.helios.ipc.default"
+            android:exported="false"
             android:enabled="true"
-            android:process=":remote" />
+            android:process=":remote"/>
 </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
