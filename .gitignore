@@ -1,3 +1,2 @@
 /study-ai/myappweb/node_modules
-.DS_Store
-study-ai/myappflutter/android/app/src/main/AndroidManifest.xml
+*.DS_Store
