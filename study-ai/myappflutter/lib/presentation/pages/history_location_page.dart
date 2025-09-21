@@ -181,6 +181,8 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
 
     /// 颜色索引
     List<int> indexs = [];
+    // 创建覆盖物列表
+    List<BMFOverlay> overlays = [];
 
     for (int i = 0; i < _trajectoryPoints.length; i++) {
       final point = _trajectoryPoints[i];
@@ -208,20 +210,33 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
         formattedTime = point.time;
       }
 
+      // 创建标记点并添加到overlays列表
+      overlays.add(
+        BMFMarker.icon(
+          position: coordinate,
+          title: '🚩 轨迹点 ${i + 1}',
+          subtitle: '📍 ${point.address}\n📅 $formattedTime',
+          icon: null,
+        ),
+      );
+
       // 添加标记点
       _mapController?.addMarker(
+        // 创建标记点并添加到overlays列表
         BMFMarker.icon(
           position: coordinate,
           title: '轨迹点 ${i + 1}',
           subtitle: '${point.address}\n$formattedTime',
-          icon: null,
-          // icon: i == 0
-          //     ? 'assets/images/start_point.png'
-          //     : i == _trajectoryPoints.length - 1
-          //     ? 'assets/images/end_point.png'
-          //     : 'assets/images/mid_point.png',
+          icon: 'assets/images/logo128.png',
         ),
       );
+    }
+
+    // 批量添加覆盖物到地图 - 修复：使用addMarker逐个添加
+    for (final overlay in overlays) {
+      if (overlay is BMFMarker) {
+        _mapController?.addMarker(overlay);
+      }
     }
 
     LogUtil.info('绘制轨迹线, 有效点: ${coordinates.length}');
@@ -240,7 +255,7 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
         );
         // 添加轨迹线到地图
         _mapController?.addPolyline(colorsPolyline);
-        
+
         setCenter(coordinates);
       } catch (e) {
         LogUtil.error('绘制轨迹线失败: $e');
@@ -351,20 +366,6 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
                     ],
                   ),
                 ),
-                // 底部显示轨迹信息
-                if (_trajectoryPoints.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('轨迹点数量: ${_trajectoryPoints.length}'),
-                        Text('起点: ${_trajectoryPoints.first.address}'),
-                        if (_trajectoryPoints.length > 1)
-                          Text('终点: ${_trajectoryPoints.last.address}'),
-                      ],
-                    ),
-                  ),
               ],
             ),
     );
