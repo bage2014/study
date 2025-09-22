@@ -72,7 +72,7 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
     if (Platform.isIOS) {
       _myLocPlugin.singleLocation(locationOption);
     } else {
-      _myLocPlugin.startLocation();
+      _myLocPlugin.singleLocation(locationOption);
     }
 
     // 4. 设置定位回调
@@ -92,15 +92,18 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
   }
 
   void _handleLocationResult(BaiduLocation result) {
+    print(
+      '定位结果: id=${result.locationID}, c=${result.country}, p = ${result.province}, city=${result.city},ss=${result.street}',
+    );
     print('定位结果: errorCode=${result.errorCode}, errorInfo=${result.errorInfo}');
     print(
-      '定位结果: 纬度=${result.latitude}, 经度=${result.longitude}, 地址=${result.address}',
+      '定位结果: 纬度=${result.latitude}, 经度=${result.longitude}, 地址=${result.locationDetail}',
     );
 
     setState(() {
       _isLocating = false;
 
-      if (result.errorCode == 0) {
+      if (result.longitude != null && result.latitude != null) {
         // 定位成功
         _currentLocation = result;
         _locationStatus = '定位成功';
@@ -132,7 +135,7 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
         position: coordinate,
         title: '当前位置',
         subtitle: _currentLocation!.address ?? '未知地址',
-        icon: null, // 使用默认定位图标
+        icon: 'assets/images/logo128.png',
       ),
     );
 

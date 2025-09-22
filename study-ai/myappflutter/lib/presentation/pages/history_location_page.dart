@@ -329,7 +329,7 @@ class _HistoryLocationPageState extends State<HistoryLocationPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: 'find_location',
+      title: 'history_location',
       body: _permissionDenied
           ? const Center(child: Text('需要位置权限才能使用此功能'))
           : Column(
