@@ -287,8 +287,7 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
                   const SizedBox(height: 12),
 
                   // 地址信息
-                  if (_currentLocation!.address != null)
-                    _buildInfoRow('地址', _currentLocation!.address!),
+                  _buildInfoRow('位置', _buildAddressInfo(_currentLocation!)),
 
                   // 经纬度信息
                   Row(
@@ -340,6 +339,45 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
         ],
       ),
     );
+  }
+
+  String _buildAddressInfo(BaiduLocation location) {
+    // 优先使用locationDetail字段
+    if (location.locationDetail != null && location.locationDetail!.isNotEmpty) {
+      return location.locationDetail!;
+    }
+    
+    // 如果locationDetail为空，尝试拼接其他地址字段
+    List<String> addressParts = [];
+    if (location.country != null && location.country!.isNotEmpty) {
+      addressParts.add(location.country!);
+    }
+    if (location.province != null && location.province!.isNotEmpty) {
+      addressParts.add(location.province!);
+    }
+    if (location.city != null && location.city!.isNotEmpty) {
+      addressParts.add(location.city!);
+    }
+    if (location.district != null && location.district!.isNotEmpty) {
+      addressParts.add(location.district!);
+    }
+    if (location.street != null && location.street!.isNotEmpty) {
+      addressParts.add(location.street!);
+    }
+    if (location.streetNumber != null && location.streetNumber!.isNotEmpty) {
+      addressParts.add(location.streetNumber!);
+    }
+    
+    if (addressParts.isNotEmpty) {
+      return addressParts.join(' ');
+    }
+    
+    // 如果所有地址字段都为空，显示经纬度信息
+    if (location.latitude != null && location.longitude != null) {
+      return '纬度: ${location.latitude!.toStringAsFixed(6)}, 经度: ${location.longitude!.toStringAsFixed(6)}';
+    }
+    
+    return '未知位置';
   }
 
   Widget _buildInfoRow(String label, String value) {
