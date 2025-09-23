@@ -142,6 +142,13 @@ class HomePage extends StatelessWidget {
                   onTap: () => Get.toNamed(AppRoutes.CURRENT_LOCATION),
                 ),
 
+                // 添加iptv菜单卡片
+                _buildMenuCard(
+                  icon: Icons.tv,
+                  title: 'iptv',
+                  onTap: () => Get.toNamed(AppRoutes.LIVE),
+                ),
+
                 // 添加位置页面菜单卡片
                 _buildMenuCard(
                   icon: Icons.location_on,

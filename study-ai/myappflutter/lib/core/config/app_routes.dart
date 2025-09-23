@@ -14,6 +14,7 @@ import '../../presentation/pages/message_page.dart';
 import '../../presentation/pages/register_page.dart';
 import '../../presentation/pages/tv_player_page.dart';
 import '../../presentation/pages/tv_list_page.dart'; // 新增导入
+import '../../presentation/pages/live_page.dart'; // 新增直播页面导入
 
 class AppRoutes {
   static const String LOGIN = '/login';
@@ -33,6 +34,7 @@ class AppRoutes {
   static const String TV_PLAYER = '/tv_player'; // 定义TV播放器路由
   static const String TV_LIST = '/tv_list'; // 新增路由常量
   static const String USER_SEARCH = '/user/search';
+  static const String LIVE = '/live'; // 新增直播页面路由
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -70,6 +72,11 @@ class AppRoutes {
     GetPage(
       name: TV_LIST,
       page: () => const TvListPage(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: LIVE,
+      page: () => const LivePage(),
       transition: Transition.fadeIn,
     ),
   ];
