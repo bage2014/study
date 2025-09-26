@@ -1,6 +1,8 @@
 package com.bage.my.app.end.point.service.impl;
 
 import com.bage.my.app.end.point.entity.IptvChannel;
+import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
+import com.bage.my.app.end.point.model.response.IptvChannelType;
 import com.bage.my.app.end.point.service.IptvService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,15 @@ public class IptvServiceImpl implements IptvService {
     }
 
     @Override
-    public Map<String, List<IptvChannel>> getChannelsByCategory() {
+    public CategoryChannelsResponse getChannelsByCategory() {
         List<IptvChannel> channels = getAllChannels();
-        return channels.stream()
+        List<IptvChannelType> categories = channels.stream()
                 .filter(channel -> channel.getCategory() != null && !channel.getCategory().isEmpty())
-                .collect(Collectors.groupingBy(IptvChannel::getCategory));
+                .collect(Collectors.groupingBy(IptvChannel::getCategory))
+                .entrySet().stream()
+                .map(entry -> new IptvChannelType(entry.getKey(), entry.getKey(),entry.getValue()))
+                .collect(Collectors.toList());
+        return new CategoryChannelsResponse(categories);
     }
 
     @Override

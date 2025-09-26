@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myappflutter/data/models/iptv_category_model.dart';
 import 'package:myappflutter/data/services/iptv_service.dart';
 import 'package:myappflutter/presentation/widgets/base_page.dart';
+import 'package:myappflutter/presentation/pages/category_channels_page.dart';
 
 class LivePage extends StatefulWidget {
   const LivePage({Key? key}) : super(key: key);
@@ -50,18 +51,36 @@ class _LivePageState extends State<LivePage> {
     print('Selected channel: ${channel.name} - ${channel.url}');
   }
 
+  void _onCategoryTap(String categoryName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CategoryChannelsPage(categoryName: categoryName),
+      ),
+    );
+  }
+
   Widget _buildCategorySection(String categoryName, List<IptvChannel> channels) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          child: Text(
-            categoryName,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
+        GestureDetector(
+          onTap: () => _onCategoryTap(categoryName),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            child: Row(
+              children: [
+                Text(
+                  categoryName,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.blue),
+              ],
             ),
           ),
         ),

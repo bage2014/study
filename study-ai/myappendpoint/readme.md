@@ -100,3 +100,7 @@ API 文档生成【DeepSeek优先】
 1、 基于markdown 格式，给 MapTrajectoryController 生成  API文档，
 2、 使用命令行将结果自动写入到 map-trajectory.md文件中， 
 3、 至少包括请求入参、响应的 请求样例、响应格式、错误响应 ;
+
+1、 基于markdown 格式，给 IptvController 生成  API文档，
+2、 使用命令行将结果自动写入到 iptv.md文件中， 
+3、 至少包括请求入参、响应的 请求样例、响应格式、错误响应 ;

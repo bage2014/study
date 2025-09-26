@@ -1,20 +1,37 @@
+import 'package:myappflutter/data/models/iptv_category_model.dart';
+
 class IptvCategoryResponse {
   final Map<String, List<IptvChannel>> categories;
+  final int totalCategories;
+  final int totalChannels;
 
-  IptvCategoryResponse({required this.categories});
+  IptvCategoryResponse({
+    required this.categories,
+    required this.totalCategories,
+    required this.totalChannels,
+  });
 
   factory IptvCategoryResponse.fromJson(Map<String, dynamic> json) {
     final categories = <String, List<IptvChannel>>{};
     
-    json.forEach((key, value) {
-      if (value is List) {
-        categories[key] = List<IptvChannel>.from(
-          value.map((x) => IptvChannel.fromJson(x)),
-        );
-      }
-    });
+    // 解析新的后端格式
+    final categoriesList = json['categories'] as List<dynamic>;
     
-    return IptvCategoryResponse(categories: categories);
+    for (var category in categoriesList) {
+      final categoryMap = category as Map<String, dynamic>;
+      final categoryType = categoryMap['type'] as String;
+      final channelsList = categoryMap['channels'] as List<dynamic>;
+      
+      categories[categoryType] = List<IptvChannel>.from(
+        channelsList.map((x) => IptvChannel.fromJson(x)),
+      );
+    }
+    
+    return IptvCategoryResponse(
+      categories: categories,
+      totalCategories: json['totalCategories'] ?? 0,
+      totalChannels: json['totalChannels'] ?? 0,
+    );
   }
 }
 
