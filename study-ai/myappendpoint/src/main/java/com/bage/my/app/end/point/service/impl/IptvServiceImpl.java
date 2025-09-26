@@ -2,7 +2,6 @@ package com.bage.my.app.end.point.service.impl;
 
 import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
-import com.bage.my.app.end.point.model.response.IptvChannelType;
 import com.bage.my.app.end.point.service.IptvService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,36 +30,26 @@ public class IptvServiceImpl implements IptvService {
     }
 
     @Override
-    public CategoryChannelsResponse getChannelsByCategory() {
+    public CategoryChannelsResponse getChannelsByCategory(List<String> tags) {
         List<IptvChannel> channels = getAllChannels();
-        List<IptvChannelType> categories = channels.stream()
-                .filter(channel -> channel.getCategory() != null && !channel.getCategory().isEmpty())
-                .collect(Collectors.groupingBy(IptvChannel::getCategory))
-                .entrySet().stream()
-                .map(entry -> new IptvChannelType(entry.getKey(), entry.getKey(),entry.getValue()))
+        if (tags == null || tags.isEmpty()) {
+            return new CategoryChannelsResponse(channels);
+        }
+
+        List<IptvChannel> filteredChannels = channels;
+       for (String tag : tags) {
+        if (tag == null || tag.isEmpty()) {
+            continue;
+        }
+            log.info("过滤标签: {}", tag);
+            filteredChannels = filteredChannels.stream()
+                .filter(channel -> channel.getTags().contains(tag))
                 .collect(Collectors.toList());
-        return new CategoryChannelsResponse(categories);
+       }
+
+        return new CategoryChannelsResponse(filteredChannels);
     }
 
-    @Override
-    public List<IptvChannel> getChannelsByLanguage(String language) {
-        return getAllChannels().stream()
-                .filter(channel -> channel.getLanguage() != null && 
-                                 (channel.getLanguage().equalsIgnoreCase(language) ||
-                                  channel.getLanguage().toLowerCase().contains(language.toLowerCase())))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<IptvChannel> searchChannels(String keyword) {
-        return getAllChannels().stream()
-                .filter(channel -> 
-                    (channel.getName() != null && channel.getName().toLowerCase().contains(keyword.toLowerCase())) ||
-                    (channel.getGroup() != null && channel.getGroup().toLowerCase().contains(keyword.toLowerCase())) ||
-                    (channel.getCategory() != null && channel.getCategory().toLowerCase().contains(keyword.toLowerCase())) ||
-                    (channel.getCountry() != null && channel.getCountry().toLowerCase().contains(keyword.toLowerCase())))
-                .collect(Collectors.toList());
-    }
 
     @Override
     public void loadIptvData() {
@@ -70,13 +59,16 @@ public class IptvServiceImpl implements IptvService {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
                 String line;
                 IptvChannel currentChannel = null;
+                int channelId = 1; // 新增ID计数器
                 
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith("#EXTINF:")) {
                         currentChannel = parseExtinfLine(line);
+                        currentChannel.setId(channelId++); // 设置ID
                     } else if (line.startsWith("http") && currentChannel != null) {
                         currentChannel.setUrl(line);
                         allChannels.add(currentChannel);
+                        currentChannel.addTag("iptv"); // 添加默认标签
                         currentChannel = null;
                     }
                 }
@@ -95,6 +87,7 @@ public class IptvServiceImpl implements IptvService {
         Matcher nameMatcher = namePattern.matcher(line);
         if (nameMatcher.find()) {
             channel.setName(nameMatcher.group(1).trim());
+            channel.addTag(channel.getName()); // 添加名称标签  
         }
 
         // 解析分组信息
@@ -104,6 +97,8 @@ public class IptvServiceImpl implements IptvService {
             channel.setGroup(groupMatcher.group(1));
             // 根据分组信息设置分类
             setCategoryFromGroup(channel);
+            channel.addTag(channel.getGroup()); // 添加分组标签
+            channel.addTag(channel.getCategory()); // 添加分类标签
         }
 
         // 解析语言信息
@@ -111,6 +106,7 @@ public class IptvServiceImpl implements IptvService {
         Matcher languageMatcher = languagePattern.matcher(line);
         if (languageMatcher.find()) {
             channel.setLanguage(languageMatcher.group(1));
+            channel.addTag(channel.getLanguage()); // 添加语言标签
         }
 
         // 解析国家信息
@@ -118,6 +114,7 @@ public class IptvServiceImpl implements IptvService {
         Matcher countryMatcher = countryPattern.matcher(line);
         if (countryMatcher.find()) {
             channel.setCountry(countryMatcher.group(1));
+            channel.addTag(channel.getCountry()); // 添加国家标签
         }
 
         // 解析logo

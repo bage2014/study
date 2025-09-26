@@ -6,16 +6,16 @@ import java.util.List;
 
 @Data
 public class CategoryChannelsResponse {
-    private List<IptvChannelType> categories;
+    private List<IptvChannel> channels;
     private int totalCategories;
     private int totalChannels;
 
     public CategoryChannelsResponse() {}
 
-    public CategoryChannelsResponse(List<IptvChannelType> categories) {
-        this.categories = categories;
-        this.totalCategories = categories != null ? categories.size() : 0;
-        this.totalChannels = categories != null ? 
-            categories.stream().mapToInt(type -> type.getChannels() != null ? type.getChannels().size() : 0).sum() : 0;
+    public CategoryChannelsResponse(List<IptvChannel> channels) {
+        this.channels = channels;
+        this.totalCategories = channels != null ? channels.size() : 0;
+        this.totalChannels = channels != null ? 
+            channels.stream().mapToInt(channel -> channel.getTags() != null ? channel.getTags().size() : 0).sum() : 0;
     }
 }

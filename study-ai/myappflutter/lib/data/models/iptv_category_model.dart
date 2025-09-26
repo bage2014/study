@@ -43,6 +43,8 @@ class IptvChannel {
   final String country;
   final String logo;
   final String category;
+  final int? id; // 新增字段
+  final List<String>? tags; // 新增字段
 
   IptvChannel({
     required this.name,
@@ -52,17 +54,21 @@ class IptvChannel {
     required this.country,
     required this.logo,
     required this.category,
+    this.id,
+    this.tags,
   });
 
   factory IptvChannel.fromJson(Map<String, dynamic> json) {
     return IptvChannel(
       name: json['name'] ?? '',
       url: json['url'] ?? '',
-      group: json['group'] ?? '',
+      group: json['group'] ?? json['category'] ?? '', // 优先使用 group，否则使用 category
       language: json['language'] ?? '',
       country: json['country'] ?? '',
       logo: json['logo'] ?? '',
       category: json['category'] ?? '',
+      id: json['id'] as int?,
+      tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
     );
   }
 
@@ -75,6 +81,8 @@ class IptvChannel {
       'country': country,
       'logo': logo,
       'category': category,
+      if (id != null) 'id': id,
+      if (tags != null) 'tags': tags,
     };
   }
 }
