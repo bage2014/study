@@ -3,6 +3,7 @@ package com.bage.my.app.end.point.controller;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
+import com.bage.my.app.end.point.model.response.SearchChannelResponse;
 import com.bage.my.app.end.point.service.IptvService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -54,10 +55,15 @@ public class IptvController {
     }
 
     @GetMapping("/search")
-    public ApiResponse<List<IptvChannel>> searchChannels(@RequestParam String keyword) {
+    public ApiResponse<SearchChannelResponse> searchChannels(@RequestParam String keyword) {
         try {
             List<IptvChannel> channels = iptvService.searchChannels(keyword);
-            return ApiResponse.success(channels);
+            SearchChannelResponse response = new SearchChannelResponse(
+                channels,
+                channels.size(),
+                keyword
+            );
+            return ApiResponse.success(response);
         } catch (Exception e) {
             log.error("搜索频道失败: {}", e.getMessage(), e);
             return ApiResponse.fail(500, "搜索频道失败");
