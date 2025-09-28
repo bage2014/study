@@ -32,7 +32,7 @@ class _LivePageState extends State<LivePage> {
     });
 
     try {
-      final response = await _iptvService.getCategories();
+      final response = await _iptvService.getCategories(tags: []);
       setState(() {
         _categoryResponse = response;
         _isLoading = false;
@@ -60,7 +60,10 @@ class _LivePageState extends State<LivePage> {
     );
   }
 
-  Widget _buildCategorySection(String categoryName, List<IptvChannel> channels) {
+  Widget _buildCategorySection(
+    String categoryName,
+    List<IptvChannel> channels,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -79,7 +82,11 @@ class _LivePageState extends State<LivePage> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.blue),
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Colors.blue,
+                ),
               ],
             ),
           ),
@@ -126,55 +133,56 @@ class _LivePageState extends State<LivePage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _hasError
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.error, size: 64, color: Colors.red),
-                      const SizedBox(height: 16),
-                      Text('加载失败: $_errorMessage'),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: _loadCategories,
-                        child: const Text('重试'),
-                      ),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text('加载失败: $_errorMessage'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _loadCategories,
+                    child: const Text('重试'),
                   ),
-                )
-              : _categoryResponse == null ||
-                      _categoryResponse!.categories.isEmpty
-                  ? const Center(child: Text('暂无频道数据'))
-                  : Column(
-                      children: [
-                        // 搜索框
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: TextField(
-                            controller: _searchController,
-                            decoration: InputDecoration(
-                              labelText: '搜索频道',
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.search),
-                                onPressed: () {
-                                  // 这里可以添加搜索功能
-                                  print('Search: ${_searchController.text}');
-                                },
-                              ),
-                              border: const OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
-                        // 分类列表
-                        Expanded(
-                          child: ListView(
-                            children: _categoryResponse!.categories.entries
-                                .map((entry) => _buildCategorySection(
-                                    entry.key, entry.value))
-                                .toList(),
-                          ),
-                        ),
-                      ],
+                ],
+              ),
+            )
+          : _categoryResponse == null || _categoryResponse!.categories.isEmpty
+          ? const Center(child: Text('暂无频道数据'))
+          : Column(
+              children: [
+                // 搜索框
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      labelText: '搜索频道',
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: () {
+                          // 这里可以添加搜索功能
+                          print('Search: ${_searchController.text}');
+                        },
+                      ),
+                      border: const OutlineInputBorder(),
                     ),
+                  ),
+                ),
+                // 分类列表
+                Expanded(
+                  child: ListView(
+                    children: _categoryResponse!.categories.entries
+                        .map(
+                          (entry) =>
+                              _buildCategorySection(entry.key, entry.value),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

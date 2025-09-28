@@ -114,7 +114,7 @@ echo '# IPTV API 文档
 ## 获取所有频道
 
 ### 请求
-```http
+​```http
 GET /iptv/channels
 ```
 
@@ -157,18 +157,14 @@ GET /iptv/categories
   "code": 200,
   "message": "success",
   "data": {
-    "categories": [
-      {
-        "type": "电影",
-        "desc": "电影",
-        "channels": [
-          {
-            "id": 1,
-            "name": "Channel 1"
-          }
-        ]
-      }
-    ],
+    "channels":{
+      "id": 1,
+      "name": "Channel 1",
+      "url": "http://example.com/channel1.m3u8",
+      "category": "电影",
+      "language": "中文",
+      "tags": ["热门", "推荐"]
+    },
     "totalCategories": 1,
     "totalChannels": 1
   }
@@ -216,4 +212,5 @@ GET /iptv/tag/{tag}
   "code": 500,
   "message": "按标签获取频道失败"
 }
-```' > api-docs/iptv.md
+
+```

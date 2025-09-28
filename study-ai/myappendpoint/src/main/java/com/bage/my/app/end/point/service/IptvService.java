@@ -5,6 +5,6 @@ import java.util.List;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
 public interface IptvService {
     List<IptvChannel> getAllChannels();
-    CategoryChannelsResponse getChannelsByCategory(List<String> tags);    
+    CategoryChannelsResponse getChannels(List<String> tags);    
     void loadIptvData();
 }

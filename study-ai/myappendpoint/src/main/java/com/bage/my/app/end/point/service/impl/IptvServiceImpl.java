@@ -30,7 +30,7 @@ public class IptvServiceImpl implements IptvService {
     }
 
     @Override
-    public CategoryChannelsResponse getChannelsByCategory(List<String> tags) {
+    public CategoryChannelsResponse getChannels(List<String> tags) {
         List<IptvChannel> channels = getAllChannels();
         if (tags == null || tags.isEmpty()) {
             return new CategoryChannelsResponse(channels);

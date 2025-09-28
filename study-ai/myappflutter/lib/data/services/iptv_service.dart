@@ -1,25 +1,34 @@
+import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 import '../models/iptv_category_model.dart';
 
 class IptvService {
   final HttpClient _httpClient = HttpClient();
 
-  Future<IptvCategoryResponse> getCategories() async {
-    final response = await _httpClient.get('iptv/categories');
+  Future<IptvCategoryResponse> getCategories({
+    required List<String> tags,
+  }) async {
+    // 改为 POST 请求并传递 tags 参数
+    final response = await _httpClient.post(
+      '/iptv/query/tags',
+      body: {'tags': tags},
+    );
+
+    LogUtil.info('getCategories response: $response');
 
     // 处理新的后端响应格式: {"code": 200, "message": "success", "data": [...]}
     if (response is Map<String, dynamic>) {
       if (response['code'] == 200) {
         // 获取频道列表
         final channelsData = response['data'] as List<dynamic>;
-        
+
         // 重构数据以符合 IptvCategoryResponse 结构
         final categoriesMap = <String, List<IptvChannel>>{};
         final List<IptvChannel> channels = [];
-        
+
         for (var item in channelsData) {
           final channelData = item as Map<String, dynamic>;
-          
+
           // 创建频道对象
           final channel = IptvChannel(
             name: channelData['name'] ?? '',
@@ -30,9 +39,9 @@ class IptvService {
             logo: channelData['logo'] ?? '', // 使用默认值
             category: channelData['category'] ?? '',
           );
-          
+
           channels.add(channel);
-          
+
           // 按分类组织频道
           final category = channelData['category'] ?? '未知分类';
           if (!categoriesMap.containsKey(category)) {
@@ -40,7 +49,7 @@ class IptvService {
           }
           categoriesMap[category]!.add(channel);
         }
-        
+
         // 返回重构后的响应
         return IptvCategoryResponse(
           categories: categoriesMap,
