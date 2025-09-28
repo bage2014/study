@@ -8,61 +8,36 @@ class IptvService {
   Future<IptvCategoryResponse> getCategories({
     required List<String> tags,
   }) async {
-    // 改为 POST 请求并传递 tags 参数
-    final response = await _httpClient.post(
-      '/iptv/query/tags',
+    final response = await HttpClient().post(
+      '/iptv/query/group',
       body: {'tags': tags},
     );
 
-    LogUtil.info('getCategories response: $response');
+    if (response['code'] == 200) {
+      final data = response['data'];
+      final groupedChannels = data['channelsByGroup'] as Map<String, dynamic>;
 
-    // 处理新的后端响应格式: {"code": 200, "message": "success", "data": [...]}
-    if (response is Map<String, dynamic>) {
-      if (response['code'] == 200) {
-        // 获取频道列表
-        final channelsData = response['data'] as List<dynamic>;
+      LogUtil.info('channelsByGroup: ${groupedChannels.length}');
+      // 转换数据格式
+      final categories = <String, List<IptvChannel>>{};
+      groupedChannels.forEach((groupName, channels) {
+        categories[groupName] = (channels as List)
+            .map((channel) => IptvChannel.fromJson(channel))
+            .toList();
+      });
 
-        // 重构数据以符合 IptvCategoryResponse 结构
-        final categoriesMap = <String, List<IptvChannel>>{};
-        final List<IptvChannel> channels = [];
-
-        for (var item in channelsData) {
-          final channelData = item as Map<String, dynamic>;
-
-          // 创建频道对象
-          final channel = IptvChannel(
-            name: channelData['name'] ?? '',
-            url: channelData['url'] ?? '',
-            group: channelData['category'] ?? '', // 使用 category 作为 group
-            language: channelData['language'] ?? '',
-            country: channelData['country'] ?? '', // 使用默认值
-            logo: channelData['logo'] ?? '', // 使用默认值
-            category: channelData['category'] ?? '',
-          );
-
-          channels.add(channel);
-
-          // 按分类组织频道
-          final category = channelData['category'] ?? '未知分类';
-          if (!categoriesMap.containsKey(category)) {
-            categoriesMap[category] = [];
-          }
-          categoriesMap[category]!.add(channel);
-        }
-
-        // 返回重构后的响应
-        return IptvCategoryResponse(
-          categories: categoriesMap,
-          totalCategories: categoriesMap.length,
-          totalChannels: channels.length,
-        );
-      } else {
-        throw Exception('API Error: ${response['message']}');
-      }
-    } else {
-      // 保持对旧格式的兼容
-      return IptvCategoryResponse.fromJson(response);
+      return IptvCategoryResponse(
+        categories: categories,
+        totalCategories: data['totalGroups'],
+        totalChannels: categories.values.fold(
+          0,
+          (sum, list) => sum + list.length,
+        ),
+      );
     }
+
+    // 保留对旧格式的兼容处理
+    return IptvCategoryResponse.fromJson(response);
   }
 
   Future<List<IptvChannel>> searchChannels(String keyword) async {

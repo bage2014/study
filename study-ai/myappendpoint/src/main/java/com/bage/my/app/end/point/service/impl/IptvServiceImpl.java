@@ -3,7 +3,12 @@ package com.bage.my.app.end.point.service.impl;
 import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
 import com.bage.my.app.end.point.service.IptvService;
+import com.bage.my.app.end.point.service.LikeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -20,6 +25,9 @@ public class IptvServiceImpl implements IptvService {
 
     private List<IptvChannel> allChannels = new ArrayList<>();
     private final String IPTV_URL = "https://iptv-org.github.io/iptv/index.m3u";
+    
+    @Autowired
+    private LikeService likeService;
 
     @Override
     public List<IptvChannel> getAllChannels() {
@@ -153,5 +161,74 @@ public class IptvServiceImpl implements IptvService {
         } else {
             channel.setCategory("其他");
         }
+    }
+
+    @Override
+    public Page<IptvChannel> getChannelsByTagWithPagination(List<String> tags, Pageable pageable) {
+        List<IptvChannel> channels = getAllChannels();
+        List<IptvChannel> filteredChannels = channels;
+        
+        // 应用标签过滤
+        if (tags != null && !tags.isEmpty()) {
+            for (String tag : tags) {
+                if (tag != null && !tag.isEmpty()) {
+                    log.info("过滤标签: {}", tag);
+                    filteredChannels = filteredChannels.stream()
+                        .filter(channel -> channel.getTags().contains(tag))
+                        .collect(Collectors.toList());
+                }
+            }
+        }
+        
+        // 应用分页
+        int start = Math.min((int) pageable.getOffset(), filteredChannels.size());
+        int end = Math.min((start + pageable.getPageSize()), filteredChannels.size());
+        
+        return new PageImpl<>(filteredChannels.subList(start, end), pageable, filteredChannels.size());
+    }
+
+    @Override
+    public Map<String, List<IptvChannel>> getChannelsByGroup() {
+        List<IptvChannel> channels = getAllChannels();
+        // 按group字段分组频道数据
+        return channels.stream()
+            .filter(channel -> channel.getGroup() != null && !channel.getGroup().isEmpty())
+            .collect(Collectors.groupingBy(IptvChannel::getGroup));
+    }
+    
+    @Override
+    public void addFavoriteChannel(Long userId, int channelId) {
+        log.info("添加喜欢的频道: userId={}, channelId={}", userId, channelId);
+        
+        // 检查频道是否存在
+        List<IptvChannel> channels = getAllChannels();
+        boolean channelExists = channels.stream().anyMatch(c -> c.getId() == channelId);
+        
+        if (!channelExists) {
+            throw new RuntimeException("频道不存在: " + channelId);
+        }
+        
+        // 使用LikeService添加喜欢关系
+        likeService.addLike(userId, channelId);
+    }
+    
+    @Override
+    public List<IptvChannel> getFavoriteChannels(Long userId) {
+        log.info("获取用户喜欢的频道: userId={}", userId);
+        
+        // 获取所有频道
+        List<IptvChannel> allChannels = getAllChannels();
+        
+        // 过滤出用户喜欢的频道
+        return allChannels.stream()
+            .filter(channel -> {
+                try {
+                    return likeService.isLiked(userId, channel.getId());
+                } catch (Exception e) {
+                    log.error("检查频道是否喜欢时出错: {}", e.getMessage());
+                    return false;
+                }
+            })
+            .collect(Collectors.toList());
     }
 }
