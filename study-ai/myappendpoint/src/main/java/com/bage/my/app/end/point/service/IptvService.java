@@ -10,7 +10,8 @@ public interface IptvService {
     List<IptvChannel> getAllChannels();
     CategoryChannelsResponse getChannels(List<String> tags);
     Page<IptvChannel> getChannelsByTagWithPagination(List<String> tags, Pageable pageable);
-    Map<String, List<IptvChannel>> getChannelsByGroup(); // 新增方法
+    Map<String, List<IptvChannel>> getChannelsByGroup(); // 原有方法
+    Map<String, List<IptvChannel>> getChannelsByGroup(String language); // 新增方法 - 支持按语言过滤
     void loadIptvData();
     
     // 新增方法：添加喜欢频道

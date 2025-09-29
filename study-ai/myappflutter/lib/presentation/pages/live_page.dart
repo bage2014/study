@@ -78,7 +78,7 @@ class _LivePageState extends State<LivePage> {
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -172,13 +172,15 @@ class _LivePageState extends State<LivePage> {
                 ),
                 // 分类列表
                 Expanded(
-                  child: ListView(
-                    children: _categoryResponse!.categories.entries
-                        .map(
-                          (entry) =>
-                              _buildCategorySection(entry.key, entry.value),
-                        )
-                        .toList(),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: _categoryResponse!.categories.entries.length,
+                    itemBuilder: (context, index) {
+                      final entry = _categoryResponse!.categories.entries
+                          .elementAt(index);
+                      return _buildCategorySection(entry.key, entry.value);
+                    },
                   ),
                 ),
               ],

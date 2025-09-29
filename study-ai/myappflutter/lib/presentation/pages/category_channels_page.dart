@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/models/iptv_category_model.dart';
 import 'package:myappflutter/data/services/iptv_service.dart';
 import 'package:myappflutter/presentation/widgets/base_page.dart';
+import 'tv_player_page.dart';
+import '../../data/models/tv_model.dart';
 
 class CategoryChannelsPage extends StatefulWidget {
   final String categoryName;
@@ -36,6 +39,10 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
       final channels = await _iptvService.getChannelsByCategory(
         widget.categoryName,
       );
+      LogUtil.info('channels: ${channels.length}');
+      if (channels.length >= 20) {
+        return;
+      }
       setState(() {
         _channels = channels;
         _isLoading = false;
@@ -50,8 +57,26 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
   }
 
   void _onChannelTap(IptvChannel channel) {
-    // 这里可以添加跳转到播放页面的逻辑
+    // 打印选中的频道信息
     print('Selected channel: ${channel.name} - ${channel.url}');
+
+    // 将 IptvChannel 转换为 TvChannel
+    TvChannel tvChannel = TvChannel(
+      title: channel.name, // 使用 IptvChannel 的 name 作为 TvChannel 的 title
+      logo: channel.logo, // 直接使用 logo
+      channelUrls: [
+        ChannelUrl(
+          title: channel.name, // 频道名称作为URL标题
+          url: channel.url, // 使用 IptvChannel 的 url
+        ),
+      ],
+    );
+
+    // 跳转到 TvPlayerPage 并传递转换后的 TvChannel 对象
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TvPlayerPage(channel: tvChannel)),
+    );
   }
 
   Widget _buildChannelCard(IptvChannel channel) {

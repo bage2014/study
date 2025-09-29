@@ -85,3 +85,19 @@ CREATE TABLE IF NOT EXISTS app_like (
     CONSTRAINT uk_user_m3u_entry UNIQUE (user_id, m3u_entry_id)
 );
 
+
+
+-- IPTV频道表
+CREATE TABLE IF NOT EXISTS iptv_channel (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    url VARCHAR(1024) NOT NULL,
+    channel_group VARCHAR(100),
+    category VARCHAR(100),
+    language VARCHAR(50),
+    country VARCHAR(50),
+    tags VARCHAR(1024),
+    logo VARCHAR(255)
+);
+
+

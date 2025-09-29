@@ -1,4 +1,3 @@
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 import '../models/iptv_category_model.dart';
@@ -9,38 +8,43 @@ class IptvService {
   Future<IptvCategoryResponse> getCategories({
     required List<String> tags,
   }) async {
-    final response = await HttpClient().post(
-      '/iptv/query/group',
-      body: {'tags': tags},
-    );
-
-    if (response['code'] == 200) {
-      final data = response['data'];
-      final groupedChannels = data['channelsByGroup'] as Map<String, dynamic>;
-
-      LogUtil.info('channelsByGroup: ${groupedChannels.length}');
-      
-      // 转换数据格式
-      final categories = <String, List<IptvChannel>>{};
-      groupedChannels.forEach((groupName, channels) {
-       
-        categories[groupName] = (channels as List)
-            .map((channel) => IptvChannel.fromJson(channel))
-            .toList();
-      });
-
-      return IptvCategoryResponse(
-        categories: categories,
-        totalCategories: data['totalGroups'],
-        totalChannels: categories.values.fold(
-          0,
-          (sum, list) => sum + list.length,
-        ),
+    try {
+      final response = await _httpClient.post(
+        '/iptv/query/group',
+        body: {'tags': tags},
       );
-    }
 
-    // 保留对旧格式的兼容处理
-    return IptvCategoryResponse.fromJson(response);
+      if (response['code'] == 200) {
+        final data = response['data'];
+        // 适配新格式：data['groups']是一个数组
+        final groupsData = data['groups'] as List;
+
+        // 转换数据格式
+        final categories = <String, List<IptvChannel>>{};
+        int totalChannels = 0;
+
+        // 遍历groups数组
+        for (var group in groupsData) {
+          final groupName = group['groupName'] as String;
+          final groupChannelsCount = group['totalChannels'] as int;
+
+          // 初始化该分组的频道列表（实际项目中可能需要额外请求获取频道详情）
+          categories[groupName] = [];
+          totalChannels += groupChannelsCount;
+        }
+
+        return IptvCategoryResponse(
+          categories: categories,
+          totalCategories: groupsData.length,
+          totalChannels: totalChannels,
+        );
+      } else {
+        throw Exception('Failed to load categories: ${response['message']}');
+      }
+    } catch (e) {
+      LogUtil.error('Error loading categories: $e');
+      throw Exception('Failed to load categories: $e');
+    }
   }
 
   Future<List<IptvChannel>> searchChannels(String keyword) async {
@@ -70,23 +74,45 @@ class IptvService {
   }
 
   Future<List<IptvChannel>> getChannelsByCategory(String category) async {
-    final response = await _httpClient.get('iptv/$category');
+    try {
+      // 使用POST请求并传递tags参数
+      final response = await _httpClient.post(
+        '/iptv/query/tags',
+        body: {
+          'tags': [category],
+        },
+      );
 
-    // 处理新的后端响应格式: {"code": 200, "message": "success", "data": [...]}
-    if (response is Map<String, dynamic>) {
-      if (response['code'] == 200) {
-        final data = response['data'] as List<dynamic>;
-        return data.map((item) => IptvChannel.fromJson(item)).toList();
+      LogUtil.info('getChannelsByCategory: $response');
+
+      // 确保response是Map类型
+      if (response is Map<String, dynamic>) {
+        if (response['code'] == 200) {
+          // 适配新格式：channels在data内部
+          final data = response['data'] as Map<String, dynamic>?;
+
+          if (data != null &&
+              data.containsKey('channels') &&
+              data['channels'] is List) {
+            return (data['channels'] as List)
+                .map((item) => IptvChannel.fromJson(item))
+                .toList();
+          } else {
+            throw Exception(
+              'Invalid data structure: channels not found or not a list',
+            );
+          }
+        } else {
+          throw Exception(
+            'API Error: ${response['message'] ?? 'Unknown error'}',
+          );
+        }
       } else {
-        throw Exception('API Error: ${response['message']}');
+        throw Exception('Unexpected response format: ${response.runtimeType}');
       }
-    } else if (response is List) {
-      // 保持对旧格式的兼容
-      return (response as List)
-          .map((item) => IptvChannel.fromJson(item))
-          .toList();
-    } else {
-      throw Exception('Unexpected response format');
+    } catch (e) {
+      LogUtil.error('Error getting channels by category $category: $e');
+      throw Exception('Failed to get channels by category: $e');
     }
   }
 }

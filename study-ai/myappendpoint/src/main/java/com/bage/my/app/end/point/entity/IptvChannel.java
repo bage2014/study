@@ -1,31 +1,53 @@
 package com.bage.my.app.end.point.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
+@Entity
+@Table(name = "iptv_channel")
 public class IptvChannel {
-    private int id; // 新增ID字段
+    @Id
+    private int id;
     private String name;
+    @Column(length = 1024)
     private String url;
+    
+    // 修改字段名以避免与SQL关键字冲突
+    @Column(name = "channel_group")
     private String group;
+    
     private String category;
     private String language;
     private String country;
+    @Column(length = 1024)
     private String logo;
-    private List<String> tags = new ArrayList<>(); // 新增标签列表
+    
+    private String tags; // 标签列表
 
     // 添加标签方法
     public void addTag(String tag) {
+        if (tag == null || tag.isEmpty()) {
+            return;
+        }
+        if (tags == null) {
+            tags = "";
+        }
         if (!tags.contains(tag)) {
-            tags.add(tag);
+            tags += tag + ",";
         }
     }
 
     // 删除标签方法
     public void removeTag(String tag) {
-        tags.remove(tag);
+        if (tag == null || tag.isEmpty()) {
+            return;
+        }
+        if (tags == null) {
+            return;
+        }
+        if (tags.contains(tag + ",")) {
+            tags = tags.replace(tag + ",", "");
+        }
     }
 }

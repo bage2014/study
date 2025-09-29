@@ -2,6 +2,7 @@ package com.bage.my.app.end.point.service.impl;
 
 import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
+import com.bage.my.app.end.point.repository.IptvChannelRepository;
 import com.bage.my.app.end.point.service.IptvService;
 import com.bage.my.app.end.point.service.LikeService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,19 +23,27 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class IptvServiceImpl implements IptvService {
-
-    private List<IptvChannel> allChannels = new ArrayList<>();
-    private final String IPTV_URL = "https://iptv-org.github.io/iptv/index.m3u";
+    
+    @Autowired
+    private IptvChannelRepository channelRepository;
     
     @Autowired
     private LikeService likeService;
 
+    private final String IPTV_URL = "https://iptv-org.github.io/iptv/index.m3u";
+
     @Override
     public List<IptvChannel> getAllChannels() {
-        if (allChannels.isEmpty()) {
+        // 先从数据库查询
+        List<IptvChannel> channels = channelRepository.findAll();
+        
+        // 如果数据库为空，则加载数据
+        if (channels.isEmpty()) {
             loadIptvData();
+            channels = channelRepository.findAll();
         }
-        return allChannels;
+        
+        return channels;
     }
 
     @Override
@@ -45,29 +54,30 @@ public class IptvServiceImpl implements IptvService {
         }
 
         List<IptvChannel> filteredChannels = channels;
-       for (String tag : tags) {
-        if (tag == null || tag.isEmpty()) {
-            continue;
-        }
+        for (String tag : tags) {
+            if (tag == null || tag.isEmpty()) {
+                continue;
+            }
             log.info("过滤标签: {}", tag);
             filteredChannels = filteredChannels.stream()
                 .filter(channel -> channel.getTags().contains(tag))
                 .collect(Collectors.toList());
-       }
+        }
 
         return new CategoryChannelsResponse(filteredChannels);
     }
-
 
     @Override
     public void loadIptvData() {
         try {
             log.info("开始加载IPTV数据...");
             URL url = new URL(IPTV_URL);
+            List<IptvChannel> channelsToSave = new ArrayList<>();
+            
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
                 String line;
                 IptvChannel currentChannel = null;
-                int channelId = 1; // 新增ID计数器
+                int channelId = 1; // ID计数器
                 
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith("#EXTINF:")) {
@@ -75,13 +85,16 @@ public class IptvServiceImpl implements IptvService {
                         currentChannel.setId(channelId++); // 设置ID
                     } else if (line.startsWith("http") && currentChannel != null) {
                         currentChannel.setUrl(line);
-                        allChannels.add(currentChannel);
+                        channelsToSave.add(currentChannel);
                         currentChannel.addTag("iptv"); // 添加默认标签
                         currentChannel = null;
                     }
                 }
             }
-            log.info("IPTV数据加载完成，共加载 {} 个频道", allChannels.size());
+            
+            // 保存到数据库
+            channelRepository.saveAll(channelsToSave);
+            log.info("IPTV数据加载完成，共加载并保存 {} 个频道到数据库", channelsToSave.size());
         } catch (Exception e) {
             log.error("加载IPTV数据失败: {}", e.getMessage(), e);
         }
@@ -174,7 +187,7 @@ public class IptvServiceImpl implements IptvService {
                 if (tag != null && !tag.isEmpty()) {
                     log.info("过滤标签: {}", tag);
                     filteredChannels = filteredChannels.stream()
-                        .filter(channel -> channel.getTags().contains(tag))
+                        .filter(channel -> channel.getTags() != null && channel.getTags().contains(tag))
                         .collect(Collectors.toList());
                 }
             }
@@ -190,10 +203,38 @@ public class IptvServiceImpl implements IptvService {
     @Override
     public Map<String, List<IptvChannel>> getChannelsByGroup() {
         List<IptvChannel> channels = getAllChannels();
-        // 按group字段分组频道数据
+        // 按category字段分组频道数据
         return channels.stream()
-            .filter(channel -> channel.getGroup() != null && !channel.getGroup().isEmpty())
-            .collect(Collectors.groupingBy(IptvChannel::getGroup));
+            .filter(channel -> channel.getCategory() != null && !channel.getCategory().isEmpty())
+            .collect(Collectors.groupingBy(IptvChannel::getCategory));
+    }
+
+    @Override
+    public Map<String, List<IptvChannel>> getChannelsByGroup(String keyword) {
+        List<IptvChannel> channels = getAllChannels();
+        
+        // 根据关键词过滤频道
+        if (keyword != null && !keyword.isEmpty()) {
+            channels = channels.stream()
+                .filter(channel -> {
+                    // 检查频道分类中是否包含关键词
+                    return (channel.getCategory() != null && containsChinese(channel.getCategory()));
+                })
+                .collect(Collectors.toList());
+        }
+        
+        // 按category字段分组过滤后的频道数据
+        return channels.stream()
+            .filter(channel -> channel.getCategory() != null && !channel.getCategory().isEmpty())
+            .collect(Collectors.groupingBy(IptvChannel::getCategory));
+    }
+    
+    // 辅助方法：检查字符串是否包含中文字符
+    private boolean containsChinese(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        return str.matches(".*[\\u4e00-\\u9fa5].*");
     }
     
     @Override
@@ -201,8 +242,7 @@ public class IptvServiceImpl implements IptvService {
         log.info("添加喜欢的频道: userId={}, channelId={}", userId, channelId);
         
         // 检查频道是否存在
-        List<IptvChannel> channels = getAllChannels();
-        boolean channelExists = channels.stream().anyMatch(c -> c.getId() == channelId);
+        boolean channelExists = channelRepository.existsById(channelId);
         
         if (!channelExists) {
             throw new RuntimeException("频道不存在: " + channelId);

@@ -7,6 +7,8 @@ import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
 import com.bage.my.app.end.point.model.response.GroupedChannelsResponse;
 import com.bage.my.app.end.point.service.IptvService;
 import com.bage.my.app.end.point.util.AuthUtil;
+import com.bage.my.app.end.point.util.JsonUtil;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +59,7 @@ public class IptvController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         try {
+            log.info("按标签获取频道, 标签: {}, 页码: {}, 每页数量: {}", JsonUtil.toJson(request.getTags()), page, size);
             Pageable pageable = PageRequest.of(page, size);
             Page<IptvChannel> channelsPage = iptvService.getChannelsByTagWithPagination(request.getTags(), pageable);
             
@@ -74,9 +77,10 @@ public class IptvController {
 
 
     @RequestMapping("/query/group")
-    public ApiResponse<GroupedChannelsResponse> getChannelsByGroup() {
+    public ApiResponse<GroupedChannelsResponse> getChannelsByGroup(
+            @RequestParam(required = false, defaultValue = "") String keyword) {
         try {
-            Map<String, List<IptvChannel>> channelsByGroup = iptvService.getChannelsByGroup();
+            Map<String, List<IptvChannel>> channelsByGroup = iptvService.getChannelsByGroup(keyword);
             GroupedChannelsResponse response = new GroupedChannelsResponse(channelsByGroup);
             return ApiResponse.success(response);
         } catch (Exception e) {

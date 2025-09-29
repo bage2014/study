@@ -16,6 +16,7 @@ public class CategoryChannelsResponse {
         this.channels = channels;
         this.totalCategories = channels != null ? channels.size() : 0;
         this.totalChannels = channels != null ? 
-            channels.stream().mapToInt(channel -> channel.getTags() != null ? channel.getTags().size() : 0).sum() : 0;
+            channels.stream().mapToInt(channel -> channel.getTags() != null ? 
+                channel.getTags().split(",").length : 0).sum() : 0;
     }
 }
