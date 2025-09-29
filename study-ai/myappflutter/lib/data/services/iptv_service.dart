@@ -1,3 +1,4 @@
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 import '../models/iptv_category_model.dart';
@@ -18,9 +19,11 @@ class IptvService {
       final groupedChannels = data['channelsByGroup'] as Map<String, dynamic>;
 
       LogUtil.info('channelsByGroup: ${groupedChannels.length}');
+      
       // 转换数据格式
       final categories = <String, List<IptvChannel>>{};
       groupedChannels.forEach((groupName, channels) {
+       
         categories[groupName] = (channels as List)
             .map((channel) => IptvChannel.fromJson(channel))
             .toList();
