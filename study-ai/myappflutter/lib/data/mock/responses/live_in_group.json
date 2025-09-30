@@ -1,0 +1,35 @@
+{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "channels": [
+            {
+                "id": 93,
+                "name": "24 Hour Free Movies (720p)",
+                "url": "https://d1j2u714xk898n.cloudfront.net/scheduler/scheduleMaster/145.m3u8",
+                "group": "Movies",
+                "category": "电影",
+                "logo": "https://i.imgur.com/iSVnzR1.png",
+                "tags": "24 Hour Free Movies (720p),电影,iptv,"
+            },
+            {
+                "id": 98,
+                "name": "27 TwentySeven [Geo-blocked]",
+                "url": "https://live2.msf.cdn.mediaset.net/content/hls_h0_cls_vos/live/channel(ts)/index.m3u8",
+                "group": "Movies;Series",
+                "category": "电影",
+                "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Twentyseven_logo.svg/512px-Twentyseven_logo.svg.png",
+                "tags": "27 TwentySeven [Geo-blocked],Movies;Series,电影,iptv,"
+            },
+            {
+                "id": 112,
+                "name": "30A TV Classic Movies",
+                "url": "https://30a-tv.com/feeds/pzaz/30atvmovies.m3u8",
+                "group": "Movies",
+                "category": "电影",
+                "logo": "https://babaktv.com/wp-content/uploads/2023/09/30A-Classi-Movies.jpeg",
+                "tags": "30A TV Classic Movies,电影,iptv,"
+            }
+        ]
+    }
+}

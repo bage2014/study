@@ -1,0 +1,48 @@
+{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "groups": [
+            {
+                "groupName": "电影",
+                "totalChannels": 369
+            },
+            {
+                "groupName": "娱乐",
+                "totalChannels": 588
+            },
+            {
+                "groupName": "教育",
+                "totalChannels": 170
+            },
+            {
+                "groupName": "体育",
+                "totalChannels": 289
+            },
+            {
+                "groupName": "少儿",
+                "totalChannels": 252
+            },
+            {
+                "groupName": "新闻",
+                "totalChannels": 801
+            },
+            {
+                "groupName": "其他",
+                "totalChannels": 7076
+            },
+            {
+                "groupName": "纪录片",
+                "totalChannels": 114
+            },
+            {
+                "groupName": "英文频道",
+                "totalChannels": 729
+            },
+            {
+                "groupName": "音乐",
+                "totalChannels": 629
+            }
+        ]
+    }
+}

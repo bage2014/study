@@ -29,6 +29,11 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
   bool _hasMorePages = true;
   bool _isLoadingMore = false;
 
+  // 添加搜索相关状态
+  final TextEditingController _searchController = TextEditingController();
+  String _searchKeyword = '';
+  bool _isSearching = false;
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +52,7 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
       } else {
         _isLoading = true;
         _hasError = false;
+        _isSearching = false; // 重置搜索状态
       }
     });
 
@@ -93,12 +99,58 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
     }
   }
 
+  // 实现搜索方法
+  Future<void> _searchChannels(String keyword) async {
+    if (keyword.isEmpty) {
+      // 如果搜索词为空，重新加载原始分类的频道
+      _loadChannels();
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+      _isSearching = true;
+      _searchKeyword = keyword;
+    });
+
+    try {
+      final channels = await _iptvService.getChannelsByCategory(
+        keyword, // 使用搜索词作为标签
+        0, // 搜索总是从第0页开始
+        _pageSize,
+      );
+
+      LogUtil.info('search results: ${channels.length}');
+
+      setState(() {
+        _channels = channels;
+        _currentPage = 0;
+        _hasMorePages = channels.length == _pageSize;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _hasError = true;
+        _errorMessage = e.toString();
+      });
+    }
+  }
+
+  // 清除搜索
+  void _clearSearch() {
+    _searchController.clear();
+    _loadChannels();
+  }
+
   // 用于触发加载更多的滚动控制器
   final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -164,55 +216,92 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
   Widget build(BuildContext context) {
     return BasePage(
       title: widget.categoryName,
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _hasError
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('加载失败: $_errorMessage'),
-                  ElevatedButton(
-                    onPressed: _loadChannels,
-                    child: const Text('重试'),
-                  ),
-                ],
-              ),
-            )
-          : _channels.isEmpty
-          ? const Center(child: Text('没有找到频道'))
-          : Stack(
-              children: [
-                ListView.builder(
-                  controller: _scrollController, // 添加滚动控制器
-                  itemCount: _channels.length,
-                  itemBuilder: (context, index) {
-                    return _buildChannelCard(_channels[index]);
-                  },
+      body: Column(
+        children: [
+          // 添加搜索框
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: '搜索频道',
+                hintText: '输入标签进行搜索',
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: _searchKeyword.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: _clearSearch,
+                      )
+                    : null,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                // 加载更多时显示指示器
-                if (_isLoadingMore)
-                  const Positioned(
-                    bottom: 16,
-                    left: 0,
-                    right: 0,
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                // 手动加载更多按钮
-                if (!_isLoadingMore && _hasMorePages)
-                  Positioned(
-                    bottom: 16,
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: ElevatedButton(
-                        onPressed: () => _loadChannels(isLoadMore: true),
-                        child: const Text('加载更多'),
-                      ),
-                    ),
-                  ),
-              ],
+              ),
+              onSubmitted: _searchChannels,
             ),
+          ),
+          // 搜索状态指示器
+          if (_isSearching)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text('搜索结果：基于标签 $_searchKeyword'),
+            ),
+          // 主要内容区域
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _hasError
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('加载失败: $_errorMessage'),
+                        ElevatedButton(
+                          onPressed: _searchKeyword.isEmpty
+                              ? _loadChannels
+                              : () => _searchChannels(_searchKeyword),
+                          child: const Text('重试'),
+                        ),
+                      ],
+                    ),
+                  )
+                : _channels.isEmpty
+                ? const Center(child: Text('没有找到频道'))
+                : Stack(
+                    children: [
+                      ListView.builder(
+                        controller: _scrollController, // 添加滚动控制器
+                        itemCount: _channels.length,
+                        itemBuilder: (context, index) {
+                          return _buildChannelCard(_channels[index]);
+                        },
+                      ),
+                      // 加载更多时显示指示器
+                      if (_isLoadingMore)
+                        const Positioned(
+                          bottom: 16,
+                          left: 0,
+                          right: 0,
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      // 手动加载更多按钮
+                      if (!_isLoadingMore && _hasMorePages)
+                        Positioned(
+                          bottom: 16,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: ElevatedButton(
+                              onPressed: () => _loadChannels(isLoadMore: true),
+                              child: const Text('加载更多'),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

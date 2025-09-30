@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:async'; // 添加这行导入语句
+import 'package:flutter/services.dart'; // 导入SystemChrome用于控制屏幕方向
 import '../widgets/base_page.dart';
 import '../../data/models/tv_model.dart'; // 导入 TvChannel 模型
 
@@ -25,9 +26,31 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
   @override
   void initState() {
     super.initState();
+    // 设置屏幕为横屏模式
+    _setLandscapeOrientation();
     // 确定要使用的流URL
     _determineStreamUrl();
     _initializePlayer();
+  }
+
+  // 设置屏幕为横屏模式
+  void _setLandscapeOrientation() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    // 隐藏状态栏和底部导航栏，实现全屏效果
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  }
+
+  // 恢复屏幕为竖屏模式
+  void _resetOrientation() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    // 恢复状态栏和底部导航栏
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
   void _determineStreamUrl() {
@@ -104,10 +127,13 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _isInitialized
-                ? AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
+                ? Container(
+                    width: double.infinity,
+                    height: double.infinity,
                     child: Stack(
+                      alignment: Alignment.center, // 确保内容居中
                       children: [
+                        // 移除AspectRatio，使视频自动适应屏幕
                         VideoPlayer(_controller),
                         VideoControlsOverlay(controller: _controller),
                       ],
@@ -123,6 +149,8 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
   @override
   void dispose() {
     _controller.dispose();
+    // 离开页面时恢复竖屏模式
+    _resetOrientation();
     super.dispose();
   }
 }
