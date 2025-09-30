@@ -22,17 +22,17 @@ class _LivePageState extends State<LivePage> {
   @override
   void initState() {
     super.initState();
-    _loadCategories();
+    _loadCategories([]);
   }
 
-  Future<void> _loadCategories() async {
+  Future<void> _loadCategories(List<String> tags) async {
     setState(() {
       _isLoading = true;
       _hasError = false;
     });
 
     try {
-      final response = await _iptvService.getCategories(tags: []);
+      final response = await _iptvService.getCategories(tags: tags);
       setState(() {
         _categoryResponse = response;
         _isLoading = false;
@@ -142,7 +142,7 @@ class _LivePageState extends State<LivePage> {
                   Text('加载失败: $_errorMessage'),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: _loadCategories,
+                    onPressed: () => _loadCategories([]),
                     child: const Text('重试'),
                   ),
                 ],
@@ -163,7 +163,7 @@ class _LivePageState extends State<LivePage> {
                         icon: const Icon(Icons.search),
                         onPressed: () {
                           // 这里可以添加搜索功能
-                          print('Search: ${_searchController.text}');
+                          _loadCategories([_searchController.text]);
                         },
                       ),
                       border: const OutlineInputBorder(),

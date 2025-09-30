@@ -112,12 +112,14 @@ curl -X POST http://localhost:8080/iptv/reload
     ```json
     {
       "tags": ["标签1", "标签2"]
+      "page":0,
+      "size",10
     }
     ```
 
 ### 请求示例
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"tags": ["CCTV"]}' http://localhost:8080/iptv/query/tags?page=0&size=20
+curl -X POST -H "Content-Type: application/json" -d '{"tags": ["CCTV"],"page": 0,"size": 10}' http://localhost:8080/iptv/query/tags
 ```
 
 ### 响应格式

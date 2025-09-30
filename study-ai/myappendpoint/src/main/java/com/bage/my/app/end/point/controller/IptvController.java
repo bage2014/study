@@ -55,12 +55,10 @@ public class IptvController {
 
     @RequestMapping("/query/tags")
     public ApiResponse<CategoryChannelsResponse> getChannelsByTag(
-            @RequestBody TagRequest request,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestBody TagRequest request) {
         try {
-            log.info("按标签获取频道, 标签: {}, 页码: {}, 每页数量: {}", JsonUtil.toJson(request.getTags()), page, size);
-            Pageable pageable = PageRequest.of(page, size);
+            log.info("按标签获取频道, 标签: {}, 页码: {}, 每页数量: {}", JsonUtil.toJson(request.getTags()), request.getPage(), request.getSize());
+            Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
             Page<IptvChannel> channelsPage = iptvService.getChannelsByTagWithPagination(request.getTags(), pageable);
             
             // 创建带有分页信息的响应
@@ -78,9 +76,15 @@ public class IptvController {
 
     @RequestMapping("/query/group")
     public ApiResponse<GroupedChannelsResponse> getChannelsByGroup(
-            @RequestParam(required = false, defaultValue = "") String keyword) {
-        try {
-            Map<String, List<IptvChannel>> channelsByGroup = iptvService.getChannelsByGroup(keyword);
+            @RequestBody TagRequest request) {
+        try {  
+            List<String> tags = request.getTags();
+            if (tags == null || tags.isEmpty()) {
+                tags = List.of("");
+            }
+            String tag = tags.get(0);
+            tag = tag == null ? "" : tag.trim();
+            Map<String, List<IptvChannel>> channelsByGroup = iptvService.getChannelsByGroup(tag);
             GroupedChannelsResponse response = new GroupedChannelsResponse(channelsByGroup);
             return ApiResponse.success(response);
         } catch (Exception e) {

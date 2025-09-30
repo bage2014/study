@@ -201,26 +201,18 @@ public class IptvServiceImpl implements IptvService {
     }
 
     @Override
-    public Map<String, List<IptvChannel>> getChannelsByGroup() {
-        List<IptvChannel> channels = getAllChannels();
-        // 按category字段分组频道数据
-        return channels.stream()
-            .filter(channel -> channel.getCategory() != null && !channel.getCategory().isEmpty())
-            .collect(Collectors.groupingBy(IptvChannel::getCategory));
-    }
-
-    @Override
     public Map<String, List<IptvChannel>> getChannelsByGroup(String keyword) {
         List<IptvChannel> channels = getAllChannels();
-        
+        log.info("获取所有频道数量: {}", channels.size());
         // 根据关键词过滤频道
         if (keyword != null && !keyword.isEmpty()) {
             channels = channels.stream()
                 .filter(channel -> {
                     // 检查频道分类中是否包含关键词
-                    return (channel.getCategory() != null && containsChinese(channel.getCategory()));
+                    return (channel.getCategory() != null && channel.getCategory().contains(keyword));
                 })
                 .collect(Collectors.toList());
+            log.info("根据关键词过滤后的频道数量: {}", channels.size());
         }
         
         // 按category字段分组过滤后的频道数据
@@ -229,14 +221,7 @@ public class IptvServiceImpl implements IptvService {
             .collect(Collectors.groupingBy(IptvChannel::getCategory));
     }
     
-    // 辅助方法：检查字符串是否包含中文字符
-    private boolean containsChinese(String str) {
-        if (str == null || str.isEmpty()) {
-            return false;
-        }
-        return str.matches(".*[\\u4e00-\\u9fa5].*");
-    }
-    
+
     @Override
     public void addFavoriteChannel(Long userId, int channelId) {
         log.info("添加喜欢的频道: userId={}, channelId={}", userId, channelId);
