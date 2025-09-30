@@ -3,7 +3,6 @@ import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:async'; // 添加这行导入语句
 import 'package:flutter/services.dart'; // 导入SystemChrome用于控制屏幕方向
-import '../widgets/base_page.dart';
 import '../../data/models/tv_model.dart'; // 导入 TvChannel 模型
 
 class TvPlayerPage extends StatefulWidget {
