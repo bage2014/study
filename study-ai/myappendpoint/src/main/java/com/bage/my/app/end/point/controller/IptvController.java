@@ -65,7 +65,8 @@ public class IptvController {
             CategoryChannelsResponse response = new CategoryChannelsResponse(channelsPage.getContent());
             response.setTotalCategories((int) channelsPage.getTotalElements());
             response.setTotalChannels((int) channelsPage.getTotalElements());
-            
+            log.info("按标签获取频道成功, 标签: {}, 页码: {}, 每页数量: {}, 总频道数: {}, 总分类数: {}", JsonUtil.toJson(request.getTags()), request.getPage(), request.getSize(), response.getTotalChannels(), response.getTotalCategories());
+            log.info("按标签获取频道成功, 频道列表: {}", JsonUtil.toJson(response.getChannels()));
             return ApiResponse.success(response);
         } catch (Exception e) {
             log.error("按标签获取频道失败: {}", e.getMessage(), e);

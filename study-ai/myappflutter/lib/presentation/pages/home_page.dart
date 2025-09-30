@@ -155,11 +155,11 @@ class HomePage extends StatelessWidget {
                   title: 'history_location',
                   onTap: () => Get.toNamed(AppRoutes.HISTORY_LOCATION),
                 ),
-                _buildMenuCard(
-                  icon: Icons.tv,
-                  title: 'tv_list',
-                  onTap: () => Get.toNamed(AppRoutes.TV_LIST),
-                ),
+                // _buildMenuCard(
+                //   icon: Icons.tv,
+                //   title: 'tv_list',
+                //   onTap: () => Get.toNamed(AppRoutes.TV_LIST),
+                // ),
               ],
             ),
           ),
