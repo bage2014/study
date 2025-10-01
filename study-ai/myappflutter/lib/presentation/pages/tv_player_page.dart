@@ -21,6 +21,7 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
   bool _isLoading = true;
   String? _effectiveStreamUrl;
   String _channelTitle = 'TV Player'; // 默认标题
+  bool _isFullScreen = true; // 添加全屏状态变量
 
   @override
   void initState() {
@@ -50,6 +51,18 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
     ]);
     // 恢复状态栏和底部导航栏
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  }
+
+  // 切换全屏/退出全屏
+  void toggleFullScreen() {
+    setState(() {
+      _isFullScreen = !_isFullScreen;
+      if (_isFullScreen) {
+        _setLandscapeOrientation();
+      } else {
+        _resetOrientation();
+      }
+    });
   }
 
   void _determineStreamUrl() {
@@ -124,11 +137,11 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
       appBar: AppBar(
         title: Text(
           _channelTitle,
-          style: TextStyle(color: Colors.blue),
-        ), // 设置标题为白色
+          style: TextStyle(color: Colors.white), // 已修正为白色
+        ),
         backgroundColor: Colors.transparent, // 设置AppBar背景为透明
         elevation: 0, // 移除阴影效果
-        iconTheme: IconThemeData(color: Colors.blue), // 设置返回按钮为白色
+        iconTheme: IconThemeData(color: Colors.white), // 设置返回按钮为白色
         systemOverlayStyle: SystemUiOverlayStyle.light, // 设置状态栏图标为白色
       ),
       body: Column(
@@ -145,7 +158,11 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
                       children: [
                         // 移除AspectRatio，使视频自动适应屏幕
                         VideoPlayer(_controller),
-                        VideoControlsOverlay(controller: _controller),
+                        VideoControlsOverlay(
+                          controller: _controller,
+                          onToggleFullScreen: toggleFullScreen, // 传递全屏切换回调
+                          isFullScreen: _isFullScreen, // 传递全屏状态
+                        ),
                       ],
                     ),
                   )
@@ -168,8 +185,15 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
 // 自定义视频控制覆盖层
 class VideoControlsOverlay extends StatefulWidget {
   final VideoPlayerController controller;
+  final VoidCallback onToggleFullScreen; // 添加全屏切换回调
+  final bool isFullScreen; // 添加全屏状态
 
-  const VideoControlsOverlay({super.key, required this.controller});
+  const VideoControlsOverlay({
+    super.key,
+    required this.controller,
+    required this.onToggleFullScreen,
+    required this.isFullScreen,
+  });
 
   @override
   State<VideoControlsOverlay> createState() => _VideoControlsOverlayState();
@@ -220,23 +244,45 @@ class _VideoControlsOverlayState extends State<VideoControlsOverlay> {
             duration: const Duration(milliseconds: 300),
             child: ColoredBox(
               color: Colors.black26,
-              child: Center(
-                child: IconButton(
-                  icon: Icon(
-                    widget.controller.value.isPlaying
-                        ? Icons.pause
-                        : Icons.play_arrow,
-                    size: 64,
-                    color: Colors.white,
+              child: Stack(
+                children: [
+                  // 播放/暂停按钮 - 居中显示
+                  Center(
+                    child: IconButton(
+                      icon: Icon(
+                        widget.controller.value.isPlaying
+                            ? Icons.pause
+                            : Icons.play_arrow,
+                        size: 64,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          widget.controller.value.isPlaying
+                              ? widget.controller.pause()
+                              : widget.controller.play();
+                        });
+                      },
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      widget.controller.value.isPlaying
-                          ? widget.controller.pause()
-                          : widget.controller.play();
-                    });
-                  },
-                ),
+                  // 全屏/退出全屏按钮 - 定位在右下角
+                  Positioned(
+                    bottom: 20,
+                    right: 20,
+                    child: IconButton(
+                      icon: Icon(
+                        widget.isFullScreen
+                            ? Icons.fullscreen_exit
+                            : Icons.fullscreen,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        widget.onToggleFullScreen();
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

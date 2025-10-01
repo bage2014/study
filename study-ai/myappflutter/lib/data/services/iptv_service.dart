@@ -95,4 +95,47 @@ class IptvService {
       throw Exception('Failed to get channels by category: $e');
     }
   }
+
+  // 添加获取喜欢频道的方法
+  Future<List<IptvChannel>> getFavoriteChannels(int page, int size) async {
+    try {
+      final response = await _httpClient.post(
+        '/iptv/query/tags',
+        body: {
+          'tags': ['favorite'], // 使用favorite标签标识喜欢的频道
+          'page': page,
+          'size': size,
+        },
+      );
+
+      LogUtil.info('getFavoriteChannels: $response');
+
+      if (response is Map<String, dynamic>) {
+        if (response['code'] == 200) {
+          final data = response['data'] as Map<String, dynamic>?;
+
+          if (data != null &&
+              data.containsKey('channels') &&
+              data['channels'] is List) {
+            return (data['channels'] as List)
+                .map((item) => IptvChannel.fromJson(item))
+                .toList();
+          } else {
+            throw Exception(
+              'Invalid data structure: channels not found or not a list',
+            );
+          }
+        } else {
+          throw Exception(
+            'API Error: ${response['message'] ?? 'Unknown error'}',
+          );
+        }
+      } else {
+        throw Exception('Unexpected response format: ${response.runtimeType}');
+      }
+    } catch (e) {
+      LogUtil.error('Error getting favorite channels: $e');
+      throw Exception('Failed to get favorite channels: $e');
+    }
+  }
 }
