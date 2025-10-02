@@ -48,7 +48,7 @@ class IptvService {
   }
 
   Future<List<IptvChannel>> getChannelsByCategory(
-    String category,
+    List<String> tags,
     int page,
     int size,
   ) async {
@@ -57,7 +57,7 @@ class IptvService {
       final response = await _httpClient.post(
         '/iptv/query/tags',
         body: {
-          'tags': [category],
+          'tags': tags,
           'page': page, // 传递分页参数
           'size': size,
         },
@@ -91,8 +91,57 @@ class IptvService {
         throw Exception('Unexpected response format: ${response.runtimeType}');
       }
     } catch (e) {
-      LogUtil.error('Error getting channels by category $category: $e');
+      LogUtil.error('Error getting channels by category $tags: $e');
       throw Exception('Failed to get channels by category: $e');
+    }
+  }
+
+  Future<List<IptvChannel>> getChannelsByKeyword(
+    String keyword,
+    int page,
+    int size,
+  ) async {
+    try {
+      // 使用POST请求并传递tags参数
+      final response = await _httpClient.post(
+        '/iptv/channels',
+        body: {
+          'keyword': keyword, // 使用搜索词作为标签
+          'page': page, // 传递分页参数
+          'size': size,
+        },
+      );
+
+      LogUtil.info('getChannelsByCategory: $response');
+
+      // 确保response是Map类型
+      if (response is Map<String, dynamic>) {
+        if (response['code'] == 200) {
+          // 适配新格式：channels在data内部
+          final data = response['data'] as Map<String, dynamic>?;
+
+          if (data != null &&
+              data.containsKey('channels') &&
+              data['channels'] is List) {
+            return (data['channels'] as List)
+                .map((item) => IptvChannel.fromJson(item))
+                .toList();
+          } else {
+            throw Exception(
+              'Invalid data structure: channels not found or not a list',
+            );
+          }
+        } else {
+          throw Exception(
+            'API Error: ${response['message'] ?? 'Unknown error'}',
+          );
+        }
+      } else {
+        throw Exception('Unexpected response format: ${response.runtimeType}');
+      }
+    } catch (e) {
+      LogUtil.error('Error getting channels by keyword $keyword: $e');
+      throw Exception('Failed to get channels by keyword: $e');
     }
   }
 

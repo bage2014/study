@@ -8,6 +8,7 @@ import com.bage.my.app.end.point.model.response.GroupedChannelsResponse;
 import com.bage.my.app.end.point.service.IptvService;
 import com.bage.my.app.end.point.util.AuthUtil;
 import com.bage.my.app.end.point.util.JsonUtil;
+import com.bage.my.app.end.point.model.request.SearchRequest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -31,14 +35,15 @@ public class IptvController {
         this.iptvService = iptvService;
     }
 
-    @GetMapping("/channels")
-    public ApiResponse<List<IptvChannel>> getAllChannels() {
+    @RequestMapping("/channels")
+    public ApiResponse<List<IptvChannel>> getAllChannels(SearchRequest request) {
         try {
-            List<IptvChannel> channels = iptvService.getAllChannels();
-            return ApiResponse.success(channels);
+            log.info("查询频道, 请求参数: {}", request);
+            Page<IptvChannel> channelsPage = iptvService.searchChannels(request);
+            return ApiResponse.success(channelsPage.getContent());
         } catch (Exception e) {
-            log.error("获取所有频道失败: {}", e.getMessage(), e);
-            return ApiResponse.fail(500, "获取所有频道失败");
+            log.error("获取频道失败: {}", e.getMessage(), e);
+            return ApiResponse.fail(500, "获取频道失败");
         }
     }
 

@@ -59,7 +59,7 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
     try {
       final page = isLoadMore ? _currentPage + 1 : 0;
       final channels = await _iptvService.getChannelsByCategory(
-        widget.categoryName,
+        [_searchKeyword], // 使用搜索词作为标签
         page, // 传递分页参数
         _pageSize,
       );
@@ -116,7 +116,7 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
 
     try {
       final channels = await _iptvService.getChannelsByCategory(
-        keyword, // 使用搜索词作为标签
+        [keyword], // 使用搜索词作为标签
         0, // 搜索总是从第0页开始
         _pageSize,
       );

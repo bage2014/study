@@ -156,8 +156,15 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
                     child: Stack(
                       alignment: Alignment.center, // 确保内容居中
                       children: [
-                        // 移除AspectRatio，使视频自动适应屏幕
-                        VideoPlayer(_controller),
+                        // 使用FittedBox实现视频自适应大小
+                        FittedBox(
+                          fit: BoxFit.contain, // 保持宽高比并适应容器
+                          child: SizedBox(
+                            width: _controller.value.size.width,
+                            height: _controller.value.size.height,
+                            child: VideoPlayer(_controller),
+                          ),
+                        ),
                         VideoControlsOverlay(
                           controller: _controller,
                           onToggleFullScreen: toggleFullScreen, // 传递全屏切换回调

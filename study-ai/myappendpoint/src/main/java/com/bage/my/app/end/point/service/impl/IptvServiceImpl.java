@@ -5,10 +5,13 @@ import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
 import com.bage.my.app.end.point.repository.IptvChannelRepository;
 import com.bage.my.app.end.point.service.IptvService;
 import com.bage.my.app.end.point.service.LikeService;
+import com.bage.my.app.end.point.model.request.SearchRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -255,5 +258,45 @@ public class IptvServiceImpl implements IptvService {
                 }
             })
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<IptvChannel> searchChannels(SearchRequest request) {
+        if (request == null) {
+            request = new SearchRequest();
+        }
+        
+        // 确保数据库中有数据
+        if (channelRepository.count() == 0) {
+            loadIptvData();
+        }
+        
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        
+        String keyword = request.getKeyword();
+        // 如果有关键词，进行关键词搜索；否则查询所有频道
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // 先尝试根据名称查询
+            List<IptvChannel> nameMatches = channelRepository.findByNameContaining(keyword);
+            // 再尝试根据分类查询
+            List<IptvChannel> categoryMatches = channelRepository.findByCategoryContaining(keyword);
+            
+            // 合并结果并去重
+            Set<IptvChannel> uniqueMatches = new HashSet<>();
+            uniqueMatches.addAll(nameMatches);
+            uniqueMatches.addAll(categoryMatches);
+            
+            List<IptvChannel> allMatches = new ArrayList<>(uniqueMatches);
+            
+            // 实现手动分页
+            int start = (int) pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), allMatches.size());
+            
+            List<IptvChannel> pagedContent = allMatches.subList(start, end);
+            return new PageImpl<>(pagedContent, pageable, allMatches.size());
+        } else {
+            // 没有关键词时，直接使用JPA的分页查询
+            return channelRepository.findAll(pageable);
+        }
     }
 }

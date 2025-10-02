@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/models/iptv_category_model.dart';
 import 'package:myappflutter/data/services/iptv_service.dart';
 import 'package:myappflutter/presentation/widgets/base_page.dart';
@@ -15,23 +16,39 @@ class _LivePageState extends State<LivePage> {
   final IptvService _iptvService = IptvService();
   final TextEditingController _searchController = TextEditingController();
   IptvCategoryResponse? _categoryResponse;
+  List<IptvChannel> _allChannels = []; // 存储所有频道
+  List<IptvChannel> _favoriteChannels = []; // 存储喜欢的频道
   bool _isLoading = true;
   bool _hasError = false;
   String _errorMessage = '';
+  int _currentTab = 0; // 0: 分组, 1: 喜欢, 2: 所有
+
+  // 分页相关状态
+  int _currentPage = 0;
+  int _pageSize = 20;
+  bool _hasMorePages = true;
+  bool _isLoadingMore = false;
+  String searchText = '';
 
   @override
   void initState() {
     super.initState();
-    _loadCategories([]);
+    _loadCategories();
   }
 
-  Future<void> _loadCategories(List<String> tags) async {
+  Future<void> _loadCategories() async {
+    if (_currentTab != 0) return; // 只有在分组标签下才加载
+
     setState(() {
       _isLoading = true;
       _hasError = false;
     });
 
     try {
+      List<String> tags = [];
+      if (searchText.isNotEmpty) {
+        tags.add(searchText);
+      }
       final response = await _iptvService.getCategories(tags: tags);
       setState(() {
         _categoryResponse = response;
@@ -43,6 +60,116 @@ class _LivePageState extends State<LivePage> {
         _hasError = true;
         _errorMessage = e.toString();
       });
+    }
+  }
+
+  // 加载所有频道
+  Future<void> _loadAllChannels({bool isLoadMore = false}) async {
+    if (_currentTab != 2) return; // 只有在所有标签下才加载
+
+    if (isLoadMore && (!_hasMorePages || _isLoadingMore)) return;
+
+    setState(() {
+      if (isLoadMore) {
+        _isLoadingMore = true;
+      } else {
+        _isLoading = true;
+        _hasError = false;
+        _allChannels = [];
+        _currentPage = 0;
+      }
+    });
+
+    try {
+      final page = isLoadMore ? _currentPage + 1 : 0;
+
+      // 使用空标签获取所有频道
+      final channels = await _iptvService.getChannelsByKeyword(
+        searchText,
+        page,
+        _pageSize,
+      );
+
+      setState(() {
+        if (isLoadMore) {
+          _allChannels.addAll(channels);
+          _currentPage = page;
+        } else {
+          _allChannels = channels;
+        }
+        _hasMorePages = channels.length == _pageSize;
+        _isLoading = false;
+        _isLoadingMore = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _isLoadingMore = false;
+        _hasError = true;
+        _errorMessage = e.toString();
+      });
+    }
+  }
+
+  // 加载喜欢的频道
+  Future<void> _loadFavoriteChannels({bool isLoadMore = false}) async {
+    if (_currentTab != 1) return; // 只有在喜欢标签下才加载
+
+    if (isLoadMore && (!_hasMorePages || _isLoadingMore)) return;
+
+    setState(() {
+      if (isLoadMore) {
+        _isLoadingMore = true;
+      } else {
+        _isLoading = true;
+        _hasError = false;
+        _favoriteChannels = [];
+        _currentPage = 0;
+      }
+    });
+
+    try {
+      final page = isLoadMore ? _currentPage + 1 : 0;
+      final channels = await _iptvService.getFavoriteChannels(page, _pageSize);
+
+      setState(() {
+        if (isLoadMore) {
+          _favoriteChannels.addAll(channels);
+          _currentPage = page;
+        } else {
+          _favoriteChannels = channels;
+        }
+        _hasMorePages = channels.length == _pageSize;
+        _isLoading = false;
+        _isLoadingMore = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _isLoadingMore = false;
+        _hasError = true;
+        _errorMessage = e.toString();
+      });
+    }
+  }
+
+  void _onTabChanged(int index) {
+    setState(() {
+      _currentTab = index;
+      _isLoading = true;
+    });
+
+    // 根据选择的标签加载对应数据
+    switch (index) {
+      case 0:
+        _loadCategories();
+        break;
+      case 1:
+        _loadFavoriteChannels();
+        break;
+      case 2:
+        _loadAllChannels();
+        break;
     }
   }
 
@@ -142,17 +269,23 @@ class _LivePageState extends State<LivePage> {
                   Text('加载失败: $_errorMessage'),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => _loadCategories([]),
+                    onPressed: () {
+                      if (_currentTab == 0) {
+                        _loadCategories();
+                      } else if (_currentTab == 1) {
+                        _loadFavoriteChannels();
+                      } else {
+                        _loadAllChannels();
+                      }
+                    },
                     child: const Text('重试'),
                   ),
                 ],
               ),
             )
-          : _categoryResponse == null || _categoryResponse!.categories.isEmpty
-          ? const Center(child: Text('暂无频道数据'))
           : Column(
               children: [
-                // 搜索框
+                // 搜索框移到页面上部
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: TextField(
@@ -161,30 +294,137 @@ class _LivePageState extends State<LivePage> {
                       labelText: '搜索频道',
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.search),
-                        onPressed: () {
-                          // 这里可以添加搜索功能
-                          _loadCategories([_searchController.text]);
-                        },
+                        onPressed: _performSearch,
                       ),
                       border: const OutlineInputBorder(),
                     ),
                   ),
                 ),
-                // 分类列表
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: _categoryResponse!.categories.entries.length,
-                    itemBuilder: (context, index) {
-                      final entry = _categoryResponse!.categories.entries
-                          .elementAt(index);
-                      return _buildCategorySection(entry.key, entry.value);
-                    },
-                  ),
-                ),
+                Expanded(child: _buildContent()),
               ],
             ),
+    );
+  }
+
+  // 添加全局搜索方法
+  void _performSearch() {
+    searchText = _searchController.text.trim();
+    LogUtil.info('searchText: $searchText');
+
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+    });
+
+    // 根据当前标签执行不同的搜索逻辑
+    switch (_currentTab) {
+      case 0: // 分组
+        _loadCategories();
+        break;
+      case 1: // 喜欢
+        // 重新加载喜欢的频道并应用搜索
+        _favoriteChannels = [];
+        _loadFavoriteChannels();
+        break;
+      case 2: // 所有
+        // 重新加载所有频道并应用搜索
+        _allChannels = [];
+        _loadAllChannels();
+        break;
+    }
+  }
+
+  Widget _buildContent() {
+    // 根据当前选中的标签构建不同的内容
+    Widget content;
+
+    switch (_currentTab) {
+      case 0: // 分组
+        content =
+            _categoryResponse == null || _categoryResponse!.categories.isEmpty
+            ? const Center(child: Text('暂无频道数据'))
+            : ListView.builder(
+                shrinkWrap: true,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: _categoryResponse!.categories.entries.length,
+                itemBuilder: (context, index) {
+                  final entry = _categoryResponse!.categories.entries.elementAt(
+                    index,
+                  );
+                  return _buildCategorySection(entry.key, entry.value);
+                },
+              );
+        break;
+
+      case 1: // 喜欢
+        content = _favoriteChannels.isEmpty
+            ? const Center(child: Text('暂无喜欢的频道'))
+            : NotificationListener<ScrollNotification>(
+                onNotification: (scrollInfo) {
+                  // 实现上拉加载更多
+                  if (!_isLoadingMore &&
+                      _hasMorePages &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                    _loadFavoriteChannels(isLoadMore: true);
+                  }
+                  return false;
+                },
+                child: ListView.builder(
+                  itemCount:
+                      _favoriteChannels.length + (_isLoadingMore ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == _favoriteChannels.length) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return _buildChannelCard(_favoriteChannels[index]);
+                  },
+                ),
+              );
+        break;
+
+      case 2: // 所有
+        content = _allChannels.isEmpty
+            ? const Center(child: Text('暂无频道数据'))
+            : NotificationListener<ScrollNotification>(
+                onNotification: (scrollInfo) {
+                  // 实现上拉加载更多
+                  if (!_isLoadingMore &&
+                      _hasMorePages &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                    _loadAllChannels(isLoadMore: true);
+                  }
+                  return false;
+                },
+                child: ListView.builder(
+                  itemCount: _allChannels.length + (_isLoadingMore ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == _allChannels.length) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return _buildChannelCard(_allChannels[index]);
+                  },
+                ),
+              );
+        break;
+
+      default:
+        content = const Center(child: Text('未知标签'));
+    }
+
+    // 添加底部导航栏
+    return Scaffold(
+      body: content,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentTab,
+        onTap: _onTabChanged,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.category), label: '分组'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '喜欢'),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: '所有'),
+        ],
+      ),
     );
   }
 }
