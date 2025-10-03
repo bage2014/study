@@ -154,21 +154,22 @@ class IptvService {
           'size': size,
         },
       );
-
+  
       LogUtil.info('getFavoriteChannels: $response');
-
+  
       if (response is Map<String, dynamic>) {
         if (response['code'] == 200) {
-          // 适配新格式：data直接是频道数组
+          // 适配新格式：data是一个对象，包含channels数组
           final data = response['data'];
-
-          if (data is List) {
-            return data
+  
+          if (data is Map<String, dynamic> && data.containsKey('channels') && data['channels'] is List) {
+            // 修复这里的类型转换问题
+            return (data['channels'] as List)
                 .map((item) => IptvChannel.fromJson(item))
                 .toList();
           } else {
             throw Exception(
-              'Invalid data structure: data is not a list',
+              'Invalid data structure: channels array not found',
             );
           }
         } else {

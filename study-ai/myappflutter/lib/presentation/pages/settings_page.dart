@@ -106,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   value: Themes.light,
                   child: Row(
                     children: [
-                      Container(width: 16, height: 16, color: Colors.blue),
+                      Container(width: 16, height: 16, color: Colors.white),
                       SizedBox(width: 8),
                       Text('light'.tr),
                     ],
@@ -116,7 +116,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   value: Themes.dark,
                   child: Row(
                     children: [
-                      Container(width: 16, height: 16, color: Colors.grey),
+                      Container(width: 16, height: 16, color: Colors.blue),
                       SizedBox(width: 8),
                       Text('dark'.tr),
                     ],

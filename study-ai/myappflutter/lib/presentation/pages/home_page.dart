@@ -183,15 +183,11 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 48, color: Theme.of(Get.context!).primaryColor),
+            Icon(icon, size: 48),
             const SizedBox(height: 16),
             Text(
               title.tr, // 使用翻译文本
-              style: TextStyle(
-                fontSize: 18,
-                color: Theme.of(Get.context!).primaryColorDark,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
         ),

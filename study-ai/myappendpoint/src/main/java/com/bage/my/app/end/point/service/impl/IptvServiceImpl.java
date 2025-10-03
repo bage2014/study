@@ -5,6 +5,7 @@ import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
 import com.bage.my.app.end.point.repository.IptvChannelRepository;
 import com.bage.my.app.end.point.service.IptvService;
 import com.bage.my.app.end.point.service.LikeService;
+import com.bage.my.app.end.point.util.JsonUtil;
 import com.bage.my.app.end.point.model.request.SearchRequest;
 
 import lombok.extern.slf4j.Slf4j;
@@ -280,12 +281,15 @@ public class IptvServiceImpl implements IptvService {
                 .collect(Collectors.toList());
              log.info("根据关键词过滤后的频道数量: {}", filteredChannels.size());
         }
-        
         // 应用分页
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         int start = Math.min((int) pageable.getOffset(), filteredChannels.size());
         int end = Math.min((start + pageable.getPageSize()), filteredChannels.size());
         
-        return new PageImpl<>(filteredChannels.subList(start, end), pageable, filteredChannels.size());
+        int size = filteredChannels.size();
+        filteredChannels = filteredChannels.subList(start, end);
+        log.info("filteredChannels: {}", JsonUtil.toJson(filteredChannels));
+
+        return new PageImpl<>(filteredChannels, pageable, size);
     }
 }

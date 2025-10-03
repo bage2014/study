@@ -18,6 +18,7 @@ class HttpMockService {
     '/trajectorys/query': 'mock/responses/map-trajectory.json',
     '/iptv/query/tags': 'mock/responses/live_in_group.json',
     '/iptv/query/group': 'mock/responses/live_query_group.json',
+    '/iptv/channels': 'mock/responses/tv_channels.json',
   };
 
   static Future<Map<String, dynamic>> getMockResponse(String path) async {
