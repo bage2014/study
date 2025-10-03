@@ -19,8 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -36,7 +34,7 @@ public class IptvController {
     }
 
     @RequestMapping("/channels")
-    public ApiResponse<List<IptvChannel>> getAllChannels(SearchRequest request) {
+    public ApiResponse<List<IptvChannel>> getAllChannels(@RequestBody SearchRequest request) {
         try {
             log.info("查询频道, 请求参数: {}", request);
             Page<IptvChannel> channelsPage = iptvService.searchChannels(request);

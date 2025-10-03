@@ -68,7 +68,7 @@ class IptvService {
       // 确保response是Map类型
       if (response is Map<String, dynamic>) {
         if (response['code'] == 200) {
-          // 适配新格式：channels在data内部
+          // 适配新格式：data是一个对象，内部包含channels数组
           final data = response['data'] as Map<String, dynamic>?;
 
           if (data != null &&
@@ -112,23 +112,21 @@ class IptvService {
         },
       );
 
-      LogUtil.info('getChannelsByCategory: $response');
+      LogUtil.info('getChannelsByKeyword: $response');
 
       // 确保response是Map类型
       if (response is Map<String, dynamic>) {
         if (response['code'] == 200) {
-          // 适配新格式：channels在data内部
-          final data = response['data'] as Map<String, dynamic>?;
+          // 适配新格式：data直接是频道数组
+          final data = response['data'];
 
-          if (data != null &&
-              data.containsKey('channels') &&
-              data['channels'] is List) {
-            return (data['channels'] as List)
+          if (data is List) {
+            return data
                 .map((item) => IptvChannel.fromJson(item))
                 .toList();
           } else {
             throw Exception(
-              'Invalid data structure: channels not found or not a list',
+              'Invalid data structure: data is not a list',
             );
           }
         } else {
@@ -161,17 +159,16 @@ class IptvService {
 
       if (response is Map<String, dynamic>) {
         if (response['code'] == 200) {
-          final data = response['data'] as Map<String, dynamic>?;
+          // 适配新格式：data直接是频道数组
+          final data = response['data'];
 
-          if (data != null &&
-              data.containsKey('channels') &&
-              data['channels'] is List) {
-            return (data['channels'] as List)
+          if (data is List) {
+            return data
                 .map((item) => IptvChannel.fromJson(item))
                 .toList();
           } else {
             throw Exception(
-              'Invalid data structure: channels not found or not a list',
+              'Invalid data structure: data is not a list',
             );
           }
         } else {

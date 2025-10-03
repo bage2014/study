@@ -267,36 +267,25 @@ public class IptvServiceImpl implements IptvService {
         }
         
         // 确保数据库中有数据
-        if (channelRepository.count() == 0) {
-            loadIptvData();
-        }
+        List<IptvChannel> channels = getAllChannels();
+        List<IptvChannel> filteredChannels = channels;
         
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        
+        // 应用标签过滤
         String keyword = request.getKeyword();
-        // 如果有关键词，进行关键词搜索；否则查询所有频道
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            // 先尝试根据名称查询
-            List<IptvChannel> nameMatches = channelRepository.findByNameContaining(keyword);
-            // 再尝试根据分类查询
-            List<IptvChannel> categoryMatches = channelRepository.findByCategoryContaining(keyword);
-            
-            // 合并结果并去重
-            Set<IptvChannel> uniqueMatches = new HashSet<>();
-            uniqueMatches.addAll(nameMatches);
-            uniqueMatches.addAll(categoryMatches);
-            
-            List<IptvChannel> allMatches = new ArrayList<>(uniqueMatches);
-            
-            // 实现手动分页
-            int start = (int) pageable.getOffset();
-            int end = Math.min((start + pageable.getPageSize()), allMatches.size());
-            
-            List<IptvChannel> pagedContent = allMatches.subList(start, end);
-            return new PageImpl<>(pagedContent, pageable, allMatches.size());
-        } else {
-            // 没有关键词时，直接使用JPA的分页查询
-            return channelRepository.findAll(pageable);
+        log.info("搜索关键词: {}", keyword);
+        if (keyword != null && !keyword.isEmpty()) {
+            log.info("根据关键词过滤前的频道数量: {}", filteredChannels.size());
+            filteredChannels = filteredChannels.stream()
+                .filter(channel -> channel.getTags() != null && channel.getTags().contains(keyword))
+                .collect(Collectors.toList());
+             log.info("根据关键词过滤后的频道数量: {}", filteredChannels.size());
         }
+        
+        // 应用分页
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        int start = Math.min((int) pageable.getOffset(), filteredChannels.size());
+        int end = Math.min((start + pageable.getPageSize()), filteredChannels.size());
+        
+        return new PageImpl<>(filteredChannels.subList(start, end), pageable, filteredChannels.size());
     }
 }
