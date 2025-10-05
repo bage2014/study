@@ -4,6 +4,9 @@ import com.bage.my.app.end.point.entity.Like;
 import com.bage.my.app.end.point.entity.User;
 import com.bage.my.app.end.point.repository.LikeRepository;
 import com.bage.my.app.end.point.repository.UserRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +59,16 @@ public class LikeService {
                 .orElseThrow(() -> new RuntimeException("用户不存在"));
 
         return likeRepository.existsByUserAndM3uEntryId(user, m3uEntryId);
+    }
+
+    /**
+     * 获取用户喜欢的所有频道ID列表
+     */
+    public List<Like> findAllByUserId(Long userId) {
+        // 查询用户的所有喜欢记录
+        List<Like> likes = likeRepository.findAllByUserId(userId);
+        
+        // 提取m3uEntryId并返回
+        return likes;
     }
 }

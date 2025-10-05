@@ -1,6 +1,7 @@
 package com.bage.my.app.end.point.service.impl;
 
 import com.bage.my.app.end.point.entity.IptvChannel;
+import com.bage.my.app.end.point.entity.Like;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
 import com.bage.my.app.end.point.repository.IptvChannelRepository;
 import com.bage.my.app.end.point.service.IptvService;
@@ -245,20 +246,30 @@ public class IptvServiceImpl implements IptvService {
     public List<IptvChannel> getFavoriteChannels(Long userId) {
         log.info("获取用户喜欢的频道: userId={}", userId);
         
-        // 获取所有频道
-        List<IptvChannel> allChannels = getAllChannels();
+        // 查询用户喜欢的所有频道ID
+        List<Integer> favoriteChannelIds = likeService.findAllByUserId(userId)
+                .stream()
+                .map(Like::getM3uEntryId)
+                .collect(Collectors.toList());
         
-        // 过滤出用户喜欢的频道
-        return allChannels.stream()
-            .filter(channel -> {
-                try {
-                    return likeService.isLiked(userId, channel.getId());
-                } catch (Exception e) {
-                    log.error("检查频道是否喜欢时出错: {}", e.getMessage());
-                    return false;
-                }
-            })
-            .collect(Collectors.toList());
+        log.info("用户喜欢的频道数量: {}", favoriteChannelIds.size());
+        
+        // 如果没有喜欢的频道，返回空分页结果
+        if (favoriteChannelIds.isEmpty()) {
+            Pageable pageable = PageRequest.of(0, 10);
+            return new ArrayList<>(Collections.emptyList());
+        }
+        
+        // 批量查询喜欢的频道
+        List<IptvChannel> favoriteChannels = channelRepository.findAllById(favoriteChannelIds);
+        
+        // 实现分页，默认查询第一页，每页10条
+        Pageable pageable = PageRequest.of(0, 10);
+        int start = Math.min((int) pageable.getOffset(), favoriteChannels.size());
+        int end = Math.min((start + pageable.getPageSize()), favoriteChannels.size());
+        
+        List<IptvChannel> pageContent = favoriteChannels.subList(start, end);
+        return pageContent;
     }
 
     @Override

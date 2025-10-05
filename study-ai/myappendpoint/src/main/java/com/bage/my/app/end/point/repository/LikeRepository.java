@@ -5,6 +5,7 @@ import com.bage.my.app.end.point.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +18,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     // 检查用户是否已喜欢某个M3uEntry
     boolean existsByUserAndM3uEntryId(User user, int m3uEntryId);
+    
+    // 根据用户ID查找所有喜欢的记录
+    List<Like> findAllByUserId(Long userId);
 }

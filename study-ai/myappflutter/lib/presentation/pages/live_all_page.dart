@@ -31,11 +31,30 @@ class _LiveAllPageState extends State<LiveAllPage> {
   bool _hasMorePages = true;
   bool _isLoadingMore = false;
   String searchText = '';
+  // 新增：存储喜欢的频道ID列表
+  List<int> _favoriteChannelIds = [];
 
   @override
   void initState() {
     super.initState();
     _loadFavoriteChannels();
+    // 新增：加载喜欢的频道ID列表
+    _loadFavoriteChannelIds();
+  }
+
+  // 新增：加载喜欢的频道ID列表
+  Future<void> _loadFavoriteChannelIds() async {
+    try {
+      final channels = await _iptvService.getFavoriteChannels(0, 1000);
+      setState(() {
+        _favoriteChannelIds = channels
+            .where((channel) => channel.id != null)
+            .map((channel) => channel.id!)
+            .toList();
+      });
+    } catch (e) {
+      LogUtil.error('Error loading favorite channel IDs: $e');
+    }
   }
 
   // 加载所有频道
@@ -146,8 +165,13 @@ class _LiveAllPageState extends State<LiveAllPage> {
     }
   }
 
-  // 然后修改_onChannelTap方法以实现跳转功能
+  // 修改：频道点击方法，现在只用于播放
   void _onChannelTap(IptvChannel channel) {
+    _onPlayTap(channel);
+  }
+
+  // 新增：播放按钮点击方法
+  void _onPlayTap(IptvChannel channel) {
     // 跳转到TV播放页面，传递整个channel对象
     if (channel.url.isNotEmpty) {
       // 打印选中的频道信息
@@ -181,7 +205,59 @@ class _LiveAllPageState extends State<LiveAllPage> {
     }
   }
 
+  // 新增：喜欢按钮点击方法
+  Future<void> _onFavoriteTap(IptvChannel channel) async {
+    if (channel.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('频道ID不存在，无法添加喜欢')));
+      return;
+    }
+
+    final isCurrentlyFavorite = _favoriteChannelIds.contains(channel.id);
+
+    try {
+      bool success;
+      if (isCurrentlyFavorite) {
+        // 移除喜欢
+        success = await _iptvService.removeFavoriteChannel(channel.id!);
+        if (success) {
+          setState(() {
+            _favoriteChannelIds.remove(channel.id);
+            // 如果在喜欢标签页，同时从列表中移除
+            if (_currentTab == 0) {
+              _favoriteChannels.removeWhere((c) => c.id == channel.id);
+            }
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('已移除喜欢')));
+        }
+      } else {
+        // 添加喜欢
+        success = await _iptvService.addFavoriteChannel(channel.id!);
+        if (success) {
+          setState(() {
+            _favoriteChannelIds.add(channel.id!);
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('已添加到喜欢')));
+        }
+      }
+
+      if (!success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('操作失败，请重试')));
+      }
+    } catch (e) {
+      LogUtil.error('Error toggling favorite status: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('操作失败：${e.toString()}')));
+    }
+  }
+
+  // 修改：频道卡片构建方法，添加按钮
   Widget _buildChannelCard(IptvChannel channel) {
+    final isFavorite = channel.id != null && _favoriteChannelIds.contains(channel.id);
+    
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       color: Theme.of(context).cardTheme.color ?? Theme.of(context).cardColor,
@@ -207,9 +283,28 @@ class _LiveAllPageState extends State<LiveAllPage> {
             Text('国家: ${channel.country}'),
           ],
         ),
-        trailing: const Icon(Icons.play_arrow),
-        // 因为它已经正确调用了_onChannelTap方法：
-        onTap: () => _onChannelTap(channel),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // 播放按钮
+            IconButton(
+              icon: const Icon(Icons.play_arrow),
+              onPressed: () => _onPlayTap(channel),
+              tooltip: '播放频道',
+            ),
+            // 喜欢按钮
+            IconButton(
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : null,
+              ),
+              onPressed: () => _onFavoriteTap(channel),
+              tooltip: isFavorite ? '取消喜欢' : '添加喜欢',
+            ),
+          ],
+        ),
+        // 点击卡片也可以播放
+        onTap: () => _onPlayTap(channel),
       ),
     );
   }

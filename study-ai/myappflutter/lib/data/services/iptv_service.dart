@@ -123,13 +123,9 @@ class IptvService {
           final data = response['data'];
 
           if (data is List) {
-            return data
-                .map((item) => IptvChannel.fromJson(item))
-                .toList();
+            return data.map((item) => IptvChannel.fromJson(item)).toList();
           } else {
-            throw Exception(
-              'Invalid data structure: data is not a list',
-            );
+            throw Exception('Invalid data structure: data is not a list');
           }
         } else {
           throw Exception(
@@ -148,31 +144,22 @@ class IptvService {
   // 添加获取喜欢频道的方法
   Future<List<IptvChannel>> getFavoriteChannels(int page, int size) async {
     try {
-      final response = await _httpClient.post(
-        '/iptv/query/tags',
-        body: {
-          'tags': ['favorite'], // 使用favorite标签标识喜欢的频道
-          'page': page,
-          'size': size,
-        },
-      );
-  
+      final response = await _httpClient.get('/iptv/favorite/list');
+
       LogUtil.info('getFavoriteChannels: $response');
-  
+
       if (response is Map<String, dynamic>) {
         if (response['code'] == 200) {
-          // 适配新格式：data是一个对象，包含channels数组
+          // 适配新格式：data直接是频道对象的数组
           final data = response['data'];
-  
-          if (data is Map<String, dynamic> && data.containsKey('channels') && data['channels'] is List) {
-            // 修复这里的类型转换问题
-            return (data['channels'] as List)
+
+          if (data is List) {
+            // 直接将data数组转换为IptvChannel列表
+            return data
                 .map((item) => IptvChannel.fromJson(item))
                 .toList();
           } else {
-            throw Exception(
-              'Invalid data structure: channels array not found',
-            );
+            throw Exception('Invalid data structure: data is not a list');
           }
         } else {
           throw Exception(
@@ -185,6 +172,48 @@ class IptvService {
     } catch (e) {
       LogUtil.error('Error getting favorite channels: $e');
       throw Exception('Failed to get favorite channels: $e');
+    }
+  }
+
+  // 添加收藏频道方法
+  Future<bool> addFavoriteChannel(int channelId) async {
+    try {
+      final response = await _httpClient.post(
+        '/iptv/favorite/add/$channelId',
+        body: {},
+      );
+
+      LogUtil.info('addFavoriteChannel: $response');
+
+      if (response is Map<String, dynamic>) {
+        return response['code'] == 200;
+      } else {
+        throw Exception('Unexpected response format');
+      }
+    } catch (e) {
+      LogUtil.error('Error adding favorite channel $channelId: $e');
+      throw Exception('Failed to add favorite channel: $e');
+    }
+  }
+
+  // 移除收藏频道方法
+  Future<bool> removeFavoriteChannel(int channelId) async {
+    try {
+      final response = await _httpClient.post(
+        '/iptv/favorite/remove/$channelId',
+        body: {},
+      );
+
+      LogUtil.info('removeFavoriteChannel: $response');
+
+      if (response is Map<String, dynamic>) {
+        return response['code'] == 200;
+      } else {
+        throw Exception('Unexpected response format');
+      }
+    } catch (e) {
+      LogUtil.error('Error removing favorite channel $channelId: $e');
+      throw Exception('Failed to remove favorite channel: $e');
     }
   }
 }
