@@ -6,17 +6,17 @@ import 'package:myappflutter/presentation/widgets/base_page.dart';
 import 'tv_player_page.dart';
 import '../../data/models/tv_model.dart';
 
-class CategoryChannelsPage extends StatefulWidget {
+class TVGroupChannelPage extends StatefulWidget {
   final String categoryName;
 
-  const CategoryChannelsPage({Key? key, required this.categoryName})
+  const TVGroupChannelPage({Key? key, required this.categoryName})
     : super(key: key);
 
   @override
-  State<CategoryChannelsPage> createState() => _CategoryChannelsPageState();
+  State<TVGroupChannelPage> createState() => _TVGroupChannelPageState();
 }
 
-class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
+class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
   final IptvService _iptvService = IptvService();
   List<IptvChannel> _channels = [];
   bool _isLoading = true;
@@ -59,7 +59,7 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
     try {
       final page = isLoadMore ? _currentPage + 1 : 0;
       final channels = await _iptvService.getChannelsByCategory(
-        [_searchKeyword], // 使用搜索词作为标签
+        [widget.categoryName], // 使用搜索词作为标签
         page, // 传递分页参数
         _pageSize,
       );
@@ -115,8 +115,9 @@ class _CategoryChannelsPageState extends State<CategoryChannelsPage> {
     });
 
     try {
-      final channels = await _iptvService.getChannelsByCategory(
-        [keyword], // 使用搜索词作为标签
+      final channels = await _iptvService.getChannelsByKeyword(
+        widget.categoryName, // 使用分类名称作为标签
+        keyword, // 使用搜索词作为标签
         0, // 搜索总是从第0页开始
         _pageSize,
       );

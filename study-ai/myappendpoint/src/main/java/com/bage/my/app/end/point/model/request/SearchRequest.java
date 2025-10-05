@@ -6,5 +6,7 @@ import lombok.Data;
 
 @Data
 public class SearchRequest extends PageQueryRequest {
+    private String category;
     private String keyword;
+
 }

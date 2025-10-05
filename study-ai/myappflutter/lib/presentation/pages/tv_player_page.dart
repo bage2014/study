@@ -135,13 +135,9 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
       // 启用内容延伸到AppBar后面
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(
-          _channelTitle,
-          style: TextStyle(color: Colors.white), // 已修正为白色
-        ),
+        title: Text(_channelTitle),
         backgroundColor: Colors.transparent, // 设置AppBar背景为透明
         elevation: 0, // 移除阴影效果
-        iconTheme: IconThemeData(color: Colors.white), // 设置返回按钮为白色
         systemOverlayStyle: SystemUiOverlayStyle.light, // 设置状态栏图标为白色
       ),
       body: Column(

@@ -97,6 +97,7 @@ class IptvService {
   }
 
   Future<List<IptvChannel>> getChannelsByKeyword(
+    String categoryName,
     String keyword,
     int page,
     int size,
@@ -107,6 +108,7 @@ class IptvService {
         '/iptv/channels',
         body: {
           'keyword': keyword, // 使用搜索词作为标签
+          'category': categoryName, // 使用分类名称作为标签
           'page': page, // 传递分页参数
           'size': size,
         },

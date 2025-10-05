@@ -3,7 +3,7 @@ import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/models/iptv_category_model.dart';
 import 'package:myappflutter/data/services/iptv_service.dart';
 import 'package:myappflutter/presentation/widgets/base_page.dart';
-import 'package:myappflutter/presentation/pages/category_channels_page.dart';
+import 'package:myappflutter/presentation/pages/tv_group_channels_page.dart';
 
 class LiveGroupPage extends StatefulWidget {
   const LiveGroupPage({Key? key}) : super(key: key);
@@ -61,7 +61,7 @@ class _LiveGroupPageState extends State<LiveGroupPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CategoryChannelsPage(categoryName: categoryName),
+        builder: (context) => TVGroupChannelPage(categoryName: categoryName),
       ),
     );
   }

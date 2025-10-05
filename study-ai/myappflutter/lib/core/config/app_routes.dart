@@ -14,7 +14,8 @@ import '../../presentation/pages/message_page.dart';
 import '../../presentation/pages/register_page.dart';
 import '../../presentation/pages/tv_player_page.dart';
 import '../../presentation/pages/tv_list_page.dart'; // 新增导入
-import '../../presentation/pages/live_page.dart'; // 新增直播页面导入
+import '../../presentation/pages/live_all_page.dart'; // 新增导入
+import '../../presentation/pages/live_group_page.dart'; // 新增导入
 
 class AppRoutes {
   static const String LOGIN = '/login';
@@ -28,13 +29,15 @@ class AppRoutes {
   static const String FAMILY_EDIT = '/family_edit'; // 添加家庭关系编辑页面路由
   static const String PROFILE = '/profile';
   static const String UPDATE = '/update';
-  static const MESSAGE = '/message';
+  static const String MESSAGE = '/message';
   // 在 app_routes.dart 中添加
   static const String REGISTER = '/register';
   static const String TV_PLAYER = '/tv_player'; // 定义TV播放器路由
   static const String TV_LIST = '/tv_list'; // 新增路由常量
   static const String USER_SEARCH = '/user/search';
   static const String LIVE = '/live'; // 新增直播页面路由
+  static const String LIVE_ALL = '/live_all'; // 新增全部频道页面路由
+  static const String LIVE_GROUP = '/live_group'; // 新增频道分组页面路由
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -74,9 +77,15 @@ class AppRoutes {
       page: () => const TvListPage(),
       transition: Transition.fadeIn,
     ),
+
     GetPage(
-      name: LIVE,
-      page: () => const LivePage(),
+      name: LIVE_ALL,
+      page: () => const LiveAllPage(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: LIVE_GROUP,
+      page: () => const LiveGroupPage(),
       transition: Transition.fadeIn,
     ),
   ];

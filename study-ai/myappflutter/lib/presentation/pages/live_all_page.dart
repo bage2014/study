@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/models/iptv_category_model.dart';
+import 'package:myappflutter/data/models/tv_model.dart';
 import 'package:myappflutter/data/services/iptv_service.dart';
+import 'package:myappflutter/presentation/pages/tv_player_page.dart';
 import 'package:myappflutter/presentation/widgets/base_page.dart';
+import 'package:get/get.dart';
+import 'live_group_page.dart';
 
 class LiveAllPage extends StatefulWidget {
   const LiveAllPage({Key? key}) : super(key: key);
@@ -56,6 +60,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
 
       // 使用空标签获取所有频道
       final channels = await _iptvService.getChannelsByKeyword(
+        '',
         searchText,
         page,
         _pageSize,
@@ -141,9 +146,39 @@ class _LiveAllPageState extends State<LiveAllPage> {
     }
   }
 
+  // 然后修改_onChannelTap方法以实现跳转功能
   void _onChannelTap(IptvChannel channel) {
-    // 这里可以添加跳转到播放页面的逻辑
-    print('Selected channel: ${channel.name} - ${channel.url}');
+    // 跳转到TV播放页面，传递整个channel对象
+    if (channel.url.isNotEmpty) {
+      // 打印选中的频道信息
+      print('Selected channel: ${channel.name} - ${channel.url}');
+
+      // 将 IptvChannel 转换为 TvChannel
+      TvChannel tvChannel = TvChannel(
+        title: channel.name, // 使用 IptvChannel 的 name 作为 TvChannel 的 title
+        logo: channel.logo, // 直接使用 logo
+        channelUrls: [
+          ChannelUrl(
+            title: channel.name, // 频道名称作为URL标题
+            url: channel.url, // 使用 IptvChannel 的 url
+          ),
+        ],
+      );
+
+      // 跳转到 TvPlayerPage 并传递转换后的 TvChannel 对象
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TvPlayerPage(channel: tvChannel),
+        ),
+      );
+    } else {
+      LogUtil.info('Channel URL is empty: ${channel.name}');
+      // 可以选择显示一个提示信息
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('该频道没有可用的播放链接')));
+    }
   }
 
   Widget _buildChannelCard(IptvChannel channel) {
@@ -173,6 +208,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
           ],
         ),
         trailing: const Icon(Icons.play_arrow),
+        // 因为它已经正确调用了_onChannelTap方法：
         onTap: () => _onChannelTap(channel),
       ),
     );
@@ -277,6 +313,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
     return content;
   }
 
+  // 在build方法中，修改BasePage组件，添加actions参数
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -284,7 +321,18 @@ class _LiveAllPageState extends State<LiveAllPage> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       // 使用Scaffold作为根组件，确保bottomNavigationBar正常工作
       body: BasePage(
+        // 添加右上角分组按钮
         title: '频道列表',
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.group),
+            onPressed: () {
+              // 跳转到LiveGroupPage页面
+              Get.to(() => const LiveGroupPage());
+            },
+            tooltip: '按分组查看频道',
+          ),
+        ],
         body: _isLoading
             ? Container(
                 color: Theme.of(context).scaffoldBackgroundColor, // 与主题背景色一致
@@ -319,7 +367,9 @@ class _LiveAllPageState extends State<LiveAllPage> {
                 children: [
                   // 搜索框
                   Container(
-                    color: Theme.of(context).scaffoldBackgroundColor, // 与主题背景色一致
+                    color: Theme.of(
+                      context,
+                    ).scaffoldBackgroundColor, // 与主题背景色一致
                     padding: const EdgeInsets.all(16),
                     child: TextField(
                       controller: _searchController,

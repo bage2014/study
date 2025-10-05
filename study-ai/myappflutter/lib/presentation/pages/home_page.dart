@@ -146,7 +146,7 @@ class HomePage extends StatelessWidget {
                 _buildMenuCard(
                   icon: Icons.tv,
                   title: 'iptv',
-                  onTap: () => Get.toNamed(AppRoutes.LIVE),
+                  onTap: () => Get.toNamed(AppRoutes.LIVE_ALL),
                 ),
 
                 // 添加位置页面菜单卡片

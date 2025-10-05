@@ -271,6 +271,17 @@ public class IptvServiceImpl implements IptvService {
         List<IptvChannel> channels = getAllChannels();
         List<IptvChannel> filteredChannels = channels;
         
+        // 应用分类过滤
+        String category = request.getCategory();
+        log.info("搜索分类: {}", category);
+        if (category != null && !category.isEmpty()) {
+            log.info("根据分类过滤前的频道数量: {}", filteredChannels.size());
+            filteredChannels = filteredChannels.stream()
+                .filter(channel -> channel.getCategory() != null && channel.getCategory().contains(category))
+                .collect(Collectors.toList());
+             log.info("根据分类过滤后的频道数量: {}", filteredChannels.size());
+        }
+
         // 应用标签过滤
         String keyword = request.getKeyword();
         log.info("搜索关键词: {}", keyword);
