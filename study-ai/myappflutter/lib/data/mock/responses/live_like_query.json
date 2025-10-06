@@ -1,0 +1,30 @@
+{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "channels": [
+            {
+                "id": 2,
+                "name": "1-2-3 TV (270p)",
+                "url": "https://123tv-mx1.flex-cdn.net/index.m3u8",
+                "group": "Shop",
+                "category": "其他",
+                "logo": "https://i.imgur.com/slSUDNX.png",
+                "tags": "1-2-3 TV (270p),Shop,其他,iptv,"
+            },
+            {
+                "id": 4,
+                "name": "1KZN TV",
+                "url": "https://uvotv-aniview.global.ssl.fastly.net/hls/live/2120684/1kzntv/playlist.m3u8",
+                "group": "Entertainment;Family;General",
+                "category": "娱乐",
+                "logo": "https://i.postimg.cc/cCPc5tyk/1kzntv.png",
+                "tags": "1KZN TV,Entertainment;Family;General,娱乐,iptv,"
+            }
+        ],
+        "totalChannels": 2,
+        "currentPage": 0,
+        "pageSize": 20,
+        "totalPages": 1
+    }
+}

@@ -19,6 +19,9 @@ class HttpMockService {
     '/iptv/query/tags': 'mock/responses/live_in_group.json',
     '/iptv/query/group': 'mock/responses/live_query_group.json',
     '/iptv/channels': 'mock/responses/tv_channels.json',
+    '/iptv/favorite/remove': 'mock/responses/live_like_remove.json',
+    '/iptv/favorite/add': 'mock/responses/live_like_add.json',
+    '/iptv/favorite/list': 'mock/responses/live_like_query.json',
   };
 
   static Future<Map<String, dynamic>> getMockResponse(String path) async {

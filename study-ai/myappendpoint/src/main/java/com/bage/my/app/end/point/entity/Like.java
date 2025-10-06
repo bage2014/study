@@ -14,11 +14,9 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
-    private int m3uEntryId; // M3uEntry的ID
+    private Long m3uEntryId; // M3uEntry的ID
 
     private LocalDateTime createTime = LocalDateTime.now();
 }

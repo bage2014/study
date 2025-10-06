@@ -45,7 +45,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
   // 新增：加载喜欢的频道ID列表
   Future<void> _loadFavoriteChannelIds() async {
     try {
-      final channels = await _iptvService.getFavoriteChannels(0, 1000);
+      final channels = await _iptvService.getFavoriteChannels('', 0, 1000);
       setState(() {
         _favoriteChannelIds = channels
             .where((channel) => channel.id != null)
@@ -125,7 +125,11 @@ class _LiveAllPageState extends State<LiveAllPage> {
 
     try {
       final page = isLoadMore ? _currentPage + 1 : 0;
-      final channels = await _iptvService.getFavoriteChannels(page, _pageSize);
+      final channels = await _iptvService.getFavoriteChannels(
+        searchText,
+        page,
+        _pageSize,
+      );
 
       setState(() {
         if (isLoadMore) {
@@ -208,8 +212,9 @@ class _LiveAllPageState extends State<LiveAllPage> {
   // 新增：喜欢按钮点击方法
   Future<void> _onFavoriteTap(IptvChannel channel) async {
     if (channel.id == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('频道ID不存在，无法添加喜欢')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('频道ID不存在，无法添加喜欢')));
       return;
     }
 
@@ -228,8 +233,9 @@ class _LiveAllPageState extends State<LiveAllPage> {
               _favoriteChannels.removeWhere((c) => c.id == channel.id);
             }
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('已移除喜欢')));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('已移除喜欢')));
         }
       } else {
         // 添加喜欢
@@ -238,26 +244,30 @@ class _LiveAllPageState extends State<LiveAllPage> {
           setState(() {
             _favoriteChannelIds.add(channel.id!);
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('已添加到喜欢')));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('已添加到喜欢')));
         }
       }
 
       if (!success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('操作失败，请重试')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('操作失败，请重试')));
       }
     } catch (e) {
       LogUtil.error('Error toggling favorite status: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('操作失败：${e.toString()}')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('操作失败：${e.toString()}')));
     }
   }
 
   // 修改：频道卡片构建方法，添加按钮
   Widget _buildChannelCard(IptvChannel channel) {
-    final isFavorite = channel.id != null && _favoriteChannelIds.contains(channel.id);
-    
+    final isFavorite =
+        channel.id != null && _favoriteChannelIds.contains(channel.id);
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       color: Theme.of(context).cardTheme.color ?? Theme.of(context).cardColor,

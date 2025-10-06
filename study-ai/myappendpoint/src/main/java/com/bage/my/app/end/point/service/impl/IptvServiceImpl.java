@@ -82,7 +82,7 @@ public class IptvServiceImpl implements IptvService {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
                 String line;
                 IptvChannel currentChannel = null;
-                int channelId = 1; // ID计数器
+                long channelId = 1; // ID计数器
                 
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith("#EXTINF:")) {
@@ -228,7 +228,7 @@ public class IptvServiceImpl implements IptvService {
     
 
     @Override
-    public void addFavoriteChannel(Long userId, int channelId) {
+    public void addFavoriteChannel(Long userId, Long channelId) {
         log.info("添加喜欢的频道: userId={}, channelId={}", userId, channelId);
         
         // 检查频道是否存在
@@ -243,75 +243,70 @@ public class IptvServiceImpl implements IptvService {
     }
     
     @Override
-    public List<IptvChannel> getFavoriteChannels(Long userId) {
-        log.info("获取用户喜欢的频道: userId={}", userId);
+    public void removeFavoriteChannel(Long userId, Long channelId) {
+        log.info("删除喜欢的频道: userId={}, channelId={}", userId, channelId);
         
-        // 查询用户喜欢的所有频道ID
-        List<Integer> favoriteChannelIds = likeService.findAllByUserId(userId)
+        // 检查频道是否存在
+        boolean channelExists = channelRepository.existsById(channelId);
+        
+        if (!channelExists) {
+            throw new RuntimeException("频道不存在: " + channelId);
+        }
+        
+        // 使用LikeService删除喜欢关系
+        likeService.removeLike(userId, channelId);
+    }
+    
+    @Override
+    public Page<IptvChannel> getFavoriteChannelsWithPagination(Long userId, SearchRequest request) {
+        log.info("获取用户喜欢的频道(分页): userId={}, 请求参数: {}", userId, JsonUtil.toJson(request));
+        
+        if(request == null){
+            request = new SearchRequest();
+        }
+        // 1. 查询用户喜欢的所有频道ID
+        List<Long> favoriteChannelIds = likeService.findAllByUserId(userId)
                 .stream()
                 .map(Like::getM3uEntryId)
                 .collect(Collectors.toList());
         
         log.info("用户喜欢的频道数量: {}", favoriteChannelIds.size());
         
-        // 如果没有喜欢的频道，返回空分页结果
+        // 2. 如果没有喜欢的频道，返回空分页结果
         if (favoriteChannelIds.isEmpty()) {
-            Pageable pageable = PageRequest.of(0, 10);
-            return new ArrayList<>(Collections.emptyList());
+            Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+            return new PageImpl<>(List.of(), pageable, 0);
         }
         
-        // 批量查询喜欢的频道
+        // 3. 批量查询喜欢的频道
         List<IptvChannel> favoriteChannels = channelRepository.findAllById(favoriteChannelIds);
         
-        // 实现分页，默认查询第一页，每页10条
-        Pageable pageable = PageRequest.of(0, 10);
+        // 4. 应用关键词过滤
+        String keyword = request.getKeyword();
+        if (keyword != null && !keyword.isEmpty()) {
+            String lowerKeyword = keyword.toLowerCase();
+            favoriteChannels = favoriteChannels.stream()
+                    .filter(channel -> 
+                        (channel.getName() != null && channel.getName().toLowerCase().contains(lowerKeyword)) ||
+                        (channel.getCategory() != null && channel.getCategory().toLowerCase().contains(lowerKeyword)) ||
+                        (channel.getTags() != null && channel.getTags().contains(lowerKeyword))
+                    )
+                    .collect(Collectors.toList());
+        }
+        
+        // 5. 应用分页
+        int page = request.getPage();
+        int size = request.getSize();
+        Pageable pageable = PageRequest.of(page, size);
+        
         int start = Math.min((int) pageable.getOffset(), favoriteChannels.size());
         int end = Math.min((start + pageable.getPageSize()), favoriteChannels.size());
         
-        List<IptvChannel> pageContent = favoriteChannels.subList(start, end);
-        return pageContent;
-    }
-
-    @Override
-    public Page<IptvChannel> searchChannels(SearchRequest request) {
-        if (request == null) {
-            request = new SearchRequest();
-        }
+        List<IptvChannel> pagedChannels = favoriteChannels.subList(start, end);
         
-        // 确保数据库中有数据
-        List<IptvChannel> channels = getAllChannels();
-        List<IptvChannel> filteredChannels = channels;
+        log.info("获取用户喜欢的频道(分页)成功: userId={}, 页码: {}, 每页数量: {}, 总数: {}, 返回数量: {}", 
+                userId, page, size, favoriteChannels.size(), pagedChannels.size());
         
-        // 应用分类过滤
-        String category = request.getCategory();
-        log.info("搜索分类: {}", category);
-        if (category != null && !category.isEmpty()) {
-            log.info("根据分类过滤前的频道数量: {}", filteredChannels.size());
-            filteredChannels = filteredChannels.stream()
-                .filter(channel -> channel.getCategory() != null && channel.getCategory().contains(category))
-                .collect(Collectors.toList());
-             log.info("根据分类过滤后的频道数量: {}", filteredChannels.size());
-        }
-
-        // 应用标签过滤
-        String keyword = request.getKeyword();
-        log.info("搜索关键词: {}", keyword);
-        if (keyword != null && !keyword.isEmpty()) {
-            log.info("根据关键词过滤前的频道数量: {}", filteredChannels.size());
-            filteredChannels = filteredChannels.stream()
-                .filter(channel -> channel.getTags() != null && channel.getTags().contains(keyword))
-                .collect(Collectors.toList());
-             log.info("根据关键词过滤后的频道数量: {}", filteredChannels.size());
-        }
-        // 应用分页
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-        int start = Math.min((int) pageable.getOffset(), filteredChannels.size());
-        int end = Math.min((start + pageable.getPageSize()), filteredChannels.size());
-        
-        int size = filteredChannels.size();
-        filteredChannels = filteredChannels.subList(start, end);
-        log.info("filteredChannels: {}", JsonUtil.toJson(filteredChannels));
-
-        return new PageImpl<>(filteredChannels, pageable, size);
+        return new PageImpl<>(pagedChannels, pageable, favoriteChannels.size());
     }
 }

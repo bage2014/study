@@ -8,7 +8,7 @@ import lombok.Data;
 @Table(name = "iptv_channel")
 public class IptvChannel {
     @Id
-    private int id;
+    private Long id;
     private String name;
     @Column(length = 1024)
     private String url;

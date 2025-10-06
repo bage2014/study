@@ -5,6 +5,7 @@ import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.request.TagRequest;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
 import com.bage.my.app.end.point.model.response.GroupedChannelsResponse;
+import com.bage.my.app.end.point.model.response.FavoriteResponse;
 import com.bage.my.app.end.point.service.IptvService;
 import com.bage.my.app.end.point.util.AuthUtil;
 import com.bage.my.app.end.point.util.JsonUtil;
@@ -37,8 +38,8 @@ public class IptvController {
     public ApiResponse<List<IptvChannel>> getAllChannels(@RequestBody SearchRequest request) {
         try {
             log.info("查询频道, 请求参数: {}", request);
-            Page<IptvChannel> channelsPage = iptvService.searchChannels(request);
-            return ApiResponse.success(channelsPage.getContent());
+            CategoryChannelsResponse response = iptvService.getChannels(List.of(request.getKeyword()));
+            return ApiResponse.success(response.getChannels());
         } catch (Exception e) {
             log.error("获取频道失败: {}", e.getMessage(), e);
             return ApiResponse.fail(500, "获取频道失败");
@@ -101,7 +102,7 @@ public class IptvController {
      * 添加喜欢的频道
      */
     @PostMapping("/favorite/add/{channelId}")
-    public ApiResponse<String> addFavoriteChannel(@PathVariable int channelId) {
+    public ApiResponse<String> addFavoriteChannel(@PathVariable Long channelId) {
         try {
             Long userId = AuthUtil.getCurrentUserId();
             if (userId == null) {
@@ -117,21 +118,56 @@ public class IptvController {
     }
     
     /**
-     * 获取当前用户喜欢的所有频道
+     * 删除喜欢的频道
      */
-    @GetMapping("/favorite/list")
-    public ApiResponse<List<IptvChannel>> getFavoriteChannels() {
+    @RequestMapping("/favorite/remove/{channelId}")
+    public ApiResponse<String> removeFavoriteChannel(@PathVariable Long channelId) {
         try {
             Long userId = AuthUtil.getCurrentUserId();
             if (userId == null) {
                 return ApiResponse.fail(401, "用户未登录");
             }
             
-            List<IptvChannel> favoriteChannels = iptvService.getFavoriteChannels(userId);
-            return ApiResponse.success(favoriteChannels);
+            iptvService.removeFavoriteChannel(userId, channelId);
+            return ApiResponse.success("删除喜欢频道成功");
+        } catch (Exception e) {
+            log.error("删除喜欢频道失败: {}", e.getMessage(), e);
+            return ApiResponse.fail(500, "删除喜欢频道失败: " + e.getMessage());
+        }
+    }
+
+
+    /**
+     * 获取当前用户喜欢的所有频道(分页和过滤)
+     */
+    @RequestMapping("/favorite/list")
+    public ApiResponse<FavoriteResponse> getFavoriteChannels(@RequestBody SearchRequest request) {
+        try {
+            Long userId = AuthUtil.getCurrentUserId();
+            if (userId == null) {
+                return ApiResponse.fail(401, "用户未登录");
+            }
+            
+            log.info("获取用户喜欢的频道(分页): userId={}, 请求参数: {}", userId, JsonUtil.toJson(request));
+            
+            Page<IptvChannel> favoriteChannelsPage = iptvService.getFavoriteChannelsWithPagination(userId, request);
+            
+            // 创建FavoriteResponse对象
+            FavoriteResponse response = new FavoriteResponse(
+                favoriteChannelsPage.getContent(),
+                request.getPage(),
+                request.getSize(),
+                (int) favoriteChannelsPage.getTotalElements()
+            );
+            
+            log.info("获取用户喜欢的频道(分页)成功: userId={}, 页码: {}, 每页数量: {}, 总数: {}", 
+                    userId, request.getPage(), request.getSize(), favoriteChannelsPage.getTotalElements());
+            
+            return ApiResponse.success(response);
         } catch (Exception e) {
             log.error("获取喜欢频道失败: {}", e.getMessage(), e);
             return ApiResponse.fail(500, "获取喜欢频道失败: " + e.getMessage());
         }
     }
+    
 }

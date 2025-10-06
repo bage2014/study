@@ -142,22 +142,50 @@ class IptvService {
   }
 
   // 添加获取喜欢频道的方法
-  Future<List<IptvChannel>> getFavoriteChannels(int page, int size) async {
+  Future<List<IptvChannel>> getFavoriteChannels(
+    String searchText,
+    int page,
+    int size,
+  ) async {
     try {
-      final response = await _httpClient.get('/iptv/favorite/list');
-
+      final response = await _httpClient.post(
+        '/iptv/favorite/list',
+        body: {'searchText': searchText, 'page': page, 'size': size},
+      );
       LogUtil.info('getFavoriteChannels: $response');
 
       if (response is Map<String, dynamic>) {
         if (response['code'] == 200) {
-          // 适配新格式：data直接是频道对象的数组
-          final data = response['data'];
+          // 适配新格式：data.channels是频道对象的数组
+          final data = response['data'] as Map<String, dynamic>;
+          final channelsList = data['channels'] as List?;
 
-          if (data is List) {
-            // 直接将data数组转换为IptvChannel列表
-            return data
+          if (channelsList != null && channelsList is List) {
+            // 将channels数组转换为IptvChannel列表
+            List<IptvChannel> channels = channelsList
                 .map((item) => IptvChannel.fromJson(item))
                 .toList();
+
+            // 根据searchText进行过滤
+            if (searchText.isNotEmpty) {
+              channels = channels.where((channel) {
+                // 在频道名称、分组、语言或国家中搜索匹配的文本
+                return channel.name.toLowerCase().contains(
+                      searchText.toLowerCase(),
+                    ) ||
+                    channel.group.toLowerCase().contains(
+                      searchText.toLowerCase(),
+                    ) ||
+                    channel.language.toLowerCase().contains(
+                      searchText.toLowerCase(),
+                    ) ||
+                    channel.country.toLowerCase().contains(
+                      searchText.toLowerCase(),
+                    );
+              }).toList();
+            }
+
+            return channels;
           } else {
             throw Exception('Invalid data structure: data is not a list');
           }
@@ -199,6 +227,7 @@ class IptvService {
   // 移除收藏频道方法
   Future<bool> removeFavoriteChannel(int channelId) async {
     try {
+      LogUtil.info('removeFavoriteChannel: $channelId');
       final response = await _httpClient.post(
         '/iptv/favorite/remove/$channelId',
         body: {},

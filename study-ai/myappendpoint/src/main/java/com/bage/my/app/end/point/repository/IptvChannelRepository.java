@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IptvChannelRepository extends JpaRepository<IptvChannel, Integer> {
+public interface IptvChannelRepository extends JpaRepository<IptvChannel, Long> {
     
     // 根据标签查询频道
     List<IptvChannel> findByTagsContaining(String tag);

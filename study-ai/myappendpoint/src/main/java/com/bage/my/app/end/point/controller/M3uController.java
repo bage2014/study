@@ -57,7 +57,7 @@ public class M3uController {
      * 添加喜欢
      */
     @PostMapping("/m3u/{id}/like")
-    public ApiResponse<String> addLike(@PathVariable int id) {
+    public ApiResponse<String> addLike(@PathVariable Long id) {
         try {
             Long userId = AuthUtil.getCurrentUserId();
             if (userId == null) {
@@ -77,7 +77,7 @@ public class M3uController {
      * 移除喜欢
      */
     @DeleteMapping("/m3u/{id}/like")
-    public ApiResponse<String> removeLike(@PathVariable int id) {
+    public ApiResponse<String> removeLike(@PathVariable Long id) {
         try {
             Long userId = AuthUtil.getCurrentUserId();
             if (userId == null) {
@@ -97,7 +97,7 @@ public class M3uController {
      * 检查是否喜欢
      */
     @GetMapping("/m3u/{id}/isliked")
-    public ApiResponse<Boolean> isLiked(@PathVariable int id) {
+    public ApiResponse<Boolean> isLiked(@PathVariable Long id) {
         try {
             Long userId = AuthUtil.getCurrentUserId();
             if (userId == null) {
