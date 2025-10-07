@@ -3,6 +3,7 @@ package com.bage.my.app.end.point.service.impl;
 import com.bage.my.app.end.point.entity.AppLike;
 import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
+import com.bage.my.app.end.point.model.response.ChannelQueryResponse;
 import com.bage.my.app.end.point.repository.IptvChannelRepository;
 import com.bage.my.app.end.point.service.AppLikeService;
 import com.bage.my.app.end.point.service.IptvService;
@@ -52,10 +53,10 @@ public class IptvServiceImpl implements IptvService {
     }
 
     @Override
-    public CategoryChannelsResponse getChannels(List<String> tags) {
+    public ChannelQueryResponse getChannels(List<String> tags) {
         List<IptvChannel> channels = getAllChannels();
         if (tags == null || tags.isEmpty()) {
-            return new CategoryChannelsResponse(channels);
+            return new ChannelQueryResponse(channels);
         }
 
         List<IptvChannel> filteredChannels = channels;
@@ -69,7 +70,7 @@ public class IptvServiceImpl implements IptvService {
                 .collect(Collectors.toList());
         }
 
-        return new CategoryChannelsResponse(filteredChannels);
+        return new ChannelQueryResponse(filteredChannels);
     }
 
     @Override

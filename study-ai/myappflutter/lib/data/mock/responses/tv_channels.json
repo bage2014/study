@@ -1,187 +1,26 @@
 {
-  "code": 200,
-  "message": "成功",
-  "data": [
-    {
-        "id": 1,
-        "name": "00s Replay",
-        "url": "http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/62ba60f059624e000781c436/master.m3u8?appName\u003dweb\u0026appVersion\u003dunknown\u0026clientTime\u003d0\u0026deviceDNT\u003d0\u0026deviceId\u003d6c25e430-30d3-11ef-9cf5-e9ddff8ff496\u0026deviceMake\u003dChrome\u0026deviceModel\u003dweb\u0026deviceType\u003dweb\u0026deviceVersion\u003dunknown\u0026includeExtendedEvents\u003dfalse\u0026serverSideAds\u003dfalse\u0026sid\u003d1b7de8e4-d114-4438-b098-6f7aee77b4be",
-        "group": "Undefined",
-        "category": "其他",
-        "logo": "",
-        "tags": "00s Replay,Undefined,其他,iptv,"
-    },
-    {
-        "id": 2,
-        "name": "1-2-3 TV (270p)",
-        "url": "https://123tv-mx1.flex-cdn.net/index.m3u8",
-        "group": "Shop",
-        "category": "其他",
-        "logo": "https://i.imgur.com/slSUDNX.png",
-        "tags": "1-2-3 TV (270p),Shop,其他,iptv,"
-    },
-    {
-        "id": 3,
-        "name": "1Almere TV (720p)",
-        "url": "https://d3472rjicrodic.cloudfront.net/nlpo/clr-nlpo/709d5260/index.m3u8",
-        "group": "General",
-        "category": "其他",
-        "logo": "https://i.imgur.com/XfkbTrU.png",
-        "tags": "1Almere TV (720p),General,其他,iptv,"
-    },
-    {
-        "id": 4,
-        "name": "1KZN TV (576p)",
-        "url": "https://cdn.freevisiontv.co.za/sttv/smil:1kzn.stream.smil/playlist.m3u8",
-        "group": "Entertainment;Family;General",
-        "category": "娱乐",
-        "logo": "https://i.postimg.cc/cCPc5tyk/1kzntv.png",
-        "tags": "1KZN TV (576p),Entertainment;Family;General,娱乐,iptv,"
-    },
-    {
-        "id": 5,
-        "name": "1Music Channel Hungary (576p)",
-        "url": "http://1music.hu/1music.m3u8",
-        "group": "Music",
-        "category": "音乐",
-        "logo": "https://i.imgur.com/pzU6FrQ.png",
-        "tags": "1Music Channel Hungary (576p),音乐,iptv,"
-    },
-    {
-        "id": 6,
-        "name": "1TV (720p)",
-        "url": "https://tv.cdn.xsg.ge/gpb-1tv/index.m3u8",
-        "group": "General",
-        "category": "其他",
-        "logo": "https://i.imgur.com/FSkYLPK.png",
-        "tags": "1TV (720p),General,其他,iptv,"
-    },
-    {
-        "id": 7,
-        "name": "1Twente TV (1080p)",
-        "url": "https://ms7.mx-cd.net/dtv-11/198-989148/1Twente_TV.smil/chunklist_w954512639_b4292608_slNLD.m3u8",
-        "group": "General",
-        "category": "其他",
-        "logo": "https://i.imgur.com/ftiuNK3.png",
-        "tags": "1Twente TV (1080p),General,其他,iptv,"
-    },
-    {
-        "id": 8,
-        "name": "002 Radio TV (720p)",
-        "url": "https://cdn.002radio.com:3909/live/radio002live.m3u8",
-        "group": "General",
-        "category": "其他",
-        "logo": "https://i.imgur.com/7oNe8xj.png",
-        "tags": "002 Radio TV (720p),General,其他,iptv,"
-    },
-    {
-        "id": 9,
-        "name": "2GB Sydney (1080p)",
-        "url": "https://2gblive.akamaized.net/hls/live/2033805/2GB/index.m3u8",
-        "group": "News",
-        "category": "新闻",
-        "logo": "https://i.ibb.co/jwM8DFG/2GB-1.png",
-        "tags": "2GB Sydney (1080p),News,新闻,iptv,"
-    },
-    {
-        "id": 10,
-        "name": "2M",
-        "url": "https://viamotionhsi.netplus.ch/live/eds/2mmaroc/browser-dash/2mmaroc.mpd",
-        "group": "General",
-        "category": "其他",
-        "logo": "https://i.imgur.com/PJYTfHi.png",
-        "tags": "2M,General,其他,iptv,"
-    },
-    {
-        "id": 11,
-        "name": "2M Monde",
-        "url": "https://cdn-globecast.akamaized.net/live/eds/2m_monde/hls_video_ts_tuhawxpiemz257adfc/2m_monde.m3u8",
-        "group": "General",
-        "category": "其他",
-        "logo": "https://i.imgur.com/MvpntzA.png",
-        "tags": "2M Monde,General,其他,iptv,"
-    },
-    {
-        "id": 12,
-        "name": "2M Monde +1 (1080p)",
-        "url": "https://d2qh3gh0k5vp3v.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-n6pess5lwbghr/2M_ES.m3u8",
-        "group": "General",
-        "category": "其他",
-        "logo": "https://i.imgur.com/MvpntzA.png",
-        "tags": "2M Monde +1 (1080p),General,其他,iptv,"
-    },
-    {
-        "id": 13,
-        "name": "2STV",
-        "url": "http://69.64.57.208/2stv/playlist.m3u8",
-        "group": "Culture",
-        "category": "其他",
-        "logo": "https://i.imgur.com/WByVBZf.png",
-        "tags": "2STV,Culture,其他,iptv,"
-    },
-    {
-        "id": 14,
-        "name": "2TV (720p)",
-        "url": "https://tv.cdn.xsg.ge/gpb-2tv/index.m3u8",
-        "group": "General",
-        "category": "其他",
-        "logo": "https://i.imgur.com/FJBL6zI.png",
-        "tags": "2TV (720p),General,其他,iptv,"
-    },
-    {
-        "id": 15,
-        "name": "2х2 [Geo-blocked]",
-        "url": "https://zabava-htlive.cdn.ngenix.net/hls/CH_2X2/variant.m3u8",
-        "group": "Entertainment",
-        "category": "娱乐",
-        "logo": "https://i.imgur.com/fhQFLEl.png",
-        "tags": "2х2 [Geo-blocked],Entertainment,娱乐,iptv,"
-    },
-    {
-        "id": 16,
-        "name": "3/24 (1080p)",
-        "url": "https://directes-tv-int.3catdirectes.cat/live-origin/canal324-hls/master.m3u8",
-        "group": "News;Public",
-        "category": "新闻",
-        "logo": "https://static.wikia.nocookie.net/logopedia/images/2/21/324_%28CCMA%29_logo.svg/revision/latest/scale-to-width-down/512",
-        "tags": "3/24 (1080p),News;Public,新闻,iptv,"
-    },
-    {
-        "id": 17,
-        "name": "3ABN Canada",
-        "url": "https://3abn.bozztv.com/3abncanada/3ABN/master.m3u8",
-        "group": "Undefined",
-        "category": "其他",
-        "logo": "",
-        "tags": "3ABN Canada,Undefined,其他,iptv,"
-    },
-    {
-        "id": 18,
-        "name": "3ABN Dare To Dream Network",
-        "url": "https://3abn.bozztv.com/3abn2/d2d_live/smil:d2d_live.smil/playlist.m3u8",
-        "group": "Religious",
-        "category": "英文频道",
-        "logo": "https://i.imgur.com/JwCLwQ2.png",
-        "tags": "3ABN Dare To Dream Network,Religious,英文频道,iptv,"
-    },
-    {
-        "id": 19,
-        "name": "3ABN English",
-        "url": "https://3abn.bozztv.com/3abn2/3abn_live/smil:3abn_live.smil/playlist.m3u8",
-        "group": "Religious",
-        "category": "英文频道",
-        "logo": "https://i.imgur.com/bgJQIyW.png",
-        "tags": "3ABN English,Religious,英文频道,iptv,"
-    },
-    {
-        "id": 20,
-        "name": "3ABN French",
-        "url": "https://3abn.bozztv.com/3abn2/Fre_live/smil:Fre_live.smil/playlist.m3u8",
-        "group": "Religious",
-        "category": "英文频道",
-        "logo": "https://i.imgur.com/B5gsM7m.png",
-        "tags": "3ABN French,Religious,英文频道,iptv,"
+    "code": 200,
+    "message": "success",
+    "data": {
+        "channels": [
+            {
+                "id": 1,
+                "name": "00s Replay",
+                "url": "http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/62ba60f059624e000781c436/master.m3u8?appName\u003dweb\u0026appVersion\u003dunknown\u0026clientTime\u003d0\u0026deviceDNT\u003d0\u0026deviceId\u003d6c25e430-30d3-11ef-9cf5-e9ddff8ff496\u0026deviceMake\u003dChrome\u0026deviceModel\u003dweb\u0026deviceType\u003dweb\u0026deviceVersion\u003dunknown\u0026includeExtendedEvents\u003dfalse\u0026serverSideAds\u003dfalse\u0026sid\u003d1b7de8e4-d114-4438-b098-6f7aee77b4be",
+                "group": "Undefined",
+                "category": "其他",
+                "logo": "",
+                "tags": "00s Replay,Undefined,其他,iptv,"
+            },
+            {
+                "id": 2,
+                "name": "1-2-3 TV (270p)",
+                "url": "https://123tv-mx1.flex-cdn.net/index.m3u8",
+                "group": "Shop",
+                "category": "其他",
+                "logo": "https://i.imgur.com/slSUDNX.png",
+                "tags": "1-2-3 TV (270p),Shop,其他,iptv,"
+            }
+        ]
     }
-  ]
 }
-

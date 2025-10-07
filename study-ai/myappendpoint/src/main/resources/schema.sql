@@ -80,9 +80,9 @@ CREATE TABLE IF NOT EXISTS m3u_entry (
 CREATE TABLE IF NOT EXISTS app_like (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT NOT NULL,
-    m3u_entry_id INT NOT NULL,
-    create_time TIMESTAMP NOT NULL,
-    CONSTRAINT uk_user_m3u_entry UNIQUE (user_id, m3u_entry_id)
+    ref_id INT NOT NULL,
+    like_type VARCHAR(10) NOT NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 

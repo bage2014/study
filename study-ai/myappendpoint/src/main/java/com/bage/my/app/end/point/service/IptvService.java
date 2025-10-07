@@ -2,7 +2,7 @@ package com.bage.my.app.end.point.service;
 
 import com.bage.my.app.end.point.entity.IptvChannel;
 import java.util.List;
-import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
+import com.bage.my.app.end.point.model.response.ChannelQueryResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.Map;
@@ -10,7 +10,7 @@ import com.bage.my.app.end.point.model.request.SearchRequest;
 
 public interface IptvService {
     List<IptvChannel> getAllChannels();
-    CategoryChannelsResponse getChannels(List<String> tags);
+    ChannelQueryResponse getChannels(List<String> tags);
     Page<IptvChannel> getChannelsByTagWithPagination(List<String> tags, Pageable pageable);
     Map<String, List<IptvChannel>> getChannelsByGroup(String language); // 新增方法 - 支持按语言过滤
     void loadIptvData();

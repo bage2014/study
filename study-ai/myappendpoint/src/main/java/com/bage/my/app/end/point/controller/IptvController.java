@@ -4,6 +4,7 @@ import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.request.TagRequest;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
+import com.bage.my.app.end.point.model.response.ChannelQueryResponse;
 import com.bage.my.app.end.point.model.response.GroupedChannelsResponse;
 import com.bage.my.app.end.point.model.response.FavoriteResponse;
 import com.bage.my.app.end.point.service.IptvService;
@@ -46,11 +47,11 @@ public class IptvController {
     }
 
     @RequestMapping("/channels")
-    public ApiResponse<List<IptvChannel>> getAllChannels(@RequestBody SearchRequest request) {
+    public ApiResponse<ChannelQueryResponse> getAllChannels(@RequestBody SearchRequest request) {
         try {
             log.info("查询频道, 请求参数: {}", request);
-            CategoryChannelsResponse response = iptvService.getChannels(List.of(request.getKeyword()));
-            return ApiResponse.success(response.getChannels());
+            ChannelQueryResponse response = iptvService.getChannels(List.of(request.getKeyword()));
+            return ApiResponse.success(response);
         } catch (Exception e) {
             log.error("获取频道失败: {}", e.getMessage(), e);
             return ApiResponse.fail(500, "获取频道失败");

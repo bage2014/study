@@ -31,18 +31,30 @@ IPTV控制器提供IPTV频道的管理功能，包括频道查询、收藏管理
 #### 响应示例
 ```json
 {
-  "code": 200,
-  "message": "success",
-  "data": [
-    {
-      "id": 1,
-      "name": "电影频道",
-      "url": "http://example.com/movie",
-      "group": "娱乐",
-      "category": "电影",
-      "logo": "http://example.com/logo.png"
+    "code": 200,
+    "message": "success",
+    "data": {
+        "channels": [
+            {
+                "id": 1,
+                "name": "00s Replay",
+                "url": "http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/62ba60f059624e000781c436/master.m3u8?appName\u003dweb\u0026appVersion\u003dunknown\u0026clientTime\u003d0\u0026deviceDNT\u003d0\u0026deviceId\u003d6c25e430-30d3-11ef-9cf5-e9ddff8ff496\u0026deviceMake\u003dChrome\u0026deviceModel\u003dweb\u0026deviceType\u003dweb\u0026deviceVersion\u003dunknown\u0026includeExtendedEvents\u003dfalse\u0026serverSideAds\u003dfalse\u0026sid\u003d1b7de8e4-d114-4438-b098-6f7aee77b4be",
+                "group": "Undefined",
+                "category": "其他",
+                "logo": "",
+                "tags": "00s Replay,Undefined,其他,iptv,"
+            },
+            {
+                "id": 2,
+                "name": "1-2-3 TV (270p)",
+                "url": "https://123tv-mx1.flex-cdn.net/index.m3u8",
+                "group": "Shop",
+                "category": "其他",
+                "logo": "https://i.imgur.com/slSUDNX.png",
+                "tags": "1-2-3 TV (270p),Shop,其他,iptv,"
+            }
+        ]
     }
-  ]
 }
 ```
 

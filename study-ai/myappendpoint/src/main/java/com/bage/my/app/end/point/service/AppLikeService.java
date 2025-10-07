@@ -16,25 +16,25 @@ public class AppLikeService {
     /**
      * 添加喜欢
      */
-    public void addLike(Long userId, Long m3uEntryId) {
+    public void addLike(Long userId, Long refId) {
         // 检查是否已经喜欢
-        if (likeRepository.existsByUserIdAndRefId(userId, m3uEntryId)) {
+        if (likeRepository.existsByUserIdAndRefId(userId, refId)) {
             throw new RuntimeException("已经喜欢该条目");
         }
 
         AppLike like = new AppLike();
         like.setUserId(userId);
-        like.setRefId(m3uEntryId);
-        like.setLikeType("m3uEntry");
+        like.setRefId(refId);
+        like.setLikeType("IPTV");
         likeRepository.save(like);
     }
 
     /**
      * 移除喜欢
      */
-    public void removeLike(Long userId, Long m3uEntryId) {
+    public void removeLike(Long userId, Long refId) {
         // 先查询喜欢关系
-        Optional<AppLike> likeOptional = likeRepository.findByUserIdAndRefId(userId, m3uEntryId);
+        Optional<AppLike> likeOptional = likeRepository.findByUserIdAndRefId(userId, refId);
         
         // 检查是否存在喜欢关系
         if (!likeOptional.isPresent()) {

@@ -1,26 +1,19 @@
 package com.bage.my.app.end.point.model.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * 分页响应
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PageResponse {
     private long totalElements;
     private int totalPages;
     private int currentPage;
     private int pageSize;
 
-    // 构造函数
-    public PageResponse(long totalElements, int totalPages, int currentPage, int pageSize) {
-        this.totalElements = totalElements;
-        this.totalPages = totalPages;
-        this.currentPage = currentPage;
-        this.pageSize = pageSize;
-    }
-
-    // Getters and Setters
-    public long getTotalElements() { return totalElements; }
-    public void setTotalElements(long totalElements) { this.totalElements = totalElements; }
-    public int getTotalPages() { return totalPages; }
-    public void setTotalPages(int totalPages) { this.totalPages = totalPages; }
-    public int getCurrentPage() { return currentPage; }
-    public void setCurrentPage(int currentPage) { this.currentPage = currentPage; }
-    public int getPageSize() { return pageSize; }
-    public void setPageSize(int pageSize) { this.pageSize = pageSize; }
 }
