@@ -34,10 +34,30 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
   String _searchKeyword = '';
   bool _isSearching = false;
 
+  // 新增：存储喜欢的频道ID列表
+  List<int> _favoriteChannelIds = [];
+
   @override
   void initState() {
     super.initState();
     _loadChannels();
+    // 新增：加载喜欢的频道ID列表
+    _loadFavoriteChannelIds();
+  }
+
+  // 新增：加载喜欢的频道ID列表
+  Future<void> _loadFavoriteChannelIds() async {
+    try {
+      final channels = await _iptvService.getFavoriteChannels('', 0, 1000);
+      setState(() {
+        _favoriteChannelIds = channels
+            .where((channel) => channel.id != null)
+            .map((channel) => channel.id!)
+            .toList();
+      });
+    } catch (e) {
+      LogUtil.error('Error loading favorite channel IDs: $e');
+    }
   }
 
   Future<void> _loadChannels({bool isLoadMore = false}) async {
@@ -167,30 +187,101 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
     });
   }
 
+  // 修改：频道点击方法，现在只用于播放
   void _onChannelTap(IptvChannel channel) {
-    // 打印选中的频道信息
-    print('Selected channel: ${channel.name} - ${channel.url}');
-
-    // 将 IptvChannel 转换为 TvChannel
-    TvChannel tvChannel = TvChannel(
-      title: channel.name, // 使用 IptvChannel 的 name 作为 TvChannel 的 title
-      logo: channel.logo, // 直接使用 logo
-      channelUrls: [
-        ChannelUrl(
-          title: channel.name, // 频道名称作为URL标题
-          url: channel.url, // 使用 IptvChannel 的 url
-        ),
-      ],
-    );
-
-    // 跳转到 TvPlayerPage 并传递转换后的 TvChannel 对象
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => TvPlayerPage(channel: tvChannel)),
-    );
+    _onPlayTap(channel);
   }
 
+  // 新增：播放按钮点击方法
+  void _onPlayTap(IptvChannel channel) {
+    // 跳转到TV播放页面，传递整个channel对象
+    if (channel.url.isNotEmpty) {
+      // 打印选中的频道信息
+      print('Selected channel: ${channel.name} - ${channel.url}');
+
+      // 将 IptvChannel 转换为 TvChannel
+      TvChannel tvChannel = TvChannel(
+        title: channel.name, // 使用 IptvChannel 的 name 作为 TvChannel 的 title
+        logo: channel.logo, // 直接使用 logo
+        channelUrls: [
+          ChannelUrl(
+            title: channel.name, // 频道名称作为URL标题
+            url: channel.url, // 使用 IptvChannel 的 url
+          ),
+        ],
+      );
+
+      // 跳转到 TvPlayerPage 并传递转换后的 TvChannel 对象
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TvPlayerPage(channel: tvChannel),
+        ),
+      );
+    } else {
+      LogUtil.info('Channel URL is empty: ${channel.name}');
+      // 可以选择显示一个提示信息
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('该频道没有可用的播放链接')));
+    }
+  }
+
+  // 新增：喜欢按钮点击方法
+  Future<void> _onFavoriteTap(IptvChannel channel) async {
+    if (channel.id == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('频道ID不存在，无法添加喜欢')));
+      return;
+    }
+
+    final isCurrentlyFavorite = _favoriteChannelIds.contains(channel.id);
+
+    try {
+      bool success;
+      if (isCurrentlyFavorite) {
+        // 移除喜欢
+        success = await _iptvService.removeFavoriteChannel(channel.id!);
+        if (success) {
+          setState(() {
+            _favoriteChannelIds.remove(channel.id);
+          });
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('已移除喜欢')));
+        }
+      } else {
+        // 添加喜欢
+        success = await _iptvService.addFavoriteChannel(channel.id!);
+        if (success) {
+          setState(() {
+            _favoriteChannelIds.add(channel.id!);
+          });
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('已添加到喜欢')));
+        }
+      }
+
+      if (!success) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('操作失败，请重试')));
+      }
+    } catch (e) {
+      LogUtil.error('Error toggling favorite status: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('操作失败：${e.toString()}')));
+    }
+  }
+
+  // 修改：频道卡片构建方法，添加按钮
   Widget _buildChannelCard(IptvChannel channel) {
+    final isFavorite =
+        channel.id != null && _favoriteChannelIds.contains(channel.id);
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
@@ -207,8 +298,27 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
             : const Icon(Icons.tv, size: 50),
         title: Text(channel.name),
         subtitle: Text(channel.group),
-        onTap: () => _onChannelTap(channel),
-        trailing: const Icon(Icons.arrow_forward_ios),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // 按钮1：播放按钮
+            IconButton(
+              icon: const Icon(Icons.play_arrow),
+              onPressed: () => _onPlayTap(channel),
+              tooltip: '播放频道',
+            ),
+            // 按钮2：喜欢按钮
+            IconButton(
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: isFavorite ? Colors.red : null,
+              ),
+              onPressed: () => _onFavoriteTap(channel),
+              tooltip: isFavorite ? '取消喜欢' : '添加喜欢',
+            ),
+          ],
+        ),
+
       ),
     );
   }
