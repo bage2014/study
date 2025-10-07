@@ -34,6 +34,17 @@ public class IptvController {
         this.iptvService = iptvService;
     }
 
+    @PostMapping("/reload")
+    public ApiResponse<String> reloadData() {
+        try {
+            iptvService.loadIptvData();
+            return ApiResponse.success("数据重新加载成功");
+        } catch (Exception e) {
+            log.error("重新加载数据失败: {}", e.getMessage(), e);
+            return ApiResponse.fail(500, "重新加载数据失败");
+        }
+    }
+
     @RequestMapping("/channels")
     public ApiResponse<List<IptvChannel>> getAllChannels(@RequestBody SearchRequest request) {
         try {
@@ -43,17 +54,6 @@ public class IptvController {
         } catch (Exception e) {
             log.error("获取频道失败: {}", e.getMessage(), e);
             return ApiResponse.fail(500, "获取频道失败");
-        }
-    }
-
-    @PostMapping("/reload")
-    public ApiResponse<String> reloadData() {
-        try {
-            iptvService.loadIptvData();
-            return ApiResponse.success("数据重新加载成功");
-        } catch (Exception e) {
-            log.error("重新加载数据失败: {}", e.getMessage(), e);
-            return ApiResponse.fail(500, "重新加载数据失败");
         }
     }
 

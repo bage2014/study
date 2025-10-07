@@ -2,7 +2,7 @@ package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.entity.M3uEntry;
-import com.bage.my.app.end.point.service.LikeService;
+import com.bage.my.app.end.point.service.AppLikeService;
 import com.bage.my.app.end.point.util.AuthUtil;
 import com.bage.my.app.end.point.util.M3uParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class M3uController {
     private List<M3uEntry> m3uEntries = new ArrayList<>();
 
     @Autowired
-    private LikeService likeService;
+    private AppLikeService appLikeService;
 
     @PostConstruct
     public void init() throws IOException {
@@ -64,7 +64,7 @@ public class M3uController {
                 return new ApiResponse<>(401, "未登录", null);
             }
 
-            likeService.addLike(userId, id);
+            appLikeService.addLike(userId, id);
             return new ApiResponse<>(200, "添加喜欢成功", null);
         } catch (RuntimeException e) {
             return new ApiResponse<>(400, e.getMessage(), null);
@@ -84,7 +84,7 @@ public class M3uController {
                 return new ApiResponse<>(401, "未登录", null);
             }
 
-            likeService.removeLike(userId, id);
+            appLikeService.removeLike(userId, id);
             return new ApiResponse<>(200, "移除喜欢成功", null);
         } catch (RuntimeException e) {
             return new ApiResponse<>(400, e.getMessage(), null);
@@ -104,7 +104,7 @@ public class M3uController {
                 return new ApiResponse<>(401, "未登录", null);
             }
 
-            boolean isLiked = likeService.isLiked(userId, id);
+            boolean isLiked = appLikeService.isLiked(userId, id);
             return new ApiResponse<>(200, "查询成功", isLiked);
         } catch (RuntimeException e) {
             return new ApiResponse<>(400, e.getMessage(), null);

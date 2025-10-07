@@ -1,11 +1,11 @@
 package com.bage.my.app.end.point.service.impl;
 
+import com.bage.my.app.end.point.entity.AppLike;
 import com.bage.my.app.end.point.entity.IptvChannel;
-import com.bage.my.app.end.point.entity.Like;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
 import com.bage.my.app.end.point.repository.IptvChannelRepository;
+import com.bage.my.app.end.point.service.AppLikeService;
 import com.bage.my.app.end.point.service.IptvService;
-import com.bage.my.app.end.point.service.LikeService;
 import com.bage.my.app.end.point.util.JsonUtil;
 import com.bage.my.app.end.point.model.request.SearchRequest;
 
@@ -33,7 +33,7 @@ public class IptvServiceImpl implements IptvService {
     private IptvChannelRepository channelRepository;
     
     @Autowired
-    private LikeService likeService;
+    private AppLikeService appLikeService;
 
     private final String IPTV_URL = "https://iptv-org.github.io/iptv/index.m3u";
 
@@ -239,7 +239,7 @@ public class IptvServiceImpl implements IptvService {
         }
         
         // 使用LikeService添加喜欢关系
-        likeService.addLike(userId, channelId);
+        appLikeService.addLike(userId, channelId);
     }
     
     @Override
@@ -254,7 +254,7 @@ public class IptvServiceImpl implements IptvService {
         }
         
         // 使用LikeService删除喜欢关系
-        likeService.removeLike(userId, channelId);
+        appLikeService.removeLike(userId, channelId);
     }
     
     @Override
@@ -265,9 +265,9 @@ public class IptvServiceImpl implements IptvService {
             request = new SearchRequest();
         }
         // 1. 查询用户喜欢的所有频道ID
-        List<Long> favoriteChannelIds = likeService.findAllByUserId(userId)
+        List<Long> favoriteChannelIds = appLikeService.findAllByUserId(userId)
                 .stream()
-                .map(Like::getM3uEntryId)
+                .map(AppLike::getRefId)
                 .collect(Collectors.toList());
         
         log.info("用户喜欢的频道数量: {}", favoriteChannelIds.size());

@@ -6,17 +6,17 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "app_like", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user_id", "m3uEntryId"})
-})
-public class Like {
+@Table(name = "app_like")
+public class AppLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;
 
-    private Long m3uEntryId; // M3uEntry的ID
+    private Long refId; // 引用ID，用于区分不同的收藏类型
+
+    private String likeType; // 喜欢类型，用于区分不同的收藏类型
 
     private LocalDateTime createTime = LocalDateTime.now();
 }
