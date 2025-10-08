@@ -1,9 +1,6 @@
 package com.bage.my.app.end.point.model.response;
 
 import java.util.List;
-
-import com.bage.my.app.end.point.entity.IptvChannel;
-
 import lombok.Data;
 
 /**
@@ -11,12 +8,12 @@ import lombok.Data;
  */
 @Data
 public class ChannelQueryResponse  extends PageResponse{
-    private List<IptvChannel> channels;
+    private List<Channel> channels;
     
     public ChannelQueryResponse() {
     }
     
-    public ChannelQueryResponse(List<IptvChannel> channels) {
+    public ChannelQueryResponse(List<Channel> channels) {
         this.channels = channels;
         if (channels != null) {
             // 计算统计信息
@@ -24,7 +21,7 @@ public class ChannelQueryResponse  extends PageResponse{
             this.setTotalChannels(channels.size());
             // 计算分类数量
             long categoryCount = channels.stream()
-                .map(IptvChannel::getCategory)
+                .map(Channel::getCategory)
                 .filter(category -> category != null && !category.isEmpty())
                 .distinct()
                 .count();

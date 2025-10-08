@@ -4,6 +4,7 @@ import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.request.TagRequest;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
+import com.bage.my.app.end.point.model.response.Channel;
 import com.bage.my.app.end.point.model.response.ChannelQueryResponse;
 import com.bage.my.app.end.point.model.response.GroupedChannelsResponse;
 import com.bage.my.app.end.point.model.response.FavoriteResponse;
@@ -64,7 +65,7 @@ public class IptvController {
         try {
             log.info("按标签获取频道, 标签: {}, 页码: {}, 每页数量: {}", JsonUtil.toJson(request.getTags()), request.getPage(), request.getSize());
             Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
-            Page<IptvChannel> channelsPage = iptvService.getChannelsByTagWithPagination(request.getTags(), pageable);
+            Page<Channel> channelsPage = iptvService.getChannelsByTagWithPagination(request.getTags(), pageable);
             
             // 创建带有分页信息的响应
             CategoryChannelsResponse response = new CategoryChannelsResponse(channelsPage.getContent());
@@ -151,7 +152,7 @@ public class IptvController {
             
             log.info("获取用户喜欢的频道(分页): userId={}, 请求参数: {}", userId, JsonUtil.toJson(request));
             
-            Page<IptvChannel> favoriteChannelsPage = iptvService.getFavoriteChannelsWithPagination(userId, request);
+            Page<Channel> favoriteChannelsPage = iptvService.getFavoriteChannelsWithPagination(userId, request);
             
             // 创建FavoriteResponse对象
             FavoriteResponse response = new FavoriteResponse(

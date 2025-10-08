@@ -2,11 +2,10 @@ package com.bage.my.app.end.point.model.response;
 
 import lombok.Data;
 import java.util.List;
-import com.bage.my.app.end.point.entity.IptvChannel;
 
 @Data
 public class FavoriteResponse {
-    private List<IptvChannel> channels;
+    private List<Channel> channels;
     private int totalChannels;
     private int currentPage;
     private int pageSize;
@@ -14,7 +13,7 @@ public class FavoriteResponse {
 
     public FavoriteResponse() {}
 
-    public FavoriteResponse(List<IptvChannel> channels, int currentPage, int pageSize, int totalChannels) {
+    public FavoriteResponse(List<Channel> channels, int currentPage, int pageSize, int totalChannels) {
         this.channels = channels;
         this.currentPage = currentPage;
         this.pageSize = pageSize;

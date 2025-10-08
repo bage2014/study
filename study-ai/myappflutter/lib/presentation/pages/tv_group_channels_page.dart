@@ -34,30 +34,10 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
   String _searchKeyword = '';
   bool _isSearching = false;
 
-  // 新增：存储喜欢的频道ID列表
-  List<int> _favoriteChannelIds = [];
-
   @override
   void initState() {
     super.initState();
     _loadChannels();
-    // 新增：加载喜欢的频道ID列表
-    _loadFavoriteChannelIds();
-  }
-
-  // 新增：加载喜欢的频道ID列表
-  Future<void> _loadFavoriteChannelIds() async {
-    try {
-      final channels = await _iptvService.getFavoriteChannels('', 0, 1000);
-      setState(() {
-        _favoriteChannelIds = channels
-            .where((channel) => channel.id != null)
-            .map((channel) => channel.id!)
-            .toList();
-      });
-    } catch (e) {
-      LogUtil.error('Error loading favorite channel IDs: $e');
-    }
   }
 
   Future<void> _loadChannels({bool isLoadMore = false}) async {
@@ -236,17 +216,12 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
       return;
     }
 
-    final isCurrentlyFavorite = _favoriteChannelIds.contains(channel.id);
-
     try {
       bool success;
-      if (isCurrentlyFavorite) {
+      if (channel.isLike) {
         // 移除喜欢
         success = await _iptvService.removeFavoriteChannel(channel.id!);
         if (success) {
-          setState(() {
-            _favoriteChannelIds.remove(channel.id);
-          });
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('已移除喜欢')));
@@ -255,9 +230,12 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
         // 添加喜欢
         success = await _iptvService.addFavoriteChannel(channel.id!);
         if (success) {
-          setState(() {
-            _favoriteChannelIds.add(channel.id!);
-          });
+          // 重新刷新当前页面列表
+          if (_searchKeyword.isEmpty) {
+            _loadChannels();
+          } else {
+            _searchChannels(_searchKeyword);
+          }
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('已添加到喜欢')));
@@ -279,8 +257,7 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
 
   // 修改：频道卡片构建方法，添加按钮
   Widget _buildChannelCard(IptvChannel channel) {
-    final isFavorite =
-        channel.id != null && _favoriteChannelIds.contains(channel.id);
+    final isFavorite = channel.id != null && channel.isLike;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -318,7 +295,6 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
             ),
           ],
         ),
-
       ),
     );
   }

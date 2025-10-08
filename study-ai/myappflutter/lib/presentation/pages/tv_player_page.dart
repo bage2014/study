@@ -132,13 +132,19 @@ class _TvPlayerPageState extends State<TvPlayerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // 设置背景色为黑色
+      backgroundColor: Colors.black,
       // 启用内容延伸到AppBar后面
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(_channelTitle),
+        title: Text(
+          _channelTitle,
+          style: TextStyle(color: Colors.white), // 设置标题颜色为白色
+        ),
         backgroundColor: Colors.transparent, // 设置AppBar背景为透明
         elevation: 0, // 移除阴影效果
         systemOverlayStyle: SystemUiOverlayStyle.light, // 设置状态栏图标为白色
+        iconTheme: IconThemeData(color: Colors.white), // 设置返回按键按钮为白色
       ),
       body: Column(
         children: [

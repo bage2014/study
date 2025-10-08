@@ -10,7 +10,8 @@
                 "group": "Undefined",
                 "category": "其他",
                 "logo": "",
-                "tags": "00s Replay,Undefined,其他,iptv,"
+                "tags": "00s Replay,Undefined,其他,iptv,",
+                "isLike": false
             },
             {
                 "id": 2,
@@ -19,7 +20,8 @@
                 "group": "Shop",
                 "category": "其他",
                 "logo": "https://i.imgur.com/slSUDNX.png",
-                "tags": "1-2-3 TV (270p),Shop,其他,iptv,"
+                "tags": "1-2-3 TV (270p),Shop,其他,iptv,",
+                "isLike": true
             }
         ]
     }

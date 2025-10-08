@@ -4,184 +4,34 @@
     "data": {
         "channels": [
             {
-                "id": 93,
+                "id": 97,
                 "name": "24 Hour Free Movies (720p)",
                 "url": "https://d1j2u714xk898n.cloudfront.net/scheduler/scheduleMaster/145.m3u8",
                 "group": "Movies",
                 "category": "电影",
                 "logo": "https://i.imgur.com/iSVnzR1.png",
-                "tags": "24 Hour Free Movies (720p),电影,iptv,"
+                "tags": "24 Hour Free Movies (720p),电影,iptv,",
+                "isLike": false
             },
             {
-                "id": 98,
+                "id": 102,
                 "name": "27 TwentySeven [Geo-blocked]",
                 "url": "https://live2.msf.cdn.mediaset.net/content/hls_h0_cls_vos/live/channel(ts)/index.m3u8",
                 "group": "Movies;Series",
                 "category": "电影",
                 "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Twentyseven_logo.svg/512px-Twentyseven_logo.svg.png",
-                "tags": "27 TwentySeven [Geo-blocked],Movies;Series,电影,iptv,"
+                "tags": "27 TwentySeven [Geo-blocked],Movies;Series,电影,iptv,",
+                "isLike": true
             },
             {
-                "id": 112,
+                "id": 116,
                 "name": "30A TV Classic Movies",
                 "url": "https://30a-tv.com/feeds/pzaz/30atvmovies.m3u8",
                 "group": "Movies",
                 "category": "电影",
                 "logo": "https://babaktv.com/wp-content/uploads/2023/09/30A-Classi-Movies.jpeg",
-                "tags": "30A TV Classic Movies,电影,iptv,"
-            },
-            {
-                "id": 120,
-                "name": "70s Cinema",
-                "url": "http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5f4d878d3d19b30007d2e782/master.m3u8?appName\u003dweb\u0026appVersion\u003dunknown\u0026clientTime\u003d0\u0026deviceDNT\u003d0\u0026deviceId\u003d6c263252-30d3-11ef-9cf5-e9ddff8ff496\u0026deviceMake\u003dChrome\u0026deviceModel\u003dweb\u0026deviceType\u003dweb\u0026deviceVersion\u003dunknown\u0026includeExtendedEvents\u003dfalse\u0026serverSideAds\u003dfalse\u0026sid\u003d7c57f1f3-2078-4f92-a4b5-6cd444220a70",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/mgXeEE4.png",
-                "tags": "70s Cinema,Movies,电影,iptv,"
-            },
-            {
-                "id": 121,
-                "name": "80s Rewind",
-                "url": "http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5ca525b650be2571e3943c63/master.m3u8?appName\u003dweb\u0026appVersion\u003dunknown\u0026clientTime\u003d0\u0026deviceDNT\u003d0\u0026deviceId\u003d6c263253-30d3-11ef-9cf5-e9ddff8ff496\u0026deviceMake\u003dChrome\u0026deviceModel\u003dweb\u0026deviceType\u003dweb\u0026deviceVersion\u003dunknown\u0026includeExtendedEvents\u003dfalse\u0026serverSideAds\u003dfalse\u0026sid\u003db52c759c-a26c-4e65-828b-14277d6117e0",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/nkEeYfI.png",
-                "tags": "80s Rewind,Movies,电影,iptv,"
-            },
-            {
-                "id": 124,
-                "name": "90s Throwback",
-                "url": "http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5f4d86f519358a00072b978e/master.m3u8?appName\u003dweb\u0026appVersion\u003dunknown\u0026clientTime\u003d0\u0026deviceDNT\u003d0\u0026deviceId\u003d6c265961-30d3-11ef-9cf5-e9ddff8ff496\u0026deviceMake\u003dChrome\u0026deviceModel\u003dweb\u0026deviceType\u003dweb\u0026deviceVersion\u003dunknown\u0026includeExtendedEvents\u003dfalse\u0026serverSideAds\u003dfalse\u0026sid\u003d71f86833-3dd6-41ac-a9b8-4a4ec8873306",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/KoGko6M.png",
-                "tags": "90s Throwback,Movies,电影,iptv,"
-            },
-            {
-                "id": 140,
-                "name": "312 Кино (406p)",
-                "url": "http://176.126.166.43:1935/live/312kino/playlist.m3u8",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.ibb.co/3m9LrLj/k7gIibH.png",
-                "tags": "312 Кино (406p),Movies,电影,iptv,"
-            },
-            {
-                "id": 152,
-                "name": "\u0026flix (1080p)",
-                "url": "https://playyonogames.in/z5/stream.m3u8?id\u003d0-9-channel_2105335046",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/WOyfzjC.png",
-                "tags": "\u0026flix (1080p),Movies,电影,iptv,"
-            },
-            {
-                "id": 153,
-                "name": "\u0026pictures (1080p)",
-                "url": "https://playyonogames.in/z5/stream.m3u8?id\u003d0-9-tvpictureshd",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/VYh3V8E.png",
-                "tags": "\u0026pictures (1080p),Movies,电影,iptv,"
-            },
-            {
-                "id": 154,
-                "name": "\u0026prive HD (1080p)",
-                "url": "https://playyonogames.in/z5/stream.m3u8?id\u003d0-9-9z5543514",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/qyyUlg3.png",
-                "tags": "\u0026prive HD (1080p),Movies,电影,iptv,"
-            },
-            {
-                "id": 155,
-                "name": "\u0026TV (1080p)",
-                "url": "https://amg01117-amg01117c1-amgplt0165.playout.now3.amagi.tv/playlist.m3u8",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/32W50Y6.png",
-                "tags": "\u0026TV (1080p),Movies,电影,iptv,"
-            },
-            {
-                "id": 156,
-                "name": "\u0026xplor HD (1080p)",
-                "url": "https://playyonogames.in/z5/stream.m3u8?id\u003d0-9-209",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/9mK6dgM.png",
-                "tags": "\u0026xplor HD (1080p),Movies,电影,iptv,"
-            },
-            {
-                "id": 159,
-                "name": "@TV (720p)",
-                "url": "http://49.0.87.24:1936/HDAttv/Attv/playlist.m3u8",
-                "group": "Movies;Series",
-                "category": "电影",
-                "logo": "https://files.catbox.moe/6rj9aw.jpg",
-                "tags": "@TV (720p),Movies;Series,电影,iptv,"
-            },
-            {
-                "id": 252,
-                "name": "ABN Bible Movies (720p)",
-                "url": "https://mediaserver.abnvideos.com/streams/abnbiblemovies.m3u8",
-                "group": "Movies;Religious",
-                "category": "电影",
-                "logo": "https://i.imgur.com/NCqZdaL.png",
-                "tags": "ABN Bible Movies (720p),Movies;Religious,电影,iptv,"
-            },
-            {
-                "id": 274,
-                "name": "Abzy Dhakad (480p)",
-                "url": "https://d2lk5u59tns74c.cloudfront.net/out/v1/4fe6ab07a13543d6bdb2ec63b3e2df44/index.m3u8",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/5ORC4tn.png",
-                "tags": "Abzy Dhakad (480p),Movies,电影,iptv,"
-            },
-            {
-                "id": 275,
-                "name": "Abzy Movies (480p)",
-                "url": "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/db8d4eca72d64748a00d0631debf542d/index.m3u8",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/LnVgKVF.png",
-                "tags": "Abzy Movies (480p),电影,iptv,"
-            },
-            {
-                "id": 303,
-                "name": "Action 24 (1080p)",
-                "url": "http://actionlive.siliconweb.com/actionabr/actiontv/playlist.m3u8",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://upload.wikimedia.org/wikipedia/commons/8/88/Action24-logo-small.png",
-                "tags": "Action 24 (1080p),Movies,电影,iptv,"
-            },
-            {
-                "id": 337,
-                "name": "Afghan Nobel Movies (720p)",
-                "url": "https://live.relentlessinnovations.net:1936/afghannobel/afghannobel/playlist.m3u8",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.ibb.co/zfdbVSm/logo-1.png",
-                "tags": "Afghan Nobel Movies (720p),电影,iptv,"
-            },
-            {
-                "id": 342,
-                "name": "Aflam (1080p)",
-                "url": "https://shls-live-enc.edgenextcdn.net/out/v1/0044dd4b001a466c941ad77b04a574a2/index.m3u8",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.imgur.com/cTLj7Yt.png",
-                "tags": "Aflam (1080p),Movies,电影,iptv,"
-            },
-            {
-                "id": 344,
-                "name": "Afra Film",
-                "url": "https://afrafhls.wns.live/hls/stream.m3u8",
-                "group": "Movies",
-                "category": "电影",
-                "logo": "https://i.postimg.cc/vZWdM86g/afra-film.jpg",
-                "tags": "Afra Film,Movies,电影,iptv,"
+                "tags": "30A TV Classic Movies,电影,iptv,",
+                "isLike": false
             }
         ]
     }

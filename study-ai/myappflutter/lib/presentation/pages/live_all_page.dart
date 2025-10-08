@@ -31,30 +31,11 @@ class _LiveAllPageState extends State<LiveAllPage> {
   bool _hasMorePages = true;
   bool _isLoadingMore = false;
   String searchText = '';
-  // 新增：存储喜欢的频道ID列表
-  List<int> _favoriteChannelIds = [];
 
   @override
   void initState() {
     super.initState();
     _loadFavoriteChannels();
-    // 新增：加载喜欢的频道ID列表
-    _loadFavoriteChannelIds();
-  }
-
-  // 新增：加载喜欢的频道ID列表
-  Future<void> _loadFavoriteChannelIds() async {
-    try {
-      final channels = await _iptvService.getFavoriteChannels('', 0, 1000);
-      setState(() {
-        _favoriteChannelIds = channels
-            .where((channel) => channel.id != null)
-            .map((channel) => channel.id!)
-            .toList();
-      });
-    } catch (e) {
-      LogUtil.error('Error loading favorite channel IDs: $e');
-    }
   }
 
   // 加载所有频道
@@ -218,16 +199,13 @@ class _LiveAllPageState extends State<LiveAllPage> {
       return;
     }
 
-    final isCurrentlyFavorite = _favoriteChannelIds.contains(channel.id);
-
     try {
       bool success;
-      if (isCurrentlyFavorite) {
+      if (channel.isLike) {
         // 移除喜欢
         success = await _iptvService.removeFavoriteChannel(channel.id!);
         if (success) {
           setState(() {
-            _favoriteChannelIds.remove(channel.id);
             // 如果在喜欢标签页，同时从列表中移除
             if (_currentTab == 0) {
               _favoriteChannels.removeWhere((c) => c.id == channel.id);
@@ -241,9 +219,15 @@ class _LiveAllPageState extends State<LiveAllPage> {
         // 添加喜欢
         success = await _iptvService.addFavoriteChannel(channel.id!);
         if (success) {
-          setState(() {
-            _favoriteChannelIds.add(channel.id!);
-          });
+          // 重新查询当前页面列表刷新
+          switch (_currentTab) {
+            case 0: // 喜欢标签页
+              _loadFavoriteChannels();
+              break;
+            case 1: // 所有标签页
+              _loadAllChannels();
+              break;
+          }
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('已添加到喜欢')));
@@ -265,8 +249,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
 
   // 修改：频道卡片构建方法，添加按钮
   Widget _buildChannelCard(IptvChannel channel) {
-    final isFavorite =
-        channel.id != null && _favoriteChannelIds.contains(channel.id);
+    final isFavorite = channel.isLike;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

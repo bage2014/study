@@ -3,10 +3,12 @@ package com.bage.my.app.end.point.service.impl;
 import com.bage.my.app.end.point.entity.AppLike;
 import com.bage.my.app.end.point.entity.IptvChannel;
 import com.bage.my.app.end.point.model.response.CategoryChannelsResponse;
+import com.bage.my.app.end.point.model.response.Channel;
 import com.bage.my.app.end.point.model.response.ChannelQueryResponse;
 import com.bage.my.app.end.point.repository.IptvChannelRepository;
 import com.bage.my.app.end.point.service.AppLikeService;
 import com.bage.my.app.end.point.service.IptvService;
+import com.bage.my.app.end.point.util.AuthUtil;
 import com.bage.my.app.end.point.util.JsonUtil;
 import com.bage.my.app.end.point.model.request.SearchRequest;
 
@@ -56,7 +58,7 @@ public class IptvServiceImpl implements IptvService {
     public ChannelQueryResponse getChannels(List<String> tags) {
         List<IptvChannel> channels = getAllChannels();
         if (tags == null || tags.isEmpty()) {
-            return new ChannelQueryResponse(channels);
+            return new ChannelQueryResponse(convertToChannelList(channels));
         }
 
         List<IptvChannel> filteredChannels = channels;
@@ -66,11 +68,46 @@ public class IptvServiceImpl implements IptvService {
             }
             log.info("过滤标签: {}", tag);
             filteredChannels = filteredChannels.stream()
-                .filter(channel -> channel.getTags().contains(tag))
+                .filter(channel -> channel.getTags() != null && channel.getTags().contains(tag))
                 .collect(Collectors.toList());
         }
 
-        return new ChannelQueryResponse(filteredChannels);
+        return new ChannelQueryResponse(convertToChannelList(filteredChannels));
+    }
+    
+    /**
+     * 将IptvChannel列表转换为Channel列表，并设置isLike字段
+     */
+    private List<Channel> convertToChannelList(List<IptvChannel> iptvChannels) {
+        if (iptvChannels == null || iptvChannels.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // 获取当前用户ID
+        Long userId = AuthUtil.getCurrentUserId();
+        
+        // 如果用户未登录，则所有频道isLike=false
+        if (userId == null) {
+            return iptvChannels.stream()
+                    .map(com.bage.my.app.end.point.model.response.Channel::new)
+                    .collect(Collectors.toList());
+        }
+        
+        // 查询用户喜欢的所有频道ID
+        List<Long> likedChannelIds = appLikeService.findAllByUserId(userId)
+                .stream()
+                .map(appLike -> appLike.getRefId())
+                .collect(Collectors.toList());
+        
+        // 转换为Channel对象并设置isLike字段
+        return iptvChannels.stream()
+                .map(iptvChannel -> {
+                    Channel channel = new Channel(iptvChannel);
+                    // 设置isLike字段
+                    channel.setIsLike(likedChannelIds.contains(iptvChannel.getId()));
+                    return channel;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -183,7 +220,7 @@ public class IptvServiceImpl implements IptvService {
     }
 
     @Override
-    public Page<IptvChannel> getChannelsByTagWithPagination(List<String> tags, Pageable pageable) {
+    public Page<Channel> getChannelsByTagWithPagination(List<String> tags, Pageable pageable) {
         List<IptvChannel> channels = getAllChannels();
         List<IptvChannel> filteredChannels = channels;
         
@@ -203,7 +240,12 @@ public class IptvServiceImpl implements IptvService {
         int start = Math.min((int) pageable.getOffset(), filteredChannels.size());
         int end = Math.min((start + pageable.getPageSize()), filteredChannels.size());
         
-        return new PageImpl<>(filteredChannels.subList(start, end), pageable, filteredChannels.size());
+        List<IptvChannel> pagedChannels = filteredChannels.subList(start, end);
+        
+        // 将IptvChannel转换为Channel对象
+        List<Channel> pagedChannelResponses = convertToChannelList(pagedChannels);
+        
+        return new PageImpl<>(pagedChannelResponses, pageable, filteredChannels.size());
     }
 
     @Override
@@ -259,12 +301,13 @@ public class IptvServiceImpl implements IptvService {
     }
     
     @Override
-    public Page<IptvChannel> getFavoriteChannelsWithPagination(Long userId, SearchRequest request) {
+    public Page<Channel> getFavoriteChannelsWithPagination(Long userId, SearchRequest request) {
         log.info("获取用户喜欢的频道(分页): userId={}, 请求参数: {}", userId, JsonUtil.toJson(request));
         
         if(request == null){
             request = new SearchRequest();
         }
+        
         // 1. 查询用户喜欢的所有频道ID
         List<Long> favoriteChannelIds = appLikeService.findAllByUserId(userId)
                 .stream()
@@ -279,14 +322,24 @@ public class IptvServiceImpl implements IptvService {
             return new PageImpl<>(List.of(), pageable, 0);
         }
         
-        // 3. 批量查询喜欢的频道
-        List<IptvChannel> favoriteChannels = channelRepository.findAllById(favoriteChannelIds);
+        // 3. 对喜欢的频道ID进行分页
+        int page = request.getPage();
+        int size = request.getSize();
+        Pageable pageable = PageRequest.of(page, size);
         
-        // 4. 应用关键词过滤
+        int start = Math.min((int) pageable.getOffset(), favoriteChannelIds.size());
+        int end = Math.min((start + pageable.getPageSize()), favoriteChannelIds.size());
+        
+        List<Long> pagedChannelIds = favoriteChannelIds.subList(start, end);
+        
+        // 4. 根据分页后的ID查询频道信息
+        List<IptvChannel> pagedChannels = channelRepository.findAllById(pagedChannelIds);
+        
+        // 5. 应用关键词过滤
         String keyword = request.getKeyword();
         if (keyword != null && !keyword.isEmpty()) {
             String lowerKeyword = keyword.toLowerCase();
-            favoriteChannels = favoriteChannels.stream()
+            pagedChannels = pagedChannels.stream()
                     .filter(channel -> 
                         (channel.getName() != null && channel.getName().toLowerCase().contains(lowerKeyword)) ||
                         (channel.getCategory() != null && channel.getCategory().toLowerCase().contains(lowerKeyword)) ||
@@ -295,19 +348,18 @@ public class IptvServiceImpl implements IptvService {
                     .collect(Collectors.toList());
         }
         
-        // 5. 应用分页
-        int page = request.getPage();
-        int size = request.getSize();
-        Pageable pageable = PageRequest.of(page, size);
-        
-        int start = Math.min((int) pageable.getOffset(), favoriteChannels.size());
-        int end = Math.min((start + pageable.getPageSize()), favoriteChannels.size());
-        
-        List<IptvChannel> pagedChannels = favoriteChannels.subList(start, end);
+        // 6. 将IptvChannel映射为Channel对象，并设置isLike=true
+        List<Channel> pagedChannelResponses = pagedChannels.stream()
+                .map(iptvChannel -> {
+                    Channel channel = new Channel(iptvChannel);
+                    channel.setIsLike(true); // 因为是喜欢的频道，所以isLike=true
+                    return channel;
+                })
+                .collect(Collectors.toList());
         
         log.info("获取用户喜欢的频道(分页)成功: userId={}, 页码: {}, 每页数量: {}, 总数: {}, 返回数量: {}", 
-                userId, page, size, favoriteChannels.size(), pagedChannels.size());
+                userId, page, size, favoriteChannelIds.size(), pagedChannelResponses.size());
         
-        return new PageImpl<>(pagedChannels, pageable, favoriteChannels.size());
+        return new PageImpl<>(pagedChannelResponses, pageable, favoriteChannelIds.size());
     }
 }

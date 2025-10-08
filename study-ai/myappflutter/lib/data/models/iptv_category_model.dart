@@ -45,6 +45,7 @@ class IptvChannel {
   final String category;
   final int? id; // 新增字段
   final String? tags; // 新增字段
+  final bool isLike; // 新增字段：是否喜欢
 
   IptvChannel({
     required this.name,
@@ -56,6 +57,7 @@ class IptvChannel {
     required this.category,
     this.id,
     this.tags,
+    this.isLike = false, // 默认值为false
   });
 
   factory IptvChannel.fromJson(Map<String, dynamic> json) {
@@ -70,6 +72,7 @@ class IptvChannel {
       category: json['category'] ?? '',
       id: json['id'] as int?,
       tags: json['tags'] as String?,
+      isLike: json['isLike'] ?? false, // 处理isLike字段
     );
   }
 
@@ -84,6 +87,7 @@ class IptvChannel {
       'category': category,
       if (id != null) 'id': id,
       if (tags != null) 'tags': tags,
+      'isLike': isLike, // 添加isLike字段
     };
   }
 }

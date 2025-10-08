@@ -10,21 +10,29 @@
                 "group": "Shop",
                 "category": "其他",
                 "logo": "https://i.imgur.com/slSUDNX.png",
-                "tags": "1-2-3 TV (270p),Shop,其他,iptv,"
+                "tags": "1-2-3 TV (270p),Shop,其他,iptv,",
+                "isLike": true
             },
             {
-                "id": 4,
-                "name": "1KZN TV",
-                "url": "https://uvotv-aniview.global.ssl.fastly.net/hls/live/2120684/1kzntv/playlist.m3u8",
-                "group": "Entertainment;Family;General",
-                "category": "娱乐",
-                "logo": "https://i.postimg.cc/cCPc5tyk/1kzntv.png",
-                "tags": "1KZN TV,Entertainment;Family;General,娱乐,iptv,"
+                "id": 3,
+                "name": "1Almere TV (720p)",
+                "url": "https://d3472rjicrodic.cloudfront.net/nlpo/clr-nlpo/709d5260/index.m3u8",
+                "group": "General",
+                "category": "其他",
+                "logo": "https://i.imgur.com/XfkbTrU.png",
+                "tags": "1Almere TV (720p),General,其他,iptv,",
+                "isLike": true
+            },
+            {
+                "id": 102,
+                "name": "27 TwentySeven [Geo-blocked]",
+                "url": "https://live2.msf.cdn.mediaset.net/content/hls_h0_cls_vos/live/channel(ts)/index.m3u8",
+                "group": "Movies;Series",
+                "category": "电影",
+                "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Twentyseven_logo.svg/512px-Twentyseven_logo.svg.png",
+                "tags": "27 TwentySeven [Geo-blocked],Movies;Series,电影,iptv,",
+                "isLike": true
             }
-        ],
-        "totalChannels": 2,
-        "currentPage": 0,
-        "pageSize": 20,
-        "totalPages": 1
+        ]
     }
 }
