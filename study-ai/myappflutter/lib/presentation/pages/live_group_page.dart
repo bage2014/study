@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:myappflutter/core/config/app_routes.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/models/iptv_category_model.dart';
 import 'package:myappflutter/data/services/iptv_service.dart';
@@ -58,11 +60,9 @@ class _LiveGroupPageState extends State<LiveGroupPage> {
   }
 
   void _onCategoryTap(String categoryName) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TVGroupChannelPage(categoryName: categoryName),
-      ),
+    Get.toNamed(
+      AppRoutes.LIVE_ALL,
+      arguments: {'categoryName': categoryName},
     );
   }
 

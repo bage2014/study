@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:myappflutter/presentation/pages/family_edit_page.dart';
+import 'package:myappflutter/presentation/pages/tv_group_channels_page.dart';
 import 'package:myappflutter/presentation/pages/user_search_page.dart';
 import '../../presentation/pages/login_page.dart';
 import '../../presentation/pages/home_page.dart';
@@ -88,5 +89,14 @@ class AppRoutes {
       page: () => const LiveGroupPage(),
       transition: Transition.fadeIn,
     ),
+    GetPage(
+      name: LIVE_GROUP,
+      page: () {
+        final args = Get.arguments;
+        return TVGroupChannelPage(args);
+      },
+      transition: Transition.fadeIn,
+    ),
+    
   ];
 }
