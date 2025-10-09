@@ -39,6 +39,7 @@ class AppRoutes {
   static const String LIVE = '/live'; // 新增直播页面路由
   static const String LIVE_ALL = '/live_all'; // 新增全部频道页面路由
   static const String LIVE_GROUP = '/live_group'; // 新增频道分组页面路由
+  static const String LIVE_CHANNEL_GROUP = '/live_channel_group'; // 新增频道分组页面路由
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -90,13 +91,12 @@ class AppRoutes {
       transition: Transition.fadeIn,
     ),
     GetPage(
-      name: LIVE_GROUP,
+      name: LIVE_CHANNEL_GROUP,
       page: () {
         final args = Get.arguments;
-        return TVGroupChannelPage(args);
+        return TVGroupChannelPage(categoryName: args['categoryName']);
       },
       transition: Transition.fadeIn,
     ),
-    
   ];
 }

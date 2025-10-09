@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:myappflutter/core/config/app_routes.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/models/iptv_category_model.dart';
 import 'package:myappflutter/data/services/iptv_service.dart';
@@ -192,12 +194,7 @@ class _TVGroupChannelPageState extends State<TVGroupChannelPage> {
       );
 
       // 跳转到 TvPlayerPage 并传递转换后的 TvChannel 对象
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TvPlayerPage(channel: tvChannel),
-        ),
-      );
+      Get.toNamed(AppRoutes.TV_PLAYER, arguments: tvChannel);
     } else {
       LogUtil.info('Channel URL is empty: ${channel.name}');
       // 可以选择显示一个提示信息

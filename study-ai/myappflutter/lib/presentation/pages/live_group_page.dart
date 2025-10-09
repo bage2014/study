@@ -61,7 +61,7 @@ class _LiveGroupPageState extends State<LiveGroupPage> {
 
   void _onCategoryTap(String categoryName) {
     Get.toNamed(
-      AppRoutes.LIVE_ALL,
+      AppRoutes.LIVE_CHANNEL_GROUP,
       arguments: {'categoryName': categoryName},
     );
   }

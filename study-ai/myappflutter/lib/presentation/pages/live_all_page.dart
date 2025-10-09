@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myappflutter/core/config/app_routes.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/models/iptv_category_model.dart';
 import 'package:myappflutter/data/models/tv_model.dart';
@@ -416,7 +417,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
             icon: const Icon(Icons.group),
             onPressed: () {
               // 跳转到LiveGroupPage页面
-              Get.to(() => const LiveGroupPage());
+              Get.toNamed(AppRoutes.LIVE_GROUP);
             },
             tooltip: '按分组查看频道',
           ),
