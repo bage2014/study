@@ -109,10 +109,91 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
         _locationStatus = '定位成功';
         _updateMapWithCurrentLocation();
       } else {
-        // 定位失败
-        _locationStatus = '定位失败: ${result.errorInfo}';
+        // 定位失败，使用上海长宁区随机地址兜底
+        _showFallbackLocation();
       }
     });
+  }
+
+  void _showFallbackLocation() {
+    // 上海长宁区随机地址列表
+    final List<Map<String, dynamic>> shanghaiChangningAddresses = [
+      {
+        'latitude': 31.220367,
+        'longitude': 121.417312,
+        'address': '上海市长宁区长宁路999号',
+        'province': '上海市',
+        'city': '上海市',
+        'district': '长宁区',
+        'street': '长宁路',
+        'streetNumber': '999号',
+        'locationDetail': '上海市长宁区长宁路999号'
+      },
+      {
+        'latitude': 31.223456,
+        'longitude': 121.420123,
+        'address': '上海市长宁区江苏路888号',
+        'province': '上海市',
+        'city': '上海市',
+        'district': '长宁区',
+        'street': '江苏路',
+        'streetNumber': '888号',
+        'locationDetail': '上海市长宁区江苏路888号'
+      },
+      {
+        'latitude': 31.218765,
+        'longitude': 121.415678,
+        'address': '上海市长宁区延安西路777号',
+        'province': '上海市',
+        'city': '上海市',
+        'district': '长宁区',
+        'street': '延安西路',
+        'streetNumber': '777号',
+        'locationDetail': '上海市长宁区延安西路777号'
+      },
+      {
+        'latitude': 31.225678,
+        'longitude': 121.422345,
+        'address': '上海市长宁区仙霞路666号',
+        'province': '上海市',
+        'city': '上海市',
+        'district': '长宁区',
+        'street': '仙霞路',
+        'streetNumber': '666号',
+        'locationDetail': '上海市长宁区仙霞路666号'
+      },
+      {
+        'latitude': 31.221234,
+        'longitude': 121.418901,
+        'address': '上海市长宁区天山路555号',
+        'province': '上海市',
+        'city': '上海市',
+        'district': '长宁区',
+        'street': '天山路',
+        'streetNumber': '555号',
+        'locationDetail': '上海市长宁区天山路555号'
+      }
+    ];
+
+    // 随机选择一个地址
+    final randomAddress = shanghaiChangningAddresses[DateTime.now().millisecond % shanghaiChangningAddresses.length];
+
+    // 创建兜底定位结果
+    final fallbackLocation = BaiduLocation(
+      latitude: randomAddress['latitude'],
+      longitude: randomAddress['longitude'],
+      address: randomAddress['address'],
+      province: randomAddress['province'],
+      city: randomAddress['city'],
+      district: randomAddress['district'],
+      street: randomAddress['street'],
+      streetNumber: randomAddress['streetNumber'],
+      locationDetail: randomAddress['locationDetail'],
+    );
+
+    _currentLocation = fallbackLocation;
+    _locationStatus = '定位失败，已显示上海长宁区随机地址';
+    _updateMapWithCurrentLocation();
   }
 
   void _updateMapWithCurrentLocation() {
