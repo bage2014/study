@@ -18,9 +18,12 @@ import com.bage.my.app.end.point.model.response.AppVersionListResponse;
 import com.bage.my.app.end.point.service.AppVersionService;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -144,7 +147,7 @@ public class AppVersionController {
 
     // 下载文件
     @RequestMapping("/download/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
+    public void downloadFile(@PathVariable String fileId, HttpServletResponse response) {
         try {
             Path uploadPath = Paths.get(fileDir);
             // 查找匹配的文件
@@ -153,12 +156,34 @@ public class AppVersionController {
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("文件不存在"));
 
-            Resource resource = new UrlResource(filePath.toUri());
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filePath.getFileName() + "\"")
-                    .body(resource);
+            // 获取文件名（去除UUID前缀）
+            String originalFileName = filePath.getFileName().toString().replaceFirst(fileId + "_", "");
+            
+            // 设置响应头
+            response.setContentType("application/octet-stream");
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + originalFileName + "\"");
+            response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
+            response.setHeader(HttpHeaders.PRAGMA, "no-cache");
+            response.setHeader(HttpHeaders.EXPIRES, "0");
+            
+            // 获取文件大小
+            long fileSize = Files.size(filePath);
+            response.setHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(fileSize));
+            
+            // 直接写入文件流到响应
+            try (InputStream inputStream = Files.newInputStream(filePath);
+                 OutputStream outputStream = response.getOutputStream()) {
+                
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.flush();
+            }
+            
         } catch (IOException e) {
+            log.error("文件下载失败: {}", e.getMessage(), e);
             throw new RuntimeException("文件下载失败", e);
         }
     }

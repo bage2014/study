@@ -14,6 +14,8 @@ public class AuthConfig {
             "/sendEmailCaptcha",
             "/resetPassword",
 
+            "/app/download/**",
+
             "/checkToken",
             "/refreshToken",
 

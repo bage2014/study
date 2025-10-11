@@ -124,6 +124,63 @@ class HttpClient {
     ).replace(queryParameters: queryParameters as Map<String, String>?);
   }
 
+  // 文件下载请求
+  Future<http.StreamedResponse> download(
+    String path,
+    String savePath, {
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParameters,
+    void Function(int received, int total)? onReceiveProgress,
+  }) async {
+    if (_envController.currentEnv.value == 'mock') {
+      throw Exception('Download not supported in mock mode');
+    }
+
+    final uri = buildUri(path, queryParameters);
+    final requestHeaders = await HttpInterceptor.interceptRequest(headers);
+
+    _logRequest('GET', uri.toString(), requestHeaders, null);
+    
+    final request = http.Request('GET', uri);
+    request.headers.addAll(requestHeaders);
+    
+    final response = await _client.send(request);
+    
+    // 检查响应状态
+    if (response.statusCode != 200) {
+      throw Exception('Download failed with status: ${response.statusCode}');
+    }
+
+    // 创建文件并写入数据
+    final file = File(savePath);
+    final sink = file.openWrite();
+    
+    int received = 0;
+    final total = response.contentLength ?? 0;
+    
+    await response.stream.listen(
+      (List<int> chunk) {
+        received += chunk.length;
+        sink.add(chunk);
+        
+        // 调用进度回调
+        if (onReceiveProgress != null) {
+          onReceiveProgress(received, total);
+        }
+      },
+      onDone: () async {
+        await sink.close();
+        LogUtil.info('Download completed: $savePath');
+      },
+      onError: (error) {
+        sink.close();
+        throw Exception('Download error: $error');
+      },
+    ).asFuture();
+
+    return response;
+  }
+
   // 打印请求日志
   void _logRequest(
     String method,
