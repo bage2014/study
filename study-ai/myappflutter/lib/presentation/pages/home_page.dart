@@ -155,6 +155,12 @@ class HomePage extends StatelessWidget {
                   title: 'history_location',
                   onTap: () => Get.toNamed(AppRoutes.HISTORY_LOCATION),
                 ),
+                // 添加应用版本菜单卡片
+                _buildMenuCard(
+                  icon: Icons.apps,
+                  title: 'app_version',
+                  onTap: () => Get.toNamed(AppRoutes.APP_VERSION),
+                ),
                 // _buildMenuCard(
                 //   icon: Icons.tv,
                 //   title: 'tv_list',

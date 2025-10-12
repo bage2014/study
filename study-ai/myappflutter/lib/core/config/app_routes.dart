@@ -17,6 +17,7 @@ import '../../presentation/pages/tv_player_page.dart';
 import '../../presentation/pages/tv_list_page.dart'; // 新增导入
 import '../../presentation/pages/live_all_page.dart'; // 新增导入
 import '../../presentation/pages/live_group_page.dart'; // 新增导入
+import '../../presentation/pages/app_version_page.dart'; // 新增应用版本页面导入
 
 class AppRoutes {
   static const String LOGIN = '/login';
@@ -40,6 +41,7 @@ class AppRoutes {
   static const String LIVE_ALL = '/live_all'; // 新增全部频道页面路由
   static const String LIVE_GROUP = '/live_group'; // 新增频道分组页面路由
   static const String LIVE_CHANNEL_GROUP = '/live_channel_group'; // 新增频道分组页面路由
+  static const String APP_VERSION = '/app_version'; // 新增应用版本页面路由
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -96,6 +98,11 @@ class AppRoutes {
         final args = Get.arguments;
         return TVGroupChannelPage(categoryName: args['categoryName']);
       },
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: APP_VERSION,
+      page: () => const AppVersionPage(),
       transition: Transition.fadeIn,
     ),
   ];
