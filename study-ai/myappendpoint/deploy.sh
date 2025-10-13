@@ -2,7 +2,7 @@
 
 # 配置远程服务器信息 - 请修改以下参数
 REMOTE_USER="bage"
-REMOTE_HOST="101.34.78.152"
+REMOTE_HOST="8.153.38.92"
 REMOTE_PATH="/home/bage/docker-images"
 
 # 配置Docker信息
