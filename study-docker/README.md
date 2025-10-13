@@ -21,9 +21,7 @@ Most users set up Docker’s repositories and install from them, for ease of ins
 
 配置仓库
 
-      yum-config-manager \
-      --add-repo \
-      https://download.docker.com/linux/centos/docker-ce.repo    
+      yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo    
 
 安装Docker 
 > yum install docker-ce
@@ -573,6 +571,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -888,6 +887,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
