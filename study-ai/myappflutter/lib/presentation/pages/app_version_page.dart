@@ -51,11 +51,11 @@ class _AppVersionPageState extends State<AppVersionPage> {
           _hasMore = newVersions.length == _pageSize;
         });
       } else {
-        Get.snackbar('错误', '获取版本列表失败: ${response['message'] ?? '未知错误'}');
+        Get.snackbar('error'.tr, 'fetch_version_failed'.tr + ': ${response['message'] ?? 'unknown_error'.tr}');
       }
     } catch (e) {
       LogUtil.error('获取版本列表异常: $e');
-      Get.snackbar('错误', '获取版本列表失败，请稍后重试');
+      Get.snackbar('error'.tr, 'fetch_version_failed'.tr + ', ' + 'retry_later'.tr);
     } finally {
       setState(() {
         _isLoading = false;
@@ -75,7 +75,7 @@ class _AppVersionPageState extends State<AppVersionPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '版本 ${version['version']}',
+                  '${'version'.tr} ${version['version']}',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -91,9 +91,9 @@ class _AppVersionPageState extends State<AppVersionPage> {
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Text(
-                      '强制更新',
-                      style: TextStyle(
+                    child: Text(
+                      'force_update'.tr,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -103,9 +103,9 @@ class _AppVersionPageState extends State<AppVersionPage> {
               ],
             ),
             const SizedBox(height: 8),
-            Text('发布日期: ${version['releaseDate']}'),
+            Text('${'release_date'.tr}: ${version['releaseDate']}'),
             const SizedBox(height: 8),
-            Text('更新内容: ${version['releaseNotes']}'),
+            Text('${'update_content'.tr}: ${version['releaseNotes']}'),
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
@@ -115,7 +115,7 @@ class _AppVersionPageState extends State<AppVersionPage> {
                   arguments: {'version': version['version']},
                 );
               },
-              child: const Text('更新应用'),
+              child: Text('update_app'.tr),
             ),
           ],
         ),
@@ -126,7 +126,7 @@ class _AppVersionPageState extends State<AppVersionPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: '应用版本',
+      title: 'app_version'.tr,
       body: Column(
         children: [
           // 刷新按钮
@@ -140,7 +140,7 @@ class _AppVersionPageState extends State<AppVersionPage> {
                       ? null
                       : () => _fetchVersions(refresh: true),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('刷新'),
+                  label: Text('refresh'.tr),
                 ),
               ],
             ),
@@ -149,14 +149,14 @@ class _AppVersionPageState extends State<AppVersionPage> {
           // 版本列表
           Expanded(
             child: _versions.isEmpty && !_isLoading
-                ? const Center(child: Text('暂无版本信息'))
+                ? Center(child: Text('no_version_info'.tr))
                 : ListView.builder(
                     itemCount: _versions.length + (_hasMore ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index == _versions.length) {
                         return _hasMore
-                            ? const Padding(
-                                padding: EdgeInsets.all(16),
+                            ? Padding(
+                                padding: const EdgeInsets.all(16),
                                 child: Center(
                                   child: CircularProgressIndicator(),
                                 ),

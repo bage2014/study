@@ -10,6 +10,9 @@ import com.bage.my.app.end.point.service.AppLikeService;
 import com.bage.my.app.end.point.service.IptvService;
 import com.bage.my.app.end.point.util.AuthUtil;
 import com.bage.my.app.end.point.util.JsonUtil;
+
+import jakarta.annotation.PostConstruct;
+
 import com.bage.my.app.end.point.model.request.SearchRequest;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +44,7 @@ public class IptvServiceImpl implements IptvService {
     private final String IPTV_URL = "https://iptv-org.github.io/iptv/index.m3u";
 
     @Override
+    @PostConstruct
     public List<IptvChannel> getAllChannels() {
         // 先从数据库查询
         List<IptvChannel> channels = channelRepository.findAll();

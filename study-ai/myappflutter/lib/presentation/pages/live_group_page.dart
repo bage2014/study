@@ -150,7 +150,7 @@ class _LiveGroupPageState extends State<LiveGroupPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: '频道分组',
+      title: 'channel_groups'.tr,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _hasError
@@ -160,11 +160,11 @@ class _LiveGroupPageState extends State<LiveGroupPage> {
                 children: [
                   const Icon(Icons.error, size: 64, color: Colors.red),
                   const SizedBox(height: 16),
-                  Text('加载失败: $_errorMessage'),
+                  Text('${'load_failed'.tr}$_errorMessage'),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _loadCategories,
-                    child: const Text('重试'),
+                    child: Text('retry'.tr),
                   ),
                 ],
               ),
@@ -177,7 +177,7 @@ class _LiveGroupPageState extends State<LiveGroupPage> {
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      labelText: '搜索频道',
+                      labelText: 'search_channel_groups'.tr,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.search),
                         onPressed: _performSearch,
@@ -190,7 +190,7 @@ class _LiveGroupPageState extends State<LiveGroupPage> {
                   child:
                       _categoryResponse == null ||
                           _categoryResponse!.categories.isEmpty
-                      ? const Center(child: Text('暂无频道数据'))
+                      ? Center(child: Text('no_channel_groups'.tr))
                       : ListView.builder(
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),

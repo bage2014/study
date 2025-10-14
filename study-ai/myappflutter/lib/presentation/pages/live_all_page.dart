@@ -187,7 +187,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
       // 可以选择显示一个提示信息
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('该频道没有可用的播放链接')));
+      ).showSnackBar(SnackBar(content: Text('channel_no_playable_link'.tr)));
     }
   }
 
@@ -196,7 +196,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
     if (channel.id == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('频道ID不存在，无法添加喜欢')));
+      ).showSnackBar(SnackBar(content: Text('channel_id_not_exist'.tr)));
       return;
     }
 
@@ -272,9 +272,9 @@ class _LiveAllPageState extends State<LiveAllPage> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('分组: ${channel.group}'),
-            Text('语言: ${channel.language}'),
-            Text('国家: ${channel.country}'),
+            Text('${'group'.tr}${channel.group}'),
+            Text('${'language'.tr}${channel.language}'),
+            Text('${'country'.tr}${channel.country}'),
           ],
         ),
         trailing: Row(
@@ -284,7 +284,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
             IconButton(
               icon: const Icon(Icons.play_arrow),
               onPressed: () => _onPlayTap(channel),
-              tooltip: '播放频道',
+              tooltip: 'play_channel'.tr,
             ),
             // 喜欢按钮
             IconButton(
@@ -293,7 +293,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
                 color: isFavorite ? Colors.red : null,
               ),
               onPressed: () => _onFavoriteTap(channel),
-              tooltip: isFavorite ? '取消喜欢' : '添加喜欢',
+              tooltip: isFavorite ? 'remove_favorite'.tr : 'add_favorite'.tr,
             ),
           ],
         ),
@@ -337,7 +337,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
         content = _favoriteChannels.isEmpty
             ? Container(
                 color: Theme.of(context).scaffoldBackgroundColor, // 与主题背景色一致
-                child: const Center(child: Text('暂无喜欢的频道')),
+                child: Center(child: Text('no_favorite_channels'.tr)),
               )
             : NotificationListener<ScrollNotification>(
                 onNotification: (scrollInfo) {
@@ -367,7 +367,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
         content = _allChannels.isEmpty
             ? Container(
                 color: Theme.of(context).scaffoldBackgroundColor, // 与主题背景色一致
-                child: const Center(child: Text('暂无频道数据')),
+                child: Center(child: Text('no_channel_data'.tr)),
               )
             : NotificationListener<ScrollNotification>(
                 onNotification: (scrollInfo) {
@@ -395,7 +395,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
       default:
         content = Container(
           color: Theme.of(context).scaffoldBackgroundColor, // 与主题背景色一致
-          child: const Center(child: Text('未知标签')),
+          child: Center(child: Text('unknown_tab'.tr)),
         );
     }
 
@@ -411,7 +411,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
       // 使用Scaffold作为根组件，确保bottomNavigationBar正常工作
       body: BasePage(
         // 添加右上角分组按钮
-        title: '频道列表',
+        title: 'channel_list'.tr,
         actions: [
           IconButton(
             icon: const Icon(Icons.group),
@@ -419,7 +419,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
               // 跳转到LiveGroupPage页面
               Get.toNamed(AppRoutes.LIVE_GROUP);
             },
-            tooltip: '按分组查看频道',
+            tooltip: 'view_by_group'.tr,
           ),
         ],
         body: _isLoading
@@ -436,7 +436,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
                     children: [
                       const Icon(Icons.error, size: 64, color: Colors.red),
                       const SizedBox(height: 16),
-                      Text('加载失败: $_errorMessage'),
+                      Text('${'load_failed'.tr}$_errorMessage'),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
@@ -446,7 +446,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
                             _loadAllChannels();
                           }
                         },
-                        child: const Text('重试'),
+                        child: Text('retry'.tr),
                       ),
                     ],
                   ),
@@ -463,7 +463,7 @@ class _LiveAllPageState extends State<LiveAllPage> {
                     child: TextField(
                       controller: _searchController,
                       decoration: InputDecoration(
-                        labelText: '搜索频道',
+                        labelText: 'search_channels'.tr,
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.search),
                           onPressed: _performSearch,
@@ -481,9 +481,9 @@ class _LiveAllPageState extends State<LiveAllPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentTab,
         onTap: _onTabChanged,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '喜欢'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: '所有'),
+        items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.favorite), label: 'favorites'.tr),
+          BottomNavigationBarItem(icon: const Icon(Icons.list), label: 'all'.tr),
         ],
       ),
     );

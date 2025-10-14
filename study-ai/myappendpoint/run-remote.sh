@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # 配置区域 - 请修改以下参数
-REMOTE_USER="bage"REMOTE_HOST="8.153.38.92"
+REMOTE_USER="bage"
+REMOTE_HOST="8.153.38.92"
 
 REMOTE_PATH="/home/bage/docker-images"
 DOCKER_IMAGE_NAME="myappendpoint"

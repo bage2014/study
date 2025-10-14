@@ -40,7 +40,7 @@ class _UpdatePageState extends State<UpdatePage> {
       final bool result = await openAppSettings();
       if (result) {
         // 用户已跳转到设置页面，等待用户返回
-        Get.snackbar('提示', '请在系统设置中授权"安装未知应用"权限');
+        Get.snackbar('prompt'.tr, '请在系统设置中授权"安装未知应用"权限');
         return true;
       }
       return false;
@@ -58,22 +58,22 @@ class _UpdatePageState extends State<UpdatePage> {
     }
 
     // 如果没有权限，请求用户授权
-    Get.snackbar('提示', '需要授权安装未知应用权限才能安装APK');
+    Get.snackbar('prompt'.tr, '需要授权安装未知应用权限才能安装APK');
 
     // 显示确认对话框
     final bool confirm =
         await Get.dialog<bool>(
           AlertDialog(
-            title: const Text('安装权限'),
-            content: const Text('需要授权"安装未知应用"权限才能安装APK。是否跳转到系统设置页面授权？'),
+            title: Text('install_permission'.tr),
+            content: Text('install_permission_required'.tr),
             actions: [
               TextButton(
                 onPressed: () => Get.back(result: false),
-                child: const Text('取消'),
+                child: Text('cancel'.tr),
               ),
               TextButton(
                 onPressed: () => Get.back(result: true),
-                child: const Text('去授权'),
+                child: Text('go_to_authorize'.tr),
               ),
             ],
           ),
@@ -127,7 +127,7 @@ class _UpdatePageState extends State<UpdatePage> {
       // 检查并请求安装权限
       final bool hasPermission = await _checkAndRequestInstallPermission();
       if (!hasPermission) {
-        Get.snackbar('提示', '安装权限未授权，无法安装APK');
+        Get.snackbar('prompt'.tr, '安装权限未授权，无法安装APK');
         return;
       }
 
@@ -214,7 +214,7 @@ class _UpdatePageState extends State<UpdatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('更新到版本 ${widget.version}')),
+      appBar: AppBar(title: Text('${'update_to_version'.tr} ${widget.version}')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -226,23 +226,23 @@ class _UpdatePageState extends State<UpdatePage> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    const Text(
-                      '方法1：浏览器下载',
-                      style: TextStyle(
+                    Text(
+                      'method_browser_download'.tr,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      '通过浏览器下载APK文件',
-                      style: TextStyle(color: Colors.grey),
+                    Text(
+                      'download_via_browser'.tr,
+                      style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 16),
                     if (_isDownloading) const CircularProgressIndicator(),
                     ElevatedButton(
                       onPressed: _isDownloading ? null : _downloadUpdate,
-                      child: Text(_isDownloading ? '处理中...' : '浏览器下载'),
+                      child: Text(_isDownloading ? 'processing'.tr : 'browser_download'.tr),
                     ),
                   ],
                 ),
@@ -256,17 +256,17 @@ class _UpdatePageState extends State<UpdatePage> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    const Text(
-                      '方法2：应用内下载',
-                      style: TextStyle(
+                    Text(
+                      'method_app_download'.tr,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      '直接在应用内下载并安装APK',
-                      style: TextStyle(color: Colors.grey),
+                    Text(
+                      'download_and_install_in_app'.tr,
+                      style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 16),
 
@@ -286,7 +286,7 @@ class _UpdatePageState extends State<UpdatePage> {
                           const SizedBox(height: 8),
                           // 进度百分比
                           Text(
-                            '下载进度: ${_downloadProgress.toStringAsFixed(1)}%',
+                            '${'download_progress'.tr} ${_downloadProgress.toStringAsFixed(1)}%',
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -306,7 +306,7 @@ class _UpdatePageState extends State<UpdatePage> {
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
                       ),
-                      child: Text(_isDownloadingApp ? '下载中...' : '应用内下载'),
+                      child: Text(_isDownloadingApp ? 'downloading'.tr : 'in_app_download'.tr),
                     ),
                   ],
                 ),
