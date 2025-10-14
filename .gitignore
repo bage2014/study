@@ -1,2 +1,3 @@
 /study-ai/myappweb/node_modules
 *.DS_Store
+study-ai/myappendpoint/src/main/resources/local.properties
