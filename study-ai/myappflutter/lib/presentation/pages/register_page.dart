@@ -104,6 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                     // 简单的邮箱格式验证
                     if (!value.contains('@')) {
+                      LogUtil.info('value: $value');
                       return 'valid_email_required'.tr;
                     }
                     return null;
@@ -168,7 +169,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : Text('next_step'.tr, style: const TextStyle(fontSize: 16.0)),
+                      : Text(
+                          'next_step'.tr,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
                 ),
               ] else if (_step == 2) ...[
                 // 第二步：显示邮箱(不可编辑)、邮箱验证码、密码、确认密码
@@ -253,7 +257,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : Text('register_now'.tr, style: const TextStyle(fontSize: 16.0)),
+                      : Text(
+                          'register_now'.tr,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
                 ),
               ],
               const SizedBox(height: 20.0),
@@ -279,7 +286,8 @@ class _RegisterPageState extends State<RegisterPage> {
   void _refreshCaptcha() {
     _generateRequestId(); // 生成新的requestId
     setState(() {
-      _captchaUrl = '/captcha?timestamp=${DateTime.now().millisecondsSinceEpoch}&requestId=$_requestId';
+      _captchaUrl =
+          '/captcha?timestamp=${DateTime.now().millisecondsSinceEpoch}&requestId=$_requestId';
     });
   }
 
@@ -301,14 +309,20 @@ class _RegisterPageState extends State<RegisterPage> {
         );
 
         if (response['code'] == 200) {
-          Get.snackbar('captcha_sent'.tr, response['message'] ?? 'captcha_send_success'.tr);
+          Get.snackbar(
+            'captcha_sent'.tr,
+            response['message'] ?? 'captcha_send_success'.tr,
+          );
           setState(() {
             _step = 2;
             _emailVerified = true;
             _captchaController.clear();
           });
         } else {
-          Get.snackbar('captcha_send_failed'.tr, response['message'] ?? 'captcha_send_failed'.tr);
+          Get.snackbar(
+            'captcha_send_failed'.tr,
+            response['message'] ?? 'captcha_send_failed'.tr,
+          );
           // 刷新验证码
           _refreshCaptcha();
         }
@@ -346,7 +360,10 @@ class _RegisterPageState extends State<RegisterPage> {
             Get.offNamed(AppRoutes.LOGIN);
           });
         } else {
-          Get.snackbar('registration_failed'.tr, response['message'] ?? 'unknown_error'.tr);
+          Get.snackbar(
+            'registration_failed'.tr,
+            response['message'] ?? 'unknown_error'.tr,
+          );
         }
       } catch (e) {
         LogUtil.error(e.toString(), error: e);
