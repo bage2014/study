@@ -35,8 +35,8 @@ public class SimpleOrderManager implements OrderManager {
                 SimpleMailMessage message = new SimpleMailMessage();
                 message.setFrom("893542907@qq.com");
                 message.setTo("1305039488@qq.com");
-                message.setSubject("花花 vs 璐璐");
-                message.setText("测试，花花 + 璐璐: " + i);
+                message.setSubject("花花");
+                message.setText("测试: " + i);
                 emailSender.send(message);
             }
         }

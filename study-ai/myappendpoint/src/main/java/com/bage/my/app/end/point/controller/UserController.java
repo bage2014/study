@@ -2,6 +2,8 @@ package com.bage.my.app.end.point.controller;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
 import com.bage.my.app.end.point.entity.User;
 import com.bage.my.app.end.point.entity.UserToken;
 import com.bage.my.app.end.point.repository.UserRepository;
@@ -44,6 +46,8 @@ public class UserController {
     private JavaMailSender mailSender;
     @Autowired
     private CaptchaController captchaController;
+    @Autowired
+    private Environment environment;
 
     @RequestMapping("/profile")
     public ApiResponse<User> profile() {
@@ -223,6 +227,7 @@ public class UserController {
 
         // 发送邮件
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(environment.getProperty("spring.mail.username"));
         message.setTo(request.getEmail());
         message.setSubject("您的验证码");
         message.setText("您的验证码是: " + emailCaptcha + "，有效期为5分钟");
