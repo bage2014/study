@@ -28,6 +28,8 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
+    // 设置邮箱默认值
+    _emailController.text = '321502897@qq.com';
     // 生成初始requestId
     _generateRequestId();
     // 初始化验证码URL，包含requestId
