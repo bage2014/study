@@ -59,6 +59,14 @@ API调用方式支持
 
 
 
+## MCP Server
+
+https://github.com/punkpeye/awesome-mcp-servers
+
+https://juejin.cn/post/7495966937101844530
+
+
+
 ## 快速开始
 
 下载运行
