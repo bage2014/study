@@ -120,7 +120,8 @@ public class AppVersionController {
                     LocalDate.now(), 
                     releaseNotes != null ? releaseNotes : "", 
                     downloadUrl, 
-                    forceUpdate
+                    forceUpdate,
+                    fileId
             );
             appVersion = appVersionService.saveVersion(appVersion);
             

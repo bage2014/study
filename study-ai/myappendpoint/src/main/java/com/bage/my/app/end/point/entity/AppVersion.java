@@ -19,14 +19,17 @@ public class AppVersion {
     private String releaseNotes;
     private String downloadUrl;
     private boolean forceUpdate;
+    private String fileId;
 
     public AppVersion() {}
 
-    public AppVersion(String version, LocalDate releaseDate, String releaseNotes, String downloadUrl, boolean forceUpdate) {
+
+    public AppVersion(String version, LocalDate releaseDate, String releaseNotes, String downloadUrl, boolean forceUpdate, String fileId) {
         this.version = version;
         this.releaseDate = releaseDate;
         this.releaseNotes = releaseNotes;
         this.downloadUrl = downloadUrl;
         this.forceUpdate = forceUpdate;
+        this.fileId = fileId;
     }
 }
