@@ -22,7 +22,7 @@ public class ScopedValueTest {
 
     public static void main(String[] args) {
         new ScopedValueTest().foo();
-//        new ScopedValueTest().bar();
-//        new ScopedValueTest().baz();
+        new ScopedValueTest().bar();
+        new ScopedValueTest().baz();
     }
 }
