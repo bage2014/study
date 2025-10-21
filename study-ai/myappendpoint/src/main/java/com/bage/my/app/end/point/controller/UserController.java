@@ -2,7 +2,6 @@ package com.bage.my.app.end.point.controller;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
 import com.bage.my.app.end.point.entity.User;
 import com.bage.my.app.end.point.entity.UserToken;

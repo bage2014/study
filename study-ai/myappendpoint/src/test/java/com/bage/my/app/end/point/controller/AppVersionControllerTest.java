@@ -1,7 +1,6 @@
 package com.bage.my.app.end.point.controller;
 
 import com.bage.my.app.end.point.entity.AppVersion;
-import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.service.AppVersionService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
