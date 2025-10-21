@@ -98,7 +98,10 @@ ssh -o ControlPath="${CONTROL_PATH}" "${REMOTE_USER}@${REMOTE_HOST}" << EOF
   fi
 
   # 启动新容器
-  docker run -d -p ${HOST_PORT}:${CONTAINER_PORT} --name "${CONTAINER_NAME}" "${DOCKER_IMAGE}"
+  docker run -d -p ${HOST_PORT}:${CONTAINER_PORT} --name "${CONTAINER_NAME}" \
+    -e APP_UPDATE_FILE_DIR=/data/uploads \
+    -v /home/bage/uploads:/data/uploads \
+    "${DOCKER_IMAGE}"
 
   # 清理远程文件
   rm -f "${REMOTE_PATH}/${DOCKER_TAR_FILE}"

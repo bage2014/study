@@ -46,11 +46,11 @@ public class AppVersionService {
     public void initDefaultVersions() {
         // 初始化5个版本
         if (appVersionRepository.count() == 0) {
-            saveVersion(new AppVersion("1.0.0", LocalDate.now().plusDays(-20), "初始版本", "", false));
-            saveVersion(new AppVersion("1.1.0", LocalDate.now().plusDays(-10), "修复了登录问题", "", false));
-            saveVersion(new AppVersion("1.2.0", LocalDate.now().plusDays(-8), "新增功能", "", false));
-            saveVersion(new AppVersion("2.0.0", LocalDate.now().plusDays(-2), "全新UI设计", "", true));
-            saveVersion(new AppVersion("2.1.0", LocalDate.now(), "性能优化", "", false));
+            saveVersion(new AppVersion("1.0.0", LocalDate.now().plusDays(-20), "初始版本", "", false, "file1"));
+            saveVersion(new AppVersion("1.1.0", LocalDate.now().plusDays(-10), "修复了登录问题", "", false, "file2"));
+            saveVersion(new AppVersion("1.2.0", LocalDate.now().plusDays(-8), "新增功能", "", false, "file3"));
+            saveVersion(new AppVersion("2.0.0", LocalDate.now().plusDays(-2), "全新UI设计", "", true, "file4"));
+            saveVersion(new AppVersion("2.1.0", LocalDate.now(), "性能优化", "", false, "file5"));
         }
     }
 }

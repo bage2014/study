@@ -13,3 +13,6 @@ EXPOSE 8080
 
 # 设置容器启动时执行的命令
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# 设置环境变量默认值
+ENV APP_UPDATE_FILE_DIR=/app/upload
