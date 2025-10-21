@@ -56,7 +56,7 @@ class AppVersionControllerTest {
         }
 
         // Mock服务层方法
-        AppVersion mockAppVersion = new AppVersion(version, LocalDate.now(), releaseNotes, "/app/files/test.apk", forceUpdate);
+        AppVersion mockAppVersion = new AppVersion(version, LocalDate.now(), releaseNotes, "/app/files/test.apk", forceUpdate, "test.apk");
         mockAppVersion.setId(1L);
         when(appVersionService.saveVersion(any(AppVersion.class))).thenReturn(mockAppVersion);
 
