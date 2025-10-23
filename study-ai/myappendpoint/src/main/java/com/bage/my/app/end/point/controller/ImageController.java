@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.repository.UserRepository;
+import com.bage.my.app.end.point.service.FileService;
 import com.bage.my.app.end.point.util.AuthUtil;
 
 import jakarta.servlet.ServletOutputStream;
@@ -37,27 +38,17 @@ public class ImageController {
     @Autowired
     private UserRepository userRepository;
 
-    // 图片存储目录
-    @Value("${app.update.file-dir:./app-updates}")
-    private String fileDir;
+    @Autowired
+    private FileService fileService;
 
 
     // 上传文件
     @PostMapping("/upload")
     public ApiResponse<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
-            // 创建存储目录
-            Path uploadPath = Paths.get(fileDir);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            // 生成唯一文件名
-            String fileId = UUID.randomUUID().toString();
-            String fileName = fileId + "_" + file.getOriginalFilename();
-            Path filePath = uploadPath.resolve(fileName);
-            Files.copy(file.getInputStream(), filePath);
-
+            // 使用FileService处理文件上传
+            Map<String, String> fileInfo = fileService.uploadFile(file);
+            String fileName = fileInfo.get("fileName");
 
             Long userId = AuthUtil.getCurrentUserId();
             log.info("userId: {}", userId);
@@ -69,10 +60,10 @@ public class ImageController {
             User result = userRepository.save(existingUser);
             log.info("result: {}", result);
 
-            // 返回文件ID
+            // 返回文件信息
             Map<String, String> response = new HashMap<>();
-            response.put("fileId", fileId);
-            response.put("originalFileName", file.getOriginalFilename());
+            response.put("fileId", fileInfo.get("fileId"));
+            response.put("originalFileName", fileInfo.get("originalFileName"));
             response.put("fileName", fileName);
             return new ApiResponse<>(200, "文件上传成功", response);
         } catch (IOException e) {
@@ -89,8 +80,7 @@ public class ImageController {
     public void getImage(@PathVariable String fileName, HttpServletResponse response) throws IOException {
         try {
             // 构建图片路径
-            Path uploadPath = Paths.get(fileDir);
-            Path imagePath = uploadPath.resolve(fileName);
+            Path imagePath = fileService.getFilePath(fileName);
 
             // 检查文件是否存在
             if (!Files.exists(imagePath) || !Files.isRegularFile(imagePath)) {
