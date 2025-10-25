@@ -109,10 +109,10 @@ class _AppVersionPageState extends State<AppVersionPage> {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
-                // 跳转到更新页面
+                // 跳转到更新页面，传递整个version对象
                 Get.toNamed(
                   AppRoutes.UPDATE,
-                  arguments: {'version': version['version']},
+                  arguments: {'version': version},
                 );
               },
               child: Text('update_app'.tr),

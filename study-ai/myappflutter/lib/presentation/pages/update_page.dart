@@ -10,7 +10,7 @@ import 'package:permission_handler/permission_handler.dart'; // 导入权限处�
 import 'dart:io'; // 导入IO操作
 
 class UpdatePage extends StatefulWidget {
-  final String version;
+  final Map<String, dynamic> version;
 
   const UpdatePage({super.key, required this.version});
 
@@ -96,7 +96,7 @@ class _UpdatePageState extends State<UpdatePage> {
     try {
       // 使用HttpClient构建下载URL
       final downloadUrl = _httpClient
-          .buildUri('/app/download/12345', null)
+          .buildUri('/app/download/${widget.version}', null)
           .toString();
       LogUtil.info('下载URL: $downloadUrl');
 
@@ -133,7 +133,7 @@ class _UpdatePageState extends State<UpdatePage> {
 
       // 构建APK下载URL
       final downloadUrl = _httpClient
-          .buildUri('/app/download/12345', null)
+          .buildUri('/app/download/${widget.version['fileId']}', null)
           .toString();
 
       LogUtil.info('APK下载URL: $downloadUrl');
@@ -214,7 +214,9 @@ class _UpdatePageState extends State<UpdatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('${'update_to_version'.tr} ${widget.version}')),
+      appBar: AppBar(
+        title: Text('${'update_to_version'.tr} ${widget.version['version']}'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -242,7 +244,11 @@ class _UpdatePageState extends State<UpdatePage> {
                     if (_isDownloading) const CircularProgressIndicator(),
                     ElevatedButton(
                       onPressed: _isDownloading ? null : _downloadUpdate,
-                      child: Text(_isDownloading ? 'processing'.tr : 'browser_download'.tr),
+                      child: Text(
+                        _isDownloading
+                            ? 'processing'.tr
+                            : 'browser_download'.tr,
+                      ),
                     ),
                   ],
                 ),
@@ -306,7 +312,11 @@ class _UpdatePageState extends State<UpdatePage> {
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
                       ),
-                      child: Text(_isDownloadingApp ? 'downloading'.tr : 'in_app_download'.tr),
+                      child: Text(
+                        _isDownloadingApp
+                            ? 'downloading'.tr
+                            : 'in_app_download'.tr,
+                      ),
                     ),
                   ],
                 ),
