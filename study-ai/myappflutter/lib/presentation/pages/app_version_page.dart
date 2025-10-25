@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myappflutter/core/config/app_routes.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
+import 'package:myappflutter/data/models/version_model.dart';
 import '../widgets/base_page.dart';
 
 class AppVersionPage extends StatefulWidget {
@@ -14,7 +15,7 @@ class AppVersionPage extends StatefulWidget {
 
 class _AppVersionPageState extends State<AppVersionPage> {
   final HttpClient _httpClient = HttpClient();
-  List<dynamic> _versions = [];
+  List<Version> _versions = [];
   bool _isLoading = false;
   bool _hasMore = true;
   int _currentPage = 0;
@@ -42,8 +43,8 @@ class _AppVersionPageState extends State<AppVersionPage> {
       final response = await _httpClient.get('/app/versions');
 
       if (response['code'] == 200 && response['data'] != null) {
-        final data = response['data'];
-        final List<dynamic> newVersions = data['versions'] ?? [];
+        final List<dynamic> versionData = response['data']['versions'] ?? [];
+        final List<Version> newVersions = versionData.map<Version>((item) => Version.fromJson(item)).toList();
 
         setState(() {
           _versions.addAll(newVersions);
@@ -51,11 +52,18 @@ class _AppVersionPageState extends State<AppVersionPage> {
           _hasMore = newVersions.length == _pageSize;
         });
       } else {
-        Get.snackbar('error'.tr, 'fetch_version_failed'.tr + ': ${response['message'] ?? 'unknown_error'.tr}');
+        Get.snackbar(
+          'error'.tr,
+          'fetch_version_failed'.tr +
+              ': ${response['message'] ?? 'unknown_error'.tr}',
+        );
       }
     } catch (e) {
       LogUtil.error('获取版本列表异常: $e');
-      Get.snackbar('error'.tr, 'fetch_version_failed'.tr + ', ' + 'retry_later'.tr);
+      Get.snackbar(
+        'error'.tr,
+        'fetch_version_failed'.tr + ', ' + 'retry_later'.tr,
+      );
     } finally {
       setState(() {
         _isLoading = false;
@@ -63,7 +71,7 @@ class _AppVersionPageState extends State<AppVersionPage> {
     }
   }
 
-  Widget _buildVersionCard(Map<String, dynamic> version) {
+  Widget _buildVersionCard(Version version) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Padding(
@@ -75,13 +83,13 @@ class _AppVersionPageState extends State<AppVersionPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${'version'.tr} ${version['version']}',
+                  '${'version'.tr} ${version.version}',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                if (version['forceUpdate'] == true)
+                if (version.forceUpdate == true)
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -103,17 +111,14 @@ class _AppVersionPageState extends State<AppVersionPage> {
               ],
             ),
             const SizedBox(height: 8),
-            Text('${'release_date'.tr}: ${version['releaseDate']}'),
+            Text('${'release_date'.tr}: ${version.releaseDate}'),
             const SizedBox(height: 8),
-            Text('${'update_content'.tr}: ${version['releaseNotes']}'),
+            Text('${'update_content'.tr}: ${version.releaseNotes}'),
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
                 // 跳转到更新页面，传递整个version对象
-                Get.toNamed(
-                  AppRoutes.UPDATE,
-                  arguments: {'version': version},
-                );
+                Get.toNamed(AppRoutes.UPDATE, arguments: {'version': version});
               },
               child: Text('update_app'.tr),
             ),

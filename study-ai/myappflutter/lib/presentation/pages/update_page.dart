@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:myappflutter/data/api/http_client.dart'; // 导入HttpClient组件
+import 'package:myappflutter/data/models/version_model.dart';
 import 'package:path_provider/path_provider.dart'; // 导入路径提供者
 import 'package:path/path.dart' as path; // 导入路径处理
 import 'package:open_file/open_file.dart'; // 导入文件打开功能
@@ -10,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart'; // 导入权限处�
 import 'dart:io'; // 导入IO操作
 
 class UpdatePage extends StatefulWidget {
-  final Map<String, dynamic> version;
+  final Version version;
 
   const UpdatePage({super.key, required this.version});
 
@@ -96,7 +97,10 @@ class _UpdatePageState extends State<UpdatePage> {
     try {
       // 使用HttpClient构建下载URL
       final downloadUrl = _httpClient
-          .buildUri('/app/download/${widget.version}', null)
+          .buildUri(
+            '/app/download/${widget.version.fileId ?? widget.version.id ?? widget.version.version}',
+            null,
+          )
           .toString();
       LogUtil.info('下载URL: $downloadUrl');
 
@@ -133,7 +137,10 @@ class _UpdatePageState extends State<UpdatePage> {
 
       // 构建APK下载URL
       final downloadUrl = _httpClient
-          .buildUri('/app/download/${widget.version['fileId']}', null)
+          .buildUri(
+            '/app/download/${widget.version.fileId ?? widget.version.id ?? widget.version.version}',
+            null,
+          )
           .toString();
 
       LogUtil.info('APK下载URL: $downloadUrl');
@@ -155,7 +162,7 @@ class _UpdatePageState extends State<UpdatePage> {
       }
 
       // 构建APK文件名
-      final String fileName = 'myapp_v${widget.version}.apk';
+      final String fileName = 'myapp_v${widget.version.version}.apk';
       final String filePath = path.join(downloadDir, fileName);
 
       // 下载APK文件
@@ -215,74 +222,36 @@ class _UpdatePageState extends State<UpdatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${'update_to_version'.tr} ${widget.version['version']}'),
+        title: Text('${'update_to_version'.tr} ${widget.version.version}'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 方法1：浏览器下载
+            // 版本信息卡片
             Card(
-              margin: const EdgeInsets.all(16),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text(
-                      'method_browser_download'.tr,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'download_via_browser'.tr,
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    const SizedBox(height: 16),
-                    if (_isDownloading) const CircularProgressIndicator(),
-                    ElevatedButton(
-                      onPressed: _isDownloading ? null : _downloadUpdate,
-                      child: Text(
-                        _isDownloading
-                            ? 'processing'.tr
-                            : 'browser_download'.tr,
-                      ),
-                    ),
-                  ],
-                ),
+              child: Text(
+                  widget.version.releaseNotes,
+                  style: const TextStyle(fontSize: 14, height: 1.5),
               ),
             ),
+            const SizedBox(height: 20),
 
-            // 方法2：应用内下载
+            // 下载选项卡片
             Card(
-              margin: const EdgeInsets.all(16),
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(16),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'method_app_download'.tr,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'download_and_install_in_app'.tr,
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // 下载进度显示
+                    // 下载进度显示（应用内下载时显示）
                     if (_isDownloadingApp) ...[
                       Column(
                         children: [
                           // 进度条
                           LinearProgressIndicator(
-                            value: _downloadProgress,
+                            value: _downloadProgress / 100,
                             backgroundColor: Colors.grey[300],
                             valueColor: AlwaysStoppedAnimation<Color>(
                               Colors.green,
@@ -304,19 +273,121 @@ class _UpdatePageState extends State<UpdatePage> {
                       ),
                     ],
 
-                    ElevatedButton(
-                      onPressed: _isDownloadingApp
-                          ? null
-                          : _downloadAndInstallApp,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: Text(
-                        _isDownloadingApp
-                            ? 'downloading'.tr
-                            : 'in_app_download'.tr,
-                      ),
+                    // 下载按钮行
+                    Row(
+                      children: [
+                        // 浏览器下载按钮
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Icon(
+                                Icons.language,
+                                size: 40,
+                                color: Colors.blue,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'browser_download'.tr,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'download_via_browser'.tr,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 12),
+                              ElevatedButton(
+                                onPressed: _isDownloading
+                                    ? null
+                                    : _downloadUpdate,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                                child: _isDownloading
+                                    ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                Colors.white,
+                                              ),
+                                        ),
+                                      )
+                                    : Text('browser_download'.tr),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(width: 16),
+
+                        // 应用内下载按钮
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Icon(
+                                Icons.download,
+                                size: 40,
+                                color: Colors.green,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'in_app_download'.tr,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'download_and_install_in_app'.tr,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 12),
+                              ElevatedButton(
+                                onPressed: _isDownloadingApp
+                                    ? null
+                                    : _downloadAndInstallApp,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                                child: _isDownloadingApp
+                                    ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                Colors.white,
+                                              ),
+                                        ),
+                                      )
+                                    : Text('in_app_download'.tr),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
