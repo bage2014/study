@@ -2,6 +2,9 @@ package com.bage.my.app.end.point.service;
 
 import com.bage.my.app.end.point.entity.AppVersion;
 import com.bage.my.app.end.point.repository.AppVersionRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AppVersionService {
     @Autowired
     private AppVersionRepository appVersionRepository;
@@ -52,5 +56,6 @@ public class AppVersionService {
             saveVersion(new AppVersion("2.0.0", LocalDate.now().plusDays(-2), "全新UI设计", "", true, "file4"));
             saveVersion(new AppVersion("2.1.0", LocalDate.now(), "性能优化", "", false, "file5"));
         }
+        log.info("Initialized default versions count: {}", appVersionRepository.count());
     }
 }

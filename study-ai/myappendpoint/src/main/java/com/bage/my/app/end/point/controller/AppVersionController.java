@@ -16,6 +16,7 @@ import com.bage.my.app.end.point.entity.AppVersion;
 import com.bage.my.app.end.point.entity.ApiResponse;
 import com.bage.my.app.end.point.model.response.AppVersionListResponse;
 import com.bage.my.app.end.point.service.AppVersionService;
+import com.bage.my.app.end.point.util.JsonUtil;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,6 +49,17 @@ public class AppVersionController {
         appVersionService.initDefaultVersions();
     }
 
+    // 访问文件
+    @RequestMapping("/version/all")
+    public ApiResponse<List<AppVersion>> getAllVersions() {
+        try {
+            return ApiResponse.success(appVersionService.getAllVersions());
+        } catch (Exception e) {
+            log.error("获取所有版本失败: {}", e.getMessage());
+            throw new RuntimeException("获取所有版本失败", e);
+        }
+    }
+
     // 查看版本列表（支持分页）
     @RequestMapping("/versions")
     public ApiResponse<AppVersionListResponse> getVersions(
@@ -54,6 +67,7 @@ public class AppVersionController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String keyword) {
         
+        log.info("Request parameters - page: {}, size: {}, keyword: {}", page, size, keyword);
         Page<AppVersion> versionsPage;
         if (keyword != null && !keyword.trim().isEmpty()) {
             log.info("Searching versions with keyword: {}", keyword);
@@ -61,7 +75,7 @@ public class AppVersionController {
         } else {
             versionsPage = appVersionService.getVersionsByPage(page, size);
         }
-        
+        log.info("versionsPage content: {}", JsonUtil.toJson(versionsPage.getContent()));
         AppVersionListResponse response = new AppVersionListResponse(
                 versionsPage.getContent(),
                 versionsPage.getTotalElements(),

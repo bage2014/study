@@ -16,6 +16,9 @@ public class AuthConfig {
 
             "/app/download/**",
 
+
+            "/app/version/all",
+
             "/checkToken",
             "/refreshToken",
 

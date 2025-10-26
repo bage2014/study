@@ -28,27 +28,26 @@ class _AppVersionPageState extends State<AppVersionPage> {
   }
 
   Future<void> _fetchVersions({bool refresh = false}) async {
+    return _fetchPage(1);
+  }
+
+  Future<void> _fetchPage(int page) async {
     if (_isLoading) return;
 
     setState(() {
       _isLoading = true;
-      if (refresh) {
-        _currentPage = 0;
-        _versions.clear();
-        _hasMore = true;
-      }
     });
 
     try {
-      final response = await _httpClient.get('/app/versions');
+      final response = await _httpClient.get('/app/versions?page=$page&size=$_pageSize');
 
       if (response['code'] == 200 && response['data'] != null) {
         final List<dynamic> versionData = response['data']['versions'] ?? [];
         final List<Version> newVersions = versionData.map<Version>((item) => Version.fromJson(item)).toList();
 
         setState(() {
-          _versions.addAll(newVersions);
-          _currentPage++;
+          _versions = newVersions;
+          _currentPage = page;
           _hasMore = newVersions.length == _pageSize;
         });
       } else {
@@ -156,22 +155,49 @@ class _AppVersionPageState extends State<AppVersionPage> {
             child: _versions.isEmpty && !_isLoading
                 ? Center(child: Text('no_version_info'.tr))
                 : ListView.builder(
-                    itemCount: _versions.length + (_hasMore ? 1 : 0),
+                    itemCount: _versions.length,
                     itemBuilder: (context, index) {
-                      if (index == _versions.length) {
-                        return _hasMore
-                            ? Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            : Container();
-                      }
                       return _buildVersionCard(_versions[index]);
                     },
                   ),
           ),
+
+          // 分页控件
+          if (_versions.isNotEmpty)
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // 上一页按钮
+                  ElevatedButton.icon(
+                    onPressed: _currentPage > 1 && !_isLoading
+                        ? () => _fetchPage(_currentPage - 1)
+                        : null,
+                    icon: const Icon(Icons.arrow_back),
+                    label: Text('previous_page'.tr),
+                  ),
+
+                  // 页码显示
+                  Text(
+                    '${'page'.tr} $_currentPage',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  // 下一页按钮
+                  ElevatedButton.icon(
+                    onPressed: _hasMore && !_isLoading
+                        ? () => _fetchPage(_currentPage + 1)
+                        : null,
+                    icon: const Icon(Icons.arrow_forward),
+                    label: Text('next_page'.tr),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );
