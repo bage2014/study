@@ -36,8 +36,31 @@ public class AppVersionService {
     
     // 分页获取版本列表
     public Page<AppVersion> getVersionsByPage(int page, int size) {
+        // 参数验证和默认值设置
+        if (page < 0) {
+            log.warn("页码不能为负数，已自动设置为0。输入页码: {}", page);
+            page = 0;
+        }
+        
+        if (size <= 0) {
+            log.warn("每页大小必须大于0，已自动设置为10。输入大小: {}", size);
+            size = 10;
+        }
+        
+        // 限制最大页面大小，防止内存溢出
+        int maxPageSize = 100;
+        if (size > maxPageSize) {
+            log.warn("每页大小超过最大限制{}，已自动设置为最大值。输入大小: {}", maxPageSize, size);
+            size = maxPageSize;
+        }
+        
         Pageable pageable = PageRequest.of(page, size);
-        return appVersionRepository.findAll(pageable);
+        Page<AppVersion> result = appVersionRepository.findAll(pageable);
+        
+        log.debug("分页查询结果 - 页码: {}, 每页大小: {}, 总记录数: {}, 总页数: {}", 
+            page, size, result.getTotalElements(), result.getTotalPages());
+        
+        return result;
     }
     
     // 根据关键词分页搜索版本
