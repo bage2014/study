@@ -57,7 +57,7 @@ public class AppVersionService {
         Pageable pageable = PageRequest.of(page, size);
         Page<AppVersion> result = appVersionRepository.findAll(pageable);
         
-        log.debug("分页查询结果 - 页码: {}, 每页大小: {}, 总记录数: {}, 总页数: {}", 
+        log.info("分页查询结果 - 页码: {}, 每页大小: {}, 总记录数: {}, 总页数: {}", 
             page, size, result.getTotalElements(), result.getTotalPages());
         
         return result;
