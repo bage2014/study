@@ -39,11 +39,15 @@ class _AppVersionPageState extends State<AppVersionPage> {
     });
 
     try {
-      final response = await _httpClient.get('/app/versions?page=$page&size=$_pageSize');
+      final response = await _httpClient.get(
+        '/app/versions?page=${page - 1}&size=$_pageSize',
+      );
 
       if (response['code'] == 200 && response['data'] != null) {
         final List<dynamic> versionData = response['data']['versions'] ?? [];
-        final List<Version> newVersions = versionData.map<Version>((item) => Version.fromJson(item)).toList();
+        final List<Version> newVersions = versionData
+            .map<Version>((item) => Version.fromJson(item))
+            .toList();
 
         setState(() {
           _versions = newVersions;
