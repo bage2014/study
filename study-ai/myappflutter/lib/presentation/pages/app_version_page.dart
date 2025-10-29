@@ -180,14 +180,25 @@ class _AppVersionPageState extends State<AppVersionPage> {
                         : null,
                     icon: const Icon(Icons.arrow_back),
                     label: Text('previous_page'.tr),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _currentPage > 1 ? Colors.blue : Colors.grey,
+                    ),
                   ),
 
                   // 页码显示
-                  Text(
-                    '${'page'.tr} $_currentPage',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '${'page'.tr} $_currentPage',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
 
@@ -198,6 +209,9 @@ class _AppVersionPageState extends State<AppVersionPage> {
                         : null,
                     icon: const Icon(Icons.arrow_forward),
                     label: Text('next_page'.tr),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _hasMore ? Colors.blue : Colors.grey,
+                    ),
                   ),
                 ],
               ),
