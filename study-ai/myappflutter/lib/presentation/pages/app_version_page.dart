@@ -144,23 +144,6 @@ class _AppVersionPageState extends State<AppVersionPage> {
       title: 'app_version'.tr,
       body: Column(
         children: [
-          // 刷新按钮
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: _isLoading
-                      ? null
-                      : () => _fetchVersions(refresh: true),
-                  icon: const Icon(Icons.refresh),
-                  label: Text('refresh'.tr),
-                ),
-              ],
-            ),
-          ),
-
           // 版本列表
           Expanded(
             child: _versions.isEmpty && !_isLoading

@@ -54,7 +54,8 @@ public class AppVersionService {
             size = maxPageSize;
         }
         
-        Pageable pageable = PageRequest.of(page, size);
+        // 创建分页请求，按照版本号倒序排列（最新版本在前）
+        Pageable pageable = PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
         Page<AppVersion> result = appVersionRepository.findAll(pageable);
         
         log.info("分页查询结果 - 页码: {}, 每页大小: {}, 总记录数: {}, 总页数: {}", 
@@ -65,7 +66,8 @@ public class AppVersionService {
     
     // 根据关键词分页搜索版本
     public Page<AppVersion> searchVersionsByKeyword(String keyword, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        // 创建分页请求，按照版本号倒序排列（最新版本在前）
+        Pageable pageable = PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
         return appVersionRepository.findByKeyword(keyword, pageable);
     }
 
