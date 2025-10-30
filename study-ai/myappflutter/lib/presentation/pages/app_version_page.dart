@@ -19,7 +19,8 @@ class _AppVersionPageState extends State<AppVersionPage> {
   bool _isLoading = false;
   bool _hasMore = true;
   int _currentPage = 0;
-  final int _pageSize = 5;
+  int _totalPages = 1;
+  final int _pageSize = 3;
 
   @override
   void initState() {
@@ -44,15 +45,21 @@ class _AppVersionPageState extends State<AppVersionPage> {
       );
 
       if (response['code'] == 200 && response['data'] != null) {
-        final List<dynamic> versionData = response['data']['versions'] ?? [];
+        final data = response['data'];
+        final List<dynamic> versionData = data['versions'] ?? [];
         final List<Version> newVersions = versionData
             .map<Version>((item) => Version.fromJson(item))
             .toList();
 
+        // 从响应中获取分页信息
+        _totalPages = data['totalPages'] ?? 1;
+        final int currentPage = (data['currentPage'] ?? 0) + 1; // 后端从0开始，前端从1开始
+        final int totalElements = data['totalElements'] ?? 0;
+
         setState(() {
           _versions = newVersions;
-          _currentPage = page;
-          _hasMore = newVersions.length == _pageSize;
+          _currentPage = currentPage;
+          _hasMore = currentPage < _totalPages;
         });
       } else {
         Get.snackbar(
@@ -181,25 +188,34 @@ class _AppVersionPageState extends State<AppVersionPage> {
                     icon: const Icon(Icons.arrow_back),
                     label: Text('previous_page'.tr),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _currentPage > 1 ? Colors.blue : Colors.grey,
+                      backgroundColor: _currentPage > 1
+                          ? Colors.blue
+                          : Colors.grey,
                     ),
                   ),
 
                   // 页码显示
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      '${'page'.tr} $_currentPage',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '$_currentPage / $_totalPages',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
 
                   // 下一页按钮
