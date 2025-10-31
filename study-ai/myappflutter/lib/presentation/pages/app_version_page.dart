@@ -125,12 +125,18 @@ class _AppVersionPageState extends State<AppVersionPage> {
             const SizedBox(height: 8),
             Text('${'update_content'.tr}: ${version.releaseNotes}'),
             const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                // 跳转到更新页面，传递整个version对象
-                Get.toNamed(AppRoutes.UPDATE, arguments: {'version': version});
-              },
-              child: Text('update_app'.tr),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton(
+                onPressed: () {
+                  // 跳转到更新页面，传递整个version对象
+                  Get.toNamed(
+                    AppRoutes.UPDATE,
+                    arguments: {'version': version},
+                  );
+                },
+                child: Text('update'.tr),
+              ),
             ),
           ],
         ),
@@ -142,19 +148,21 @@ class _AppVersionPageState extends State<AppVersionPage> {
   Widget build(BuildContext context) {
     return BasePage(
       title: 'app_version'.tr,
-      body: Column(
+      body: Stack(
         children: [
-          // 版本列表
-          Expanded(
-            child: _versions.isEmpty && !_isLoading
-                ? Center(child: Text('no_version_info'.tr))
-                : ListView.builder(
-                    itemCount: _versions.length,
-                    itemBuilder: (context, index) {
-                      return _buildVersionCard(_versions[index]);
-                    },
-                  ),
-          ),
+          Column(
+            children: [
+              // 版本列表
+              Expanded(
+                child: _versions.isEmpty && !_isLoading
+                    ? Center(child: Text('no_version_info'.tr))
+                    : ListView.builder(
+                        itemCount: _versions.length,
+                        itemBuilder: (context, index) {
+                          return _buildVersionCard(_versions[index]);
+                        },
+                      ),
+              ),
 
           // 分页控件
           if (_versions.isNotEmpty)
@@ -213,6 +221,18 @@ class _AppVersionPageState extends State<AppVersionPage> {
                     ),
                   ),
                 ],
+              ),
+            ),
+        ],
+          ),
+          // 网络请求加载框
+          if (_isLoading)
+            Container(
+              color: Colors.black54,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
               ),
             ),
         ],

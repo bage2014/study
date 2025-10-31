@@ -1,0 +1,39 @@
+{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "versions": [
+            {
+                "id": 5,
+                "version": "2.1.0",
+                "releaseDate": "2025-10-30",
+                "releaseNotes": "性能优化",
+                "downloadUrl": "",
+                "forceUpdate": false,
+                "fileId": "file5"
+            },
+            {
+                "id": 4,
+                "version": "2.0.0",
+                "releaseDate": "2025-10-28",
+                "releaseNotes": "全新UI设计",
+                "downloadUrl": "",
+                "forceUpdate": true,
+                "fileId": "file4"
+            },
+            {
+                "id": 3,
+                "version": "1.2.0",
+                "releaseDate": "2025-10-22",
+                "releaseNotes": "新增功能",
+                "downloadUrl": "",
+                "forceUpdate": false,
+                "fileId": "file3"
+            }
+        ],
+        "totalElements": 5,
+        "totalPages": 2,
+        "currentPage": 0,
+        "pageSize": 3
+    }
+}

@@ -192,7 +192,6 @@ const Map<String, String> zh = {
   'app_version': '应用版本',
   'refresh': '刷新',
   'version': '版本',
-  'update_app': '更新应用',
   'no_version_info': '暂无版本信息',
   'error_fetching_versions': '获取版本列表失败',
   'retry_later': '请稍后重试',

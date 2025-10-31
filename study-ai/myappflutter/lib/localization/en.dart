@@ -169,7 +169,6 @@ const Map<String, String> en = {
   'app_version': 'App Version',
   'refresh': 'Refresh',
   'version': 'Version',
-  'update_app': 'Update App',
   'no_version_info': 'No version information available',
   'error_fetching_versions': 'Error fetching version list',
   'retry_later': 'Please try again later',
