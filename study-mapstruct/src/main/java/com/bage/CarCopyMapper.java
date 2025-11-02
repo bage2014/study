@@ -8,7 +8,7 @@ public interface CarCopyMapper {
  
     CarCopyMapper INSTANCE = Mappers.getMapper( CarCopyMapper.class );
  
-    Car merge(Car car, @M);
+    Car merge(Car car);
 
     @ObjectFactory
     default Car source(Car car) {
