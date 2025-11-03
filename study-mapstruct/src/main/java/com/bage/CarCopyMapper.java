@@ -15,4 +15,6 @@ public interface CarCopyMapper {
         return car;// ... custom factory logic
     }
 
+//    Car merge(Car car1, Car car2);
+
 }
