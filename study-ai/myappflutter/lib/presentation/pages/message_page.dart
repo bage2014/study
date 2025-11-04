@@ -272,28 +272,6 @@ class _MessagePageState extends State<MessagePage> {
       ],
       body: Column(
         children: [
-          // 添加分页控制按钮
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _currentPage > 1 && !_isLoading
-                      ? _goToPreviousPage
-                      : null,
-                  child: Text('previous_page'.tr),
-                ),
-                const SizedBox(width: 16.0),
-                Text('$_currentPage'),
-                const SizedBox(width: 16.0),
-                ElevatedButton(
-                  onPressed: _hasMore && !_isLoading ? _goToNextPage : null,
-                  child: Text('next_page'.tr),
-                ),
-              ],
-            ),
-          ),
           // 原有内容：下拉刷新和消息列表
           Expanded(
             child: RefreshIndicator(
@@ -374,6 +352,28 @@ class _MessagePageState extends State<MessagePage> {
                   );
                 },
               ),
+            ),
+          ),
+          // 分页控制按钮 - 移动到页面下方
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _currentPage > 1 && !_isLoading
+                      ? _goToPreviousPage
+                      : null,
+                  child: Text('previous_page'.tr),
+                ),
+                const SizedBox(width: 16.0),
+                Text('$_currentPage'),
+                const SizedBox(width: 16.0),
+                ElevatedButton(
+                  onPressed: _hasMore && !_isLoading ? _goToNextPage : null,
+                  child: Text('next_page'.tr),
+                ),
+              ],
             ),
           ),
         ],
