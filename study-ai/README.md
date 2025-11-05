@@ -49,6 +49,28 @@ https://docs.dify.ai/zh-hans/getting-started/install-self-hosted/docker-compose
 
 
 
+### 快速开始
+
+下载运行
+
+```
+Publish Remote
+
+```
+
+### 应用实践
+
+下载运行
+
+```
+Publish Remote
+
+```
+
+### 原理解析
+
+基本原理
+
 ### 知识库
 
 搭建自己的知识库？
@@ -67,7 +89,17 @@ https://juejin.cn/post/7495966937101844530
 
 
 
-## 快速开始
+
+
+
+
+## AnythingLLM
+
+https://github.com/Mintplex-Labs/anything-llm
+
+
+
+### 快速开始
 
 下载运行
 
@@ -76,7 +108,7 @@ Publish Remote
 
 ```
 
-## 应用实践
+### 应用实践
 
 下载运行
 
@@ -85,6 +117,6 @@ Publish Remote
 
 ```
 
-## 原理解析
+### 原理解析
 
 基本原理
