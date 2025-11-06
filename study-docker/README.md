@@ -572,6 +572,7 @@ Docker Pull Command
 
 
 
+
 基本访问
 
 ```
@@ -887,6 +888,7 @@ start a instance
 	http://localhost:8808/xxl-job-admin
 
  
+
 
 
 
@@ -2534,6 +2536,36 @@ Visit
 ```
 // go to http://localhost to access the Appwrite console from your browser.
 http://localhost
+```
+
+### 安装 Anything-LLM
+
+参考链接  
+
+https://github.com/Mintplex-Labs/anything-llm/blob/master/docker/HOW_TO_USE_DOCKER.md
+
+https://github.com/Mintplex-Labs/anything-llm/blob/master/locales/README.zh-CN.md
+
+Download
+
+```
+docker pull mintplexlabs/anythingllm
+```
+
+
+
+Start
+
+```
+docker run --name bage-anything-llm -it mintplexlabs/anythingllm
+```
+
+
+
+Visit
+
+```
+http://localhost:3001
 ```
 
 
