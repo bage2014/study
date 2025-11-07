@@ -2546,18 +2546,29 @@ https://github.com/Mintplex-Labs/anything-llm/blob/master/docker/HOW_TO_USE_DOCK
 
 https://github.com/Mintplex-Labs/anything-llm/blob/master/locales/README.zh-CN.md
 
+https://docs.anythingllm.com/installation-docker/local-docker
+
 Download
 
 ```
 docker pull mintplexlabs/anythingllm
 ```
 
-
-
 Start
 
 ```
-docker run --name bage-anything-llm -it mintplexlabs/anythingllm
+export STORAGE_LOCATION=$HOME/bage/docker-data/anythingllm/ && \
+mkdir -p $STORAGE_LOCATION && \
+touch "$STORAGE_LOCATION/.env" && \
+docker run -d -p 3001:3001 \
+--name bage-anything-llm \
+--cap-add SYS_ADMIN \
+-v ${STORAGE_LOCATION}:/app/server/storage \
+-v ${STORAGE_LOCATION}/.env:/app/server/.env \
+-e STORAGE_DIR="/app/server/storage" \
+mintplexlabs/anythingllm
+
+
 ```
 
 
