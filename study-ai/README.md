@@ -11,9 +11,32 @@ https://docs.spring.io/spring-ai/reference/getting-started.html
 
 https://www.baeldung.com/spring-ai
 
-
 spring-ai-github
 Github Copilot https://juejin.cn/post/7450045521635328012
+
+
+
+AI 常用知识点
+
+https://github.com/darmenliu/learn-gen-ai-outline
+
+
+
+## AI 学习
+
+https://github.com/darmenliu/learn-gen-ai-outline
+
+### 基本概念
+
+
+
+### 常用组件
+
+
+
+
+
+
 
 ## MetaGPT
 https://github.com/geekan/MetaGPT
