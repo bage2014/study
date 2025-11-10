@@ -161,6 +161,12 @@ class HomePage extends StatelessWidget {
                   title: 'app_version',
                   onTap: () => Get.toNamed(AppRoutes.APP_VERSION),
                 ),
+                // 添加AI助手菜单卡片
+                _buildMenuCard(
+                  icon: Icons.smart_toy,
+                  title: 'ai_assistant',
+                  onTap: () => Get.toNamed(AppRoutes.AI),
+                ),
                 // _buildMenuCard(
                 //   icon: Icons.tv,
                 //   title: 'tv_list',
