@@ -16,19 +16,19 @@ class _AiPageState extends State<AiPage> {
   final TextEditingController _inputController = TextEditingController();
   final HttpClient _httpClient = HttpClient();
   final ScrollController _scrollController = ScrollController();
-  
+
   bool _isLoading = false;
   String _responseText = '';
   List<Map<String, String>> _conversationHistory = [];
 
   Future<void> _sendMessage() async {
     if (_inputController.text.trim().isEmpty) return;
-    
+
     setState(() {
       _isLoading = true;
       _conversationHistory.add({
         'role': 'user',
-        'content': _inputController.text.trim()
+        'content': _inputController.text.trim(),
       });
     });
 
@@ -40,12 +40,9 @@ class _AiPageState extends State<AiPage> {
       final Map<String, dynamic> requestData = {
         'model': 'deepseek-chat',
         'messages': [
-          {
-            'role': 'user',
-            'content': userMessage
-          }
+          {'role': 'user', 'content': userMessage},
         ],
-        'stream': false
+        'stream': false,
       };
 
       // 发送请求到DeepSeek API
@@ -53,22 +50,23 @@ class _AiPageState extends State<AiPage> {
         'https://api.deepseek.com/v1/chat/completions',
         body: requestData,
         headers: {
-          'Authorization': 'Bearer YOUR_DEEPSEEK_API_KEY', // 请替换为实际的API密钥
-          'Content-Type': 'application/json'
-        }
+          'Authorization':
+              'Bearer ', // 请替换为实际的API密钥
+          'Content-Type': 'application/json',
+        },
       );
 
       if (response['choices'] != null && response['choices'].isNotEmpty) {
         final String aiResponse = response['choices'][0]['message']['content'];
-        
+
         setState(() {
           _conversationHistory.add({
             'role': 'assistant',
-            'content': aiResponse
+            'content': aiResponse,
           });
           _responseText = aiResponse;
         });
-        
+
         // 滚动到底部
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _scrollController.animateTo(
@@ -83,11 +81,11 @@ class _AiPageState extends State<AiPage> {
     } catch (e) {
       LogUtil.error('DeepSeek API调用失败: $e');
       Get.snackbar('错误', '请求失败，请检查网络连接和API密钥');
-      
+
       setState(() {
         _conversationHistory.add({
           'role': 'assistant',
-          'content': '抱歉，请求失败，请稍后重试。'
+          'content': '抱歉，请求失败，请稍后重试。',
         });
       });
     } finally {
@@ -101,7 +99,9 @@ class _AiPageState extends State<AiPage> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
-        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         children: [
           if (!isUser)
             const CircleAvatar(
@@ -173,7 +173,7 @@ class _AiPageState extends State<AiPage> {
                     ),
             ),
           ),
-          
+
           // 输入区域
           Container(
             padding: const EdgeInsets.all(16.0),

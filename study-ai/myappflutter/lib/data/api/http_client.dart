@@ -112,7 +112,7 @@ class HttpClient {
 
   // 构建请求URL
   Uri buildUri(String path, Map<String, dynamic>? queryParameters) {
-    if (path.startsWith("http")) {
+    if (path.startsWith("http") || path.startsWith("https")) {
       return Uri.parse(path);
     }
 
