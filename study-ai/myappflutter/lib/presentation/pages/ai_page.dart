@@ -50,8 +50,7 @@ class _AiPageState extends State<AiPage> {
         'https://api.deepseek.com/v1/chat/completions',
         body: requestData,
         headers: {
-          'Authorization':
-              'Bearer ', // 请替换为实际的API密钥
+          'Authorization': 'Bearer ', // 请替换为实际的API密钥
           'Content-Type': 'application/json',
         },
       );
