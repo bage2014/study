@@ -61,7 +61,9 @@ class _FileUploadPageState extends State<FileUploadPage> {
         _selectedFile!,
         fieldName: 'file',
         extraFields: {
-          'description': '从移动端上传的文件',
+          'version': '1.0.0', // 版本号
+          'forceUpdate': 'false', // 强制更新标志
+          'releaseNotes': '文件上传功能更新', // 发布说明
         },
         onReceiveProgress: (received, total) {
           if (total > 0) {
