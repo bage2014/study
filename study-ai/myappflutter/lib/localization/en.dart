@@ -221,4 +221,21 @@ const Map<String, String> en = {
   'search_channel_groups': 'Search channel groups',
   'group_channels': 'Group Channels',
   'view_channels_in_group': 'View channels in this group',
+  
+  // File Upload Page translations
+  'file_upload': 'File Upload',
+  'select_file': 'Select File',
+  'select_file_to_upload': 'Select a file to upload',
+  'supports_images_documents': 'Supports images, documents and other file types',
+  'selected_file_info': 'Selected File Info',
+  'file_name': 'File Name',
+  'file_size': 'File Size',
+  'file_path': 'File Path',
+  'clear_selection': 'Clear Selection',
+  'upload_file': 'Upload File',
+  'upload_progress': 'Upload Progress',
+  'file_upload_success': 'File uploaded successfully!',
+  'file_upload_failed': 'File upload failed',
+  'please_select_file_first': 'Please select a file first',
+  'uploading': 'Uploading...',
 };

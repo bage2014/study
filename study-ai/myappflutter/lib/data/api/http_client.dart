@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -64,6 +65,7 @@ class HttpClient {
     Map<String, String>? headers,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? extraFields,
+    void Function(int sent, int total)? onReceiveProgress,
   }) async {
     if (_envController.currentEnv.value == 'mock') {
       return HttpMockService.getMockResponse(path);
@@ -96,8 +98,42 @@ class HttpClient {
       'file': file.path,
       ...?extraFields,
     });
+    
+    // 发送请求并跟踪进度
     final response = await _client.send(request);
-    final responseBody = await response.stream.bytesToString();
+    
+    // 处理进度回调
+    String responseBody;
+    if (onReceiveProgress != null) {
+      final total = request.contentLength ?? 0;
+      int sent = 0;
+      final chunks = <List<int>>[];
+      
+      // 使用单个流监听同时处理进度和响应体
+      final completer = Completer<String>();
+      
+      response.stream.listen(
+        (List<int> chunk) {
+          sent += chunk.length;
+          chunks.add(chunk);
+          onReceiveProgress(sent, total);
+        },
+        onError: (error) {
+          LogUtil.error('上传进度跟踪错误: $error');
+          completer.completeError(error);
+        },
+        onDone: () {
+          // 合并所有chunk为响应体
+          final body = utf8.decode(chunks.expand((chunk) => chunk).toList());
+          completer.complete(body);
+        },
+      );
+      
+      responseBody = await completer.future;
+    } else {
+      // 如果没有进度回调，直接读取响应体
+      responseBody = await response.stream.bytesToString();
+    }
 
     // 构建响应对象
     final httpResponse = http.Response(

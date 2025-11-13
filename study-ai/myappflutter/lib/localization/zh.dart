@@ -244,4 +244,21 @@ const Map<String, String> zh = {
   'search_channel_groups': '搜索频道分组',
   'group_channels': '分组频道',
   'view_channels_in_group': '查看该分组下的频道',
+  
+  // File Upload Page translations
+  'file_upload': '文件上传',
+  'select_file': '选择文件',
+  'select_file_to_upload': '选择要上传的文件',
+  'supports_images_documents': '支持图片、文档和其他文件类型',
+  'selected_file_info': '已选文件信息',
+  'file_name': '文件名',
+  'file_size': '文件大小',
+  'file_path': '文件路径',
+  'clear_selection': '清除选择',
+  'upload_file': '上传文件',
+  'upload_progress': '上传进度',
+  'file_upload_success': '文件上传成功！',
+  'file_upload_failed': '文件上传失败',
+  'please_select_file_first': '请先选择文件',
+  'uploading': '上传中...',
 };
