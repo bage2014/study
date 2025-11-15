@@ -23,7 +23,19 @@ CREATE TABLE user_token (
 
 CREATE TABLE IF NOT EXISTS family_member (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100)
+);
+
+-- 文件表
+CREATE TABLE IF NOT EXISTS app_file (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    file_name VARCHAR(255) NOT NULL,
+    file_url VARCHAR(500) NOT NULL,
+    file_size BIGINT NOT NULL,
+    original_file_name VARCHAR(255) NOT NULL,
+    file_type VARCHAR(100),
+    created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
     gender VARCHAR(10),
     birth_date DATE,
     birth_place VARCHAR(200),

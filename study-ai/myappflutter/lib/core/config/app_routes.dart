@@ -20,6 +20,7 @@ import '../../presentation/pages/live_group_page.dart'; // 新增导入
 import '../../presentation/pages/app_version_page.dart'; // 新增应用版本页面导入
 import '../../presentation/pages/ai_page.dart'; // 新增AI页面导入
 import '../../presentation/pages/file_upload_page.dart'; // 新增文件上传页面导入
+import '../../presentation/pages/file_list_page.dart'; // 新增文件列表页面导入
 
 class AppRoutes {
   static const String LOGIN = '/login';
@@ -46,6 +47,7 @@ class AppRoutes {
   static const String APP_VERSION = '/app_version'; // 新增应用版本页面路由
   static const String AI = '/ai'; // AI页面路由
   static const String FILE_UPLOAD = '/file_upload'; // 文件上传页面路由
+  static const String FILE_LIST = '/file_list'; // 文件列表页面路由
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -117,6 +119,11 @@ class AppRoutes {
     GetPage(
       name: AppRoutes.FILE_UPLOAD,
       page: () => const FileUploadPage(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: AppRoutes.FILE_LIST,
+      page: () => const FileListPage(),
       transition: Transition.fadeIn,
     ),
   ];

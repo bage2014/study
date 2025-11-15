@@ -173,6 +173,12 @@ class HomePage extends StatelessWidget {
                   title: 'file_upload',
                   onTap: () => Get.toNamed(AppRoutes.FILE_UPLOAD),
                 ),
+                // 添加文件列表菜单卡片
+                _buildMenuCard(
+                  icon: Icons.file_copy,
+                  title: 'file_list',
+                  onTap: () => Get.toNamed(AppRoutes.FILE_LIST),
+                ),
                 // _buildMenuCard(
                 //   icon: Icons.tv,
                 //   title: 'tv_list',
