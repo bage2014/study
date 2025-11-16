@@ -238,4 +238,14 @@ const Map<String, String> en = {
   'file_upload_failed': 'File upload failed',
   'please_select_file_first': 'Please select a file first',
   'uploading': 'Uploading...',
+  
+  // File List Page translations
+  'file_list': 'File List',
+  'loading_files': 'Loading files...',
+  'no_files': 'No files available',
+  'upload_time': 'Upload Time',
+  'download_file': 'Download File',
+  'download_success': 'File downloaded successfully',
+  'download_failed': 'File download failed',
+  'save_path': 'Save path'
 };

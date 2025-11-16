@@ -261,4 +261,14 @@ const Map<String, String> zh = {
   'file_upload_failed': '文件上传失败',
   'please_select_file_first': '请先选择文件',
   'uploading': '上传中...',
+  
+  // File List Page translations
+  'file_list': '文件列表',
+  'loading_files': '加载文件中...',
+  'no_files': '暂无文件',
+  'upload_time': '上传时间',
+  'download_file': '下载文件',
+  'download_success': '文件下载成功',
+  'download_failed': '文件下载失败',
+  'save_path': '保存路径'
 };

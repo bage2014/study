@@ -16,7 +16,7 @@ class FileUploadPage extends StatefulWidget {
 class _FileUploadPageState extends State<FileUploadPage> {
   final HttpClient _httpClient = HttpClient();
   final ImagePicker _imagePicker = ImagePicker();
-  
+
   File? _selectedFile;
   bool _isUploading = false;
   double _uploadProgress = 0.0;
@@ -57,14 +57,9 @@ class _FileUploadPageState extends State<FileUploadPage> {
 
     try {
       final response = await _httpClient.uploadFile(
-        '/app/upload', // 后端上传接口路径
+        '/app/file/upload', // 后端上传接口路径
         _selectedFile!,
         fieldName: 'file',
-        extraFields: {
-          'version': '1.0.0', // 版本号
-          'forceUpdate': 'false', // 强制更新标志
-          'releaseNotes': '文件上传功能更新', // 发布说明
-        },
         onReceiveProgress: (received, total) {
           if (total > 0) {
             setState(() {
@@ -121,7 +116,9 @@ class _FileUploadPageState extends State<FileUploadPage> {
             ),
             const SizedBox(height: 8),
             Text('文件名: ${_selectedFile!.path.split('/').last}'),
-            Text('文件大小: ${(_selectedFile!.lengthSync() / 1024).toStringAsFixed(2)} KB'),
+            Text(
+              '文件大小: ${(_selectedFile!.lengthSync() / 1024).toStringAsFixed(2)} KB',
+            ),
             Text('文件路径: ${_selectedFile!.path}'),
             const SizedBox(height: 16),
             Row(
@@ -212,15 +209,14 @@ class _FileUploadPageState extends State<FileUploadPage> {
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.cloud_upload,
-                      size: 64,
-                      color: Colors.blue,
-                    ),
+                    Icon(Icons.cloud_upload, size: 64, color: Colors.blue),
                     const SizedBox(height: 16),
                     const Text(
                       '选择要上传的文件',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     const Text(
