@@ -39,13 +39,13 @@ class _FileUploadPageState extends State<FileUploadPage> {
       }
     } catch (e) {
       LogUtil.error('选择文件失败: $e');
-      Get.snackbar('错误', '选择文件失败，请重试');
+      Get.snackbar('error'.tr, '${'file_upload_failed'.tr}, ${'retry'.tr}');
     }
   }
 
   Future<void> _uploadFile() async {
     if (_selectedFile == null) {
-      Get.snackbar('提示', '请先选择要上传的文件');
+      Get.snackbar('prompt'.tr, 'please_select_file_first'.tr);
       return;
     }
 
@@ -71,18 +71,18 @@ class _FileUploadPageState extends State<FileUploadPage> {
 
       if (response['code'] == 200) {
         setState(() {
-          _uploadResult = '文件上传成功！';
+          _uploadResult = 'file_upload_success'.tr;
         });
-        Get.snackbar('成功', '文件上传成功');
+        Get.snackbar('success'.tr, 'file_upload_success'.tr);
       } else {
         throw Exception(response['message'] ?? '上传失败');
       }
     } catch (e) {
       LogUtil.error('文件上传失败: $e');
       setState(() {
-        _uploadResult = '文件上传失败: $e';
+        _uploadResult = '${'file_upload_failed'.tr}: $e';
       });
-      Get.snackbar('错误', '文件上传失败，请重试');
+      Get.snackbar('error'.tr, '${'file_upload_failed'.tr}, ${'retry'.tr}');
     } finally {
       setState(() {
         _isUploading = false;
@@ -110,16 +110,16 @@ class _FileUploadPageState extends State<FileUploadPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              '已选文件信息:',
+            Text(
+              'selected_file_info'.tr,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text('文件名: ${_selectedFile!.path.split('/').last}'),
+            Text('${'file_name'.tr}: ${_selectedFile!.path.split('/').last}'),
             Text(
-              '文件大小: ${(_selectedFile!.lengthSync() / 1024).toStringAsFixed(2)} KB',
+              '${'file_size'.tr}: ${(_selectedFile!.lengthSync() / 1024).toStringAsFixed(2)} KB',
             ),
-            Text('文件路径: ${_selectedFile!.path}'),
+            Text('${'file_path'.tr}: ${_selectedFile!.path}'),
             const SizedBox(height: 16),
             Row(
               children: [
@@ -127,7 +127,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
                   child: ElevatedButton.icon(
                     onPressed: _clearSelection,
                     icon: const Icon(Icons.clear),
-                    label: const Text('清除选择'),
+                    label: Text('clear_selection'.tr),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey,
                     ),
@@ -138,7 +138,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
                   child: ElevatedButton.icon(
                     onPressed: _uploadFile,
                     icon: const Icon(Icons.cloud_upload),
-                    label: const Text('上传文件'),
+                    label: Text('upload_file'.tr),
                   ),
                 ),
               ],
@@ -158,8 +158,8 @@ class _FileUploadPageState extends State<FileUploadPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              '上传进度:',
+            Text(
+              'upload_progress'.tr,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
@@ -198,7 +198,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: '文件上传',
+      title: 'file_upload'.tr,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -211,23 +211,23 @@ class _FileUploadPageState extends State<FileUploadPage> {
                   children: [
                     Icon(Icons.cloud_upload, size: 64, color: Colors.blue),
                     const SizedBox(height: 16),
-                    const Text(
-                      '选择要上传的文件',
+                    Text(
+                      'select_file_to_upload'.tr,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      '支持图片、文档等文件类型',
+                    Text(
+                      'supports_images_documents'.tr,
                       style: TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton.icon(
                       onPressed: _pickFile,
                       icon: const Icon(Icons.photo_library),
-                      label: const Text('选择文件'),
+                      label: Text('select_file'.tr),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,

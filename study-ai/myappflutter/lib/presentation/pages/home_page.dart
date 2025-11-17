@@ -130,11 +130,6 @@ class HomePage extends StatelessWidget {
                   title: 'family',
                   onTap: () => Get.toNamed(AppRoutes.FAMILY),
                 ),
-                _buildMenuCard(
-                  icon: Icons.message,
-                  title: 'message',
-                  onTap: () => Get.toNamed(AppRoutes.MESSAGE),
-                ),
                 // 添加位置页面菜单卡片
                 _buildMenuCard(
                   icon: Icons.location_on,

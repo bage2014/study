@@ -177,6 +177,15 @@ class _SettingsPageState extends State<SettingsPage> {
             trailing: Icon(Icons.system_update),
             onTap: _checkForUpdates,
           ),
+          // 消息页面选项
+          ListTile(
+            title: Text('message'.tr),
+            subtitle: Text('view_messages'.tr),
+            trailing: Icon(Icons.message),
+            onTap: () {
+              Get.toNamed(AppRoutes.MESSAGE);
+            },
+          ),
           // 清空缓存选项
           ListTile(
             title: Text('clear_cache'.tr),

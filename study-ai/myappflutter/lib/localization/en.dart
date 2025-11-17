@@ -150,8 +150,8 @@ const Map<String, String> en = {
   'dark': 'Dark',
   'english': 'English',
   'chinese': 'Chinese',
-  'clear_login_info_and_return_to_login_page':
-      'Clear login information and return to login page',
+  'clear_login_info_and_return_to_login_page': 'Clear login information and return to login page',
+  'view_messages': 'View messages',
   'prompt': 'Prompt',
   'env_settings': 'Environment Settings',
   'check_updates': 'Check Updates',

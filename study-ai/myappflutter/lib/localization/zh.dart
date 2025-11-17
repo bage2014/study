@@ -150,6 +150,7 @@ const Map<String, String> zh = {
   'light': '浅色',
   'dark': '深色',
   'clear_login_info_and_return_to_login_page': '清除登录信息并返回登录页面',
+  'view_messages': '查看消息',
   'prompt': '提示',
   'env_settings': '环境设置',
   'current_env': '当前环境',
