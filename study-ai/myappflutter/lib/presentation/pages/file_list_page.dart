@@ -185,30 +185,27 @@ class _FileListPageState extends State<FileListPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                file.displayName,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Text(
-                              _formatFileSize(file.fileSize),
-                              style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
+                        // 文件名单独显示
+                        Text(
+                          file.displayName,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          ],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
+                        // 文件大小放在下方
+                        Text(
+                          _formatFileSize(file.fileSize),
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        // 上传时间
                         Text(
                           '${'upload_time'.tr}: ${file.uploadTime}',
                           style: const TextStyle(
