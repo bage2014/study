@@ -146,6 +146,30 @@ class _FileListPageState extends State<FileListPage> {
       return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
+  // 文件名中间省略处理函数
+  String _truncateFileName(String fileName, {int maxLength = 80}) {
+    if (fileName.length <= maxLength) {
+      return fileName;
+    }
+    
+    final int middleLength = 3; // 中间省略号占用的长度
+    final int partLength = (maxLength - middleLength) ~/ 2;
+    
+    // 保留文件名后缀
+    final int lastDotIndex = fileName.lastIndexOf('.');
+    if (lastDotIndex != -1 && lastDotIndex > fileName.length * 0.7) {
+      // 如果后缀点在文件名的70%位置之后，优先保留后缀
+      final String extension = fileName.substring(lastDotIndex);
+      if (extension.length < maxLength * 0.3) {
+        final int availableLength = maxLength - extension.length - middleLength;
+        return '${fileName.substring(0, availableLength)}...$extension';
+      }
+    }
+    
+    // 普通情况：前后各保留一部分，中间省略
+    return '${fileName.substring(0, partLength)}...${fileName.substring(fileName.length - partLength)}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return BasePage(
@@ -185,9 +209,9 @@ class _FileListPageState extends State<FileListPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // 文件名单独显示
+                        // 文件名单独显示，超出长度时中间使用省略号
                         Text(
-                          file.displayName,
+                          _truncateFileName(file.displayName),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
