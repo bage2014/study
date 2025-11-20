@@ -182,14 +182,43 @@ class _FileListPageState extends State<FileListPage> {
         ),
       ],
       body: _isLoading
-          ? Center(child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(),
-                const SizedBox(height: 16),
-                Text('loading_files'.tr),
-              ],
-            ))
+          ? Container(
+              color: Colors.white.withOpacity(0.95),
+              child: Center(
+                child: Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CircularProgressIndicator(
+                        strokeWidth: 4,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'loading_files'.tr,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'please_wait'.tr,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
           : _fileList.isEmpty
           ? Center(child: Text('no_files'.tr))
           : ListView.builder(

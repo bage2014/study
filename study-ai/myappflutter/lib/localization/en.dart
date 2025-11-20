@@ -22,6 +22,8 @@ const Map<String, String> en = {
   'sender': 'Sender',
   'loading_more': 'Loading more...',
   'load_more': 'Load more', // 添加这个翻译键
+  'loading_files': 'Loading files',
+  'please_wait': 'Please wait...',
   'fetch_message_failed': 'Failed to fetch messages',
   'user_login': 'User Login',
   'account': 'Account',
@@ -241,7 +243,6 @@ const Map<String, String> en = {
   
   // File List Page translations
   'file_list': 'File List',
-  'loading_files': 'Loading files...',
   'no_files': 'No files available',
   'upload_time': 'Upload Time',
   'download_file': 'Download File',

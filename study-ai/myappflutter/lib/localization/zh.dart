@@ -22,6 +22,8 @@ const Map<String, String> zh = {
   'sender': '发件人',
   'loading_more': '加载更多...',
   'load_more': '加载更多', // 添加这个翻译键
+  'loading_files': '加载文件中',
+  'please_wait': '请稍候...',
   'fetch_message_failed': '获取消息失败',
   'user_login': '用户登录',
   'account': '账号',
@@ -265,7 +267,6 @@ const Map<String, String> zh = {
   
   // File List Page translations
   'file_list': '文件列表',
-  'loading_files': '加载文件中...',
   'no_files': '暂无文件',
   'upload_time': '上传时间',
   'download_file': '下载文件',
