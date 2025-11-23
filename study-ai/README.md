@@ -24,6 +24,8 @@ https://github.com/darmenliu/learn-gen-ai-outline
 
 ## AI 学习
 
+learn-gen-ai-outline ??
+
 https://github.com/darmenliu/learn-gen-ai-outline
 
 ### 基本概念
