@@ -372,6 +372,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
                             ),
                             Text(
                               '${_currentPage + 1} / $_totalPages',
+                              style: TextStyle(fontSize: 14),
                             ), // 显示1-based页码
                             IconButton(
                               icon: Icon(Icons.arrow_forward),
@@ -456,7 +457,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
         final fileName = data['fileName'] ?? '';
 
         // 构建图片URL - 修复类型错误，不需要传递额外参数
-        final avatarUrl = _httpClient
+        final imageUrl = _httpClient
             .buildUri(
               '/images/item/$fileName',
               null,
@@ -465,7 +466,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
 
         // 更新控制器的值
         setState(() {
-          controller.text = avatarUrl;
+          controller.text = imageUrl;
         });
 
         Get.snackbar('success'.tr, 'image_uploaded'.tr);
