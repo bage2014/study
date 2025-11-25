@@ -4,10 +4,6 @@ import 'package:myappflutter/core/utils/log_util.dart';
 import 'package:myappflutter/data/api/http_client.dart';
 import '../widgets/base_page.dart';
 
-// 在文件顶部添加必要的导入
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-
 class UserSearchPage extends StatefulWidget {
   const UserSearchPage({Key? key}) : super(key: key);
 
@@ -22,8 +18,6 @@ class _UserSearchPageState extends State<UserSearchPage> {
   int _pageSize = 10; // 调整为与后台一致的分页大小
   List<Map<String, dynamic>> _searchResults = [];
   bool _isSearching = false;
-  String avatarUrl = 'assets/images/user_null.png';
-  final ImagePicker _imagePicker = ImagePicker();
 
   // 创建HttpClient实例
   final HttpClient _httpClient = HttpClient();
@@ -126,32 +120,6 @@ class _UserSearchPageState extends State<UserSearchPage> {
                   decoration: InputDecoration(labelText: 'name'.tr),
                 ),
                 // 将TextField替换为图片显示组件
-                GestureDetector(
-                  onTap: () {
-                    // 显示图片选择对话框
-                    _showImageSourceDialog(avatarController);
-                  },
-                  child: Card(
-                    elevation: 8,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: CircleAvatar(
-                        radius: 55,
-                        backgroundImage:
-                            avatarController.text.isNotEmpty &&
-                                avatarController.text.startsWith('http')
-                            ? NetworkImage(avatarUrl)
-                            : AssetImage(avatarUrl)
-                                  as ImageProvider,
-                      ),
-                    ),
-                  ),
-                ),
-                Text('click_to_change_avatar'.tr),
                 DropdownButtonFormField<String>(
                   value: gender,
                   decoration: InputDecoration(labelText: 'gender'.tr),
@@ -391,124 +359,6 @@ class _UserSearchPageState extends State<UserSearchPage> {
           ],
         ),
       ),
-    );
-  }
-
-  // 添加图片选择和上传相关方法
-  Future<void> _selectImage(TextEditingController controller) async {
-    final XFile? image = await _imagePicker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 80,
-    );
-
-    if (image != null) {
-      // 上传图片
-      await _uploadImage(File(image.path), controller);
-    }
-  }
-
-  Future<void> _takePhoto(TextEditingController controller) async {
-    final XFile? image = await _imagePicker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 80,
-    );
-
-    if (image != null) {
-      // 上传图片
-      await _uploadImage(File(image.path), controller);
-    }
-  }
-
-  // 修改_uploadImage方法中的URL构建部分
-  Future<void> _uploadImage(
-    File imageFile,
-    TextEditingController controller,
-  ) async {
-    try {
-      // 显示加载中对话框
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Row(
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(width: 20),
-                Text('uploading_image'.tr),
-              ],
-            ),
-          );
-        },
-      );
-
-      // 调用HttpClient的上传方法
-      final response = await _httpClient.uploadFile(
-        '/images/upload',
-        imageFile,
-      );
-
-      Navigator.of(context).pop(); // 关闭加载对话框
-
-      // 处理响应
-      if (response['code'] == 200) {
-        // 提取data字段
-        final data = response['data'] ?? {};
-        final fileName = data['fileName'] ?? '';
-
-        // 构建图片URL - 修复类型错误，不需要传递额外参数
-        final imageUrl = _httpClient
-            .buildUri(
-              '/images/item/$fileName',
-              null,
-            ) // 或者传入空Map: <String, String>{}
-            .toString();
-
-        // 更新控制器的值
-        setState(() {
-          controller.text = imageUrl;
-        });
-
-        Get.snackbar('success'.tr, 'image_uploaded'.tr);
-      } else {
-        Get.snackbar('error'.tr, 'image_upload_failed'.tr);
-      }
-    } catch (e) {
-      Navigator.of(context).pop(); // 关闭加载对话框
-      print('上传图片失败: $e');
-      Get.snackbar('error'.tr, 'image_upload_failed'.tr);
-    }
-  }
-
-  void _showImageSourceDialog(TextEditingController controller) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('select_image_source'.tr),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                GestureDetector(
-                  child: Text('select_from_gallery'.tr),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _selectImage(controller);
-                  },
-                ),
-                const Padding(padding: EdgeInsets.all(8.0)),
-                GestureDetector(
-                  child: Text('take_photo'.tr),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _takePhoto(controller);
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }
