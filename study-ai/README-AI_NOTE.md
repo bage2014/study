@@ -4,5 +4,22 @@
 /myappflutter 为APP 服务，使用Flutter框架，负责展示用户界面和与用户交互。
 /myappweb 为前端服务，使用Vue框架，负责展示用户界面和与用户交互。
 基于此框架结构，完成功能：
-1、 实现
+1、 
+
+
+
+
+
+```
+cd ${HOME}/bage/github/study/study-ai/
+
+./flutterapp flutter start
+
+./flutterapp/start_emulator.sh
+
+./myappendpoint/mvnw spring-boot:run 
+
+
+
+```
 
