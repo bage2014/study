@@ -69,7 +69,7 @@ public class AppFileController {
     }
     
     // 分页查询文件列表
-    @GetMapping("/list")
+    @RequestMapping("/list")
     public ApiResponse<AppFileListResponse> getFiles(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,

@@ -13,9 +13,9 @@
 ```
 cd ${HOME}/bage/github/study/study-ai/
 
-./flutterapp flutter start
+./myappflutter flutter start
 
-./flutterapp/start_emulator.sh
+./myappflutter/start_emulator.sh
 
 ./myappendpoint/mvnw spring-boot:run 
 
