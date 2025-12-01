@@ -203,115 +203,51 @@ class _FileListPageState extends State<FileListPage> {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-      ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // 显示总数和当前页信息
-          Text(
-            '${'total'.tr}: $_totalItems ${'items'.tr}, ${'page'.tr}: $_currentPage/$totalPages',
-            style: const TextStyle(fontSize: 14, color: Colors.grey),
+          // 上一页按钮
+          ElevatedButton.icon(
+            onPressed: _currentPage > 1 && !_isLoading ? _goToPreviousPage : null,
+            icon: const Icon(Icons.arrow_back),
+            label: Text('previous_page'.tr),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _currentPage > 1 ? Colors.blue : Colors.grey,
+            ),
           ),
-          const SizedBox(height: 12),
-          // 分页按钮
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // 上一页按钮
-              ElevatedButton(
-                onPressed: _currentPage > 1 ? _goToPreviousPage : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _currentPage > 1
-                      ? Colors.blue
-                      : Colors.grey.shade300,
-                ),
-                child: Text('${'previous'.tr}'),
-              ),
-              const SizedBox(width: 8),
 
-              // 页码按钮（最多显示5个页码）
-              Row(children: _buildPageButtons(totalPages)),
-              const SizedBox(width: 8),
-
-              // 下一页按钮
-              ElevatedButton(
-                onPressed: _fileList.length >= _pageSize ? _goToNextPage : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _fileList.length >= _pageSize
-                      ? Colors.blue
-                      : Colors.grey.shade300,
-                ),
-                child: Text('${'next'.tr}'),
+          // 页码显示
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.blue.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              '$_currentPage / $totalPages',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
               ),
-            ],
+            ),
+          ),
+
+          // 下一页按钮
+          ElevatedButton.icon(
+            onPressed: _fileList.length >= _pageSize && !_isLoading ? _goToNextPage : null,
+            icon: const Icon(Icons.arrow_forward),
+            label: Text('next_page'.tr),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _fileList.length >= _pageSize ? Colors.blue : Colors.grey,
+            ),
           ),
         ],
       ),
     );
-  }
-
-  // 构建页码按钮列表
-  List<Widget> _buildPageButtons(int totalPages) {
-    final List<Widget> buttons = [];
-    final int maxVisiblePages = 5;
-    int startPage = 1;
-    int endPage = totalPages;
-
-    if (totalPages > maxVisiblePages) {
-      startPage = _currentPage - (maxVisiblePages ~/ 2);
-      endPage = _currentPage + (maxVisiblePages ~/ 2);
-
-      if (startPage < 1) {
-        startPage = 1;
-        endPage = maxVisiblePages;
-      } else if (endPage > totalPages) {
-        endPage = totalPages;
-        startPage = endPage - maxVisiblePages + 1;
-      }
-    }
-
-    // 添加省略号（如果需要）
-    if (startPage > 1) {
-      buttons.add(
-        TextButton(onPressed: () => _goToPage(1), child: const Text('1')),
-      );
-      if (startPage > 2) {
-        buttons.add(const Text('...'));
-      }
-    }
-
-    // 添加页码按钮
-    for (int i = startPage; i <= endPage; i++) {
-      buttons.add(
-        ElevatedButton(
-          onPressed: () => _goToPage(i),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: i == _currentPage
-                ? Colors.blue.shade700
-                : Colors.grey.shade200,
-            foregroundColor: i == _currentPage ? Colors.white : Colors.black,
-          ),
-          child: Text('$i'),
-        ),
-      );
-    }
-
-    // 添加省略号（如果需要）
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        buttons.add(const Text('...'));
-      }
-      buttons.add(
-        TextButton(
-          onPressed: () => _goToPage(totalPages),
-          child: Text('$totalPages'),
-        ),
-      );
-    }
-
-    return buttons;
   }
 
   Future<void> _downloadFile(FileInfo file) async {
