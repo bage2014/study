@@ -22,7 +22,7 @@ class _FileListPageState extends State<FileListPage> {
 
   // 分页和搜索相关状态
   int _currentPage = 1;
-  int _pageSize = 10;
+  int _pageSize = 4;
   int _totalItems = 0;
   TextEditingController _searchController = TextEditingController();
   String _searchKeyword = '';
@@ -62,15 +62,15 @@ class _FileListPageState extends State<FileListPage> {
         '/app/file/list',
         body: queryParams,
       );
-
+      LogUtil.info('加载文件列表响应: $response');
       if (response['code'] == 200 && response['data'] is Map) {
         final data = response['data'] as Map;
-        if (data['records'] is List) {
+        if (data['files'] is List) {
           setState(() {
-            _fileList = (data['records'] as List)
+            _fileList = (data['files'] as List)
                 .map((item) => FileInfo.fromJson(item))
                 .toList();
-            _totalItems = data['total'] ?? 0;
+            _totalItems = data['totalElements'] ?? 0;
           });
         }
       }
@@ -78,7 +78,6 @@ class _FileListPageState extends State<FileListPage> {
       LogUtil.error('加载文件列表失败: $e');
       Get.snackbar('错误', '加载文件列表失败，请重试');
       // 如果API调用失败，使用模拟数据（适配分页）
-      _loadMockFileList();
     } finally {
       setState(() {
         _isLoading = false;
@@ -133,69 +132,6 @@ class _FileListPageState extends State<FileListPage> {
     _loadFileList();
   }
 
-  void _loadMockFileList() {
-    // 模拟文件数据（更多数据用于测试分页）
-    final mockFiles = [];
-    for (int i = 1; i <= 50; i++) {
-      // 如果有搜索关键词，只返回包含关键词的文件
-      if (_searchKeyword.isNotEmpty &&
-          !('文档_$i'.contains(_searchKeyword) ||
-              '图片_$i'.contains(_searchKeyword) ||
-              '手册_$i'.contains(_searchKeyword))) {
-        continue;
-      }
-
-      mockFiles.add({
-        'id': i,
-        'fileName':
-            'uuid_${i % 3 == 0
-                ? '文档'
-                : i % 3 == 1
-                ? '图片'
-                : '手册'}_$i.${i % 3 == 0
-                ? 'pdf'
-                : i % 3 == 1
-                ? 'jpg'
-                : 'docx'}',
-        'originalFileName':
-            '${i % 3 == 0
-                ? '示例文档'
-                : i % 3 == 1
-                ? '产品图片'
-                : '开发手册'}_$i.${i % 3 == 0
-                ? 'pdf'
-                : i % 3 == 1
-                ? 'jpg'
-                : 'docx'}',
-        'fileSize': 1024 * i,
-        'fileUrl': '/file/download/uuid_文件_$i',
-        'fileType': i % 3 == 0
-            ? 'application/pdf'
-            : i % 3 == 1
-            ? 'image/jpeg'
-            : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'createdTime': '2024-0${i % 12 + 1}-${(i % 28) + 1}T10:00:00',
-        'updatedTime': '2024-0${i % 12 + 1}-${(i % 28) + 1}T10:00:00',
-      });
-    }
-
-    // 模拟分页
-    final startIndex = (_currentPage - 1) * _pageSize;
-    final endIndex = startIndex + _pageSize;
-    List filteredFiles = [];
-
-    if (startIndex < mockFiles.length) {
-      filteredFiles = mockFiles.sublist(
-        startIndex,
-        endIndex > mockFiles.length ? mockFiles.length : endIndex,
-      );
-    }
-
-    setState(() {
-      _fileList = filteredFiles.map((item) => FileInfo.fromJson(item)).toList();
-      _totalItems = mockFiles.length;
-    });
-  }
 
   // 构建分页控件
   Widget _buildPagination() {
