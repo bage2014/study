@@ -22,7 +22,7 @@ class _FileListPageState extends State<FileListPage> {
 
   // 分页和搜索相关状态
   int _currentPage = 1;
-  int _pageSize = 4;
+  int _pageSize = 3;
   int _totalItems = 0;
   TextEditingController _searchController = TextEditingController();
   String _searchKeyword = '';
@@ -48,7 +48,7 @@ class _FileListPageState extends State<FileListPage> {
       // 构建请求参数
       final Map<String, dynamic> queryParams = {
         'page': _currentPage,
-        'pageSize': _pageSize,
+        'size': _pageSize,
         'keyword': '',
       };
 
@@ -136,6 +136,10 @@ class _FileListPageState extends State<FileListPage> {
   // 构建分页控件
   Widget _buildPagination() {
     final totalPages = (_totalItems + _pageSize - 1) ~/ _pageSize;
+    // 判断是否为第一页
+    final isFirstPage = _currentPage == 1;
+    // 判断是否为最后一页
+    final isLastPage = _currentPage >= totalPages || _fileList.length < _pageSize;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -144,11 +148,11 @@ class _FileListPageState extends State<FileListPage> {
         children: [
           // 上一页按钮
           ElevatedButton.icon(
-            onPressed: _currentPage > 1 && !_isLoading ? _goToPreviousPage : null,
+            onPressed: !isFirstPage && !_isLoading ? _goToPreviousPage : null,
             icon: const Icon(Icons.arrow_back),
             label: Text('previous_page'.tr),
             style: ElevatedButton.styleFrom(
-              backgroundColor: _currentPage > 1 ? Colors.blue : Colors.grey,
+              backgroundColor: !isFirstPage ? Colors.blue : Colors.grey,
             ),
           ),
 
@@ -174,11 +178,11 @@ class _FileListPageState extends State<FileListPage> {
 
           // 下一页按钮
           ElevatedButton.icon(
-            onPressed: _fileList.length >= _pageSize && !_isLoading ? _goToNextPage : null,
+            onPressed: !isLastPage && !_isLoading ? _goToNextPage : null,
             icon: const Icon(Icons.arrow_forward),
             label: Text('next_page'.tr),
             style: ElevatedButton.styleFrom(
-              backgroundColor: _fileList.length >= _pageSize ? Colors.blue : Colors.grey,
+              backgroundColor: !isLastPage ? Colors.blue : Colors.grey,
             ),
           ),
         ],
