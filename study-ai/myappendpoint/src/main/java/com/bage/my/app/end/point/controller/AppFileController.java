@@ -71,25 +71,42 @@ public class AppFileController {
     // 分页查询文件列表
     @RequestMapping("/list")
     public ApiResponse<AppFileListResponse> getFiles(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String keyword) {
         
         log.info("请求参数 - 页码: {}, 每页大小: {}, 关键词: {}", page, size, keyword);
+        
+        // 参数验证
+        if (page < 1) {
+            log.warn("页码不能小于1，已自动设置为1。输入页码: {}", page);
+            page = 1;
+        }
+        
+        if (size <= 0) {
+            log.warn("每页大小必须大于0，已自动设置为10。输入大小: {}", size);
+            size = 10;
+        }
+        
+        // Spring Data JPA的页码是从0开始的，需要转换
+        int jpaPage = page - 1;
+        
         Page<AppFile> filesPage;
         if (keyword != null && !keyword.trim().isEmpty()) {
             log.info("根据关键词搜索文件: {}", keyword);
-            filesPage = appFileService.searchFilesByKeyword(keyword, page, size);
+            filesPage = appFileService.searchFilesByKeyword(keyword, jpaPage, size);
         } else {
-            filesPage = appFileService.getFilesByPage(page, size);
+            filesPage = appFileService.getFilesByPage(jpaPage, size);
         }
         
-        log.info("文件分页查询结果: {}", JsonUtil.toJson(filesPage.getContent()));
+        log.info("文件分页查询结果 - 总记录数: {}, 总页数: {}, 当前页记录数: {}", 
+                filesPage.getTotalElements(), filesPage.getTotalPages(), filesPage.getNumberOfElements());
+        
         AppFileListResponse response = new AppFileListResponse(
                 filesPage.getContent(),
                 filesPage.getTotalElements(),
                 filesPage.getTotalPages(),
-                filesPage.getNumber(),
+                page,  // 返回前端传入的页码（从1开始）
                 filesPage.getSize()
         );
         
