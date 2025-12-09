@@ -58,9 +58,9 @@ class _FileListPageState extends State<FileListPage> {
       }
 
       // 调用获取文件列表的API（带分页和搜索参数）
-      final response = await _httpClient.post(
+      final response = await _httpClient.get(
         '/app/file/list',
-        body: queryParams,
+        queryParameters: queryParams,
       );
       LogUtil.info('加载文件列表响应: $response');
       if (response['code'] == 200 && response['data'] is Map) {
@@ -116,7 +116,8 @@ class _FileListPageState extends State<FileListPage> {
 
   // 切换到下一页
   void _goToNextPage() {
-    if (_fileList.length >= _pageSize) {
+    final totalPages = (_totalItems + _pageSize - 1) ~/ _pageSize;
+    if (_currentPage < totalPages) {
       setState(() {
         _currentPage++;
       });
