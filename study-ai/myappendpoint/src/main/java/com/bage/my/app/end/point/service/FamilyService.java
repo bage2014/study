@@ -222,7 +222,8 @@ public class FamilyService {
         }
         
         // 删除成员本身
-        // memberRepository.delete(existingMember);
+        // 删除成员本身
+        memberRepository.delete(existingMember);
     }
     // 在类的末尾，deleteMember方法之后添加
     public void deleteRelationship(Long relationshipId) {

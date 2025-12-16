@@ -488,7 +488,8 @@ class _FamilyPageState extends State<FamilyPage> {
 
             // 发送删除请求
             final response = await _httpClient.post(
-              '/family/members/${member.id}',
+              '/family/members/delete',
+              body: {'id': member.id},
             );
 
             // 关闭加载弹窗
@@ -526,6 +527,13 @@ class _FamilyPageState extends State<FamilyPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            ListTile(
+              title: Text('edit_member_info'.tr),
+              onTap: () {
+                Get.back();
+                _editMemberInfo(member);
+              },
+            ),
             ListTile(
               title: Text('delete_relationship'.tr),
               textColor: Colors.red,

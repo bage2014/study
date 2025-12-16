@@ -83,6 +83,32 @@ public class FamilyController {
         }
     }
 
+    /**
+     * 更新成员
+     */
+    @PostMapping("/members/update")
+    public ApiResponse<FamilyMember> updateMember(@RequestBody FamilyMember member) {
+        try {
+            // 检查成员是否存在
+            if (member.getId() == null) {
+                return ApiResponse.fail(400, "成员ID不能为空");
+            }
+            FamilyMember existingMember = familyService.getMemberById(member.getId());
+            if (existingMember == null) {
+                return ApiResponse.fail(404, "成员不存在");
+            }
+            
+            FamilyMember updatedMember = familyService.saveMember(member);
+            return ApiResponse.success(updatedMember);
+        } catch (IllegalArgumentException e) {
+            log.error("更新成员参数错误: {}", e.getMessage(), e);
+            return ApiResponse.fail(400, e.getMessage());
+        } catch (Exception e) {
+            log.error("更新成员系统错误", e);
+            return ApiResponse.fail(500, "服务器内部错误");
+        }
+    }
+
     // 原有方法保持不变
     @PostMapping("/members/delete")
     public ApiResponse<String> deleteMember(@RequestBody FamilyMember member) {
