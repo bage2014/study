@@ -217,7 +217,9 @@ public class FamilyService {
         // 删除与该成员相关的所有关系
         List<FamilyRelationship> relationships = relationshipRepository.findByMember1IdOrMember2Id(
                 member.getId(), member.getId());
-        if (!relationships.isEmpty()) {
+        if (!relationships.
+            
+            isEmpty()) {
             relationshipRepository.deleteAll(relationships);
         }
         
