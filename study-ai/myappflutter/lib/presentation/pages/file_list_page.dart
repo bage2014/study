@@ -58,10 +58,10 @@ class _FileListPageState extends State<FileListPage> {
       }
 
       // 调用获取文件列表的API（带分页和搜索参数）
-      final response = await _httpClient.get(
+      final response = await _httpClient.post(
         '/app/file/list',
-        queryParameters: queryParams,
-      );
+        body: queryParams,
+      ); 
       LogUtil.info('加载文件列表响应: $response');
       if (response['code'] == 200 && response['data'] is Map) {
         final data = response['data'] as Map;
@@ -318,41 +318,42 @@ class _FileListPageState extends State<FileListPage> {
             )
           : Column(
               children: [
-                // 搜索框
+                // 搜索框和搜索按钮在同一行
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      labelText: 'search_file'.tr,
-                      hintText: 'enter_file_name'.tr,
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: _searchKeyword.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: _clearSearch,
-                            )
-                          : null,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  child: Row(
+                    children: [
+                      // 搜索框
+                      Expanded(
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            labelText: 'search_file'.tr,
+                            hintText: 'enter_file_name'.tr,
+                            prefixIcon: const Icon(Icons.search),
+                            suffixIcon: _searchKeyword.isNotEmpty
+                                ? IconButton(
+                                    icon: const Icon(Icons.clear),
+                                    onPressed: _clearSearch,
+                                  )
+                                : null,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onSubmitted: (value) => _onSearch(),
+                        ),
                       ),
-                    ),
-                    onSubmitted: (value) => _onSearch(),
-                  ),
-                ),
-
-                // 搜索按钮
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: ElevatedButton(
-                    onPressed: _onSearch,
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 40),
-                    ),
-                    child: Text('search'.tr),
+                      const SizedBox(width: 12),
+                      // 搜索按钮
+                      ElevatedButton(
+                        onPressed: _onSearch,
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(80, 48), // 调整按钮大小以匹配搜索框高度
+                        ),
+                        child: Text('search'.tr),
+                      ),
+                    ],
                   ),
                 ),
 
