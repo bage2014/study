@@ -170,12 +170,28 @@ public class FamilyController {
     @PostMapping("/relationships")
     public ApiResponse<FamilyRelationship> addRelationship(@RequestBody FamilyRelationship relationship) {
         try {
-            if(relationship != null && relationship.getMember1() != null){
-                Long id = relationship.getMember1().getId();
-                if(id == null){
-                    relationship.getMember1().setId(AuthUtil.getCurrentUserId());
-                }
+            // 完善空指针检查
+            if (relationship == null) {
+                throw new IllegalArgumentException("关系信息不能为空");
             }
+            
+            if (relationship.getMember1() == null) {
+                relationship.setMember1(new FamilyMember());
+            }
+            
+            if (relationship.getMember2() == null) {
+                relationship.setMember2(new FamilyMember());
+            }
+            
+            if(relationship.getMember1().getId() == null){
+                relationship.getMember1().setId(AuthUtil.getCurrentUserId());
+            }
+            
+            // 确保member2有ID
+            if (relationship.getMember2().getId() == null) {
+                throw new IllegalArgumentException("成员2的ID不能为空");
+            }
+            
             familyService.validateRelationship(relationship);
             log.info("addRelationship relationship: {}", JsonUtil.toJson(relationship));
             FamilyRelationship savedRelationship = familyService.saveRelationship(relationship);

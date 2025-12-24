@@ -28,6 +28,11 @@ public class FamilyService {
     
     public void validateRelationship(FamilyRelationship relationship) {
         // 1. 检查成员是否存在
+        if (relationship.getMember1() == null || relationship.getMember1().getId() == null ||
+            relationship.getMember2() == null || relationship.getMember2().getId() == null) {
+            throw new IllegalArgumentException("成员信息不完整");
+        }
+        
         if (!memberRepository.existsById(relationship.getMember1().getId()) || 
             !memberRepository.existsById(relationship.getMember2().getId())) {
             throw new IllegalArgumentException("成员不存在");
@@ -47,6 +52,12 @@ public class FamilyService {
         // 使用BFS算法检查环形关系
         Queue<Long> queue = new LinkedList<>();
         Set<Long> visited = new HashSet<>();
+        
+        // 确保成员和ID不为null
+        if (relationship.getMember1() == null || relationship.getMember1().getId() == null ||
+            relationship.getMember2() == null || relationship.getMember2().getId() == null) {
+            return; // 如果成员信息不完整，跳过环形检查
+        }
         
         queue.add(relationship.getMember1().getId());
         visited.add(relationship.getMember1().getId());
