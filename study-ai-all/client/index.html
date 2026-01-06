@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户列表 - Hello World App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .hello-message {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .user-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .user-item:last-child {
+            border-bottom: none;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .user-email {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .user-id {
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 20px;
+            color: #e74c3c;
+            background-color: #ffebee;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>用户列表</h1>
+        <div class="hello-message">Hello World! 这是一个简单的用户列表应用</div>
+        
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="loading" class="loading">加载用户列表中...</div>
+        
+        <div id="user-list" class="user-list" style="display: none;"></div>
+    </div>
+
+    <script>
+        // API地址
+        const API_URL = 'http://localhost:5001/api/users';
+        
+        // DOM元素
+        const errorDiv = document.getElementById('error');
+        const loadingDiv = document.getElementById('loading');
+        const userListDiv = document.getElementById('user-list');
+        
+        // 获取用户列表
+        async function fetchUsers() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error('网络响应失败');
+                }
+                const users = await response.json();
+                renderUsers(users);
+            } catch (error) {
+                showError('获取用户列表失败: ' + error.message);
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+        
+        // 渲染用户列表
+        function renderUsers(users) {
+            userListDiv.innerHTML = '';
+            
+            users.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+                
+                userItem.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-name">${user.name}</div>
+                        <div class="user-email">${user.email}</div>
+                    </div>
+                    <div class="user-id">ID: ${user.id}</div>
+                `;
+                
+                userListDiv.appendChild(userItem);
+            });
+            
+            userListDiv.style.display = 'block';
+        }
+        
+        // 显示错误信息
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        // 页面加载完成后获取用户列表
+        window.addEventListener('load', fetchUsers);
+    </script>
+</body>
+</html>
