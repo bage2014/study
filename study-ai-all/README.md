@@ -5,13 +5,11 @@
 ## 项目结构
 
 ```
-├── android-app/              # Android移动应用模块
-├── backend/                  # 原始Node.js后端服务
-├── frontend/                 # 原始Web前端应用
+├── flutter_app/              # Flutter移动应用模块
 ├── spring-boot-backend/      # Spring Boot后端服务
 ├── vue-frontend/             # Vue 3前端应用
 ├── .gitignore                # 根目录Git忽略文件
-└── package.json              # 项目根配置文件
+└── README.md                 # 项目结构说明文档
 ```
 
 ## 模块说明
@@ -55,59 +53,27 @@
 - `vite.config.js` - Vite配置文件
 - `package.json` - 项目依赖配置
 
-### 3. Android移动应用 (android-app/)
+### 3. Flutter移动应用 (flutter_app/)
 
 **技术栈：**
-- Java 8
-- Android SDK (API 34)
-- RecyclerView
-- Retrofit + Gson
-- MVVM架构
+- Dart
+- Flutter 3.0+
+- HTTP Package
+- FutureBuilder
+- Material Design
 
 **功能：**
 - 移动设备上展示用户列表
 - 与Spring Boot后端通信
 - 响应式列表布局
+- 加载状态和错误处理
+- 支持Android和iOS平台
 
 **核心文件：**
-- `app/src/main/java/com/example/userlistapp/MainActivity.java` - 主活动
-- `app/src/main/java/com/example/userlistapp/adapter/UserAdapter.java` - 列表适配器
-- `app/src/main/java/com/example/userlistapp/api/RetrofitClient.java` - 网络客户端
-- `app/src/main/java/com/example/userlistapp/api/UserApi.java` - API接口定义
-- `app/src/main/java/com/example/userlistapp/model/User.java` - 用户数据模型
-- `app/src/main/res/layout/activity_main.xml` - 主布局
-- `app/src/main/res/layout/user_item.xml` - 列表项布局
-
-### 4. 原始Node.js后端 (backend/)
-
-**技术栈：**
-- Node.js
-- Express
-- CORS
-
-**功能：**
-- 提供用户列表数据接口
-- 支持跨域请求
-
-**核心文件：**
-- `server.js` - 服务器入口文件
-- `package.json` - 项目依赖配置
-
-### 5. 原始Web前端 (frontend/)
-
-**技术栈：**
-- HTML5
-- CSS3
-- JavaScript
-- Fetch API
-
-**功能：**
-- 展示用户列表
-- 与Node.js后端通信
-
-**核心文件：**
-- `index.html` - 主页面
-- `package.json` - 项目依赖配置
+- `lib/main.dart` - 应用入口和主界面
+- `lib/models/user.dart` - 用户数据模型
+- `lib/api/api_service.dart` - API服务类
+- `android/app/src/main/AndroidManifest.xml` - Android权限配置
 
 ## 启动指南
 
@@ -130,31 +96,13 @@ npm run dev
 
 应用将在 `http://localhost:5173` 启动。
 
-### Android移动应用
+### Flutter移动应用
 
-1. 使用Android Studio打开 `android-app` 目录
-2. 连接Android设备或启动模拟器
-3. 点击运行按钮启动应用
-
-### 原始Node.js后端
-
-```bash
-cd backend
-npm install
-npm start
-```
-
-服务将在 `http://localhost:5001` 启动。
-
-### 原始Web前端
-
-```bash
-cd frontend
-npm install
-npm start
-```
-
-应用将在 `http://localhost:8081` 启动。
+1. 确保已安装Flutter SDK
+2. 使用VS Code或Android Studio打开 `flutter_app` 目录
+3. 连接Android设备或启动模拟器
+4. 运行 `flutter pub get` 安装依赖
+5. 点击运行按钮或执行 `flutter run` 启动应用
 
 ## API接口说明
 
@@ -190,5 +138,5 @@ npm start
 
 - Spring Boot: 3.2.0
 - Vue: 3.x
-- Android SDK: API 34
-- Java: 17 (后端) / 8 (Android)
+- Flutter: 3.0+
+- Dart: 3.8.1+

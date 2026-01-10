@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">User List App</string>
-    <string name="hello_world">Hello World! 这是一个Android用户列表应用</string>
-    <string name="loading_users">加载用户列表中...</string>
-    <string name="error_loading">加载失败，请重试</string>
-    <string name="retry">重试</string>
-    <string name="user_list_title">用户列表</string>
-</resources>
