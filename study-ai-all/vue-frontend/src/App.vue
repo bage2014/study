@@ -1,56 +1,396 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-const users = ref([])
+// API配置
+const API_URL = 'http://localhost:8080/api/family-tree'
+
+// 状态管理
+const persons = ref([])
+const relationships = ref([])
 const loading = ref(true)
 const error = ref(null)
+const activeTab = ref('graph') // 'graph', 'persons', 'relationships'
 
-const API_URL = 'http://localhost:8080/api/users'
+// 表单数据
+const newPerson = ref({
+  name: '',
+  gender: '男',
+  birthDate: '',
+  deathDate: '',
+  description: ''
+})
 
-async function fetchUsers() {
+const newRelationship = ref({
+  person1Id: '',
+  person2Id: '',
+  type: '',
+  description: ''
+})
+
+// 加载数据
+async function fetchData() {
   try {
     loading.value = true
-    const response = await fetch(API_URL)
-    if (!response.ok) {
-      throw new Error('Failed to fetch users')
+    const [personsRes, relationshipsRes] = await Promise.all([
+      fetch(`${API_URL}/persons`),
+      fetch(`${API_URL}/relationships`)
+    ])
+    
+    if (!personsRes.ok || !relationshipsRes.ok) {
+      throw new Error('Failed to fetch data')
     }
-    users.value = await response.json()
+    
+    persons.value = await personsRes.json()
+    relationships.value = await relationshipsRes.json()
     error.value = null
   } catch (err) {
     error.value = err.message
-    users.value = []
+    persons.value = []
+    relationships.value = []
   } finally {
     loading.value = false
   }
 }
 
+// 添加人员
+async function addPerson() {
+  try {
+    const response = await fetch(`${API_URL}/persons`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newPerson.value)
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to add person')
+    }
+    
+    const addedPerson = await response.json()
+    persons.value.push(addedPerson)
+    
+    // 重置表单
+    newPerson.value = {
+      name: '',
+      gender: '男',
+      birthDate: '',
+      deathDate: '',
+      description: ''
+    }
+  } catch (err) {
+    error.value = err.message
+  }
+}
+
+// 添加关系
+async function addRelationship() {
+  try {
+    const response = await fetch(`${API_URL}/relationships`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ...newRelationship.value,
+        person1Id: Number(newRelationship.value.person1Id),
+        person2Id: Number(newRelationship.value.person2Id)
+      })
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to add relationship')
+    }
+    
+    const addedRelationship = await response.json()
+    relationships.value.push(addedRelationship)
+    
+    // 重置表单
+    newRelationship.value = {
+      person1Id: '',
+      person2Id: '',
+      type: '',
+      description: ''
+    }
+  } catch (err) {
+    error.value = err.message
+  }
+}
+
+// 删除人员
+async function deletePerson(id) {
+  try {
+    const response = await fetch(`${API_URL}/persons/${id}`, {
+      method: 'DELETE'
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to delete person')
+    }
+    
+    persons.value = persons.value.filter(p => p.id !== id)
+    relationships.value = relationships.value.filter(r => r.person1Id !== id && r.person2Id !== id)
+  } catch (err) {
+    error.value = err.message
+  }
+}
+
+// 删除关系
+async function deleteRelationship(id) {
+  try {
+    const response = await fetch(`${API_URL}/relationships/${id}`, {
+      method: 'DELETE'
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to delete relationship')
+    }
+    
+    relationships.value = relationships.value.filter(r => r.id !== id)
+  } catch (err) {
+    error.value = err.message
+  }
+}
+
+// 格式化日期
+function formatDate(dateString) {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString()
+}
+
+// 获取人员名称
+function getPersonName(id) {
+  const person = persons.value.find(p => p.id === id)
+  return person ? person.name : `未知(${id})`
+}
+
 onMounted(() => {
-  fetchUsers()
+  fetchData()
 })
 </script>
 
 <template>
   <div class="container">
-    <h1>用户列表</h1>
-    <div class="hello-message">Hello World! 这是一个基于Vue 3的用户列表应用</div>
+    <h1>家庭族谱应用</h1>
+    <div class="hello-message">Hello World! 这是一个基于Vue 3的家庭族谱应用</div>
     
     <div v-if="error" class="error">{{ error }}</div>
     
     <div v-else-if="loading" class="loading">
-      加载用户列表中...
+      加载数据中...
     </div>
     
-    <div v-else class="user-list">
-      <div 
-        v-for="user in users" 
-        :key="user.id" 
-        class="user-item"
-      >
-        <div class="user-info">
-          <div class="user-name">{{ user.name }}</div>
-          <div class="user-email">{{ user.email }}</div>
+    <div v-else>
+      <!-- 标签页 -->
+      <div class="tabs">
+        <button 
+          class="tab-button" 
+          :class="{ active: activeTab === 'graph' }" 
+          @click="activeTab = 'graph'"
+        >
+          关系图
+        </button>
+        <button 
+          class="tab-button" 
+          :class="{ active: activeTab === 'persons' }" 
+          @click="activeTab = 'persons'"
+        >
+          人员管理
+        </button>
+        <button 
+          class="tab-button" 
+          :class="{ active: activeTab === 'relationships' }" 
+          @click="activeTab = 'relationships'"
+        >
+          关系管理
+        </button>
+      </div>
+      
+      <!-- 关系图标签页 -->
+      <div v-if="activeTab === 'graph'" class="graph-tab">
+        <h2>家庭关系图</h2>
+        <div class="graph-container">
+          <div class="graph-info">
+            <p>共有 {{ persons.length }} 位家庭成员</p>
+            <p>共有 {{ relationships.length }} 条关系记录</p>
+          </div>
+          <!-- 简单的关系图显示 -->
+          <div class="simple-graph">
+            <h3>人员列表</h3>
+            <div class="persons-list">
+              <div 
+                v-for="person in persons" 
+                :key="person.id" 
+                class="person-node"
+              >
+                <div class="person-name">{{ person.name }}</div>
+                <div class="person-details">
+                  <span>{{ person.gender }}</span>
+                  <span>{{ formatDate(person.birthDate) }}</span>
+                  <span>{{ person.deathDate ? formatDate(person.deathDate) : '在世' }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <h3>关系列表</h3>
+            <div class="relationships-list">
+              <div 
+                v-for="relationship in relationships" 
+                :key="relationship.id" 
+                class="relationship-edge"
+              >
+                <span>{{ getPersonName(relationship.person1Id) }}</span>
+                <span class="relationship-type">{{ relationship.type }}</span>
+                <span>{{ getPersonName(relationship.person2Id) }}</span>
+                <button 
+                  class="delete-btn" 
+                  @click="deleteRelationship(relationship.id)"
+                >
+                  删除
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="user-id">ID: {{ user.id }}</div>
+      </div>
+      
+      <!-- 人员管理标签页 -->
+      <div v-if="activeTab === 'persons'" class="persons-tab">
+        <h2>人员管理</h2>
+        
+        <!-- 添加人员表单 -->
+        <div class="add-form">
+          <h3>添加新成员</h3>
+          <form @submit.prevent="addPerson">
+            <div class="form-group">
+              <label>姓名:</label>
+              <input type="text" v-model="newPerson.name" required>
+            </div>
+            <div class="form-group">
+              <label>性别:</label>
+              <select v-model="newPerson.gender">
+                <option value="男">男</option>
+                <option value="女">女</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>出生日期:</label>
+              <input type="date" v-model="newPerson.birthDate">
+            </div>
+            <div class="form-group">
+              <label>去世日期:</label>
+              <input type="date" v-model="newPerson.deathDate">
+            </div>
+            <div class="form-group">
+              <label>描述:</label>
+              <textarea v-model="newPerson.description"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">添加人员</button>
+          </form>
+        </div>
+        
+        <!-- 人员列表 -->
+        <div class="persons-list">
+          <h3>人员列表</h3>
+          <div class="list-container">
+            <div 
+              v-for="person in persons" 
+              :key="person.id" 
+              class="person-item"
+            >
+              <div class="person-info">
+                <div class="person-name">{{ person.name }}</div>
+                <div class="person-details">
+                  <span>{{ person.gender }}</span>
+                  <span>{{ formatDate(person.birthDate) }}</span>
+                  <span>{{ person.deathDate ? formatDate(person.deathDate) : '在世' }}</span>
+                </div>
+                <div class="person-description">{{ person.description }}</div>
+              </div>
+              <button 
+                class="delete-btn" 
+                @click="deletePerson(person.id)"
+              >
+                删除
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 关系管理标签页 -->
+      <div v-if="activeTab === 'relationships'" class="relationships-tab">
+        <h2>关系管理</h2>
+        
+        <!-- 添加关系表单 -->
+        <div class="add-form">
+          <h3>添加新关系</h3>
+          <form @submit.prevent="addRelationship">
+            <div class="form-group">
+              <label>人员1:</label>
+              <select v-model="newRelationship.person1Id" required>
+                <option value="">选择人员</option>
+                <option 
+                  v-for="person in persons" 
+                  :key="person.id" 
+                  :value="person.id"
+                >
+                  {{ person.name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>关系类型:</label>
+              <input type="text" v-model="newRelationship.type" required placeholder="如：父亲、母亲、儿子等">
+            </div>
+            <div class="form-group">
+              <label>人员2:</label>
+              <select v-model="newRelationship.person2Id" required>
+                <option value="">选择人员</option>
+                <option 
+                  v-for="person in persons" 
+                  :key="person.id" 
+                  :value="person.id"
+                >
+                  {{ person.name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>描述:</label>
+              <textarea v-model="newRelationship.description"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">添加关系</button>
+          </form>
+        </div>
+        
+        <!-- 关系列表 -->
+        <div class="relationships-list">
+          <h3>关系列表</h3>
+          <div class="list-container">
+            <div 
+              v-for="relationship in relationships" 
+              :key="relationship.id" 
+              class="relationship-item"
+            >
+              <div class="relationship-info">
+                <div class="relationship-pair">
+                  <span>{{ getPersonName(relationship.person1Id) }}</span>
+                  <span class="relationship-type">{{ relationship.type }}</span>
+                  <span>{{ getPersonName(relationship.person2Id) }}</span>
+                </div>
+                <div class="relationship-description">{{ relationship.description }}</div>
+              </div>
+              <button 
+                class="delete-btn" 
+                @click="deleteRelationship(relationship.id)"
+              >
+                删除
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -58,7 +398,7 @@ onMounted(() => {
 
 <style scoped>
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -67,7 +407,19 @@ onMounted(() => {
 h1 {
   text-align: center;
   color: #2c3e50;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #34495e;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+h3 {
+  color: #7f8c8d;
+  margin-bottom: 15px;
 }
 
 .hello-message {
@@ -77,48 +429,25 @@ h1 {
   margin-bottom: 30px;
 }
 
-.user-list {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.user-item {
+.tabs {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
 }
 
-.user-item:last-child {
-  border-bottom: none;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.user-name {
-  font-weight: bold;
+.tab-button {
+  padding: 12px 24px;
+  background: none;
+  border: none;
   font-size: 16px;
-  margin-bottom: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  color: #7f8c8d;
 }
 
-.user-email {
-  color: #666;
-  font-size: 14px;
-}
-
-.user-id {
-  background-color: #3498db;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
+.tab-button.active {
+  color: #3498db;
+  border-bottom: 3px solid #3498db;
 }
 
 .loading {
@@ -134,5 +463,212 @@ h1 {
   background-color: #ffebee;
   border-radius: 4px;
   margin: 20px 0;
+}
+
+/* 表单样式 */
+.add-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-group textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+.submit-btn {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-btn:hover {
+  background-color: #2980b9;
+}
+
+/* 列表样式 */
+.list-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.person-item,
+.relationship-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.person-item:last-child,
+.relationship-item:last-child {
+  border-bottom: none;
+}
+
+.person-info,
+.relationship-info {
+  flex: 1;
+}
+
+.person-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+
+.person-details {
+  color: #7f8c8d;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.person-details span {
+  margin-right: 15px;
+}
+
+.person-description {
+  color: #95a5a6;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.relationship-pair {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.relationship-type {
+  background-color: #3498db;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 0 10px;
+  font-size: 14px;
+}
+
+.relationship-description {
+  color: #95a5a6;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+/* 关系图样式 */
+.graph-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.graph-info {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.simple-graph {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.persons-list,
+.relationships-list {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 4px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.person-node {
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.relationship-edge {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.relationship-edge .relationship-type {
+  margin: 0 10px;
+}
+
+.relationship-edge .delete-btn {
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .simple-graph {
+    grid-template-columns: 1fr;
+  }
+  
+  .person-item,
+  .relationship-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .delete-btn {
+    margin-top: 10px;
+  }
 }
 </style>
