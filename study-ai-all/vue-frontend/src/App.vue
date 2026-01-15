@@ -215,40 +215,77 @@ onMounted(() => {
             <p>共有 {{ persons.length }} 位家庭成员</p>
             <p>共有 {{ relationships.length }} 条关系记录</p>
           </div>
-          <!-- 简单的关系图显示 -->
-          <div class="simple-graph">
-            <h3>人员列表</h3>
-            <div class="persons-list">
-              <div 
-                v-for="person in persons" 
-                :key="person.id" 
-                class="person-node"
-              >
-                <div class="person-name">{{ person.name }}</div>
-                <div class="person-details">
-                  <span>{{ person.gender }}</span>
-                  <span>{{ formatDate(person.birthDate) }}</span>
-                  <span>{{ person.deathDate ? formatDate(person.deathDate) : '在世' }}</span>
+          <!-- 美化的关系图显示 -->
+          <div class="beautified-graph">
+            <!-- 中心人员展示 -->
+            <div class="graph-center">
+              <div class="graph-title">家庭关系</div>
+              <div class="graph-visualization">
+                <!-- 人员节点 -->
+                <div class="nodes-container">
+                  <div 
+                    v-for="person in persons" 
+                    :key="person.id" 
+                    class="person-node"
+                    :class="{ 'male': person.gender === '男', 'female': person.gender === '女' }"
+                  >
+                    <div class="person-avatar">
+                      {{ person.name.charAt(0) }}
+                    </div>
+                    <div class="person-name">{{ person.name }}</div>
+                    <div class="person-details">
+                      <span class="birth-date">{{ formatDate(person.birthDate) }}</span>
+                      <span class="status">{{ person.deathDate ? '已故' : '在世' }}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             
-            <h3>关系列表</h3>
-            <div class="relationships-list">
-              <div 
-                v-for="relationship in relationships" 
-                :key="relationship.id" 
-                class="relationship-edge"
-              >
-                <span>{{ getPersonName(relationship.person1Id) }}</span>
-                <span class="relationship-type">{{ relationship.type }}</span>
-                <span>{{ getPersonName(relationship.person2Id) }}</span>
-                <button 
-                  class="delete-btn" 
-                  @click="deleteRelationship(relationship.id)"
+            <!-- 关系连接 -->
+            <div class="relationships-section">
+              <h3>关系列表</h3>
+              <div class="relationships-grid">
+                <div 
+                  v-for="relationship in relationships" 
+                  :key="relationship.id" 
+                  class="relationship-card"
                 >
-                  删除
-                </button>
+                  <div class="relationship-content">
+                    <div class="person-pair">
+                      <div class="person-info">
+                        <div class="person-avatar small">
+                          {{ getPersonName(relationship.person1Id).charAt(0) }}
+                        </div>
+                        <div class="person-name">{{ getPersonName(relationship.person1Id) }}</div>
+                      </div>
+                      
+                      <div class="relationship-connector">
+                        <div class="connector-line"></div>
+                        <div class="relationship-type-badge">{{ relationship.type }}</div>
+                      </div>
+                      
+                      <div class="person-info">
+                        <div class="person-avatar small">
+                          {{ getPersonName(relationship.person2Id).charAt(0) }}
+                        </div>
+                        <div class="person-name">{{ getPersonName(relationship.person2Id) }}</div>
+                      </div>
+                    </div>
+                    
+                    <div class="relationship-description">
+                      {{ relationship.description }}
+                    </div>
+                  </div>
+                  
+                  <button 
+                    class="delete-btn small" 
+                    @click="deleteRelationship(relationship.id)"
+                    title="删除关系"
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -615,50 +652,263 @@ h3 {
   margin-bottom: 20px;
 }
 
-.simple-graph {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+/* 美化的关系图样式 */
+.beautified-graph {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-.persons-list,
-.relationships-list {
-  background-color: #f8f9fa;
-  padding: 15px;
-  border-radius: 4px;
-  max-height: 500px;
-  overflow-y: auto;
+.graph-center {
+  text-align: center;
+}
+
+.graph-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.graph-visualization {
+  background-color: #f0f4f8;
+  border-radius: 12px;
+  padding: 30px;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nodes-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+  align-items: center;
 }
 
 .person-node {
   background-color: white;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 15px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.relationship-edge {
+.person-node:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.person-node.male {
+  border-top: 4px solid #3498db;
+}
+
+.person-node.female {
+  border-top: 4px solid #e91e63;
+}
+
+.person-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 auto 10px;
+  background-color: #3498db;
+  color: white;
+}
+
+.person-node.male .person-avatar {
+  background-color: #3498db;
+}
+
+.person-node.female .person-avatar {
+  background-color: #e91e63;
+}
+
+.person-avatar.small {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  margin: 0 auto 8px;
+}
+
+.person-name {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.person-details {
+  font-size: 12px;
+  color: #7f8c8d;
+}
+
+.birth-date {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.status {
+  padding: 2px 8px;
+  border-radius: 12px;
+  background-color: #e7f3ff;
+  color: #3498db;
+  font-size: 10px;
+}
+
+/* 关系部分 */
+.relationships-section {
+  margin-top: 20px;
+}
+
+.relationships-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.relationship-card {
   background-color: white;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  border-left: 4px solid #3498db;
 }
 
-.relationship-edge .relationship-type {
-  margin: 0 10px;
+.relationship-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.relationship-edge .delete-btn {
-  margin-left: auto;
+.person-pair {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.person-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.relationship-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  position: relative;
+}
+
+.connector-line {
+  width: 100%;
+  height: 2px;
+  background-color: #e0e0e0;
+  position: relative;
+}
+
+.relationship-type-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  background-color: #3498db;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.relationship-description {
+  font-size: 14px;
+  color: #7f8c8d;
+  font-style: italic;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.relationship-card .delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.delete-btn.small {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
 }
 
 @media (max-width: 768px) {
   .simple-graph {
     grid-template-columns: 1fr;
+  }
+  
+  .beautified-graph {
+    gap: 20px;
+  }
+  
+  .graph-visualization {
+    padding: 20px;
+  }
+  
+  .nodes-container {
+    gap: 15px;
+  }
+  
+  .person-node {
+    width: 120px;
+    padding: 12px;
+  }
+  
+  .person-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .relationships-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .person-pair {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .relationship-connector {
+    flex-direction: row;
+    gap: 15px;
+  }
+  
+  .connector-line {
+    width: 2px;
+    height: 40px;
   }
   
   .person-item,
