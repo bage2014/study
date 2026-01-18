@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onUnmounted, nextTick } from 'vue'
+import { Network } from 'vis-network'
 
 // API配置
 const API_URL = 'http://localhost:8080/api/family-tree'
@@ -10,6 +11,10 @@ const relationships = ref([])
 const loading = ref(true)
 const error = ref(null)
 const activeTab = ref('graph') // 'graph', 'persons', 'relationships'
+
+// 网络图形相关
+const networkContainer = ref(null)
+let network = null
 
 // 表单数据
 const newPerson = ref({
@@ -43,6 +48,11 @@ async function fetchData() {
     persons.value = await personsRes.json()
     relationships.value = await relationshipsRes.json()
     error.value = null
+    
+    // 数据加载完成后初始化网络
+    nextTick(() => {
+      initNetwork()
+    })
   } catch (err) {
     error.value = err.message
     persons.value = []
@@ -69,6 +79,9 @@ async function addPerson() {
     
     const addedPerson = await response.json()
     persons.value.push(addedPerson)
+    
+    // 更新网络图形
+    updateNetwork()
     
     // 重置表单
     newPerson.value = {
@@ -105,6 +118,9 @@ async function addRelationship() {
     const addedRelationship = await response.json()
     relationships.value.push(addedRelationship)
     
+    // 更新网络图形
+    updateNetwork()
+    
     // 重置表单
     newRelationship.value = {
       person1Id: '',
@@ -130,6 +146,9 @@ async function deletePerson(id) {
     
     persons.value = persons.value.filter(p => p.id !== id)
     relationships.value = relationships.value.filter(r => r.person1Id !== id && r.person2Id !== id)
+    
+    // 更新网络图形
+    updateNetwork()
   } catch (err) {
     error.value = err.message
   }
@@ -147,6 +166,9 @@ async function deleteRelationship(id) {
     }
     
     relationships.value = relationships.value.filter(r => r.id !== id)
+    
+    // 更新网络图形
+    updateNetwork()
   } catch (err) {
     error.value = err.message
   }
@@ -165,9 +187,138 @@ function getPersonName(id) {
   return person ? person.name : `未知(${id})`
 }
 
+// 初始化网络图形
+function initNetwork() {
+  if (!networkContainer.value || persons.value.length === 0) return
+
+  // 准备节点数据
+  const nodes = persons.value.map(person => ({
+    id: person.id,
+    label: person.name,
+    shape: 'circularImage',
+    image: '', // 可以添加头像图片
+    color: {
+      background: person.gender === '男' ? '#3498db' : '#e91e63',
+      border: person.gender === '男' ? '#2980b9' : '#c2185b',
+      highlight: {
+        background: person.gender === '男' ? '#4aa3df' : '#f06292',
+        border: person.gender === '男' ? '#2980b9' : '#c2185b'
+      }
+    },
+    font: {
+      color: 'white',
+      size: 14,
+      bold: true
+    },
+    title: `姓名: ${person.name}\n性别: ${person.gender}\n出生日期: ${formatDate(person.birthDate)}${person.deathDate ? `\n去世日期: ${formatDate(person.deathDate)}` : ''}${person.description ? `\n描述: ${person.description}` : ''}`
+  }))
+
+  // 准备边数据
+  const edges = relationships.value.map(relationship => ({
+    from: relationship.person1Id,
+    to: relationship.person2Id,
+    label: relationship.type,
+    color: '#848484',
+    font: {
+      size: 12,
+      align: 'middle'
+    },
+    arrows: {
+      to: {
+        enabled: true,
+        scaleFactor: 0.5
+      }
+    },
+    title: relationship.description || ''
+  }))
+
+  // 配置选项
+  const options = {
+    nodes: {
+      borderWidth: 2,
+      size: 40,
+      font: {
+        size: 14
+      }
+    },
+    edges: {
+      width: 2,
+      smooth: {
+        enabled: true,
+        type: 'dynamic',
+        roundness: 0.5
+      }
+    },
+    layout: {
+      hierarchical: {
+        enabled: true,
+        direction: 'UD',
+        sortMethod: 'directed',
+        levelSeparation: 150,
+        nodeSpacing: 100,
+        treeSpacing: 200
+      }
+    },
+    physics: {
+      enabled: true,
+      solver: 'forceAtlas2Based',
+      forceAtlas2Based: {
+        gravitationalConstant: -50,
+        centralGravity: 0.01,
+        springLength: 100,
+        springConstant: 0.08
+      },
+      maxVelocity: 146,
+      minVelocity: 0.75,
+      timestep: 0.35
+    },
+    interaction: {
+      hover: true,
+      tooltipDelay: 200,
+      dragNodes: true,
+      zoomView: true,
+      dragView: true
+    }
+  }
+
+  // 创建网络
+  const data = {
+    nodes,
+    edges
+  }
+
+  // 销毁现有网络
+  if (network) {
+    network.destroy()
+  }
+
+  // 初始化网络
+  network = new Network(networkContainer.value, data, options)
+
+  // 监听事件
+  network.on('click', function(params) {
+    if (params.nodes.length > 0) {
+      console.log('点击了节点:', params.nodes[0])
+    }
+  })
+}
+
+// 更新网络图形
+function updateNetwork() {
+  if (!network) {
+    nextTick(() => {
+      initNetwork()
+    })
+  } else {
+    initNetwork()
+  }
+}
+
 onMounted(() => {
   fetchData()
 })
+
+
 </script>
 
 <template>
@@ -221,24 +372,11 @@ onMounted(() => {
             <div class="graph-center">
               <div class="graph-title">家庭关系</div>
               <div class="graph-visualization">
-                <!-- 人员节点 -->
-                <div class="nodes-container">
-                  <div 
-                    v-for="person in persons" 
-                    :key="person.id" 
-                    class="person-node"
-                    :class="{ 'male': person.gender === '男', 'female': person.gender === '女' }"
-                  >
-                    <div class="person-avatar">
-                      {{ person.name.charAt(0) }}
-                    </div>
-                    <div class="person-name">{{ person.name }}</div>
-                    <div class="person-details">
-                      <span class="birth-date">{{ formatDate(person.birthDate) }}</span>
-                      <span class="status">{{ person.deathDate ? '已故' : '在世' }}</span>
-                    </div>
-                  </div>
-                </div>
+                <!-- 人员节点 - 网络图形 -->
+                <div 
+                  ref="networkContainer" 
+                  class="network-container"
+                ></div>
               </div>
             </div>
             
@@ -673,11 +811,22 @@ h3 {
 .graph-visualization {
   background-color: #f0f4f8;
   border-radius: 12px;
-  padding: 30px;
-  min-height: 300px;
+  padding: 20px;
+  min-height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* 网络图形容器样式 */
+.network-container {
+  width: 100%;
+  height: 550px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .nodes-container {

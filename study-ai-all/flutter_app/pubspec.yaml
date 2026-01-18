@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   # HTTP package for API requests
   http: ^1.2.1
+  # Graph visualization package
+  graphview: ^1.0.0
 
 dev_dependencies:
   flutter_test:

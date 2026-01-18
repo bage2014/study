@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/api/api_service.dart';
 import 'package:flutter_app/models/person.dart';
 import 'package:flutter_app/models/relationship.dart';
+import 'package:graphview/GraphView.dart';
 
 class GraphPage extends StatefulWidget {
   const GraphPage({Key? key}) : super(key: key);
@@ -14,15 +15,136 @@ class _GraphPageState extends State<GraphPage> {
   late Future<List<Person>> _futurePersons;
   late Future<List<Relationship>> _futureRelationships;
 
+  // 图形相关变量
+  final Graph graph = Graph();
+  final BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
+
   @override
   void initState() {
     super.initState();
     _refreshData();
+
+    // 配置图形算法
+    builder.siblingSeparation = 200;
+    builder.levelSeparation = 250;
+    builder.subtreeSeparation = 200;
+    builder.orientation = BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM;
   }
 
   void _refreshData() {
     _futurePersons = ApiService.getAllPersons();
     _futureRelationships = ApiService.getAllRelationships();
+  }
+
+  // 构建家庭关系图
+  Widget _buildFamilyTree(
+    List<Person> persons,
+    List<Relationship> relationships,
+  ) {
+    // 清空现有图形
+    graph.nodes.clear();
+    graph.edges.clear();
+
+    // 创建所有节点
+    Map<int, Node> nodeMap = {};
+    for (var person in persons) {
+      nodeMap[person.id] = Node(null);
+      graph.addNode(nodeMap[person.id]!);
+    }
+
+    // 创建所有边
+    for (var relationship in relationships) {
+      if (nodeMap.containsKey(relationship.person1Id) &&
+          nodeMap.containsKey(relationship.person2Id)) {
+        graph.addEdge(
+          nodeMap[relationship.person1Id]!,
+          nodeMap[relationship.person2Id]!,
+        );
+      }
+    }
+
+    return InteractiveViewer(
+      constrained: false,
+      boundaryMargin: const EdgeInsets.all(100),
+      minScale: 0.1,
+      maxScale: 2,
+      child: GraphView(
+        graph: graph,
+        algorithm: BuchheimWalkerAlgorithm(builder, TreeEdgeRenderer(builder)),
+        paint: Paint()
+          ..color = Colors.grey
+          ..strokeWidth = 2
+          ..style = PaintingStyle.stroke,
+        builder: (Node node) {
+          // 找到当前节点对应的人员（简单实现：按索引匹配）
+          int nodeIndex = graph.nodes.indexOf(node);
+          if (nodeIndex >= persons.length) return const SizedBox();
+          final person = persons[nodeIndex];
+
+          bool isMale = person.gender == '男';
+          bool isAlive = person.deathDate == null;
+
+          return SizedBox(
+            width: 120,
+            height: 120,
+            child: Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isMale ? Colors.blue : Colors.pink,
+                      ),
+                      child: Center(
+                        child: Text(
+                          person.name.isNotEmpty ? person.name[0] : '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      person.name,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      '${person.birthDate.substring(0, 4)}',
+                      style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // 获取节点文本（用作节点的键）
+  String getNodeText(Person person) {
+    return person.id.toString();
   }
 
   @override
@@ -95,14 +217,9 @@ class _GraphPageState extends State<GraphPage> {
                               color: const Color(0xFFF0F4F8),
                               borderRadius: BorderRadius.circular(12),
                             ),
+                            height: 500,
                             child: Center(
-                              child: Wrap(
-                                spacing: 24,
-                                runSpacing: 24,
-                                children: persons
-                                    .map((person) => _buildPersonNode(person))
-                                    .toList(),
-                              ),
+                              child: _buildFamilyTree(persons, relationships),
                             ),
                           ),
                           const SizedBox(height: 24),
