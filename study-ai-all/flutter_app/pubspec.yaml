@@ -38,6 +38,8 @@ dependencies:
   http: ^1.2.1
   # Graph visualization package
   graphview: ^1.0.0
+  # Local storage package
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

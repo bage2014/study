@@ -2,10 +2,23 @@ import 'dart:convert';
 import 'package:flutter_app/models/user.dart';
 import 'package:flutter_app/models/person.dart';
 import 'package:flutter_app/models/relationship.dart';
+import 'package:flutter_app/models/environment.dart';
 import 'package:http/http.dart' as http;
+import '../services/environment_service.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:8080';
+  static late String baseUrl;
+
+  // 初始化ApiService，设置baseUrl
+  static Future<void> initialize() async {
+    final environment = await EnvironmentService.getSelectedEnvironment();
+    baseUrl = environment.url;
+  }
+
+  // 手动设置baseUrl
+  static void setBaseUrl(String url) {
+    baseUrl = url;
+  }
 
   // 获取用户列表（保留原有功能）
   static Future<List<User>> getUsers() async {

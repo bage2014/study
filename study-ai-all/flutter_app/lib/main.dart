@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/user_list_page.dart';
 import 'package:flutter_app/pages/family_tree_page.dart';
+import 'package:flutter_app/api/api_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ApiService.initialize();
   runApp(const MyApp());
 }
 
