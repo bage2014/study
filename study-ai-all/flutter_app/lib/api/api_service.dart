@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter_app/models/user.dart';
 import 'package:flutter_app/models/person.dart';
 import 'package:flutter_app/models/relationship.dart';
-import 'package:flutter_app/models/environment.dart';
 import 'package:http/http.dart' as http;
 import '../services/environment_service.dart';
 
