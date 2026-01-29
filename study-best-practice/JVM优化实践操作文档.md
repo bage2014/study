@@ -373,8 +373,8 @@ netstat -an
 
 ## 10. 参考资料
 
-- 阿里巴巴Java开发手册
-- 字节跳动技术博客
-- 美团技术沙龙
-- Oracle JVM官方文档
-- 《深入理解Java虚拟机》
+- [阿里巴巴Java开发手册](https://github.com/alibaba/p3c)
+- [字节跳动技术博客](https://bytedance.larkoffice.com/wiki/Na3Owt5dniqrlkkPHj2cWGYunfg)
+- [美团技术沙龙](https://tech.meituan.com/salon.html)
+- [Oracle JVM官方文档](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/)
+- [《深入理解Java虚拟机》](https://item.jd.com/12494631.html)
