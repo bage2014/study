@@ -1,1223 +1,775 @@
-# study-best-practice
+# Study Best Practice
 
+## 项目简介
 
+本项目是一个Java最佳实践学习项目，包含性能测试、数据库性能分析、JVM优化、Redis优化等多个模块，旨在提供可操作的性能优化指南和实践案例。
 
-阿里云性能测试PTS的文档
-https://help.aliyun.com/document_detail/29338.html#section-9q1-mug-j3t
+## 目录结构
 
-https://zhuanlan.zhihu.com/p/491927737
+- **src/main/java/com/bage/study/best/practice/**
+  - **cache/**: 缓存相关实现
+  - **config/**: 配置类
+  - **controller/**: 控制器
+  - **metrics/**: 指标监控
+  - **model/**: 数据模型
+  - **mq/**: 消息队列
+  - **repo/**: 数据访问
+  - **service/**: 业务逻辑
+  - **trial/**: 性能测试相关控制器
+  - **utils/**: 工具类
 
-https://baijiahao.baidu.com/s?id=1740860079075651792&wfr=spider&for=pc
+## 核心功能模块
 
-阿里问题排查 
-https://developer.aliyun.com/article/778128
+### 1. 性能测试
 
-juejin 
-https://juejin.cn/post/7355389990530809908
+#### 1.1 WRK压测
 
-## todo 
-验证各个模块的逻辑
-DB
-Redis
-CPU
-GC
-Memory
-API、
-
-
-## 瓶颈分析
-
-https://www.jianshu.com/p/62cf2690e6eb
-
-**业务指标**：如吞吐量(QPS、TPS)、响应时间(RT)、并发数、业务成功率等
-
-**资源指标**：如CPU、内存、Disk I/O、Network I/O等资源的消耗情况
-
-
-
-- 我终于知道高工是如快速分析线上程序性能瓶颈了（CPU篇）
-
-https://zhuanlan.zhihu.com/p/613430726
-
-- 性能测试：CPU/内存/IO性能瓶颈分析常用工具
-
-https://www.jianshu.com/p/e1deb8b6984d
-
-- 性能测试中服务器关键性能指标浅析
-
-https://www.jianshu.com/p/62cf2690e6eb
-
-- 初探调优1：系统压测，瓶颈定位及调优方案
-
-https://blog.51cto.com/u_14006572/3153832
-
-- 性能之巅：定位和优化程序 CPU、内存、IO 瓶颈
-
-https://my.oschina.net/u/4526289/blog/4783751
-
-- 性能测试中如何定位性能瓶颈？
-
-https://www.zhihu.com/question/29269160
-
-- 性能测试如何定位分析性能瓶颈？
-
-https://blog.51cto.com/u_12087147/6225614
-
-- 压力测试瓶颈分析
-
-https://zhuanlan.zhihu.com/p/486542009
-
-
-启动 gzip
-Content-Encoding: gzip
-
-## 启动命令
-
-设置JVM 参数 
-
-```
-
-cd /Users/bage/bage/github/study/study-best-practice
-
-jdk8 :
-java -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:my-gc-%t.gc.log -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-jdk17 :
-java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-
-jdk21 :
-java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-Remote :
-java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
- --spring.config.location=file:///Users/bage/bage/config/application-remore-db.properties
-
-
-
-```
-
-
-
-
-
-## MySQL
-
-### 问题类型
-
-参考链接 https://help.aliyun.com/zh/rds/apsaradb-rds-for-mysql/common-performance-issues/
-
-慢SQL
-
-```
-http://localhost:8000/mysql/sql/slow?key=64415%20Hudson%20Drives
-```
-
-
-
-### 监控
-
-查看负载 
-
-```
-show global status
-```
-
-查看查询 
-
-```
-show processlist;
-```
-
-配置查看 
-
-```
- 连接数
- SHOW GLOBAL VARIABLES WHERE Variable_name='max_connections';
- SHOW STATUS WHERE Variable_name like 'Threads_connect%';
- 
- 缓冲区 
- SHOW STATUS WHERE Variable_name like '%buffer%';
- 
- 
- Bin Log 
- SHOW STATUS WHERE Variable_name like '%binlog%';
- SHOW Variables like 'log_bin';
-
-
-```
-
-调整
-
-```
-SET GLOBAL max_connections=10;
-
-SET GLOBAL max_connections=500;
-
-SET GLOBAL max_connections=500;
-
-SET GLOBAL max_connections=500;
-
-```
-
-## MySQL监控
-
-Docker 容器监控工具
-
-https://registry.hub.docker.com/r/prom/mysqld-exporter/
-
-https://github.com/prometheus/mysqld_exporter
-
-
-
-配置对应的图表ID 
-
-7362
-
-- **推荐图标ID：https://grafana.com/dashboards/7362**
-
-
-
-
-
-## WRK
-wrk 压测
-https://formulae.brew.sh/formula/wrk
-https://github.com/wg/wrk
-
-安装
-```
+**安装**
+```bash
 brew install wrk
 ```
 
-请求
-This runs a benchmark for 30 seconds, using 12 threads, and keeping 400 HTTP connections open.
-```
-
+**使用示例**
+```bash
+# 10线程，50连接，压测90秒
 wrk -t10 -c50 -d90s http://localhost:8000/user/insert
 
-wrk -t10 -c400 -d60s http://localhost:8000/user/insert
-
-wrk -t10 -c100 -d60s http://localhost:8000/user/insert
-
+# 带延迟统计
 wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/log/insert
+```
 
-wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/user/insert
+**压测结果分析**
+- **Latency**: 响应时间分布
+- **Req/Sec**: 每秒请求数
+- **Requests/sec**: 总体QPS
+- **Transfer/sec**: 每秒传输数据量
 
-wrk -t10 -c100 -d5s -T3s --latency http://localhost:8000/goods/buy
+#### 1.2 JMeter压测
+
+**启动命令**
+```bash
+cd /Users/bage/bage/software/apache-jmeter-5.5/bin
+
+java -jar jmeter.jar
+```
+
+### 2. 数据库性能分析
+
+#### 2.1 MySQL慢SQL分析
+
+**慢SQL检测**
+```sql
+-- 查看慢查询配置
+show variables like '%slow_query%';
+
+-- 开启慢查询日志
+set global slow_query_log = 'ON';
+set global slow_query_log_file = '/var/log/mysql/slow-query.log';
+set global long_query_time = 1;
+```
+
+**慢SQL示例**
+```bash
+http://localhost:8000/mysql/sql/slow?key=64415%20Hudson%20Drives
 
 ```
 
-Output:
-```
-Running 30s test @ http://127.0.0.1:8080/index.html
-12 threads and 400 connections
-Thread Stats   Avg      Stdev     Max   +/- Stdev
-Latency   635.91us    0.89ms  12.92ms   93.69%
-Req/Sec    56.20k     8.07k   62.00k    86.54%
-22464657 requests in 30.00s, 17.76GB read
-Requests/sec: 748868.53
-Transfer/sec:    606.33MB
-```
+**慢SQL场景测试API**
+```bash
+# 全表扫描
+http://localhost:8000/mysql/full/table/scan
 
-请求 实践
-```
-bage@bagedeMacBook-Pro ~ % wrk -t12 -c200 -d30s http://localhost:8000/user/insert
+# 复杂JOIN查询
+http://localhost:8000/mysql/complex/join
 
-Running 30s test @ http://localhost:8000/user/insert
-12 threads and 200 connections
-Thread Stats   Avg      Stdev     Max   +/- Stdev
-Latency   827.00ms  256.50ms   1.99s    86.84%
-Req/Sec    21.02     13.00    99.00     79.95%
-6705 requests in 30.10s, 1.18MB read
-Socket errors: connect 0, read 89, write 0, timeout 100
-Requests/sec:    222.74
-Transfer/sec:     40.25KB
+# 无索引排序
+http://localhost:8000/mysql/order/by/no/index
 
+# LIKE前缀模糊匹配
+http://localhost:8000/mysql/like/prefix?prefix=xxx
 
+# LIKE中缀模糊匹配（索引失效）
+http://localhost:8000/mysql/like/infix?keyword=xxx
 
-bage@bagedeMacBook-Pro ~ % wrk -t12 -c400 -d30s http://localhost:8000/user/insert
-
-Running 30s test @ http://localhost:8000/user/insert
-12 threads and 400 connections
-Thread Stats   Avg      Stdev     Max   +/- Stdev
-Latency     1.45s   349.10ms   2.00s    72.86%
-Req/Sec    22.62     13.43   100.00     59.04%
-7287 requests in 30.07s, 1.29MB read
-Socket errors: connect 0, read 1486, write 0, timeout 788
-Requests/sec:    242.33
-Transfer/sec:     43.79KB
-
-
-bage@bagedeMacBook-Pro ~ % wrk -t100 -c400 -d30s http://localhost:8000/user/insert
-
-Running 30s test @ http://localhost:8000/user/insert
-  100 threads and 400 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     1.33s   396.91ms   2.00s    66.59%
-    Req/Sec     2.44      3.56    29.00     86.15%
-  2306 requests in 30.10s, 416.61KB read
-  Socket errors: connect 0, read 933, write 0, timeout 1387
-Requests/sec:     76.61
-Transfer/sec:     13.84KB
+# 函数操作（索引失效）
+http://localhost:8000/mysql/function/operation
 ```
 
+**慢SQL分析工具**
+- MySQL慢查询日志
+- EXPLAIN分析
+- Performance Schema
+- MySQL Enterprise Monitor
+- Percona Toolkit
 
-## Tomcat 
+#### 2.2 数据库连接池优化
 
-线程配置 
-https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.server
+**JDBC vs 连接池性能对比**
+- JDBC直连: `http://localhost:8000/data/source/jdbc/get?phone=18119069047`
+- 连接池: `http://localhost:8000/data/source/pool/get?phone=18119069047`
 
-https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.server.server.tomcat.threads.max
-
-
-Mac 启动 https://cwiki.apache.org/confluence/display/TOMCAT/Building+Tomcat+on+MacOS
-
-```
-
-cd /Users/bage/bage/software/apache-tomcat-10.1.10/
-
-chmod 755 ./bin/*.sh
-
-./bin/startup.sh
-```
-
-
-
-## Jdbc 链接 
-
-#### jdbc 关闭实验
-
-jdbc 不关闭
-
-```
-http://localhost:8000/connection/get?close=false
-```
-
-jdbc 关闭
-
-```
-http://localhost:8000/connection/get?close=true
-```
-
-#### Jdbc vs Pool
-
-jdbc 一个connection查询
-
-```
-http://localhost:8000/data/source/jdbc/get?phone=18119069047
-```
-
-datasource查询
-
-```
-http://localhost:8000/data/source/pool/get?phone=18119069047
-```
-
-监控耗时对比
-
-```
-http://localhost:3000/d/Oc-s90XVk/bage?orgId=1&viewPanel=7&from=now-5m&to=now
-```
-
-
-
-## Spring
-
-https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties
-
-## Jmeter
-吞吐量上不去？
-
-## Druid 
-
-基本配置和使用 
-
-https://github.com/alibaba/druid
-
-https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
-
-
-
-查看监控 
-
+**Druid监控**
+```bash
 http://localhost:8000/druid/index.html
-
-
-
 http://localhost:8000/druid/sql.html
-
-
-
-## Redis
-
-Docker 安装启动
-
-https://github.com/bage2014/study/blob/master/study-docker/README.md
-
-```
-// 启动
-docker run --network bage-net -p 6379:6379 --name bage-redis -d redis --requirepass "bage"
-
-// 链接
-redis-cli
-
-auth
-
 ```
 
-Spring 集成 Redis
+### 3. JVM优化
 
-https://spring.io/guides/gs/messaging-redis/
+#### 3.1 JVM参数调优
 
-验证高并发访问 redis
-http://localhost:8000/redis/random/set
+**基础参数配置**
+```bash
+# JDK 8
+java -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation \
+-XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M \
+-Xloggc:my-gc-%t.gc.log -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
 
-http://localhost:8000/big/number/set?count=2
-
-
-
-配置监控？？采样数据？？
-
-https://nelsoncode.medium.com/how-to-monitor-redis-with-prometheus-and-grafana-docker-6eb33a5ea998
-
-
-
-### 基本
-
+# JDK 17+
+java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
 ```
-// set. 初始化 N个
+
+**推荐生产环境参数**
+```bash
+java -Xms4g -Xmx4g -Xmn2g -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m \
+-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:G1HeapRegionSize=8m \
+-XX:G1ReservePercent=15 -XX:InitiatingHeapOccupancyPercent=45 \
+-XX:ParallelGCThreads=8 -XX:ConcGCThreads=2 \
+-XX:+DisableExplicitGC -XX:+AlwaysPreTouch \
+-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/to/dump \
+-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/path/to/gc.log \
+-jar application.jar
+```
+
+#### 3.2 垃圾回收器优化
+
+**垃圾回收器选择**
+| 回收器 | 参数 | 适用场景 |
+|--------|------|----------|
+| 串行回收器 | `-XX:+UseSerialGC` | 单线程、小型应用 |
+| 并行回收器 | `-XX:+UseParallelGC` | 吞吐量优先 |
+| CMS回收器 | `-XX:+UseConcMarkSweepGC` | 低延迟优先 |
+| G1回收器 | `-XX:+UseG1GC` | 平衡吞吐量和延迟 |
+| ZGC | `-XX:+UseZGC` | 超大堆、低延迟 |
+
+#### 3.3 GC日志分析
+
+**GC日志配置**
+```bash
+-XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation \
+-XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M \
+-Xloggc:/opt/app/gc-%t.log
+```
+
+**GC日志分析工具**
+- [GCViewer](https://github.com/chewiebug/GCViewer)
+- [GCEasy](https://gceasy.io/)
+- [HPROF Viewer](https://www.eclipse.org/mat/)
+
+#### 3.4 内存泄漏分析
+
+**生成堆转储文件**
+```bash
+jps
+jmap -dump:file=heap.hprof,format=b {pid}
+```
+
+**分析堆转储文件**
+- 使用MAT (Memory Analyzer Tool)
+- 使用VisualVM
+
+### 4. Redis优化
+
+#### 4.1 大Key检测与优化
+
+**大Key检测**
+```bash
+redis-cli -a password --bigkeys
+```
+
+**大Key示例**
+- 大集合: `http://localhost:8000/redis/big/key/set?count=10000`
+- 大值: `http://localhost:8000/redis/big/value/set?count=10000`
+
+**大Key影响**
+- 内存占用高
+- 操作阻塞
+- 网络传输慢
+
+#### 4.2 Redis性能测试
+
+**基本操作**
+```bash
+# 初始化数据
 http://localhost:8000/redis/random/init?max=10000
 
-// random set
+# 随机写入
 http://localhost:8000/redis/random/set
 
-// random get
+# 随机读取
 http://localhost:8000/redis/random/get
 ```
 
-### Big Key
+#### 4.3 Redis性能监控与压力测试
 
-```
-// set. 初始化 N个
-http://localhost:8000/redis/big/key/init?max=1000
+**性能测试API**
+```bash
+# 单线程写入测试
+http://localhost:8000/redis/performance/single/write?count=1000
 
-// random set
-http://localhost:8000/redis/big/key/random/set
+# 多线程写入测试
+http://localhost:8000/redis/performance/multi/write?count=10000&threads=10
 
-// random get
-http://localhost:8000/redis/big/key/random/get
+# 单线程读取测试
+http://localhost:8000/redis/performance/single/read?count=1000
 
-```
+# 多线程读取测试
+http://localhost:8000/redis/performance/multi/read?count=10000&threads=10
 
-
-
-### Big Value
-
-```
-// set. 初始化 N个
-http://localhost:8000/redis/big/value/init?max=1000
-
-// random set
-http://localhost:8000/redis/big/value/random/set
-
-// random get
-http://localhost:8000/redis/big/value/random/get
+# 混合读写测试
+http://localhost:8000/redis/performance/mixed/read/write?count=10000&threads=10&readRatio=0.7
 ```
 
+**Redis场景测试API**
+```bash
+# 生成大key（大字符串）
+http://localhost:8000/redis/performance/big/key/generate?size=1024
 
+# 生成大List
+http://localhost:8000/redis/performance/big/list/generate?size=10000
 
+# 模拟热点key访问
+http://localhost:8000/redis/performance/hot/key?count=10000&threads=10
 
-### Big Collection
+# 测试大key性能
+http://localhost:8000/redis/performance/big/key/test?size=512
 
-```
-// set. 初始化 N个
-http://localhost:8000/redis/big/collection/init?max=1000&collectionCount=1000
-
-// random set
-http://localhost:8000/redis/big/collection/set
-
-// random get
-http://localhost:8000/redis/big/collection/get
-```
-
-
-
-### 总结
-
-redis 大key https://juejin.cn/post/7309482256808509459、https://juejin.cn/post/7349360925185818635
-
-监控 http://localhost:3000/d/RpSjVqWMz/redis?orgId=1&refresh=10s&from=now-30m&to=now
-
-性能影响 
-
-- **性能下降**
-
-大 key 会占用大量的内存，导致内存碎片增加，进而影响Redis的性能。同时，对大 key 的读写操作消耗的时间都会比较长，这会导致单个操作阻塞 Redis 服务器，影响整体性能。
-
-尤其是执行像 `HGETALL`、`SMEMBERS`、`ZRANGE`、`LRANGE` 等命令时，如果操作的是大 key，可能会导致明显的延迟。
-
-基础数据准备【往换成添加N个值】
-
+# 清理测试数据
+http://localhost:8000/redis/performance/cleanup
 ```
 
-// set. 初始化 N个BigKey
-http://localhost:8000/redis/big/key/init?max=1000
+**监控工具**
+- Redis Insight: 可视化管理和监控Redis
+- Prometheus + Grafana: 监控Redis指标
+- Redis Exporter: 提供Redis监控指标
 
-// get 一个 BigKey
+**性能分析指南**
+详细的Redis性能分析过程请参考：[Redis-MQ性能分析指南.md](Redis-MQ性能分析指南.md)
 
-```
+## 5. RabbitMQ优化
 
-常规查询【bigkey 设置之前】
+### 5.1 RabbitMQ消息验证
 
-```
-http://localhost:8000/redis/count/random?index=1
-
-4ms 左右
-```
-
-常规BigKey压测查询【bigkey 设置之后】
-
-```
-http://localhost:8000/redis/count/random
-6ms 左右
-```
-
-
-
-设置Big Key
-
-```
-大 Key
-http://localhost:8000/redis/big/key/set?count=100
-
-http://localhost:8000/redis/big/key/set?count=10000
-
-大 Value
-http://localhost:8000/redis/big/value/set?count=100
-
-http://localhost:8000/redis/big/value/set?count=10000
-
-http://localhost:8000/redis/big/value/set?count=10000
-
-```
-
-Big Key 验证
-
-```
-redis-cli -a bage --bigkeys 
-
-```
-
-
-
-常规查询【bigkey 设置之后】
-
-
-
-常规压测查询【bigkey 设置之后】
-
-
-
-
-
-请求过程
-
-```
-并发
-http://localhost:8000/redis/random/set
-并发
-http://localhost:8000/redis/big/number/set?count=100
-
-大key
-http://localhost:8000/redis/big/key/set?count=100
-
-http://localhost:8000/redis/big/key/set?count=10000
-
-http://localhost:8000/redis/big/value/set?count=100
-
-http://localhost:8000/redis/big/value/set?count=10000
-
-http://localhost:8000/redis/big/value/set?count=10000
-
-热点key
-http://localhost:8000/redis/count/init?max=10000
-http://localhost:8000/redis/count/get?index=1
-
-
-
-```
-
-
-
-Redis 大Key 检测 
-
-```
-redis-cli -a bage --bigkeys
-
-
-```
-
-
-
-Redis 监控 
-
-```
-http://localhost:3000/d/RpSjVqWMz/redis?orgId=1&refresh=10s
-```
-
-
-
-## Sentinel
-
-访问
-
-```
-// 无限流
-http://localhost:8000/limit/query/phone=1234
-
-// 限流
-http://localhost:8000/limit/insert
-
-```
-
-
-
-请求验证
-
-
-
-
-
-报错分析
-
-
-
-
-
-
-
-## MQ
-
-MQ 消息验证 
-
-```
+```bash
 // 随机发送MQ 
 http://localhost:8000/mq/send/random
-
 
 // MQ 异步写入 
 http://localhost:8000/user/insert/async/mq
 
-
 // 接受MQ消息 
 MQMessageReceiver
-
 ```
 
+### 5.2 RabbitMQ性能监控与压力测试
 
+**性能测试API**
+```bash
+# 单线程发送测试
+http://localhost:8000/mq/performance/single/send?count=1000
 
-## Mybatis
+# 多线程发送测试
+http://localhost:8000/mq/performance/multi/send?count=10000&threads=10
 
-一级二级缓存
-
-```
-一级缓存
-http://localhost:8000/mybatis/cache1/phone=1234
-
-二级缓存
-http://localhost:8000/mybatis/cache2/phone=1234
-
-```
-
-
-
-## Metrics
-
-### 基本使用
-启动 prometheus 挂在 网络bage-net 下  
-
-```
-docker run --network bage-net -d --name bage-prometheus -p 9090:9090 -v /Users/bage/bage/docker-conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+# 发送并接收测试
+http://localhost:8000/mq/performance/send/receive?count=100
 ```
 
-启动 kabana
+**监控工具**
+- RabbitMQ Management UI: `http://localhost:15672`
+- Prometheus + Grafana: 监控RabbitMQ指标
+- RabbitMQ Prometheus插件: 提供RabbitMQ监控指标
 
-```
-docker run --network bage-net -d --name=bage-grafana -p 3000:3000 grafana/grafana
+**性能分析指南**
+详细的RabbitMQ性能分析过程请参考：[Redis-MQ性能分析指南.md](Redis-MQ性能分析指南.md)
 
-docker run  -d --name=bage-grafana -p 3000:3000 grafana/grafana
+## 6. 线程池监控与分析
 
-```
+### 6.1 Tomcat线程池配置
 
-本地指标
-http://localhost:8000/actuator/prometheus
-
-Promethoes
-http://localhost:9090
-
-查看指标
-http://localhost:9090/targets
-
-Grafana
-http://localhost:3000/
-
-admin/admin 登陆 
-
-配置数据源 Data Sources
-http://bage-prometheus:9090
-
-画图
-sum(rate(bage_user_request_count_total[1m]))
-
-sum_over_time(bage_user_request_count_total[1m])
-
-
-
-
-
-### JVM 模板 
-
-https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
-
-
-
-导入
-
-dashboard -> import ;
-
-拷贝上面 https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
-
-链接对应的 ID 或者 json
-
-
-
-## Docker 
-CPU 使用情况 
-
-```
-docker stats --no-stream
-
-docker stats
-
+**application.properties配置**
+```properties
+server.tomcat.threads.max=200
+server.tomcat.threads.min-spare=20
+server.tomcat.max-connections=10000
+server.tomcat.accept-count=100
 ```
 
-## JVM 
+### 6.2 线程分析工具
 
-### 常用指标
-
-https://help.aliyun.com/zh/arms/application-monitoring/user-guide/jvm-monitoring
-
-https://help.aliyun.com/zh/edas/user-guide/jvm-monitoring-1
-
-```
-http://localhost:8000/gc/step/5
-
-// 分配GC 堆内存
-http://localhost:8000/jvm/add?step=5000
-
-http://localhost:8000/jvm/clean
+**查看线程状态**
+```bash
+jstack {pid} > threads.txt
 ```
 
-
-
-#### GC
-
-- FullGC次数
-
-```
-http://localhost:8000/jvm/gc/full/count?times=100
-```
-
-
-
-- YoungGC次数
-
-```
-http://localhost:8000/jvm/gc/young/count?times=100
-```
-
-
-
-- FullGC耗时
-
-
-
-- YoungGC耗时
-
-
-
-#### Memory
-
-堆内存
-
-#### Thread
-
-线程数量
-
-
-
-
-
-
-
-打开自带的 Jconsole
-
-JVM参数调优：
-
-https://juejin.cn/post/7344325496983666714
-
-https://juejin.cn/post/7344282440725250085
-
-
-
-参数配置 
-
-https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
-
-### 堆内存
-
-选择对应的JAVA 进程 
-
-    java -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-
-
-
-### 线程栈大小？？
-
-配置 减少，用不到1M ？
-
-
-
-## deploy 
-
-参考链接 https://www.baeldung.com/deployable-fat-jar-spring-boot
-```
-打包 
-mvn clean package 
-
-cd /Users/bage/bage/github/study/study-best-practice
-
-
-启动 
--Xms【memory size】 初试堆大小 
--Xmx 【memory max】 最大堆大小
-java -jar  -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar --spring.config.location=file:///Users/bage/bage/config/application-remore-db.properties
-
-```
-
-
-
-拷贝到远程
-
-```
-scp -r ./target/study-best-practice-0.0.1-SNAPSHOT.jar bage@124.221.97.97:/home/bage
-
-java -jar study-best-practice-0.0.1-SNAPSHOT.jar
-
-
-```
-
-
-
-## 生成 dump
-
-https://www.baeldung.com/java-heap-dump-capture
-
-
-
-选择对应的JAVA 进程 
-
-```
-jps
-
-jmap -dump:file=javaDump.hprof,format=b {pid}
-
-example：
-jmap -dump:file=bestp.hprof,format=b 41337
-
-bage@bagedeMacBook-Pro ~ % jps
-95028 Jps
-90631 study-best-practice-0.0.1-SNAPSHOT.jar
-90806 ApacheJMeter.jar
-
-bage@bagedeMacBook-Pro ~ % jmap -dump:file=0707.hprof,format=b 90631   
-Dumping heap to /Users/bage/0707.hprof ...
-Heap dump file created [120639811 bytes in 0.287 secs]
-
-
-```
-
-
-
-## Arthas 
-
-A里爸爸工具使用 
-热点图 线上服务的 CPU 火焰图。
-
-https://github.com/brendangregg/FlameGraph
-
-
-
-- [profiler](https://alibaba.github.io/arthas/profiler.html)–使用[async-profiler](https://github.com/jvm-profiling-tools/async-profiler)对应用采样，生成火焰图
-
-
-
-生成火焰图
-
-```
-[arthas@21777]$ profiler start
-Profiling started
+**分析线程阻塞**
+- 使用Arthas
+- 使用jstack分析线程堆栈
+
+## 性能问题排查指南
+
+### 1. CPU使用率高
+
+**排查步骤**
+1. 使用`top`命令查看CPU使用情况
+2. 使用`jstack`查看线程堆栈
+3. 使用Arthas生成火焰图
+4. 定位耗时方法并优化
+
+**常见原因**
+- 死循环
+- 复杂计算
+- 线程阻塞
+- GC频繁
+
+### 2. 内存泄漏
+
+**排查步骤**
+1. 使用`jmap -heap`查看内存使用情况
+2. 生成堆转储文件
+3. 使用MAT分析堆转储
+4. 定位大对象和内存泄漏点
+
+**常见原因**
+- 静态集合持有对象
+- 监听器未移除
+- 线程局部变量未清理
+- 连接未关闭
+
+### 3. GC频繁
+
+**排查步骤**
+1. 查看GC日志
+2. 分析GC原因和频率
+3. 调整JVM参数
+4. 优化代码减少对象创建
+
+**常见原因**
+- 内存分配不合理
+- 对象创建过于频繁
+- 大对象直接进入老年代
+- 内存泄漏
+
+### 4. 数据库性能问题
+
+**排查步骤**
+1. 开启慢查询日志
+2. 分析慢SQL
+3. 检查索引使用情况
+4. 优化SQL语句
+
+**常见原因**
+- 缺少索引
+- SQL语句复杂
+- 全表扫描
+- 连接池配置不合理
+
+## 实践案例
+
+### 案例1: 高并发下的Redis大Key问题
+
+**场景**
+- 系统在高峰期出现Redis响应延迟
+- 监控显示Redis CPU使用率高
+
+**排查过程**
+1. 使用`redis-cli --bigkeys`检测大Key
+2. 发现多个包含10万+元素的集合
+3. 分析代码发现使用了`HGETALL`操作大Hash
+
+**解决方案**
+1. 拆分大Key为多个小Key
+2. 使用`HSCAN`分批获取数据
+3. 增加Redis集群节点
+
+**优化效果**
+- Redis响应时间从50ms降至5ms
+- CPU使用率从80%降至20%
+
+### 案例2: JVM GC频繁导致的服务卡顿
+
+**场景**
+- 服务每几分钟出现一次短暂卡顿
+- GC日志显示Young GC频繁
+
+**排查过程**
+1. 分析GC日志
+2. 发现新生代空间过小
+3. 检查代码发现大量临时对象创建
+
+**解决方案**
+1. 调整JVM参数，增大新生代空间
+2. 优化代码，减少临时对象创建
+3. 使用对象池复用对象
+
+**优化效果**
+- Young GC频率从每分钟10次降至每分钟2次
+- 服务卡顿现象消失
+
+### 案例3: 数据库慢查询优化
+
+**场景**
+- 接口响应时间超过2秒
+- 数据库CPU使用率高
+
+**排查过程**
+1. 查看慢查询日志
+2. 发现一条SQL执行时间超过1秒
+3. 分析执行计划，发现全表扫描
+
+**解决方案**
+1. 添加合适的索引
+2. 优化SQL语句，减少关联查询
+3. 增加数据库缓存
+
+**优化效果**
+- 接口响应时间从2秒降至200ms
+- 数据库CPU使用率从70%降至30%
+
+## 监控系统
+
+### 1. Prometheus + Grafana
+
+**部署步骤**
+1. 启动Prometheus
+```bash
+docker run --network bage-net -d --name bage-prometheus -p 9090:9090 \
+-v /path/to/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 ```
 
-
-
-
-
-停止
-
-```
-[arthas@21777]$ profiler stop --format html
-OK
-profiler output file: /Users/bage/bage/github/study/arthas-output/20230912-190608.html
-
-
-[arthas@21777]$ profiler stop
-OK
-profiler output file: /Users/bage/bage/github/study/arthas-output/20230912-190615.html
-
+2. 启动Grafana
+```bash
+docker run -d --name=bage-grafana -p 3000:3000 grafana/grafana
 ```
 
+3. 配置数据源
+- 访问: `http://localhost:3000`
+- 用户名/密码: admin/admin
+- 添加Prometheus数据源: `http://bage-prometheus:9090`
 
+**推荐仪表盘**
+- JVM监控: [4701-JVM Micrometer](https://grafana.com/grafana/dashboards/4701-jvm-micrometer/)
+- MySQL监控: [7362-MySQL](https://grafana.com/dashboards/7362)
+- Redis监控: [Redis Dashboard](https://grafana.com/grafana/dashboards/763)
 
-## SafePoint 
+### 2. Spring Boot Actuator
 
-本地请求地点 
+**访问端点**
+- 健康检查: `http://localhost:8000/actuator/health`
+- 指标: `http://localhost:8000/actuator/prometheus`
+- 环境: `http://localhost:8000/actuator/env`
 
-```
-http://localhost:8000/gc/safe/point/start
+## 7. 类初始化顺序验证
 
-```
+### 7.1 类初始化顺序测试
 
+**测试API**
+```bash
+# 完整验证类初始化顺序（父类+子类）
+http://localhost:8000/class/init/test
 
-
-### 分析过程
-
-#### 硬件环境
-
-应用程序运行的机器环境，CPU、内存、磁盘IO
-
-**CPU**
-
-- 使用率 
-
-**内存**
-
-**Disk I/O**
-
-**Network I/O**
-
-#### 应用程序
-
-通过增加资源也就是扩容可以提高系统总体的TPS，但是这种方法，往往会掩盖掉程序本身存在的设计和编码缺陷，还是需要从代码上进行分析，例如缓存设计和命中率，数据库连接设计，数据结构和算法，资源合理释放。
-
-DB
-
-
-
-#### 中间件环境
-
-例如高并发下数据库mysql性能调优，通常有建索引，慢SQL分析，SQL语句优化，Buffer Pool调整等措施；Tomcat的JVM内存启动参数调优等。
-
-
-
-
-
-## 问题排查 
-
-- 阿里爸爸排查总结稳定
-
-https://developer.aliyun.com/article/778128
-
-
-
-- G1GC慢的排查过程
-
-https://zhuanlan.zhihu.com/p/165285835
-
-- 有钱人的烦恼——服务器CPU和JVM GC卡顿问题排查和解决
-
-https://www.jianshu.com/p/890d44df0ba4
-
-- jvm Linux服务器出现异常和卡顿排查思路和步骤
-
-http://www.kuazhi.com/post/442548.html
-
-- 一次YoungGC过慢排查
-
-https://www.jianshu.com/p/4afabaa2b390
-
-- 系统运行缓慢，CPU 100%，以及Full GC次数过多问题的排查思路
-
-https://maimai.cn/article/detail?fid=1746642867&efid=IScZAP8KVukoQ0ZANO9G7A
-
-- 系统运行缓慢，CPU 100%，以及 Full GC 次数过多问题的排查思路
-
-https://my.oschina.net/zhangxufeng/blog/3017521
-
-- 一次线上遇到磁盘 IO 瓶颈的问题处理
-
-https://my.oschina.net/u/4417528/blog/3943828
-
-## GC 耗时性能
-
-https://juejin.cn/post/7380513226155704374
-
-
-
-不同垃圾回收器的回收差异 效果
-
-
-
-各种回收参数？
-
-
-
-JVM参数配置调整？
-
-
-
-GC 触发
-
-默认在启动后，会每1秒，放一个10M的对象，存储到map中
-
-```
-// 每次放 N * 10M
-http://localhost:8000/jvm/addAndFinish/10
-
-// JVM 监控 
-http://localhost:3000/d/LgQKi_rVk/jvm-micrometer?orgId=1&refresh=30s
-
-// 每次放 N * 10M【不删除引用，会触发OOM】
-http://localhost:8000/jvm/add/10
-
-// 清空 Map 
-http://localhost:8000/jvm/clean
-
-// JVM 内存使用情况
-http://localhost:8000/jvm/info
-
-// metric 信息 
-http://localhost:8000/actuator/prometheus
+# 单独验证父类初始化顺序
+http://localhost:8000/class/init/parent
 ```
 
+**预期执行顺序**
+1. 父类静态变量初始化
+2. 父类静态代码块执行
+3. 子类静态变量初始化
+4. 子类静态代码块执行
+5. 父类实例变量初始化
+6. 父类实例代码块执行
+7. 父类构造函数执行
+8. 子类实例变量初始化
+9. 子类实例代码块执行
+10. 子类构造函数执行
 
+**验证说明**
+- 类的初始化过程只会执行一次，首次访问类时触发
+- 静态代码块和静态变量的执行顺序与它们在代码中的定义顺序一致
+- 实例代码块和实例变量的执行顺序与它们在代码中的定义顺序一致
+- 构造函数会在实例代码块执行完成后执行
 
-## GC 垃圾回收器
+## 8. JVM垃圾回收器验证
 
-配置启用串行回收器
+### 8.1 垃圾回收器配置
 
-- ```
-  -XX:+UseSerialGC
-  ```
-
-配置启用并行回收器
-
-- ```
-  -XX:+UseParallelGC
-  ```
-
-配置启用并发标记清除回收器
-
-- ```
-  -XX:+UseConcMarkSweepGC
-  ```
-
-配置启用G1回收器
-
-- ```
-  -XX:+UseG1GC
-  ```
-
-## 
-
-## GC日志
-
-日志输出配置参数
-
-https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
-
-JDK doc文档 
-
-https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.htm
-
-日志查看解析
-
-https://dzone.com/articles/understanding-g1-gc-log-format
-
-https://blog.tier1app.com/2016/04/06/gc-logging-user-sys-real-which-time-to-use/
-
-基本解析
-
-https://zhuanlan.zhihu.com/p/267388951
-
-各种类型 
-
-https://blog.csdn.net/yunxing323/article/details/108304534
-
-
-
-GC 日志配置
-
-```
-jdk8 :
-java -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:my-gc-%t.gc.log -jar -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-jdk17 :
-java -jar -Xlog:gc:my-gc.log:time,level -Xms64m -Xmx256m target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-jdk21 :
-java -jar -Xlog:gc:my-gc-latest.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
-
-Remote :
-java -jar -Xlog:gc:my-gc-0813.log:time,level target/study-best-practice-0.0.1-SNAPSHOT.jar
- --spring.config.location=file:///Users/bage/bage/config/application-remore-db.properties
+**Serial收集器配置**
+```bash
+-XX:+UseSerialGC -Xms512m -Xmx512m -Xmn256m -XX:SurvivorRatio=8 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:serial-gc.log
 ```
 
-
-
-GC 过程 
-
-```
-localhost:8000/jvm/addAndFinish/step=10000
-
-
+**Parallel收集器配置**
+```bash
+-XX:+UseParallelGC -XX:+UseParallelOldGC -Xms1g -Xmx1g -Xmn512m -XX:SurvivorRatio=8 -XX:ParallelGCThreads=4 -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:parallel-gc.log
 ```
 
-
-
-**弱引用验证**
-
-内存占用
-
-```
-localhost:8000/jvm/map/add?step=100
+**CMS收集器配置**
+```bash
+-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Xms1g -Xmx1g -Xmn512m -XX:SurvivorRatio=8 -XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:cms-gc.log
 ```
 
-GC 模拟
-
-```
-http://localhost:8000/jvm/addAndFinish/1000
-```
-
-查看大小
-
-```
-localhost:8000/jvm/map/size
+**G1收集器配置**
+```bash
+-XX:+UseG1GC -Xms1g -Xmx1g -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=4 -XX:ConcGCThreads=2 -XX:InitiatingHeapOccupancyPercent=45 -XX:G1HeapRegionSize=16m -XX:G1MaxNewSizePercent=60 -XX:G1ReservePercent=15 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintAdaptiveSizePolicy -Xloggc:g1-gc.log
 ```
 
+**ZGC收集器配置 (JDK 11+)**
+```bash
+-XX:+UseZGC -Xms1g -Xmx1g -XX:ZGCHeapSizeMax=1g -XX:ZGCHeapSizeMin=512m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:zgc-gc.log
+```
 
+### 8.2 GC场景验证API
 
+**测试API**
+```bash
+# 触发年轻代GC
+http://localhost:8000/gc/young/gc
 
+# 触发老年代GC
+http://localhost:8000/gc/old/gc
 
-### 日志信息
+# 测试内存分配策略
+http://localhost:8000/gc/memory/allocation?size=100
 
-- GC类型
+# 测试G1 GC行为
+http://localhost:8000/gc/g1/test?count=1000
+```
 
-这里会告诉我们产生的是**YGC** （YGC 代表新生代的GC只会收集Eden区和Survivor ）、 还是**Full GC**（Full GC是针对于整个堆进行搜集）
+### 8.3 常见参数验证
 
-- GC产生的原因
+**内存配置验证**
+| 参数 | 说明 | 验证方法 |
+|------|------|----------|
+| Xms/Xmx | 初始/最大堆内存 | 启动时指定不同值，观察内存分配 |
+| Xmn | 年轻代大小 | 调整大小，观察GC频率变化 |
+| SurvivorRatio | 伊甸区与幸存者区比例 | 调整比例，观察对象晋升行为 |
+| MaxMetaspaceSize | 元空间最大大小 | 调整大小，观察类加载行为 |
 
-这里一般都会告诉我们是因为什么原因导致产生GC，一般通过这里可以分析出具体是因为哪个区域空间不够了导致的GC。
+**GC行为验证**
+| 参数 | 说明 | 验证方法 |
+|------|------|----------|
+| MaxGCPauseMillis | 最大GC停顿时间 | 调整值，观察GC停顿时间变化 |
+| ParallelGCThreads | 并行GC线程数 | 调整线程数，观察GC速度变化 |
+| CMSInitiatingOccupancyFraction | CMS触发阈值 | 调整阈值，观察CMS启动时机 |
+| InitiatingHeapOccupancyPercent | G1触发阈值 | 调整阈值，观察G1启动时机 |
+| G1MaxNewSizePercent | G1年轻代最大比例 | 调整比例，观察年轻代大小变化 |
+| G1HeapRegionSize | G1区域大小 | 调整大小，观察内存分配行为 |
 
-- 回收的情况
+### 8.4 验证说明
 
-这里主要体现出回收的成果，通过数据告诉我们 回收之前的区域对象占用空间大小、回收之后区域对象占用空间的大小 、当前区域的空间大小、回收使用的时长。
+1. **GC日志分析**
+   - 启动时添加`-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log`参数
+   - 使用GCViewer等工具分析GC日志
+   - 关注GC类型、GC时间、内存使用情况等指标
 
+2. **内存使用监控**
+   - 使用JConsole、VisualVM等工具监控内存使用
+   - 观察年轻代、老年代内存变化
+   - 关注对象晋升情况和内存碎片
 
+3. **性能对比**
+   - 在相同硬件环境下测试不同垃圾回收器
+   - 对比GC频率、GC停顿时间、吞吐量等指标
+   - 根据应用特点选择合适的垃圾回收器
 
-https://zhuanlan.zhihu.com/p/267388951
+4. **调优建议**
+   - 对于低延迟应用，优先考虑G1或ZGC
+   - 对于高吞吐量应用，优先考虑Parallel收集器
+   - 根据堆大小和硬件配置调整GC线程数
+   - 定期分析GC日志，持续优化GC配置
 
-![](https://pic1.zhimg.com/v2-5f7d61a15fa505a84fb3459a23988210_r.jpg)
+## 9. 类加载过程验证
 
+### 9.1 类加载过程测试
 
+**测试API**
+```bash
+# 完整验证类加载过程
+http://localhost:8000/class/load/test
 
-个人汇总文章
+# 获取类加载信息
+http://localhost:8000/class/load/info?className=com.bage.study.best.practice.trial.classload.TestClass
 
-https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/JVM%20%e6%a0%b8%e5%bf%83%e6%8a%80%e6%9c%af%2032%20%e8%ae%b2%ef%bc%88%e5%ae%8c%ef%bc%89/17%20GC%20%e6%97%a5%e5%bf%97%e8%a7%a3%e8%af%bb%e4%b8%8e%e5%88%86%e6%9e%90%ef%bc%88%e5%9f%ba%e7%a1%80%e9%85%8d%e7%bd%ae%ef%bc%89.md
+# 测试不同类加载器
+http://localhost:8000/class/load/loader/test
+```
 
+### 9.2 类加载过程说明
 
+**类加载的三个阶段**
+1. **加载**：将类的字节码加载到内存，生成Class对象
+2. **链接**：验证、准备、解析
+3. **初始化**：执行静态代码块和静态变量初始化
 
-https://www.cnblogs.com/felixzh/p/11526306.html
+**触发类初始化的场景**
+1. 访问类的静态变量（非final常量）
+2. 调用类的静态方法
+3. 创建类的实例
+4. 初始化子类时，父类会先初始化
+5. 使用反射API访问类
 
+**类加载器层次**
+| 类加载器 | 加载范围 | 父加载器 |
+|---------|---------|----------|
+| Bootstrap ClassLoader | JDK核心类库 | 无 |
+| Extension ClassLoader | JDK扩展类库 | Bootstrap |
+| App ClassLoader | 应用类路径 | Extension |
+| Custom ClassLoader | 自定义路径 | App |
+
+### 9.3 验证场景
+
+**场景1：访问静态常量**
+- 访问`TestClass.STATIC_CONSTANT`
+- 结果：不会触发类初始化，只会触发加载
+
+**场景2：访问静态变量**
+- 访问`TestClass.staticVar`
+- 结果：触发类初始化，执行静态代码块和静态变量初始化
+
+**场景3：调用静态方法**
+- 调用`TestClass.staticMethod()`
+- 结果：如果类未初始化，会先初始化
+
+**场景4：创建实例**
+- 创建`new TestClass()`
+- 结果：如果类未初始化，会先初始化，然后执行实例代码块和构造函数
+
+**场景5：创建多个实例**
+- 创建多个`TestClass`实例
+- 结果：类初始化只执行一次，实例化会执行多次
+
+### 9.4 验证方法
+
+1. **查看日志输出**
+   - 启动应用后，访问测试API
+   - 观察控制台日志，查看类加载、初始化、实例化的顺序
+   - 关注不同阶段的执行时间点
+
+2. **分析类加载信息**
+   - 访问`/class/load/info`接口
+   - 查看类的加载状态、初始化状态、加载器信息
+   - 查看实例化数量
+
+3. **使用工具监控**
+   - 使用JConsole、VisualVM等工具监控类加载
+   - 观察类加载数量和内存使用变化
+   - 分析类加载的性能影响
+
+### 9.5 代码样例
+
+**TestClass.java**
 ```java
-Real is wall clock time – time from start to finish of the call. This is all elapsed time including time slices used by other processes and time the process spends blocked (for example if it is waiting for I/O to complete).
-User is the amount of CPU time spent in user-mode code (outside the kernel) within the process. This is only actual CPU time used in executing the process. Other processes and time the process spends blocked do not count towards this figure.
-
-Sys is the amount of CPU time spent in the kernel within the process. This means executing CPU time spent in system calls within the kernel, as opposed to library code, which is still running in user-space. Like ‘user’, this is only CPU time used by the process.
-
-User+Sys will tell you how much actual CPU time your process used. Note that this is across all CPUs, so if the process has multiple threads it could potentially exceed the wall clock time reported by Real.
-  
+public class TestClass {
+    // 静态常量
+    public static final String STATIC_CONSTANT = "static constant";
+    
+    // 静态变量
+    public static String staticVar = initStaticVar();
+    
+    // 静态代码块
+    static {
+        log.info("TestClass static block executed");
+        ClassLoadMonitor.recordClassInit(TestClass.class.getName());
+    }
+    
+    // 实例变量
+    private String instanceVar = initInstanceVar();
+    
+    // 实例代码块
+    {
+        log.info("TestClass instance block executed");
+    }
+    
+    // 构造函数
+    public TestClass() {
+        log.info("TestClass constructor executed");
+        ClassLoadMonitor.recordInstanceCreation(TestClass.class.getName());
+    }
+    
+    // 静态方法
+    public static void staticMethod() {
+        log.info("TestClass staticMethod executed");
+    }
+    
+    // 实例方法
+    public void instanceMethod() {
+        log.info("TestClass instanceMethod executed");
+    }
+    
+    private static String initStaticVar() {
+        log.info("TestClass initStaticVar executed");
+        return "initialized static var";
+    }
+    
+    private String initInstanceVar() {
+        log.info("TestClass initInstanceVar executed");
+        return "initialized instance var";
+    }
+}
 ```
 
-配置GC日志写出 
+## 工具集
 
+### 1. 诊断工具
+
+- **Arthas**: 阿里巴巴开源的Java诊断工具
+- **JConsole**: JDK自带的监控工具
+- **VisualVM**: 可视化JVM监控工具
+- **MAT**: 内存分析工具
+- **GCViewer**: GC日志分析工具
+
+### 2. 压测工具
+
+- **WRK**: 轻量级HTTP压测工具
+- **JMeter**: 功能强大的压测工具
+- **Gatling**: 高性能压测工具
+
+## 部署指南
+
+### 1. 本地部署
+
+**打包**
+```bash
+mvn clean package
 ```
--XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseGCLogFileRotation  -XX:+PrintHeapAtGC -XX:NumberOfGCLogFiles=100 -XX:GCLogFileSize=10M -Xloggc:/opt/ard-user-gc-%t.gc.log
 
+**启动**
+```bash
+java -jar target/study-best-practice-0.0.1-SNAPSHOT.jar
 ```
 
-解释说明 
+### 2. 远程部署
 
-```text
- -Xloggc:/opt/app/ard-user/ard-user-gc-%t.log   设置日志目录和日志名称
- -XX:+UseGCLogFileRotation           开启滚动生成日志
- -XX:NumberOfGCLogFiles=5            滚动GC日志文件数，默认0，不滚动
- -XX:GCLogFileSize=20M               GC文件滚动大小，需开启UseGCLogFileRotation
- -XX:+PrintGCDetails                 开启记录GC日志详细信息（包括GC类型、各个操作使用的时间）,并且在程序运行结束打印出JVM的内存占用情况
- -XX:+ PrintGCDateStamps             记录系统的GC时间           
- -XX:+PrintGCCause                   产生GC的原因(默认开启)
+**拷贝文件**
+```bash
+scp -r ./target/study-best-practice-0.0.1-SNAPSHOT.jar user@server:/path/to/deploy
 ```
 
+**启动**
+```bash
+java -jar study-best-practice-0.0.1-SNAPSHOT.jar \
+--spring.config.location=file:///path/to/application.properties
+```
 
+## 参考资料
 
-
-
-GC 分析工具 
-
-https://dgrt.cn/a/2439307.html?action=onClick
-
-
-
-## MAT 使用
-
-官方网址 https://help.eclipse.org/latest/index.jsp?topic=/org.eclipse.mat.ui.help/welcome.html
-
-https://zhuanlan.zhihu.com/p/585668729
-
-http://androooid.github.io/public/lightsky/mat_usage/mat_usage.html
-
-入门 https://juejin.cn/post/6908665391136899079
-
-进阶 https://juejin.cn/post/6911624328472133646
-
-官网 https://help.eclipse.org/latest/index.jsp?topic=/org.eclipse.mat.ui.help/welcome.html
-
-文档使用 https://help.eclipse.org/latest/index.jsp?topic=/org.eclipse.mat.ui.help/welcome.html
-
-
-
-## 分析过程 
-
-实践参考 https://help.aliyun.com/document_detail/91580.html?spm=a2c4g.29342.0.0
-
-排查过程 https://www.zhihu.com/question/29269160/answer/2649417643
-
-线上问题排查  https://developer.aliyun.com/article/778128
-
-hutool https://github.com/dromara/hutool
+- [阿里巴巴Java开发手册](https://github.com/alibaba/p3c)
+- [字节跳动技术博客](https://bytedance.larkoffice.com/wiki/Na3Owt5dniqrlkkPHj2cWGYunfg)
+- [美团技术沙龙](https://tech.meituan.com/salon.html)
+- [Oracle JVM官方文档](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/)
+- [《深入理解Java虚拟机》](https://item.jd.com/12494631.html)
+- [Spring Boot官方文档](https://docs.spring.io/spring-boot/docs/current/reference/html/)
+- [Redis官方文档](https://redis.io/documentation)
+- [RabbitMQ官方文档](https://www.rabbitmq.com/documentation.html)
+- [MySQL官方文档](https://dev.mysql.com/doc/)
