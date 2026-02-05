@@ -1117,8 +1117,6 @@ GC Root为垃圾回收器提供了初始的扫描位置，垃圾回收过程如�
 
 ### 13.8 G1收集器
 
-#### 基本特色
-
 G1（Garbage First）收集器是JDK 7中引入的一款面向服务端应用的垃圾收集器，在JDK 9中成为默认收集器。
 
 **特点**：
@@ -1143,6 +1141,8 @@ G1（Garbage First）收集器是JDK 7中引入的一款面向服务端应用的
 - 实现复杂，内存开销较大
 - 对于小内存环境，性能可能不如其他收集器
 - 并发执行时会占用部分CPU资源
+
+
 
 ### 13.9 ZGC收集器
 
@@ -1310,8 +1310,212 @@ flowchart TD
 #### 14.4.2 关键信息解读
 
 - **GC类型**：Allocation Failure（分配失败）、Ergonomics（自动调优）、CMS Initial Mark（CMS初始标记）等
-- **内存区域**：PSYoungGen（Parallel Scavenge新生代）、ParOldGen（Parallel Old老年代）、Metaspace（元空间）等
-- **内存变化**：如76800K->10240K，表示GC前内存使用量->GC后内存使用量
-- **内存大小**：如(89600K)，表示该内存区域的总大小
-- **GC时间**：如0.0087359 secs，表示GC执行的时间
-- **时间分解**：user（用户
+
+
+
+### 14.5 Mixed GC
+
+#### 14.5.1 基本概念说明
+
+**Mixed GC（混合垃圾收集）**是G1收集器特有的一种垃圾回收模式，它同时回收新生代和部分老年代的Region（区域）。与传统的Full GC不同，Mixed GC只回收部分老年代区域，而不是整个老年代，从而减少了GC停顿时间。
+
+**核心概念**：
+- **Region**：G1收集器将堆内存划分为多个大小相等的区域（Region），每个Region可以是Eden、Survivor或Old区域
+- **Humongous Region**：用于存储大对象的特殊Region
+- **Mixed GC**：同时回收新生代和部分老年代Region的垃圾收集过程
+
+#### 14.5.2 基本过程、原理
+
+Mixed GC的执行过程主要包括以下步骤：
+
+1. **初始标记（Initial Mark）**：
+   - 暂停所有用户线程（STW）
+   - 标记GC Root直接引用的对象
+   - 此阶段停顿时间很短
+
+2. **并发标记（Concurrent Mark）**：
+   - 恢复用户线程执行
+   - 从GC Root开始，并发标记所有可达对象
+   - 此阶段与用户线程并行执行，几乎不影响应用响应时间
+
+3. **最终标记（Final Mark）**：
+   - 暂停所有用户线程（STW）
+   - 处理并发标记阶段产生的新引用
+   - 此阶段停顿时间较短
+
+4. **筛选回收（Live Data Counting and Evacuation）**：
+   - 暂停所有用户线程（STW）
+   - 计算每个Region的存活对象比例
+   - 选择回收价值最高的一组Region（包括新生代和部分老年代Region）
+   - 使用复制算法，将选中Region中的存活对象复制到空Region中
+   - 清理被回收的Region
+
+**执行触发条件**：
+- 老年代堆占用达到阈值（默认45%，可通过`-XX:InitiatingHeapOccupancyPercent`调整）
+- 并发标记完成后，G1会自动触发Mixed GC
+
+**关键参数**：
+- `-XX:InitiatingHeapOccupancyPercent`：触发并发标记的老年代堆占用阈值
+- `-XX:G1MixedGCLiveThresholdPercent`：Mixed GC中Region被选中的存活对象比例阈值
+- `-XX:G1MixedGCCountTarget`：设置在标记周期后执行的Mixed GC数量目标
+- `-XX:G1OldCSetRegionThresholdPercent`：Mixed GC中老年代Region的最大数量
+
+#### 14.5.3 优劣分析
+
+**优点**：
+
+1. **减少停顿时间**：只回收部分老年代Region，避免了Full GC的长时间停顿
+2. **可预测的停顿时间**：通过`-XX:MaxGCPauseMillis`参数，可以控制Mixed GC的最大停顿时间
+3. **更高的吞吐量**：与CMS收集器相比，Mixed GC在大内存环境下有更好的吞吐量
+4. **内存碎片少**：使用复制算法，自动整理内存，减少内存碎片
+5. **灵活性高**：根据Region的回收价值动态选择回收区域，提高回收效率
+
+**缺点**：
+
+1. **内存开销大**：需要维护Region的状态信息，内存开销比其他收集器大
+2. **CPU开销高**：并发标记和筛选回收过程需要更多的CPU资源
+3. **实现复杂**：G1收集器的实现比其他收集器复杂，调优难度较大
+4. **小内存环境不适用**：在小内存环境（如堆内存小于4GB）下，性能可能不如其他收集器
+5. **Young GC频率可能增加**：为了控制Mixed GC的停顿时间，可能会增加Young GC的频率
+
+**适用场景**：
+- 大内存服务器应用（堆内存大于4GB）
+- 对响应时间有要求的应用
+- 需要可预测停顿时间的应用
+- 内存碎片敏感的应用
+
+#### 14.5.4 Mixed GC与其他GC类型的对比
+
+| GC类型 | 回收范围 | 特点 | 适用场景 |
+|--------|----------|------|----------|
+| **Young GC** | 只回收新生代Region | 停顿时间短，频率高 | 所有应用 |
+| **Mixed GC** | 回收新生代和部分老年代Region | 停顿时间中等，频率较低 | 大内存应用 |
+| **Full GC** | 回收整个堆内存 | 停顿时间长，频率低 | 内存不足时 |
+| **CMS GC** | 回收老年代 | 并发执行，停顿时间短 | 响应时间敏感应用 |
+
+Mixed GC是G1收集器的核心特性之一，它通过局部回收策略，在保证应用响应时间的同时，有效管理大内存环境下的垃圾回收，为现代服务器应用提供了更好的性能体验。
+
+
+
+## 15. JVM参数解析
+
+### 15.1 参数分类
+
+JVM参数根据其格式和作用可以分为以下几类：
+
+| 类型 | 格式 | 示例 | 说明 |
+|------|------|------|------|
+| **标准参数** | `-`开头 | `-version` | 所有JVM实现都必须支持的参数 |
+| **非标准参数** | `-X`开头 | `-Xmx512m` | 特定JVM实现支持的参数，可能在不同版本间变化 |
+| **高级参数** | `-XX:`开头 | `-XX:+UseG1GC` | 用于调优和调试的参数，变化性较大 |
+| **属性参数** | `-D`开头 | `-Djava.home=/path` | 设置系统属性 |
+
+### 15.2 内存相关参数
+
+#### 15.2.1 堆内存参数
+
+| 参数 | 说明 | 默认值 | 示例 |
+|------|------|--------|------|
+| `-Xms` | 初始堆大小 | 物理内存的1/64 | `-Xms512m` |
+| `-Xmx` | 最大堆大小 | 物理内存的1/4 | `-Xmx1g` |
+| `-Xmn` | 新生代大小 | 堆大小的1/3 | `-Xmn384m` |
+| `-XX:SurvivorRatio` | Eden区与Survivor区的比例 | 8 | `-XX:SurvivorRatio=8` |
+| `-XX:NewRatio` | 老年代与新生代的比例 | 2 | `-XX:NewRatio=2` |
+| `-XX:MetaspaceSize` | 元空间初始大小 | 21MB | `-XX:MetaspaceSize=64m` |
+| `-XX:MaxMetaspaceSize` | 元空间最大大小 | 无限制 | `-XX:MaxMetaspaceSize=256m` |
+| `-XX:PretenureSizeThreshold` | 大对象阈值 | 0（不启用） | `-XX:PretenureSizeThreshold=3145728`（3MB） |
+
+#### 15.2.2 栈内存参数
+
+| 参数 | 说明 | 默认值 | 示例 |
+|------|------|--------|------|
+| `-Xss` | 线程栈大小 | 1MB（64位系统） | `-Xss256k` |
+
+### 15.3 GC相关参数
+
+#### 15.3.1 收集器选择
+
+| 参数 | 说明 | 适用场景 |
+|------|------|----------|
+| `-XX:+UseSerialGC` | 使用Serial收集器 | 客户端应用 |
+| `-XX:+UseParallelGC` | 使用Parallel Scavenge收集器 | 计算密集型应用 |
+| `-XX:+UseConcMarkSweepGC` | 使用CMS收集器 | 响应时间敏感应用 |
+| `-XX:+UseG1GC` | 使用G1收集器 | 大内存服务器应用 |
+| `-XX:+UseZGC` | 使用ZGC收集器 | 超大内存低延迟应用 |
+
+#### 15.3.2 GC行为调优
+
+| 参数 | 说明 | 示例 |
+|------|------|------|
+| `-XX:MaxGCPauseMillis` | 最大GC停顿时间目标 | `-XX:MaxGCPauseMillis=200` |
+| `-XX:GCTimeRatio` | 吞吐量目标（1/(N+1)） | `-XX:GCTimeRatio=99` |
+| `-XX:ParallelGCThreads` | 并行GC线程数 | `-XX:ParallelGCThreads=4` |
+| `-XX:ConcGCThreads` | CMS/ZGC并发线程数 | `-XX:ConcGCThreads=2` |
+| `-XX:InitiatingHeapOccupancyPercent` | G1启动标记周期的堆占用阈值 | `-XX:InitiatingHeapOccupancyPercent=45` |
+
+#### 15.3.3 GC日志参数
+
+| 参数 | 说明 | 示例 |
+|------|------|------|
+| `-XX:+PrintGCDetails` | 打印详细GC日志 | `-XX:+PrintGCDetails` |
+| `-XX:+PrintGCDateStamps` | 打印GC发生的时间戳 | `-XX:+PrintGCDateStamps` |
+| `-XX:+PrintHeapAtGC` | 打印GC前后的堆信息 | `-XX:+PrintHeapAtGC` |
+| `-Xloggc:file` | 将GC日志写入文件 | `-Xloggc:gc.log` |
+
+### 15.4 性能调优参数
+
+| 参数 | 说明 | 示例 |
+|------|------|------|
+| `-XX:+TieredCompilation` | 启用分层编译 | `-XX:+TieredCompilation` |
+| `-XX:CompileThreshold` | JIT编译阈值 | `-XX:CompileThreshold=10000` |
+| `-XX:MetaspaceSize` | 元空间初始大小 | `-XX:MetaspaceSize=64m` |
+| `-XX:MaxMetaspaceSize` | 元空间最大大小 | `-XX:MaxMetaspaceSize=256m` |
+| `-XX:+UseLargePages` | 使用大页内存 | `-XX:+UseLargePages` |
+
+### 15.5 常用调优组合
+
+#### 15.5.1 服务器端应用调优
+
+```bash
+# 8GB堆内存，使用G1收集器，最大停顿时间200ms
+java -Xms8g -Xmx8g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=8 -XX:ConcGCThreads=2 -XX:InitiatingHeapOccupancyPercent=45 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -jar application.jar
+```
+
+#### 15.5.2 客户端应用调优
+
+```bash
+# 512MB堆内存，使用Serial收集器
+java -Xms512m -Xmx512m -XX:+UseSerialGC -jar application.jar
+```
+
+#### 15.5.3 低延迟应用调优
+
+```bash
+# 4GB堆内存，使用ZGC收集器
+java -Xms4g -Xmx4g -XX:+UseZGC -XX:ConcGCThreads=4 -jar application.jar
+```
+
+### 15.6 参数调优建议
+
+1. **内存设置**：
+   - 初始堆大小与最大堆大小设置为相同值，避免运行时动态调整
+   - 根据应用特性和服务器内存大小合理设置堆大小
+   - 新生代大小通常设置为堆大小的1/3左右
+
+2. **收集器选择**：
+   - 客户端应用：Serial收集器
+   - 计算密集型应用：Parallel Scavenge收集器
+   - 响应时间敏感应用：CMS或G1收集器
+   - 大内存低延迟应用：ZGC收集器
+
+3. **GC调优**：
+   - 通过GC日志分析应用的内存使用情况
+   - 根据GC日志调整相关参数
+   - 优先关注Major GC的频率和耗时
+
+4. **监控与分析**：
+   - 启用GC日志记录
+   - 使用JVM监控工具（如JConsole、VisualVM）实时监控
+   - 定期分析GC日志，优化参数设置
+
+通过合理的JVM参数调优，可以显著提高Java应用的性能和稳定性，减少内存溢出和GC停顿带来的问题。
