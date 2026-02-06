@@ -117,4 +117,103 @@ public class GCController {
         return "G1 GC测试完成，请查看GC日志";
     }
 
-}
+    /**
+     * 测试垃圾回收性能指标
+     */
+    @RequestMapping("/performance/test")
+    public Object testGCPerformance(@RequestParam("count") int count, @RequestParam("interval") int interval) {
+        log.info("开始测试垃圾回收性能指标，创建对象数量: {}, 间隔时间: {}ms", count, interval);
+        
+        // 初始化GC监控器
+        GCMonitor gcMonitor = new GCMonitor();
+        gcMonitor.start();
+        
+        List<byte[]> objects = new ArrayList<>();
+        
+        try {
+            for (int i = 0; i < count; i++) {
+                // 创建对象
+                int size = (i % 10 + 1) * 1024 * 1024; // 1-10MB
+                byte[] obj = new byte[size];
+                objects.add(obj);
+                
+                // 每创建一定数量的对象后清空，模拟对象生命周期
+                if (i % 50 == 0) {
+                    objects.clear();
+                    System.gc();
+                }
+                
+                // 短暂休眠，模拟实际应用中的时间间隔
+                if (interval > 0) {
+                    Thread.sleep(interval);
+                }
+            }
+        } catch (Exception e) {
+            log.error("GC性能测试失败: {}", e.getMessage());
+            return "GC性能测试失败: " + e.getMessage();
+        }
+        
+        // 停止监控并获取结果
+        GCMonitor.GCMonitorResult result = gcMonitor.stop();
+        
+        log.info("GC性能测试完成，结果: {}", result);
+        return result;
+    }
+
+    /**
+     * 比较不同垃圾回收器的性能
+     */
+    @RequestMapping("/performance/compare")
+    public Object compareGCPerformance(@RequestParam("count") int count) {
+        log.info("开始比较不同垃圾回收器的性能，创建对象数量: {}", count);
+        
+        // 这里只是一个示例，实际比较需要通过不同的JVM参数启动应用
+        // 这里我们通过模拟不同的对象创建模式来测试
+        
+        // 测试场景1: 大量小对象
+        log.info("\n=== 测试场景1: 大量小对象 ===");
+        testGCScenario(count, 1024 * 1024, 5); // 1MB对象，每5个清空一次
+        
+        // 测试场景2: 少量大对象
+        log.info("\n=== 测试场景2: 少量大对象 ===");
+        testGCScenario(count / 10, 10 * 1024 * 1024, 2); // 10MB对象，每2个清空一次
+        
+        // 测试场景3: 混合大小对象
+        log.info("\n=== 测试场景3: 混合大小对象 ===");
+        testGCScenario(count, 5 * 1024 * 1024, 10); // 5MB对象，每10个清空一次
+        
+        return "不同垃圾回收器性能比较测试完成，请查看日志";
+    }
+
+    /**
+     * 测试GC场景
+     */
+    private void testGCScenario(int count, int objectSize, int clearInterval) {
+        GCMonitor gcMonitor = new GCMonitor();
+        gcMonitor.start();
+        
+        List<byte[]> objects = new ArrayList<>();
+        
+        try {
+            for (int i = 0; i < count; i++) {
+                byte[] obj = new byte[objectSize];
+                objects.add(obj);
+                
+                if (i % clearInterval == 0) {
+                    objects.clear();
+                    System.gc();
+                }
+                
+                // 短暂休眠
+                Thread.sleep(1);
+            }
+        } catch (Exception e) {
+            log.error("GC场景测试失败: {}", e.getMessage());
+        }
+        
+        GCMonitor.GCMonitorResult result = gcMonitor.stop();
+        log.info("场景测试结果: 对象大小={}MB, 清空间隔={}, 结果={}", 
+                objectSize / (1024 * 1024), clearInterval, result);
+    }
+
+} 

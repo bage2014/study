@@ -172,7 +172,7 @@ rabbitmq:3-management
 
 #### 1.5.3 访问验证
 
-访问管理界面（默认用户名/密码：admin/admin）：
+访问管理界面（默认用户名/密码：bage/bage）：
 
 ```
 http://127.0.0.1:15672/
@@ -229,7 +229,7 @@ http://localhost:9090/metrics
 docker pull grafana/grafana
 ```
 
-#### 1.7.2 启动 Grafana 实例
+#### 1.7.2 启动 Grafana 实例[todo 配置存储到本地]
 
 **基本启动**：
 

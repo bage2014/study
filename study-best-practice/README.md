@@ -20,6 +20,8 @@
 
 ## 核心功能模块
 
+
+
 ### 1. 性能测试
 
 #### 1.1 WRK压测
@@ -39,6 +41,7 @@ wrk -t10 -c100 -d60s -T3s --latency http://localhost:8000/log/insert
 ```
 
 **压测结果分析**
+
 - **Latency**: 响应时间分布
 - **Req/Sec**: 每秒请求数
 - **Requests/sec**: 总体QPS
@@ -113,6 +116,228 @@ http://localhost:8000/mysql/function/operation
 http://localhost:8000/druid/index.html
 http://localhost:8000/druid/sql.html
 ```
+
+### 2.3 数据库连接池监控详解
+
+#### 2.3.1 监控方法
+
+**1. Druid内置监控**
+- **Web控制台**: `http://localhost:8000/druid/index.html`
+- **登录信息**: 用户名: sa, 密码: bage
+- **功能**: 连接池状态、SQL执行统计、慢SQL分析、并发线程监控
+
+**2. 自定义监控API**
+
+- **连接池基本信息**: `http://localhost:8000/data/source/info`
+- **连接池状态**: `http://localhost:8000/data/source/status`
+- **连接获取测试**: `http://localhost:8000/data/source/get/connection`
+- **并发测试**: `http://localhost:8000/data/source/test/concurrency?threadCount=10&iterations=100`
+- **连接池极限测试**: `http://localhost:8000/data/source/test/limit?connectionCount=100`
+- **连接池性能监控**: `http://localhost:8000/data/source/monitor?testCount=50`
+- **批量测试**: `http://localhost:8000/data/source/batch/test?batchSize=100`
+
+**3. 第三方监控工具**
+- **Prometheus + Grafana**: 通过Spring Boot Actuator暴露指标
+- **JMX**: 监控连接池运行时状态
+- **APM工具**: 如SkyWalking、Pinpoint等
+
+#### 2.3.2 核心监控指标
+
+**连接池状态指标**
+| 指标 | 说明 | 常规值范围 | 异常值 | 优化建议 |
+|------|------|------------|--------|----------|
+| **activeCount** | 当前活跃连接数 | < maxActive | >= maxActive | 增加maxActive或检查连接泄漏 |
+| **poolingCount** | 当前空闲连接数 | 10-30% maxActive | < minIdle 或 > 80% maxActive | 调整minIdle或maxActive |
+| **waitThreadCount** | 等待连接的线程数 | 0-5 | > 10 | 增加maxActive或检查连接释放 |
+| **usageRate** | 连接池使用率 | 20-70% | > 80% 或 < 10% | 调整maxActive或检查连接泄漏 |
+| **acquisitionTime** | 连接获取时间 | < 10ms | > 100ms | 检查连接池配置或数据库响应 |
+
+**性能指标**
+| 指标 | 说明 | 常规值范围 | 异常值 | 优化建议 |
+|------|------|------------|--------|----------|
+| **connectionSuccessRate** | 连接获取成功率 | > 99% | < 95% | 检查数据库连接或网络 |
+| **avgAcquisitionTime** | 平均连接获取时间 | < 5ms | > 50ms | 优化连接池配置 |
+| **errorCount** | 错误计数 | 0 | > 0 | 检查错误原因并修复 |
+| **removeAbandonedCount** | 移除的废弃连接数 | 0 | > 0 | 检查连接释放代码 |
+
+**SQL执行指标**
+| 指标 | 说明 | 常规值范围 | 异常值 | 优化建议 |
+|------|------|------------|--------|----------|
+| **slowSqlCount** | 慢SQL数量 | 0 | > 0 | 优化SQL语句和索引 |
+| **avgSqlExecuteTime** | 平均SQL执行时间 | < 100ms | > 500ms | 优化SQL语句和索引 |
+| **sqlExecuteCount** | SQL执行次数 | 正常业务量 | 异常增长 | 检查是否存在SQL注入或死循环 |
+
+#### 2.3.3 常见错误与解决方案
+
+**连接池常见错误**
+| 错误 | 症状 | 原因 | 解决方案 |
+|------|------|------|----------|
+| **连接泄漏** | activeCount持续增长，最终达到maxActive | 连接未正确关闭 | 使用try-with-resources或确保finally中关闭连接 |
+| **连接超时** | 获取连接时抛出timeout异常 | 连接池无可用连接 | 增加maxActive，检查连接释放，设置合理的maxWait |
+| **连接失效** | 执行SQL时抛出connection reset异常 | 连接长时间空闲被数据库关闭 | 配置validationQuery和testWhileIdle |
+| **内存泄漏** | 应用内存持续增长 | 连接池配置过大，连接对象未释放 | 调整连接池大小，检查连接释放 |
+| **线程阻塞** | 应用线程阻塞在获取连接 | 连接池耗尽，连接未及时释放 | 增加maxActive，检查连接释放，使用异步操作 |
+
+**数据库常见错误**
+| 错误 | 症状 | 原因 | 解决方案 |
+|------|------|------|----------|
+| **Too many connections** | 数据库拒绝连接 | 连接池maxActive超过数据库max_connections | 调整maxActive，增加数据库max_connections |
+| **Connection reset by peer** | 连接突然关闭 | 网络问题或数据库重启 | 检查网络连接，配置合理的连接超时 |
+| **Communications link failure** | 通信链路失败 | 网络问题或数据库服务异常 | 检查网络连接，配置连接重试机制 |
+
+#### 2.3.4 高阶用法与优化
+
+**1. 连接池配置优化**
+```java
+// 推荐配置示例
+@Bean
+dataSource {
+    DruidDataSource dataSource = new DruidDataSource()
+    dataSource.url = "jdbc:mysql://localhost:3306/mydb"
+    dataSource.username = "root"
+    dataSource.password = "password"
+    
+    // 基本配置
+    dataSource.initialSize = 10         // 初始连接数
+    dataSource.maxActive = 100          // 最大连接数
+    dataSource.minIdle = 5              // 最小空闲连接数
+    dataSource.maxWait = 60000          // 获取连接的最大等待时间
+    
+    // 连接验证
+    dataSource.validationQuery = "SELECT 1"
+    dataSource.testWhileIdle = true     // 空闲时验证连接
+    dataSource.testOnBorrow = false     // 获取连接时不验证
+    dataSource.testOnReturn = false     // 返回连接时不验证
+    
+    // 连接回收
+    dataSource.timeBetweenEvictionRunsMillis = 60000  // 连接回收间隔
+    dataSource.minEvictableIdleTimeMillis = 300000    // 连接最小空闲时间
+    
+    // 监控配置
+    dataSource.filters = "stat,wall,log4j"  // 启用监控和防火墙
+    
+    dataSource
+}
+```
+
+**2. 分库分表场景优化**
+- **多数据源管理**: 使用动态数据源路由
+- **连接池隔离**: 为不同数据库配置独立的连接池
+- **读写分离**: 主库用于写操作，从库用于读操作
+
+**3. 高并发场景优化**
+- **连接池大小**: 根据并发数和数据库性能调整
+- **异步操作**: 使用CompletableFuture处理并发请求
+- **批量操作**: 使用JDBC批处理减少连接次数
+- **事务管理**: 合理控制事务范围，避免长事务
+
+**4. 监控与告警**
+- **实时监控**: 集成Prometheus + Grafana
+- **告警配置**: 当连接池使用率超过80%时告警
+- **慢SQL监控**: 配置slowSqlMillis，监控执行时间超过阈值的SQL
+
+#### 2.3.5 案例分析
+
+**案例1: 连接泄漏导致系统崩溃**
+
+**场景描述**:
+- 应用在高峰期出现响应缓慢，最终系统崩溃
+- 监控发现activeCount持续增长，达到maxActive后不再下降
+
+**根因分析**:
+- 代码中使用了try-catch但未在finally中关闭连接
+- 异常情况下连接未被释放，导致连接池耗尽
+
+**解决方案**:
+- 使用try-with-resources自动关闭连接
+- 添加removeAbandoned配置，自动回收长时间未使用的连接
+- 增加连接池监控和告警
+
+**优化效果**:
+- 系统稳定性显著提高
+- 连接池使用率保持在合理范围
+- 高峰期不再出现连接耗尽的情况
+
+**案例2: 慢SQL导致连接池阻塞**
+
+**场景描述**:
+- 应用响应时间突然变长
+- 监控发现大量线程等待获取连接
+
+**根因分析**:
+- 某个复杂查询执行时间过长，占用连接时间太久
+- 导致其他请求无法获取连接，形成阻塞链
+
+**解决方案**:
+- 优化SQL语句，添加合适的索引
+- 调整连接池配置，设置合理的maxWait
+- 实现SQL超时机制，避免长时间占用连接
+
+**优化效果**:
+- SQL执行时间从5秒降至100ms以内
+- 连接池阻塞问题解决
+- 系统响应时间恢复正常
+
+#### 2.3.6 实践验证
+
+**验证场景1: 连接池基本功能**
+```bash
+# 获取连接池信息
+http://localhost:8000/data/source/info
+
+# 测试连接获取
+http://localhost:8000/data/source/get/connection
+```
+
+**验证场景2: 并发性能测试**
+```bash
+# 10个线程，每个线程执行100次连接获取
+http://localhost:8000/data/source/test/concurrency?threadCount=10&iterations=100
+
+# 预期结果: 成功率>99%，平均获取时间<10ms
+```
+
+**验证场景3: 连接池极限测试**
+```bash
+# 尝试获取100个连接
+http://localhost:8000/data/source/test/limit?connectionCount=100
+
+# 预期结果: 当connectionCount>maxActive时，会出现获取失败
+```
+
+**验证场景4: 性能监控**
+```bash
+# 执行50次连接获取测试并监控性能
+http://localhost:8000/data/source/monitor?testCount=50
+
+# 预期结果: 生成详细的性能报告，包括成功率、平均获取时间等
+```
+
+**验证场景5: 批量测试**
+```bash
+# 批量执行100次连接获取测试
+http://localhost:8000/data/source/batch/test?batchSize=100
+
+# 预期结果: 生成批量测试报告，分析连接池性能趋势
+```
+
+#### 2.3.7 参考链接
+
+**官方文档**:
+- [Druid官方文档](https://github.com/alibaba/druid/wiki)
+- [Druid连接池配置说明](https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8)
+
+**技术博客**:
+- [数据库连接池原理与实现](https://www.iteye.com/blog/jinnianshilongnian-1493190)
+- [Druid连接池最佳实践](https://www.cnblogs.com/fangjian0423/p/druid-best-practice.html)
+
+**监控工具**:
+- [Prometheus官方文档](https://prometheus.io/docs/introduction/overview/)
+- [Grafana官方文档](https://grafana.com/docs/)
+
+**性能调优**:
+- [MySQL性能调优指南](https://dev.mysql.com/doc/refman/8.0/en/optimization.html)
+- [JDBC性能优化技巧](https://www.oracle.com/technical-resources/articles/java/jdbc-performance.html)
 
 ### 3. JVM优化
 
@@ -502,6 +727,38 @@ http://localhost:8000/class/init/parent
 
 ## 8. JVM垃圾回收器验证
 
+### 8.0 JVM参数分类
+
+**JVM参数根据来源和特性分为三类：**
+
+| 分类 | 前缀 | 示例 | 说明 |
+|------|------|------|------|
+| **标准参数** | 无 | `-version`、`-cp` | 所有JVM实现都必须支持的参数，向后兼容 |
+| **非标准参数** | `-X` | `-Xms`、`-Xmx` | 特定JVM实现支持的参数，可能在不同版本间变化 |
+| **高级参数** | `-XX:` | `-XX:MaxGCPauseMillis`、`-XX:+UseG1GC` | 用于JVM调优和调试的参数，变化频繁 |
+
+**常见内存配置参数：**
+
+| 参数 | 类型 | 含义 | 示例 |
+|------|------|------|------|
+| `-Xms` | 非标准 | 初始堆内存大小 | `-Xms512m`（初始堆内存512MB） |
+| `-Xmx` | 非标准 | 最大堆内存大小 | `-Xmx1g`（最大堆内存1GB） |
+| `-Xmn` | 非标准 | 年轻代大小 | `-Xmn256m`（年轻代256MB） |
+| `-Xss` | 非标准 | 线程栈大小 | `-Xss1m`（每个线程栈1MB） |
+
+**常见高级参数：**
+
+| 参数 | 类型 | 含义 | 示例 |
+|------|------|------|------|
+| `-XX:SurvivorRatio` | 数值型 | 伊甸区与幸存者区比例 | `-XX:SurvivorRatio=8`（伊甸区:幸存者区=8:1） |
+| `-XX:MaxMetaspaceSize` | 数值型 | 元空间最大大小 | `-XX:MaxMetaspaceSize=256m` |
+| `-XX:MaxGCPauseMillis` | 数值型 | 最大GC停顿时间目标 | `-XX:MaxGCPauseMillis=100`（目标100ms） |
+| `-XX:ParallelGCThreads` | 数值型 | 并行GC线程数 | `-XX:ParallelGCThreads=4` |
+| `-XX:+UseG1GC` | 布尔型 | 启用G1垃圾收集器 | `-XX:+UseG1GC` |
+| `-XX:+UseZGC` | 布尔型 | 启用Z垃圾收集器 | `-XX:+UseZGC` |
+| `-XX:CMSInitiatingOccupancyFraction` | 数值型 | CMS触发阈值 | `-XX:CMSInitiatingOccupancyFraction=75` |
+| `-XX:InitiatingHeapOccupancyPercent` | 数值型 | G1触发阈值 | `-XX:InitiatingHeapOccupancyPercent=45` |
+
 ### 8.1 垃圾回收器配置
 
 **Serial收集器配置**
@@ -588,6 +845,146 @@ http://localhost:8000/gc/g1/test?count=1000
    - 对于高吞吐量应用，优先考虑Parallel收集器
    - 根据堆大小和硬件配置调整GC线程数
    - 定期分析GC日志，持续优化GC配置
+
+### 8.5 垃圾回收性能指标实践
+
+#### 8.5.1 性能指标监控
+
+**核心性能指标**
+| 指标 | 说明 | 理想值 |
+|------|------|--------|
+| **吞吐量** | 非GC时间占总时间的比例 | >95% |
+| **GC停顿时间** | 单次GC的暂停时间 | <100ms（低延迟应用） |
+| **GC频率** | 单位时间内GC的次数 | 越少越好 |
+| **内存使用率** | 堆内存的使用比例 | <70% |
+| **GC CPU占用** | GC过程中CPU的使用率 | <20% |
+
+**监控工具**
+1. **JDK自带工具**
+   - **jstat**：实时监控GC统计信息
+   - **jconsole**：图形化监控工具
+   - **jvisualvm**：可视化性能分析工具
+
+2. **第三方工具**
+   - **GCViewer**：GC日志分析工具
+   - **Prometheus + Grafana**：监控告警系统
+   - **Arthas**：Java诊断工具
+
+**监控命令示例**
+```bash
+# 使用jstat监控GC情况（每1秒输出一次，共10次）
+jstat -gcutil <pid> 1000 10
+
+# 使用jstat监控内存使用情况
+jstat -gccapacity <pid>
+
+# 查看GC详细信息
+jstat -gc <pid>
+```
+
+#### 8.5.2 性能指标验证代码
+
+**测试API**
+```bash
+# 测试垃圾回收性能指标
+http://localhost:8000/gc/performance/test?count=1000&interval=10
+
+# 比较不同垃圾回收器的性能
+http://localhost:8000/gc/performance/compare?count=500
+```
+
+**性能指标验证示例**
+```java
+// 初始化GC监控器
+GCMonitor gcMonitor = new GCMonitor();
+gcMonitor.start();
+
+// 创建对象，触发GC
+List<byte[]> objects = new ArrayList<>();
+for (int i = 0; i < 1000; i++) {
+    byte[] obj = new byte[(i % 10 + 1) * 1024 * 1024];
+    objects.add(obj);
+    
+    if (i % 50 == 0) {
+        objects.clear();
+        System.gc();
+    }
+    
+    Thread.sleep(10);
+}
+
+// 停止监控并获取结果
+GCMonitor.GCMonitorResult result = gcMonitor.stop();
+System.out.println("GC性能测试结果: " + result);
+```
+
+#### 8.5.3 验证场景
+
+**场景1：大量小对象**
+- **测试方法**：创建大量1MB大小的对象，每5个清空一次
+- **预期结果**：年轻代GC频繁，老年代GC较少
+- **适合回收器**：Parallel GC（吞吐量优先）
+
+**场景2：少量大对象**
+- **测试方法**：创建少量10MB大小的对象，每2个清空一次
+- **预期结果**：可能直接进入老年代，触发老年代GC
+- **适合回收器**：G1 GC（大对象处理较好）
+
+**场景3：混合大小对象**
+- **测试方法**：创建混合大小的对象，模拟真实应用场景
+- **预期结果**：年轻代和老年代GC都有发生
+- **适合回收器**：根据应用特点选择
+
+#### 8.5.4 注意事项与易错点
+
+**注意事项**
+1. **GC日志配置**
+   - 生产环境中建议开启GC日志，但要注意日志文件大小
+   - 可使用`-XX:+UseGCLogFileRotation`参数进行日志轮转
+
+2. **内存分配策略**
+   - 避免频繁创建大对象，可能导致直接进入老年代
+   - 合理设置年轻代大小，减少对象晋升
+
+3. **并发处理**
+   - 注意GC线程与应用线程的资源竞争
+   - 合理设置GC线程数，避免CPU过度使用
+
+**易错点**
+1. **过度调优**
+   - 不要盲目追求GC停顿时间，可能影响吞吐量
+   - 根据应用特点选择合适的垃圾回收器
+
+2. **参数冲突**
+   - 注意不同GC参数之间的兼容性
+   - 例如，G1 GC的一些参数不适用于其他回收器
+
+3. **监控盲区**
+   - 不要只关注GC指标，还要关注应用的整体性能
+   - 结合业务指标进行调优
+
+4. **版本差异**
+   - 不同JDK版本的GC行为可能有所不同
+   - 升级JDK时要重新评估GC配置
+
+**调优建议**
+1. **循序渐进**
+   - 先使用默认配置，观察性能表现
+   - 再根据监控结果进行针对性调优
+
+2. **对比测试**
+   - 在相同条件下测试不同配置
+   - 选择最适合应用的GC配置
+
+3. **持续监控**
+   - 建立长期的GC监控机制
+   - 定期分析GC日志，及时发现问题
+
+4. **容量规划**
+   - 根据应用的内存使用情况，合理规划堆大小
+   - 预留足够的内存空间，避免频繁GC
+
+通过以上实践，可以全面了解垃圾回收的性能指标，选择合适的垃圾回收器和配置参数，从而提高应用的性能和稳定性。
 
 ## 9. 类加载过程验证
 
@@ -757,6 +1154,7 @@ scp -r ./target/study-best-practice-0.0.1-SNAPSHOT.jar user@server:/path/to/depl
 ```
 
 **启动**
+
 ```bash
 java -jar study-best-practice-0.0.1-SNAPSHOT.jar \
 --spring.config.location=file:///path/to/application.properties
