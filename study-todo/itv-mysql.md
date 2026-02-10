@@ -45,6 +45,9 @@
 24.7 [故障排查面试题](#247-故障排查面试题)
 24.8 [架构设计面试题](#248-架构设计面试题)
 
+### 第七部分：参考资料
+25. [参考链接](#25-参考链接)
+
 ## 1. 简介
 
 MySQL是一个关系型数据库管理系统，由瑞典MySQL AB公司开发，属于Oracle旗下产品。MySQL是最流行的关系型数据库管理系统之一，在WEB应用方面，MySQL是最好的RDBMS (Relational Database Management System，关系数据库管理系统)应用软件之一。
@@ -1390,3 +1393,49 @@ MySQL是一款功能强大、性能优异的开源关系型数据库，广泛应
   - 自动化运维
 
 通过掌握这些高阶面试题的解析，不仅可以应对技术面试，更能深入理解MySQL的内部原理和最佳实践，为实际工作中的数据库设计和优化提供指导。
+
+## 25. 参考链接
+
+### 25.1 官方文档
+- [MySQL官方文档](https://dev.mysql.com/doc/)
+- [MySQL 8.0参考手册](https://dev.mysql.com/doc/refman/8.0/en/)
+- [MySQL架构文档](https://dev.mysql.com/doc/internals/en/)
+- [InnoDB存储引擎文档](https://dev.mysql.com/doc/refman/8.0/en/innodb-storage-engine.html)
+- [MySQL复制文档](https://dev.mysql.com/doc/refman/8.0/en/replication.html)
+
+### 25.2 技术博客与文章
+- [MySQL性能调优实战](https://www.cnblogs.com/f-ck-need-u/p/7596096.html)
+- [InnoDB事务与锁机制](https://www.jianshu.com/p/34d21c25e475)
+- [MySQL索引原理与优化](https://tech.meituan.com/2014/06/30/mysql-index.html)
+- [MySQL主从复制原理与实践](https://cloud.tencent.com/developer/article/1115818)
+- [分库分表最佳实践](https://www.imooc.com/article/286193)
+
+### 25.3 视频教程
+- [MySQL数据库入门到精通](https://www.bilibili.com/video/BV12b411K7Zu/)
+- [MySQL高级性能优化](https://www.bilibili.com/video/BV1aE41167Tu/)
+- [InnoDB内部原理详解](https://www.bilibili.com/video/BV1R441187cP/)
+- [MySQL高可用架构实战](https://www.bilibili.com/video/BV1pE411h7wP/)
+
+### 25.4 实战案例
+- [美团MySQL数据库优化实践](https://tech.meituan.com/2019/03/07/mysql-index-optimization-practice-in-meituan.html)
+- [阿里MySQL分库分表方案](https://developer.aliyun.com/article/705741)
+- [京东MySQL高可用架构](https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&mid=2247486863&idx=1&sn=e7f9c0e4b7b8f6a7c9a8c8a9c8a8c8a9)
+- [携程MySQL监控体系](https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&mid=2247486863&idx=1&sn=e7f9c0e4b7b8f6a7c9a8c8a9c8a8c8a9)
+
+### 25.5 性能优化工具
+- [Percona Toolkit](https://www.percona.com/software/database-tools/percona-toolkit)
+- [MySQLTuner](https://github.com/major/MySQLTuner-perl)
+- [pt-query-digest](https://www.percona.com/doc/percona-toolkit/LATEST/pt-query-digest.html)
+- [MySQL Enterprise Monitor](https://www.mysql.com/products/enterprise/monitor.html)
+
+### 25.6 高可用方案
+- [MySQL Group Replication](https://dev.mysql.com/doc/refman/8.0/en/group-replication.html)
+- [MySQL InnoDB Cluster](https://dev.mysql.com/doc/refman/8.0/en/mysql-innodb-cluster-introduction.html)
+- [MHA (Master High Availability)](https://code.google.com/archive/p/mysql-master-ha/)
+- [Orchestrator](https://github.com/openark/orchestrator)
+
+### 25.7 云原生相关
+- [AWS RDS MySQL](https://aws.amazon.com/rds/mysql/)
+- [阿里云RDS MySQL](https://www.aliyun.com/product/rds/mysql)
+- [腾讯云MySQL](https://cloud.tencent.com/product/cdb)
+- [MySQL on Kubernetes](https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/)
