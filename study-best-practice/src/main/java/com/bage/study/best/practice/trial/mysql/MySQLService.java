@@ -39,7 +39,7 @@ public class MySQLService {
         return jdbcTemplate.query(sql, new Object[]{"%" + key + "%"}, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
+            user.setFirstName(rs.getString("first_Name"));
             user.setPhone(rs.getString("phone"));
             user.setAddress(rs.getString("address"));
             return user;
@@ -55,7 +55,7 @@ public class MySQLService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
+            user.setFirstName(rs.getString("first_name"));
             user.setPhone(rs.getString("phone"));
             user.setAddress(rs.getString("address"));
             return user;
@@ -70,7 +70,7 @@ public class MySQLService {
         int threadCount = 20;
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
-        
+
         for (int i = 0; i < threadCount; i++) {
             final int index = i;
             executor.submit(() -> {
@@ -79,7 +79,7 @@ public class MySQLService {
                     jdbcTemplate.query(sql, new Object[]{index % 100 + 1}, (rs, rowNum) -> {
                         User user = new User();
                         user.setId(rs.getLong("id"));
-                        user.setName(rs.getString("name"));
+                        user.setFirstName(rs.getString("first_name"));
                         user.setPhone(rs.getString("phone"));
                         user.setAddress(rs.getString("address"));
                         return user;
@@ -89,15 +89,15 @@ public class MySQLService {
                 }
             });
         }
-        
+
         try {
             latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        
+
         executor.shutdown();
-        
+
         // 返回一个结果
         return userService.queryByAddress(key);
     }
@@ -111,7 +111,7 @@ public class MySQLService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
+            user.setFirstName(rs.getString("first_name"));
             user.setPhone(rs.getString("phone"));
             user.setAddress(rs.getString("address"));
             return user;
@@ -127,7 +127,7 @@ public class MySQLService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
+            user.setFirstName(rs.getString("first_name"));
             user.setPhone(rs.getString("phone"));
             user.setAddress(rs.getString("address"));
             return user;
@@ -143,7 +143,7 @@ public class MySQLService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
+            user.setFirstName(rs.getString("first_name"));
             user.setPhone(rs.getString("phone"));
             user.setAddress(rs.getString("address"));
             return user;
@@ -159,7 +159,7 @@ public class MySQLService {
         return jdbcTemplate.query(sql, new Object[]{prefix + "%"}, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
+            user.setFirstName(rs.getString("first_name"));
             user.setPhone(rs.getString("phone"));
             user.setAddress(rs.getString("address"));
             return user;
@@ -175,7 +175,7 @@ public class MySQLService {
         return jdbcTemplate.query(sql, new Object[]{"%" + keyword + "%"}, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
+            user.setFirstName(rs.getString("first_name"));
             user.setPhone(rs.getString("phone"));
             user.setAddress(rs.getString("address"));
             return user;
@@ -191,7 +191,7 @@ public class MySQLService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             User user = new User();
             user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
+            user.setFirstName(rs.getString("first_name"));
             user.setPhone(rs.getString("phone"));
             user.setAddress(rs.getString("address"));
             return user;

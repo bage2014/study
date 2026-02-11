@@ -62,8 +62,8 @@ public class DataSourceController {
             info.put("rollbackCount", druidDataSource.getRollbackCount());
             
             // 性能统计
-            info.put("queryTimeoutCount", druidDataSource.getQueryTimeoutCount());
-            info.put("transactionQueryTimeoutCount", druidDataSource.getTransactionQueryTimeoutCount());
+//            info.put("queryTimeoutCount", druidDataSource.getQueryTimeoutCount());
+//            info.put("transactionQueryTimeoutCount", druidDataSource.getTransactionQueryTimeoutCount());
             info.put("removeAbandonedCount", druidDataSource.getRemoveAbandonedCount());
             
             log.info("获取连接池信息: {}", info);

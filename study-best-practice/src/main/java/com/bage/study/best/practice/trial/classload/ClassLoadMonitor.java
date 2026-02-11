@@ -147,15 +147,14 @@ public class ClassLoadMonitor {
 
         @Override
         public String toString() {
-            return "ClassLoadInfo{
-" +
+            return "ClassLoadInfo{"+
                     "  className='" + className + "'\n" +
                     "  loaderName='" + loaderName + "'\n" +
                     "  loadTime='" + new java.util.Date(loadTime) + "'\n" +
                     "  initTime='" + (initTime > 0 ? new java.util.Date(initTime) : "Not initialized") + "'\n" +
                     "  loaded=" + loaded + "\n" +
                     "  initialized=" + initialized + "\n" +
-                    '}';
+                    "}";
         }
     }
 
