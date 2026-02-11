@@ -371,10 +371,378 @@ netstat -an
 - [ ] 实现合理的缓存策略
 - [ ] 定期进行性能压测
 
-## 10. 参考资料
+## 7. Web框架优化
+
+### 7.1 Spring Boot优化
+
+#### 7.1.1 启动优化
+
+**核心策略**：
+- 延迟初始化Bean：`@Lazy`注解
+- 减少自动配置：使用`@EnableAutoConfiguration(exclude = {...})`
+- 优化依赖：移除不必要的依赖
+- 使用Spring Boot 3.0+：基于GraalVM的原生镜像支持
+
+**大厂实践**：
+- **阿里巴巴**：使用Bean预加载和并行初始化提升启动速度
+- **字节跳动**：基于Docker的分层构建，减少启动时间
+
+**参考链接**：
+- [Spring Boot性能优化指南](https://spring.io/blog/2021/04/20/spring-boot-2-5-performance-improvements)
+
+#### 7.1.2 运行时优化
+
+**核心策略**：
+- 启用HTTP/2：提升网络传输效率
+- 配置连接池：优化数据库连接管理
+- 启用缓存：合理使用Spring Cache
+- 异步处理：`@Async`注解和CompletableFuture
+
+**参考链接**：
+- [Spring Boot运行时优化最佳实践](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.web)
+
+### 7.2 Spring Cloud微服务优化
+
+#### 7.2.1 服务发现优化
+
+**核心策略**：
+- 合理设置心跳间隔：减少网络开销
+- 启用缓存：缓存服务注册表
+- 优化负载均衡策略：根据业务场景选择合适的策略
+
+**大厂实践**：
+- **Netflix**：Eureka服务发现优化
+- **阿里巴巴**：Nacos服务发现与配置中心
+
+**参考链接**：
+- [Spring Cloud Netflix官方文档](https://spring.io/projects/spring-cloud-netflix)
+- [Nacos官方文档](https://nacos.io/zh-cn/docs/quick-start.html)
+
+#### 7.2.2 熔断与限流
+
+**核心策略**：
+- 合理设置熔断阈值：避免雪崩效应
+- 实现细粒度限流：基于接口、用户等维度
+- 降级策略：确保核心功能可用
+
+**大厂实践**：
+- **阿里巴巴**：Sentinel熔断限流框架
+- **Netflix**：Hystrix熔断库
+
+**参考链接**：
+- [Sentinel官方文档](https://sentinelguard.io/zh-cn/docs/introduction.html)
+- [Hystrix官方文档](https://github.com/Netflix/Hystrix)
+
+## 8. 数据库优化
+
+### 8.1 MySQL优化
+
+#### 8.1.1 索引优化
+
+**核心策略**：
+- 合理设计索引：覆盖查询、联合索引
+- 避免索引失效：注意查询条件
+- 定期重建索引：优化索引碎片
+
+**大厂实践**：
+- **阿里巴巴**：索引设计规范
+- **美团**：MySQL索引优化实践
+
+**参考链接**：
+- [MySQL官方索引优化文档](https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html)
+- [阿里巴巴MySQL最佳实践](https://github.com/alibaba/transmittable-thread-local)
+
+#### 8.1.2 连接池优化
+
+**核心策略**：
+- 合理设置连接池大小：根据并发量调整
+- 配置连接超时：避免连接泄漏
+- 监控连接池状态：及时发现问题
+
+**推荐连接池**：
+- HikariCP：性能最优
+- Druid：功能丰富，支持监控
+
+**参考链接**：
+- [HikariCP官方文档](https://github.com/brettwooldridge/HikariCP)
+- [Druid官方文档](https://github.com/alibaba/druid)
+
+### 8.2 分库分表
+
+**核心策略**：
+- 合理选择分库分表键：避免热点数据
+- 实现数据迁移：支持平滑扩容
+- 解决跨库查询：使用中间件或应用层处理
+
+**大厂实践**：
+- **阿里巴巴**：TDDL分库分表中间件
+- **美团**：Atlas数据库中间件
+
+**参考链接**：
+- [ShardingSphere官方文档](https://shardingsphere.apache.org/)
+- [TDDL开源项目](https://github.com/alibaba/tb_tddl)
+
+## 9. 缓存优化
+
+### 9.1 Redis优化
+
+#### 9.1.1 内存优化
+
+**核心策略**：
+- 合理设置内存上限：`maxmemory`
+- 选择合适的淘汰策略：根据业务场景
+- 优化数据结构：使用合适的数据类型
+- 避免大Key：拆分大对象
+
+**大厂实践**：
+- **Twitter**：Redis集群优化
+- **阿里巴巴**：Redis内存优化实践
+
+**参考链接**：
+- [Redis官方内存优化文档](https://redis.io/topics/memory-optimization)
+- [Redis最佳实践](https://github.com/redis/redis-doc)
+
+#### 9.1.2 性能优化
+
+**核心策略**：
+- 使用Pipeline：批量执行命令
+- 启用持久化：合理配置RDB和AOF
+- 集群部署：提升并发能力
+- 使用Lua脚本：减少网络开销
+
+**参考链接**：
+- [Redis性能优化指南](https://redis.io/topics/benchmarks)
+
+### 9.2 多级缓存架构
+
+**核心策略**：
+- 本地缓存：Caffeine、Guava Cache
+- 分布式缓存：Redis、Memcached
+- 缓存预热：提前加载热点数据
+- 缓存更新策略：更新、失效、穿透处理
+
+**大厂实践**：
+- **美团**：多级缓存架构实践
+- **字节跳动**：缓存一致性保障
+
+**参考链接**：
+- [Caffeine官方文档](https://github.com/ben-manes/caffeine)
+- [Guava Cache官方文档](https://github.com/google/guava/wiki/CachesExplained)
+
+## 10. 消息队列优化
+
+### 10.1 Kafka优化
+
+**核心策略**：
+- 合理设置分区数：提升并发能力
+- 配置消息压缩：减少网络传输
+- 调优生产者和消费者参数：根据业务场景
+- 监控消息积压：及时发现问题
+
+**大厂实践**：
+- **LinkedIn**：Kafka原生命令
+- **字节跳动**：Kafka大规模集群优化
+
+**参考链接**：
+- [Kafka官方文档](https://kafka.apache.org/documentation/)
+- [字节跳动Kafka实践](https://bytedance.larkoffice.com/wiki/Na3Owt5dniqrlkkPHj2cWGYunfg)
+
+### 10.2 RabbitMQ优化
+
+**核心策略**：
+- 合理设置队列大小：避免内存溢出
+- 使用持久化：确保消息不丢失
+- 配置消费者确认机制：保证消息可靠性
+- 集群部署：提升可用性
+
+**参考链接**：
+- [RabbitMQ官方文档](https://www.rabbitmq.com/documentation.html)
+
+## 11. 分布式系统实践
+
+### 11.1 分布式事务
+
+**核心策略**：
+- 两阶段提交：XA协议
+- 补偿事务：TCC模式
+- 本地消息表：可靠消息最终一致性
+- Saga模式：长事务处理
+
+**大厂实践**：
+- **阿里巴巴**：Seata分布式事务框架
+- **蚂蚁金服**：Fescar（Seata前身）
+
+**参考链接**：
+- [Seata官方文档](https://seata.io/zh-cn/docs/overview/what-is-seata.html)
+
+### 11.2 分布式锁
+
+**核心策略**：
+- Redis分布式锁：基于SETNX命令
+- ZooKeeper分布式锁：基于临时节点
+- 数据库分布式锁：基于唯一索引
+
+**参考链接**：
+- [Redis分布式锁实现](https://redis.io/commands/setnx)
+- [ZooKeeper官方文档](https://zookeeper.apache.org/doc/current/)
+
+## 12. 安全实践
+
+### 12.1 常见安全问题
+
+**核心策略**：
+- SQL注入：使用参数化查询
+- XSS攻击：输入验证和输出编码
+- CSRF攻击：使用Token验证
+- 敏感信息泄露：加密存储
+
+**大厂实践**：
+- **OWASP**：Web应用安全十大风险
+- **阿里巴巴**：Java应用安全规范
+
+**参考链接**：
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [阿里巴巴Java安全编码规范](https://github.com/alibaba/p3c)
+
+### 12.2 安全防护措施
+
+**核心策略**：
+- 使用HTTPS：加密传输
+- 实现权限控制：基于角色的访问控制
+- 安全日志：记录关键操作
+- 定期安全扫描：发现并修复漏洞
+
+**参考链接**：
+- [Spring Security官方文档](https://spring.io/projects/spring-security)
+
+## 13. 部署与运维
+
+### 13.1 容器化部署
+
+**核心策略**：
+- 合理设计Docker镜像：减少镜像大小
+- 配置资源限制：避免容器逃逸
+- 实现健康检查：确保服务可用性
+- 使用编排工具：Kubernetes管理容器
+
+**大厂实践**：
+- **Google**：Kubernetes原生支持
+- **阿里巴巴**：ACK容器服务
+
+**参考链接**：
+- [Docker官方文档](https://docs.docker.com/)
+- [Kubernetes官方文档](https://kubernetes.io/docs/home/)
+
+### 13.2 CI/CD实践
+
+**核心策略**：
+- 自动化构建：Maven/Gradle
+- 自动化测试：JUnit、Mockito
+- 自动化部署：Jenkins、GitLab CI
+- 代码质量检查：SonarQube
+
+**参考链接**：
+- [Jenkins官方文档](https://www.jenkins.io/doc/)
+- [GitLab CI官方文档](https://docs.gitlab.com/ee/ci/)
+
+## 14. 大厂实践样例
+
+### 14.1 阿里巴巴实践
+
+**核心技术栈**：
+- Spring Boot + Dubbo
+- MySQL + Redis
+- RocketMQ
+- Nacos
+- Sentinel
+
+**关键实践**：
+- 服务网格：Istio
+- 云原生：ACK容器服务
+- DevOps：Pipeline自动化
+
+**参考链接**：
+- [阿里巴巴技术文档](https://tech.aliyun.com/)
+- [Alibaba Cloud官方文档](https://www.alibabacloud.com/help/en/)
+
+### 14.2 字节跳动实践
+
+**核心技术栈**：
+- Go + Java混合架构
+- Kubernetes
+- Kafka + Pulsar
+- TiDB + Redis
+
+**关键实践**：
+- 服务网格：Istio
+- 可观测性：Prometheus + Grafana
+- 自动化运维：内部平台
+
+**参考链接**：
+- [字节跳动技术博客](https://bytedance.larkoffice.com/wiki/Na3Owt5dniqrlkkPHj2cWGYunfg)
+
+### 14.3 美团实践
+
+**核心技术栈**：
+- Spring Cloud + gRPC
+- MySQL + Redis + Cassandra
+- Kafka
+- ZooKeeper
+
+**关键实践**：
+- 服务治理：内部平台
+- 性能优化：全链路压测
+- 监控告警：内部系统
+
+**参考链接**：
+- [美团技术博客](https://tech.meituan.com/)
+
+### 14.4 腾讯实践
+
+**核心技术栈**：
+- Spring Boot + Tars
+- MySQL + Redis
+- CKafka
+- TDSQL
+
+**关键实践**：
+- 微服务治理：Tars
+- 数据库中间件：DBProxy
+- 容器服务：TKE
+
+**参考链接**：
+- [腾讯云开发者文档](https://cloud.tencent.com/developer)
+
+### 14.5 百度实践
+
+**核心技术栈**：
+- Spring Cloud + BrPC
+- MySQL + Redis + HBase
+- Kafka
+- BNS服务发现
+
+**关键实践**：
+- 服务网格：内部实现
+- 分布式追踪：内部系统
+- 自动化运维：内部平台
+
+**参考链接**：
+- [百度技术博客](https://tech.baidu.com/)
+
+## 15. 参考资料
 
 - [阿里巴巴Java开发手册](https://github.com/alibaba/p3c)
 - [字节跳动技术博客](https://bytedance.larkoffice.com/wiki/Na3Owt5dniqrlkkPHj2cWGYunfg)
 - [美团技术沙龙](https://tech.meituan.com/salon.html)
 - [Oracle JVM官方文档](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/)
 - [《深入理解Java虚拟机》](https://item.jd.com/12494631.html)
+- [Spring Boot官方文档](https://docs.spring.io/spring-boot/docs/current/reference/html/)
+- [Spring Cloud官方文档](https://spring.io/projects/spring-cloud)
+- [MySQL官方文档](https://dev.mysql.com/doc/)
+- [Redis官方文档](https://redis.io/documentation)
+- [Kafka官方文档](https://kafka.apache.org/documentation/)
+- [Docker官方文档](https://docs.docker.com/)
+- [Kubernetes官方文档](https://kubernetes.io/docs/home/)
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [Seata官方文档](https://seata.io/zh-cn/docs/overview/what-is-seata.html)
+- [Sentinel官方文档](https://sentinelguard.io/zh-cn/docs/introduction.html)
