@@ -110,6 +110,56 @@ executor.shutdown();
 2. **偏向锁 → 轻量级锁** - 当有其他线程竞争锁时，升级为轻量级锁
 3. **轻量级锁 → 重量级锁** - 当线程竞争激烈时，升级为重量级锁
 
+**详细解释说明**
+
+当线程竞争激烈时，轻量级锁会升级为重量级锁，主要发生在以下情况：
+
+1. **自旋失败**：当线程尝试通过自旋获取锁时，如果自旋超过一定次数（JVM 会根据 CPU 核心数等因素动态调整）仍然无法获取锁，会升级为重量级锁
+2. **线程数超过 CPU 核心数**：当竞争线程数超过 CPU 核心数时，自旋会导致 CPU 资源浪费，此时会升级为重量级锁
+3. **长时间持有锁**：当持有锁的线程执行时间较长时，其他线程的自旋会浪费 CPU 资源，此时会升级为重量级锁
+
+**重量级锁的特点**：
+- 依赖操作系统的互斥量（mutex）实现
+- 线程阻塞时会进入内核态，上下文切换开销较大
+- 但在竞争激烈时，重量级锁比自旋更节省 CPU 资源
+
+**代码样例**
+
+```java
+public class LockUpgradeDemo {
+    private static final Object lock = new Object();
+    private static int counter = 0;
+    
+    public static void main(String[] args) {
+        // 创建多个线程竞争锁
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                for (int j = 0; j < 100000; j++) {
+                    synchronized (lock) {
+                        counter++;
+                    }
+                }
+            }).start();
+        }
+        
+        // 等待所有线程执行完成
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println("Counter: " + counter);
+    }
+}
+```
+
+**执行说明**：
+- 当只有一个线程执行时，使用偏向锁
+- 当有少量线程竞争时，使用轻量级锁（自旋）
+- 当有大量线程竞争时（如示例中的10个线程），会升级为重量级锁
+- 升级后，线程会通过操作系统的互斥量进行同步，避免 CPU 资源浪费
+
 ### 2.2 CAS 机制
 
 #### 2.2.1 CAS 的基本概念
@@ -118,7 +168,82 @@ CAS（Compare And Swap）是一种乐观锁机制，它通过比较内存值和�
 
 #### 2.2.2 CAS 的实现原理
 
+**CAS 操作原理**
+
 CAS 操作包含三个参数：内存位置（V）、期望值（A）和新值（B）。如果内存位置的值等于期望值，则将内存位置的值更新为新值，否则不做任何操作。
+
+**CAS 数据结构图**
+
+```
++================================+
+|           内存位置 (V)          |
+|  存储当前值，如：0x1000         |
++================================+
+                ↑
+                | 读取
+                |
++================================+
+|         CPU 寄存器             |
+|  期望值 (A): 0x1000            |
+|  新值 (B): 0x2000               |
++================================+
+                |
+                | 比较并交换
+                ↓
++================================+
+|         比较逻辑               |
+| if (V == A) then V = B         |
+| else do nothing                |
++================================+
+                |
+                ↓
++================================+
+|         结果                    |
+| 成功: 返回 true, V = 0x2000     |
+| 失败: 返回 false, V 不变        |
++================================+
+```
+
+**CAS 流程图**
+
+```
+开始 → 读取内存值到寄存器 → 计算新值 → 比较内存值与期望值 → 相等？
+    ├─ 是 → 更新内存值为新值 → 返回成功
+    └─ 否 → 不做操作 → 返回失败
+```
+
+**底层实现**
+
+CAS 操作在底层是通过 CPU 指令实现的，不同 CPU 架构有不同的实现：
+
+- **x86 架构**：使用 `cmpxchg` 指令
+- **ARM 架构**：使用 `ldrex` 和 `strex` 指令
+
+这些指令是原子的，保证了 CAS 操作的原子性。
+
+**代码示例**
+
+```java
+public class CASDemo {
+    private static final AtomicInteger counter = new AtomicInteger(0);
+    
+    public static void main(String[] args) {
+        // 尝试将 counter 从 0 改为 1
+        boolean success = counter.compareAndSet(0, 1);
+        System.out.println("CAS 操作结果: " + success);
+        System.out.println("counter 值: " + counter.get());
+        
+        // 尝试将 counter 从 0 改为 2（会失败）
+        success = counter.compareAndSet(0, 2);
+        System.out.println("CAS 操作结果: " + success);
+        System.out.println("counter 值: " + counter.get());
+    }
+}
+```
+
+**执行说明**：
+1. 第一次 CAS 操作：内存值为 0，期望值为 0，新值为 1，操作成功
+2. 第二次 CAS 操作：内存值为 1，期望值为 0，不相等，操作失败
 
 #### 2.2.3 CAS 的优缺点
 
@@ -146,7 +271,125 @@ AQS 内部维护了一个 volatile 修饰的 state 字段和一个 FIFO 双向�
 
 ![](https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzH49o61bopUB4EnjNCwHOecxIIErSt29lDBx4pUsV0ghoAXuia1M4GeNBCw8iaOpdIqv3wiaib81KLkjA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
 
-#### 2.3.3 AQS 的模板方法
+#### 2.3.3 AQS 的基本原理和常见过程
+
+**AQS 基本原理**
+
+AQS（AbstractQueuedSynchronizer）是 Java 并发包中的基础框架，它通过以下机制实现同步：
+
+1. **状态管理**：通过 volatile 修饰的 state 字段管理同步状态
+2. **队列管理**：通过 CLH 双向队列管理等待线程
+3. **模板方法**：提供模板方法让子类实现具体的同步逻辑
+4. **CAS 操作**：使用 CAS 操作保证状态更新的原子性
+
+**AQS 数据结构详细说明**
+
+```
++================================+
+|        AQS 同步器              |
++================================+
+| - state: volatile int          |
+| - head: Node (队首)            |
+| - tail: Node (队尾)             |
++================================+
+                |
+                v
++================================+
+|          CLH 队列              |
++================================+
+| Node1 → Node2 → Node3 → Node4  |
+| (head)        (tail)           |
++================================+
+
+每个 Node 节点包含：
+- thread: Thread (当前线程)
+- prev: Node (前驱节点)
+- next: Node (后继节点)
+- waitStatus: int (等待状态)
+- nextWaiter: Node (条件队列中的后继节点)
+```
+
+**AQS 常见过程**
+
+**1. 获取锁过程**
+
+```
+开始 → 尝试获取锁 (tryAcquire) → 成功？
+    ├─ 是 → 返回成功
+    └─ 否 → 创建节点并加入队列 → 阻塞线程 → 被唤醒后再次尝试获取锁
+```
+
+**2. 释放锁过程**
+
+```
+开始 → 尝试释放锁 (tryRelease) → 成功？
+    ├─ 是 → 唤醒队列中的后继节点 → 返回成功
+    └─ 否 → 返回失败
+```
+
+**3. 条件等待过程**
+
+```
+开始 → 获取锁 → 检查条件 → 条件不满足？
+    ├─ 是 → 进入条件队列 → 释放锁 → 被唤醒后重新获取锁 → 再次检查条件
+    └─ 否 → 执行条件满足后的逻辑
+```
+
+**4. 条件唤醒过程**
+
+```
+开始 → 获取锁 → 唤醒条件队列中的线程 → 线程从条件队列转移到同步队列 → 释放锁
+```
+
+**代码示例**
+
+```java
+// 自定义同步器示例
+class MySync extends AbstractQueuedSynchronizer {
+    @Override
+    protected boolean tryAcquire(int arg) {
+        if (compareAndSetState(0, 1)) {
+            setExclusiveOwnerThread(Thread.currentThread());
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    protected boolean tryRelease(int arg) {
+        if (getState() == 0) {
+            throw new IllegalMonitorStateException();
+        }
+        setExclusiveOwnerThread(null);
+        setState(0);
+        return true;
+    }
+    
+    @Override
+    protected boolean isHeldExclusively() {
+        return getState() == 1;
+    }
+    
+    public void lock() {
+        acquire(1);
+    }
+    
+    public void unlock() {
+        release(1);
+    }
+}
+```
+
+**使用场景**
+
+AQS 被广泛应用于 Java 并发包中的各种同步器：
+- **ReentrantLock**：基于 AQS 实现的可重入锁
+- **CountDownLatch**：基于 AQS 实现的倒计时器
+- **Semaphore**：基于 AQS 实现的信号量
+- **CyclicBarrier**：基于 AQS 实现的循环屏障
+- **FutureTask**：基于 AQS 实现的异步任务
+
+#### 2.3.4 AQS 的模板方法
 
 AQS 提供了以下模板方法，供子类实现：
 
@@ -176,15 +419,43 @@ public ThreadPoolExecutor(int corePoolSize,                      // 核心线程
 
 #### 2.4.3 线程池的工作流程
 
-1. 当有任务提交时，首先检查核心线程数是否已满
-2. 如果核心线程数未满，创建核心线程执行任务
-3. 如果核心线程数已满，检查工作队列是否已满
-4. 如果工作队列未满，将任务放入工作队列
-5. 如果工作队列已满，检查最大线程数是否已满
-6. 如果最大线程数未满，创建非核心线程执行任务
-7. 如果最大线程数已满，执行拒绝策略
+**线程池工作流程图**
 
-![](https://camo.githubusercontent.com/aa9e708171a22704b09a2b0a57732ae81a2e04b014063e68f15aa2fafbc7ebb3/68747470733a2f2f70362d6a75656a696e2e62797465696d672e636f6d2f746f732d636e2d692d6b3375316662706663702f65666539656438323039336534633862616237363865616337396466666564337e74706c762d6b3375316662706663702d7a6f6f6d2d312e696d616765)
+```
+开始 → 提交任务 → 核心线程数已满？
+    ├─ 否 → 创建核心线程执行任务 → 结束
+    └─ 是 → 工作队列已满？
+        ├─ 否 → 将任务放入工作队列 → 结束
+        └─ 是 → 最大线程数已满？
+            ├─ 否 → 创建非核心线程执行任务 → 结束
+            └─ 是 → 执行拒绝策略 → 结束
+```
+
+**详细工作流程**
+
+1. **当有任务提交时**，首先检查核心线程数是否已满
+2. **如果核心线程数未满**，创建核心线程执行任务
+3. **如果核心线程数已满**，检查工作队列是否已满
+4. **如果工作队列未满**，将任务放入工作队列
+5. **如果工作队列已满**，检查最大线程数是否已满
+6. **如果最大线程数未满**，创建非核心线程执行任务
+7. **如果最大线程数已满**，执行拒绝策略
+
+**线程池状态转换**
+
+```
++================================+
+|        线程池状态              |
++================================+
+| RUNNING: 接受新任务并处理队列  |
+| SHUTDOWN: 不接受新任务，处理队列|
+| STOP: 不接受新任务，中断处理中线程|
+| TIDYING: 所有任务已终止         |
+| TERMINATED: 线程池已终止        |
++================================+
+```
+
+
 
 ## 第三部分：Java 并发工具类
 
@@ -222,7 +493,95 @@ Exchanger 是一种同步工具，它允许两个线程在指定点交换数据�
 
 #### 3.3.1 ConcurrentHashMap
 
-ConcurrentHashMap 是一种线程安全的哈希表，它支持高并发的读写操作。
+**ConcurrentHashMap 数据结构图**
+
+```
++================================+
+|        ConcurrentHashMap       |
++================================+
+| - sizeCtl: int (控制表初始化和扩容)|
+| - table: Node<K,V>[] (哈希表数组)|
+| - nextTable: Node<K,V>[] (扩容时的新表)|
++================================+
+                |
+                v
++================================+
+|        哈希表数组 (table)       |
++================================+
+| 0: Node → Node → Node          |
+| 1: Node                        |
+| 2: ForwardingNode (扩容时使用)  |
+| 3: Node → Node                 |
+| 4: TreeNode → TreeNode (红黑树) |
+| ...                            |
++================================+
+```
+
+**ConcurrentHashMap put 操作流程图**
+
+```
+开始 → 计算哈希值 → 检查哈希表是否初始化 → 未初始化？
+    ├─ 是 → 初始化哈希表 → 继续
+    └─ 否 → 继续
+→ 定位桶位置 → 桶为空？
+    ├─ 是 → CAS 插入新节点 → 结束
+    └─ 否 → 检查桶头节点类型 → 是 ForwardingNode？
+        ├─ 是 → 帮助扩容 → 重试
+        └─ 否 → 是 TreeNode？
+            ├─ 是 → 红黑树插入
+            └─ 否 → 链表插入 → 检查是否需要转换为红黑树
+→ 检查是否需要扩容 → 需要？
+    ├─ 是 → 触发扩容
+    └─ 否 → 结束
+```
+
+**ConcurrentHashMap get 操作流程图**
+
+```
+开始 → 计算哈希值 → 检查哈希表是否初始化 → 未初始化？
+    ├─ 是 → 返回 null
+    └─ 否 → 继续
+→ 定位桶位置 → 桶为空？
+    ├─ 是 → 返回 null
+    └─ 否 → 检查桶头节点 → 哈希值匹配？
+        ├─ 是 → 返回节点值
+        └─ 否 → 是 TreeNode？
+            ├─ 是 → 红黑树查找
+            └─ 否 → 链表查找 → 找到？
+                ├─ 是 → 返回节点值
+                └─ 否 → 返回 null
+```
+
+**ConcurrentHashMap 特点**
+
+ConcurrentHashMap 是一种线程安全的哈希表，它支持高并发的读写操作，主要特点包括：
+
+- **分段锁**：在 Java 8 之前使用分段锁，Java 8 之后使用 CAS + synchronized
+- **无锁读**：读操作不需要加锁，通过 volatile 保证可见性
+- **红黑树**：当链表长度超过阈值时，会转换为红黑树
+- **扩容优化**：支持多线程同时扩容，提高扩容效率
+- **高并发**：在保证线程安全的同时，提供了较高的并发性能
+
+**代码示例**
+
+```java
+// 创建 ConcurrentHashMap
+ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+
+// put 操作
+map.put("key1", 1);
+map.put("key2", 2);
+
+// get 操作
+Integer value = map.get("key1");
+
+// 遍历
+map.forEach((k, v) -> System.out.println(k + ": " + v));
+
+// 原子操作
+map.computeIfAbsent("key3", k -> 3);
+map.computeIfPresent("key1", (k, v) -> v + 1);
+```
 
 #### 3.3.2 CopyOnWriteArrayList
 
@@ -238,18 +597,87 @@ BlockingQueue 是一种阻塞队列，它支持在队列为空时阻塞获取操
 
 LockSupport 是一种线程阻塞工具，它可以在任意位置阻塞线程，并且可以唤醒指定的线程。
 
-#### 3.4.2 LockSupport 的方法
+#### 3.4.2 LockSupport 的数据结构
+
+**LockSupport 内部数据结构图**
+
+```
++================================+
+|        LockSupport             |
++================================+
+| - Unsafe: sun.misc.Unsafe (底层实现)|
++================================+
+                |
+                v
++================================+
+|        线程 park 状态管理        |
++================================+
+| 线程1: _counter = 1 (可运行)     |
+| 线程2: _counter = 0 (已阻塞)     |
+| 线程3: _counter = 1 (可运行)     |
+| ...                            |
++================================+
+```
+
+**说明**：
+- LockSupport 内部使用 Unsafe 类实现线程的阻塞和唤醒
+- 每个线程都有一个 _counter 变量，用于表示线程的 park 状态
+- 当 _counter = 0 时，线程可以被 park
+- 当 _counter = 1 时，线程不可被 park（或者说 park 会立即返回）
+
+#### 3.4.3 LockSupport 的方法
 
 - **park()** - 阻塞当前线程
 - **parkNanos(long nanos)** - 阻塞当前线程指定时间
 - **parkUntil(long deadline)** - 阻塞当前线程直到指定时间
 - **unpark(Thread thread)** - 唤醒指定线程
 
-#### 3.4.3 LockSupport 与 wait/notify 的区别
+#### 3.4.4 LockSupport 操作流程图
+
+**park 操作流程**
+
+```
+开始 → 调用 park() → 检查线程的 _counter 值 → _counter == 1？
+    ├─ 是 → 设置 _counter = 0 → 返回（不阻塞）
+    └─ 否 → 阻塞线程 → 被唤醒或中断 → 设置 _counter = 0 → 返回
+```
+
+**unpark 操作流程**
+
+```
+开始 → 调用 unpark(thread) → 设置线程的 _counter = 1 → 检查线程是否阻塞 → 是？
+    ├─ 是 → 唤醒线程
+    └─ 否 → 不做操作
+→ 结束
+```
+
+#### 3.4.5 LockSupport 与 wait/notify 的区别
 
 - **LockSupport 不需要获取对象锁** - wait/notify 需要在同步块中调用
 - **LockSupport 可以唤醒指定线程** - notify 只能随机唤醒一个线程
 - **LockSupport 不会产生死锁** - 如果先调用 unpark 再调用 park，线程不会阻塞
+- **LockSupport 支持中断响应** - park 方法会响应线程中断，但不会抛出 InterruptedException
+- **LockSupport 可以设置超时** - 提供 parkNanos 和 parkUntil 方法支持超时阻塞
+
+**代码示例**
+
+```java
+public class LockSupportDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread(() -> {
+            System.out.println("线程开始执行");
+            System.out.println("线程准备阻塞");
+            LockSupport.park(); // 阻塞线程
+            System.out.println("线程被唤醒");
+        });
+        
+        thread.start();
+        Thread.sleep(1000); // 等待 1 秒
+        System.out.println("主线程准备唤醒子线程");
+        LockSupport.unpark(thread); // 唤醒线程
+    }
+}
+```
 
 ## 第四部分：并发编程最佳实践
 
@@ -385,9 +813,26 @@ LockSupport 是一种线程阻塞工具，它可以在任意位置阻塞线程�
 
 ### 6.3 博客和文章
 
+**线程池相关**
+- [Java 线程池原理分析](https://juejin.cn/post/7303461209142099978)
+- [美团技术团队：线程池实现原理及其在美团业务中的实践](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
+- [阿里巴巴技术团队：Java线程池的设计与实现](https://www.aliyun.com/article/734234)
+- [字节跳动技术团队：线程池最佳实践](https://bytedance.larkoffice.com/docx/OBqfdI4d1o4rYjx3Jf3cVfczn5d)
+
+**CAS 相关**
+- [深入理解CAS原理](https://zhuanlan.zhihu.com/p/383674857)
+- [阿里巴巴技术团队：CAS机制详解](https://www.aliyun.com/article/728321)
+- [腾讯技术团队：CAS原理与ABA问题](https://cloud.tencent.com/developer/article/1707338)
+
+**AQS 相关**
+- [Java AQS原理深度解析](https://juejin.cn/post/6844908087458201614)
+- [美团技术团队：AQS原理与应用](https://tech.meituan.com/2019/12/05/aqs-theory-and-apply.html)
+- [百度技术团队：深入理解AQS框架](https://cloud.baidu.com/article/3156735)
+
+**综合并发编程**
 - [Java 并发编程指南](https://pdai.tech/md/java/thread/java-thread-x-overview.html)
 - [Java 并发编程核心技术](https://zhuanlan.zhihu.com/p/571637324)
-- [Java 线程池原理分析](https://juejin.cn/post/7303461209142099978)
+- [字节跳动技术团队：并发编程最佳实践](https://bytedance.larkoffice.com/docx/DQzVdVjWbo60TxxUaL6cQVczn9c)
 
 ### 6.4 视频教程
 
