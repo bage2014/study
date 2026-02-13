@@ -804,20 +804,115 @@ JVM采用基于栈的执行模型，与基于寄存器的模型相比，具有�
 
 #### 9.2.1 Minor GC触发条件
 
+**通用触发条件：**
 - **Eden区空间不足**：当新对象分配时，Eden区空间不足
 - **大对象直接进入老年代**：当分配的对象超过Eden区大小
 
+**不同JDK版本的差异：**
+
+| JDK版本 | 触发条件 | 特点 |
+|---------|----------|------|
+| JDK 8 | Eden区空间不足时触发 | 默认使用Parallel Scavenge收集器 |
+| JDK 11 | Eden区空间不足时触发 | 默认使用G1收集器，采用增量式回收 |
+| JDK 17 | Eden区空间不足时触发 | G1收集器优化，触发更智能 |
+| JDK 21 | Eden区空间不足时触发 | G1收集器进一步优化，支持分代ZGC |
+
 #### 9.2.2 Major GC触发条件
 
+**通用触发条件：**
 - **老年代空间不足**：当对象从新生代晋升到老年代时，老年代空间不足
 - **元空间不足**：当元空间空间不足时
 
+**不同JDK版本的差异：**
+
+| JDK版本 | 触发条件 | 特点 |
+|---------|----------|------|
+| JDK 8 | 老年代空间不足时触发 | 默认使用Parallel Old收集器，支持CMS |
+| JDK 11 | 老年代空间不足时触发 | 默认使用G1收集器，混合回收模式 |
+| JDK 17 | 老年代空间不足时触发 | G1收集器优化，混合回收更高效 |
+| JDK 21 | 老年代空间不足时触发 | 支持ZGC和Shenandoah，低延迟回收 |
+
 #### 9.2.3 Full GC触发条件
 
+**通用触发条件：**
 - **调用System.gc()**：显式触发Full GC
 - **老年代空间不足**：当Major GC无法释放足够空间
 - **空间分配担保失败**：Minor GC前，老年代剩余空间不足以容纳新生代所有对象
-- **CMS收集器并发失败**：CMS收集器在并发阶段无法处理所有垃圾
+
+**不同JDK版本的差异：**
+
+| JDK版本 | 触发条件 | 特点 |
+|---------|----------|------|
+| JDK 8 | CMS收集器并发失败 | CMS收集器在并发阶段无法处理所有垃圾 |
+| JDK 11 | G1收集器混合回收失败 | G1收集器混合回收无法释放足够空间 |
+| JDK 17 | G1收集器混合回收失败 | G1收集器优化，减少Full GC频率 |
+| JDK 21 | ZGC/Shenandoah回收失败 | 低延迟收集器也可能触发Full GC |
+
+#### 9.2.4 各JDK版本垃圾回收器默认配置
+
+**JDK 8：**
+- 默认收集器：Parallel Scavenge (新生代) + Parallel Old (老年代)
+- 其他可用收集器：CMS、G1（实验性）
+- 触发特点：注重吞吐量，Full GC停顿时间较长
+
+**JDK 11：**
+- 默认收集器：G1
+- 其他可用收集器：CMS（已弃用）、Parallel、ZGC（实验性）
+- 触发特点：平衡吞吐量和停顿时间，增量式回收
+
+**JDK 17：**
+- 默认收集器：G1
+- 其他可用收集器：Parallel、ZGC、Shenandoah
+- 触发特点：G1收集器进一步优化，ZGC和Shenandoah成熟
+
+**JDK 21：**
+- 默认收集器：G1
+- 其他可用收集器：Parallel、ZGC、Shenandoah、Serial
+- 触发特点：支持分代ZGC，低延迟回收成为主流
+
+#### 9.2.5 垃圾回收触发的详细流程
+
+**Minor GC流程：**
+1. **检查Eden区**：新对象分配时检查Eden区空间
+2. **空间不足**：触发Minor GC
+3. **对象标记**：标记Eden区和Survivor区的存活对象
+4. **对象复制**：将存活对象复制到Survivor区或晋升到老年代
+5. **清空Eden区**：回收Eden区的垃圾对象
+
+**Major GC流程：**
+1. **检查老年代**：对象晋升时检查老年代空间
+2. **空间不足**：触发Major GC
+3. **对象标记**：标记老年代的存活对象
+4. **对象整理**：根据收集器类型进行整理（标记-清除或标记-整理）
+5. **回收空间**：回收老年代的垃圾对象
+
+**Full GC流程：**
+1. **触发条件**：满足Full GC触发条件
+2. **全局标记**：标记整个堆空间的存活对象
+3. **全局回收**：回收整个堆空间的垃圾对象
+4. **内存整理**：根据收集器类型进行内存整理
+
+#### 9.2.6 垃圾回收触发的调优建议
+
+**JDK 8调优建议：**
+- 关注Parallel收集器的吞吐量设置
+- CMS收集器注意并发失败问题
+- 合理设置新生代和老年代比例
+
+**JDK 11调优建议：**
+- G1收集器关注停顿时间目标设置
+- 避免使用已弃用的CMS收集器
+- 合理设置最大堆大小和GC线程数
+
+**JDK 17调优建议：**
+- 考虑使用ZGC或Shenandoah获得更低的停顿时间
+- G1收集器关注混合回收阈值设置
+- 合理设置元空间大小
+
+**JDK 21调优建议：**
+- 考虑使用分代ZGC获得更好的性能
+- 关注低延迟收集器的内存开销
+- 合理设置GC相关的JVM参数
 
 ### 9.3 垃圾回收的性能指标
 
@@ -1375,7 +1470,172 @@ flowchart TD
 
 #### 9.4.2 关键信息解读
 
-- **GC类型**：Allocation Failure（分配失败）、Ergonomics（自动调优）、CMS Initial Mark（CMS初始标记）等
+**GC 日志的基本组成**
+
+GC 日志是 JVM 垃圾回收过程的详细记录，包含了垃圾回收的类型、时间、内存变化等重要信息。不同收集器的 GC 日志格式略有不同，但基本组成部分相似。
+
+**1. GC 日志的基本格式**
+
+```
+[GC类型] [时间戳:GC前内存使用情况 -> GC后内存使用情况 (总内存)] [GC耗时]
+```
+
+**2. 常见 GC 日志组成部分**
+
+| 组成部分 | 含义 | 示例 |
+|---------|------|------|
+| GC类型 | 垃圾回收的类型 | [GC]、[Full GC]、[G1 GC]、[ZGC] |
+| 时间戳 | GC 发生的时间 | 2023-01-01T12:00:00.000+0000: |
+| GC前内存 | GC 前各内存区域的使用情况 | Eden:100M->0M(200M), Survivor:10M->15M(20M), Old:200M->150M(300M) |
+| GC后内存 | GC 后各内存区域的使用情况 | Eden:0M->0M(200M), Survivor:15M->10M(20M), Old:150M->145M(300M) |
+| 总内存 | 各内存区域的总大小 | (200M+20M+300M)=520M |
+| GC耗时 | GC 执行的时间 | 50ms |
+| 触发原因 | GC 触发的原因 | Allocation Failure、Ergonomics |
+| 收集器信息 | 使用的垃圾收集器 | [PSYoungGen]、[ParOldGen]、[G1 Young Generation] |
+
+**3. 不同收集器的 GC 日志解读**
+
+**3.1 Parallel 收集器 GC 日志**
+
+```
+2023-01-01T12:00:00.000+0000: [GC (Allocation Failure) [PSYoungGen: 100M->10M(200M)] 300M->210M(520M), 0.050s] [Times: user=0.10, sys=0.02, real=0.05s]
+```
+
+**字段解读**：
+- `GC (Allocation Failure)`：GC 类型为 Minor GC，触发原因是分配失败
+- `PSYoungGen: 100M->10M(200M)`：新生代 GC 前使用 100M，GC 后使用 10M，总大小 200M
+- `300M->210M(520M)`：整个堆 GC 前使用 300M，GC 后使用 210M，总大小 520M
+- `0.050s`：GC 耗时 50ms
+- `Times: user=0.10, sys=0.02, real=0.05s`：用户时间、系统时间、实际时间
+
+**3.2 CMS 收集器 GC 日志**
+
+```
+2023-01-01T12:00:00.000+0000: [GC (Allocation Failure) [ParNew: 100M->10M(200M)] 300M->210M(520M), 0.050s] [Times: user=0.10, sys=0.02, real=0.05s]
+
+2023-01-01T12:00:01.000+0000: [GC [1 CMS-initial-mark: 200M(300M)] 250M(520M), 0.001s] [Times: user=0.00, sys=0.00, real=0.00s]
+2023-01-01T12:00:01.001+0000: [CMS-concurrent-mark-start]
+2023-01-01T12:00:01.050+0000: [CMS-concurrent-mark: 0.049/0.049 secs] [Times: user=0.10, sys=0.01, real=0.05s]
+2023-01-01T12:00:01.050+0000: [CMS-concurrent-preclean-start]
+2023-01-01T12:00:01.060+0000: [CMS-concurrent-preclean: 0.010/0.010 secs] [Times: user=0.02, sys=0.00, real=0.01s]
+2023-01-01T12:00:01.060+0000: [CMS-concurrent-abortable-preclean-start]
+2023-01-01T12:00:01.100+0000: [CMS-concurrent-abortable-preclean: 0.040/0.040 secs] [Times: user=0.08, sys=0.01, real=0.04s]
+2023-01-01T12:00:01.100+0000: [GC [YG occupancy: 150M (200M)]2023-01-01T12:00:01.100+0000: [Rescan (parallel) , 0.005s]2023-01-01T12:00:01.105+0000: [weak refs processing, 0.001s]2023-01-01T12:00:01.106+0000: [class unloading, 0.005s]2023-01-01T12:00:01.111+0000: [scrub symbol table, 0.003s]2023-01-01T12:00:01.114+0000: [scrub string table, 0.001s][1 CMS-remark: 200M(300M)] 350M(520M), 0.015s] [Times: user=0.03, sys=0.00, real=0.02s]
+2023-01-01T12:00:01.115+0000: [CMS-concurrent-sweep-start]
+2023-01-01T12:00:01.150+0000: [CMS-concurrent-sweep: 0.035/0.035 secs] [Times: user=0.07, sys=0.01, real=0.04s]
+2023-01-01T12:00:01.150+0000: [CMS-concurrent-reset-start]
+2023-01-01T12:00:01.155+0000: [CMS-concurrent-reset: 0.005/0.005 secs] [Times: user=0.01, sys=0.00, real=0.01s]
+```
+
+**字段解读**：
+- `GC (Allocation Failure) [ParNew: ...]`：Minor GC，使用 ParNew 收集器
+- `GC [1 CMS-initial-mark: ...]`：CMS 初始标记阶段
+- `CMS-concurrent-mark-start`：CMS 并发标记开始
+- `CMS-concurrent-mark: 0.049/0.049 secs`：CMS 并发标记耗时
+- `CMS-concurrent-preclean-start`：CMS 并发预清理开始
+- `CMS-concurrent-abortable-preclean-start`：CMS 可中止的并发预清理开始
+- `GC [YG occupancy: ...]`：年轻代占用情况
+- `Rescan (parallel)`：重新扫描
+- `weak refs processing`：弱引用处理
+- `class unloading`：类卸载
+- `scrub symbol table`：清理符号表
+- `scrub string table`：清理字符串表
+- `CMS-remark: ...`：CMS 重新标记阶段
+- `CMS-concurrent-sweep-start`：CMS 并发清理开始
+- `CMS-concurrent-reset-start`：CMS 并发重置开始
+
+**3.3 G1 收集器 GC 日志**
+
+```
+2023-01-01T12:00:00.000+0000: [GC pause (G1 Evacuation Pause) (young), 0.050s] [Parallel Time: 40.0ms, GC Workers: 4] [GC Worker Start (ms): Min: 1000.0, Avg: 1000.0, Max: 1000.0, Diff: 0.0] [Ext Root Scanning (ms): Min: 5.0, Avg: 6.0, Max: 7.0, Diff: 2.0, Sum: 24.0] [Update RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0] [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0] [Scan RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0] [Code Root Scanning (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0] [Object Copy (ms): Min: 30.0, Avg: 31.0, Max: 32.0, Diff: 2.0, Sum: 124.0] [Termination (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0] [Termination Attempts: Min: 1, Avg: 1.0, Max: 1, Diff: 0, Sum: 4] [GC Worker Other (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0] [GC Worker Total (ms): Min: 40.0, Avg: 40.0, Max: 40.0, Diff: 0.0, Sum: 160.0] [GC Worker End (ms): Min: 1040.0, Avg: 1040.0, Max: 1040.0, Diff: 0.0] [Code Root Fixup: 0.0ms] [Code Root Purge: 0.0ms] [Clear CT: 0.5ms] [Other: 9.5ms] [Choose CSet: 0.1ms] [Ref Proc: 5.0ms] [Ref Enq: 0.1ms] [Redirty Cards: 0.2ms] [Humongous Register: 0.1ms] [Humongous Reclaim: 0.0ms] [Free CSet: 0.1ms] [Eden: 100.0M(100.0M)->0.0M(100.0M) Survivors: 10.0M->10.0M Heap: 150.0M(520.0M)->50.0M(520.0M)] [Times: user=0.10, sys=0.02, real=0.05s]
+```
+
+**字段解读**：
+- `GC pause (G1 Evacuation Pause) (young)`：G1 收集器的年轻代回收
+- `Parallel Time: 40.0ms, GC Workers: 4`：并行时间 40ms，GC 工作线程数 4
+- `Ext Root Scanning (ms)`：根对象扫描时间
+- `Object Copy (ms)`：对象复制时间
+- `Eden: 100.0M(100.0M)->0.0M(100.0M)`：Eden 区使用情况
+- `Survivors: 10.0M->10.0M`：Survivor 区使用情况
+- `Heap: 150.0M(520.0M)->50.0M(520.0M)`：整个堆使用情况
+
+**3.4 ZGC 收集器 GC 日志**
+
+```
+[2023-01-01T12:00:00.000+0000][12345][gc] GC(1) Pause Mark Start 1000M->1000M(2048M) 1.0ms
+[2023-01-01T12:00:00.001+0000][12345][gc] GC(1) Concurrent Mark 20.0ms
+[2023-01-01T12:00:00.021+0000][12345][gc] GC(1) Pause Mark End 1000M->1000M(2048M) 0.5ms
+[2023-01-01T12:00:00.021+0000][12345][gc] GC(1) Concurrent Relocate Start
+[2023-01-01T12:00:00.050+0000][12345][gc] GC(1) Concurrent Relocate End 800M->800M(2048M) 29.0ms
+```
+
+**字段解读**：
+- `GC(1)`：GC 编号为 1
+- `Pause Mark Start`：标记开始暂停
+- `Concurrent Mark`：并发标记阶段
+- `Pause Mark End`：标记结束暂停
+- `Concurrent Relocate Start`：并发重定位开始
+- `Concurrent Relocate End`：并发重定位结束
+- `1000M->1000M(2048M)`：堆内存使用情况
+
+**4. GC 日志的配置**
+
+**基本配置**：
+```bash
+# 输出 GC 日志到文件
+-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log
+
+# 输出 GC 前后的堆内存情况
+-XX:+PrintHeapAtGC
+
+# 输出对象晋升老年代的详细信息
+-XX:+PrintPromotionFailure
+
+# 输出 CMS 收集器的详细信息
+-XX:+PrintCMSInitiationStatistics -XX:+PrintCMSDetails
+
+# 输出 G1 收集器的详细信息
+-XX:+PrintG1Details
+```
+
+**JDK 9+ 统一日志配置**：
+```bash
+# 输出 GC 日志到文件
+-Xlog:gc*:file=gc.log:time,level,tags:filecount=5,filesize=20M
+
+# 输出详细的 GC 信息
+-Xlog:gc*=debug:file=gc.log:time,level,tags:filecount=5,filesize=20M
+```
+
+**5. GC 日志解读的最佳实践**
+
+1. **关注 GC 频率**：频繁的 Minor GC 可能表明对象创建过快
+2. **关注 GC 耗时**：长时间的 GC 停顿会影响应用响应时间
+3. **关注内存变化**：观察 Eden、Survivor、Old 区的内存使用变化
+4. **关注晋升情况**：频繁的对象晋升可能导致老年代空间不足
+5. **关注 Full GC**：Full GC 通常意味着严重的内存问题
+
+**6. 常见 GC 日志触发原因**
+
+| 触发原因 | 含义 | 可能的问题 |
+|---------|------|------------|
+| Allocation Failure | 新生代空间不足，无法分配对象 | 对象创建过快、新生代空间过小 |
+| Ergonomics | JVM 自动调优触发 | 内存使用达到阈值 |
+| System.gc() | 显式调用 System.gc() | 代码中调用了 System.gc() |
+| Metadata GC Threshold | 元空间不足 | 类加载过多、元空间配置过小 |
+| G1 Evacuation Pause | G1 收集器的对象复制阶段 | 正常的 G1 垃圾回收 |
+| CMS Initial Mark | CMS 收集器的初始标记阶段 | CMS 垃圾回收开始 |
+| ZGC Pause Mark Start | ZGC 收集器的标记开始阶段 | ZGC 垃圾回收开始 |
+
+**7. GC 日志分析工具**
+
+- **GCViewer**：可视化分析 GC 日志的工具
+- **GCEasy**：在线 GC 日志分析工具
+- **HPJmeter**：HP 提供的 JVM 性能分析工具
+- **IBM GC and Memory Visualizer**：IBM 提供的 GC 分析工具
+- **JDK 自带工具**：jstat、jmap、jcmd 等
+
+通过对 GC 日志的详细解读，可以深入了解 JVM 的内存使用情况和垃圾回收行为，从而进行有针对性的调优，提高应用的性能和稳定性。
 
 
 
@@ -1541,11 +1801,80 @@ G1 收集器的工作原理：
 4. **可预测的停顿时间**：通过设置停顿时间目标，控制垃圾回收的时间
 5. **混合回收**：同时回收新生代和老年代的部分区域
 
+**可预测的停顿时间详解**：
+
+**什么是可预测的停顿时间**：
+可预测的停顿时间是 G1 收集器的核心特性，指 G1 能够根据用户设置的停顿时间目标（如 `-XX:MaxGCPauseMillis=200`），在大多数情况下将垃圾回收的停顿时间控制在目标范围内，满足延迟敏感应用的需求。
+
+**G1 为什么能实现可预测的停顿时间**：
+
+1. **基于 Region 的内存布局**
+   - 将堆内存划分为多个大小相等的 Region（通常为 1MB 到 32MB）
+   - 每个 Region 可以独立进行垃圾回收，无需回收整个堆
+   - 回收单位从整个堆缩小到单个 Region，粒度更细
+
+2. **停顿时间预测模型**
+   - G1 收集器维护一个停顿时间预测模型，记录历史回收时间
+   - 基于历史数据预测不同 Region 的回收时间
+   - 在选择回收区域时，根据预测模型计算回收时间
+
+3. **动态调整回收区域数量**
+   - 根据停顿时间目标，动态调整每次回收的 Region 数量
+   - 回收时间 = 单个 Region 回收时间 × 回收 Region 数量
+   - 通过控制回收 Region 数量，控制总停顿时间
+
+4. **优先级排序机制**
+   - G1 会对所有 Region 进行优先级排序，优先回收垃圾最多的 Region
+   - 优先回收垃圾多的 Region 可以在有限时间内回收更多内存
+   - 提高回收效率，确保在目标时间内完成回收
+
+5. **增量回收策略**
+   - 将大的回收任务分解为多个小任务
+   - 每次只执行一部分回收工作，避免长时间 STW
+   - 逐步完成整个堆的垃圾回收
+
+**实现可预测停顿时间的关键参数**：
+
+| 参数 | 描述 | 默认值 | 建议值 |
+|------|------|--------|--------|
+| `-XX:MaxGCPauseMillis` | 最大 GC 停顿时间目标 | 200ms | 根据应用需求设置，如 100-500ms |
+| `-XX:G1HeapRegionSize` | Region 大小 | 自动计算 | 1-32MB，根据堆大小调整 |
+| `-XX:InitiatingHeapOccupancyPercent` | 并发标记启动阈值 | 45% | 40-50%，根据应用内存使用情况调整 |
+| `-XX:G1MixedGCLiveThresholdPercent` | 混合回收时 Region 存活对象阈值 | 85% | 70-90%，影响回收区域选择 |
+| `-XX:G1MixedGCCountTarget` | 标记周期后执行的混合回收次数 | 8 | 5-10，影响混合回收频率 |
+
+**实际应用中的注意事项**：
+
+1. **停顿时间目标设置**
+   - 目标设置过严（如 < 50ms）可能导致回收不充分，内存占用增加
+   - 目标设置过松（如 > 1000ms）可能导致停顿时间过长，影响用户体验
+   - 应根据应用的实际延迟要求和硬件环境设置合理目标
+
+2. **内存大小影响**
+   - 小内存环境（< 4GB）下，G1 的优势不明显，可能不如其他收集器
+   - 大内存环境（> 8GB）下，G1 的可预测停顿时间优势更加明显
+
+3. **GC 频率平衡**
+   - 为了控制停顿时间，G1 可能会增加 Young GC 的频率
+   - 频繁的 Young GC 可能会增加整体 GC 开销
+   - 需要在停顿时间和 GC 频率之间找到平衡
+
+4. **监控与调优**
+   - 应密切监控 G1 的 GC 行为，包括停顿时间、回收频率、内存使用等
+   - 根据监控数据调整相关参数，优化 G1 的性能
+   - 关注并发标记、混合回收等阶段的执行情况
+
 G1 收集器的优点：
 - 可预测的停顿时间，满足延迟敏感应用的需求
 - 高吞吐量，适合大内存环境
 - 减少内存碎片，提高内存利用率
 - 灵活的回收策略，可根据应用特点调整
+
+G1 收集器的适用场景：
+- 大内存服务器应用（堆内存大于 4GB）
+- 对响应时间有严格要求的应用
+- 需要可预测停顿时间的应用
+- 内存碎片敏感的应用
 
 #### 10.3.2 如何排查 JVM 内存泄漏问题？
 

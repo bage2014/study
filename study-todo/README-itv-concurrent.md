@@ -172,6 +172,43 @@ CAS（Compare And Swap）是一种乐观锁机制，它通过比较内存值和�
 
 CAS 操作包含三个参数：内存位置（V）、期望值（A）和新值（B）。如果内存位置的值等于期望值，则将内存位置的值更新为新值，否则不做任何操作。
 
+**CAS 数据结构**
+
+**1. 原子类内部结构**
+
+```java
+// AtomicInteger 内部结构简化版
+public class AtomicInteger extends Number implements java.io.Serializable {
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
+    private static final long valueOffset; // 值的内存偏移量
+    
+    static {
+        try {
+            // 通过反射获取 value 字段的内存偏移量
+            valueOffset = unsafe.objectFieldOffset(
+                AtomicInteger.class.getDeclaredField("value"));
+        } catch (Exception ex) {
+            throw new Error(ex);
+        }
+    }
+    
+    private volatile int value; // 存储实际值，使用 volatile 保证可见性
+    
+    // CAS 操作核心方法
+    public final boolean compareAndSet(int expect, int update) {
+        return unsafe.compareAndSwapInt(this, valueOffset, expect, update);
+    }
+}
+```
+
+**2. Unsafe 类核心方法**
+
+| 方法 | 描述 | 参数 |
+|------|------|------|
+| compareAndSwapInt | 原子更新 int 类型 | obj: 对象, offset: 内存偏移量, expect: 期望值, update: 新值 |
+| compareAndSwapLong | 原子更新 long 类型 | obj: 对象, offset: 内存偏移量, expect: 期望值, update: 新值 |
+| compareAndSwapObject | 原子更新引用类型 | obj: 对象, offset: 内存偏移量, expect: 期望值, update: 新值 |
+
 **CAS 数据结构图**
 
 ```
@@ -204,12 +241,27 @@ CAS 操作包含三个参数：内存位置（V）、期望值（A）和新值�
 +================================+
 ```
 
-**CAS 流程图**
+**CAS 详细流程说明**
+
+**1. 完整执行流程**
 
 ```
 开始 → 读取内存值到寄存器 → 计算新值 → 比较内存值与期望值 → 相等？
     ├─ 是 → 更新内存值为新值 → 返回成功
-    └─ 否 → 不做操作 → 返回失败
+    └─ 否 → 检查是否需要重试 → 需要？
+        ├─ 是 → 重新读取内存值 → 计算新值 → 比较内存值与期望值
+        └─ 否 → 返回失败
+```
+
+**2. 自旋重试机制流程**
+
+```
+开始 → 初始化期望值 = 当前值 → 计算新值
+    → 尝试 CAS 操作 → 成功？
+        ├─ 是 → 返回新值
+        └─ 否 → 重新读取当前值 → 当前值 == 期望值？
+            ├─ 是 → 可能有其他线程修改后又改回，继续尝试
+            └─ 否 → 更新期望值为当前值 → 重新计算新值 → 继续尝试
 ```
 
 **底层实现**
@@ -220,6 +272,21 @@ CAS 操作在底层是通过 CPU 指令实现的，不同 CPU 架构有不同的
 - **ARM 架构**：使用 `ldrex` 和 `strex` 指令
 
 这些指令是原子的，保证了 CAS 操作的原子性。
+
+**CAS 与 volatile 的关系**
+
+- **volatile 保证可见性**：确保其他线程对变量的修改能被当前线程看到
+- **CAS 保证原子性**：确保更新操作的原子性
+- **两者结合**：volatile 确保 CAS 操作能读取到最新值，CAS 确保更新操作的原子性
+
+**CAS 性能特点**
+
+| 场景 | 性能表现 | 原因 |
+|------|----------|------|
+| 低竞争 | 非常快 | 无锁操作，无需上下文切换 |
+| 中竞争 | 良好 | 自旋重试次数较少 |
+| 高竞争 | 较差 | 自旋重试次数多，CPU 开销大 |
+| 超高竞争 | 很差 | 几乎所有线程都在自旋，CPU 资源浪费严重 |
 
 **代码示例**
 
@@ -275,7 +342,7 @@ AQS 内部维护了一个 volatile 修饰的 state 字段和一个 FIFO 双向�
 
 **AQS 基本原理**
 
-AQS（AbstractQueuedSynchronizer）是 Java 并发包中的基础框架，它通过以下机制实现同步：
+AQS（AbstractQueuedSynchronizer）【抽象队列同步器】是 Java 并发包中的基础框架，它通过以下机制实现同步：
 
 1. **状态管理**：通过 volatile 修饰的 state 字段管理同步状态
 2. **队列管理**：通过 CLH 双向队列管理等待线程
@@ -453,7 +520,369 @@ public ThreadPoolExecutor(int corePoolSize,                      // 核心线程
 | TIDYING: 所有任务已终止         |
 | TERMINATED: 线程池已终止        |
 +================================+
+
+
 ```
+
+#### 2.4.4 拒绝策略类型
+
+**常见的拒绝策略（RejectedExecutionHandler）类型**
+
+| 拒绝策略                       | 含义           | 特点                                                       |
+| ------------------------------ | -------------- | ---------------------------------------------------------- |
+| AbortPolicy                    | 中止策略       | 直接抛出 RejectedExecutionException 异常，阻止系统正常运行 |
+| CallerRunsPolicy               | 调用者运行策略 | 由提交任务的线程执行该任务，降低新任务的提交速度           |
+| DiscardPolicy                  | 丢弃策略       | 直接丢弃无法处理的任务，不做任何处理                       |
+| DiscardOldestPolicy            | 丢弃最旧策略   | 丢弃工作队列中最旧的任务，然后尝试提交新任务               |
+| CustomRejectedExecutionHandler | 自定义拒绝策略 | 根据业务需求自定义处理逻辑                                 |
+
+**拒绝策略选择建议**
+
+- **AbortPolicy**：适用于需要明确知道任务被拒绝的场景，确保系统稳定性
+- **CallerRunsPolicy**：适用于任务量不大且要求不丢失任务的场景
+- **DiscardPolicy**：适用于对任务丢失不敏感的场景
+- **DiscardOldestPolicy**：适用于需要处理最新任务的场景
+- **CustomRejectedExecutionHandler**：适用于有特殊业务需求的场景
+
+#### 2.4.5 阻塞队列类型和含义
+
+**常见的阻塞队列（BlockingQueue）类型**
+
+| 队列类型              | 含义                     | 特点                                                         |
+| --------------------- | ------------------------ | ------------------------------------------------------------ |
+| ArrayBlockingQueue    | 基于数组的有界阻塞队列   | 有固定容量，FIFO 顺序，使用 ReentrantLock 保证线程安全       |
+| LinkedBlockingQueue   | 基于链表的阻塞队列       | 可选有界/无界，默认无界，FIFO 顺序，吞吐量通常高于 ArrayBlockingQueue |
+| SynchronousQueue      | 同步队列                 | 无容量，每个插入操作必须等待一个对应的移除操作，适用于直接提交策略 |
+| PriorityBlockingQueue | 基于优先级的无界阻塞队列 | 无界，按优先级排序，元素必须实现 Comparable 接口或提供 Comparator |
+| DelayQueue            | 基于优先级的延迟队列     | 无界，元素必须实现 Delayed 接口，只有到期的元素才能被取出    |
+| LinkedTransferQueue   | 基于链表的无界传输队列   | 无界，支持 transfer() 方法，生产者可以等待消费者接收元素     |
+| LinkedBlockingDeque   | 基于链表的双向阻塞队列   | 可选有界/无界，支持 FIFO 和 LIFO 操作，适用于工作窃取算法    |
+
+**队列选择建议**
+
+- **ArrayBlockingQueue**：适用于需要严格控制队列大小的场景
+- **LinkedBlockingQueue**：适用于任务量较大且不需要严格控制队列大小的场景
+- **SynchronousQueue**：适用于直接提交策略，要求处理速度快的场景
+- **PriorityBlockingQueue**：适用于需要按优先级处理任务的场景
+- **DelayQueue**：适用于需要延迟执行任务的场景
+
+#### 2.4.6 线程工厂使用样例
+
+**自定义线程工厂**
+
+```java
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class CustomThreadFactory implements ThreadFactory {
+    private static final AtomicInteger poolNumber = new AtomicInteger(1);
+    private final ThreadGroup group;
+    private final AtomicInteger threadNumber = new AtomicInteger(1);
+    private final String namePrefix;
+
+    public CustomThreadFactory(String prefix) {
+        SecurityManager s = System.getSecurityManager();
+        group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
+        namePrefix = prefix + "-pool-" + poolNumber.getAndIncrement() + "-thread-";
+    }
+
+    @Override
+    public Thread newThread(Runnable r) {
+        Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
+        if (t.isDaemon()) {
+            t.setDaemon(false);
+        }
+        if (t.getPriority() != Thread.NORM_PRIORITY) {
+            t.setPriority(Thread.NORM_PRIORITY);
+        }
+        return t;
+    }
+}
+
+```
+
+**线程工厂使用示例**
+
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+public class ThreadFactoryDemo {
+    public static void main(String[] args) {
+        // 使用自定义线程工厂
+        CustomThreadFactory customFactory = new CustomThreadFactory("MyApp");
+        
+        // 创建线程池
+        ExecutorService executorService = new ThreadPoolExecutor(
+            5, // 核心线程数
+            10, // 最大线程数
+            60, // 线程存活时间
+            TimeUnit.SECONDS, // 时间单位
+            new LinkedBlockingQueue<>(100), // 工作队列
+            customFactory, // 自定义线程工厂
+            new ThreadPoolExecutor.AbortPolicy() // 拒绝策略
+        );
+        
+        // 提交任务
+        for (int i = 0; i < 20; i++) {
+            final int taskId = i;
+            executorService.submit(() -> {
+                System.out.println("Task " + taskId + " executed by thread: " + Thread.currentThread().getName());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        
+        // 关闭线程池
+        executorService.shutdown();
+    }
+}
+```
+
+**内置线程工厂对比**
+
+| 线程工厂 | 特点 | 适用场景 |
+|---------|------|----------|
+| Executors.defaultThreadFactory() | 默认线程工厂，创建的线程属于同一线程组，非守护线程，优先级为 NORM_PRIORITY | 一般场景 |
+| Executors.privilegedThreadFactory() | 创建的线程拥有当前访问控制上下文和类加载器 | 需要特定权限的场景 |
+| CustomThreadFactory | 可自定义线程名称、优先级、是否为守护线程等 | 需要定制线程属性的场景 |
+
+**线程工厂最佳实践**
+
+1. **命名规范**：为线程池和线程设置有意义的名称，便于日志分析和问题定位
+2. **线程属性**：根据实际需求设置线程的优先级、是否为守护线程等属性
+3. **异常处理**：在 run() 方法中捕获未处理的异常，避免线程意外终止
+4. **资源管理**：确保线程池能够正确关闭，释放资源
+5. **监控**：可以在线程工厂中添加监控逻辑，统计线程创建和销毁情况
+
+#### 2.4.7 动态线程池
+
+**1. 动态线程池的基本背景和概念**
+
+**基本背景**：
+在传统的线程池使用中，线程池的参数（如核心线程数、最大线程数、队列大小等）通常是在初始化时固定设置的，无法根据运行时的系统负载和业务需求进行动态调整。这在面对流量波动较大的场景时，可能会导致以下问题：
+- **流量低谷时**：线程池线程数过多，导致资源浪费
+- **流量高峰时**：线程池线程数不足，导致任务排队积压，响应时间变长
+- **系统资源变化时**：无法根据系统资源的变化（如 CPU 使用率、内存使用情况）调整线程池参数
+
+**概念**：
+动态线程池是指能够根据运行时的系统负载、业务需求和资源使用情况，自动或手动调整线程池参数的线程池实现。它可以：
+- **动态调整核心线程数**：根据系统负载调整核心线程数量
+- **动态调整最大线程数**：根据峰值流量调整最大线程数量
+- **动态调整队列大小**：根据任务积压情况调整队列容量
+- **动态调整拒绝策略**：根据业务需求调整任务拒绝策略
+- **动态调整线程存活时间**：根据线程空闲情况调整线程存活时间
+
+**2. 动态线程池的实现原理**
+
+**核心原理**：
+动态线程池的实现核心在于：
+1. **参数管理**：将线程池参数从硬编码改为可配置、可动态修改的方式
+2. **参数监听**：监控配置参数的变化
+3. **参数更新**：当参数变化时，实时更新线程池的实际参数
+4. **状态监控**：监控线程池的运行状态，为参数调整提供依据
+
+**实现方式**：
+
+**方式一：基于 ThreadPoolExecutor 扩展**
+
+```java
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class DynamicThreadPool extends ThreadPoolExecutor {
+    private AtomicInteger corePoolSize;
+    private AtomicInteger maximumPoolSize;
+    private long keepAliveTime;
+    private TimeUnit unit;
+    private BlockingQueue<Runnable> workQueue;
+    
+    public DynamicThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+        this.corePoolSize = new AtomicInteger(corePoolSize);
+        this.maximumPoolSize = new AtomicInteger(maximumPoolSize);
+        this.keepAliveTime = keepAliveTime;
+        this.unit = unit;
+        this.workQueue = workQueue;
+    }
+    
+    // 动态调整核心线程数
+    public void setCorePoolSize(int newCorePoolSize) {
+        this.corePoolSize.set(newCorePoolSize);
+        super.setCorePoolSize(newCorePoolSize);
+    }
+    
+    // 动态调整最大线程数
+    public void setMaximumPoolSize(int newMaximumPoolSize) {
+        this.maximumPoolSize.set(newMaximumPoolSize);
+        super.setMaximumPoolSize(newMaximumPoolSize);
+    }
+    
+    // 动态调整线程存活时间
+    public void setKeepAliveTime(long time, TimeUnit unit) {
+        this.keepAliveTime = time;
+        this.unit = unit;
+        super.setKeepAliveTime(time, unit);
+    }
+    
+    // 获取当前参数
+    public int getCurrentCorePoolSize() {
+        return this.corePoolSize.get();
+    }
+    
+    public int getCurrentMaximumPoolSize() {
+        return this.maximumPoolSize.get();
+    }
+    
+    public long getCurrentKeepAliveTime() {
+        return this.keepAliveTime;
+    }
+    
+    public TimeUnit getCurrentTimeUnit() {
+        return this.unit;
+    }
+}
+```
+
+**方式二：基于配置中心实现**
+
+```java
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class ConfigurableThreadPool {
+    private DynamicThreadPool executor;
+    private String poolName;
+    private ConfigCenter configCenter; // 配置中心客户端
+    
+    public ConfigurableThreadPool(String poolName, ConfigCenter configCenter) {
+        this.poolName = poolName;
+        this.configCenter = configCenter;
+        
+        // 从配置中心加载初始参数
+        ThreadPoolConfig initialConfig = configCenter.getThreadPoolConfig(poolName);
+        this.executor = new DynamicThreadPool(
+            initialConfig.getCorePoolSize(),
+            initialConfig.getMaximumPoolSize(),
+            initialConfig.getKeepAliveTime(),
+            TimeUnit.SECONDS,
+            new LinkedBlockingQueue<>(initialConfig.getQueueCapacity())
+        );
+        
+        // 监听配置变化
+        configCenter.addConfigListener(poolName, this::onConfigChange);
+    }
+    
+    // 配置变化回调
+    private void onConfigChange(ThreadPoolConfig newConfig) {
+        executor.setCorePoolSize(newConfig.getCorePoolSize());
+        executor.setMaximumPoolSize(newConfig.getMaximumPoolSize());
+        executor.setKeepAliveTime(newConfig.getKeepAliveTime(), TimeUnit.SECONDS);
+        // 注意：队列大小通常无法动态调整，需要特殊处理
+        System.out.println("ThreadPool " + poolName + " config updated: " + newConfig);
+    }
+    
+    public ExecutorService getExecutor() {
+        return executor;
+    }
+    
+    // 线程池配置类
+    public static class ThreadPoolConfig {
+        private int corePoolSize;
+        private int maximumPoolSize;
+        private int queueCapacity;
+        private long keepAliveTime;
+        
+        // getters and setters
+    }
+    
+    // 配置中心接口
+    public interface ConfigCenter {
+        ThreadPoolConfig getThreadPoolConfig(String poolName);
+        void addConfigListener(String poolName, ConfigChangeListener listener);
+        
+        interface ConfigChangeListener {
+            void onConfigChange(ThreadPoolConfig newConfig);
+        }
+    }
+}
+```
+
+**3. 动态线程池的注意事项**
+
+**注意事项**：
+
+1. **线程安全**：
+   - 线程池参数的修改必须是线程安全的
+   - 使用原子类或同步机制确保参数更新的原子性
+
+2. **队列大小调整**：
+   - 标准的 BlockingQueue 通常不支持动态调整容量
+   - 可以通过自定义队列实现或替换队列的方式实现
+   - 替换队列时需要注意线程安全和任务迁移
+
+3. **参数合理性**：
+   - 核心线程数：通常设置为 CPU 核心数的 1-2 倍（CPU 密集型）或更多（IO 密集型）
+   - 最大线程数：根据系统资源和峰值流量设置，避免过多线程导致上下文切换开销
+   - 队列大小：根据任务处理速度和内存大小设置，避免队列过大导致内存溢出
+   - 线程存活时间：根据线程空闲情况设置，避免频繁创建和销毁线程
+
+4. **监控和告警**：
+   - 监控线程池的运行状态：活跃线程数、队列大小、任务完成数、拒绝次数等
+   - 设置合理的告警阈值：如队列使用率超过 80%、活跃线程数接近最大线程数等
+   - 建立完善的监控体系，及时发现和处理线程池异常
+
+5. **平滑调整**：
+   - 参数调整应平滑进行，避免突然的参数变化导致系统波动
+   - 对于核心线程数的减少，应等待线程自然终止，而不是强制中断
+   - 对于最大线程数的增加，应考虑系统资源的承载能力
+
+6. **回滚机制**：
+   - 当参数调整导致系统性能下降时，应能够快速回滚到之前的参数配置
+   - 建立参数调整的审计和回滚机制
+
+7. **负载评估**：
+   - 建立科学的负载评估模型，根据系统负载和业务需求调整参数
+   - 考虑 CPU 使用率、内存使用情况、网络 IO、磁盘 IO 等因素
+   - 可以采用自适应算法，根据历史数据自动调整参数
+
+**4. 动态线程池的使用场景**
+
+| 场景 | 特点 | 动态调整策略 |
+|------|------|------------|
+| **Web 应用** | 流量波动大，有明显的高峰期和低谷期 | 根据 QPS 动态调整核心线程数和最大线程数 |
+| **批处理系统** | 任务量不稳定，有时任务集中到达 | 根据任务积压情况动态调整队列大小和最大线程数 |
+| **实时数据处理** | 对延迟敏感，需要快速响应 | 保持足够的核心线程数，根据系统负载调整最大线程数 |
+| **微服务架构** | 服务间依赖复杂，负载不均衡 | 为每个服务设置独立的动态线程池，根据服务负载调整参数 |
+
+**5. 参考链接**
+
+- **官方文档**：
+  - [Java ThreadPoolExecutor 文档](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html)
+  - [Java 并发编程官方教程](https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html)
+
+- **开源实现**：
+  - [Dynamic Thread Pool](https://github.com/dromara/dynamic-tp) - 轻量级动态线程池框架
+  - [Hystrix ThreadPool](https://github.com/Netflix/Hystrix) - Netflix 的熔断框架中的线程池实现
+  - [Resilience4j ThreadPoolBulkhead](https://github.com/resilience4j/resilience4j) - 弹性4j中的线程池隔离实现
+
+- **技术博客**：
+  - [美团技术团队：动态线程池在美团的实践](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
+  - [阿里巴巴技术团队：Java线程池的设计与实现](https://www.aliyun.com/article/734234)
+  - [字节跳动技术团队：线程池最佳实践](https://bytedance.larkoffice.com/docx/DQzVdVjWbo60TxxUaL6cQVczn9c)
+
+- **书籍**：
+  - 《Java 并发编程实战》
+  - 《Java 并发编程艺术》
+  - 《实战 Java 高并发程序设计》
+
+通过使用动态线程池，可以根据系统的实际运行情况和业务需求，灵活调整线程池参数，提高系统的资源利用率和响应速度，同时避免资源浪费和系统过载。
 
 
 
