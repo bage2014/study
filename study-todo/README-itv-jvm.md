@@ -1948,35 +1948,119 @@ ZGC 收集器的特点：
 - 避免在 ThreadLocal 中存储大对象
 - 合理设置线程池大小
 
-## 第十二部分：参考链接
+## 第十二部分：JVM 性能指标
 
-### 12.1 官方文档
+### 12.1 内存相关指标
+
+| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
+|---------|---------|------|---------|---------|----------|
+| **堆内存使用率** | Heap Memory Usage | 堆内存已使用/总堆内存 | 40%-70% | > 85% | GC 频繁，可能导致 OOM |
+| **老年代使用率** | Old Generation Usage | 老年代已使用/老年代总内存 | 40%-70% | > 80% | Full GC 频繁，应用响应缓慢 |
+| **永久代/元空间使用率** | PermGen/Metaspace Usage | 永久代/元空间已使用/总大小 | 40%-70% | > 85% | 可能导致 Full GC 或 OOM |
+| **直接内存使用率** | Direct Memory Usage | 直接内存已使用/总大小 | 40%-70% | > 85% | 可能导致 OOM，应用崩溃 |
+| **对象创建速率** | Object Allocation Rate | 每秒创建的对象数 | 取决于应用 | 过高 | 年轻代 GC 频繁，CPU 使用率高 |
+| **对象晋升速率** | Promotion Rate | 每秒从年轻代晋升到老年代的对象数 | 取决于应用 | 过高 | 老年代快速增长，Full GC 频繁 |
+
+### 12.2 GC 相关指标
+
+| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
+|---------|---------|------|---------|---------|----------|
+| **Young GC 频率** | Young GC Frequency | 每分钟 Young GC 次数 | 0-5 次 | > 10 次/分钟 | 应用响应缓慢，CPU 使用率高 |
+| **Young GC 停顿时间** | Young GC Pause Time | 每次 Young GC 的停顿时间 | < 100ms | > 500ms | 应用短暂无响应 |
+| **Full GC 频率** | Full GC Frequency | 每小时 Full GC 次数 | 0-2 次 | > 5 次/小时 | 应用长时间无响应，性能严重下降 |
+| **Full GC 停顿时间** | Full GC Pause Time | 每次 Full GC 的停顿时间 | < 1s | > 3s | 应用长时间无响应 |
+| **GC 总时间占比** | GC Time Ratio | GC 总时间/应用运行总时间 | < 5% | > 15% | 应用整体性能下降 |
+| **GC 回收效率** | GC Efficiency | 每次 GC 回收的内存量/GC 前内存使用量 | > 50% | < 20% | GC 效果差，可能存在内存泄漏 |
+
+### 12.3 线程相关指标
+
+| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
+|---------|---------|------|---------|---------|----------|
+| **活跃线程数** | Active Threads | 当前活跃的线程数 | 取决于应用 | 过高 | CPU 使用率高，系统负载大 |
+| **线程阻塞时间** | Thread Blocked Time | 线程阻塞的时间占比 | < 10% | > 30% | 应用响应缓慢，可能存在锁竞争 |
+| **线程等待时间** | Thread Wait Time | 线程等待的时间占比 | < 20% | > 40% | 应用响应缓慢，可能存在资源争用 |
+| **线程 CPU 使用率** | Thread CPU Usage | 线程占用的 CPU 时间占比 | 取决于应用 | 过高 | 系统 CPU 使用率高，可能存在死循环 |
+| **线程上下文切换次数** | Thread Context Switches | 每秒线程上下文切换次数 | 取决于系统 | 过高 | CPU 使用率高，系统性能下降 |
+
+### 12.4 类加载相关指标
+
+| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
+|---------|---------|------|---------|---------|----------|
+| **类加载数量** | Loaded Classes | 已加载的类数量 | 取决于应用 | 过高 | 元空间使用量大，可能导致 OOM |
+| **类卸载数量** | Unloaded Classes | 已卸载的类数量 | 取决于应用 | 过低 | 可能存在类加载器泄漏 |
+| **类加载时间** | Class Loading Time | 类加载的总时间 | < 1s | > 5s | 应用启动缓慢 |
+
+### 12.5 操作系统相关指标
+
+| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
+|---------|---------|------|---------|---------|----------|
+| **CPU 使用率** | CPU Usage | CPU 使用率 | < 70% | > 90% | 应用响应缓慢，系统性能下降 |
+| **内存使用率** | Memory Usage | 系统内存使用率 | < 70% | > 85% | 系统性能下降，可能导致 OOM |
+| **磁盘 I/O 使用率** | Disk I/O Usage | 磁盘 I/O 使用率 | < 70% | > 85% | 应用响应缓慢，I/O 操作延迟高 |
+| **网络 I/O 使用率** | Network I/O Usage | 网络 I/O 使用率 | < 70% | > 85% | 应用响应缓慢，网络操作延迟高 |
+| **系统负载** | System Load | 系统负载值 | < CPU 核心数 | > CPU 核心数 × 1.5 | 系统性能下降，应用响应缓慢 |
+
+### 12.6 JVM 内部指标
+
+| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
+|---------|---------|------|---------|---------|----------|
+| **编译时间** | Compilation Time | JIT 编译的总时间 | < 10s | > 30s | 应用启动缓慢 |
+| **编译失败次数** | Compilation Failures | JIT 编译失败的次数 | 0 | > 0 | 可能影响应用性能 |
+| **解释执行比例** | Interpreter Ratio | 解释执行的字节码比例 | < 10% | > 30% | 应用性能下降 |
+| **方法内联成功率** | Inline Success Rate | 方法内联成功的比例 | > 80% | < 50% | 应用性能下降 |
+| **代码缓存使用率** | Code Cache Usage | 代码缓存已使用/总大小 | < 70% | > 90% | JIT 编译可能失败，应用性能下降 |
+
+### 12.7 性能指标监控工具
+
+1. **JDK 自带工具**：
+   - **jstat**：监控 JVM 统计信息
+   - **jconsole**：图形化监控工具
+   - **jvisualvm**：功能强大的可视化监控工具
+   - **jmap**：生成堆转储文件
+   - **jstack**：生成线程转储文件
+
+2. **第三方工具**：
+   - **Arthas**：阿里开源的 Java 诊断工具
+   - **MAT**：内存分析工具
+   - **YourKit Java Profiler**：商业性能分析工具
+   - **New Relic**：APM 监控工具
+   - **Datadog**：云监控平台
+
+3. **监控建议**：
+   - 建立基线：记录正常情况下的指标值
+   - 设置告警：当指标超出正常范围时及时告警
+   - 定期分析：定期分析监控数据，发现潜在问题
+   - 持续优化：根据监控数据持续优化 JVM 参数和应用代码
+
+## 第十三部分：参考链接
+
+### 13.1 官方文档
 
 - [Oracle JVM 官方文档](https://docs.oracle.com/en/java/javase/17/docs/specs/jvm-specification/jvm-spec.html)
 - [OpenJDK 官方网站](https://openjdk.org/)
 - [JDK 17 文档](https://docs.oracle.com/en/java/javase/17/)
 
-### 12.2 技术博客
+### 13.2 技术博客
 
 - [深入理解 Java 虚拟机](https://book.douban.com/subject/24722612/)
 - [Java Performance](https://book.douban.com/subject/11613203/)
 - [JVM 调优实战](https://time.geekbang.org/column/intro/100028001)
 - [G1 垃圾收集器详解](https://www.oracle.com/technical-resources/articles/java/g1gc.html)
 
-### 12.3 工具与资源
+### 13.3 工具与资源
 
 - [VisualVM](https://visualvm.github.io/)
 - [MAT (Memory Analyzer Tool)](https://www.eclipse.org/mat/)
 - [Arthas](https://arthas.aliyun.com/)
 - [JVM 调优指南](https://docs.oracle.com/en/java/javase/17/gctuning/)
 
-### 12.4 视频教程
+### 13.4 视频教程
 
 - [Java 虚拟机原理与实践](https://www.imooc.com/learn/933)
 - [JVM 调优实战](https://www.imooc.com/learn/1193)
 - [深入理解 Java 内存模型](https://www.imooc.com/learn/1236)
 
-### 12.5 社区与论坛
+### 13.5 社区与论坛
 
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/jvm)
 - [Java 技术论坛](https://bbs.csdn.net/forums/Java)

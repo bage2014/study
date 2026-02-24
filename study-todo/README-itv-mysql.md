@@ -382,8 +382,53 @@ DROP INDEX idx_age ON users;
 - **主键索引**：唯一标识行数据，不允许NULL
 - **唯一索引**：值唯一，允许NULL
 - **普通索引**：最基本的索引类型
-- **复合索引**：基于多个列的索引
-- **前缀索引**：基于列的前缀创建索引
+
+**复合索引**
+- **定义**：基于多个列的索引
+- **适用场景**：
+  - 频繁使用多个列作为查询条件
+  - 经常需要对多个列进行排序
+  - 覆盖查询（查询的列都在索引中）
+- **使用样例**：
+  ```sql
+  -- 创建复合索引
+  CREATE INDEX idx_name_age ON users(name, age);
+  
+  -- 有效使用（遵循最左前缀原则）
+  SELECT * FROM users WHERE name = '张三';
+  SELECT * FROM users WHERE name = '张三' AND age = 25;
+  SELECT * FROM users WHERE name = '张三' ORDER BY age;
+  
+  -- 无效使用（不遵循最左前缀原则）
+  SELECT * FROM users WHERE age = 25; -- 不会使用复合索引
+  ```
+
+**前缀索引**
+- **定义**：基于列的前缀创建索引
+- **适用场景**：
+  - 列值较长（如URL、邮箱、长文本）
+  - 只需要前缀匹配（如LIKE 'prefix%'）
+  - 节省索引存储空间
+- **使用样例**：
+  ```sql
+  -- 创建前缀索引（取email列的前20个字符）
+  CREATE INDEX idx_email_prefix ON users(email(20));
+  
+  -- 创建前缀索引（取url列的前30个字符）
+  CREATE INDEX idx_url_prefix ON articles(url(30));
+  
+  -- 有效使用
+  SELECT * FROM users WHERE email LIKE 'zhang%';
+  SELECT * FROM articles WHERE url LIKE 'https://www.example.com%';
+  
+  -- 前缀长度选择
+  -- 查看不同前缀长度的选择性
+  SELECT
+      COUNT(DISTINCT LEFT(email, 10)) / COUNT(*) AS selectivity_10,
+      COUNT(DISTINCT LEFT(email, 20)) / COUNT(*) AS selectivity_20,
+      COUNT(DISTINCT LEFT(email, 30)) / COUNT(*) AS selectivity_30
+  FROM users;
+  ```
 
 ### 6.2 B+树索引
 
@@ -391,6 +436,39 @@ B+树是MySQL中最常用的索引结构，具有以下特点：
 
 #### 6.2.1 B+树结构
 
+**B+树结构图**：
+
+```
+                              ┌─────────────────────────────────────────────┐
+                              │                根节点                       │
+                              ├───────────┬───────────┬───────────┬───────────┤
+                              │  10       │  20       │  30       │  40       │
+                              └──┬────────┴──┬────────┴──┬────────┴──┬────────┘
+                                 │           │           │           │
+                  ┌──────────────┘           │           │           └──────────────┐
+                  │                          │           │                          │
+┌─────────────────────────────┐  ┌─────────────────────────────┐  ┌─────────────────────────────┐
+│         子节点 1            │  │         子节点 2            │  │         子节点 3            │
+├───────────┬───────────┬─────┤  ├───────────┬───────────┬─────┤  ├───────────┬───────────┬─────┤
+│   5       │   8       │  10 │  │  15       │  18       │  20 │  │  35       │  38       │  40 │
+└──┬────────┴──┬────────┴┬────┘  └──┬────────┴──┬────────┴┬────┘  └──┬────────┴──┬────────┴┬────┘
+   │           │         │           │           │         │           │           │         │
+┌──▼──┐    ┌──▼──┐    ┌──▼──┐    ┌──▼──┐    ┌──▼──┐    ┌──▼──┐    ┌──▼──┐    ┌──▼──┐    ┌──▼──┐
+│  3  │    │  6  │    │  9  │    │ 12  │    │ 16  │    │ 19  │    │ 32  │    │ 36  │    │ 39  │
+│  4  │    │  7  │    │  10 │    │ 14  │    │ 17  │    │ 20  │    │ 34  │    │ 37  │    │ 40  │
+└─────┘    └─────┘    └─────┘    └─────┘    └─────┘    └─────┘    └─────┘    └─────┘    └─────┘
+   └──────────┬──────────┘          └──────────┬──────────┘          └──────────┬──────────┘
+              │                                │                                │
+              └──────────────────┬─────────────┘──────────────────┬─────────────┘
+                                 │                                │
+                                 └────────────────┬───────────────┘
+                                                  │
+                                      ┌─────────────────────────────┐
+                                      │        叶子节点链表         │
+                                      └─────────────────────────────┘
+```
+
+**B+树结构特点**：
 - **非叶子节点**：只存储索引键，不存储数据
 - **叶子节点**：存储索引键和数据指针（非聚簇索引）或数据本身（聚簇索引）
 - **叶子节点链表**：叶子节点通过双向链表连接，支持范围查询
@@ -970,41 +1048,130 @@ MySQL监控是确保数据库稳定运行的重要手段，需要关注以下关
 
 ### 19.1 连接相关指标
 
-- **连接数**：`Threads_connected`、`Max_used_connections`
-- **连接错误**：`Connection_errors_*`
-- **连接状态**：`Threads_running`、`Threads_idle`
+- **连接数**：
+  - `Threads_connected`：当前活跃的客户端连接数
+  - `Max_used_connections`：历史最大连接数
+  - **含义**：监控连接数可以了解数据库的负载情况，避免连接数超过最大限制
+  - **监控阈值**：当 `Threads_connected` 接近 `max_connections` 时需要关注
+
+- **连接错误**：
+  - `Connection_errors_accept`：接受连接时的错误数
+  - `Connection_errors_internal`：内部连接错误数
+  - `Connection_errors_max_connections`：达到最大连接数的错误数
+  - `Connection_errors_peer_address`：获取对等方地址时的错误数
+  - `Connection_errors_select`：选择连接时的错误数
+  - `Connection_errors_tcpwrap`：TCP包装器拒绝的连接数
+  - **含义**：连接错误数增加可能表明网络问题或服务器配置问题
+
+- **连接状态**：
+  - `Threads_running`：当前正在执行查询的线程数
+  - `Threads_idle`：当前空闲的线程数
+  - **含义**：`Threads_running` 过高可能表明数据库负载过重，`Threads_idle` 过高可能表明连接池设置不合理
 
 ### 19.2 查询相关指标
 
-- **QPS**：每秒查询数
-- **TPS**：每秒事务数
-- **慢查询**：`Slow_queries`
-- **查询缓存**：`Qcache_*`（MySQL 8.0已移除）
+- **QPS**：
+  - **定义**：每秒查询数（Queries Per Second）
+  - **计算方式**：`Questions / Uptime` 或 `Queries / Uptime`
+  - **含义**：反映数据库的查询负载情况
+  - **监控阈值**：根据业务场景不同，一般来说，单实例MySQL QPS在10k以内是正常的
+
+- **TPS**：
+  - **定义**：每秒事务数（Transactions Per Second）
+  - **计算方式**：`(Com_commit + Com_rollback) / Uptime`
+  - **含义**：反映数据库的事务处理能力
+  - **监控阈值**：根据业务场景不同，一般来说，单实例MySQL TPS在1k以内是正常的
+
+- **慢查询**：
+  - `Slow_queries`：执行时间超过阈值的查询数
+  - **含义**：慢查询数增加表明存在性能问题的SQL语句
+  - **监控阈值**：慢查询率（慢查询数/总查询数）应低于1%
+
+- **查询缓存**：
+  - `Qcache_hits`：查询缓存命中次数
+  - `Qcache_inserts`：查询缓存插入次数
+  - `Qcache_lowmem_prunes`：查询缓存因内存不足而被淘汰的次数
+  - **含义**：（MySQL 8.0已移除）反映查询缓存的使用效率
+  - **监控阈值**：查询缓存命中率（Qcache_hits / (Qcache_hits + Qcache_inserts)）应高于50%
 
 ### 19.3 缓冲池指标
 
-- **缓冲池大小**：`Innodb_buffer_pool_size`
-- **缓冲池使用率**：`Innodb_buffer_pool_pages_data / Innodb_buffer_pool_pages_total`
-- **缓冲池命中率**：`Innodb_buffer_pool_read_requests / (Innodb_buffer_pool_read_requests + Innodb_buffer_pool_reads)`
+- **缓冲池大小**：
+  - `Innodb_buffer_pool_size`：InnoDB缓冲池大小
+  - **含义**：缓冲池是InnoDB存储引擎的核心组件，用于缓存数据页和索引页
+  - **配置建议**：建议设置为总内存的50-80%
+
+- **缓冲池使用率**：
+  - **计算方式**：`Innodb_buffer_pool_pages_data / Innodb_buffer_pool_pages_total`
+  - **含义**：反映缓冲池的使用情况
+  - **监控阈值**：使用率过高（如超过90%）可能导致内存压力
+
+- **缓冲池命中率**：
+  - **计算方式**：`Innodb_buffer_pool_read_requests / (Innodb_buffer_pool_read_requests + Innodb_buffer_pool_reads)`
+  - **含义**：反映缓冲池的效率，命中率越高越好
+  - **监控阈值**：缓冲池命中率应高于95%
 
 ### 19.4 IO相关指标
 
-- **IO等待**：`Innodb_data_reads`、`Innodb_data_writes`
-- **IO吞吐量**：`Innodb_data_read`、`Innodb_data_written`
-- **IOPS**：每秒IO操作数
+- **IO等待**：
+  - `Innodb_data_reads`：InnoDB数据读取次数
+  - `Innodb_data_writes`：InnoDB数据写入次数
+  - `Innodb_data_reads / Innodb_data_read_requests`：物理读比率
+  - **含义**：反映数据库的IO负载情况
+  - **监控阈值**：物理读比率应低于1%
+
+- **IO吞吐量**：
+  - `Innodb_data_read`：InnoDB数据读取量（字节）
+  - `Innodb_data_written`：InnoDB数据写入量（字节）
+  - **含义**：反映数据库的IO流量
+  - **监控阈值**：根据存储设备的性能不同而不同，SSD一般可以处理更高的吞吐量
+
+- **IOPS**：
+  - **定义**：每秒IO操作数（Input/Output Operations Per Second）
+  - **计算方式**：`(Innodb_data_reads + Innodb_data_writes) / Uptime`
+  - **含义**：反映数据库的IO操作频率
+  - **监控阈值**：根据存储设备的性能不同而不同，普通HDD约为100-200 IOPS，SSD约为10000+ IOPS
 
 ### 19.5 事务相关指标
 
-- **事务提交**：`Com_commit`
-- **事务回滚**：`Com_rollback`
-- **锁等待**：`Innodb_row_lock_waits`
-- **死锁**：`Innodb_deadlocks`
+- **事务提交**：
+  - `Com_commit`：事务提交次数
+  - **含义**：反映成功完成的事务数量
+
+- **事务回滚**：
+  - `Com_rollback`：事务回滚次数
+  - **含义**：反映因错误或用户主动回滚的事务数量
+  - **监控阈值**：回滚率（Com_rollback / (Com_commit + Com_rollback)）应低于1%
+
+- **锁等待**：
+  - `Innodb_row_lock_waits`：InnoDB行锁等待次数
+  - `Innodb_row_lock_time`：InnoDB行锁等待总时间
+  - `Innodb_row_lock_time_avg`：InnoDB行锁等待平均时间
+  - **含义**：反映数据库的锁竞争情况
+  - **监控阈值**：锁等待次数应尽量少，平均等待时间应低于10ms
+
+- **死锁**：
+  - `Innodb_deadlocks`：InnoDB死锁次数
+  - **含义**：反映数据库的死锁情况
+  - **监控阈值**：死锁次数应尽量为0，出现死锁需要分析原因
 
 ### 19.6 复制相关指标
 
-- **复制延迟**：`Seconds_Behind_Master`
-- **复制状态**：`Slave_IO_Running`、`Slave_SQL_Running`
-- **复制错误**：`Last_Error`
+- **复制延迟**：
+  - `Seconds_Behind_Master`：从库落后主库的秒数
+  - **含义**：反映主从复制的同步情况
+  - **监控阈值**：复制延迟应尽量小，一般应低于30秒
+
+- **复制状态**：
+  - `Slave_IO_Running`：从库IO线程状态（Yes/No）
+  - `Slave_SQL_Running`：从库SQL线程状态（Yes/No）
+  - **含义**：反映主从复制的运行状态
+  - **监控阈值**：两个线程状态都应为Yes
+
+- **复制错误**：
+  - `Last_Error`：最近的复制错误信息
+  - **含义**：反映主从复制的错误情况
+  - **监控阈值**：应无复制错误，出现错误需要及时处理
 
 ## 20. 监控工具
 
