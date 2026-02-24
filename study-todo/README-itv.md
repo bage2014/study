@@ -5,12 +5,37 @@
 
 | 描述 | 访问链接 | 备注 |
 |------|---------|------|
-| itv-mq | `https://github.com/bage2014/study/blob/master/study-todo/README-itv-mq.md` | MQ相关资料 |
-| itv-spring | `https://github.com/bage2014/study/blob/master/study-todo/README-itv-spring.md` | Spring相关资料 |
-| itv-jvm | `https://github.com/bage2014/study/blob/master/study-todo/README-itv-jvm.md` | JVM相关资料 |
-| itv-concurrent | `https://github.com/bage2014/study/blob/master/study-todo/README-itv-concurrent.md` | 并发相关资料 |
-| itv-es | `https://github.com/bage2014/study/blob/master/study-todo/README-itv-es.md` | Elasticsearch相关资料 |
-| itv-dubbo | `https://github.com/bage2014/study/blob/master/study-todo/README-itv-dubbo.md` | Dubbo相关资料 |
+| itv-mq | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-mq.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-mq.md) | MQ相关资料 |
+| itv-spring | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-spring.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-spring.md) | Spring相关资料 |
+| itv-jvm | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-jvm.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-jvm.md) | JVM相关资料 |
+| itv-concurrent | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-concurrent.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-concurrent.md) | 并发相关资料 |
+| itv-es | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-es.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-es.md) | Elasticsearch相关资料 |
+| itv-dubbo | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-dubbo.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-dubbo.md) | Dubbo相关资料 |
+| itv-algorithm-structure | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-algorithm-structure.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-algorithm-structure.md) | 算法与数据结构相关资料 |
+| itv-ai | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-ai.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-ai.md) | AI相关资料 |
+| itv-java | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-java.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-java.md) | Java基础相关资料 |
+| itv-nginx | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-nginx.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-nginx.md) | Nginx相关资料 |
+| itv-redis | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-redis.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-redis.md) | Redis相关资料 |
+| itv-sentinel | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-sentinel.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-sentinel.md) | Sentinel相关资料 |
+| itv-web | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-web.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-web.md) | Web相关资料 |
+| itv-tomcat | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-tomcat.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-tomcat.md) | Tomcat相关资料 |
+| itv-spring-cloud | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-spring-cloud.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-spring-cloud.md) | Spring Cloud相关资料 |
+| itv-security | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-security.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-security.md) | 安全相关资料 |
+| itv-nacos | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-nacos.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-nacos.md) | Nacos相关资料 |
+| itv-mybatis | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-mybatis.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-mybatis.md) | MyBatis相关资料 |
+| itv-log | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-log.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-log.md) | 日志相关资料 |
+| itv-linux | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-linux.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-linux.md) | Linux相关资料 |
+| itv-io | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-io.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-io.md) | IO相关资料 |
+| itv-circuit-breaker | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-circuit-breaker.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-circuit-breaker.md) | 熔断器相关资料 |
+| itv-mysql | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-mysql.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-mysql.md) | MySQL相关资料 |
+| itv-feign-open | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-feign-open.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-feign-open.md) | Feign与OpenFeign相关资料 |
+| itv-others | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-others.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-others.md) | 其他相关资料 |
+| itv-zookeeper | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-zookeeper.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-zookeeper.md) | ZooKeeper相关资料 |
+| itv-mat | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-mat.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-mat.md) | MAT相关资料 |
+| itv-patterns | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-patterns.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-patterns.md) | 设计模式相关资料 |
+| itv-maven | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-maven.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-maven.md) | Maven相关资料 |
+| itv-distribute-transaction | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-distribute-transaction.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-distribute-transaction.md) | 分布式事务相关资料 |
+| itv-netty | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-netty.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-netty.md) | Netty相关资料 |
 
 ## Schedule
 
