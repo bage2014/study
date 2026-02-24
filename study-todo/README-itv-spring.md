@@ -153,25 +153,51 @@ AOP（Aspect-Oriented Programming）是 Spring 的另一个核心概念，它允
 
 ### 2.4 事务管理
 
-Spring 提供了强大的事务管理能力，支持声明式事务和编程式事务。
+Spring 提供了强大的事务管理能力，支持声明式事务和编程式事务。事务管理是企业应用开发中的核心功能，用于确保数据操作的一致性和可靠性。
 
 #### 2.4.1 事务隔离级别
 
-- **DEFAULT** - 使用底层数据库的默认隔离级别。
-- **READ_UNCOMMITTED** - 允许读取未提交的数据。
-- **READ_COMMITTED** - 只允许读取已提交的数据。
-- **REPEATABLE_READ** - 确保同一事务中多次读取同一数据的结果一致。
-- **SERIALIZABLE** - 确保事务串行执行，避免并发问题。
+事务隔离级别定义了多个并发事务之间的隔离程度，主要解决脏读、不可重复读和幻读等并发问题。
+
+- **DEFAULT** - 使用底层数据库的默认隔离级别。例如，MySQL 默认使用 REPEATABLE_READ，Oracle 默认使用 READ_COMMITTED。
+  **适用场景**：大多数应用场景，无需特殊配置，依赖数据库默认设置。
+
+- **READ_UNCOMMITTED** - 读未提交。允许读取其他事务未提交的数据，可能导致脏读、不可重复读和幻读。
+  **适用场景**：对数据一致性要求极低，追求极致性能的场景，如实时监控系统。
+
+- **READ_COMMITTED** - 读已提交。只允许读取其他事务已提交的数据，可以避免脏读，但可能导致不可重复读和幻读。
+  **适用场景**：大多数互联网应用，注重性能和数据一致性的平衡，如电商系统的订单查询。
+
+- **REPEATABLE_READ** - 可重复读。确保同一事务中多次读取同一数据的结果一致，可以避免脏读和不可重复读，但可能导致幻读。
+  **适用场景**：需要确保数据一致性的业务场景，如金融系统的账户余额查询。
+
+- **SERIALIZABLE** - 串行化。确保事务串行执行，完全避免并发问题，但性能开销最大。
+  **适用场景**：对数据一致性要求极高的场景，如金融系统的资金转账。
 
 #### 2.4.2 事务传播行为
 
-- **REQUIRED** - 如果当前存在事务，则加入该事务；否则，创建一个新事务。
-- **SUPPORTS** - 如果当前存在事务，则加入该事务；否则，以非事务方式执行。
-- **MANDATORY** - 如果当前存在事务，则加入该事务；否则，抛出异常。
-- **REQUIRES_NEW** - 创建一个新事务，如果当前存在事务，则挂起该事务。
-- **NOT_SUPPORTED** - 以非事务方式执行，如果当前存在事务，则挂起该事务。
-- **NEVER** - 以非事务方式执行，如果当前存在事务，则抛出异常。
-- **NESTED** - 如果当前存在事务，则创建一个嵌套事务；否则，创建一个新事务。
+事务传播行为定义了当一个事务方法被另一个事务方法调用时，事务如何传播。
+
+- **REQUIRED** - 如果当前存在事务，则加入该事务；否则，创建一个新事务。这是最常用的传播行为。
+  **适用场景**：大多数业务操作，如用户注册、订单创建等核心业务逻辑。
+
+- **SUPPORTS** - 如果当前存在事务，则加入该事务；否则，以非事务方式执行。适用于那些不依赖事务但如果有事务也可以参与的操作。
+  **适用场景**：可选事务的操作，如数据查询、统计分析等。
+
+- **MANDATORY** - 如果当前存在事务，则加入该事务；否则，抛出异常。确保方法必须在事务中执行。
+  **适用场景**：必须在事务中执行的操作，如资金扣减、库存更新等关键业务逻辑。
+
+- **REQUIRES_NEW** - 创建一个新事务，如果当前存在事务，则挂起该事务。适用于需要独立事务的操作，如日志记录。
+  **适用场景**：需要独立事务的操作，如操作日志记录、审计记录等，确保即使主事务失败也能保存记录。
+
+- **NOT_SUPPORTED** - 以非事务方式执行，如果当前存在事务，则挂起该事务。适用于那些不需要事务的操作，如只读查询。
+  **适用场景**：不需要事务的操作，如缓存更新、只读查询等，提高性能。
+
+- **NEVER** - 以非事务方式执行，如果当前存在事务，则抛出异常。确保方法绝对不在事务中执行。
+  **适用场景**：绝对不能在事务中执行的操作，如某些特定的外部系统调用。
+
+- **NESTED** - 如果当前存在事务，则创建一个嵌套事务；否则，创建一个新事务。嵌套事务是外部事务的一部分，只有外部事务提交，嵌套事务才会提交。
+  **适用场景**：需要部分回滚的场景，如批量操作中，部分操作失败不影响其他操作。
 
 ## 第三部分：Spring Bean
 
@@ -263,17 +289,28 @@ Spring 支持自动装配 Bean，可以通过 `@Autowired`、`@Resource` 或 `@I
 
 ### 4.1 事件机制
 
-Spring 提供了强大的事件机制，它允许应用程序组件之间通过事件进行通信。
+Spring 提供了强大的事件机制，它允许应用程序组件之间通过事件进行通信，实现松耦合的组件交互。
 
 #### 4.1.1 内置事件
 
 - **ContextRefreshedEvent** - Spring 容器刷新完成事件
+  **适用场景**：应用启动完成后执行初始化操作，如加载缓存数据、初始化定时任务等。
+
 - **ContextStartedEvent** - Spring 容器启动事件
+  **适用场景**：容器启动时需要执行的操作，如启动后台服务、初始化连接池等。
+
 - **ContextStoppedEvent** - Spring 容器停止事件
+  **适用场景**：容器停止时需要执行的操作，如优雅关闭服务、释放资源等。
+
 - **ContextClosedEvent** - Spring 容器关闭事件
+  **适用场景**：容器关闭时需要执行的操作，如保存状态数据、清理临时文件等。
+
 - **ServletRequestHandledEvent** - HTTP 请求处理完成事件
+  **适用场景**：请求处理完成后执行的操作，如记录访问日志、统计请求耗时等。
 
 #### 4.1.2 自定义事件
+
+**基本使用示例**
 
 ```java
 // 定义事件
@@ -307,6 +344,221 @@ public class EventListener {
     @EventListener
     public void handleCustomEvent(CustomEvent event) {
         System.out.println("Received custom event: " + event.getMessage());
+    }
+}
+```
+
+**场景一：用户注册事件**
+
+```java
+// 定义用户注册事件
+public class UserRegisteredEvent extends ApplicationEvent {
+    private Long userId;
+    private String username;
+    private String email;
+    
+    public UserRegisteredEvent(Object source, Long userId, String username, String email) {
+        super(source);
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+    }
+    
+    public Long getUserId() {
+        return userId;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+
+// 用户服务
+@Service
+public class UserService {
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+    
+    public void registerUser(String username, String email) {
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user = userRepository.save(user);
+        
+        eventPublisher.publishEvent(new UserRegisteredEvent(this, user.getId(), username, email));
+    }
+}
+
+// 发送欢迎邮件监听器
+@Component
+public class WelcomeEmailListener {
+    @Autowired
+    private EmailService emailService;
+    
+    @EventListener
+    public void handleUserRegistered(UserRegisteredEvent event) {
+        emailService.sendWelcomeEmail(event.getEmail(), event.getUsername());
+    }
+}
+
+// 发送注册积分监听器
+@Component
+public class PointsListener {
+    @Autowired
+    private PointsService pointsService;
+    
+    @EventListener
+    public void handleUserRegistered(UserRegisteredEvent event) {
+        pointsService.addRegistrationPoints(event.getUserId());
+    }
+}
+```
+
+**场景二：订单创建事件**
+
+```java
+// 定义订单创建事件
+public class OrderCreatedEvent extends ApplicationEvent {
+    private Long orderId;
+    private Long userId;
+    private BigDecimal amount;
+    
+    public OrderCreatedEvent(Object source, Long orderId, Long userId, BigDecimal amount) {
+        super(source);
+        this.orderId = orderId;
+        this.userId = userId;
+        this.amount = amount;
+    }
+    
+    public Long getOrderId() {
+        return orderId;
+    }
+    
+    public Long getUserId() {
+        return userId;
+    }
+    
+    public BigDecimal getAmount() {
+        return amount;
+    }
+}
+
+// 订单服务
+@Service
+public class OrderService {
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+    
+    public void createOrder(Long userId, BigDecimal amount) {
+        Order order = new Order();
+        order.setUserId(userId);
+        order.setAmount(amount);
+        order = orderRepository.save(order);
+        
+        eventPublisher.publishEvent(new OrderCreatedEvent(this, order.getId(), userId, amount));
+    }
+}
+
+// 库存扣减监听器
+@Component
+public class InventoryListener {
+    @Autowired
+    private InventoryService inventoryService;
+    
+    @EventListener
+    public void handleOrderCreated(OrderCreatedEvent event) {
+        inventoryService.deductInventory(event.getOrderId());
+    }
+}
+
+// 发送订单确认短信监听器
+@Component
+public class SmsNotificationListener {
+    @Autowired
+    private SmsService smsService;
+    
+    @EventListener
+    public void handleOrderCreated(OrderCreatedEvent event) {
+        smsService.sendOrderConfirmation(event.getUserId(), event.getOrderId());
+    }
+}
+```
+
+**场景三：异步事件处理**
+
+```java
+// 异步配置
+@Configuration
+@EnableAsync
+public class AsyncConfig {
+    @Bean
+    public Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix("async-event-");
+        executor.initialize();
+        return executor;
+    }
+}
+
+// 异步监听器
+@Component
+public class AsyncEventListener {
+    @Async
+    @EventListener
+    public void handleUserRegistered(UserRegisteredEvent event) {
+        try {
+            Thread.sleep(2000);
+            System.out.println("Async processing: " + event.getUsername());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
+
+**场景四：条件监听器**
+
+```java
+// 条件监听器 - 只监听金额大于1000的订单
+@Component
+public class HighValueOrderListener {
+    @EventListener(condition = "#event.amount > 1000")
+    public void handleHighValueOrder(OrderCreatedEvent event) {
+        System.out.println("High value order: " + event.getAmount());
+    }
+}
+
+// 条件监听器 - 只监听特定类型的用户
+@Component
+public class VipUserListener {
+    @EventListener(condition = "#event.username.startsWith('vip_')")
+    public void handleVipUser(UserRegisteredEvent event) {
+        System.out.println("VIP user registered: " + event.getUsername());
+    }
+}
+```
+
+**场景五：事务事件监听器**
+
+```java
+// 事务成功提交后执行
+@Component
+public class TransactionEventListener {
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void handleAfterCommit(OrderCreatedEvent event) {
+        System.out.println("Order committed: " + event.getOrderId());
+    }
+    
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
+    public void handleAfterRollback(OrderCreatedEvent event) {
+        System.out.println("Order rolled back: " + event.getOrderId());
     }
 }
 ```
@@ -866,12 +1118,56 @@ public class HelloController {
 
 #### 6.1.2 循环依赖解决过程
 
-1. A 实例化，放入三级缓存
-2. A 注入依赖 B，查找 B
-3. B 实例化，放入三级缓存
-4. B 注入依赖 A，从三级缓存获取 A 的早期实例，放入二级缓存
-5. B 初始化完成，放入一级缓存
-6. A 注入 B 完成，初始化完成，放入一级缓存
+**详细的获取 Bean 过程**：
+
+1. **获取 Bean A**：
+   - 首先尝试从一级缓存（singletonObjects）中获取 A
+   - 如果一级缓存没有，尝试从二级缓存（earlySingletonObjects）中获取 A
+   - 如果二级缓存也没有，尝试从三级缓存（singletonFactories）中获取 A
+   - 如果三级缓存也没有，开始创建 Bean A
+
+2. **创建 Bean A**：
+   - 实例化 A（调用构造函数）
+   - 将 A 的工厂对象放入三级缓存（singletonFactories）
+   - 开始为 A 注入依赖
+
+3. **注入依赖 B**：
+   - A 需要注入依赖 B，开始获取 Bean B
+
+4. **获取 Bean B**：
+   - 首先尝试从一级缓存中获取 B
+   - 如果一级缓存没有，尝试从二级缓存中获取 B
+   - 如果二级缓存也没有，尝试从三级缓存中获取 B
+   - 如果三级缓存也没有，开始创建 Bean B
+
+5. **创建 Bean B**：
+   - 实例化 B（调用构造函数）
+   - 将 B 的工厂对象放入三级缓存
+   - 开始为 B 注入依赖
+
+6. **注入依赖 A**：
+   - B 需要注入依赖 A，开始获取 Bean A
+   - 从三级缓存中获取 A 的工厂对象
+   - 使用工厂对象创建 A 的早期实例
+   - 将 A 的早期实例放入二级缓存（earlySingletonObjects）
+   - 从三级缓存中移除 A 的工厂对象
+   - 将 A 的早期实例注入到 B 中
+
+7. **完成 Bean B 的初始化**：
+   - B 初始化完成（调用初始化方法）
+   - 将 B 从三级缓存中移除
+   - 将 B 放入一级缓存（singletonObjects）
+
+8. **完成 Bean A 的初始化**：
+   - A 注入 B 完成
+   - A 初始化完成（调用初始化方法）
+   - 将 A 从二级缓存中移除
+   - 将 A 放入一级缓存（singletonObjects）
+
+**最终状态**：
+- 一级缓存（singletonObjects）中包含完全初始化的 Bean A 和 Bean B
+- 二级缓存（earlySingletonObjects）为空
+- 三级缓存（singletonFactories）为空
 
 ### 6.2 事务失效
 
@@ -893,6 +1189,80 @@ public class HelloController {
 Spring MVC 的核心是 DispatcherServlet，它负责处理 HTTP 请求并返回响应。
 
 ![](https://mmbiz.qpic.cn/mmbiz_png/ibLfOIwWn242drgCjBCwUTfnzr76ftCdn29LjYtpwBYmaicaKGJMg89nS0YBrlmBTxZ9KicFEqYDAK3l4s95PicjxQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+
+**详细的工作流程图**
+```
++----------------------------------+
+| 1. 客户端发送 HTTP 请求           |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 2. 请求被 DispatcherServlet 捕获   |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 3. 调用 HandlerMapping            |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 4. 解析请求 URL，找到匹配的 Handler |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 5. 返回 HandlerExecutionChain     |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 6. 调用 HandlerAdapter            |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 7. 执行前置处理器（PreHandler）    |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 8. 执行 Controller 方法           |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 9. 执行后置处理器（PostHandler）   |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 10. 返回 ModelAndView 对象        |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 11. 调用 ViewResolver             |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 12. 解析视图名称，找到对应视图     |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 13. 渲染视图（填充模型数据）       |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 14. 返回 HTTP 响应给客户端         |
++----------------------------------+
+```
+
+**步骤说明**：
 
 1. **请求捕获** - 向服务器发送 HTTP 请求，请求被前端控制器 DispatcherServlet 捕获
 2. **处理器映射** - DispatcherServlet 根据请求的 URL 调用 HandlerMapping 获得该 Handler 配置的所有相关的对象，最后以 HandlerExecutionChain 对象的形式返回
@@ -980,12 +1350,174 @@ Spring MVC 的核心是 DispatcherServlet，它负责处理 HTTP 请求并返回
 
 #### 7.4.2 Spring Boot 的启动过程是什么？
 
-**答案**：Spring Boot 应用程序的启动过程包括以下阶段：
+**Spring Boot 启动过程流程图**
+```
++----------------------------------+
+| 1. 执行 main 方法                 |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 2. 初始化 SpringApplication       |
+|    - 创建 SpringApplication 实例  |
+|    - 加载配置信息                 |
+|    - 注册监听器                   |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 3. 执行 run 方法                  |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 4. 准备环境                       |
+|    - 加载环境变量                 |
+|    - 加载配置文件                 |
+|    - 创建 Environment 对象        |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 5. 打印 Banner                    |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 6. 创建 ApplicationContext        |
+|    - 根据应用类型创建上下文       |
+|    - Web 应用：AnnotationConfigServletWebServerApplicationContext |
+|    - 非 Web 应用：AnnotationConfigApplicationContext |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 7. 准备上下文                     |
+|    - 应用环境信息                 |
+|    - 注册 Bean 定义               |
+|    - 应用监听器                   |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 8. 刷新 ApplicationContext        |
+|    - 加载 Bean 定义               |
+|    - 实例化单例 Bean              |
+|    - 初始化 Bean                  |
+|    - 处理 Bean 依赖关系           |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 9. 刷新后处理                     |
+|    - 执行自定义初始化逻辑         |
+|    - 启动嵌入式服务器             |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 10. 执行 CommandLineRunner        |
+|     和 ApplicationRunner          |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 11. 应用启动完成                  |
++----------------------------------+
+```
+
+**Spring 框架启动过程流程图**
+```
++----------------------------------+
+| 1. 加载 Spring 配置文件/类         |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 2. 创建 BeanFactory              |
+|    - XmlBeanFactory / DefaultListableBeanFactory |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 3. 加载 Bean 定义                 |
+|    - 解析 XML 配置文件            |
+|    - 扫描注解配置类               |
+|    - 注册 BeanDefinition          |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 4. 注册 BeanPostProcessor        |
+|    - 前置处理器                   |
+|    - 后置处理器                   |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 5. 实例化单例 Bean                |
+|    - 调用构造函数                 |
+|    - 处理循环依赖                 |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 6. 注入依赖                       |
+|    - setter 方法注入              |
+|    - 构造函数注入                 |
+|    - 字段注入                     |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 7. 初始化 Bean                    |
+|    - 执行 BeanNameAware           |
+|    - 执行 BeanFactoryAware        |
+|    - 执行 ApplicationContextAware |
+|    - 执行 InitializingBean        |
+|    - 执行自定义初始化方法         |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 8. 执行后置处理器                 |
+|    - 执行 postProcessAfterInitialization |
+|    - AOP 代理创建                 |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 9. 注册销毁回调                   |
+|    - 执行 DisposableBean          |
+|    - 执行自定义销毁方法           |
++----------------------------------+
+            |
+            v
++----------------------------------+
+| 10. Spring 容器启动完成           |
++----------------------------------+
+```
+
+**答案**：
+
+**Spring Boot 应用程序的启动过程**包括以下阶段：
 1. 初始化 SpringApplication - 创建 SpringApplication 实例，加载配置
 2. 准备环境 - 加载环境变量、配置文件等
 3. 创建 ApplicationContext - 根据应用类型创建相应的 ApplicationContext
 4. 刷新 ApplicationContext - 加载 Bean 定义，实例化 Bean
 5. 执行 CommandLineRunner 和 ApplicationRunner - 执行应用程序的初始化逻辑
+
+**Spring 框架的启动过程**包括以下阶段：
+1. 加载 Spring 配置文件/类 - XML 配置文件或注解配置类
+2. 创建 BeanFactory - 如 XmlBeanFactory 或 DefaultListableBeanFactory
+3. 加载 Bean 定义 - 解析配置文件，扫描注解，注册 BeanDefinition
+4. 注册 BeanPostProcessor - 前置处理器和后置处理器
+5. 实例化单例 Bean - 调用构造函数，处理循环依赖
+6. 注入依赖 - setter 方法注入、构造函数注入或字段注入
+7. 初始化 Bean - 执行各种 Aware 接口，InitializingBean，自定义初始化方法
+8. 执行后置处理器 - 如 AOP 代理创建
+9. 注册销毁回调 - 执行 DisposableBean 和自定义销毁方法
+10. Spring 容器启动完成
 
 ### 7.5 常见问题
 
@@ -996,13 +1528,51 @@ Spring MVC 的核心是 DispatcherServlet，它负责处理 HTTP 请求并返回
 - **二级缓存**（earlySingletonObjects）- 存储早期暴露的 Bean 实例
 - **三级缓存**（singletonFactories）- 存储 Bean 工厂，用于创建早期暴露的 Bean 实例
 
-解决过程：
-1. A 实例化，放入三级缓存
-2. A 注入依赖 B，查找 B
-3. B 实例化，放入三级缓存
-4. B 注入依赖 A，从三级缓存获取 A 的早期实例，放入二级缓存
-5. B 初始化完成，放入一级缓存
-6. A 注入 B 完成，初始化完成，放入一级缓存
+**详细的获取 Bean 过程**：
+
+1. **获取 Bean A**：
+   - 首先尝试从一级缓存（singletonObjects）中获取 A
+   - 如果一级缓存没有，尝试从二级缓存（earlySingletonObjects）中获取 A
+   - 如果二级缓存也没有，尝试从三级缓存（singletonFactories）中获取 A
+   - 如果三级缓存也没有，开始创建 Bean A
+
+2. **创建 Bean A**：
+   - 实例化 A（调用构造函数）
+   - 将 A 的工厂对象放入三级缓存（singletonFactories）
+   - 开始为 A 注入依赖
+
+3. **注入依赖 B**：
+   - A 需要注入依赖 B，开始获取 Bean B
+
+4. **获取 Bean B**：
+   - 首先尝试从一级缓存中获取 B
+   - 如果一级缓存没有，尝试从二级缓存中获取 B
+   - 如果二级缓存也没有，尝试从三级缓存中获取 B
+   - 如果三级缓存也没有，开始创建 Bean B
+
+5. **创建 Bean B**：
+   - 实例化 B（调用构造函数）
+   - 将 B 的工厂对象放入三级缓存
+   - 开始为 B 注入依赖
+
+6. **注入依赖 A**：
+   - B 需要注入依赖 A，开始获取 Bean A
+   - 从三级缓存中获取 A 的工厂对象
+   - 使用工厂对象创建 A 的早期实例
+   - 将 A 的早期实例放入二级缓存（earlySingletonObjects）
+   - 从三级缓存中移除 A 的工厂对象
+   - 将 A 的早期实例注入到 B 中
+
+7. **完成 Bean B 的初始化**：
+   - B 初始化完成（调用初始化方法）
+   - 将 B 从三级缓存中移除
+   - 将 B 放入一级缓存（singletonObjects）
+
+8. **完成 Bean A 的初始化**：
+   - A 注入 B 完成
+   - A 初始化完成（调用初始化方法）
+   - 将 A 从二级缓存中移除
+   - 将 A 放入一级缓存（singletonObjects）
 
 #### 7.5.2 什么情况下事务会失效？
 
