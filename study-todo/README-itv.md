@@ -37,6 +37,11 @@
 | itv-distribute-transaction | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-distribute-transaction.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-distribute-transaction.md) | 分布式事务相关资料 |
 | itv-netty | [https://github.com/bage2014/study/blob/master/study-todo/README-itv-netty.md](https://github.com/bage2014/study/blob/master/study-todo/README-itv-netty.md) | Netty相关资料 |
 | Java 全栈知识体系 | [https://pdai.tech/md/resource/tools.html](https://pdai.tech/md/resource/tools.html) | Java 全栈知识体系 |
+| Java Guide | [https://github.com/Snailclimb/JavaGuide](https://github.com/Snailclimb/JavaGuide) | Java Guide |
+| Java Home | [https://github.com/whx123/JavaHome](https://github.com/whx123/JavaHome) | Java Home |
+| Advanced Java | [https://github.com/doocs/advanced-java](https://github.com/doocs/advanced-java) | Advanced Java |
+
+
 
 
 ## Schedule
