@@ -1073,31 +1073,923 @@ public class ConfigurableThreadPool {
 
 #### 3.1.1 Lock 接口的基本概念
 
-Lock 接口是 Java 5 引入的，它提供了比 synchronized 更灵活的锁机制。
+Lock 接口是 Java 5 引入的，它提供了比 synchronized 更灵活的锁机制。Lock 接口允许更细粒度的线程控制，支持尝试获取锁、可中断的锁获取、超时获取锁等特性。
 
-#### 3.1.2 Lock 接口的实现类
+#### 3.1.2 Lock 接口的核心方法
+
+- **void lock()** - 获取锁，阻塞直到获取到锁
+- **void lockInterruptibly()** - 获取锁，但允许被中断
+- **boolean tryLock()** - 尝试获取锁，立即返回，不阻塞
+- **boolean tryLock(long time, TimeUnit unit)** - 尝试获取锁，最多等待指定时间
+- **void unlock()** - 释放锁
+- **Condition newCondition()** - 创建条件对象
+
+#### 3.1.3 Lock 接口的实现类
 
 - **ReentrantLock** - 可重入锁
 - **ReadWriteLock** - 读写锁
 - **StampedLock** - 乐观读锁
 
+#### 3.1.4 Lock 接口的使用场景
+
+| 场景 | 推荐使用的 Lock 实现 | 原因 |
+|------|-------------------|------|
+| 一般同步场景 | ReentrantLock | 提供与 synchronized 类似的功能，但更灵活 |
+| 读多写少场景 | ReadWriteLock | 允许多个线程同时读，提高并发性能 |
+| 高并发读场景 | StampedLock | 提供乐观读模式，进一步提高读性能 |
+| 需要可中断锁的场景 | ReentrantLock | 支持 lockInterruptibly() 方法 |
+| 需要超时获取锁的场景 | ReentrantLock | 支持 tryLock(long, TimeUnit) 方法 |
+| 需要公平锁的场景 | ReentrantLock | 构造函数可指定公平性 |
+| 需要多个条件变量的场景 | ReentrantLock | 支持多个 Condition 对象 |
+
+#### 3.1.5 ReentrantLock 详细说明
+
+##### 3.1.5.1 基本原理
+
+ReentrantLock 是一种可重入的独占锁，它基于 AQS 实现，通过状态变量 state 来表示锁的持有情况：
+- 当 state = 0 时，表示锁未被持有
+- 当 state > 0 时，表示锁被持有，state 的值表示重入次数
+
+##### 3.1.5.2 核心过程
+
+**获取锁过程**：
+1. 调用 lock() 方法
+2. 检查 state 是否为 0
+3. 如果 state = 0，尝试通过 CAS 将 state 设置为 1
+4. 如果 CAS 成功，设置当前线程为锁的持有者
+5. 如果 state > 0，检查当前线程是否为锁的持有者
+6. 如果是，将 state 加 1（重入）
+7. 如果不是，将线程加入 AQS 等待队列并阻塞
+
+**释放锁过程**：
+1. 调用 unlock() 方法
+2. 检查当前线程是否为锁的持有者
+3. 如果是，将 state 减 1
+4. 如果 state 减到 0，设置锁的持有者为 null，并唤醒 AQS 等待队列中的线程
+5. 如果 state 不为 0，直接返回（仍持有锁）
+
+##### 3.1.5.3 优缺点
+
+**优点**：
+- 支持可中断获取锁
+- 支持超时获取锁
+- 支持公平锁
+- 支持多个条件变量
+- 提供了更多的锁操作信息
+
+**缺点**：
+- 需要手动释放锁，容易遗漏 unlock() 调用
+- 比 synchronized 稍复杂，需要更多的代码
+
+##### 3.1.5.4 注意事项
+
+1. **必须在 finally 块中释放锁**：确保即使发生异常，锁也能被正确释放
+2. **避免死锁**：不要在持有锁的同时获取其他锁，或者确保所有线程按相同的顺序获取锁
+3. **公平性选择**：公平锁会降低性能，只有在确实需要公平性时才使用
+4. **重入次数控制**：避免过多的重入，可能导致栈溢出
+5. **线程中断处理**：使用 lockInterruptibly() 时，需要处理 InterruptedException
+
+##### 3.1.5.5 样例代码
+
+**基本用法**：
+
+```java
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ReentrantLockDemo {
+    private final ReentrantLock lock = new ReentrantLock();
+    private int counter = 0;
+    
+    public void increment() {
+        lock.lock();
+        try {
+            counter++;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public int getCounter() {
+        lock.lock();
+        try {
+            return counter;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public static void main(String[] args) {
+        ReentrantLockDemo demo = new ReentrantLockDemo();
+        
+        // 创建多个线程测试
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                for (int j = 0; j < 1000; j++) {
+                    demo.increment();
+                }
+            }).start();
+        }
+        
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println("Counter: " + demo.getCounter());
+    }
+}
+```
+
+**使用条件变量**：
+
+```java
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ConditionDemo {
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition notEmpty = lock.newCondition();
+    private final Condition notFull = lock.newCondition();
+    private final Object[] buffer = new Object[10];
+    private int count = 0;
+    private int putIndex = 0;
+    private int takeIndex = 0;
+    
+    public void put(Object item) throws InterruptedException {
+        lock.lock();
+        try {
+            while (count == buffer.length) {
+                notFull.await(); // 缓冲区满，等待
+            }
+            buffer[putIndex] = item;
+            putIndex = (putIndex + 1) % buffer.length;
+            count++;
+            notEmpty.signal(); // 通知消费者缓冲区非空
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public Object take() throws InterruptedException {
+        lock.lock();
+        try {
+            while (count == 0) {
+                notEmpty.await(); // 缓冲区空，等待
+            }
+            Object item = buffer[takeIndex];
+            takeIndex = (takeIndex + 1) % buffer.length;
+            count--;
+            notFull.signal(); // 通知生产者缓冲区非满
+            return item;
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+#### 3.1.6 ReadWriteLock 详细说明
+
+##### 3.1.6.1 基本概念
+
+ReadWriteLock 是一种读写分离的锁，它允许多个线程同时读，但只允许一个线程写。这种锁适用于读多写少的场景，可以提高并发性能。
+
+##### 3.1.6.2 核心原理
+
+ReadWriteLock 维护了一对锁：
+- **读锁**：允许多个线程同时获取
+- **写锁**：只允许一个线程获取
+
+**获取规则**：
+- 读锁：当没有线程持有写锁时，可以获取
+- 写锁：当没有线程持有读锁或写锁时，可以获取
+
+##### 3.1.6.3 优缺点
+
+**优点**：
+- 提高读多写少场景的并发性能
+- 读写分离，逻辑清晰
+
+**缺点**：
+- 实现复杂，开销较大
+- 在写操作频繁的场景，可能比独占锁性能更差
+
+##### 3.1.6.4 注意事项
+
+1. **读写锁的升级和降级**：
+   - 不支持从读锁升级到写锁（可能导致死锁）
+   - 支持从写锁降级到读锁
+
+2. **锁的释放顺序**：
+   - 必须先释放写锁，再释放读锁
+
+3. **性能考虑**：
+   - 只有在读操作远多于写操作时才使用
+   - 写操作频繁时，读写锁可能比独占锁更慢
+
+##### 3.1.6.5 样例代码
+
+```java
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class ReadWriteLockDemo {
+    private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock.ReadLock readLock = rwLock.readLock();
+    private final ReentrantReadWriteLock.WriteLock writeLock = rwLock.writeLock();
+    private int data = 0;
+    
+    public void read() {
+        readLock.lock();
+        try {
+            System.out.println("Read data: " + data);
+            try {
+                Thread.sleep(100); // 模拟读操作
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } finally {
+            readLock.unlock();
+        }
+    }
+    
+    public void write(int newValue) {
+        writeLock.lock();
+        try {
+            data = newValue;
+            System.out.println("Write data: " + data);
+            try {
+                Thread.sleep(100); // 模拟写操作
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } finally {
+            writeLock.unlock();
+        }
+    }
+    
+    public static void main(String[] args) {
+        ReadWriteLockDemo demo = new ReadWriteLockDemo();
+        
+        // 创建多个读线程
+        for (int i = 0; i < 5; i++) {
+            new Thread(() -> {
+                for (int j = 0; j < 10; j++) {
+                    demo.read();
+                }
+            }).start();
+        }
+        
+        // 创建写线程
+        new Thread(() -> {
+            for (int i = 0; i < 5; i++) {
+                demo.write(i);
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+}
+```
+
+#### 3.1.7 StampedLock 详细说明
+
+##### 3.1.7.1 基本概念
+
+StampedLock 是 Java 8 引入的一种新型锁，它提供了乐观读模式，可以进一步提高读多写少场景的并发性能。StampedLock 的设计目的是在高并发读场景下，比 ReadWriteLock 有更好的性能。
+
+##### 3.1.7.2 核心原理
+
+StampedLock 使用一个长整型的 stamp 来表示锁的状态：
+- **读锁**：通过 readLock() 获取，返回一个 stamp
+- **写锁**：通过 writeLock() 获取，返回一个 stamp
+- **乐观读**：通过 tryOptimisticRead() 获取，返回一个 stamp
+
+**乐观读流程**：
+1. 获取乐观读 stamp
+2. 读取数据
+3. 通过 validate(stamp) 验证 stamp 是否有效
+4. 如果有效，直接返回数据
+5. 如果无效，升级为悲观读锁或写锁
+
+##### 3.1.7.3 优缺点
+
+**优点**：
+- 提供乐观读模式，提高读性能
+- 支持锁的升级和降级
+- 比 ReadWriteLock 有更好的并发性能
+
+**缺点**：
+- 不支持可重入
+- 用法复杂，容易出错
+- 不支持条件变量
+
+##### 3.1.7.4 注意事项
+
+1. **不支持可重入**：同一个线程不能多次获取同一把锁
+2. **必须使用 stamp**：所有锁操作都需要使用 stamp
+3. **乐观读验证**：必须在使用乐观读获取的数据前验证 stamp
+4. **异常处理**：需要在 finally 块中释放锁
+5. **性能考虑**：只在高并发读场景下使用
+
+##### 3.1.7.5 样例代码
+
+```java
+import java.util.concurrent.locks.StampedLock;
+
+public class StampedLockDemo {
+    private final StampedLock lock = new StampedLock();
+    private double x = 0.0;
+    private double y = 0.0;
+    
+    // 写操作
+    public void move(double deltaX, double deltaY) {
+        long stamp = lock.writeLock();
+        try {
+            x += deltaX;
+            y += deltaY;
+        } finally {
+            lock.unlockWrite(stamp);
+        }
+    }
+    
+    // 读操作（使用乐观读）
+    public double distanceFromOrigin() {
+        long stamp = lock.tryOptimisticRead();
+        double currentX = x;
+        double currentY = y;
+        
+        // 验证乐观读是否有效
+        if (!lock.validate(stamp)) {
+            // 乐观读无效，升级为悲观读锁
+            stamp = lock.readLock();
+            try {
+                currentX = x;
+                currentY = y;
+            } finally {
+                lock.unlockRead(stamp);
+            }
+        }
+        
+        return Math.sqrt(currentX * currentX + currentY * currentY);
+    }
+    
+    // 读操作（使用悲观读）
+    public double[] getPosition() {
+        long stamp = lock.readLock();
+        try {
+            return new double[] { x, y };
+        } finally {
+            lock.unlockRead(stamp);
+        }
+    }
+    
+    public static void main(String[] args) {
+        StampedLockDemo demo = new StampedLockDemo();
+        
+        // 创建多个读线程
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                for (int j = 0; j < 100; j++) {
+                    System.out.println("Distance: " + demo.distanceFromOrigin());
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+        
+        // 创建写线程
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                demo.move(1.0, 1.0);
+                System.out.println("Moved to: " + demo.getPosition()[0] + ", " + demo.getPosition()[1]);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+}
+```
+
 ### 3.2 同步工具类
 
 #### 3.2.1 CountDownLatch
 
-CountDownLatch 是一种同步工具，它允许一个或多个线程等待其他线程完成操作。
+##### 3.2.1.1 基本概念
+
+CountDownLatch 是一种同步工具，它允许一个或多个线程等待其他线程完成操作。CountDownLatch 通过一个计数器实现，计数器初始化为一个正整数，当线程完成操作时，计数器减 1，当计数器减到 0 时，所有等待的线程被唤醒。
+
+##### 3.2.1.2 核心原理
+
+CountDownLatch 基于 AQS 实现，使用 state 字段作为计数器：
+- 当线程调用 await() 方法时，如果 state > 0，线程会被加入 AQS 等待队列并阻塞
+- 当线程调用 countDown() 方法时，state 减 1，如果 state == 0，唤醒所有等待的线程
+
+##### 3.2.1.3 核心方法
+
+- **CountDownLatch(int count)** - 创建一个计数器初始化为 count 的 CountDownLatch
+- **void await()** - 等待计数器减到 0，阻塞直到条件满足
+- **boolean await(long timeout, TimeUnit unit)** - 等待计数器减到 0，最多等待指定时间
+- **void countDown()** - 计数器减 1
+- **long getCount()** - 获取当前计数器的值
+
+##### 3.2.1.4 使用场景
+
+| 场景 | 示例 | 原因 |
+|------|------|------|
+| 等待多个线程完成初始化 | 主线程等待所有工作线程初始化完成 | 确保所有线程都准备就绪后再开始工作 |
+| 等待多个任务完成 | 主线程等待所有子任务完成 | 确保所有任务都完成后再汇总结果 |
+| 限制线程执行顺序 | 线程 A 等待线程 B 完成某个操作 | 确保操作的顺序执行 |
+| 模拟并发测试 | 多个线程同时开始执行 | 确保测试的并发性能 |
+
+##### 3.2.1.5 优缺点
+
+**优点**：
+- 简单易用，功能明确
+- 支持超时等待
+- 可以等待多个线程完成
+
+**缺点**：
+- 计数器只能使用一次，不能重置
+- 不支持线程间的交互，只是简单的等待
+
+##### 3.2.1.6 注意事项
+
+1. **计数器初始化**：计数器的初始值应等于需要等待的事件数量
+2. **countDown() 调用**：确保每个事件完成后都调用 countDown()，否则可能导致线程永久阻塞
+3. **超时处理**：使用 await(long, TimeUnit) 时，需要处理超时情况
+4. **异常处理**：在 countDown() 调用处需要处理异常，确保即使发生异常也能正确计数
+5. **内存可见性**：CountDownLatch 可以保证线程间的内存可见性
+
+##### 3.2.1.7 样例代码
+
+**基本用法**：
+
+```java
+import java.util.concurrent.CountDownLatch;
+
+public class CountDownLatchDemo {
+    public static void main(String[] args) throws InterruptedException {
+        // 计数器初始化为 3
+        CountDownLatch latch = new CountDownLatch(3);
+        
+        // 创建 3 个线程
+        for (int i = 0; i < 3; i++) {
+            final int threadId = i;
+            new Thread(() -> {
+                try {
+                    System.out.println("Thread " + threadId + " is working");
+                    Thread.sleep(1000);
+                    System.out.println("Thread " + threadId + " has finished");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    // 计数器减 1
+                    latch.countDown();
+                    System.out.println("Countdown: " + latch.getCount());
+                }
+            }).start();
+        }
+        
+        System.out.println("Main thread is waiting for all threads to finish");
+        // 等待计数器减到 0
+        latch.await();
+        System.out.println("All threads have finished, main thread continues");
+    }
+}
+```
+
+**使用超时等待**：
+
+```java
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+public class CountDownLatchWithTimeoutDemo {
+    public static void main(String[] args) throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(3);
+        
+        // 创建 2 个线程，故意少一个
+        for (int i = 0; i < 2; i++) {
+            final int threadId = i;
+            new Thread(() -> {
+                try {
+                    System.out.println("Thread " + threadId + " is working");
+                    Thread.sleep(500);
+                    System.out.println("Thread " + threadId + " has finished");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    latch.countDown();
+                }
+            }).start();
+        }
+        
+        System.out.println("Main thread is waiting for all threads to finish (with timeout)");
+        // 等待最多 1 秒
+        boolean completed = latch.await(1, TimeUnit.SECONDS);
+        if (completed) {
+            System.out.println("All threads have finished, main thread continues");
+        } else {
+            System.out.println("Timeout: Not all threads have finished, main thread continues");
+        }
+    }
+}
+```
 
 #### 3.2.2 CyclicBarrier
 
-CyclicBarrier 是一种同步工具，它允许一组线程互相等待，直到达到某个公共屏障点。
+##### 3.2.2.1 基本概念
+
+CyclicBarrier 是一种同步工具，它允许一组线程互相等待，直到达到某个公共屏障点。与 CountDownLatch 不同，CyclicBarrier 的计数器可以重置，因此可以重复使用。
+
+##### 3.2.2.2 核心原理
+
+CyclicBarrier 基于 ReentrantLock 和 Condition 实现：
+- 内部维护一个计数器和一个 Condition 对象
+- 当线程调用 await() 方法时，计数器减 1
+- 如果计数器减到 0，唤醒所有等待的线程，并重置计数器（如果需要）
+- 如果计数器不为 0，线程会被加入 Condition 等待队列并阻塞
+
+##### 3.2.2.3 核心方法
+
+- **CyclicBarrier(int parties)** - 创建一个 parties 个线程的 CyclicBarrier
+- **CyclicBarrier(int parties, Runnable barrierAction)** - 创建一个 parties 个线程的 CyclicBarrier，并指定屏障动作
+- **int await()** - 等待所有线程到达屏障点，阻塞直到条件满足
+- **int await(long timeout, TimeUnit unit)** - 等待所有线程到达屏障点，最多等待指定时间
+- **int getParties()** - 获取参与的线程数
+- **int getNumberWaiting()** - 获取当前等待的线程数
+- **boolean isBroken()** - 检查屏障是否被打破
+- **void reset()** - 重置屏障
+
+##### 3.2.2.4 使用场景
+
+| 场景 | 示例 | 原因 |
+|------|------|------|
+| 并行计算 | 多个线程分别计算不同部分，然后汇总结果 | 确保所有计算都完成后再汇总 |
+| 数据处理 pipeline | 多个线程按阶段处理数据，每个阶段都需要等待所有线程完成 | 确保数据处理的顺序执行 |
+| 游戏开发 | 多个玩家准备就绪后开始游戏 | 确保所有玩家都准备好后再开始 |
+| 测试场景 | 多个线程同时执行测试用例 | 确保测试的一致性 |
+
+##### 3.2.2.5 优缺点
+
+**优点**：
+- 计数器可以重置，支持重复使用
+- 支持屏障动作，当所有线程到达屏障点时执行
+- 功能更丰富，支持更多的操作
+
+**缺点**：
+- 实现复杂，开销较大
+- 只适用于固定数量的线程
+
+##### 3.2.2.6 注意事项
+
+1. **线程数量**：参与的线程数必须等于 parties，否则可能导致线程永久阻塞
+2. **异常处理**：如果某个线程在等待过程中被中断或超时，屏障会被打破，所有等待的线程会被唤醒并抛出 BrokenBarrierException
+3. **重置操作**：reset() 方法会唤醒所有等待的线程并抛出 BrokenBarrierException，需要谨慎使用
+4. **内存可见性**：CyclicBarrier 可以保证线程间的内存可见性
+
+##### 3.2.2.7 样例代码
+
+**基本用法**：
+
+```java
+import java.util.concurrent.CyclicBarrier;
+
+public class CyclicBarrierDemo {
+    public static void main(String[] args) {
+        // 创建一个 3 个线程的 CyclicBarrier
+        CyclicBarrier barrier = new CyclicBarrier(3, () -> {
+            System.out.println("All threads have reached the barrier, barrier action executed");
+        });
+        
+        // 创建 3 个线程
+        for (int i = 0; i < 3; i++) {
+            final int threadId = i;
+            new Thread(() -> {
+                try {
+                    System.out.println("Thread " + threadId + " is working");
+                    Thread.sleep(1000);
+                    System.out.println("Thread " + threadId + " is waiting at the barrier");
+                    // 等待所有线程到达屏障点
+                    barrier.await();
+                    System.out.println("Thread " + threadId + " continues after the barrier");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+}
+```
+
+**重复使用**：
+
+```java
+import java.util.concurrent.CyclicBarrier;
+
+public class CyclicBarrierReuseDemo {
+    public static void main(String[] args) {
+        // 创建一个 2 个线程的 CyclicBarrier
+        CyclicBarrier barrier = new CyclicBarrier(2, () -> {
+            System.out.println("Barrier action executed");
+        });
+        
+        // 创建 2 个线程，重复使用 CyclicBarrier
+        for (int i = 0; i < 2; i++) {
+            final int threadId = i;
+            new Thread(() -> {
+                try {
+                    for (int round = 0; round < 3; round++) {
+                        System.out.println("Thread " + threadId + " working on round " + round);
+                        Thread.sleep(500);
+                        System.out.println("Thread " + threadId + " waiting at barrier for round " + round);
+                        // 等待所有线程到达屏障点
+                        barrier.await();
+                        System.out.println("Thread " + threadId + " continues after barrier for round " + round);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+}
+```
 
 #### 3.2.3 Semaphore
 
-Semaphore 是一种同步工具，它用于控制对共享资源的访问数量。
+##### 3.2.3.1 基本概念
+
+Semaphore 是一种同步工具，它用于控制对共享资源的访问数量。Semaphore 通过一个计数器实现，计数器表示可用资源的数量，当线程获取资源时，计数器减 1，当线程释放资源时，计数器加 1。
+
+##### 3.2.3.2 核心原理
+
+Semaphore 基于 AQS 实现，使用 state 字段作为计数器：
+- 当线程调用 acquire() 方法时，如果 state > 0，state 减 1 并获取资源；否则，线程会被加入 AQS 等待队列并阻塞
+- 当线程调用 release() 方法时，state 加 1，如果有等待的线程，唤醒其中一个
+
+##### 3.2.3.3 核心方法
+
+- **Semaphore(int permits)** - 创建一个许可证数量为 permits 的 Semaphore
+- **Semaphore(int permits, boolean fair)** - 创建一个许可证数量为 permits 的 Semaphore，并指定公平性
+- **void acquire()** - 获取一个许可证，阻塞直到获取到
+- **void acquire(int permits)** - 获取 permits 个许可证，阻塞直到获取到
+- **boolean tryAcquire()** - 尝试获取一个许可证，立即返回，不阻塞
+- **boolean tryAcquire(int permits)** - 尝试获取 permits 个许可证，立即返回，不阻塞
+- **boolean tryAcquire(long timeout, TimeUnit unit)** - 尝试获取一个许可证，最多等待指定时间
+- **boolean tryAcquire(int permits, long timeout, TimeUnit unit)** - 尝试获取 permits 个许可证，最多等待指定时间
+- **void release()** - 释放一个许可证
+- **void release(int permits)** - 释放 permits 个许可证
+- **int availablePermits()** - 获取当前可用的许可证数量
+- **int drainPermits()** - 获取并返回所有可用的许可证
+- **boolean isFair()** - 检查是否为公平模式
+- **boolean hasQueuedThreads()** - 检查是否有线程在等待
+- **int getQueueLength()** - 获取等待线程的数量
+
+##### 3.2.3.4 使用场景
+
+| 场景 | 示例 | 原因 |
+|------|------|------|
+| 限流 | 限制同时访问某个服务的请求数 | 防止服务过载 |
+| 资源池管理 | 限制同时使用数据库连接的数量 | 合理利用资源 |
+| 并发控制 | 限制同时执行某个操作的线程数 | 避免竞态条件 |
+| 生产者-消费者模式 | 限制生产者和消费者的数量 | 平衡生产和消费速度 |
+
+##### 3.2.3.5 优缺点
+
+**优点**：
+- 灵活控制资源访问数量
+- 支持公平和非公平模式
+- 支持获取和释放多个许可证
+- 功能丰富，支持多种获取方式
+
+**缺点**：
+- 需要手动释放许可证，容易遗漏
+- 公平模式会降低性能
+
+##### 3.2.3.6 注意事项
+
+1. **许可证释放**：必须确保获取的许可证都能被释放，否则可能导致资源耗尽
+2. **异常处理**：在 finally 块中释放许可证，确保即使发生异常也能正确释放
+3. **公平性选择**：公平模式会降低性能，只有在确实需要公平性时才使用
+4. **许可证数量**：根据实际资源数量和并发需求设置合适的许可证数量
+5. **线程中断**：使用 acquire() 时，需要处理 InterruptedException
+
+##### 3.2.3.7 样例代码
+
+**基本用法**：
+
+```java
+import java.util.concurrent.Semaphore;
+
+public class SemaphoreDemo {
+    public static void main(String[] args) {
+        // 创建一个许可证数量为 2 的 Semaphore
+        Semaphore semaphore = new Semaphore(2);
+        
+        // 创建 5 个线程
+        for (int i = 0; i < 5; i++) {
+            final int threadId = i;
+            new Thread(() -> {
+                try {
+                    System.out.println("Thread " + threadId + " is waiting for a permit");
+                    // 获取许可证
+                    semaphore.acquire();
+                    System.out.println("Thread " + threadId + " has acquired a permit");
+                    // 模拟使用资源
+                    Thread.sleep(1000);
+                    System.out.println("Thread " + threadId + " is releasing a permit");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    // 释放许可证
+                    semaphore.release();
+                }
+            }).start();
+        }
+    }
+}
+```
+
+**资源池管理**：
+
+```java
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class ResourcePoolDemo {
+    private final Semaphore semaphore;
+    private final AtomicInteger availableResources;
+    private final int maxResources;
+    
+    public ResourcePoolDemo(int maxResources) {
+        this.maxResources = maxResources;
+        this.semaphore = new Semaphore(maxResources);
+        this.availableResources = new AtomicInteger(maxResources);
+    }
+    
+    public void acquireResource() throws InterruptedException {
+        semaphore.acquire();
+        availableResources.decrementAndGet();
+        System.out.println("Resource acquired. Available: " + availableResources.get());
+    }
+    
+    public void releaseResource() {
+        semaphore.release();
+        availableResources.incrementAndGet();
+        System.out.println("Resource released. Available: " + availableResources.get());
+    }
+    
+    public static void main(String[] args) {
+        ResourcePoolDemo pool = new ResourcePoolDemo(3);
+        
+        // 创建 10 个线程
+        for (int i = 0; i < 10; i++) {
+            final int threadId = i;
+            new Thread(() -> {
+                try {
+                    System.out.println("Thread " + threadId + " is trying to acquire a resource");
+                    pool.acquireResource();
+                    // 模拟使用资源
+                    Thread.sleep(500);
+                    System.out.println("Thread " + threadId + " is releasing a resource");
+                    pool.releaseResource();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+}
+```
 
 #### 3.2.4 Exchanger
 
-Exchanger 是一种同步工具，它允许两个线程在指定点交换数据。
+##### 3.2.4.1 基本概念
+
+Exchanger 是一种同步工具，它允许两个线程在指定点交换数据。Exchanger 提供了一个同步点，两个线程可以在此交换彼此的数据。
+
+##### 3.2.4.2 核心原理
+
+Exchanger 基于 AQS 实现，使用一个特殊的节点结构来存储线程和数据：
+- 当线程调用 exchange() 方法时，会创建一个节点存储自己和数据
+- 如果没有其他线程在等待交换，线程会被阻塞
+- 如果有其他线程在等待交换，会唤醒该线程并交换数据
+
+##### 3.2.4.3 核心方法
+
+- **Exchanger()** - 创建一个 Exchanger
+- **V exchange(V x)** - 交换数据，阻塞直到另一个线程到达交换点
+- **V exchange(V x, long timeout, TimeUnit unit)** - 交换数据，最多等待指定时间
+
+##### 3.2.4.4 使用场景
+
+| 场景 | 示例 | 原因 |
+|------|------|------|
+| 生产者-消费者模式 | 生产者和消费者交换数据 | 简化数据交换逻辑 |
+| 数据校对 | 两个线程分别处理数据，然后交换结果进行校对 | 方便结果比较 |
+| 管道通信 | 两个线程通过 Exchanger 传递数据 | 简化线程间通信 |
+| 游戏开发 | 两个玩家交换游戏状态 | 同步游戏状态 |
+
+##### 3.2.4.5 优缺点
+
+**优点**：
+- 简化两个线程间的数据交换
+- 支持超时设置
+- 实现简单，使用方便
+
+**缺点**：
+- 只支持两个线程间的交换
+- 交换过程中如果一个线程异常，可能导致另一个线程永久阻塞
+
+##### 3.2.4.6 注意事项
+
+1. **线程数量**：Exchanger 只适用于两个线程间的交换
+2. **超时处理**：使用带超时的 exchange() 方法，避免永久阻塞
+3. **异常处理**：在 exchange() 调用处需要处理异常，确保线程不会意外终止
+4. **内存可见性**：Exchanger 可以保证线程间的内存可见性
+
+##### 3.2.4.7 样例代码
+
+**基本用法**：
+
+```java
+import java.util.concurrent.Exchanger;
+
+public class ExchangerDemo {
+    public static void main(String[] args) {
+        // 创建一个 Exchanger
+        Exchanger<String> exchanger = new Exchanger<>();
+        
+        // 创建线程 A
+        new Thread(() -> {
+            try {
+                String data = "Data from Thread A";
+                System.out.println("Thread A is sending: " + data);
+                // 交换数据
+                String receivedData = exchanger.exchange(data);
+                System.out.println("Thread A received: " + receivedData);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        
+        // 创建线程 B
+        new Thread(() -> {
+            try {
+                String data = "Data from Thread B";
+                System.out.println("Thread B is sending: " + data);
+                // 交换数据
+                String receivedData = exchanger.exchange(data);
+                System.out.println("Thread B received: " + receivedData);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+}
+```
+
+**使用超时**：
+
+```java
+import java.util.concurrent.Exchanger;
+import java.util.concurrent.TimeUnit;
+
+public class ExchangerWithTimeoutDemo {
+    public static void main(String[] args) {
+        // 创建一个 Exchanger
+        Exchanger<String> exchanger = new Exchanger<>();
+        
+        // 创建线程 A
+        new Thread(() -> {
+            try {
+                String data = "Data from Thread A";
+                System.out.println("Thread A is sending: " + data);
+                // 交换数据，最多等待 1 秒
+                String receivedData = exchanger.exchange(data, 1, TimeUnit.SECONDS);
+                System.out.println("Thread A received: " + receivedData);
+            } catch (Exception e) {
+                System.out.println("Thread A exchange failed: " + e.getMessage());
+            }
+        }).start();
+        
+        // 线程 B 不执行 exchange
+        System.out.println("Thread B is not sending data");
+    }
+}
+```
 
 ### 3.3 并发集合
 
@@ -1294,6 +2186,252 @@ public class LockSupportDemo {
     }
 }
 ```
+
+### 3.5 Thread 类相关内容
+
+#### 3.5.1 线程对象的常用属性
+
+##### 3.5.1.1 基本属性
+
+| 属性 | 类型 | 描述 | 示例 |
+|------|------|------|------|
+| **id** | long | 线程的唯一标识符 | `Thread.currentThread().getId()` |
+| **name** | String | 线程的名称 | `Thread.currentThread().getName()` |
+| **priority** | int | 线程的优先级（1-10） | `Thread.currentThread().getPriority()` |
+| **state** | Thread.State | 线程的状态 | `Thread.currentThread().getState()` |
+| **isDaemon** | boolean | 是否为守护线程 | `Thread.currentThread().isDaemon()` |
+| **isAlive** | boolean | 线程是否存活 | `Thread.currentThread().isAlive()` |
+| **isInterrupted** | boolean | 线程是否被中断 | `Thread.currentThread().isInterrupted()` |
+
+##### 3.5.1.2 线程状态
+
+Java 线程有 6 种状态：
+
+| 状态 | 描述 |
+|------|------|
+| **NEW** | 线程已创建但尚未启动 |
+| **RUNNABLE** | 线程正在运行或准备运行 |
+| **BLOCKED** | 线程被阻塞，等待锁 |
+| **WAITING** | 线程无限期等待 |
+| **TIMED_WAITING** | 线程有限期等待 |
+| **TERMINATED** | 线程已终止 |
+
+##### 3.5.1.3 核心方法
+
+- **Thread(String name)** - 创建一个指定名称的线程
+- **Thread(Runnable target)** - 创建一个执行指定任务的线程
+- **Thread(Runnable target, String name)** - 创建一个执行指定任务并指定名称的线程
+- **void start()** - 启动线程
+- **void run()** - 线程的执行方法
+- **void sleep(long millis)** - 线程睡眠指定时间
+- **void sleep(long millis, int nanos)** - 线程睡眠指定时间（精确到纳秒）
+- **void join()** - 等待线程终止
+- **void join(long millis)** - 等待线程终止，最多等待指定时间
+- **void join(long millis, int nanos)** - 等待线程终止，最多等待指定时间（精确到纳秒）
+- **void interrupt()** - 中断线程
+- **boolean isInterrupted()** - 检查线程是否被中断
+- **static boolean interrupted()** - 检查当前线程是否被中断，并清除中断状态
+- **static Thread currentThread()** - 获取当前线程
+- **static void yield()** - 线程礼让
+- **void setPriority(int newPriority)** - 设置线程优先级
+- **int getPriority()** - 获取线程优先级
+- **void setDaemon(boolean on)** - 设置线程为守护线程
+- **boolean isDaemon()** - 检查线程是否为守护线程
+- **long getId()** - 获取线程 ID
+- **String getName()** - 获取线程名称
+- **void setName(String name)** - 设置线程名称
+- **Thread.State getState()** - 获取线程状态
+- **boolean isAlive()** - 检查线程是否存活
+
+#### 3.5.2 线程对象的使用样例
+
+##### 3.5.2.1 基本使用
+
+```java
+public class ThreadBasicDemo {
+    public static void main(String[] args) {
+        // 创建线程
+        Thread thread = new Thread(() -> {
+            System.out.println("Thread name: " + Thread.currentThread().getName());
+            System.out.println("Thread ID: " + Thread.currentThread().getId());
+            System.out.println("Thread priority: " + Thread.currentThread().getPriority());
+            System.out.println("Thread state: " + Thread.currentThread().getState());
+            System.out.println("Is daemon: " + Thread.currentThread().isDaemon());
+            System.out.println("Is alive: " + Thread.currentThread().isAlive());
+        }, "DemoThread");
+        
+        // 启动线程
+        thread.start();
+        
+        // 等待线程终止
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println("Thread state after termination: " + thread.getState());
+        System.out.println("Is alive after termination: " + thread.isAlive());
+    }
+}
+```
+
+##### 3.5.2.2 线程优先级
+
+```java
+public class ThreadPriorityDemo {
+    public static void main(String[] args) {
+        // 创建低优先级线程
+        Thread lowPriorityThread = new Thread(() -> {
+            for (int i = 0; i < 5; i++) {
+                System.out.println("Low priority thread running: " + i);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "LowPriorityThread");
+        
+        // 创建高优先级线程
+        Thread highPriorityThread = new Thread(() -> {
+            for (int i = 0; i < 5; i++) {
+                System.out.println("High priority thread running: " + i);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "HighPriorityThread");
+        
+        // 设置优先级
+        lowPriorityThread.setPriority(Thread.MIN_PRIORITY); // 1
+        highPriorityThread.setPriority(Thread.MAX_PRIORITY); // 10
+        
+        // 启动线程
+        lowPriorityThread.start();
+        highPriorityThread.start();
+    }
+}
+```
+
+##### 3.5.2.3 守护线程
+
+```java
+public class DaemonThreadDemo {
+    public static void main(String[] args) {
+        // 创建守护线程
+        Thread daemonThread = new Thread(() -> {
+            while (true) {
+                System.out.println("Daemon thread is running");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "DaemonThread");
+        
+        // 设置为守护线程
+        daemonThread.setDaemon(true);
+        
+        // 启动守护线程
+        daemonThread.start();
+        
+        // 主线程睡眠 2 秒后退出
+        System.out.println("Main thread is running");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Main thread exiting");
+        // 主线程退出后，守护线程也会退出
+    }
+}
+```
+
+##### 3.5.2.4 线程中断
+
+```java
+public class ThreadInterruptDemo {
+    public static void main(String[] args) {
+        // 创建一个可中断的线程
+        Thread interruptibleThread = new Thread(() -> {
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    System.out.println("Thread is running");
+                    Thread.sleep(1000);
+                }
+                System.out.println("Thread was interrupted");
+            } catch (InterruptedException e) {
+                System.out.println("Thread was interrupted while sleeping");
+                // 重新设置中断状态
+                Thread.currentThread().interrupt();
+            }
+        }, "InterruptibleThread");
+        
+        // 启动线程
+        interruptibleThread.start();
+        
+        // 主线程睡眠 3 秒后中断线程
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Interrupting thread");
+        interruptibleThread.interrupt();
+        
+        // 等待线程终止
+        try {
+            interruptibleThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Thread has terminated");
+    }
+}
+```
+
+#### 3.5.3 使用的注意事项
+
+1. **线程创建和启动**：
+   - 不要直接调用 run() 方法，应该调用 start() 方法启动线程
+   - 一个线程只能启动一次，多次启动会抛出 IllegalThreadStateException
+
+2. **线程优先级**：
+   - 线程优先级只是一个提示，操作系统可能会忽略
+   - 不要依赖线程优先级来控制程序的执行顺序
+   - 合理设置优先级，避免优先级反转
+
+3. **守护线程**：
+   - 守护线程在主线程退出后会自动退出，不适合执行需要完成的任务
+   - 守护线程中不要执行 IO 操作，可能会导致资源泄漏
+   - 守护线程的优先级较低，可能会被系统忽略
+
+4. **线程中断**：
+   - 线程中断只是一个状态标记，不会立即终止线程
+   - 在阻塞方法中，线程中断会抛出 InterruptedException
+   - 捕获 InterruptedException 后，应该重新设置中断状态
+
+5. **线程状态**：
+   - 不要依赖线程状态来控制程序的执行逻辑
+   - 线程状态会随着线程的执行而变化，可能不可预测
+
+6. **线程安全**：
+   - 多个线程访问共享资源时，需要保证线程安全
+   - 合理使用同步机制，避免死锁和竞态条件
+
+7. **资源管理**：
+   - 线程执行完成后，会自动释放资源
+   - 避免创建过多线程，可能导致系统资源耗尽
+   - 使用线程池管理线程，提高资源利用率
+
+8. **异常处理**：
+   - 线程中的异常不会传播到主线程，需要在线程内部处理
+   - 使用 UncaughtExceptionHandler 处理未捕获的异常
 
 ## 第四部分：并发编程最佳实践
 
