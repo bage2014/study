@@ -32,10 +32,10 @@ public class MQConfig {
         return new Queue(performanceQueueName, false);
     }
 
-    @Bean
-    public TopicExchange topicExchange() {
-        return new TopicExchange(topicExchangeName);
-    }
+//    @Bean
+//    public TopicExchange topicExchange() {
+//        return new TopicExchange(topicExchangeName);
+//    }
     
     @Bean
     public TopicExchange performanceExchange() {

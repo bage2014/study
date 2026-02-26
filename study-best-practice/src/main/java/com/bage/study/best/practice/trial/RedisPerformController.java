@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/redis/performance")
 @RestController
 @Slf4j
-public class RedisPerformanceController {
+public class RedisPerformController {
 
     @Autowired
     private RedisPerformanceService redisPerformanceService;

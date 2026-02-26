@@ -1,4 +1,4 @@
-package com.bage.study.best.practice.trial.redis;
+package com.bage.study.best.practice.trial;
 
 import com.bage.study.best.practice.cache.CacheService;
 import lombok.extern.slf4j.Slf4j;

@@ -20,7 +20,7 @@ public class RedisPerformanceController {
     /**
      * 单线程写入测试
      */
-    @RequestMapping("/performance/single/write")
+    @RequestMapping("/perform/single/write")
     public Object singleThreadWrite(@RequestParam("count") int count) {
         long start = System.currentTimeMillis();
         RedisPerformanceService.PerformanceResult result = redisPerformanceService.singleThreadWrite(count);
@@ -32,7 +32,7 @@ public class RedisPerformanceController {
     /**
      * 多线程写入测试
      */
-    @RequestMapping("/performance/multi/write")
+    @RequestMapping("/perform/multi/write")
     public Object multiThreadWrite(@RequestParam("count") int count, @RequestParam("threads") int threads) {
         long start = System.currentTimeMillis();
         RedisPerformanceService.PerformanceResult result = redisPerformanceService.multiThreadWrite(count, threads);
@@ -44,7 +44,7 @@ public class RedisPerformanceController {
     /**
      * 单线程读取测试
      */
-    @RequestMapping("/performance/single/read")
+    @RequestMapping("/perform/single/read")
     public Object singleThreadRead(@RequestParam("count") int count) {
         long start = System.currentTimeMillis();
         RedisPerformanceService.PerformanceResult result = redisPerformanceService.singleThreadRead(count);
@@ -56,7 +56,7 @@ public class RedisPerformanceController {
     /**
      * 多线程读取测试
      */
-    @RequestMapping("/performance/multi/read")
+    @RequestMapping("/perform/multi/read")
     public Object multiThreadRead(@RequestParam("count") int count, @RequestParam("threads") int threads) {
         long start = System.currentTimeMillis();
         RedisPerformanceService.PerformanceResult result = redisPerformanceService.multiThreadRead(count, threads);
@@ -68,7 +68,7 @@ public class RedisPerformanceController {
     /**
      * 混合读写测试
      */
-    @RequestMapping("/performance/mixed/read/write")
+    @RequestMapping("/perform/mixed/read/write")
     public Object mixedReadWrite(@RequestParam("count") int count, @RequestParam("threads") int threads, @RequestParam("readRatio") double readRatio) {
         long start = System.currentTimeMillis();
         RedisPerformanceService.PerformanceResult result = redisPerformanceService.mixedReadWrite(count, threads, readRatio);
@@ -80,7 +80,7 @@ public class RedisPerformanceController {
     /**
      * 生成大key
      */
-    @RequestMapping("/performance/big/key/generate")
+    @RequestMapping("/perform/big/key/generate")
     public Object generateBigKey(@RequestParam("size") int size) {
         long start = System.currentTimeMillis();
         String key = redisPerformanceService.generateBigKey(size);
@@ -92,7 +92,7 @@ public class RedisPerformanceController {
     /**
      * 生成大List
      */
-    @RequestMapping("/performance/big/list/generate")
+    @RequestMapping("/perform/big/list/generate")
     public Object generateBigListKey(@RequestParam("size") int size) {
         long start = System.currentTimeMillis();
         String key = redisPerformanceService.generateBigListKey(size);
@@ -104,7 +104,7 @@ public class RedisPerformanceController {
     /**
      * 模拟热点key访问
      */
-    @RequestMapping("/performance/hot/key")
+    @RequestMapping("/perform/hot/key")
     public Object simulateHotKey(@RequestParam("count") int count, @RequestParam("threads") int threads) {
         long start = System.currentTimeMillis();
         RedisPerformanceService.PerformanceResult result = redisPerformanceService.simulateHotKey(count, threads);
@@ -116,7 +116,7 @@ public class RedisPerformanceController {
     /**
      * 测试大key性能
      */
-    @RequestMapping("/performance/big/key/test")
+    @RequestMapping("/perform/big/key/test")
     public Object bigKeyPerformance(@RequestParam("size") int size) {
         long start = System.currentTimeMillis();
         RedisPerformanceService.PerformanceResult result = redisPerformanceService.bigKeyPerformance(size);
@@ -128,7 +128,7 @@ public class RedisPerformanceController {
     /**
      * 清理测试数据
      */
-    @RequestMapping("/performance/cleanup")
+    @RequestMapping("/perform/cleanup")
     public Object cleanup() {
         long start = System.currentTimeMillis();
         redisPerformanceService.cleanup();
