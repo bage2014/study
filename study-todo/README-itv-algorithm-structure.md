@@ -3249,6 +3249,8 @@ Gossip协议的基本思想是：
 
 ### 14.1 两数之和 (Two Sum)
 
+**原题链接**：[LeetCode 1. Two Sum](https://leetcode.cn/problems/two-sum/)
+
 **题目描述**：给定一个整数数组 `nums` 和一个目标值 `target`，请你在该数组中找出和为目标值的那两个整数，并返回它们的数组下标。
 
 **解题思路**：使用哈希表存储已经遍历过的元素及其索引，对于每个元素，检查哈希表中是否存在 `target - nums[i]`，如果存在，则返回两个元素的索引。
@@ -3285,6 +3287,8 @@ public class TwoSum {
 
 ### 14.2 爬楼梯 (Climbing Stairs)
 
+**原题链接**：[LeetCode 70. Climbing Stairs](https://leetcode.cn/problems/climbing-stairs/)
+
 **题目描述**：假设你正在爬楼梯。需要 `n` 阶你才能到达楼顶。每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶？
 
 **解题思路**：使用动态规划，定义 `dp[i]` 表示爬到第 `i` 阶的不同方法数。状态转移方程为 `dp[i] = dp[i-1] + dp[i-2]`，因为最后一步可以爬 1 阶或 2 阶。
@@ -3317,6 +3321,8 @@ public class ClimbingStairs {
 ```
 
 ### 14.3 子集 (Subsets)
+
+**原题链接**：[LeetCode 78. Subsets](https://leetcode.cn/problems/subsets/)
 
 **题目描述**：给定一组不含重复元素的整数数组 `nums`，返回该数组所有可能的子集（幂集）。
 
@@ -3364,3 +3370,779 @@ public class Subsets {
     }
 }
 ```
+
+## 15. 大厂经典算法题目汇总
+
+本章节汇总了国内外大厂（字节跳动、阿里巴巴、腾讯、美团、百度、Google、Facebook、Amazon等）面试中高频出现的经典算法题目，涵盖数组、链表、树、动态规划、回溯等多个领域。
+
+### 15.1 数组与字符串
+
+#### 15.1.1 三数之和 (3Sum)
+
+**原题链接**：[LeetCode 15. 3Sum](https://leetcode.cn/problems/3sum/)
+
+**题目描述**：给你一个整数数组 `nums` ，判断是否存在三元组 `[nums[i], nums[j], nums[k]]` 满足 `i != j`、`i != k` 且 `j != k` ，同时还满足 `nums[i] + nums[j] + nums[k] == 0` 。请你返回所有和为 `0` 且不重复的三元组。
+
+**解题思路**：
+1. 首先对数组进行排序
+2. 固定一个数，使用双指针在剩余部分寻找两个数，使三数之和为0
+3. 注意去重：跳过相同的元素，避免重复的三元组
+
+**时间复杂度**：O(n²)，排序O(nlogn)，双指针遍历O(n²)
+**空间复杂度**：O(1)，不考虑结果存储空间
+
+**Java代码实现**：
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class ThreeSum {
+    public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null || nums.length < 3) {
+            return result;
+        }
+        
+        // 排序
+        Arrays.sort(nums);
+        
+        for (int i = 0; i < nums.length - 2; i++) {
+            // 去重：跳过相同的元素
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            
+            // 如果当前数字大于0，则三数之和一定大于0
+            if (nums[i] > 0) {
+                break;
+            }
+            
+            int left = i + 1;
+            int right = nums.length - 1;
+            
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                
+                if (sum == 0) {
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    
+                    // 去重
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+                    
+                    left++;
+                    right--;
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        
+        return result;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] nums = {-1, 0, 1, 2, -1, -4};
+        List<List<Integer>> result = threeSum(nums);
+        System.out.println("三数之和为0的所有组合:");
+        for (List<Integer> list : result) {
+            System.out.println(list);
+        }
+        // 输出: [-1, -1, 2], [-1, 0, 1]
+    }
+}
+```
+
+---
+
+#### 15.1.2 合并区间 (Merge Intervals)
+
+**原题链接**：[LeetCode 56. Merge Intervals](https://leetcode.cn/problems/merge-intervals/)
+
+**题目描述**：以数组 `intervals` 表示若干个区间的集合，其中单个区间为 `intervals[i] = [starti, endi]` 。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
+
+**解题思路**：
+1. 按区间的起始位置排序
+2. 遍历区间，如果当前区间的起始位置小于等于上一个区间的结束位置，则合并
+3. 否则，将上一个区间加入结果，更新当前区间
+
+**时间复杂度**：O(nlogn)，主要是排序
+**空间复杂度**：O(n)，存储结果
+
+**Java代码实现**：
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class MergeIntervals {
+    public static int[][] merge(int[][] intervals) {
+        if (intervals == null || intervals.length <= 1) {
+            return intervals;
+        }
+        
+        // 按区间起始位置排序
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        
+        List<int[]> result = new ArrayList<>();
+        int[] current = intervals[0];
+        
+        for (int i = 1; i < intervals.length; i++) {
+            // 如果当前区间与下一个区间重叠
+            if (current[1] >= intervals[i][0]) {
+                // 合并区间，更新结束位置
+                current[1] = Math.max(current[1], intervals[i][1]);
+            } else {
+                // 不重叠，加入结果
+                result.add(current);
+                current = intervals[i];
+            }
+        }
+        
+        // 加入最后一个区间
+        result.add(current);
+        
+        return result.toArray(new int[result.size()][]);
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+        int[][] result = merge(intervals);
+        System.out.println("合并后的区间:");
+        for (int[] interval : result) {
+            System.out.println(Arrays.toString(interval));
+        }
+        // 输出: [1, 6], [8, 10], [15, 18]
+    }
+}
+```
+
+---
+
+#### 15.1.3 最长无重复子串 (Longest Substring Without Repeating Characters)
+
+**原题链接**：[LeetCode 3. Longest Substring Without Repeating Characters](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+**题目描述**：给定一个字符串 `s` ，请你找出其中不含有重复字符的最长子串的长度。
+
+**解题思路**：
+1. 使用滑动窗口，维护一个窗口 `[left, right]`
+2. 使用HashSet存储窗口内的字符
+3. 右指针向右移动，如果遇到重复字符，左指针向右移动直到无重复
+4. 记录最大窗口大小
+
+**时间复杂度**：O(n)，每个字符最多被访问两次
+**空间复杂度**：O(min(m, n))，m为字符集大小
+
+**Java代码实现**：
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class LongestSubstring {
+    public static int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        
+        Set<Character> set = new HashSet<>();
+        int left = 0;
+        int maxLength = 0;
+        
+        for (int right = 0; right < s.length(); right++) {
+            // 如果字符已存在，移动左指针
+            while (set.contains(s.charAt(right))) {
+                set.remove(s.charAt(left));
+                left++;
+            }
+            
+            set.add(s.charAt(right));
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+        
+        return maxLength;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        String s = "abcabcbb";
+        int result = lengthOfLongestSubstring(s);
+        System.out.println("最长无重复子串长度: " + result);
+        // 输出: 3 ("abc")
+    }
+}
+```
+
+### 15.2 链表
+
+#### 15.2.1 反转链表 (Reverse Linked List)
+
+**原题链接**：[LeetCode 206. Reverse Linked List](https://leetcode.cn/problems/reverse-linked-list/)
+
+**题目描述**：给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
+
+**解题思路**：
+1. 使用三个指针：prev、current、next
+2. 遍历链表，将当前节点的next指向prev
+3. 移动指针，继续处理下一个节点
+
+**时间复杂度**：O(n)
+**空间复杂度**：O(1)
+
+**Java代码实现**：
+
+```java
+public class ReverseLinkedList {
+    // 链表节点定义
+    static class ListNode {
+        int val;
+        ListNode next;
+        
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    
+    public static ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
+        
+        while (current != null) {
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        
+        return prev;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        // 构建链表: 1 -> 2 -> 3 -> 4 -> 5
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
+        
+        ListNode reversed = reverseList(head);
+        System.out.print("反转后的链表: ");
+        while (reversed != null) {
+            System.out.print(reversed.val + " ");
+            reversed = reversed.next;
+        }
+        // 输出: 5 4 3 2 1
+    }
+}
+```
+
+---
+
+#### 15.2.2 环形链表 II (Linked List Cycle II)
+
+**原题链接**：[LeetCode 142. Linked List Cycle II](https://leetcode.cn/problems/linked-list-cycle-ii/)
+
+**题目描述**：给定一个链表的头节点 `head` ，返回链表开始入环的第一个节点。如果链表无环，则返回 `null`。
+
+**解题思路**：
+1. 使用快慢指针判断是否有环
+2. 如果有环，快指针回到头节点，慢指针保持在相遇点
+3. 两个指针以相同速度移动，再次相遇点即为环的入口
+
+**时间复杂度**：O(n)
+**空间复杂度**：O(1)
+
+**Java代码实现**：
+
+```java
+public class LinkedListCycleII {
+    static class ListNode {
+        int val;
+        ListNode next;
+        
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    
+    public static ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
+        
+        ListNode slow = head;
+        ListNode fast = head;
+        
+        // 判断是否有环
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            
+            if (slow == fast) {
+                // 有环，找入口
+                fast = head;
+                while (slow != fast) {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow;
+            }
+        }
+        
+        return null;
+    }
+}
+```
+
+### 15.3 树与图
+
+#### 15.3.1 二叉树的最近公共祖先 (Lowest Common Ancestor of a Binary Tree)
+
+**原题链接**：[LeetCode 236. Lowest Common Ancestor of a Binary Tree](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+**题目描述**：给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+**解题思路**：
+1. 递归遍历树
+2. 如果当前节点等于p或q，返回当前节点
+3. 递归在左右子树中查找
+4. 如果左右子树都找到，当前节点就是LCA
+5. 如果只有一边找到，返回那一边的结果
+
+**时间复杂度**：O(n)
+**空间复杂度**：O(h)，h为树的高度
+
+**Java代码实现**：
+
+```java
+public class LowestCommonAncestor {
+    static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        
+        TreeNode(int val) {
+            this.val = val;
+        }
+    }
+    
+    public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+        
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        
+        // 如果左右子树都找到，当前节点就是LCA
+        if (left != null && right != null) {
+            return root;
+        }
+        
+        // 返回非空的那一边
+        return left != null ? left : right;
+    }
+}
+```
+
+---
+
+#### 15.3.2 课程表 (Course Schedule)
+
+**原题链接**：[LeetCode 207. Course Schedule](https://leetcode.cn/problems/course-schedule/)
+
+**题目描述**：你这个学期必须选修 `numCourses` 门课程，记为 `0` 到 `numCourses - 1` 。在选修某些课程之前需要一些先修课程。给定课程总数和先修课程关系，判断是否可能完成所有课程的学习。
+
+**解题思路**：
+1. 构建有向图，表示课程依赖关系
+2. 使用拓扑排序（Kahn算法或DFS）检测是否有环
+3. 如果有环，则无法完成所有课程
+
+**时间复杂度**：O(V + E)，V为课程数，E为先修关系数
+**空间复杂度**：O(V + E)
+
+**Java代码实现**：
+
+```java
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+public class CourseSchedule {
+    public static boolean canFinish(int numCourses, int[][] prerequisites) {
+        // 构建图和入度数组
+        List<List<Integer>> graph = new ArrayList<>();
+        int[] inDegree = new int[numCourses];
+        
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+        
+        for (int[] prereq : prerequisites) {
+            graph.get(prereq[1]).add(prereq[0]);
+            inDegree[prereq[0]]++;
+        }
+        
+        // Kahn算法
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            count++;
+            
+            for (int next : graph.get(course)) {
+                inDegree[next]--;
+                if (inDegree[next] == 0) {
+                    queue.offer(next);
+                }
+            }
+        }
+        
+        return count == numCourses;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int numCourses = 2;
+        int[][] prerequisites = {{1, 0}};
+        boolean result = canFinish(numCourses, prerequisites);
+        System.out.println("是否可以完成所有课程: " + result);
+        // 输出: true
+    }
+}
+```
+
+### 15.4 动态规划
+
+#### 15.4.1 最长公共子序列 (Longest Common Subsequence)
+
+**原题链接**：[LeetCode 1143. Longest Common Subsequence](https://leetcode.cn/problems/longest-common-subsequence/)
+
+**题目描述**：给定两个字符串 `text1` 和 `text2`，返回这两个字符串的最长公共子序列的长度。
+
+**解题思路**：
+1. 定义dp[i][j]为text1[0..i-1]和text2[0..j-1]的最长公共子序列长度
+2. 如果text1[i-1] == text2[j-1]，则dp[i][j] = dp[i-1][j-1] + 1
+3. 否则，dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+**时间复杂度**：O(m * n)
+**空间复杂度**：O(m * n)，可优化至O(min(m, n))
+
+**Java代码实现**：
+
+```java
+public class LongestCommonSubsequence {
+    public static int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        String text1 = "abcde";
+        String text2 = "ace";
+        int result = longestCommonSubsequence(text1, text2);
+        System.out.println("最长公共子序列长度: " + result);
+        // 输出: 3
+    }
+}
+```
+
+---
+
+#### 15.4.2 编辑距离 (Edit Distance)
+
+**原题链接**：[LeetCode 72. Edit Distance](https://leetcode.cn/problems/edit-distance/)
+
+**题目描述**：给你两个单词 `word1` 和 `word2`，请返回将 `word1` 转换成 `word2` 所使用的最少操作数。你可以对一个单词进行插入、删除、替换操作。
+
+**解题思路**：
+1. 定义dp[i][j]为word1[0..i-1]转换为word2[0..j-1]的最小操作数
+2. 如果word1[i-1] == word2[j-1]，dp[i][j] = dp[i-1][j-1]
+3. 否则，dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+   - dp[i-1][j] + 1：删除
+   - dp[i][j-1] + 1：插入
+   - dp[i-1][j-1] + 1：替换
+
+**时间复杂度**：O(m * n)
+**空间复杂度**：O(m * n)
+
+**Java代码实现**：
+
+```java
+public class EditDistance {
+    public static int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        
+        // 初始化边界
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        String word1 = "horse";
+        String word2 = "ros";
+        int result = minDistance(word1, word2);
+        System.out.println("最小操作数: " + result);
+        // 输出: 3
+    }
+}
+```
+
+### 15.5 回溯算法
+
+#### 15.5.1 全排列 (Permutations)
+
+**原题链接**：[LeetCode 46. Permutations](https://leetcode.cn/problems/permutations/)
+
+**题目描述**：给定一个不含重复数字的数组 `nums` ，返回其所有可能的全排列。
+
+**解题思路**：
+1. 使用回溯算法
+2. 维护一个used数组标记已使用的元素
+3. 递归构建排列，当路径长度等于数组长度时，加入结果
+
+**时间复杂度**：O(n * n!)
+**空间复杂度**：O(n)
+
+**Java代码实现**：
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Permutations {
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        backtrack(result, new ArrayList<>(), nums, used);
+        return result;
+    }
+    
+    private static void backtrack(List<List<Integer>> result, List<Integer> path, int[] nums, boolean[] used) {
+        if (path.size() == nums.length) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+            
+            used[i] = true;
+            path.add(nums[i]);
+            backtrack(result, path, nums, used);
+            path.remove(path.size() - 1);
+            used[i] = false;
+        }
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        List<List<Integer>> result = permute(nums);
+        System.out.println("所有全排列:");
+        for (List<Integer> perm : result) {
+            System.out.println(perm);
+        }
+        // 输出: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]
+    }
+}
+```
+
+---
+
+#### 15.5.2 N皇后 (N-Queens)
+
+**原题链接**：[LeetCode 51. N-Queens](https://leetcode.cn/problems/n-queens/)
+
+**题目描述**：按照国际象棋的规则，皇后可以攻击与之处在同一行或同一列或同一斜线上的棋子。n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+
+**解题思路**：
+1. 使用回溯算法，逐行放置皇后
+2. 检查当前位置是否安全（列、对角线）
+3. 使用三个集合记录已占用的列和两个对角线
+
+**时间复杂度**：O(n!)
+**空间复杂度**：O(n)
+
+**Java代码实现**：
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class NQueens {
+    public static List<List<String>> solveNQueens(int n) {
+        List<List<String>> result = new ArrayList<>();
+        char[][] board = new char[n][n];
+        
+        // 初始化棋盘
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = '.';
+            }
+        }
+        
+        backtrack(result, board, 0, n);
+        return result;
+    }
+    
+    private static void backtrack(List<List<String>> result, char[][] board, int row, int n) {
+        if (row == n) {
+            result.add(construct(board));
+            return;
+        }
+        
+        for (int col = 0; col < n; col++) {
+            if (isValid(board, row, col, n)) {
+                board[row][col] = 'Q';
+                backtrack(result, board, row + 1, n);
+                board[row][col] = '.';
+            }
+        }
+    }
+    
+    private static boolean isValid(char[][] board, int row, int col, int n) {
+        // 检查列
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == 'Q') {
+                return false;
+            }
+        }
+        
+        // 检查左上对角线
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
+        }
+        
+        // 检查右上对角线
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    private static List<String> construct(char[][] board) {
+        List<String> result = new ArrayList<>();
+        for (char[] row : board) {
+            result.add(new String(row));
+        }
+        return result;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int n = 4;
+        List<List<String>> result = solveNQueens(n);
+        System.out.println(n + "皇后问题的所有解法:");
+        for (List<String> solution : result) {
+            for (String row : solution) {
+                System.out.println(row);
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
+### 15.6 大厂面试题汇总表
+
+| 题目 | 难度 | 算法类型 | 出现频率 | 大厂 |
+|------|------|----------|----------|------|
+| 三数之和 | 中等 | 双指针、排序 | ⭐⭐⭐⭐⭐ | 字节、阿里、腾讯 |
+| 合并区间 | 中等 | 排序、贪心 | ⭐⭐⭐⭐⭐ | 字节、美团、百度 |
+| 最长无重复子串 | 中等 | 滑动窗口 | ⭐⭐⭐⭐⭐ | 所有大厂 |
+| 反转链表 | 简单 | 链表操作 | ⭐⭐⭐⭐⭐ | 所有大厂 |
+| 环形链表 II | 中等 | 双指针 | ⭐⭐⭐⭐ | 字节、阿里 |
+| 二叉树最近公共祖先 | 中等 | 树、递归 | ⭐⭐⭐⭐⭐ | 所有大厂 |
+| 课程表 | 中等 | 图、拓扑排序 | ⭐⭐⭐⭐ | 字节、腾讯 |
+| 最长公共子序列 | 中等 | 动态规划 | ⭐⭐⭐⭐ | 阿里、腾讯 |
+| 编辑距离 | 困难 | 动态规划 | ⭐⭐⭐⭐ | 字节、Google |
+| 全排列 | 中等 | 回溯 | ⭐⭐⭐⭐⭐ | 所有大厂 |
+| N皇后 | 困难 | 回溯 | ⭐⭐⭐ | 字节、Google |
+
+### 15.7 解题技巧总结
+
+1. **数组/字符串问题**：
+   - 优先考虑双指针、滑动窗口
+   - 需要排序时考虑快速排序或归并排序
+   - 查找问题优先考虑哈希表
+
+2. **链表问题**：
+   - 熟练运用快慢指针
+   - 注意处理边界情况（空链表、单节点）
+   - 考虑使用哑节点简化操作
+
+3. **树与图问题**：
+   - 遍历：DFS（递归/栈）、BFS（队列）
+   - 路径问题：回溯
+   - 依赖关系：拓扑排序
+
+4. **动态规划问题**：
+   - 明确定义状态
+   - 找出状态转移方程
+   - 考虑空间优化（滚动数组）
+
+5. **回溯问题**：
+   - 画出递归树帮助理解
+   - 注意剪枝优化
+   - 去重技巧（排序、used数组）
