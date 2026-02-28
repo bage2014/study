@@ -3585,6 +3585,125 @@ public class LongestSubstring {
 }
 ```
 
+---
+
+#### 15.1.4 接雨水 (Trapping Rain Water)
+
+**原题链接**：[LeetCode 42. Trapping Rain Water](https://leetcode.cn/problems/trapping-rain-water/)
+
+**题目描述**：给定 `n` 个非负整数表示每个宽度为 `1` 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+**解题思路**：
+1. 使用双指针法，分别从左右两端向中间移动
+2. 维护左右两个最大值 `leftMax` 和 `rightMax`
+3. 当 `height[left] < height[right]` 时，左指针右移，否则右指针左移
+4. 计算当前位置能接的雨水量：`min(leftMax, rightMax) - height[i]`
+
+**时间复杂度**：O(n)
+**空间复杂度**：O(1)
+
+**Java代码实现**：
+
+```java
+public class TrappingRainWater {
+    public static int trap(int[] height) {
+        if (height == null || height.length <= 2) {
+            return 0;
+        }
+        
+        int left = 0;
+        int right = height.length - 1;
+        int leftMax = 0;
+        int rightMax = 0;
+        int water = 0;
+        
+        while (left < right) {
+            if (height[left] < height[right]) {
+                // 左指针移动
+                if (height[left] >= leftMax) {
+                    leftMax = height[left];
+                } else {
+                    water += leftMax - height[left];
+                }
+                left++;
+            } else {
+                // 右指针移动
+                if (height[right] >= rightMax) {
+                    rightMax = height[right];
+                } else {
+                    water += rightMax - height[right];
+                }
+                right--;
+            }
+        }
+        
+        return water;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] height = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+        int result = trap(height);
+        System.out.println("能接的雨水量: " + result);
+        // 输出: 6
+    }
+}
+```
+
+---
+
+#### 15.1.5 盛最多水的容器 (Container With Most Water)
+
+**原题链接**：[LeetCode 11. Container With Most Water](https://leetcode.cn/problems/container-with-most-water/)
+
+**题目描述**：给定一个长度为 `n` 的整数数组 `height` 。有 `n` 条垂线，第 `i` 条线的两个端点是 `(i, 0)` 和 `(i, height[i])` 。找出其中的两条线，使得它们与 `x` 轴共同构成的容器可以容纳最多的水。
+
+**解题思路**：
+1. 使用双指针，分别从左右两端向中间移动
+2. 计算当前容器的面积：`min(height[left], height[right]) * (right - left)`
+3. 移动较短的那条边，寻找可能的更大面积
+
+**时间复杂度**：O(n)
+**空间复杂度**：O(1)
+
+**Java代码实现**：
+
+```java
+public class ContainerWithMostWater {
+    public static int maxArea(int[] height) {
+        if (height == null || height.length < 2) {
+            return 0;
+        }
+        
+        int left = 0;
+        int right = height.length - 1;
+        int maxArea = 0;
+        
+        while (left < right) {
+            int currentArea = Math.min(height[left], height[right]) * (right - left);
+            maxArea = Math.max(maxArea, currentArea);
+            
+            // 移动较短的边
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        
+        return maxArea;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] height = {1, 8, 6, 2, 5, 4, 8, 3, 7};
+        int result = maxArea(height);
+        System.out.println("最大容器面积: " + result);
+        // 输出: 49
+    }
+}
+```
+
 ### 15.2 链表
 
 #### 15.2.1 反转链表 (Reverse Linked List)
