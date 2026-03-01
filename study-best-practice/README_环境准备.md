@@ -24,6 +24,15 @@ lvm2
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 ```
 
+**步骤 3：增加网络 **
+
+```bash
+docker network create myapp
+
+```
+
+### 
+
 ### 1.2 MySQL 安装
 
 官方镜像地址：[Docker Hub MySQL](https://hub.docker.com/_/mysql)
@@ -42,6 +51,7 @@ docker pull mysql/mysql-server
 
 ```bash
 docker run --name bage-mysql \
+--network myapp \
 --add-host=host.docker.internal:host-gateway \
 -v ${HOME}/bage/docker-data/mysql:/var/lib/mysql \
 -e MYSQL_ROOT_PASSWORD=bage \
@@ -96,6 +106,93 @@ ALTER USER 'bage'@'%' IDENTIFIED WITH mysql_native_password BY 'bage';
 FLUSH PRIVILEGES;
 ```
 
+#### 1.2.4 配置 mysqld_exporter 
+
+参考链接 
+
+https://registry.hub.docker.com/r/prom/mysqld-exporter/
+
+https://github.com/prometheus/mysqld_exporter
+
+Docker Pull Command
+
+```
+docker pull prom/mysqld-exporter
+```
+
+Run 
+
+```console
+docker run --name bage-mysqld-exporter --network myapp --add-host=host.docker.internal:host-gateway  -d -p 9104:9104 -e DATA_SOURCE_NAME="bage:bage@(bage-mysql:3306)/mydbpro" prom/mysqld-exporter
+```
+
+访问
+
+```
+http://localhost:9104/metrics
+```
+
+
+
+图标显示
+
+**推荐图标ID：https://grafana.com/dashboards/7362**
+
+
+
+**启动失败-问题**
+
+授权
+
+```
+授权
+-- 允许本地主机访问
+CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'bage' WITH MAX_USER_CONNECTIONS 3;
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
+
+
+```
+
+配置用户和重新启动 
+
+```
+mkdir ~/bage/docker-conf/mysql-exporter
+
+vi .my.cnf
+
+
+---- 内容为：-----
+
+[client]
+host=bage-mysql
+port=3306
+user=exporter
+password=bage
+
+```
+
+重新启动 
+
+```
+
+docker run -d --name bage-mysqld-exporter \
+-p 9104:9104 \
+--network myapp --add-host=host.docker.internal:host-gateway \
+-v ${HOME}/bage/docker-conf/mysql-exporter/.my.cnf:/usr/.my.cnf \
+-e DATA_SOURCE_NAME="exporter:bage@(bage-mysql:3306)/mydbpro" \
+prom/mysqld-exporter \
+--config.my-cnf=/usr/.my.cnf
+
+```
+
+
+
+参考链接
+
+https://blog.salmonedu.ltd/articles/316
+
+
+
 ### 1.3 JMeter 安装
 
 官方网站：[Apache JMeter](https://jmeter.apache.org/)
@@ -130,6 +227,7 @@ docker pull redis
 ```bash
 docker run -p 6379:6379 \
 --name bage-redis \
+--network myapp \
 --add-host=host.docker.internal:host-gateway \
 -d redis \
 --requirepass "bage"
@@ -144,6 +242,32 @@ redis-cli
 
 auth bage
 ```
+
+#### 1.4.4 使用Prometheus + Grafana监控
+
+**部署步骤**
+
+1. 启动Redis Exporter
+
+```bash
+docker run -d --name bage-redis-exporter --network myapp -p 9121:9121 oliver006/redis_exporter:latest --redis.addr=redis://redis-bage:6379
+```
+
+2. 配置Prometheus（`prometheus.yml`）
+
+```yaml
+scrape_configs:
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['localhost:9121']
+        labels:
+          instance: 'redis'
+```
+
+3. 启动Prometheus和Grafana
+4. 导入Redis监控仪表盘（推荐ID：763）
+
+
 
 ### 1.5 RabbitMQ 安装
 
@@ -161,6 +285,7 @@ docker pull rabbitmq
 docker run -d \
 --hostname bage-rabbit \
 --name bage-rabbit \
+--network myapp \
 -p 15672:15672 \
 -p 5672:5672 \
 -e RABBITMQ_DEFAULT_USER=bage \
@@ -195,7 +320,7 @@ docker pull prom/prometheus
 **基本启动**：
 
 ```bash
-docker run -d \
+docker run -d --network myapp \
 --name bage-prometheus \
 -p 9090:9090 \
 prom/prometheus
@@ -206,6 +331,7 @@ prom/prometheus
 ```bash
 docker run -d \
 --name bage-prometheus \
+--network myapp \
 --add-host=host.docker.internal:host-gateway \
 -p 9090:9090 \
 -v /Users/bage/bage/docker-data/prometheus:/prometheus/data \
@@ -245,6 +371,7 @@ grafana/grafana
 ```bash
 docker run -d \
 --name=bage-grafana \
+--network myapp \
 --add-host=host.docker.internal:host-gateway \
 -p 3000:3000 \
 -v /Users/bage/bage/docker-data/grafana:/var/lib/grafana \

@@ -82,7 +82,7 @@ redis-cli info persistence
 **部署步骤**
 1. 启动Redis Exporter
 ```bash
-docker run -d --name redis-exporter -p 9121:9121 oliver006/redis_exporter:latest --redis.addr=redis://localhost:6379
+docker run -d --name redis-exporter -p 9121:9121 oliver006/redis_exporter:latest --redis.addr=redis://redis-bage:6379
 ```
 
 2. 配置Prometheus（`prometheus.yml`）

@@ -1076,11 +1076,13 @@ InnoDB存储引擎会自动为每行数据添加三个隐藏列：
 - 当事务修改某行数据时，会将该行DB_TRX_ID设置为自己的事务ID
 
 **DB_ROLL_PTR详解：**
+
 - 指向undo log中该行的上一个版本
 - 通过回滚指针可以构建数据的多版本链
 - 每次更新都会生成新的undo log记录，并更新回滚指针
 
 **DB_ROW_ID详解：**
+
 - 如果表没有主键，InnoDB会自动创建DB_ROW_ID作为主键
 - 如果表有主键，则不会创建DB_ROW_ID
 - DB_ROW_ID是单调递增的6字节整数
@@ -1088,6 +1090,7 @@ InnoDB存储引擎会自动为每行数据添加三个隐藏列：
 #### 9.1.3 Undo Log详解
 
 **Undo Log的作用：**
+
 1. **事务回滚**：记录数据修改前的状态，用于回滚
 2. **MVCC多版本读**：存储数据的历史版本，供其他事务读取
 3. **崩溃恢复**：帮助恢复未提交的事务
@@ -1126,9 +1129,44 @@ Undo Log版本2 (TRX_ID=90):
 ```
 
 **Undo Log的清理：**
-- InnoDB后台线程 purge thread负责清理undo log
+- InnoDB后台线程 purge thread负责清理undo log 【purge==清除】
 - 当某个undo log不再被任何活跃事务需要时，才会被清理
 - 长时间运行的事务会导致undo log无法清理，占用大量空间
+
+**如何识别undo log不再被需要：**
+
+1. **基于事务ID的判断**
+   - 每个undo log记录都包含创建该版本的事务ID（trx_id）
+   - Purge线程会检查undo log的事务ID是否小于所有活跃事务的最小事务ID
+   - 如果undo log的trx_id < 所有活跃事务的最小trx_id，则该undo log不再被需要
+
+2. **基于Read View的判断**
+   - 当所有活跃事务的Read View都不包含该undo log的事务ID时
+   - 说明没有事务需要通过该undo log回滚到该版本
+   - 此时undo log可以被安全清理
+
+3. **具体清理依据**
+   - **活跃事务列表**：InnoDB维护一个活跃事务的列表，记录所有未提交事务的ID
+   - **最小活跃事务ID**：当前所有活跃事务中最小的事务ID
+   - **undo log的trx_id**：undo log记录的创建事务ID
+   - **判断条件**：如果undo log的trx_id < 最小活跃事务ID，则该undo log不再被任何活跃事务需要
+
+4. **清理过程**
+   - Purge线程定期扫描undo log
+   - 对于符合清理条件的undo log，将其标记为可回收
+   - 当undo log所在的undo页空间全部可回收时，释放整个页
+
+**影响undo log清理的因素：**
+- **长事务**：长时间运行的事务会保持较小的trx_id，导致大量undo log无法清理
+- **事务隔离级别**：不同隔离级别对undo log的保留时间有影响
+- **purge线程配置**：purge线程的数量和优先级会影响清理效率
+- **innodb_undo_log_truncate**：是否自动截断undo log表空间
+
+**优化建议：**
+- 避免长时间运行的事务
+- 合理配置purge线程数量（innodb_purge_threads）
+- 启用undo log表空间自动截断（innodb_undo_log_truncate=ON）
+- 监控undo log空间使用情况，及时处理异常增长
 
 #### 9.1.4 Read View详解
 

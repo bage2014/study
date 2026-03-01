@@ -20,12 +20,19 @@
     - [6.2 非线性结构](#62-非线性结构)
     - [6.3 跳跃表](#63-跳跃表)
     - [6.4 红黑树 vs 跳跃表](#64-红黑树-vs-跳跃表)
-  - [7. 一致性算法](#7-一致性算法)
-    - [7.1 为什么需要一致性](#71-为什么需要一致性)
-    - [7.2 一致性分类](#72-一致性分类)
-    - [7.3 主流一致性算法](#73-主流一致性算法)
-  - [8. 面试题解析](#8-面试题解析)
-  - [9. 参考链接](#9-参考链接)
+  - [11. 一致性算法](#11-一致性算法)
+    - [11.1 为什么需要一致性](#111-为什么需要一致性)
+    - [11.2 一致性分类](#112-一致性分类)
+    - [11.3 主流一致性算法](#113-主流一致性算法)
+  - [12. 页面置换算法](#12-页面置换算法)
+    - [12.1 算法概述](#121-算法概述)
+    - [12.2 LRU算法](#122-lru-算法)
+    - [12.3 LFU算法](#123-lfu-算法)
+    - [12.4 CLOCK算法](#124-clock-算法)
+    - [12.5 WSClock算法](#125-wsclock-算法)
+    - [12.6 算法对比与分析](#126-算法对比与分析)
+  - [14. 面试题解析](#14-面试题解析)
+  - [15. 参考链接](#15-参考链接)
 
 ## 1. 基础概念
 
@@ -2527,11 +2534,14 @@ public class CombinationSum {
 }
 ```
 
-# 测试
+### 测试
 candidates = [2, 3, 6, 7]
 target = 7
 print(combination_sum(candidates, target))  # 输出: [[2, 2, 3], [7]]
-```
+
+
+
+
 
 ## 9. 分支限界算法
 
@@ -2574,7 +2584,8 @@ print(combination_sum(candidates, target))  # 输出: [[2, 2, 3], [7]]
 
 **样例代码**：
 
-```java
+```
+​```java
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -3456,7 +3467,805 @@ Gossip协议的基本思想是：
 
 5. **微服务架构**：确保服务之间的状态一致性，如服务注册与发现
 
-## 8. 面试题解析
+## 12. 页面置换算法
+
+页面置换算法是操作系统内存管理中的核心算法，用于在物理内存不足时选择哪个页面被换出到磁盘。本节详细探讨LRU、LFU、CLOCK、WSClock四种主流算法的原理、实现和对比。
+
+### 12.1 算法概述
+
+| 算法 | 全称 | 核心思想 | 时间复杂度 | 空间复杂度 | 适用场景 |
+|------|------|----------|------------|------------|----------|
+| **LRU** | Least Recently Used | 最近最少使用 | O(n) | O(n) | 通用场景，符合局部性原理 |
+| **LFU** | Least Frequently Used | 最少使用频率 | O(n) | O(n) | 周期性访问模式 |
+| **CLOCK** | Clock (Second Chance) | 二次机会算法 | O(n) | O(1) | 近似LRU，开销小 |
+| **WSClock** | Working Set Clock | 工作集时钟 | O(n) | O(n) | 多道程序环境，防止抖动 |
+
+### 12.2 LRU (Least Recently Used) 算法
+
+#### 12.2.1 基本概念
+
+LRU算法基于**局部性原理**：最近被访问的页面很可能再次被访问。当需要置换页面时，选择最长时间未被访问的页面。
+
+#### 12.2.2 核心过程
+
+**算法流程**：
+1. 维护一个页面访问顺序的数据结构（栈或链表）
+2. 页面被访问时，将其移到数据结构顶部（最近使用）
+3. 需要置换时，选择数据结构底部的页面（最久未使用）
+
+**示例过程**：
+```
+内存容量：3个页面
+访问序列：A, B, C, A, D, B
+
+步骤1: 访问A
+内存: [A]  (A最近使用)
+
+步骤2: 访问B
+内存: [A, B]  (B最近使用)
+
+步骤3: 访问C
+内存: [A, B, C]  (C最近使用)
+
+步骤4: 访问A (命中)
+内存: [B, C, A]  (A移到最近使用)
+
+步骤5: 访问D (缺页，置换最久未使用的B)
+内存: [C, A, D]  (B被置换，D最近使用)
+
+步骤6: 访问B (缺页，置换最久未使用的C)
+内存: [A, D, B]  (C被置换，B最近使用)
+```
+
+#### 12.2.3 伪代码实现
+
+**实现方式1：基于哈希表+双向链表**
+
+```java
+// LRU缓存实现
+class LRUCache {
+    // 双向链表节点
+    class DLinkedNode {
+        int key;
+        int value;
+        DLinkedNode prev;
+        DLinkedNode next;
+        
+        DLinkedNode() {}
+        DLinkedNode(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+    
+    private Map<Integer, DLinkedNode> cache = new HashMap<>();
+    private int size;
+    private int capacity;
+    private DLinkedNode head, tail;
+    
+    public LRUCache(int capacity) {
+        this.size = 0;
+        this.capacity = capacity;
+        // 使用伪头部和伪尾部节点
+        head = new DLinkedNode();
+        tail = new DLinkedNode();
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    // 获取值
+    public int get(int key) {
+        DLinkedNode node = cache.get(key);
+        if (node == null) {
+            return -1;  // 未命中
+        }
+        // 命中，移到头部
+        moveToHead(node);
+        return node.value;
+    }
+    
+    // 插入或更新
+    public void put(int key, int value) {
+        DLinkedNode node = cache.get(key);
+        if (node == null) {
+            // 创建新节点
+            DLinkedNode newNode = new DLinkedNode(key, value);
+            cache.put(key, newNode);
+            addToHead(newNode);
+            size++;
+            
+            if (size > capacity) {
+                // 超出容量，删除尾部节点
+                DLinkedNode tail = removeTail();
+                cache.remove(tail.key);
+                size--;
+            }
+        } else {
+            // 更新值，移到头部
+            node.value = value;
+            moveToHead(node);
+        }
+    }
+    
+    // 添加节点到头部
+    private void addToHead(DLinkedNode node) {
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+    
+    // 删除节点
+    private void removeNode(DLinkedNode node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+    
+    // 移动节点到头部
+    private void moveToHead(DLinkedNode node) {
+        removeNode(node);
+        addToHead(node);
+    }
+    
+    // 删除尾部节点
+    private DLinkedNode removeTail() {
+        DLinkedNode res = tail.prev;
+        removeNode(res);
+        return res;
+    }
+}
+```
+
+**实现方式2：基于LinkedHashMap（Java简化版）**
+
+```java
+class LRUCache extends LinkedHashMap<Integer, Integer> {
+    private int capacity;
+    
+    public LRUCache(int capacity) {
+        super(capacity, 0.75f, true);  // accessOrder=true表示按访问顺序
+        this.capacity = capacity;
+    }
+    
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+        return size() > capacity;  // 超出容量时删除最老的元素
+    }
+    
+    public int get(int key) {
+        return super.getOrDefault(key, -1);
+    }
+    
+    public void put(int key, int value) {
+        super.put(key, value);
+    }
+}
+```
+
+### 12.3 LFU (Least Frequently Used) 算法
+
+#### 12.3.1 基本概念
+
+LFU算法选择**访问次数最少**的页面进行置换。每个页面维护一个访问计数器，记录被访问的次数。
+
+#### 12.3.2 核心过程
+
+**算法流程**：
+1. 为每个页面维护访问计数器
+2. 页面被访问时，计数器加1
+3. 需要置换时，选择计数器值最小的页面
+4. 计数相同时，可以使用FIFO或LRU作为 tie-breaker
+
+**示例过程**：
+```
+内存容量：3个页面
+访问序列：A, A, B, C, A, B, D
+
+步骤1: 访问A
+内存: [A(1)]  (A访问1次)
+
+步骤2: 访问A
+内存: [A(2)]  (A访问2次)
+
+步骤3: 访问B
+内存: [A(2), B(1)]  (B访问1次)
+
+步骤4: 访问C
+内存: [A(2), B(1), C(1)]  (C访问1次)
+
+步骤5: 访问A
+内存: [A(3), B(1), C(1)]  (A访问3次)
+
+步骤6: 访问B
+内存: [A(3), B(2), C(1)]  (B访问2次)
+
+步骤7: 访问D (缺页，置换访问次数最少的C)
+内存: [A(3), B(2), D(1)]  (C被置换，D访问1次)
+```
+
+#### 12.3.3 伪代码实现
+
+```java
+// LFU缓存实现
+class LFUCache {
+    // 节点类
+    class Node {
+        int key;
+        int value;
+        int freq;  // 访问频率
+        
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+            this.freq = 1;  // 初始频率为1
+        }
+    }
+    
+    private int minFreq;  // 最小频率
+    private int capacity;
+    private Map<Integer, Node> keyTable;  // key -> Node
+    private Map<Integer, LinkedHashSet<Integer>> freqTable;  // freq -> keys
+    
+    public LFUCache(int capacity) {
+        this.minFreq = 0;
+        this.capacity = capacity;
+        this.keyTable = new HashMap<>();
+        this.freqTable = new HashMap<>();
+    }
+    
+    // 获取值
+    public int get(int key) {
+        if (capacity == 0) return -1;
+        
+        Node node = keyTable.get(key);
+        if (node == null) return -1;
+        
+        // 增加频率
+        increaseFreq(node);
+        return node.value;
+    }
+    
+    // 插入或更新
+    public void put(int key, int value) {
+        if (capacity == 0) return;
+        
+        Node node = keyTable.get(key);
+        if (node != null) {
+            // 更新值，增加频率
+            node.value = value;
+            increaseFreq(node);
+            return;
+        }
+        
+        // 新节点
+        if (keyTable.size() == capacity) {
+            // 删除最小频率的节点
+            removeMinFreqNode();
+        }
+        
+        Node newNode = new Node(key, value);
+        keyTable.put(key, newNode);
+        freqTable.computeIfAbsent(1, k -> new LinkedHashSet<>()).add(key);
+        minFreq = 1;
+    }
+    
+    // 增加节点频率
+    private void increaseFreq(Node node) {
+        int freq = node.freq;
+        Set<Integer> keys = freqTable.get(freq);
+        keys.remove(node.key);
+        
+        if (keys.isEmpty() && freq == minFreq) {
+            minFreq++;
+        }
+        
+        node.freq++;
+        freqTable.computeIfAbsent(node.freq, k -> new LinkedHashSet<>()).add(node.key);
+    }
+    
+    // 删除最小频率的节点
+    private void removeMinFreqNode() {
+        Set<Integer> keys = freqTable.get(minFreq);
+        int key = keys.iterator().next();
+        keys.remove(key);
+        keyTable.remove(key);
+    }
+}
+```
+
+### 12.4 CLOCK (Second Chance) 算法
+
+#### 12.4.1 基本概念
+
+CLOCK算法是LRU的**近似实现**，使用**访问位（reference bit）**代替精确时间。页面组织成环形队列（时钟），每个页面有一个访问位。
+
+#### 12.4.2 核心过程
+
+**算法流程**：
+1. 页面组织成环形队列，维护一个时钟指针
+2. 页面被访问时，访问位置1
+3. 需要置换时，从指针位置开始扫描：
+   - 访问位为1：给第二次机会，置0，继续扫描
+   - 访问位为0：选择该页面置换
+
+**示例过程**：
+```
+内存容量：4个页面
+时钟队列: [A(1), B(0), C(1), D(0)]  (括号内为访问位)
+当前指针: 指向A
+
+访问序列：E (新页面)
+
+置换过程:
+1. 从指针位置开始扫描：
+   - A(1): 给第二次机会，置0，指针移到B
+   - B(0): 选择B置换
+2. 置换B为E，E的访问位置1
+3. 指针移到C
+
+结果: [A(0), E(1), C(1), D(0)]
+```
+
+#### 12.4.3 伪代码实现
+
+```java
+// CLOCK缓存实现
+class ClockCache {
+    // 时钟页面
+    class ClockPage {
+        int key;
+        int value;
+        boolean referenceBit;  // 访问位
+        
+        ClockPage(int key, int value) {
+            this.key = key;
+            this.value = value;
+            this.referenceBit = true;  // 新页面访问位置1
+        }
+    }
+    
+    private ClockPage[] pages;  // 环形队列
+    private int hand;           // 时钟指针
+    private int size;
+    private int capacity;
+    private Map<Integer, Integer> keyToIndex;  // key -> index
+    
+    public ClockCache(int capacity) {
+        this.capacity = capacity;
+        this.pages = new ClockPage[capacity];
+        this.hand = 0;
+        this.size = 0;
+        this.keyToIndex = new HashMap<>();
+    }
+    
+    // 获取值
+    public int get(int key) {
+        Integer index = keyToIndex.get(key);
+        if (index == null) {
+            return -1;  // 未命中
+        }
+        
+        // 命中，设置访问位
+        pages[index].referenceBit = true;
+        return pages[index].value;
+    }
+    
+    // 插入或更新
+    public void put(int key, int value) {
+        Integer index = keyToIndex.get(key);
+        
+        if (index != null) {
+            // 更新值，设置访问位
+            pages[index].value = value;
+            pages[index].referenceBit = true;
+            return;
+        }
+        
+        // 新页面
+        if (size < capacity) {
+            // 内存未满，直接加入
+            pages[size] = new ClockPage(key, value);
+            keyToIndex.put(key, size);
+            size++;
+        } else {
+            // 内存已满，执行CLOCK算法
+            while (true) {
+                if (!pages[hand].referenceBit) {
+                    // 找到访问位为0的页面，进行置换
+                    keyToIndex.remove(pages[hand].key);
+                    pages[hand] = new ClockPage(key, value);
+                    keyToIndex.put(key, hand);
+                    hand = (hand + 1) % capacity;
+                    break;
+                } else {
+                    // 给第二次机会，置0，继续扫描
+                    pages[hand].referenceBit = false;
+                    hand = (hand + 1) % capacity;
+                }
+            }
+        }
+    }
+}
+```
+
+### 12.5 WSClock (Working Set Clock) 算法
+
+#### 12.5.1 基本概念
+
+WSClock算法结合**工作集模型**和**CLOCK算法**。工作集是指进程在最近τ时间内访问的页面集合。算法优先置换不在工作集中的页面。
+
+#### 12.5.2 核心过程
+
+**算法流程**：
+1. 为每个页面维护访问位和时间戳
+2. 需要置换时，从指针位置开始扫描：
+   - 页面不在工作集中（当前时间-时间戳 > τ）：直接置换
+   - 页面在工作集中，访问位为0：可以置换
+   - 页面在工作集中，访问位为1：给第二次机会，置0
+
+**示例过程**：
+```
+内存容量：5个页面
+时钟队列: [A, B, C, D, E]
+访问位:   [1, 0, 1, 0, 1]
+时间戳:   [100, 95, 102, 90, 105]
+当前时间: 110
+工作集窗口: τ = 20
+
+访问序列：F (新页面)
+
+置换过程:
+1. 从指针位置开始扫描：
+   - A: 访问位=1, 时间=100, 110-100=10 < τ，在工作集中，保留
+   - B: 访问位=0, 时间=95, 110-95=15 < τ，在工作集中，但访问位为0，可以置换
+2. 置换B为F
+3. 更新F的访问位为1，时间戳为110
+
+结果: [A(1), F(1), C(1), D(0), E(1)]
+时间戳: [100, 110, 102, 90, 105]
+```
+
+#### 12.5.3 伪代码实现
+
+```java
+// WSClock缓存实现
+class WSClockCache {
+    // WSClock页面
+    class WSClockPage {
+        int key;
+        int value;
+        boolean referenceBit;   // 访问位
+        long timeOfArrival;     // 到达时间/上次访问时间
+        
+        WSClockPage(int key, int value, long currentTime) {
+            this.key = key;
+            this.value = value;
+            this.referenceBit = true;
+            this.timeOfArrival = currentTime;
+        }
+    }
+    
+    private WSClockPage[] pages;  // 环形队列
+    private int hand;             // 时钟指针
+    private int size;
+    private int capacity;
+    private long tau;             // 工作集时间窗口
+    private Map<Integer, Integer> keyToIndex;
+    
+    public WSClockCache(int capacity, long tau) {
+        this.capacity = capacity;
+        this.tau = tau;
+        this.pages = new WSClockPage[capacity];
+        this.hand = 0;
+        this.size = 0;
+        this.keyToIndex = new HashMap<>();
+    }
+    
+    // 检查页面是否在工作集中
+    private boolean isInWorkingSet(WSClockPage page, long currentTime) {
+        return (currentTime - page.timeOfArrival) <= tau;
+    }
+    
+    // 获取值
+    public int get(int key) {
+        Integer index = keyToIndex.get(key);
+        if (index == null) {
+            return -1;  // 未命中
+        }
+        
+        // 命中，更新访问位和时间戳
+        long currentTime = System.currentTimeMillis();
+        pages[index].referenceBit = true;
+        pages[index].timeOfArrival = currentTime;
+        return pages[index].value;
+    }
+    
+    // 插入或更新
+    public void put(int key, int value) {
+        Integer index = keyToIndex.get(key);
+        long currentTime = System.currentTimeMillis();
+        
+        if (index != null) {
+            // 更新值，更新访问位和时间戳
+            pages[index].value = value;
+            pages[index].referenceBit = true;
+            pages[index].timeOfArrival = currentTime;
+            return;
+        }
+        
+        // 新页面
+        if (size < capacity) {
+            // 内存未满，直接加入
+            pages[size] = new WSClockPage(key, value, currentTime);
+            keyToIndex.put(key, size);
+            size++;
+        } else {
+            // 内存已满，执行WSClock算法
+            int startHand = hand;
+            
+            do {
+                WSClockPage currentPage = pages[hand];
+                
+                if (!isInWorkingSet(currentPage, currentTime)) {
+                    // 页面不在工作集中，可以直接置换
+                    keyToIndex.remove(currentPage.key);
+                    pages[hand] = new WSClockPage(key, value, currentTime);
+                    keyToIndex.put(key, hand);
+                    hand = (hand + 1) % capacity;
+                    return;
+                }
+                
+                if (!currentPage.referenceBit) {
+                    // 在工作集中，但访问位为0，可以置换
+                    keyToIndex.remove(currentPage.key);
+                    pages[hand] = new WSClockPage(key, value, currentTime);
+                    keyToIndex.put(key, hand);
+                    hand = (hand + 1) % capacity;
+                    return;
+                } else {
+                    // 给第二次机会，清除访问位
+                    currentPage.referenceBit = false;
+                }
+                
+                hand = (hand + 1) % capacity;
+            } while (hand != startHand);
+            
+            // 扫描了一圈，没找到合适的，置换当前指针指向的页面
+            keyToIndex.remove(pages[hand].key);
+            pages[hand] = new WSClockPage(key, value, currentTime);
+            keyToIndex.put(key, hand);
+            hand = (hand + 1) % capacity;
+        }
+    }
+}
+```
+
+### 12.6 算法对比与分析
+
+#### 12.6.1 区别与联系
+
+**核心区别**：
+
+| 维度 | LRU | LFU | CLOCK | WSClock |
+|------|-----|-----|-------|---------|
+| **选择依据** | 最近访问时间 | 访问频率 | 访问位 | 工作集+访问位 |
+| **数据结构** | 栈/链表 | 计数器+链表 | 环形队列 | 环形队列+时间戳 |
+| **精确度** | 高 | 中 | 中 | 高 |
+| **开销** | 大 | 大 | 小 | 中 |
+| **实现复杂度** | 中 | 高 | 低 | 高 |
+
+**联系**：
+1. **目标一致**：都是为了最小化缺页率，提高缓存命中率
+2. **局部性原理**：LRU和WSClock都基于局部性原理
+3. **近似关系**：CLOCK是LRU的近似实现，WSClock是CLOCK的改进
+4. **数据结构**：都使用队列或链表组织页面
+
+**演进关系**：
+```
+FIFO → LRU → CLOCK → WSClock
+  ↓      ↓       ↓
+简单   精确    高效    智能
+```
+
+#### 12.6.2 不足之处
+
+**LRU的不足**：
+- ❌ **开销大**：每次访问都需要更新数据结构
+- ❌ **硬件复杂**：需要计数器或栈支持
+- ❌ **历史负担**：很久之前访问的页面可能影响当前决策
+- ❌ **突发访问**：突发的大量访问会污染缓存
+
+**LFU的不足**：
+- ❌ **新页面劣势**：新页面计数低，容易被置换
+- ❌ **历史累积**：历史高频率页面难以被淘汰
+- ❌ **计数器溢出**：长时间运行可能导致计数器溢出
+- ❌ **周期性失效**：无法适应访问模式的周期性变化
+
+**CLOCK的不足**：
+- ❌ **不够精确**：只是LRU的近似，性能略差
+- ❌ **扫描开销**：最坏情况下需要扫描整个队列
+- ❌ **局部性差**：对突发访问的适应性不如LRU
+- ❌ **无时间概念**：只考虑访问位，不考虑时间
+
+**WSClock的不足**：
+- ❌ **参数敏感**：工作集窗口τ的选择困难
+- ❌ **实现复杂**：需要维护时间戳，逻辑复杂
+- ❌ **时间开销**：需要获取当前时间
+- ❌ **多进程复杂**：需要考虑进程ID，实现更复杂
+
+#### 12.6.3 可改进点
+
+**LRU改进方案**：
+
+1. **分段LRU (SLRU)**
+   - 将缓存分为 probation 和 protected 两段
+   - 新页面先进入probation段，命中后提升到protected段
+   - protected段满时，页面降级到probation段
+
+2. **LRU-K**
+   - 记录页面的最后K次访问时间
+   - 根据第K次访问时间决定置换
+   - 更好地处理突发访问
+
+```java
+// LRU-K 伪代码
+class LRU_KCache {
+    class Node {
+        int key;
+        int value;
+        Queue<Long> accessHistory;  // 访问历史
+        
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+            this.accessHistory = new LinkedList<>();
+        }
+        
+        long getKthAccessTime(int k) {
+            if (accessHistory.size() < k) return Long.MAX_VALUE;
+            // 返回第K次访问的时间
+            return ((LinkedList<Long>) accessHistory).get(k - 1);
+        }
+    }
+}
+```
+
+**LFU改进方案**：
+
+1. **Aging LFU**
+   - 定期衰减计数器（如每过一段时间计数器减半）
+   - 减少历史访问的影响
+   - 更好地适应访问模式变化
+
+2. **Window LFU**
+   - 只考虑最近N次访问
+   - 使用滑动窗口记录访问历史
+   - 避免历史累积问题
+
+```java
+// Aging LFU 伪代码
+class AgingLFUCache {
+    class Node {
+        int key;
+        int value;
+        int frequency;
+        long lastDecayTime;
+        
+        void decay(long currentTime, long decayInterval) {
+            long intervals = (currentTime - lastDecayTime) / decayInterval;
+            frequency = frequency >> intervals;  // 右移相当于除以2的幂
+            lastDecayTime = currentTime;
+        }
+    }
+}
+```
+
+**CLOCK改进方案**：
+
+1. **Enhanced CLOCK**
+   - 使用(访问位, 修改位)组合
+   - 优先置换(0,0)页面，其次是(0,1)
+   - 减少写回磁盘的次数
+
+2. **GCLOCK (Generalized CLOCK)**
+   - 使用计数器代替二进制访问位
+   - 每次访问计数器加1，扫描时减1
+   - 更精确地反映访问频率
+
+```java
+// GCLOCK 伪代码
+class GCLOCKCache {
+    class GCLOCKPage {
+        int key;
+        int value;
+        int counter;  // 计数器，替代二进制访问位
+        
+        GCLOCKPage(int key, int value) {
+            this.key = key;
+            this.value = value;
+            this.counter = 0;
+        }
+    }
+    
+    // 访问页面时
+    void accessPage(int index) {
+        pages[index].counter = Math.min(pages[index].counter + 1, MAX_COUNTER);
+    }
+    
+    // 扫描时
+    void scan() {
+        while (pages[hand].counter > 0) {
+            pages[hand].counter--;
+            hand = (hand + 1) % capacity;
+        }
+        // 找到counter为0的页面，进行置换
+    }
+}
+```
+
+**WSClock改进方案**：
+
+1. **自适应WSClock**
+   - 动态调整工作集窗口τ
+   - 根据缺页率自动调整τ大小
+   - 缺页率高时增大τ，缺页率低时减小τ
+
+2. **多级WSClock**
+   - 维护多个不同τ的WSClock队列
+   - 根据页面特性选择不同的队列
+   - 更好地适应不同类型的页面
+
+```java
+// 自适应WSClock 伪代码
+class AdaptiveWSClockCache {
+    long tau;           // 当前工作集窗口
+    int pageFaultRate;  // 缺页率
+    
+    void adjustTau() {
+        if (pageFaultRate > HIGH_THRESHOLD) {
+            tau = tau * 2;  // 缺页率高，增大窗口
+        } else if (pageFaultRate < LOW_THRESHOLD) {
+            tau = tau / 2;  // 缺页率低，减小窗口
+        }
+    }
+}
+```
+
+#### 12.6.4 实际应用选择
+
+**选择建议**：
+
+| 场景 | 推荐算法 | 原因 |
+|------|----------|------|
+| **通用缓存** | LRU | 实现简单，性能好，符合局部性原理 |
+| **高并发系统** | CLOCK | 开销小，不需要频繁更新数据结构 |
+| **周期性访问** | LFU | 能识别热点数据，适合周期性模式 |
+| **多道程序系统** | WSClock | 防止抖动，考虑工作集 |
+| **内存受限** | CLOCK | 空间复杂度O(1)，内存占用小 |
+| **需要精确控制** | LRU-K | 更精确地控制缓存行为 |
+| **写密集型** | Enhanced CLOCK | 减少写回操作，提高性能 |
+
+**实际应用案例**：
+
+```
+Redis: 使用近似LRU算法
+- 原因：内存数据库，需要高效的缓存淘汰
+- 实现：随机采样+访问时间比较
+
+Linux内核: 使用改进的CLOCK算法
+- 原因：内核需要低开销的页面置换
+- 实现：活跃链表+非活跃链表+访问位
+
+MySQL Buffer Pool: 使用LRU
+- 原因：数据库缓存需要精确控制
+- 实现：LRU列表+LRU_old列表（分段LRU）
+
+Memcached: 使用LRU
+- 原因：简单高效
+- 实现：双向链表+哈希表
+```
+
+## 14. 面试题解析
 
 ### 1. 请解释时间复杂度和空间复杂度的概念
 
@@ -3616,7 +4425,7 @@ Gossip协议的基本思想是：
 4. 能够结合多种算法思想解决复杂问题
 5. 不断实践，积累经验，提高算法设计能力
 
-## 13. 参考链接
+## 15. 参考链接
 
 ### 排序算法
 - [排序算法详解 - 力扣](https://leetcode-cn.com/problems/sort-an-array/solution/) 
@@ -5310,6 +6119,18 @@ public class Trie {
 
 ### 15.7 大厂面试题汇总表
 
+字节 https://mp.weixin.qq.com/s/2dkLI0t7oJLzMfnui63vYQ
+
+阿里 https://mp.weixin.qq.com/s/7cJ-lLf0puxndyvSx6ZYsg
+
+快手 https://mp.weixin.qq.com/s/qICQhuu4u2AwxSU-aGZ_FQ
+
+百度 https://mp.weixin.qq.com/s/_Mr0znKdwZlDxhKGBoxFsA
+
+汇总 https://mp.weixin.qq.com/s/XHMnFC35lyFyrXPTScjh6A
+
+
+
 | 题目 | 难度 | 算法类型 | 出现频率 | 大厂 |
 |------|------|----------|----------|------|
 | 三数之和 | 中等 | 双指针、排序 | ⭐⭐⭐⭐⭐ | 字节、阿里、腾讯 |
@@ -5334,6 +6155,8 @@ public class Trie {
 | LRU缓存机制 | 中等 | 设计、哈希表、链表 | ⭐⭐⭐⭐⭐ | 字节、阿里、腾讯、百度 |
 | 最小栈 | 简单 | 设计、栈 | ⭐⭐⭐⭐ | 字节、腾讯 |
 | 实现Trie | 中等 | 设计、树 | ⭐⭐⭐⭐ | 字节、阿里、百度 |
+
+
 
 ### 15.8 解题技巧总结
 
