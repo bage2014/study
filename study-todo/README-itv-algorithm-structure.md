@@ -1286,33 +1286,54 @@ public class BinarySearch {
 
 **样例代码**：
 
-```python
-def multiply(num1, num2):
-    # 基本情况
-    if len(num1) == 1 or len(num2) == 1:
-        return str(int(num1) * int(num2))
-    
-    n = max(len(num1), len(num2))
-    n2 = n // 2
-    
-    # 分解
-    a = num1[:-n2] if len(num1) > n2 else '0'
-    b = num1[-n2:] if len(num1) > n2 else num1
-    c = num2[:-n2] if len(num2) > n2 else '0'
-    d = num2[-n2:] if len(num2) > n2 else num2
-    
-    # 递归计算
-    ac = multiply(a, c)
-    bd = multiply(b, d)
-    ad_bc = str(int(multiply(a, d)) + int(multiply(b, c)))
-    
-    # 合并结果
-    return str(int(ac) * 10**(2*n2) + int(ad_bc) * 10**n2 + int(bd))
+```java
+import java.math.BigInteger;
 
-# 测试
-num1 = "123456789"
-num2 = "987654321"
-print(multiply(num1, num2))  # 输出: 121932631112635269
+public class MultiplyStrings {
+    public static String multiply(String num1, String num2) {
+        // 使用Java内置的BigInteger处理大数乘法
+        BigInteger n1 = new BigInteger(num1);
+        BigInteger n2 = new BigInteger(num2);
+        return n1.multiply(n2).toString();
+    }
+    
+    // 手动实现大数乘法（模拟竖式乘法）
+    public static String multiplyManual(String num1, String num2) {
+        int m = num1.length();
+        int n = num2.length();
+        int[] result = new int[m + n];
+        
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                int p1 = i + j;
+                int p2 = i + j + 1;
+                int sum = mul + result[p2];
+                
+                result[p2] = sum % 10;
+                result[p1] += sum / 10;
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        for (int num : result) {
+            if (!(sb.length() == 0 && num == 0)) {
+                sb.append(num);
+            }
+        }
+        
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        String num1 = "123456789";
+        String num2 = "987654321";
+        System.out.println("BigInteger实现: " + multiply(num1, num2));
+        System.out.println("手动实现: " + multiplyManual(num1, num2));
+        // 输出: 121932631112635269
+    }
+}
 ```
 
 ### 4.3 递归与分治的关系
@@ -1687,25 +1708,42 @@ public class ClimbStairs {
 
 **边界条件**：`dp[0] = 0, dp[1] = 1`
 
-```python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    dp = [0] * (n + 1)
-    dp[0] = 0
-    dp[1] = 1
-    for i in range(2, n + 1):
-        dp[i] = dp[i-1] + dp[i-2]
-    return dp[n]
+```java
+public class Fibonacci {
+    public static int fibonacci(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+    
+    // 空间优化版本
+    public static int fibonacciOptimized(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        int a = 0, b = 1;
+        for (int i = 2; i <= n; i++) {
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+        return b;
+    }
 
-# 空间优化版本
-def fibonacci_optimized(n):
-    if n <= 1:
-        return n
-    a, b = 0, 1
-    for _ in range(2, n + 1):
-        a, b = b, a + b
-    return b
+    // 测试
+    public static void main(String[] args) {
+        System.out.println("fibonacci(10): " + fibonacci(10));
+        System.out.println("fibonacciOptimized(10): " + fibonacciOptimized(10));
+        // 输出: 55
+    }
+}
 ```
 
 #### 2. 0-1背包问题
@@ -1718,30 +1756,49 @@ def fibonacci_optimized(n):
 
 **边界条件**：`dp[0][j] = 0, dp[i][0] = 0`
 
-```python
-def knapsack_01(w, v, C):
-    n = len(w)
-    dp = [[0] * (C + 1) for _ in range(n + 1)]
+```java
+public class Knapsack01 {
+    public static int knapsack01(int[] w, int[] v, int C) {
+        int n = w.length;
+        int[][] dp = new int[n + 1][C + 1];
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= C; j++) {
+                if (j >= w[i - 1]) {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - w[i - 1]] + v[i - 1]);
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        
+        return dp[n][C];
+    }
     
-    for i in range(1, n + 1):
-        for j in range(1, C + 1):
-            if j >= w[i-1]:
-                dp[i][j] = max(dp[i-1][j], dp[i-1][j - w[i-1]] + v[i-1])
-            else:
-                dp[i][j] = dp[i-1][j]
-    
-    return dp[n][C]
+    // 空间优化版本
+    public static int knapsack01Optimized(int[] w, int[] v, int C) {
+        int n = w.length;
+        int[] dp = new int[C + 1];
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = C; j >= w[i]; j--) {
+                dp[j] = Math.max(dp[j], dp[j - w[i]] + v[i]);
+            }
+        }
+        
+        return dp[C];
+    }
 
-# 空间优化版本
-def knapsack_01_optimized(w, v, C):
-    n = len(w)
-    dp = [0] * (C + 1)
-    
-    for i in range(n):
-        for j in range(C, w[i] - 1, -1):
-            dp[j] = max(dp[j], dp[j - w[i]] + v[i])
-    
-    return dp[C]
+    // 测试
+    public static void main(String[] args) {
+        int[] w = {2, 3, 4, 5};
+        int[] v = {3, 4, 5, 6};
+        int C = 8;
+        System.out.println("最大价值: " + knapsack01(w, v, C));
+        System.out.println("最大价值(优化): " + knapsack01Optimized(w, v, C));
+        // 输出: 10
+    }
+}
 ```
 
 #### 3. 最长递增子序列
@@ -1754,36 +1811,65 @@ def knapsack_01_optimized(w, v, C):
 
 **边界条件**：`dp[i] = 1`（每个元素自身构成一个长度为1的子序列）
 
-```python
-def length_of_lis(nums):
-    if not nums:
-        return 0
-    n = len(nums)
-    dp = [1] * n
-    
-    for i in range(1, n):
-        for j in range(i):
-            if nums[j] < nums[i]:
-                dp[i] = max(dp[i], dp[j] + 1)
-    
-    return max(dp)
+```java
+import java.util.Arrays;
 
-# 二分查找优化版本（O(nlogn)）
-def length_of_lis_optimized(nums):
-    tails = []
-    for num in nums:
-        left, right = 0, len(tails)
-        while left < right:
-            mid = (left + right) // 2
-            if tails[mid] < num:
-                left = mid + 1
-            else:
-                right = mid
-        if left == len(tails):
-            tails.append(num)
-        else:
-            tails[left] = num
-    return len(tails)
+public class LongestIncreasingSubsequence {
+    public static int lengthOfLIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        
+        int maxLen = 1;
+        for (int len : dp) {
+            maxLen = Math.max(maxLen, len);
+        }
+        return maxLen;
+    }
+    
+    // 二分查找优化版本（O(nlogn)）
+    public static int lengthOfLISOptimized(int[] nums) {
+        int[] tails = new int[nums.length];
+        int size = 0;
+        
+        for (int num : nums) {
+            int left = 0, right = size;
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                if (tails[mid] < num) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+            tails[left] = num;
+            if (left == size) {
+                size++;
+            }
+        }
+        
+        return size;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
+        System.out.println("LIS长度: " + lengthOfLIS(nums));
+        System.out.println("LIS长度(优化): " + lengthOfLISOptimized(nums));
+        // 输出: 4
+    }
+}
 ```
 
 #### 4. 最长公共子序列
@@ -1798,19 +1884,34 @@ def length_of_lis_optimized(nums):
 
 **边界条件**：`dp[i][0] = 0, dp[0][j] = 0`
 
-```python
-def longest_common_subsequence(s1, s2):
-    m, n = len(s1), len(s2)
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
-    
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if s1[i-1] == s2[j-1]:
-                dp[i][j] = dp[i-1][j-1] + 1
-            else:
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
-    
-    return dp[m][n]
+```java
+public class LongestCommonSubsequence {
+    public static int longestCommonSubsequence(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        String s1 = "abcde";
+        String s2 = "ace";
+        System.out.println("LCS长度: " + longestCommonSubsequence(s1, s2));
+        // 输出: 3
+    }
+}
 ```
 
 #### 5. 爬楼梯问题
@@ -1823,25 +1924,42 @@ def longest_common_subsequence(s1, s2):
 
 **边界条件**：`dp[1] = 1, dp[2] = 2`
 
-```python
-def climb_stairs(n):
-    if n <= 2:
-        return n
-    dp = [0] * (n + 1)
-    dp[1] = 1
-    dp[2] = 2
-    for i in range(3, n + 1):
-        dp[i] = dp[i-1] + dp[i-2]
-    return dp[n]
+```java
+public class ClimbStairs {
+    public static int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+    
+    // 空间优化版本
+    public static int climbStairsOptimized(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int a = 1, b = 2;
+        for (int i = 3; i <= n; i++) {
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+        return b;
+    }
 
-# 空间优化版本
-def climb_stairs_optimized(n):
-    if n <= 2:
-        return n
-    a, b = 1, 2
-    for _ in range(3, n + 1):
-        a, b = b, a + b
-    return b
+    // 测试
+    public static void main(String[] args) {
+        System.out.println("爬楼梯方法数: " + climbStairs(5));
+        System.out.println("爬楼梯方法数(优化): " + climbStairsOptimized(5));
+        // 输出: 8
+    }
+}
 ```
 
 ### 5.12 动态规划的优化技巧
@@ -1902,19 +2020,32 @@ def climb_stairs_optimized(n):
 
 **样例代码**：
 
-```python
-def two_sum(nums, target):
-    n = len(nums)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if nums[i] + nums[j] == target:
-                return [i, j]
-    return []
+```java
+import java.util.HashMap;
+import java.util.Map;
 
-# 测试
-nums = [2, 7, 11, 15]
-target = 9
-print(two_sum(nums, target))  # 输出: [0, 1]
+public class TwoSum {
+    public static int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (map.containsKey(complement)) {
+                return new int[]{map.get(complement), i};
+            }
+            map.put(nums[i], i);
+        }
+        return new int[]{};
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] nums = {2, 7, 11, 15};
+        int target = 9;
+        int[] result = twoSum(nums, target);
+        System.out.println("[" + result[0] + ", " + result[1] + "]");
+        // 输出: [0, 1]
+    }
+}
 ```
 
 #### 6.5.2 全排列
@@ -1923,28 +2054,43 @@ print(two_sum(nums, target))  # 输出: [0, 1]
 
 **样例代码**：
 
-```python
-def permute(nums):
-    def backtrack(path, used):
-        if len(path) == len(nums):
-            result.append(path[:])
-            return
-        for i in range(len(nums)):
-            if used[i]:
-                continue
-            path.append(nums[i])
-            used[i] = True
-            backtrack(path, used)
-            path.pop()
-            used[i] = False
-    
-    result = []
-    backtrack([], [False] * len(nums))
-    return result
+```java
+import java.util.ArrayList;
+import java.util.List;
 
-# 测试
-nums = [1, 2, 3]
-print(permute(nums))  # 输出: [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+public class Permutations {
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        backtrack(result, new ArrayList<>(), nums, used);
+        return result;
+    }
+    
+    private static void backtrack(List<List<Integer>> result, List<Integer> path, int[] nums, boolean[] used) {
+        if (path.size() == nums.length) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+            path.add(nums[i]);
+            used[i] = true;
+            backtrack(result, path, nums, used);
+            path.remove(path.size() - 1);
+            used[i] = false;
+        }
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        List<List<Integer>> result = permute(nums);
+        System.out.println(result);
+        // 输出: [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+    }
+}
 ```
 
 #### 6.5.3 子集和问题
@@ -1953,23 +2099,33 @@ print(permute(nums))  # 输出: [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3,
 
 **样例代码**：
 
-```python
-def subset_sum(nums, target):
-    n = len(nums)
-    # 生成所有可能的子集
-    for i in range(1, 1 << n):
-        current_sum = 0
-        for j in range(n):
-            if i & (1 << j):
-                current_sum += nums[j]
-        if current_sum == target:
-            return True
-    return False
+```java
+public class SubsetSum {
+    public static boolean subsetSum(int[] nums, int target) {
+        int n = nums.length;
+        // 生成所有可能的子集
+        for (int i = 1; i < (1 << n); i++) {
+            int currentSum = 0;
+            for (int j = 0; j < n; j++) {
+                if ((i & (1 << j)) != 0) {
+                    currentSum += nums[j];
+                }
+            }
+            if (currentSum == target) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-# 测试
-nums = [3, 34, 4, 12, 5, 2]
-target = 9
-print(subset_sum(nums, target))  # 输出: True (3 + 4 + 2 = 9)
+    // 测试
+    public static void main(String[] args) {
+        int[] nums = {3, 34, 4, 12, 5, 2};
+        int target = 9;
+        System.out.println(subsetSum(nums, target));
+        // 输出: true (3 + 4 + 2 = 9)
+    }
+}
 ```
 
 ## 7. 贪心算法
@@ -2012,24 +2168,41 @@ print(subset_sum(nums, target))  # 输出: True (3 + 4 + 2 = 9)
 
 **样例代码**：
 
-```python
-def activity_selection(activities):
-    # 按结束时间排序
-    activities.sort(key=lambda x: x[1])
-    selected = []
-    last_end = -1
-    
-    for activity in activities:
-        start, end = activity
-        if start >= last_end:
-            selected.append(activity)
-            last_end = end
-    
-    return selected
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
-# 测试
-activities = [(1, 4), (3, 5), (0, 6), (5, 7), (3, 9), (5, 9), (6, 10), (8, 11), (8, 12), (2, 14), (12, 16)]
-print(activity_selection(activities))  # 输出: [(1, 4), (5, 7), (8, 11), (12, 16)]
+public class ActivitySelection {
+    public static List<int[]> activitySelection(int[][] activities) {
+        // 按结束时间排序
+        Arrays.sort(activities, Comparator.comparingInt(a -> a[1]));
+        List<int[]> selected = new ArrayList<>();
+        int lastEnd = -1;
+        
+        for (int[] activity : activities) {
+            int start = activity[0];
+            int end = activity[1];
+            if (start >= lastEnd) {
+                selected.add(activity);
+                lastEnd = end;
+            }
+        }
+        
+        return selected;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[][] activities = {{1, 4}, {3, 5}, {0, 6}, {5, 7}, {3, 9}, {5, 9}, {6, 10}, {8, 11}, {8, 12}, {2, 14}, {12, 16}};
+        List<int[]> result = activitySelection(activities);
+        for (int[] activity : result) {
+            System.out.print("[" + activity[0] + ", " + activity[1] + "] ");
+        }
+        // 输出: [1, 4] [5, 7] [8, 11] [12, 16]
+    }
+}
 ```
 
 #### 7.5.2 零钱兑换问题
@@ -2038,34 +2211,55 @@ print(activity_selection(activities))  # 输出: [(1, 4), (5, 7), (8, 11), (12, 
 
 **样例代码**：
 
-```python
-def coin_change(coins, amount):
-    # 按面额从大到小排序
-    coins.sort(reverse=True)
-    min_coins = float('inf')
-    
-    def backtrack(remaining, coin_count, index):
-        nonlocal min_coins
-        if remaining == 0:
-            min_coins = min(min_coins, coin_count)
-            return
-        if index >= len(coins):
-            return
-        if coin_count >= min_coins:
-            return
-        
-        # 尽可能多地使用当前面额的硬币
-        max_usage = remaining // coins[index]
-        for i in range(max_usage, -1, -1):
-            backtrack(remaining - i * coins[index], coin_count + i, index + 1)
-    
-    backtrack(amount, 0, 0)
-    return min_coins if min_coins != float('inf') else -1
+```java
+import java.util.Arrays;
 
-# 测试
-coins = [1, 2, 5]
-amount = 11
-print(coin_change(coins, amount))  # 输出: 3 (5 + 5 + 1)
+public class CoinChangeGreedy {
+    private static int minCoins = Integer.MAX_VALUE;
+    
+    public static int coinChange(int[] coins, int amount) {
+        // 按面额从大到小排序
+        int[] sortedCoins = coins.clone();
+        Arrays.sort(sortedCoins);
+        // 反转数组，使其从大到小
+        for (int i = 0; i < sortedCoins.length / 2; i++) {
+            int temp = sortedCoins[i];
+            sortedCoins[i] = sortedCoins[sortedCoins.length - 1 - i];
+            sortedCoins[sortedCoins.length - 1 - i] = temp;
+        }
+        
+        minCoins = Integer.MAX_VALUE;
+        backtrack(sortedCoins, amount, 0, 0);
+        return minCoins == Integer.MAX_VALUE ? -1 : minCoins;
+    }
+    
+    private static void backtrack(int[] coins, int remaining, int coinCount, int index) {
+        if (remaining == 0) {
+            minCoins = Math.min(minCoins, coinCount);
+            return;
+        }
+        if (index >= coins.length) {
+            return;
+        }
+        if (coinCount >= minCoins) {
+            return;
+        }
+        
+        // 尽可能多地使用当前面额的硬币
+        int maxUsage = remaining / coins[index];
+        for (int i = maxUsage; i >= 0; i--) {
+            backtrack(coins, remaining - i * coins[index], coinCount + i, index + 1);
+        }
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] coins = {1, 2, 5};
+        int amount = 11;
+        System.out.println(coinChange(coins, amount));
+        // 输出: 3 (5 + 5 + 1)
+    }
+}
 ```
 
 #### 7.5.3 跳跃游戏
@@ -2074,23 +2268,31 @@ print(coin_change(coins, amount))  # 输出: 3 (5 + 5 + 1)
 
 **样例代码**：
 
-```python
-def can_jump(nums):
-    max_reach = 0
-    for i in range(len(nums)):
-        if i > max_reach:
-            return False
-        max_reach = max(max_reach, i + nums[i])
-        if max_reach >= len(nums) - 1:
-            return True
-    return False
+```java
+public class JumpGame {
+    public static boolean canJump(int[] nums) {
+        int maxReach = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i > maxReach) {
+                return false;
+            }
+            maxReach = Math.max(maxReach, i + nums[i]);
+            if (maxReach >= nums.length - 1) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-# 测试
-nums = [2, 3, 1, 1, 4]
-print(can_jump(nums))  # 输出: True
-
-nums = [3, 2, 1, 0, 4]
-print(can_jump(nums))  # 输出: False
+    // 测试
+    public static void main(String[] args) {
+        int[] nums1 = {2, 3, 1, 1, 4};
+        System.out.println(canJump(nums1));  // 输出: true
+        
+        int[] nums2 = {3, 2, 1, 0, 4};
+        System.out.println(canJump(nums2));  // 输出: false
+    }
+}
 ```
 
 ## 8. 回溯算法
@@ -2133,47 +2335,74 @@ print(can_jump(nums))  # 输出: False
 
 **样例代码**：
 
-```python
-def solve_n_queens(n):
-    def is_valid(board, row, col):
-        # 检查列
-        for i in range(row):
-            if board[i][col] == 'Q':
-                return False
-        # 检查左上到右下的斜线
-        i, j = row - 1, col - 1
-        while i >= 0 and j >= 0:
-            if board[i][j] == 'Q':
-                return False
-            i -= 1
-            j -= 1
-        # 检查右上到左下的斜线
-        i, j = row - 1, col + 1
-        while i >= 0 and j < n:
-            if board[i][j] == 'Q':
-                return False
-            i -= 1
-            j += 1
-        return True
-    
-    def backtrack(row, board):
-        if row == n:
-            result.append([''.join(row) for row in board])
-            return
-        for col in range(n):
-            if is_valid(board, row, col):
-                board[row][col] = 'Q'
-                backtrack(row + 1, board)
-                board[row][col] = '.'
-    
-    result = []
-    board = [['.' for _ in range(n)] for _ in range(n)]
-    backtrack(0, board)
-    return result
+```java
+import java.util.ArrayList;
+import java.util.List;
 
-# 测试
-n = 4
-print(solve_n_queens(n))  # 输出: [[".Q..", "...Q", "Q...", "..Q."], ["..Q.", "Q...", "...Q", ".Q.."]]
+public class NQueens {
+    public static List<List<String>> solveNQueens(int n) {
+        List<List<String>> result = new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = '.';
+            }
+        }
+        backtrack(result, board, 0);
+        return result;
+    }
+    
+    private static void backtrack(List<List<String>> result, char[][] board, int row) {
+        if (row == board.length) {
+            List<String> solution = new ArrayList<>();
+            for (char[] chars : board) {
+                solution.add(new String(chars));
+            }
+            result.add(solution);
+            return;
+        }
+        
+        for (int col = 0; col < board.length; col++) {
+            if (isValid(board, row, col)) {
+                board[row][col] = 'Q';
+                backtrack(result, board, row + 1);
+                board[row][col] = '.';
+            }
+        }
+    }
+    
+    private static boolean isValid(char[][] board, int row, int col) {
+        // 检查列
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == 'Q') {
+                return false;
+            }
+        }
+        // 检查左上到右下的斜线
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
+        }
+        // 检查右上到左下的斜线
+        for (int i = row - 1, j = col + 1; i >= 0 && j < board.length; i--, j++) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int n = 4;
+        List<List<String>> result = solveNQueens(n);
+        for (List<String> solution : result) {
+            System.out.println(solution);
+        }
+        // 输出: [".Q..", "...Q", "Q...", "..Q."] 和 ["..Q.", "Q...", "...Q", ".Q.."]
+    }
+}
 ```
 
 #### 8.5.2 数独求解
@@ -2182,55 +2411,77 @@ print(solve_n_queens(n))  # 输出: [[".Q..", "...Q", "Q...", "..Q."], ["..Q.", 
 
 **样例代码**：
 
-```python
-def solve_sudoku(board):
-    def is_valid(row, col, num):
-        # 检查行
-        for i in range(9):
-            if board[row][i] == num:
-                return False
-        # 检查列
-        for i in range(9):
-            if board[i][col] == num:
-                return False
-        # 检查3x3子网格
-        box_row = (row // 3) * 3
-        box_col = (col // 3) * 3
-        for i in range(3):
-            for j in range(3):
-                if board[box_row + i][box_col + j] == num:
-                    return False
-        return True
+```java
+public class SudokuSolver {
+    public static void solveSudoku(char[][] board) {
+        backtrack(board);
+    }
     
-    def backtrack():
-        for i in range(9):
-            for j in range(9):
-                if board[i][j] == '.':
-                    for num in '123456789':
-                        if is_valid(i, j, num):
-                            board[i][j] = num
-                            if backtrack():
-                                return True
-                            board[i][j] = '.'
-                    return False
-        return True
+    private static boolean backtrack(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') {
+                    for (char c = '1'; c <= '9'; c++) {
+                        if (isValid(board, i, j, c)) {
+                            board[i][j] = c;
+                            if (backtrack(board)) {
+                                return true;
+                            }
+                            board[i][j] = '.';
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     
-    backtrack()
-    return board
+    private static boolean isValid(char[][] board, int row, int col, char num) {
+        // 检查行
+        for (int i = 0; i < 9; i++) {
+            if (board[row][i] == num) {
+                return false;
+            }
+        }
+        // 检查列
+        for (int i = 0; i < 9; i++) {
+            if (board[i][col] == num) {
+                return false;
+            }
+        }
+        // 检查3x3子网格
+        int boxRow = (row / 3) * 3;
+        int boxCol = (col / 3) * 3;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[boxRow + i][boxCol + j] == num) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
-# 测试
-board = [
-    ["5", "3", ".", ".", "7", ".", ".", ".", "."],
-    ["6", ".", ".", "1", "9", "5", ".", ".", "."],
-    [".", "9", "8", ".", ".", ".", ".", "6", "."],
-    ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
-    ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
-    ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
-    [".", "6", ".", ".", ".", ".", "2", "8", "."],
-    [".", ".", ".", "4", "1", "9", ".", ".", "5"],
-    [".", ".", ".", ".", "8", ".", ".", "7", "9"]
-]
-print(solve_sudoku(board))
+    // 测试
+    public static void main(String[] args) {
+        char[][] board = {
+            {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+            {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+            {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+            {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+            {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+            {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+            {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+            {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+            {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
+        solveSudoku(board);
+        for (char[] row : board) {
+            System.out.println(new String(row));
+        }
+    }
+}
 ```
 
 #### 8.5.3 组合总和
@@ -2239,22 +2490,42 @@ print(solve_sudoku(board))
 
 **样例代码**：
 
-```python
-def combination_sum(candidates, target):
-    def backtrack(start, path, current_sum):
-        if current_sum == target:
-            result.append(path[:])
-            return
-        if current_sum > target:
-            return
-        for i in range(start, len(candidates)):
-            path.append(candidates[i])
-            backtrack(i, path, current_sum + candidates[i])
-            path.pop()
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class CombinationSum {
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(result, new ArrayList<>(), candidates, target, 0);
+        return result;
+    }
     
-    result = []
-    backtrack(0, [], 0)
-    return result
+    private static void backtrack(List<List<Integer>> result, List<Integer> path, int[] candidates, int remain, int start) {
+        if (remain == 0) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        if (remain < 0) {
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            path.add(candidates[i]);
+            backtrack(result, path, candidates, remain - candidates[i], i);
+            path.remove(path.size() - 1);
+        }
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] candidates = {2, 3, 6, 7};
+        int target = 7;
+        List<List<Integer>> result = combinationSum(candidates, target);
+        System.out.println(result);
+        // 输出: [[2, 2, 3], [7]]
+    }
+}
+```
 
 # 测试
 candidates = [2, 3, 6, 7]
@@ -2303,52 +2574,83 @@ print(combination_sum(candidates, target))  # 输出: [[2, 2, 3], [7]]
 
 **样例代码**：
 
-```python
-import heapq
+```java
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Set;
 
-def travelingsalesmanproblem(distances):
-    n = len(distances)
-    # 状态: (当前成本, 当前城市, 已访问的城市)
-    # 使用优先队列，按当前成本排序
-    heap = []
-    # 从城市0出发，已访问城市0
-    heapq.heappush(heap, (0, 0, frozenset([0])))
-    
-    min_cost = float('inf')
-    
-    while heap:
-        current_cost, current_city, visited = heapq.heappop(heap)
+public class TravelingSalesmanProblem {
+    static class State implements Comparable<State> {
+        int cost;
+        int city;
+        Set<Integer> visited;
         
-        # 如果所有城市都已访问，返回起始城市
-        if len(visited) == n:
-            total_cost = current_cost + distances[current_city][0]
-            if total_cost < min_cost:
-                min_cost = total_cost
-            continue
+        State(int cost, int city, Set<Integer> visited) {
+            this.cost = cost;
+            this.city = city;
+            this.visited = new HashSet<>(visited);
+        }
         
-        # 剪枝：如果当前成本已经大于已知的最小成本，跳过
-        if current_cost >= min_cost:
-            continue
-        
-        # 探索下一个城市
-        for next_city in range(n):
-            if next_city not in visited:
-                new_cost = current_cost + distances[current_city][next_city]
-                # 剪枝：如果新成本已经大于已知的最小成本，跳过
-                if new_cost < min_cost:
-                    new_visited = visited.union({next_city})
-                    heapq.heappush(heap, (new_cost, next_city, new_visited))
+        @Override
+        public int compareTo(State other) {
+            return Integer.compare(this.cost, other.cost);
+        }
+    }
     
-    return min_cost
+    public static int tsp(int[][] distances) {
+        int n = distances.length;
+        PriorityQueue<State> pq = new PriorityQueue<>();
+        
+        // 从城市0出发，已访问城市0
+        Set<Integer> initialVisited = new HashSet<>();
+        initialVisited.add(0);
+        pq.offer(new State(0, 0, initialVisited));
+        
+        int minCost = Integer.MAX_VALUE;
+        
+        while (!pq.isEmpty()) {
+            State current = pq.poll();
+            
+            // 如果所有城市都已访问，返回起始城市
+            if (current.visited.size() == n) {
+                int totalCost = current.cost + distances[current.city][0];
+                minCost = Math.min(minCost, totalCost);
+                continue;
+            }
+            
+            // 剪枝：如果当前成本已经大于已知的最小成本，跳过
+            if (current.cost >= minCost) {
+                continue;
+            }
+            
+            // 探索下一个城市
+            for (int nextCity = 0; nextCity < n; nextCity++) {
+                if (!current.visited.contains(nextCity)) {
+                    int newCost = current.cost + distances[current.city][nextCity];
+                    // 剪枝：如果新成本已经大于已知的最小成本，跳过
+                    if (newCost < minCost) {
+                        Set<Integer> newVisited = new HashSet<>(current.visited);
+                        newVisited.add(nextCity);
+                        pq.offer(new State(newCost, nextCity, newVisited));
+                    }
+                }
+            }
+        }
+        
+        return minCost;
+    }
 
-# 测试
-distances = [
-    [0, 10, 15, 20],
-    [10, 0, 35, 25],
-    [15, 35, 0, 30],
-    [20, 25, 30, 0]
-]
-print(travelingsalesmanproblem(distances))  # 输出: 80
+    // 测试
+    public static void main(String[] args) {
+        int[][] distances = {
+            {0, 10, 15, 20},
+            {10, 0, 35, 25},
+            {15, 35, 0, 30},
+            {20, 25, 30, 0}
+        };
+        System.out.println(tsp(distances));  // 输出: 80
+    }
+}
 ```
 
 #### 9.5.2 0-1背包问题
@@ -2357,85 +2659,103 @@ print(travelingsalesmanproblem(distances))  # 输出: 80
 
 **样例代码**：
 
-```python
-import heapq
+```java
+import java.util.PriorityQueue;
 
-def knapsack_01_branch_and_bound(values, weights, capacity):
-    n = len(values)
-    # 计算价值重量比，用于排序
-    items = sorted(range(n), key=lambda i: values[i]/weights[i], reverse=True)
+public class KnapsackBranchAndBound {
+    static class Node implements Comparable<Node> {
+        int level;
+        int value;
+        int weight;
+        double bound;
+        
+        Node(int level, int value, int weight, double bound) {
+            this.level = level;
+            this.value = value;
+            this.weight = weight;
+            this.bound = bound;
+        }
+        
+        @Override
+        public int compareTo(Node other) {
+            return Double.compare(other.bound, this.bound);
+        }
+    }
     
-    max_value = 0
+    public static int knapsack01(int[] values, int[] weights, int capacity) {
+        int n = values.length;
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        
+        // 初始节点
+        pq.offer(new Node(-1, 0, 0, Double.MAX_VALUE));
+        
+        int maxValue = 0;
+        
+        while (!pq.isEmpty()) {
+            Node node = pq.poll();
+            
+            // 更新最大价值
+            if (node.value > maxValue) {
+                maxValue = node.value;
+            }
+            
+            // 如果已经处理完所有物品或没有剩余容量，跳过
+            if (node.level == n - 1 || node.weight >= capacity) {
+                continue;
+            }
+            
+            // 剪枝：如果当前上界小于等于已知的最大价值，跳过
+            if (node.bound <= maxValue) {
+                continue;
+            }
+            
+            int nextLevel = node.level + 1;
+            
+            // 选当前物品
+            if (node.weight + weights[nextLevel] <= capacity) {
+                int newValue = node.value + values[nextLevel];
+                int newWeight = node.weight + weights[nextLevel];
+                double newBound = bound(newValue, newWeight, nextLevel + 1, values, weights, capacity);
+                if (newBound > maxValue) {
+                    pq.offer(new Node(nextLevel, newValue, newWeight, newBound));
+                }
+            }
+            
+            // 不选当前物品
+            double newBound = bound(node.value, node.weight, nextLevel + 1, values, weights, capacity);
+            if (newBound > maxValue) {
+                pq.offer(new Node(nextLevel, node.value, node.weight, newBound));
+            }
+        }
+        
+        return maxValue;
+    }
     
-    # 节点: (负的当前价值下界, 当前价值, 当前重量, 当前物品索引)
-    # 使用最大堆，按负的下界排序（因为heapq是最小堆）
-    heap = []
-    # 初始节点：还没有选择任何物品
-    heapq.heappush(heap, (0, 0, 0, 0))
-    
-    while heap:
-        neg_bound, current_value, current_weight, index = heapq.heappop(heap)
-        bound = -neg_bound
+    private static double bound(int value, int weight, int start, int[] values, int[] weights, int capacity) {
+        double bound = value;
+        int remainingCapacity = capacity - weight;
         
-        # 更新最大价值
-        if current_value > max_value:
-            max_value = current_value
+        for (int i = start; i < values.length && remainingCapacity > 0; i++) {
+            if (remainingCapacity >= weights[i]) {
+                bound += values[i];
+                remainingCapacity -= weights[i];
+            } else {
+                bound += values[i] * ((double) remainingCapacity / weights[i]);
+                break;
+            }
+        }
         
-        # 如果已经处理完所有物品，跳过
-        if index == n:
-            continue
-        
-        # 剪枝：如果当前下界小于等于已知的最大价值，跳过
-        if bound <= max_value:
-            continue
-        
-        # 计算不选当前物品的情况
-        # 计算下界：当前价值 + 剩余物品的最大可能价值
-        next_index = index + 1
-        next_weight = current_weight
-        next_value = current_value
-        # 计算下界
-        bound = next_value
-        remaining_capacity = capacity - next_weight
-        for i in range(next_index, n):
-            item = items[i]
-            if remaining_capacity >= weights[item]:
-                bound += values[item]
-                remaining_capacity -= weights[item]
-            else:
-                bound += values[item] * (remaining_capacity / weights[item])
-                break
-        # 如果下界大于当前最大价值，加入堆
-        if bound > max_value:
-            heapq.heappush(heap, (-bound, next_value, next_weight, next_index))
-        
-        # 计算选当前物品的情况
-        item = items[index]
-        next_weight = current_weight + weights[item]
-        if next_weight <= capacity:
-            next_value = current_value + values[item]
-            # 计算下界
-            bound = next_value
-            remaining_capacity = capacity - next_weight
-            for i in range(next_index, n):
-                item = items[i]
-                if remaining_capacity >= weights[item]:
-                    bound += values[item]
-                    remaining_capacity -= weights[item]
-                else:
-                    bound += values[item] * (remaining_capacity / weights[item])
-                    break
-            # 如果下界大于当前最大价值，加入堆
-            if bound > max_value:
-                heapq.heappush(heap, (-bound, next_value, next_weight, next_index))
-    
-    return max_value
+        return bound;
+    }
 
-# 测试
-values = [60, 100, 120]
-weights = [10, 20, 30]
-capacity = 50
-print(knapsack_01_branch_and_bound(values, weights, capacity))  # 输出: 220
+    // 测试
+    public static void main(String[] args) {
+        int[] values = {60, 100, 120};
+        int[] weights = {10, 20, 30};
+        int capacity = 50;
+        System.out.println(knapsack01(values, weights, capacity));  // 输出: 220
+    }
+}
 ```
 
 #### 9.5.3 最短路径问题
@@ -2444,51 +2764,105 @@ print(knapsack_01_branch_and_bound(values, weights, capacity))  # 输出: 220
 
 **样例代码**：
 
-```python
-import heapq
+```java
+import java.util.*;
 
-def shortest_path(graph, start, end):
-    # 使用优先队列，按距离排序
-    heap = []
-    heapq.heappush(heap, (0, start, [start]))
-    # 记录已访问的节点及其最短距离
-    visited = {}
+public class ShortestPath {
+    static class State implements Comparable<State> {
+        int distance;
+        String node;
+        List<String> path;
+        
+        State(int distance, String node, List<String> path) {
+            this.distance = distance;
+            this.node = node;
+            this.path = new ArrayList<>(path);
+        }
+        
+        @Override
+        public int compareTo(State other) {
+            return Integer.compare(this.distance, other.distance);
+        }
+    }
     
-    while heap:
-        current_distance, current_node, path = heapq.heappop(heap)
+    public static Result shortestPath(Map<String, Map<String, Integer>> graph, String start, String end) {
+        PriorityQueue<State> pq = new PriorityQueue<>();
+        Map<String, Integer> visited = new HashMap<>();
         
-        # 如果到达目标节点，返回路径和距离
-        if current_node == end:
-            return path, current_distance
+        // 初始状态
+        List<String> initialPath = new ArrayList<>();
+        initialPath.add(start);
+        pq.offer(new State(0, start, initialPath));
         
-        # 如果当前节点已经访问过，且当前距离大于已记录的最短距离，跳过
-        if current_node in visited and current_distance >= visited[current_node]:
-            continue
+        while (!pq.isEmpty()) {
+            State current = pq.poll();
+            
+            // 如果到达目标节点，返回路径和距离
+            if (current.node.equals(end)) {
+                return new Result(current.path, current.distance);
+            }
+            
+            // 如果当前节点已经访问过，且当前距离大于已记录的最短距离，跳过
+            if (visited.containsKey(current.node) && current.distance >= visited.get(current.node)) {
+                continue;
+            }
+            
+            // 记录当前节点的最短距离
+            visited.put(current.node, current.distance);
+            
+            // 探索邻居节点
+            if (graph.containsKey(current.node)) {
+                for (Map.Entry<String, Integer> neighbor : graph.get(current.node).entrySet()) {
+                    int distance = current.distance + neighbor.getValue();
+                    // 如果邻居节点未访问过，或者当前距离小于已记录的距离，加入队列
+                    if (!visited.containsKey(neighbor.getKey()) || distance < visited.get(neighbor.getKey())) {
+                        List<String> newPath = new ArrayList<>(current.path);
+                        newPath.add(neighbor.getKey());
+                        pq.offer(new State(distance, neighbor.getKey(), newPath));
+                    }
+                }
+            }
+        }
         
-        # 记录当前节点的最短距离
-        visited[current_node] = current_distance
-        
-        # 探索邻居节点
-        for neighbor, weight in graph[current_node].items():
-            distance = current_distance + weight
-            # 如果邻居节点未访问过，或者当前距离小于已记录的距离，加入堆
-            if neighbor not in visited or distance < visited.get(neighbor, float('inf')):
-                heapq.heappush(heap, (distance, neighbor, path + [neighbor]))
+        // 如果无法到达目标节点
+        return new Result(null, Integer.MAX_VALUE);
+    }
     
-    # 如果无法到达目标节点
-    return None, float('inf')
+    static class Result {
+        List<String> path;
+        int distance;
+        
+        Result(List<String> path, int distance) {
+            this.path = path;
+            this.distance = distance;
+        }
+    }
 
-# 测试
-graph = {
-    'A': {'B': 1, 'C': 4},
-    'B': {'A': 1, 'C': 2, 'D': 5},
-    'C': {'A': 4, 'B': 2, 'D': 1},
-    'D': {'B': 5, 'C': 1}
+    // 测试
+    public static void main(String[] args) {
+        Map<String, Map<String, Integer>> graph = new HashMap<>();
+        graph.put("A", new HashMap<>());
+        graph.get("A").put("B", 1);
+        graph.get("A").put("C", 4);
+        graph.put("B", new HashMap<>());
+        graph.get("B").put("A", 1);
+        graph.get("B").put("C", 2);
+        graph.get("B").put("D", 5);
+        graph.put("C", new HashMap<>());
+        graph.get("C").put("A", 4);
+        graph.get("C").put("B", 2);
+        graph.get("C").put("D", 1);
+        graph.put("D", new HashMap<>());
+        graph.get("D").put("B", 5);
+        graph.get("D").put("C", 1);
+        
+        String start = "A";
+        String end = "D";
+        Result result = shortestPath(graph, start, end);
+        System.out.println("最短路径: " + result.path + ", 距离: " + result.distance);
+        // 输出: 最短路径: [A, B, C, D], 距离: 4
+    }
 }
-start = 'A'
-end = 'D'
-path, distance = shortest_path(graph, start, end)
-print(f"最短路径: {path}, 距离: {distance}")  # 输出: 最短路径: ['A', 'B', 'C', 'D'], 距离: 4
 ```
 
 ## 10. 数据结构
@@ -2600,122 +2974,149 @@ Level 1: 1 --> 3 --> 5 --> 7 --> 9 --> 10
 
 #### 样例代码
 
-```python
-import random
+```java
+import java.util.Random;
 
-class SkipNode:
-    def __init__(self, value, level):
-        self.value = value
-        self.forward = [None] * (level + 1)  # 存储各层的下一个节点
+class SkipNode {
+    int value;
+    SkipNode[] forward;
+    
+    SkipNode(int value, int level) {
+        this.value = value;
+        this.forward = new SkipNode[level + 1];
+    }
+}
 
-class SkipList:
-    def __init__(self, max_level=4):
-        self.max_level = max_level
-        self.level = 0  # 当前跳跃表的最大层数
-        self.header = SkipNode(-1, max_level)  # 头节点，值为-1
+public class SkipList {
+    private int maxLevel;
+    private int level;
+    private SkipNode header;
+    private Random random;
     
-    def random_level(self):
-        """随机生成节点的层数，遵循几何分布"""
-        level = 0
-        while random.random() < 0.5 and level < self.max_level:
-            level += 1
-        return level
+    public SkipList(int maxLevel) {
+        this.maxLevel = maxLevel;
+        this.level = 0;
+        this.header = new SkipNode(-1, maxLevel);
+        this.random = new Random();
+    }
     
-    def insert(self, value):
-        """插入新值"""
-        # 用于存储每一层需要更新的节点
-        update = [None] * (self.max_level + 1)
-        current = self.header
-        
-        # 从最高层开始查找插入位置
-        for i in range(self.level, -1, -1):
-            while current.forward[i] and current.forward[i].value < value:
-                current = current.forward[i]
-            update[i] = current
-        
-        # 随机生成新节点的层数
-        new_level = self.random_level()
-        
-        # 如果新节点的层数超过当前跳跃表的高度，则更新跳跃表的高度
-        if new_level > self.level:
-            for i in range(self.level + 1, new_level + 1):
-                update[i] = self.header
-            self.level = new_level
-        
-        # 创建新节点并插入
-        new_node = SkipNode(value, new_level)
-        for i in range(new_level + 1):
-            new_node.forward[i] = update[i].forward[i]
-            update[i].forward[i] = new_node
+    private int randomLevel() {
+        int level = 0;
+        while (random.nextDouble() < 0.5 && level < maxLevel) {
+            level++;
+        }
+        return level;
+    }
     
-    def search(self, value):
-        """查找值"""
-        current = self.header
+    public void insert(int value) {
+        SkipNode[] update = new SkipNode[maxLevel + 1];
+        SkipNode current = header;
         
-        # 从最高层开始查找
-        for i in range(self.level, -1, -1):
-            while current.forward[i] and current.forward[i].value < value:
-                current = current.forward[i]
+        // 从最高层开始查找插入位置
+        for (int i = level; i >= 0; i--) {
+            while (current.forward[i] != null && current.forward[i].value < value) {
+                current = current.forward[i];
+            }
+            update[i] = current;
+        }
         
-        # 移动到下一个节点，判断是否找到
-        current = current.forward[0]
-        if current and current.value == value:
-            return True
-        return False
+        // 随机生成新节点的层数
+        int newLevel = randomLevel();
+        
+        // 如果新节点的层数超过当前跳跃表的高度，则更新跳跃表的高度
+        if (newLevel > level) {
+            for (int i = level + 1; i <= newLevel; i++) {
+                update[i] = header;
+            }
+            level = newLevel;
+        }
+        
+        // 创建新节点并插入
+        SkipNode newNode = new SkipNode(value, newLevel);
+        for (int i = 0; i <= newLevel; i++) {
+            newNode.forward[i] = update[i].forward[i];
+            update[i].forward[i] = newNode;
+        }
+    }
     
-    def delete(self, value):
-        """删除值"""
-        # 用于存储每一层需要更新的节点
-        update = [None] * (self.max_level + 1)
-        current = self.header
+    public boolean search(int value) {
+        SkipNode current = header;
         
-        # 从最高层开始查找
-        for i in range(self.level, -1, -1):
-            while current.forward[i] and current.forward[i].value < value:
-                current = current.forward[i]
-            update[i] = current
+        // 从最高层开始查找
+        for (int i = level; i >= 0; i--) {
+            while (current.forward[i] != null && current.forward[i].value < value) {
+                current = current.forward[i];
+            }
+        }
         
-        # 移动到下一个节点，判断是否找到
-        current = current.forward[0]
-        if current and current.value == value:
-            # 从最低层开始删除
-            for i in range(self.level + 1):
-                if update[i].forward[i] != current:
-                    break
-                update[i].forward[i] = current.forward[i]
+        // 移动到下一个节点，判断是否找到
+        current = current.forward[0];
+        return current != null && current.value == value;
+    }
+    
+    public boolean delete(int value) {
+        SkipNode[] update = new SkipNode[maxLevel + 1];
+        SkipNode current = header;
+        
+        // 从最高层开始查找
+        for (int i = level; i >= 0; i--) {
+            while (current.forward[i] != null && current.forward[i].value < value) {
+                current = current.forward[i];
+            }
+            update[i] = current;
+        }
+        
+        // 移动到下一个节点，判断是否找到
+        current = current.forward[0];
+        if (current != null && current.value == value) {
+            // 从最低层开始删除
+            for (int i = 0; i <= level; i++) {
+                if (update[i].forward[i] != current) {
+                    break;
+                }
+                update[i].forward[i] = current.forward[i];
+            }
             
-            # 调整跳跃表的高度
-            while self.level > 0 and not self.header.forward[self.level]:
-                self.level -= 1
-            return True
-        return False
+            // 调整跳跃表的高度
+            while (level > 0 && header.forward[level] == null) {
+                level--;
+            }
+            return true;
+        }
+        return false;
+    }
     
-    def display(self):
-        """打印跳跃表结构"""
-        for i in range(self.level, -1, -1):
-            print(f"Level {i}: ", end="")
-            node = self.header.forward[i]
-            while node:
-                print(f"{node.value} --> ", end="")
-                node = node.forward[i]
-            print("None")
+    public void display() {
+        for (int i = level; i >= 0; i--) {
+            System.out.print("Level " + i + ": ");
+            SkipNode node = header.forward[i];
+            while (node != null) {
+                System.out.print(node.value + " --> ");
+                node = node.forward[i];
+            }
+            System.out.println("null");
+        }
+    }
 
-# 测试代码
-if __name__ == "__main__":
-    sl = SkipList()
-    values = [3, 6, 7, 9, 12, 19, 17, 26, 21, 25]
-    for val in values:
-        sl.insert(val)
-    
-    print("跳跃表结构:")
-    sl.display()
-    
-    print("\n查找值 19:", sl.search(19))
-    print("查找值 15:", sl.search(15))
-    
-    print("\n删除值 19:", sl.delete(19))
-    print("跳跃表结构:")
-    sl.display()
+    // 测试代码
+    public static void main(String[] args) {
+        SkipList sl = new SkipList(4);
+        int[] values = {3, 6, 7, 9, 12, 19, 17, 26, 21, 25};
+        for (int val : values) {
+            sl.insert(val);
+        }
+        
+        System.out.println("跳跃表结构:");
+        sl.display();
+        
+        System.out.println("\n查找值 19: " + sl.search(19));
+        System.out.println("查找值 15: " + sl.search(15));
+        
+        System.out.println("\n删除值 19: " + sl.delete(19));
+        System.out.println("跳跃表结构:");
+        sl.display();
+    }
+}
 ```
 
 #### 时间复杂度分析
@@ -3826,6 +4227,100 @@ public class LinkedListCycleII {
 }
 ```
 
+---
+
+#### 15.2.3 K个一组翻转链表 (Reverse Nodes in k-Group)
+
+**原题链接**：[LeetCode 25. Reverse Nodes in k-Group](https://leetcode.cn/problems/reverse-nodes-in-k-group/)
+
+**题目描述**：给你链表的头节点 `head` ，每 `k` 个节点一组进行翻转，请你返回修改后的链表。`k` 是一个正整数，它的值小于或等于链表的长度。如果节点总数不是 `k` 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+**解题思路**：
+1. 首先计算链表长度，确定需要翻转的组数
+2. 使用哑节点简化操作
+3. 每组翻转时，先检查剩余节点是否足够k个
+4. 翻转每组内的节点，然后连接到原链表中
+
+**时间复杂度**：O(n)
+**空间复杂度**：O(1)
+
+**Java代码实现**：
+
+```java
+public class ReverseKGroup {
+    static class ListNode {
+        int val;
+        ListNode next;
+        
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    
+    public static ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k == 1) {
+            return head;
+        }
+        
+        // 计算链表长度
+        int length = 0;
+        ListNode current = head;
+        while (current != null) {
+            length++;
+            current = current.next;
+        }
+        
+        // 哑节点
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+        
+        // 需要翻转的组数
+        int groups = length / k;
+        
+        for (int i = 0; i < groups; i++) {
+            current = prev.next;
+            ListNode next = null;
+            ListNode groupPrev = null;
+            
+            // 翻转当前组
+            for (int j = 0; j < k; j++) {
+                next = current.next;
+                current.next = groupPrev;
+                groupPrev = current;
+                current = next;
+            }
+            
+            // 连接翻转后的组到原链表
+            ListNode temp = prev.next;
+            prev.next = groupPrev;
+            temp.next = current;
+            prev = temp;
+        }
+        
+        return dummy.next;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        // 构建链表: 1 -> 2 -> 3 -> 4 -> 5
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
+        
+        ListNode result = reverseKGroup(head, 2);
+        System.out.print("翻转后的链表: ");
+        while (result != null) {
+            System.out.print(result.val + " ");
+            result = result.next;
+        }
+        // 输出: 2 1 4 3 5
+    }
+}
+```
+
 ### 15.3 树与图
 
 #### 15.3.1 二叉树的最近公共祖先 (Lowest Common Ancestor of a Binary Tree)
@@ -3951,6 +4446,152 @@ public class CourseSchedule {
 }
 ```
 
+---
+
+#### 15.3.3 岛屿数量 (Number of Islands)
+
+**原题链接**：[LeetCode 200. Number of Islands](https://leetcode.cn/problems/number-of-islands/)
+
+**题目描述**：给定一个由 `'1'`（陆地）和 `'0'`（水）组成的的二维网格，计算岛屿的数量。岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+
+**解题思路**：
+1. 遍历二维网格，当遇到陆地时，进行DFS或BFS遍历
+2. 将遍历过的陆地标记为已访问（如改为'0'）
+3. 每次完整的遍历代表一个岛屿，计数器加1
+
+**时间复杂度**：O(m * n)，m和n分别是网格的行数和列数
+**空间复杂度**：O(m * n)，最坏情况下，整个网格都是陆地，递归深度达到m*n
+
+**Java代码实现**：
+
+```java
+public class NumberOfIslands {
+    public static int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        
+        int count = 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    private static void dfs(char[][] grid, int i, int j) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        
+        // 边界条件或已访问
+        if (i < 0 || i >= rows || j < 0 || j >= cols || grid[i][j] == '0') {
+            return;
+        }
+        
+        // 标记为已访问
+        grid[i][j] = '0';
+        
+        // 上下左右四个方向
+        dfs(grid, i - 1, j); // 上
+        dfs(grid, i + 1, j); // 下
+        dfs(grid, i, j - 1); // 左
+        dfs(grid, i, j + 1); // 右
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        char[][] grid = {
+            {'1', '1', '1', '1', '0'},
+            {'1', '1', '0', '1', '0'},
+            {'1', '1', '0', '0', '0'},
+            {'0', '0', '0', '0', '0'}
+        };
+        int result = numIslands(grid);
+        System.out.println("岛屿数量: " + result);
+        // 输出: 1
+    }
+}
+```
+
+---
+
+#### 15.3.4 二叉树的最大路径和 (Binary Tree Maximum Path Sum)
+
+**原题链接**：[LeetCode 124. Binary Tree Maximum Path Sum](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
+
+**题目描述**：二叉树中的**路径**被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中**至多出现一次**。该路径**至少包含一个**节点，且不一定经过根节点。**路径和**是路径中各节点值的总和。给你一个二叉树的根节点 `root` ，返回其**最大路径和**。
+
+**解题思路**：
+1. 对于每个节点，计算以该节点为根的最大路径和
+2. 路径可以是：左子树路径 + 当前节点 + 右子树路径
+3. 递归计算每个节点的最大贡献值，同时更新全局最大路径和
+
+**时间复杂度**：O(n)，每个节点被访问一次
+**空间复杂度**：O(h)，h为树的高度，递归栈的空间
+
+**Java代码实现**：
+
+```java
+public class BinaryTreeMaximumPathSum {
+    static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        
+        TreeNode(int val) {
+            this.val = val;
+        }
+    }
+    
+    private static int maxSum = Integer.MIN_VALUE;
+    
+    public static int maxPathSum(TreeNode root) {
+        maxSum = Integer.MIN_VALUE;
+        maxGain(root);
+        return maxSum;
+    }
+    
+    private static int maxGain(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        
+        // 递归计算左右子节点的最大贡献值
+        // 只有在最大贡献值大于0时，才会选取对应子节点
+        int leftGain = Math.max(maxGain(node.left), 0);
+        int rightGain = Math.max(maxGain(node.right), 0);
+        
+        // 节点的最大路径和取决于该节点的值与该节点左右子节点的最大贡献值
+        int priceNewPath = node.val + leftGain + rightGain;
+        
+        // 更新答案
+        maxSum = Math.max(maxSum, priceNewPath);
+        
+        // 返回节点的最大贡献值
+        return node.val + Math.max(leftGain, rightGain);
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        
+        int result = maxPathSum(root);
+        System.out.println("最大路径和: " + result);
+        // 输出: 6 (路径: 2 -> 1 -> 3)
+    }
+}
+```
+
 ### 15.4 动态规划
 
 #### 15.4.1 最长公共子序列 (Longest Common Subsequence)
@@ -4056,6 +4697,163 @@ public class EditDistance {
         int result = minDistance(word1, word2);
         System.out.println("最小操作数: " + result);
         // 输出: 3
+    }
+}
+```
+
+---
+
+#### 15.4.3 买卖股票的最佳时机 (Best Time to Buy and Sell Stock)
+
+**原题链接**：[LeetCode 121. Best Time to Buy and Sell Stock](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)
+
+**题目描述**：给定一个数组 `prices` ，它的第 `i` 个元素 `prices[i]` 是一支给定股票第 `i` 天的价格。如果你最多只允许完成一笔交易（即买入和卖出一只股票），设计一个算法来计算你所能获取的最大利润。
+
+**解题思路**：
+1. 遍历数组，记录到目前为止的最低价格
+2. 计算当前价格与最低价格的差值，更新最大利润
+3. 时间复杂度O(n)，空间复杂度O(1)
+
+**时间复杂度**：O(n)
+**空间复杂度**：O(1)
+
+**Java代码实现**：
+
+```java
+public class BestTimeToBuyAndSellStock {
+    public static int maxProfit(int[] prices) {
+        if (prices == null || prices.length < 2) {
+            return 0;
+        }
+        
+        int minPrice = prices[0];
+        int maxProfit = 0;
+        
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] < minPrice) {
+                minPrice = prices[i];
+            } else {
+                maxProfit = Math.max(maxProfit, prices[i] - minPrice);
+            }
+        }
+        
+        return maxProfit;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] prices = {7, 1, 5, 3, 6, 4};
+        int result = maxProfit(prices);
+        System.out.println("最大利润: " + result);
+        // 输出: 5 (在第2天买入，第5天卖出)
+    }
+}
+```
+
+---
+
+#### 15.4.4 最长递增子序列 (Longest Increasing Subsequence)
+
+**原题链接**：[LeetCode 300. Longest Increasing Subsequence](https://leetcode.cn/problems/longest-increasing-subsequence/)
+
+**题目描述**：给你一个整数数组 `nums` ，找到其中最长严格递增子序列的长度。
+
+**解题思路**：
+1. 动态规划：dp[i]表示以nums[i]结尾的最长递增子序列长度
+2. 对于每个i，遍历之前的所有j，如果nums[j] < nums[i]，则dp[i] = max(dp[i], dp[j] + 1)
+3. 优化：使用二分查找，维护一个递增数组
+
+**时间复杂度**：O(n²)，优化后O(nlogn)
+**空间复杂度**：O(n)
+
+**Java代码实现**：
+
+```java
+import java.util.Arrays;
+
+public class LongestIncreasingSubsequence {
+    public static int lengthOfLIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        
+        int maxLength = 1;
+        
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            maxLength = Math.max(maxLength, dp[i]);
+        }
+        
+        return maxLength;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
+        int result = lengthOfLIS(nums);
+        System.out.println("最长递增子序列长度: " + result);
+        // 输出: 4 ([2, 3, 7, 101])
+    }
+}
+```
+
+---
+
+#### 15.4.5 零钱兑换 (Coin Change)
+
+**原题链接**：[LeetCode 322. Coin Change](https://leetcode.cn/problems/coin-change/)
+
+**题目描述**：给你一个整数数组 `coins` ，表示不同面额的硬币；以及一个整数 `amount` ，表示总金额。计算并返回可以凑成总金额所需的**最少的硬币个数** 。如果没有任何一种硬币组合能组成总金额，返回 `-1` 。
+
+**解题思路**：
+1. 动态规划：dp[i]表示凑成金额i所需的最少硬币数
+2. 初始化dp[0] = 0，其他为无穷大
+3. 对于每个金额i，遍历所有硬币，dp[i] = min(dp[i], dp[i - coin] + 1)
+
+**时间复杂度**：O(amount * n)，n为硬币种类数
+**空间复杂度**：O(amount)
+
+**Java代码实现**：
+
+```java
+import java.util.Arrays;
+
+public class CoinChange {
+    public static int coinChange(int[] coins, int amount) {
+        if (coins == null || coins.length == 0) {
+            return -1;
+        }
+        
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+        
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (coin <= i) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int[] coins = {1, 2, 5};
+        int amount = 11;
+        int result = coinChange(coins, amount);
+        System.out.println("最少硬币数: " + result);
+        // 输出: 3 (5 + 5 + 1)
     }
 }
 ```
@@ -4223,23 +5021,321 @@ public class NQueens {
 }
 ```
 
-### 15.6 大厂面试题汇总表
+### 15.6 设计类题目
+
+#### 15.6.1 LRU缓存机制 (LRU Cache)
+
+**原题链接**：[LeetCode 146. LRU Cache](https://leetcode.cn/problems/lru-cache/)
+
+**题目描述**：请你设计并实现一个满足 LRU (最近最少使用) 缓存约束的数据结构。实现 `LRUCache` 类：
+- `LRUCache(int capacity)` 以**正整数**作为容量 `capacity` 初始化 LRU 缓存
+- `int get(int key)` 如果关键字 `key` 存在于缓存中，则返回关键字的值，否则返回 `-1` 。
+- `void put(int key, int value)` 如果关键字 `key` 已经存在，则变更其数据值 `value` ；如果不存在，则向缓存中插入该组 `key-value` 。如果插入操作导致关键字数量超过 `capacity` ，则应该逐出**最久未使用**的关键字。
+
+**解题思路**：
+1. 使用哈希表 + 双向链表的组合结构
+2. 哈希表用于O(1)时间查找
+3. 双向链表维护访问顺序，最近访问的在头部，最久未访问的在尾部
+4. get操作：查找并移动到头部
+5. put操作：插入或更新，并移动到头部，超出容量则删除尾部
+
+**时间复杂度**：get和put均为O(1)
+**空间复杂度**：O(capacity)
+
+**Java代码实现**：
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class LRUCache {
+    class DLinkedNode {
+        int key;
+        int value;
+        DLinkedNode prev;
+        DLinkedNode next;
+        
+        DLinkedNode() {}
+        DLinkedNode(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+    
+    private Map<Integer, DLinkedNode> cache = new HashMap<>();
+    private int size;
+    private int capacity;
+    private DLinkedNode head, tail;
+    
+    public LRUCache(int capacity) {
+        this.size = 0;
+        this.capacity = capacity;
+        // 使用伪头部和伪尾部节点
+        head = new DLinkedNode();
+        tail = new DLinkedNode();
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public int get(int key) {
+        DLinkedNode node = cache.get(key);
+        if (node == null) {
+            return -1;
+        }
+        // 如果key存在，先通过哈希表定位，再移到头部
+        moveToHead(node);
+        return node.value;
+    }
+    
+    public void put(int key, int value) {
+        DLinkedNode node = cache.get(key);
+        if (node == null) {
+            // 如果key不存在，创建一个新的节点
+            DLinkedNode newNode = new DLinkedNode(key, value);
+            // 添加进哈希表
+            cache.put(key, newNode);
+            // 添加至双向链表的头部
+            addToHead(newNode);
+            size++;
+            if (size > capacity) {
+                // 如果超出容量，删除双向链表的尾部节点
+                DLinkedNode tail = removeTail();
+                // 删除哈希表中对应的项
+                cache.remove(tail.key);
+                size--;
+            }
+        } else {
+            // 如果key存在，先通过哈希表定位，再修改value，并移到头部
+            node.value = value;
+            moveToHead(node);
+        }
+    }
+    
+    private void addToHead(DLinkedNode node) {
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+    
+    private void removeNode(DLinkedNode node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+    
+    private void moveToHead(DLinkedNode node) {
+        removeNode(node);
+        addToHead(node);
+    }
+    
+    private DLinkedNode removeTail() {
+        DLinkedNode res = tail.prev;
+        removeNode(res);
+        return res;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        LRUCache lRUCache = new LRUCache(2);
+        lRUCache.put(1, 1); // 缓存是 {1=1}
+        lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}
+        System.out.println(lRUCache.get(1));    // 返回 1
+        lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+        System.out.println(lRUCache.get(2));    // 返回 -1 (未找到)
+        lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+        System.out.println(lRUCache.get(1));    // 返回 -1 (未找到)
+        System.out.println(lRUCache.get(3));    // 返回 3
+        System.out.println(lRUCache.get(4));    // 返回 4
+    }
+}
+```
+
+---
+
+#### 15.6.2 最小栈 (Min Stack)
+
+**原题链接**：[LeetCode 155. Min Stack](https://leetcode.cn/problems/min-stack/)
+
+**题目描述**：设计一个支持 `push` ，`pop` ，`top` 操作，并能在常数时间内检索到最小元素的栈。实现 `MinStack` 类：
+- `MinStack()` 初始化堆栈对象。
+- `void push(int val)` 将元素val推入堆栈。
+- `void pop()` 删除堆栈顶部的元素。
+- `int top()` 获取堆栈顶部的元素。
+- `int getMin()` 获取堆栈中的最小元素。
+
+**解题思路**：
+1. 使用辅助栈存储每个位置对应的最小值
+2. 每次push时，辅助栈push当前最小值
+3. 每次pop时，辅助栈也pop
+4. getMin直接返回辅助栈栈顶
+
+**时间复杂度**：所有操作均为O(1)
+**空间复杂度**：O(n)
+
+**Java代码实现**：
+
+```java
+import java.util.Stack;
+
+public class MinStack {
+    private Stack<Integer> stack;
+    private Stack<Integer> minStack;
+    
+    public MinStack() {
+        stack = new Stack<>();
+        minStack = new Stack<>();
+        minStack.push(Integer.MAX_VALUE);
+    }
+    
+    public void push(int val) {
+        stack.push(val);
+        minStack.push(Math.min(minStack.peek(), val));
+    }
+    
+    public void pop() {
+        stack.pop();
+        minStack.pop();
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int getMin() {
+        return minStack.peek();
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        MinStack minStack = new MinStack();
+        minStack.push(-2);
+        minStack.push(0);
+        minStack.push(-3);
+        System.out.println(minStack.getMin()); // 返回 -3
+        minStack.pop();
+        System.out.println(minStack.top());    // 返回 0
+        System.out.println(minStack.getMin()); // 返回 -2
+    }
+}
+```
+
+---
+
+#### 15.6.3 实现Trie (Implement Trie)
+
+**原题链接**：[LeetCode 208. Implement Trie (Prefix Tree)](https://leetcode.cn/problems/implement-trie-prefix-tree/)
+
+**题目描述**：**Trie**（发音类似 "try"）或者说**前缀树**是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。实现 Trie 类：
+- `Trie()` 初始化前缀树对象。
+- `void insert(String word)` 向前缀树中插入字符串 `word` 。
+- `boolean search(String word)` 如果字符串 `word` 在前缀树中，返回 `true`（即，在检索之前已经插入）；否则，返回 `false` 。
+- `boolean startsWith(String prefix)` 如果之前已经插入的字符串 `word` 的前缀之一为 `prefix` ，返回 `true` ；否则，返回 `false` 。
+
+**解题思路**：
+1. 每个节点包含26个子节点（对应26个字母）和一个结束标志
+2. insert：逐字符创建路径，最后标记结束
+3. search：逐字符查找，最后检查结束标志
+4. startsWith：逐字符查找，不需要检查结束标志
+
+**时间复杂度**：所有操作均为O(m)，m为字符串长度
+**空间复杂度**：O(字符总数 × 26)
+
+**Java代码实现**：
+
+```java
+public class Trie {
+    private TrieNode root;
+    
+    private class TrieNode {
+        private TrieNode[] children;
+        private boolean isEnd;
+        
+        public TrieNode() {
+            children = new TrieNode[26];
+            isEnd = false;
+        }
+    }
+    
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    public void insert(String word) {
+        TrieNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            int index = ch - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new TrieNode();
+            }
+            node = node.children[index];
+        }
+        node.isEnd = true;
+    }
+    
+    public boolean search(String word) {
+        TrieNode node = searchPrefix(word);
+        return node != null && node.isEnd;
+    }
+    
+    public boolean startsWith(String prefix) {
+        return searchPrefix(prefix) != null;
+    }
+    
+    private TrieNode searchPrefix(String prefix) {
+        TrieNode node = root;
+        for (int i = 0; i < prefix.length(); i++) {
+            char ch = prefix.charAt(i);
+            int index = ch - 'a';
+            if (node.children[index] == null) {
+                return null;
+            }
+            node = node.children[index];
+        }
+        return node;
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        Trie trie = new Trie();
+        trie.insert("apple");
+        System.out.println(trie.search("apple"));   // 返回 True
+        System.out.println(trie.search("app"));     // 返回 False
+        System.out.println(trie.startsWith("app")); // 返回 True
+        trie.insert("app");
+        System.out.println(trie.search("app"));     // 返回 True
+    }
+}
+```
+
+### 15.7 大厂面试题汇总表
 
 | 题目 | 难度 | 算法类型 | 出现频率 | 大厂 |
 |------|------|----------|----------|------|
 | 三数之和 | 中等 | 双指针、排序 | ⭐⭐⭐⭐⭐ | 字节、阿里、腾讯 |
 | 合并区间 | 中等 | 排序、贪心 | ⭐⭐⭐⭐⭐ | 字节、美团、百度 |
 | 最长无重复子串 | 中等 | 滑动窗口 | ⭐⭐⭐⭐⭐ | 所有大厂 |
+| 接雨水 | 困难 | 双指针、动态规划 | ⭐⭐⭐⭐⭐ | 字节、阿里、腾讯 |
+| 盛最多水的容器 | 中等 | 双指针 | ⭐⭐⭐⭐⭐ | 所有大厂 |
 | 反转链表 | 简单 | 链表操作 | ⭐⭐⭐⭐⭐ | 所有大厂 |
 | 环形链表 II | 中等 | 双指针 | ⭐⭐⭐⭐ | 字节、阿里 |
+| K个一组翻转链表 | 困难 | 链表操作 | ⭐⭐⭐⭐ | 字节、腾讯 |
 | 二叉树最近公共祖先 | 中等 | 树、递归 | ⭐⭐⭐⭐⭐ | 所有大厂 |
 | 课程表 | 中等 | 图、拓扑排序 | ⭐⭐⭐⭐ | 字节、腾讯 |
+| 岛屿数量 | 中等 | 图、DFS/BFS | ⭐⭐⭐⭐⭐ | 所有大厂 |
+| 二叉树的最大路径和 | 困难 | 树、递归 | ⭐⭐⭐⭐⭐ | 字节、阿里、百度 |
 | 最长公共子序列 | 中等 | 动态规划 | ⭐⭐⭐⭐ | 阿里、腾讯 |
 | 编辑距离 | 困难 | 动态规划 | ⭐⭐⭐⭐ | 字节、Google |
+| 买卖股票的最佳时机 | 简单 | 动态规划 | ⭐⭐⭐⭐⭐ | 腾讯、阿里、字节 |
+| 最长递增子序列 | 中等 | 动态规划、二分查找 | ⭐⭐⭐⭐⭐ | 字节、腾讯、百度 |
+| 零钱兑换 | 中等 | 动态规划 | ⭐⭐⭐⭐ | 阿里、字节、美团 |
 | 全排列 | 中等 | 回溯 | ⭐⭐⭐⭐⭐ | 所有大厂 |
 | N皇后 | 困难 | 回溯 | ⭐⭐⭐ | 字节、Google |
+| LRU缓存机制 | 中等 | 设计、哈希表、链表 | ⭐⭐⭐⭐⭐ | 字节、阿里、腾讯、百度 |
+| 最小栈 | 简单 | 设计、栈 | ⭐⭐⭐⭐ | 字节、腾讯 |
+| 实现Trie | 中等 | 设计、树 | ⭐⭐⭐⭐ | 字节、阿里、百度 |
 
-### 15.7 解题技巧总结
+### 15.8 解题技巧总结
 
 1. **数组/字符串问题**：
    - 优先考虑双指针、滑动窗口
@@ -4265,3 +5361,10 @@ public class NQueens {
    - 画出递归树帮助理解
    - 注意剪枝优化
    - 去重技巧（排序、used数组）
+
+6. **设计类问题**：
+   - 分析需求，选择合适的数据结构组合
+   - 哈希表 + 链表：LRU缓存
+   - 辅助栈：最小栈
+   - 前缀树：字符串检索
+   - 关注时间复杂度和空间复杂度的平衡
