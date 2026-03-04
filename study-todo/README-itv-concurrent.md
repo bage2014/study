@@ -646,6 +646,8 @@ AQS 提供了以下模板方法，供子类实现：
 - **tryAcquireShared(int)** - 共享方式尝试获取资源
 - **tryReleaseShared(int)** - 共享方式尝试释放资源
 
+```
+
 ### 2.4 线程池
 
 #### 2.4.1 线程池的基本概念
@@ -663,6 +665,8 @@ public ThreadPoolExecutor(int corePoolSize,                      // 核心线程
                           ThreadFactory threadFactory,          // 线程工厂
                           RejectedExecutionHandler handler)     // 拒绝策略
 ```
+
+
 
 #### 2.4.3 线程池的工作流程
 
