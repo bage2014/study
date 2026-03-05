@@ -506,6 +506,710 @@ class Solution {
 
 ---
 
+#### 9. 相交链表（32次）
+
+**题目链接**：[160. 相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/)
+
+**题目描述**：给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+
+**解题思路**：
+1. **双指针法**：pA 从 headA 出发，pB 从 headB 出发
+2. 当 pA 到达链表末尾时，转向 headB；当 pB 到达链表末尾时，转向 headA
+3. 两个指针相遇的地方就是相交点
+
+**Java代码实现**：
+```java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        
+        ListNode pA = headA;
+        ListNode pB = headB;
+        
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
+        }
+        
+        return pA;
+    }
+}
+```
+
+---
+
+#### 10. 二叉树的最近公共祖先（32次）
+
+**题目链接**：[236. 二叉树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+**题目描述**：给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+**解题思路**：
+1. **递归法**：后序遍历
+2. 如果当前节点是 p 或 q，返回当前节点
+3. 递归左子树和右子树
+4. 如果左右子树都返回非空，则当前节点是最近公共祖先
+5. 如果只有一边返回非空，返回那边的结果
+
+**Java代码实现**：
+```java
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // 递归终止条件
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+        
+        // 递归左子树
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        // 递归右子树
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        
+        // 如果左右都找到，当前节点就是最近公共祖先
+        if (left != null && right != null) {
+            return root;
+        }
+        // 如果只有一边找到，返回找到的那边
+        return left != null ? left : right;
+    }
+}
+```
+
+---
+
+#### 11. 接雨水（31次）
+
+**题目链接**：[42. 接雨水](https://leetcode.cn/problems/trapping-rain-water/)
+
+**题目描述**：给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+**解题思路**：
+1. **双指针法**：左右指针分别从两端向中间移动
+2. 维护左最大高度和右最大高度
+3. 较低的一侧向中间移动，计算当前位置能接的雨水量
+
+**Java代码实现**：
+```java
+class Solution {
+    public int trap(int[] height) {
+        int left = 0, right = height.length - 1;
+        int leftMax = 0, rightMax = 0;
+        int result = 0;
+        
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (height[left] >= leftMax) {
+                    leftMax = height[left];
+                } else {
+                    result += leftMax - height[left];
+                }
+                left++;
+            } else {
+                if (height[right] >= rightMax) {
+                    rightMax = height[right];
+                } else {
+                    result += rightMax - height[right];
+                }
+                right--;
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+---
+
+#### 12. 搜索旋转排序数组（27次）
+
+**题目链接**：[33. 搜索旋转排序数组](https://leetcode.cn/problems/search-in-rotated-sorted-array/)
+
+**题目描述**：整数数组 nums 按升序排列，数组中的值互不相同 。在传递给函数之前，nums 在预先未知的某个下标 k（0 <= k < nums.length）上进行了旋转，使数组变为 [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]（下标 从 0 开始计数）。给定旋转后的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。
+
+**解题思路**：
+1. **二分查找**：虽然数组旋转了，但其中一半仍然是有序的
+2. 每次二分后，判断哪一半是有序的
+3. 在有序的那一半中判断 target 是否存在
+
+**Java代码实现**：
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) {
+                return mid;
+            }
+            
+            // 左半部分有序
+            if (nums[left] <= nums[mid]) {
+                if (target >= nums[left] && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else {
+                // 右半部分有序
+                if (target > nums[mid] && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+        
+        return -1;
+    }
+}
+```
+
+---
+
+#### 13. 下一个排列（27次）
+
+**题目链接**：[31. 下一个排列](https://leetcode.cn/problems/next-permutation/)
+
+**题目描述**：实现获取 下一个排列 的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+
+**解题思路**：
+1. **从后向前**找到第一个降序的位置 i
+2. **从后向前**找到第一个大于 nums[i] 的位置 j
+3. **交换** nums[i] 和 nums[j]
+4. **反转** i+1 到末尾的元素
+
+**Java代码实现**：
+```java
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int i = n - 2;
+        
+        // 从后向前找到第一个降序的位置
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+        
+        if (i >= 0) {
+            // 从后向前找到第一个大于nums[i]的位置
+            int j = n - 1;
+            while (j > i && nums[j] <= nums[i]) {
+                j--;
+            }
+            // 交换
+            swap(nums, i, j);
+        }
+        
+        // 反转i+1到末尾
+        reverse(nums, i + 1, n - 1);
+    }
+    
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+    
+    private void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            swap(nums, start, end);
+            start++;
+            end--;
+        }
+    }
+}
+```
+
+---
+
+#### 14. 二叉树的右视图（24次）
+
+**题目链接**：[199. 二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/)
+
+**题目描述**：给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+
+**解题思路**：
+1. **层次遍历（BFS）**：按层遍历二叉树
+2. 记录每层的最后一个节点
+
+**Java代码实现**：
+```java
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                // 记录每层的最后一个节点
+                if (i == size - 1) {
+                    result.add(node.val);
+                }
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+---
+
+#### 15. 螺旋矩阵（24次）
+
+**题目链接**：[54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
+
+**题目描述**：给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
+
+**解题思路**：
+1. **模拟法**：按顺时针方向遍历矩阵
+2. 维护四个边界：上、下、左、右
+3. 按顺序遍历：右 → 下 → 左 → 上
+
+**Java代码实现**：
+```java
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        if (matrix == null || matrix.length == 0) {
+            return result;
+        }
+        
+        int top = 0, bottom = matrix.length - 1;
+        int left = 0, right = matrix[0].length - 1;
+        
+        while (top <= bottom && left <= right) {
+            // 从左到右
+            for (int i = left; i <= right; i++) {
+                result.add(matrix[top][i]);
+            }
+            top++;
+            
+            // 从上到下
+            for (int i = top; i <= bottom; i++) {
+                result.add(matrix[i][right]);
+            }
+            right--;
+            
+            // 从右到左
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    result.add(matrix[bottom][i]);
+                }
+                bottom--;
+            }
+            
+            // 从下到上
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    result.add(matrix[i][left]);
+                }
+                left++;
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+---
+
+#### 16. 重排链表（24次）
+
+**题目链接**：[143. 重排链表](https://leetcode.cn/problems/reorder-list/)
+
+**题目描述**：给定一个单链表 L 的头节点 head ，单链表 L 表示为： L0 → L1 → … → Ln-1 → Ln 。请将其重新排列后变为： L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → …
+
+**解题思路**：
+1. **快慢指针**找到链表中点
+2. **反转**后半部分链表
+3. **合并**前半部分和反转后的后半部分
+
+**Java代码实现**：
+```java
+class Solution {
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null) {
+            return;
+        }
+        
+        // 找到中点
+        ListNode slow = head, fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        // 反转后半部分
+        ListNode second = slow.next;
+        slow.next = null; // 断开
+        second = reverse(second);
+        
+        // 合并两部分
+        ListNode first = head;
+        while (second != null) {
+            ListNode temp1 = first.next;
+            ListNode temp2 = second.next;
+            
+            first.next = second;
+            second.next = temp1;
+            
+            first = temp1;
+            second = temp2;
+        }
+    }
+    
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
+```
+
+---
+
+#### 17. 合并K个排序链表（23次）
+
+**题目链接**：[23. 合并K个排序链表](https://leetcode.cn/problems/merge-k-sorted-lists/)
+
+**题目描述**：给你一个链表数组，每个链表都已经按升序排列。请你将所有链表合并到一个升序链表中，返回合并后的链表。
+
+**解题思路**：
+1. **分治法**：将链表数组分成两部分，递归合并
+2. **优先队列**：维护一个最小堆，每次取出最小的节点
+
+**Java代码实现（分治法）**：
+```java
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        return mergeKLists(lists, 0, lists.length - 1);
+    }
+    
+    private ListNode mergeKLists(ListNode[] lists, int start, int end) {
+        if (start == end) {
+            return lists[start];
+        }
+        int mid = start + (end - start) / 2;
+        ListNode left = mergeKLists(lists, start, mid);
+        ListNode right = mergeKLists(lists, mid + 1, end);
+        return mergeTwoLists(left, right);
+    }
+    
+    private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+        
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+            curr = curr.next;
+        }
+        
+        curr.next = l1 != null ? l1 : l2;
+        return dummy.next;
+    }
+}
+```
+
+**Java代码实现（优先队列）**：
+```java
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>((a, b) -> a.val - b.val);
+        
+        // 将所有链表的头节点加入堆
+        for (ListNode list : lists) {
+            if (list != null) {
+                minHeap.offer(list);
+            }
+        }
+        
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+        
+        while (!minHeap.isEmpty()) {
+            ListNode node = minHeap.poll();
+            curr.next = node;
+            curr = curr.next;
+            
+            if (node.next != null) {
+                minHeap.offer(node.next);
+            }
+        }
+        
+        return dummy.next;
+    }
+}
+```
+
+---
+
+#### 18. 合并两个有序链表（22次）
+
+**题目链接**：[21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
+
+**题目描述**：将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+
+**解题思路**：
+1. **迭代法**：使用哑节点，比较两个链表的节点值
+2. **递归法**：递归比较两个链表的节点值
+
+**Java代码实现（迭代法）**：
+```java
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+        
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                curr.next = list1;
+                list1 = list1.next;
+            } else {
+                curr.next = list2;
+                list2 = list2.next;
+            }
+            curr = curr.next;
+        }
+        
+        curr.next = list1 != null ? list1 : list2;
+        return dummy.next;
+    }
+}
+```
+
+**Java代码实现（递归法）**：
+```java
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) {
+            return list2;
+        }
+        if (list2 == null) {
+            return list1;
+        }
+        
+        if (list1.val < list2.val) {
+            list1.next = mergeTwoLists(list1.next, list2);
+            return list1;
+        } else {
+            list2.next = mergeTwoLists(list1, list2.next);
+            return list2;
+        }
+    }
+}
+```
+
+---
+
+#### 19. 最长上升子序列（21次）
+
+**题目链接**：[300. 最长上升子序列](https://leetcode.cn/problems/longest-increasing-subsequence/)
+
+**题目描述**：给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+
+**解题思路**：
+1. **动态规划**：dp[i] 表示以 nums[i] 结尾的最长上升子序列长度
+2. **贪心 + 二分查找**：维护一个递增数组，替换第一个大于等于当前元素的位置
+
+**Java代码实现（动态规划）**：
+```java
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        int maxLen = 0;
+        
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1; // 至少包含自己
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            maxLen = Math.max(maxLen, dp[i]);
+        }
+        
+        return maxLen;
+    }
+}
+```
+
+**Java代码实现（贪心 + 二分查找）**：
+```java
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        
+        for (int num : nums) {
+            int index = binarySearch(list, num);
+            if (index == list.size()) {
+                list.add(num);
+            } else {
+                list.set(index, num);
+            }
+        }
+        
+        return list.size();
+    }
+    
+    private int binarySearch(List<Integer> list, int target) {
+        int left = 0, right = list.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (list.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+}
+```
+
+---
+
+#### 20. x的平方根（20次）
+
+**题目链接**：[69. x 的平方根](https://leetcode.cn/problems/sqrtx/)
+
+**题目描述**：给你一个非负整数 x ，计算并返回 x 的 算术平方根 。由于返回类型是整数，结果只保留 整数部分 ，小数部分将被 舍去 。
+
+**解题思路**：
+1. **二分查找**：在 [0, x] 范围内查找平方根
+2. **牛顿迭代法**：通过迭代逼近平方根
+
+**Java代码实现（二分查找）**：
+```java
+class Solution {
+    public int mySqrt(int x) {
+        if (x == 0) {
+            return 0;
+        }
+        
+        int left = 1, right = x;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            // 防止溢出
+            if (mid > x / mid) {
+                right = mid - 1;
+            } else {
+                if (mid + 1 > x / (mid + 1)) {
+                    return mid;
+                }
+                left = mid + 1;
+            }
+        }
+        
+        return -1;
+    }
+}
+```
+
+**Java代码实现（牛顿迭代法）**：
+```java
+class Solution {
+    public int mySqrt(int x) {
+        if (x == 0) {
+            return 0;
+        }
+        
+        long guess = x;
+        while (guess * guess > x) {
+            guess = (guess + x / guess) / 2;
+        }
+        
+        return (int) guess;
+    }
+}
+```
+
+---
+
+#### 21. 反转链表 II（20次）
+
+**题目链接**：[92. 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/)
+
+**题目描述**：给你单链表的头指针 head 和两个整数 left 和 right ，其中 left <= right 。请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 。
+
+**解题思路**：
+1. **找到反转的起点和终点**
+2. **反转指定区间的链表**
+3. **重新连接链表**
+
+**Java代码实现**：
+```java
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || left == right) {
+            return head;
+        }
+        
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+        
+        // 找到反转的前一个节点
+        for (int i = 1; i < left; i++) {
+            prev = prev.next;
+        }
+        
+        // 反转区间内的链表
+        ListNode curr = prev.next;
+        ListNode next;
+        for (int i = 0; i < right - left; i++) {
+            next = curr.next;
+            curr.next = next.next;
+            next.next = prev.next;
+            prev.next = next;
+        }
+        
+        return dummy.next;
+    }
+}
+```
+
+---
+
 ## 三、阿里巴巴高频题
 
 ### 数据概览
