@@ -4458,3 +4458,1704 @@ class Solution {
 ```
 
 ---
+
+## 六、其他类型（25题）
+
+### 76. 两数之和
+
+**题目链接**：[1. 两数之和](https://leetcode.cn/problems/two-sum/)
+
+**题目描述**：给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出和为目标值 target 的那两个整数，并返回它们的数组下标。
+
+**解决思路**：
+1. **哈希表**：使用HashMap存储已遍历过的数字及其下标
+2. 对于当前数字num，检查target - num是否在map中
+
+**伪代码实现**：
+```
+function twoSum(nums, target):
+    map = new HashMap()
+    
+    for i from 0 to nums.length - 1:
+        complement = target - nums[i]
+        if map.containsKey(complement):
+            return [map.get(complement), i]
+        map.put(nums[i], i)
+    
+    return null
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (map.containsKey(complement)) {
+                return new int[]{map.get(complement), i};
+            }
+            map.put(nums[i], i);
+        }
+        
+        return null;
+    }
+}
+```
+
+---
+
+### 77. 字母异位词分组
+
+**题目链接**：[49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/)
+
+**题目描述**：给你一个字符串数组，请你将字母异位词组合在一起。可以按任意顺序返回结果列表。
+
+**解决思路**：
+1. **哈希表**：将排序后的字符串作为key
+2. 异位词排序后相同
+
+**伪代码实现**：
+```
+function groupAnagrams(strs):
+    map = new HashMap()
+    
+    for str in strs:
+        char[] chars = str.toCharArray()
+        Arrays.sort(chars)
+        key = new String(chars)
+        
+        if not map.containsKey(key):
+            map.put(key, new ArrayList())
+        map.get(key).add(str)
+    
+    return new ArrayList(map.values())
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String key = new String(chars);
+            
+            if (!map.containsKey(key)) {
+                map.put(key, new ArrayList<>());
+            }
+            map.get(key).add(str);
+        }
+        
+        return new ArrayList<>(map.values());
+    }
+}
+```
+
+---
+
+### 78. 最长连续序列
+
+**题目链接**：[128. 最长连续序列](https://leetcode.cn/problems/longest-consecutive-sequence/)
+
+**题目描述**：给定一个未排序的整数数组 nums，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+
+**解决思路**：
+1. **哈希集合**：将所有数字存入HashSet
+2. 对于每个数字，如果num-1不在集合中，则从num开始向后寻找连续序列
+
+**伪代码实现**：
+```
+function longestConsecutive(nums):
+    if nums.length == 0: return 0
+    
+    set = new HashSet()
+    for num in nums:
+        set.add(num)
+    
+    maxLen = 0
+    for num in set:
+        if not set.contains(num - 1):
+            currentNum = num
+            currentLen = 1
+            
+            while set.contains(currentNum + 1):
+                currentNum++
+                currentLen++
+            
+            maxLen = max(maxLen, currentLen)
+    
+    return maxLen
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        if (nums.length == 0) return 0;
+        
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+        
+        int maxLen = 0;
+        for (int num : set) {
+            if (!set.contains(num - 1)) {
+                int currentNum = num;
+                int currentLen = 1;
+                
+                while (set.contains(currentNum + 1)) {
+                    currentNum++;
+                    currentLen++;
+                }
+                
+                maxLen = Math.max(maxLen, currentLen);
+            }
+        }
+        
+        return maxLen;
+    }
+}
+```
+
+---
+
+### 79. 盛最多水的容器
+
+**题目链接**：[11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
+
+**题目描述**：给定一个长度为 n 的整数数组 height。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i])。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+
+**解决思路**：
+1. **双指针**：使用左右两个指针向中间移动
+2. 每次移动高度较小的一边，因为移动高度较大的一边不可能得到更大的面积
+
+**伪代码实现**：
+```
+function maxArea(height):
+    left = 0
+    right = height.length - 1
+    maxArea = 0
+    
+    while left < right:
+        width = right - left
+        h = min(height[left], height[right])
+        maxArea = max(maxArea, width * h)
+        
+        if height[left] < height[right]:
+            left++
+        else:
+            right--
+    
+    return maxArea
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int maxArea = 0;
+        
+        while (left < right) {
+            int width = right - left;
+            int h = Math.min(height[left], height[right]);
+            maxArea = Math.max(maxArea, width * h);
+            
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        
+        return maxArea;
+    }
+}
+```
+
+---
+
+### 80. 三数之和
+
+**题目链接**：[15. 三数之和](https://leetcode.cn/problems/3sum/)
+
+**题目描述**：给你一个整数数组 nums，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k，同时还满足 nums[i] + nums[j] + nums[k] == 0。请你返回所有和为 0 且不重复的三元组。
+
+**解决思路**：
+1. **排序 + 双指针**：先排序，然后固定一个数，使用双指针找另外两个数
+2. 注意去重
+
+**伪代码实现**：
+```
+function threeSum(nums):
+    result = new ArrayList()
+    if nums.length < 3: return result
+    
+    Arrays.sort(nums)
+    
+    for i from 0 to nums.length - 3:
+        if i > 0 and nums[i] == nums[i - 1]: continue
+        if nums[i] > 0: break
+        
+        left = i + 1
+        right = nums.length - 1
+        
+        while left < right:
+            sum = nums[i] + nums[left] + nums[right]
+            
+            if sum == 0:
+                result.add([nums[i], nums[left], nums[right]])
+                while left < right and nums[left] == nums[left + 1]: left++
+                while left < right and nums[right] == nums[right - 1]: right--
+                left++
+                right--
+            else if sum < 0:
+                left++
+            else:
+                right--
+    
+    return result
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums.length < 3) return result;
+        
+        Arrays.sort(nums);
+        
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if (nums[i] > 0) break;
+            
+            int left = i + 1;
+            int right = nums.length - 1;
+            
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                
+                if (sum == 0) {
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+---
+
+### 81. 接雨水
+
+**题目链接**：[42. 接雨水](https://leetcode.cn/problems/trapping-rain-water/)
+
+**题目描述**：给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+**解决思路**：
+1. **双指针**：使用左右两个指针，维护左右最大高度
+2. 每次移动高度较小的一边
+
+**伪代码实现**：
+```
+function trap(height):
+    if height.length == 0: return 0
+    
+    left = 0
+    right = height.length - 1
+    leftMax = 0
+    rightMax = 0
+    result = 0
+    
+    while left < right:
+        if height[left] < height[right]:
+            if height[left] >= leftMax:
+                leftMax = height[left]
+            else:
+                result += leftMax - height[left]
+            left++
+        else:
+            if height[right] >= rightMax:
+                rightMax = height[right]
+            else:
+                result += rightMax - height[right]
+            right--
+    
+    return result
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int trap(int[] height) {
+        if (height.length == 0) return 0;
+        
+        int left = 0, right = height.length - 1;
+        int leftMax = 0, rightMax = 0;
+        int result = 0;
+        
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (height[left] >= leftMax) {
+                    leftMax = height[left];
+                } else {
+                    result += leftMax - height[left];
+                }
+                left++;
+            } else {
+                if (height[right] >= rightMax) {
+                    rightMax = height[right];
+                } else {
+                    result += rightMax - height[right];
+                }
+                right--;
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+---
+
+### 82. 旋转图像
+
+**题目链接**：[48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
+
+**题目描述**：给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。你必须在原地旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要使用另一个矩阵来旋转图像。
+
+**解决思路**：
+1. **先转置，再反转每一行**：顺时针旋转90度 = 转置 + 水平翻转
+
+**伪代码实现**：
+```
+function rotate(matrix):
+    n = matrix.length
+    
+    // 转置
+    for i from 0 to n - 1:
+        for j from i + 1 to n - 1:
+            swap(matrix[i][j], matrix[j][i])
+    
+    // 反转每一行
+    for i from 0 to n - 1:
+        reverse(matrix[i])
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        
+        // 转置
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+        
+        // 反转每一行
+        for (int i = 0; i < n; i++) {
+            reverse(matrix[i]);
+        }
+    }
+    
+    private void reverse(int[] row) {
+        int left = 0, right = row.length - 1;
+        while (left < right) {
+            int temp = row[left];
+            row[left] = row[right];
+            row[right] = temp;
+            left++;
+            right--;
+        }
+    }
+}
+```
+
+---
+
+### 83. 矩阵置零
+
+**题目链接**：[73. 矩阵置零](https://leetcode.cn/problems/set-matrix-zeroes/)
+
+**题目描述**：给定一个 m x n 的矩阵，如果一个元素为 0，则将其所在行和列的所有元素都设为 0。请使用原地算法。
+
+**解决思路**：
+1. **使用第一行和第一列作为标记**：节省空间
+2. 需要额外的变量记录第一行和第一列是否需要置零
+
+**伪代码实现**：
+```
+function setZeroes(matrix):
+    m = matrix.length
+    n = matrix[0].length
+    firstRowZero = false
+    firstColZero = false
+    
+    // 检查第一行是否需要置零
+    for j from 0 to n - 1:
+        if matrix[0][j] == 0:
+            firstRowZero = true
+            break
+    
+    // 检查第一列是否需要置零
+    for i from 0 to m - 1:
+        if matrix[i][0] == 0:
+            firstColZero = true
+            break
+    
+    // 使用第一行和第一列做标记
+    for i from 1 to m - 1:
+        for j from 1 to n - 1:
+            if matrix[i][j] == 0:
+                matrix[i][0] = 0
+                matrix[0][j] = 0
+    
+    // 根据标记置零
+    for i from 1 to m - 1:
+        for j from 1 to n - 1:
+            if matrix[i][0] == 0 or matrix[0][j] == 0:
+                matrix[i][j] = 0
+    
+    // 处理第一行
+    if firstRowZero:
+        for j from 0 to n - 1:
+            matrix[0][j] = 0
+    
+    // 处理第一列
+    if firstColZero:
+        for i from 0 to m - 1:
+            matrix[i][0] = 0
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        boolean firstRowZero = false;
+        boolean firstColZero = false;
+        
+        // 检查第一行是否需要置零
+        for (int j = 0; j < n; j++) {
+            if (matrix[0][j] == 0) {
+                firstRowZero = true;
+                break;
+            }
+        }
+        
+        // 检查第一列是否需要置零
+        for (int i = 0; i < m; i++) {
+            if (matrix[i][0] == 0) {
+                firstColZero = true;
+                break;
+            }
+        }
+        
+        // 使用第一行和第一列做标记
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        
+        // 根据标记置零
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        
+        // 处理第一行
+        if (firstRowZero) {
+            for (int j = 0; j < n; j++) {
+                matrix[0][j] = 0;
+            }
+        }
+        
+        // 处理第一列
+        if (firstColZero) {
+            for (int i = 0; i < m; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+}
+```
+
+---
+
+### 84. 螺旋矩阵
+
+**题目链接**：[54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
+
+**题目描述**：给你一个 m 行 n 列的矩阵 matrix，请按照顺时针螺旋顺序，返回矩阵中的所有元素。
+
+**解决思路**：
+1. **按层模拟**：按照顺时针方向逐层遍历
+2. 维护四个边界：top, bottom, left, right
+
+**伪代码实现**：
+```
+function spiralOrder(matrix):
+    if matrix.length == 0: return new ArrayList()
+    
+    result = new ArrayList()
+    top = 0
+    bottom = matrix.length - 1
+    left = 0
+    right = matrix[0].length - 1
+    
+    while top <= bottom and left <= right:
+        // 从左到右
+        for j from left to right:
+            result.add(matrix[top][j])
+        top++
+        
+        // 从上到下
+        for i from top to bottom:
+            result.add(matrix[i][right])
+        right--
+        
+        // 从右到左
+        if top <= bottom:
+            for j from right down to left:
+                result.add(matrix[bottom][j])
+            bottom--
+        
+        // 从下到上
+        if left <= right:
+            for i from bottom down to top:
+                result.add(matrix[i][left])
+            left++
+    
+    return result
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        if (matrix.length == 0) return new ArrayList<>();
+        
+        List<Integer> result = new ArrayList<>();
+        int top = 0, bottom = matrix.length - 1;
+        int left = 0, right = matrix[0].length - 1;
+        
+        while (top <= bottom && left <= right) {
+            // 从左到右
+            for (int j = left; j <= right; j++) {
+                result.add(matrix[top][j]);
+            }
+            top++;
+            
+            // 从上到下
+            for (int i = top; i <= bottom; i++) {
+                result.add(matrix[i][right]);
+            }
+            right--;
+            
+            // 从右到左
+            if (top <= bottom) {
+                for (int j = right; j >= left; j--) {
+                    result.add(matrix[bottom][j]);
+                }
+                bottom--;
+            }
+            
+            // 从下到上
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    result.add(matrix[i][left]);
+                }
+                left++;
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+---
+
+### 85. 合并区间
+
+**题目链接**：[56. 合并区间](https://leetcode.cn/problems/merge-intervals/)
+
+**题目描述**：以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi]。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
+
+**解决思路**：
+1. **排序**：按照区间起点排序
+2. 遍历区间，如果当前区间与上一个区间重叠，则合并
+
+**伪代码实现**：
+```
+function merge(intervals):
+    if intervals.length <= 1: return intervals
+    
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0])
+    result = new ArrayList()
+    current = intervals[0]
+    
+    for i from 1 to intervals.length - 1:
+        if intervals[i][0] <= current[1]:
+            current[1] = max(current[1], intervals[i][1])
+        else:
+            result.add(current)
+            current = intervals[i]
+    
+    result.add(current)
+    return result.toArray(new int[result.size()][])
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length <= 1) return intervals;
+        
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        List<int[]> result = new ArrayList<>();
+        int[] current = intervals[0];
+        
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] <= current[1]) {
+                current[1] = Math.max(current[1], intervals[i][1]);
+            } else {
+                result.add(current);
+                current = intervals[i];
+            }
+        }
+        
+        result.add(current);
+        return result.toArray(new int[result.size()][]);
+    }
+}
+```
+
+---
+
+### 86. 插入区间
+
+**题目链接**：[57. 插入区间](https://leetcode.cn/problems/insert-interval/)
+
+**题目描述**：给你一个无重叠的，按照区间起始端点排序的区间列表。在列表中插入一个新的区间，你需要确保列表中的区间仍然有序且不重叠（如果有必要的话，可以合并区间）。
+
+**解决思路**：
+1. **分类讨论**：新区间在当前区间之前、重叠、之后
+
+**伪代码实现**：
+```
+function insert(intervals, newInterval):
+    result = new ArrayList()
+    i = 0
+    n = intervals.length
+    
+    // 添加所有在newInterval之前的区间
+    while i < n and intervals[i][1] < newInterval[0]:
+        result.add(intervals[i])
+        i++
+    
+    // 合并所有与newInterval重叠的区间
+    while i < n and intervals[i][0] <= newInterval[1]:
+        newInterval[0] = min(newInterval[0], intervals[i][0])
+        newInterval[1] = max(newInterval[1], intervals[i][1])
+        i++
+    
+    result.add(newInterval)
+    
+    // 添加剩余的区间
+    while i < n:
+        result.add(intervals[i])
+        i++
+    
+    return result.toArray(new int[result.size()][])
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> result = new ArrayList<>();
+        int i = 0;
+        int n = intervals.length;
+        
+        // 添加所有在newInterval之前的区间
+        while (i < n && intervals[i][1] < newInterval[0]) {
+            result.add(intervals[i]);
+            i++;
+        }
+        
+        // 合并所有与newInterval重叠的区间
+        while (i < n && intervals[i][0] <= newInterval[1]) {
+            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+        
+        result.add(newInterval);
+        
+        // 添加剩余的区间
+        while (i < n) {
+            result.add(intervals[i]);
+            i++;
+        }
+        
+        return result.toArray(new int[result.size()][]);
+    }
+}
+```
+
+---
+
+### 87. 跳跃游戏
+
+**题目链接**：[55. 跳跃游戏](https://leetcode.cn/problems/jump-game/)
+
+**题目描述**：给定一个非负整数数组 nums，你最初位于数组的第一个下标。数组中的每个元素代表你在该位置可以跳跃的最大长度。判断你是否能够到达最后一个下标。
+
+**解决思路**：
+1. **贪心算法**：维护能到达的最远位置
+2. 如果当前位置超过最远位置，则无法到达
+
+**伪代码实现**：
+```
+function canJump(nums):
+    maxReach = 0
+    
+    for i from 0 to nums.length - 1:
+        if i > maxReach: return false
+        maxReach = max(maxReach, i + nums[i])
+    
+    return true
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public boolean canJump(int[] nums) {
+        int maxReach = 0;
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (i > maxReach) return false;
+            maxReach = Math.max(maxReach, i + nums[i]);
+        }
+        
+        return true;
+    }
+}
+```
+
+---
+
+### 88. 跳跃游戏 II
+
+**题目链接**：[45. 跳跃游戏 II](https://leetcode.cn/problems/jump-game-ii/)
+
+**题目描述**：给定一个长度为 n 的 0 索引整数数组 nums。初始位置为 nums[0]。每个元素 nums[i] 表示从索引 i 向前跳转的最大长度。返回到达 nums[n - 1] 的最小跳跃次数。
+
+**解决思路**：
+1. **贪心算法**：维护当前能到达的最远位置和下一步能到达的最远位置
+2. 当到达当前边界时，更新边界并增加跳跃次数
+
+**伪代码实现**：
+```
+function jump(nums):
+    if nums.length <= 1: return 0
+    
+    jumps = 0
+    currentEnd = 0
+    farthest = 0
+    
+    for i from 0 to nums.length - 2:
+        farthest = max(farthest, i + nums[i])
+        
+        if i == currentEnd:
+            jumps++
+            currentEnd = farthest
+    
+    return jumps
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int jump(int[] nums) {
+        if (nums.length <= 1) return 0;
+        
+        int jumps = 0;
+        int currentEnd = 0;
+        int farthest = 0;
+        
+        for (int i = 0; i < nums.length - 1; i++) {
+            farthest = Math.max(farthest, i + nums[i]);
+            
+            if (i == currentEnd) {
+                jumps++;
+                currentEnd = farthest;
+            }
+        }
+        
+        return jumps;
+    }
+}
+```
+
+---
+
+### 89. 买卖股票的最佳时机
+
+**题目链接**：[121. 买卖股票的最佳时机](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)
+
+**题目描述**：给定一个数组 prices，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。你只能选择某一天买入这只股票，并选择在未来的某一个不同的日子卖出该股票。设计一个算法来计算你所能获取的最大利润。
+
+**解决思路**：
+1. **一次遍历**：维护最低价格和最大利润
+
+**伪代码实现**：
+```
+function maxProfit(prices):
+    if prices.length == 0: return 0
+    
+    minPrice = prices[0]
+    maxProfit = 0
+    
+    for price in prices:
+        if price < minPrice:
+            minPrice = price
+        else if price - minPrice > maxProfit:
+            maxProfit = price - minPrice
+    
+    return maxProfit
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length == 0) return 0;
+        
+        int minPrice = prices[0];
+        int maxProfit = 0;
+        
+        for (int price : prices) {
+            if (price < minPrice) {
+                minPrice = price;
+            } else if (price - minPrice > maxProfit) {
+                maxProfit = price - minPrice;
+            }
+        }
+        
+        return maxProfit;
+    }
+}
+```
+
+---
+
+### 90. 买卖股票的最佳时机 II
+
+**题目链接**：[122. 买卖股票的最佳时机 II](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
+
+**题目描述**：给定一个数组 prices，其中 prices[i] 是一支给定股票第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+
+**解决思路**：
+1. **贪心算法**：只要今天的价格比昨天高，就进行买卖
+2. 累加所有正利润
+
+**伪代码实现**：
+```
+function maxProfit(prices):
+    profit = 0
+    
+    for i from 1 to prices.length - 1:
+        if prices[i] > prices[i - 1]:
+            profit += prices[i] - prices[i - 1]
+    
+    return profit
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1]) {
+                profit += prices[i] - prices[i - 1];
+            }
+        }
+        
+        return profit;
+    }
+}
+```
+
+---
+
+### 91. 分发糖果
+
+**题目链接**：[135. 分发糖果](https://leetcode.cn/problems/candy/)
+
+**题目描述**：n 个孩子站成一排。给你一个整数数组 ratings 表示每个孩子的评分。你需要按照以下要求，给这些孩子分发糖果：每个孩子至少分配到 1 个糖果。相邻两个孩子评分更高的孩子会获得更多的糖果。请你给每个孩子分发糖果，计算并返回需要准备的 最少糖果数目。
+
+**解决思路**：
+1. **两次遍历**：从左到右和从右到左各遍历一次
+2. 取两次遍历的最大值
+
+**伪代码实现**：
+```
+function candy(ratings):
+    n = ratings.length
+    candies = new int[n]
+    Arrays.fill(candies, 1)
+    
+    // 从左到右
+    for i from 1 to n - 1:
+        if ratings[i] > ratings[i - 1]:
+            candies[i] = candies[i - 1] + 1
+    
+    // 从右到左
+    for i from n - 2 down to 0:
+        if ratings[i] > ratings[i + 1]:
+            candies[i] = max(candies[i], candies[i + 1] + 1)
+    
+    sum = 0
+    for c in candies:
+        sum += c
+    
+    return sum
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        int[] candies = new int[n];
+        Arrays.fill(candies, 1);
+        
+        // 从左到右
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+        
+        // 从右到左
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+            }
+        }
+        
+        int sum = 0;
+        for (int c : candies) {
+            sum += c;
+        }
+        
+        return sum;
+    }
+}
+```
+
+---
+
+### 92. 根据身高重建队列
+
+**题目链接**：[406. 根据身高重建队列](https://leetcode.cn/problems/queue-reconstruction-by-height/)
+
+**题目描述**：假设有打乱顺序的一群人站成一个队列，数组 people 表示队列中一些人的属性（不一定按顺序）。每个 people[i] = [hi, ki] 表示第 i 个人的身高为 hi，前面正好有 ki 个身高大于或等于 hi 的人。请你重新构造并返回输入数组 people 所表示的队列。
+
+**解决思路**：
+1. **排序 + 插入**：先按身高降序、ki升序排序
+2. 然后按ki值插入到结果列表中
+
+**伪代码实现**：
+```
+function reconstructQueue(people):
+    Arrays.sort(people, (a, b) -> {
+        if a[0] != b[0]: return b[0] - a[0]
+        return a[1] - b[1]
+    })
+    
+    result = new ArrayList()
+    for p in people:
+        result.add(p[1], p)
+    
+    return result.toArray(new int[result.size()][])
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people, (a, b) -> {
+            if (a[0] != b[0]) return b[0] - a[0];
+            return a[1] - b[1];
+        });
+        
+        List<int[]> result = new ArrayList<>();
+        for (int[] p : people) {
+            result.add(p[1], p);
+        }
+        
+        return result.toArray(new int[result.size()][]);
+    }
+}
+```
+
+---
+
+### 93. 任务调度器
+
+**题目链接**：[621. 任务调度器](https://leetcode.cn/problems/task-scheduler/)
+
+**题目描述**：给你一个用字符数组 tasks 表示的 CPU 需要执行的任务列表。其中每个字母表示一种不同种类的任务。任务可以以任意顺序执行，并且每个任务都可以在 1 个单位时间内执行完。在任何一个单位时间，CPU 可以完成一个任务，或者处于待命状态。然而，两个相同种类的任务之间必须有长度为整数 n 的冷却时间，因此至少有连续 n 个单位时间内 CPU 在执行不同的任务，或者在待命状态。你需要计算完成所有任务所需要的最短时间。
+
+**解决思路**：
+1. **数学公式**：计算最大频率任务所需时间
+2. 公式：max(tasks.length, (maxFreq - 1) * (n + 1) + maxCount)
+
+**伪代码实现**：
+```
+function leastInterval(tasks, n):
+    count = new int[26]
+    for task in tasks:
+        count[task - 'A']++
+    
+    maxFreq = 0
+    for c in count:
+        maxFreq = max(maxFreq, c)
+    
+    maxCount = 0
+    for c in count:
+        if c == maxFreq:
+            maxCount++
+    
+    partCount = maxFreq - 1
+    partLength = n - (maxCount - 1)
+    emptySlots = partCount * partLength
+    availableTasks = tasks.length - maxFreq * maxCount
+    idles = max(0, emptySlots - availableTasks)
+    
+    return tasks.length + idles
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] count = new int[26];
+        for (char task : tasks) {
+            count[task - 'A']++;
+        }
+        
+        int maxFreq = 0;
+        for (int c : count) {
+            maxFreq = Math.max(maxFreq, c);
+        }
+        
+        int maxCount = 0;
+        for (int c : count) {
+            if (c == maxFreq) {
+                maxCount++;
+            }
+        }
+        
+        int partCount = maxFreq - 1;
+        int partLength = n - (maxCount - 1);
+        int emptySlots = partCount * partLength;
+        int availableTasks = tasks.length - maxFreq * maxCount;
+        int idles = Math.max(0, emptySlots - availableTasks);
+        
+        return tasks.length + idles;
+    }
+}
+```
+
+---
+
+### 94. 划分字母区间
+
+**题目链接**：[763. 划分字母区间](https://leetcode.cn/problems/partition-labels/)
+
+**题目描述**：给你一个字符串 s。我们要把这个字符串划分为尽可能多的片段，同一字母最多出现在一个片段中。返回一个表示每个字符串片段的长度的列表。
+
+**解决思路**：
+1. **贪心算法**：先记录每个字符最后出现的位置
+2. 遍历字符串，维护当前片段的结束位置
+
+**伪代码实现**：
+```
+function partitionLabels(s):
+    last = new int[26]
+    for i from 0 to s.length - 1:
+        last[s.charAt(i) - 'a'] = i
+    
+    result = new ArrayList()
+    start = 0
+    end = 0
+    
+    for i from 0 to s.length - 1:
+        end = max(end, last[s.charAt(i) - 'a'])
+        
+        if i == end:
+            result.add(end - start + 1)
+            start = end + 1
+    
+    return result
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public List<Integer> partitionLabels(String s) {
+        int[] last = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            last[s.charAt(i) - 'a'] = i;
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        int start = 0;
+        int end = 0;
+        
+        for (int i = 0; i < s.length(); i++) {
+            end = Math.max(end, last[s.charAt(i) - 'a']);
+            
+            if (i == end) {
+                result.add(end - start + 1);
+                start = end + 1;
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+---
+
+### 95. 移掉 K 位数字
+
+**题目链接**：[402. 移掉 K 位数字](https://leetcode.cn/problems/remove-k-digits/)
+
+**题目描述**：给你一个以字符串表示的非负整数 num 和一个整数 k，移除这个数中的 k 位数字，使得剩下的数字最小。请你以字符串形式返回这个最小的数字。
+
+**解决思路**：
+1. **单调栈**：维护一个递增的栈
+2. 当当前数字小于栈顶时，弹出栈顶（移除数字）
+
+**伪代码实现**：
+```
+function removeKdigits(num, k):
+    if k >= num.length(): return "0"
+    
+    stack = new Stack()
+    
+    for char c in num:
+        while k > 0 and not stack.isEmpty() and stack.peek() > c:
+            stack.pop()
+            k--
+        stack.push(c)
+    
+    // 如果k还有剩余，从栈顶移除
+    while k > 0:
+        stack.pop()
+        k--
+    
+    // 构建结果，去除前导零
+    result = ""
+    while not stack.isEmpty():
+        result = stack.pop() + result
+    
+    // 去除前导零
+    while result.length() > 1 and result.charAt(0) == '0':
+        result = result.substring(1)
+    
+    return result
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public String removeKdigits(String num, int k) {
+        if (k >= num.length()) return "0";
+        
+        Stack<Character> stack = new Stack<>();
+        
+        for (char c : num.toCharArray()) {
+            while (k > 0 && !stack.isEmpty() && stack.peek() > c) {
+                stack.pop();
+                k--;
+            }
+            stack.push(c);
+        }
+        
+        // 如果k还有剩余，从栈顶移除
+        while (k > 0) {
+            stack.pop();
+            k--;
+        }
+        
+        // 构建结果，去除前导零
+        StringBuilder result = new StringBuilder();
+        while (!stack.isEmpty()) {
+            result.insert(0, stack.pop());
+        }
+        
+        // 去除前导零
+        while (result.length() > 1 && result.charAt(0) == '0') {
+            result.deleteCharAt(0);
+        }
+        
+        return result.toString();
+    }
+}
+```
+
+---
+
+### 96. 数据流的中位数
+
+**题目链接**：[295. 数据流的中位数](https://leetcode.cn/problems/find-median-from-data-stream/)
+
+**题目描述**：中位数是有序整数列表中的中间值。如果列表的大小是偶数，则没有中间值，中位数是两个中间值的平均值。设计一个支持以下两种操作的数据结构：void addNum(int num) - 从数据流中添加一个整数到数据结构中。double findMedian() - 返回目前所有元素的中位数。
+
+**解决思路**：
+1. **双堆**：使用最大堆存储较小的一半，最小堆存储较大的一半
+2. 保持两个堆的大小差不超过1
+
+**伪代码实现**：
+```
+class MedianFinder:
+    maxHeap = new PriorityQueue(Collections.reverseOrder())
+    minHeap = new PriorityQueue()
+    
+    function addNum(num):
+        maxHeap.offer(num)
+        minHeap.offer(maxHeap.poll())
+        
+        if maxHeap.size() < minHeap.size():
+            maxHeap.offer(minHeap.poll())
+    
+    function findMedian():
+        if maxHeap.size() > minHeap.size():
+            return maxHeap.peek()
+        return (maxHeap.peek() + minHeap.peek()) / 2.0
+```
+
+**Java代码实现**：
+```java
+class MedianFinder {
+    private PriorityQueue<Integer> maxHeap;
+    private PriorityQueue<Integer> minHeap;
+    
+    public MedianFinder() {
+        maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        minHeap = new PriorityQueue<>();
+    }
+    
+    public void addNum(int num) {
+        maxHeap.offer(num);
+        minHeap.offer(maxHeap.poll());
+        
+        if (maxHeap.size() < minHeap.size()) {
+            maxHeap.offer(minHeap.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if (maxHeap.size() > minHeap.size()) {
+            return maxHeap.peek();
+        }
+        return (maxHeap.peek() + minHeap.peek()) / 2.0;
+    }
+}
+```
+
+---
+
+### 97. 前 K 个高频元素
+
+**题目链接**：[347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
+
+**题目描述**：给你一个整数数组 nums 和一个整数 k，请你返回其中出现频率前 k 高的元素。你可以按任意顺序返回答案。
+
+**解决思路**：
+1. **哈希表 + 最小堆**：统计频率，使用大小为k的最小堆
+
+**伪代码实现**：
+```
+function topKFrequent(nums, k):
+    map = new HashMap()
+    for num in nums:
+        map.put(num, map.getOrDefault(num, 0) + 1)
+    
+    minHeap = new PriorityQueue((a, b) -> a[1] - b[1])
+    
+    for entry in map.entrySet():
+        minHeap.offer(new int[]{entry.getKey(), entry.getValue()})
+        if minHeap.size() > k:
+            minHeap.poll()
+    
+    result = new int[k]
+    for i from k - 1 down to 0:
+        result[i] = minHeap.poll()[0]
+    
+    return result
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            minHeap.offer(new int[]{entry.getKey(), entry.getValue()});
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        
+        int[] result = new int[k];
+        for (int i = k - 1; i >= 0; i--) {
+            result[i] = minHeap.poll()[0];
+        }
+        
+        return result;
+    }
+}
+```
+
+---
+
+### 98. 滑动窗口最大值
+
+**题目链接**：[239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/)
+
+**题目描述**：给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。返回滑动窗口中的最大值。
+
+**解决思路**：
+1. **单调队列**：使用双端队列维护单调递减序列
+2. 队列中存储下标，队首为当前窗口最大值
+
+**伪代码实现**：
+```
+function maxSlidingWindow(nums, k):
+    result = new ArrayList()
+    deque = new ArrayDeque()
+    
+    for i from 0 to nums.length - 1:
+        // 移除不在窗口内的元素
+        while not deque.isEmpty() and deque.peekFirst() < i - k + 1:
+            deque.pollFirst()
+        
+        // 移除小于当前元素的元素
+        while not deque.isEmpty() and nums[deque.peekLast()] < nums[i]:
+            deque.pollLast()
+        
+        deque.offerLast(i)
+        
+        // 记录结果
+        if i >= k - 1:
+            result.add(nums[deque.peekFirst()])
+    
+    return result.stream().mapToInt(Integer::intValue).toArray()
+```
+
+**Java代码实现**：
+```java
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        List<Integer> result = new ArrayList<>();
+        Deque<Integer> deque = new ArrayDeque<>();
+        
+        for (int i = 0; i < nums.length; i++) {
+            // 移除不在窗口内的元素
+            while (!deque.isEmpty() && deque.peekFirst() < i - k + 1) {
+                deque.pollFirst();
+            }
+            
+            // 移除小于当前元素的元素
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                deque.pollLast();
+            }
+            
+            deque.offerLast(i);
+            
+            // 记录结果
+            if (i >= k - 1) {
+                result.add(nums[deque.peekFirst()]);
+            }
+        }
+        
+        return result.stream().mapToInt(Integer::intValue).toArray();
+    }
+}
+```
+
+---
+
+### 99. 数组中的第K个最大元素
+
+**题目链接**：[215. 数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
+
+**题目描述**：给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+
+**解决思路**：
+1. **快速选择**：基于快速排序的选择算法
+2. **最小堆**：维护大小为k的最小堆
+
+**伪代码实现（快速选择）**：
+```
+function findKthLargest(nums, k):
+    return quickSelect(nums, 0, nums.length - 1, nums.length - k)
+
+function quickSelect(nums, left, right, k):
+    if left == right: return nums[left]
+    
+    pivotIndex = partition(nums, left, right)
+    
+    if pivotIndex == k:
+        return nums[k]
+    else if pivotIndex < k:
+        return quickSelect(nums, pivotIndex + 1, right, k)
+    else:
+        return quickSelect(nums, left, pivotIndex - 1, k)
+
+function partition(nums, left, right):
+    pivot = nums[right]
+    i = left
+    
+    for j from left to right - 1:
+        if nums[j] <= pivot:
+            swap(nums, i, j)
+            i++
+    
+    swap(nums, i, right)
+    return i
+```
+
+**Java代码实现（快速选择）**：
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        return quickSelect(nums, 0, nums.length - 1, nums.length - k);
+    }
+    
+    private int quickSelect(int[] nums, int left, int right, int k) {
+        if (left == right) return nums[left];
+        
+        int pivotIndex = partition(nums, left, right);
+        
+        if (pivotIndex == k) {
+            return nums[k];
+        } else if (pivotIndex < k) {
+            return quickSelect(nums, pivotIndex + 1, right, k);
+        } else {
+            return quickSelect(nums, left, pivotIndex - 1, k);
+        }
+    }
+    
+    private int partition(int[] nums, int left, int right) {
+        int pivot = nums[right];
+        int i = left;
+        
+        for (int j = left; j < right; j++) {
+            if (nums[j] <= pivot) {
+                swap(nums, i, j);
+                i++;
+            }
+        }
+        
+        swap(nums, i, right);
+        return i;
+    }
+    
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```
+
+---
+
+### 100. 实现 Trie（前缀树）
+
+**题目链接**：[208. 实现 Trie（前缀树）](https://leetcode.cn/problems/implement-trie-prefix-tree/)
+
+**题目描述**：Trie（发音类似 "try"）或者说前缀树是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。请你实现 Trie 类。
+
+**解决思路**：
+1. **树形结构**：每个节点包含子节点数组和是否为单词结尾的标记
+
+**伪代码实现**：
+```
+class TrieNode:
+    children = new TrieNode[26]
+    isEnd = false
+
+class Trie:
+    root = new TrieNode()
+    
+    function insert(word):
+        node = root
+        for char c in word:
+            index = c - 'a'
+            if node.children[index] == null:
+                node.children[index] = new TrieNode()
+            node = node.children[index]
+        node.isEnd = true
+    
+    function search(word):
+        node = searchPrefix(word)
+        return node != null and node.isEnd
+    
+    function startsWith(prefix):
+        return searchPrefix(prefix) != null
+    
+    function searchPrefix(prefix):
+        node = root
+        for char c in prefix:
+            index = c - 'a'
+            if node.children[index] == null:
+                return null
+            node = node.children[index]
+        return node
+```
+
+**Java代码实现**：
+```java
+class Trie {
+    private TrieNode root;
+    
+    class TrieNode {
+        TrieNode[] children;
+        boolean isEnd;
+        
+        public TrieNode() {
+            children = new TrieNode[26];
+            isEnd = false;
+        }
+    }
+    
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new TrieNode();
+            }
+            node = node.children[index];
+        }
+        node.isEnd = true;
+    }
+    
+    public boolean search(String word) {
+        TrieNode node = searchPrefix(word);
+        return node != null && node.isEnd;
+    }
+    
+    public boolean startsWith(String prefix) {
+        return searchPrefix(prefix) != null;
+    }
+    
+    private TrieNode searchPrefix(String prefix) {
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            int index = c - 'a';
+            if (node.children[index] == null) {
+                return null;
+            }
+            node = node.children[index];
+        }
+        return node;
+    }
+}
+```
+
+---
+
+## 总结
+
+本文档包含了LeetCode Top 100常见题目的完整实现，涵盖了以下六大类算法问题：
+
+### 1. 数组（15题）
+- 双指针、二分查找、滑动窗口、前缀和等经典技巧
+- 重点题目：两数之和、三数之和、接雨水、盛最多水的容器
+
+### 2. 链表（15题）
+- 链表的基本操作：反转、合并、删除、检测环等
+- 重点题目：反转链表、合并K个升序链表、LRU缓存、环形链表
+
+### 3. 二叉树（15题）
+- 树的遍历：前序、中序、后序、层序
+- 重点题目：二叉树的中序遍历、二叉树的层序遍历、二叉树的最大深度、路径总和
+
+### 4. 动态规划（15题）
+- 经典DP问题：斐波那契、背包、路径、子序列等
+- 重点题目：爬楼梯、最长递增子序列、零钱兑换、编辑距离
+
+### 5. 字符串（15题）
+- 字符串处理技巧：滑动窗口、KMP、双指针、栈
+- 重点题目：无重复字符的最长子串、最长回文子串、最小覆盖子串、有效的括号
+
+### 6. 其他类型（25题）
+- 贪心算法、哈希表、堆、单调栈/队列、并查集、Trie树等
+- 重点题目：两数之和、跳跃游戏、买卖股票的最佳时机、数据流的中位数、前K个高频元素
+
+### 学习建议
+
+1. **循序渐进**：按照分类顺序学习，先掌握基础算法，再攻克复杂问题
+2. **理解思想**：不仅要会写代码，更要理解算法的设计思想和适用场景
+3. **举一反三**：每道题都要思考是否有其他解法，以及能否应用到其他问题
+4. **定期复习**：算法需要反复练习，建议定期回顾已学过的题目
+5. **动手实践**：光看是不够的，一定要自己动手写代码，调试和优化
+
+希望这份文档能帮助你系统地学习和掌握LeetCode常见算法题目！
+
+
+---
