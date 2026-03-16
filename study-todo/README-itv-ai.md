@@ -608,6 +608,22 @@ pip install jupyter jupyterlab
 3. **开始使用**：
    - 在代码编辑器中开始编写代码，TabNine 会自动提供建议
 
+#### 11.2.4 TREA 工具
+
+1. **安装 TREA 扩展**：
+   - 在 VS Code 中，打开扩展面板，搜索 "TREA"
+   - 点击 "安装" 按钮
+
+2. **配置 TREA**：
+   - 打开 VS Code 的设置（Settings）
+   - 搜索 "TREA" 相关配置
+   - 根据需要调整配置选项
+
+3. **开始使用**：
+   - 在代码编辑器中，使用 `Command+Shift+P`（macOS）或 `Ctrl+Shift+P`（Windows/Linux）打开命令面板
+   - 输入 "TREA" 查看可用命令
+   - 选择相应命令开始使用 TREA 工具的功能
+
 ## 12. 编程相关名词解释
 
 ### 12.1 基础概念
