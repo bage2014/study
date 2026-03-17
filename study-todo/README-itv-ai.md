@@ -354,6 +354,134 @@ agent = initialize_agent(
 agent.run("北京的天气如何？3加5乘2等于多少？")
 ```
 
+#### 8.3.4 示例 4：基于 Spring AI 的 Java Agent
+
+**依赖配置**：
+```xml
+<dependencies>
+    <!-- Spring AI 核心依赖 -->
+    <dependency>
+        <groupId>org.springframework.ai</groupId>
+        <artifactId>spring-ai-openai</artifactId>
+        <version>0.8.1</version>
+    </dependency>
+    <!-- Spring Boot 依赖 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+</dependencies>
+```
+
+**配置文件**（application.yml）：
+```yaml
+spring:
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      model: gpt-4
+```
+
+**Java 代码实现**：
+```java
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.ChatClient.Builder;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.tool.SimpleTool;
+import org.springframework.ai.tool.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+public class SpringAIAgentController {
+
+    private final ChatClient chatClient;
+
+    @Autowired
+    public SpringAIAgentController(ChatClient.Builder chatClientBuilder) {
+        // 定义工具
+        Tool weatherTool = new SimpleTool(
+            "get_weather",
+            "获取指定城市的天气信息",
+            (parameters) -> {
+                String city = parameters.get("city").toString();
+                // 模拟天气数据，实际应用中可调用真实天气 API
+                Map<String, String> weatherData = Map.of(
+                    "北京", "晴，20-28°C",
+                    "上海", "多云，18-25°C",
+                    "广州", "雷阵雨，23-30°C"
+                );
+                return weatherData.getOrDefault(city, "未找到该城市的天气信息");
+            },
+            List.of(Map.of("name", "city", "description", "城市名称", "type", "string", "required", true))
+        );
+
+        Tool calculatorTool = new SimpleTool(
+            "calculate",
+            "计算数学表达式的值",
+            (parameters) -> {
+                String expression = parameters.get("expression").toString();
+                try {
+                    // 简单的表达式计算，实际应用中可使用更安全的计算方式
+                    double result = evalExpression(expression);
+                    return "计算结果：" + result;
+                } catch (Exception e) {
+                    return "计算错误：" + e.getMessage();
+                }
+            },
+            List.of(Map.of("name", "expression", "description", "数学表达式", "type", "string", "required", true))
+        );
+
+        // 构建带有工具的 ChatClient
+        this.chatClient = chatClientBuilder
+            .withTools(List.of(weatherTool, calculatorTool))
+            .build();
+    }
+
+    @GetMapping("/agent/chat")
+    public String chat(@RequestParam String message) {
+        Prompt prompt = new PromptTemplate("{message}")
+            .create(Map.of("message", message));
+
+        return chatClient.prompt(prompt).call().getResult().getOutput().getContent();
+    }
+
+    // 简单的表达式计算方法
+    private double evalExpression(String expression) throws Exception {
+        // 这里使用简单的计算，实际应用中应使用更安全的方式
+        return new javax.script.ScriptEngineManager()
+            .getEngineByName("JavaScript")
+            .eval(expression)
+            .toString()
+            .equals("NaN") ? 0 : Double.parseDouble(
+                new javax.script.ScriptEngineManager()
+                    .getEngineByName("JavaScript")
+                    .eval(expression)
+                    .toString()
+            );
+    }
+}
+```
+
+**使用示例**：
+```java
+// 启动 Spring Boot 应用后，通过 HTTP 请求访问
+// GET http://localhost:8080/agent/chat?message=北京的天气如何？3加5乘2等于多少？
+
+// 响应示例：
+// 北京的天气是晴，20-28°C。3加5乘2的计算结果是13。
+```
+
 ### 8.4 开发最佳实践
 
 - **明确职责边界**：定义 Agent 能够处理和不能处理的任务范围，避免超出能力范围的请求。
