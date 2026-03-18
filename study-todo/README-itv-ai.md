@@ -1,5 +1,9 @@
 # AI 技术全指南
 
+
+todo
+增加SPring AI。和 Spring AI alibaba 和 Langchain + python 等场景下的 AI 调用大模型 样例 病附上代码。
+
 ## 1. 简介
 
 人工智能（Artificial Intelligence，简称 AI）是计算机科学的重要分支，致力于开发能够模拟人类智能行为的系统。本指南涵盖了 AI 领域的核心概念、最新技术、主流工具以及实践应用，旨在为读者提供全面的 AI 技术参考。
