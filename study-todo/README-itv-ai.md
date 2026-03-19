@@ -1,8 +1,14 @@
 # AI 技术全指南
 
+### Todo
 
-todo
-增加SPring AI。和 Spring AI alibaba 和 Langchain + python 等场景下的 AI 调用大模型 样例 病附上代码。
+```
+增加Spring AI。和 Spring AI alibaba 和 Langchain + python 等场景下的 AI 调用大模型 样例 并附上代码。
+
+
+```
+
+
 
 ## 1. 简介
 
