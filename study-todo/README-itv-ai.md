@@ -981,9 +981,404 @@ ai-examples/
     └── rag_demo.py
 ```
 
-## 10. 常见面试题目与解答
+## 10. 大模型常用处理思路与模式
 
-### 10.1 基础概念类
+### 10.1 核心处理模式
+
+#### 10.1.1 Plan + Execute 模式
+
+**基本概念**：
+Plan + Execute 模式是一种将复杂任务分解为多个子任务，然后依次执行的模式。这种模式特别适合需要多步骤推理和任务分解的场景。
+
+**工作流程**：
+1. **规划阶段（Plan）**：分析用户需求，将复杂任务分解为可执行的子任务序列
+2. **执行阶段（Execute）**：按照规划的顺序依次执行每个子任务
+3. **结果整合**：将各个子任务的执行结果整合成最终答案
+
+**使用场景**：
+- 复杂问题求解：如数学证明、编程任务等
+- 多步骤流程：如数据分析、报告生成等
+- 需要精确控制的场景：如自动化流程、工作流执行等
+
+**优势**：
+- 任务分解清晰，便于调试和优化
+- 可以并行执行独立的子任务
+- 适合需要精确控制执行顺序的场景
+
+**劣势**：
+- 规划阶段可能产生错误，影响后续执行
+- 缺乏动态调整能力，执行过程中遇到问题难以灵活应对
+- 对于需要实时反馈的场景不够灵活
+
+**代码示例**：
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+llm = ChatOpenAI(model="gpt-4", temperature=0)
+
+# 规划提示
+planner_prompt = ChatPromptTemplate.from_template(
+    """你是一个任务规划专家。请将以下任务分解为可执行的步骤：
+
+任务：{task}
+
+请按以下格式输出：
+步骤1: [步骤描述]
+步骤2: [步骤描述]
+...
+"""
+)
+
+# 执行提示
+executor_prompt = ChatPromptTemplate.from_template(
+    """你是一个任务执行专家。请执行以下步骤：
+
+{plan}
+
+请逐步执行并给出结果。
+"""
+)
+
+# 创建规划链
+planner = planner_prompt | llm | StrOutputParser()
+
+# 创建执行链
+executor = executor_prompt | llm | StrOutputParser()
+
+# Plan + Execute 模式
+def plan_and_execute(task):
+    # 1. 规划阶段
+    plan = planner.invoke({"task": task})
+    print("规划结果：\n", plan)
+    
+    # 2. 执行阶段
+    result = executor.invoke({"plan": plan})
+    print("\n执行结果：\n", result)
+    
+    return result
+
+# 使用示例
+result = plan_and_execute("分析2024年AI技术的发展趋势，并给出总结报告")
+```
+
+#### 10.1.2 ReAct 模式
+
+**基本概念**：
+ReAct（Reasoning + Acting）模式是一种结合推理和行动的模式。模型通过推理决定下一步行动，执行行动后观察结果，然后继续推理，直到完成任务。
+
+**工作流程**：
+1. **推理（Reasoning）**：分析当前状态，决定下一步应该做什么
+2. **行动（Acting）**：执行推理中确定的行动
+3. **观察（Observation）**：观察行动的结果
+4. **循环**：重复上述过程，直到任务完成
+
+**使用场景**：
+- 需要与外部工具交互的场景：如搜索、计算器、API调用等
+- 动态决策场景：如游戏、实时策略等
+- 需要逐步推理和验证的场景：如调试、故障排查等
+
+**优势**：
+- 动态适应性强，可以根据执行结果调整策略
+- 推理过程透明，便于理解和调试
+- 适合需要多步推理和工具调用的场景
+
+**劣势**：
+- 可能陷入推理循环，无法收敛
+- 对模型的推理能力要求较高
+- 执行效率可能较低，因为需要多轮交互
+
+**代码示例**：
+```python
+from langchain_openai import ChatOpenAI
+from langchain.agents import Tool, AgentExecutor, create_react_agent
+from langchain_core.prompts import PromptTemplate
+
+llm = ChatOpenAI(model="gpt-4", temperature=0)
+
+# 定义工具
+def search_tool(query):
+    """搜索工具"""
+    return f"搜索结果：关于'{query}'的信息..."
+
+def calculate_tool(expression):
+    """计算工具"""
+    try:
+        result = eval(expression)
+        return f"计算结果：{result}"
+    except:
+        return "计算错误"
+
+tools = [
+    Tool(name="search", func=search_tool, description="搜索信息"),
+    Tool(name="calculator", func=calculate_tool, description="计算表达式")
+]
+
+# ReAct 提示模板
+react_prompt = PromptTemplate.from_template(
+    """回答以下问题，你可以使用以下工具：
+
+{tools}
+
+使用以下格式：
+问题：你回答的问题
+思考：你应该始终思考要做什么
+行动：要采取的行动，应该是[{tool_names}]之一
+行动输入：行动的输入
+观察：行动的结果
+...（这个思考/行动/行动输入/观察可以重复N次）
+思考：我现在知道最终答案了
+最终答案：对原始输入问题的最终答案
+
+开始！
+
+问题：{input}
+思考：{agent_scratchpad}"""
+)
+
+# 创建 ReAct Agent
+agent = create_react_agent(llm, tools, react_prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
+# 使用示例
+result = agent_executor.invoke({
+    "input": "2024年AI领域的重大突破是什么？3的5次方是多少？"
+})
+print("最终答案：", result["output"])
+```
+
+### 10.2 其他常用模式
+
+#### 10.2.1 Chain of Thought (CoT)
+
+**基本概念**：
+Chain of Thought（思维链）是一种通过引导模型展示推理过程来提高回答质量的技术。模型被要求逐步思考，展示中间推理步骤，而不是直接给出最终答案。
+
+**工作流程**：
+1. **问题理解**：模型理解问题的要求
+2. **逐步推理**：模型逐步分析问题，展示推理过程
+3. **结论得出**：基于推理过程得出最终答案
+
+**使用场景**：
+- 复杂推理任务：如数学问题、逻辑推理等
+- 需要解释的场景：如教学、咨询等
+- 提高可信度的场景：如专业咨询、决策支持等
+
+**优势**：
+- 提高复杂问题的解决能力
+- 推理过程透明，便于验证
+- 减少错误率
+
+**劣势**：
+- 增加了Token消耗
+- 对于简单问题可能过度复杂
+- 可能产生错误的推理链
+
+**代码示例**：
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+
+llm = ChatOpenAI(model="gpt-4", temperature=0)
+
+# CoT 提示模板
+cot_prompt = ChatPromptTemplate.from_template(
+    """请逐步思考并回答以下问题。在给出最终答案前，请展示你的推理过程。
+
+问题：{question}
+
+请按以下格式回答：
+思考过程：
+[你的逐步推理过程]
+
+最终答案：
+[你的最终答案]
+"""
+)
+
+# 使用示例
+question = "一个农夫有17只羊，除了9只外都死了。农夫还剩几只羊？"
+
+response = cot_prompt | llm
+result = response.invoke({"question": question})
+print(result.content)
+```
+
+#### 10.2.2 Self-Consistency (自洽性)
+
+**基本概念**：
+Self-Consistency（自洽性）是一种通过多次采样和投票来提高回答质量的技术。模型对同一问题生成多个答案，然后选择最一致的答案。
+
+**工作流程**：
+1. **多次采样**：对同一问题生成多个不同的答案
+2. **一致性检查**：比较这些答案的一致性
+3. **投票选择**：选择最一致或最频繁的答案
+
+**使用场景**：
+- 需要高准确性的场景：如医疗诊断、金融分析等
+- 有多种可能答案的场景：如创意生成、方案设计等
+- 需要验证的场景：如关键决策、风险评估等
+
+**优势**：
+- 提高答案的准确性和可靠性
+- 减少随机性和偏差
+- 适合关键决策场景
+
+**劣势**：
+- 计算成本高，需要多次调用模型
+- 响应时间较长
+- 对于事实性问题效果有限
+
+**代码示例**：
+```python
+from langchain_openai import ChatOpenAI
+from collections import Counter
+
+llm = ChatOpenAI(model="gpt-4", temperature=0.7)
+
+def self_consistency(question, n=5):
+    """自洽性采样"""
+    # 1. 多次采样
+    answers = []
+    for i in range(n):
+        response = llm.invoke(question)
+        answers.append(response.content)
+        print(f"答案{i+1}: {answers[-1]}")
+    
+    # 2. 统计最一致的答案
+    answer_counts = Counter(answers)
+    most_common = answer_counts.most_common(1)[0]
+    
+    print(f"\n最一致的答案（出现{most_common[1]}次）：{most_common[0]}")
+    return most_common[0]
+
+# 使用示例
+question = "如果今天下雨，我应该带什么出门？"
+result = self_consistency(question, n=5)
+```
+
+#### 10.2.3 Tree of Thoughts (ToT)
+
+**基本概念**：
+Tree of Thoughts（思维树）是一种通过构建和搜索思维树来解决复杂问题的技术。模型生成多个可能的思维路径，然后搜索最优路径。
+
+**工作流程**：
+1. **思维生成**：为问题生成多个可能的思维路径
+2. **树构建**：将思维路径组织成树状结构
+3. **搜索评估**：搜索和评估不同的思维路径
+4. **最优选择**：选择最优的思维路径作为答案
+
+**使用场景**：
+- 复杂规划问题：如旅行规划、项目规划等
+- 需要多方案比较的场景：如决策分析、方案选择等
+- 创意生成场景：如产品设计、创意写作等
+
+**优势**：
+- 可以探索多个可能的解决方案
+- 适合复杂的多步骤问题
+- 提高找到最优解的概率
+
+**劣势**：
+- 计算成本高，需要生成和评估多个路径
+- 实现复杂度高
+- 可能产生过多无用的思维路径
+
+**代码示例**：
+```python
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(model="gpt-4", temperature=0.8)
+
+def tree_of_thoughts(problem, max_depth=3, branch_factor=3):
+    """思维树搜索"""
+    
+    def generate_thoughts(current_thought, depth):
+        if depth >= max_depth:
+            return [current_thought]
+        
+        # 生成多个可能的下一步思考
+        prompt = f"""当前思考：{current_thought}
+请生成{branch_factor}个可能的下一步思考。每个思考应该是一个简短的描述。"""
+        
+        response = llm.invoke(prompt)
+        next_thoughts = [t.strip() for t in response.content.split('\n') if t.strip()]
+        
+        # 递归生成思维树
+        all_paths = []
+        for thought in next_thoughts:
+            paths = generate_thoughts(thought, depth + 1)
+            all_paths.extend(paths)
+        
+        return all_paths
+    
+    # 生成思维树
+    all_paths = generate_thoughts(problem, 0)
+    
+    # 评估和选择最优路径
+    print(f"生成了{len(all_paths)}条思维路径")
+    
+    # 简化版：选择最后一条路径
+    return all_paths[-1] if all_paths else problem
+
+# 使用示例
+problem = "如何提高团队的工作效率？"
+result = tree_of_thoughts(problem, max_depth=2, branch_factor=2)
+print("\n最优思维路径：", result)
+```
+
+### 10.3 模式对比与选择
+
+| 模式 | 适用场景 | 优势 | 劣势 | 计算成本 | 灵活性 |
+|------|---------|------|------|----------|---------|
+| Plan + Execute | 需要精确控制的复杂任务 | 任务分解清晰，便于调试 | 缺乏动态调整能力 | 中等 | 低 |
+| ReAct | 需要与工具交互的动态场景 | 动态适应性强，推理透明 | 可能陷入循环，效率较低 | 高 | 高 |
+| Chain of Thought | 复杂推理任务 | 提高解决能力，过程透明 | 增加Token消耗 | 中等 | 中等 |
+| Self-Consistency | 需要高准确性的场景 | 提高准确性和可靠性 | 计算成本高，响应慢 | 高 | 低 |
+| Tree of Thoughts | 复杂规划和创意生成 | 探索多方案，提高最优解概率 | 实现复杂，成本高 | 很高 | 中等 |
+
+### 10.4 实践建议
+
+#### 10.4.1 模式选择指南
+
+1. **任务复杂度**：
+   - 简单任务：直接调用，无需复杂模式
+   - 中等复杂：使用 CoT 或 Plan + Execute
+   - 高度复杂：使用 ReAct 或 ToT
+
+2. **动态性需求**：
+   - 静态任务：Plan + Execute
+   - 动态任务：ReAct
+   - 需要探索：ToT
+
+3. **准确性要求**：
+   - 一般要求：基础调用或 CoT
+   - 高准确性：Self-Consistency
+   - 关键决策：组合使用多种模式
+
+4. **资源约束**：
+   - 计算资源充足：可以使用 ToT 或 Self-Consistency
+   - 资源有限：优先使用 Plan + Execute 或 CoT
+   - 需要平衡：ReAct
+
+#### 10.4.2 组合使用策略
+
+1. **Plan + ReAct**：
+   - 先规划任务，然后在执行阶段使用 ReAct 模式
+   - 适合复杂但需要动态调整的场景
+
+2. **CoT + Self-Consistency**：
+   - 使用 CoT 生成推理链，然后多次采样验证
+   - 适合需要高准确性的推理任务
+
+3. **ToT + ReAct**：
+   - 使用 ToT 生成多个方案，然后用 ReAct 执行最优方案
+   - 适合复杂规划和执行结合的场景
+
+## 11. 常见面试题目与解答
+
+### 11.1 基础概念类
 
 **1. 请解释什么是人工智能 (AI)，并简要说明其发展历程。**
 
@@ -1008,7 +1403,7 @@ ai-examples/
 - 阿里巴巴的通义千问
 - 科大讯飞的讯飞星火
 
-### 10.2 技术原理类
+### 11.2 技术原理类
 
 **4. 请解释什么是 Transformer 架构，它在大语言模型中的作用是什么？**
 
