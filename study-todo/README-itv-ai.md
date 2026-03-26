@@ -1711,7 +1711,7 @@ pip install jupyter jupyterlab
   - 仓库：https://github.com/huggingface/text-generation-inference
   - 特点：支持批量推理，动态批处理，优化的内存使用
 
-### 13.2 开源大模型
+### 14.2 开源大模型
 
 - **Llama 3**：Meta 开发的开源大语言模型，提供多种尺寸的模型版本。
   - 仓库：https://github.com/meta-llama/llama3
@@ -1733,7 +1733,7 @@ pip install jupyter jupyterlab
   - 仓库：https://github.com/THUDM/GLM
   - 特点：中文支持良好，多任务能力，开源开放
 
-### 13.3 AI 编程工具
+### 14.3 AI 编程工具
 
 - **Codeium**：免费的 AI 编程工具，提供代码补全、搜索和生成功能。
   - 仓库：https://github.com/Exafunction/codeium
@@ -1751,7 +1751,7 @@ pip install jupyter jupyterlab
   - 仓库：https://github.com/github/copilot-cli
   - 特点：命令行集成，代码生成，自然语言交互
 
-### 13.4 多模态 AI 工具
+### 14.4 多模态 AI 工具
 
 - **Stable Diffusion**：开源的文本到图像生成模型，支持多种风格和创意。
   - 仓库：https://github.com/Stability-AI/stablediffusion
@@ -1769,7 +1769,7 @@ pip install jupyter jupyterlab
   - 仓库：https://github.com/facebookresearch/audiocraft
   - 特点：高质量音频生成，多种音频类型支持，易于使用
 
-### 13.5 其他开源 AI 工具
+### 14.5 其他开源 AI 工具
 
 - **MLflow**：用于机器学习生命周期管理的平台，包括实验跟踪、模型注册和部署。
   - 仓库：https://github.com/mlflow/mlflow
@@ -1787,9 +1787,9 @@ pip install jupyter jupyterlab
   - 仓库：https://github.com/HumanSignal/label-studio
   - 特点：多类型数据标注，自定义标注界面，团队协作
 
-## 14. 参考资源
+## 15. 参考资源
 
-### 14.1 基础资源
+### 15.1 基础资源
 - **什么是人工智能 (AI)**：https://www.ibm.com/cn-zh/topics?topic=all&page=1
 - **什么是机器学习**：https://www.ibm.com/cn-zh/think/topics/machine-learning
 - **什么是深度学习**：https://www.ibm.com/cn-zh/think/topics/deep-learning
@@ -1799,7 +1799,7 @@ pip install jupyter jupyterlab
 - **核心流派、算法原理与实战解析**：https://www.woshipm.com/ai/6202602.html
 - **人工智能入门指南**：https://zhuanlan.zhihu.com/p/703098876
 
-### 14.2 最新技术参考
+### 15.2 最新技术参考
 - **OpenAI 官方博客**：https://openai.com/blog
 - **Anthropic 官方博客**：https://www.anthropic.com/index
 - **Hugging Face 模型库**：https://huggingface.co/models
