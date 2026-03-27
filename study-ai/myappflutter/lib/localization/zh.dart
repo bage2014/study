@@ -285,5 +285,13 @@ const Map<String, String> zh = {
   'download_file': '下载文件',
   'download_success': '文件下载成功',
   'download_failed': '文件下载失败',
-  'save_path': '保存路径'
+  'save_path': '保存路径',
+  
+  // User List Page translations
+  'user_list': '用户列表',
+  'add_user': '添加用户',
+  'enter_phone_email_or_username': '请输入手机号、邮箱或用户名',
+  'no_users_found': '未找到用户',
+  'user_added_successfully': '用户添加成功',
+  'failed_to_add_user': '添加用户失败'
 };

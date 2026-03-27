@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:myappflutter/presentation/pages/family_edit_page.dart';
 import 'package:myappflutter/presentation/pages/tv_group_channels_page.dart';
 import 'package:myappflutter/presentation/pages/user_search_page.dart';
+import 'package:myappflutter/presentation/pages/user_list_page.dart';
 import '../../presentation/pages/login_page.dart';
 import '../../presentation/pages/home_page.dart';
 import '../../presentation/pages/current_location_page.dart';
@@ -48,6 +49,7 @@ class AppRoutes {
   static const String AI = '/ai'; // AI页面路由
   static const String FILE_UPLOAD = '/file_upload'; // 文件上传页面路由
   static const String FILE_LIST = '/file_list'; // 文件列表页面路由
+  static const String USER_LIST = '/user_list'; // 用户列表页面路由
 
   static final routes = [
     GetPage(name: LOGIN, page: () => const LoginPage()),
@@ -124,6 +126,11 @@ class AppRoutes {
     GetPage(
       name: AppRoutes.FILE_LIST,
       page: () => const FileListPage(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: AppRoutes.USER_LIST,
+      page: () => const UserListPage(),
       transition: Transition.fadeIn,
     ),
   ];

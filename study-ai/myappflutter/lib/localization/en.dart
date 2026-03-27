@@ -262,5 +262,13 @@ const Map<String, String> en = {
   'download_file': 'Download File',
   'download_success': 'File downloaded successfully',
   'download_failed': 'File download failed',
-  'save_path': 'Save path'
+  'save_path': 'Save path',
+  
+  // User List Page translations
+  'user_list': 'User List',
+  'add_user': 'Add User',
+  'enter_phone_email_or_username': 'Enter phone, email or username',
+  'no_users_found': 'No users found',
+  'user_added_successfully': 'User added successfully',
+  'failed_to_add_user': 'Failed to add user'
 };

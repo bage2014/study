@@ -170,6 +170,12 @@ class HomePage extends StatelessWidget {
                   title: 'file_list',
                   onTap: () => Get.toNamed(AppRoutes.FILE_LIST),
                 ),
+                // 添加用户列表菜单卡片
+                _buildMenuCard(
+                  icon: Icons.people,
+                  title: 'user_list',
+                  onTap: () => Get.toNamed(AppRoutes.USER_LIST),
+                ),
               
               ],
             ),

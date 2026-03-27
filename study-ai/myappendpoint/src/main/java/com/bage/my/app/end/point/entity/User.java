@@ -22,6 +22,7 @@ public class User {
     private LocalDateTime lockTime;
     // 新增字段
     private String email;
+    private String phone;
     private String gender;
     private LocalDate birthDate;
     private String avatarUrl;

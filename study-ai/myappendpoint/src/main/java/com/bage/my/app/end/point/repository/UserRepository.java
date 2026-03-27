@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 新增：根据关键词分页查询用户
     @Query("SELECT u FROM User u WHERE " +
            "(u.username LIKE %:keyword% OR " +
-           "u.email LIKE %:keyword%)")
+           "u.email LIKE %:keyword% OR " +
+           "u.phone LIKE %:keyword%)")
     Page<User> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }
