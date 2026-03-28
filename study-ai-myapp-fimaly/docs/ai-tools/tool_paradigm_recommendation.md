@@ -12,7 +12,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                        应用层                              │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │  Web前端    │  │ Android端  │  │ 管理后台    │         │
+│  │  Web前端    │  │ Flutter端  │  │ 管理后台    │         │
 │  └─────────────┘  └─────────────┘  └─────────────┘         │
 ├─────────────────────────────────────────────────────────────┤
 │                        API层                               │
@@ -39,8 +39,8 @@
 | 后端开发 | Spring Boot框架 | Spring Boot 2.5+ | 构建RESTful API |
 |  | 数据库 | MySQL + Neo4j | 存储结构化数据和家族关系网络 |
 |  | 安全认证 | Spring Security + JWT | 用户认证和授权 |
-| 前端开发 | Web框架 | React 18+ | 构建响应式Web应用 |
-|  | 移动开发 | Kotlin + Jetpack Compose | 构建原生Android应用 |
+| 前端开发 | Web框架 | Vue 3+ | 构建响应式Web应用 |
+|  | 移动开发 | Flutter | 构建跨平台移动应用 |
 |  | UI组件 | Tailwind CSS + Material Design | 构建美观的用户界面 |
 | AI工具 | 知识图谱 | Neo4j | 构建家族关系网络 |
 |  | 计算机视觉 | face-api.js + OpenCV.js | 人脸识别和图像处理 |
@@ -66,13 +66,13 @@
 
 | 工具 | 版本 | 用途 | 配置建议 |
 |------|------|------|----------|
-| React | 18+ | Web框架 | 使用Vite创建项目，配置路由和状态管理 |
-| Redux Toolkit | 1.8+ | 状态管理 | 组织状态结构，使用createSlice简化代码 |
-| React Router | 6.0+ | 路由管理 | 配置嵌套路由，实现权限控制 |
+| Vue | 3+ | Web框架 | 使用Vite创建项目，配置路由和状态管理 |
+| Pinia | 2.0+ | 状态管理 | 组织状态结构，简化状态管理 |
+| Vue Router | 4.0+ | 路由管理 | 配置嵌套路由，实现权限控制 |
 | Tailwind CSS | 3.0+ | 样式管理 | 配置自定义主题，使用响应式类 |
-| Kotlin | 1.6+ | Android开发 | 使用Jetpack Compose构建UI |
-| Jetpack Compose | 1.1+ | Android UI | 使用Compose组件构建现代化界面 |
-| Retrofit | 2.9+ | 网络请求 | 配置拦截器，处理认证和错误 |
+| Flutter | 3.0+ | 跨平台开发 | 使用Flutter构建UI |
+| Dart | 2.17+ | 开发语言 | Flutter应用开发 |
+| Dio | 5.0+ | 网络请求 | 配置拦截器，处理认证和错误 |
 
 ### 3.3 AI核心工具
 
@@ -125,18 +125,18 @@
 ### 4.2 前端开发范式
 
 1. **Web前端**
-   - 使用Vite创建React项目
-   - 配置路由（React Router）
-   - 配置状态管理（Redux Toolkit）
+   - 使用Vite创建Vue项目
+   - 配置路由（Vue Router）
+   - 配置状态管理（Pinia）
    - 实现响应式设计（Tailwind CSS）
    - 集成API服务（Axios）
 
-2. **Android前端**
-   - 使用Android Studio创建Kotlin项目
-   - 配置Jetpack Compose
+2. **Flutter前端**
+   - 使用Flutter CLI创建项目
+   - 配置状态管理（Provider/Riverpod）
    - 实现MVVM架构
-   - 配置Retrofit进行网络请求
-   - 实现本地数据存储（Room）
+   - 配置Dio进行网络请求
+   - 实现本地数据存储（Hive）
 
 3. **UI/UX设计**
    - 遵循设计规范
@@ -226,7 +226,7 @@
    - 开发基础API
 
 2. **前端**：
-   - 初始化Web和Android项目
+   - 初始化Web和Flutter项目
    - 实现基本布局和导航
    - 集成API服务
    - 实现核心UI组件
@@ -276,7 +276,7 @@
 
 - **后端**：使用Maven或Gradle管理依赖
 - **Web前端**：使用npm或yarn管理依赖
-- **Android前端**：使用Gradle管理依赖
+- **Flutter前端**：使用pub管理依赖
 
 ### 7.2 版本控制
 

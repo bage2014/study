@@ -154,7 +154,6 @@
         <module name="study-spring-boot-sso-oauth2-client2" />
         <module name="study-spring-boot-trace" />
         <module name="study-spring-boot-sso-oauth2-client1" />
-        <module name="study-ai" />
         <module name="study-java21" />
         <module name="study-mapping-generator" />
         <module name="study-arthas" />
@@ -242,6 +241,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="21">
       <module name="demo" target="21" />
+      <module name="study-ai" target="21" />
       <module name="study-guava" target="1.8" />
       <module name="study-java-agent-attach" target="1.8" />
       <module name="study-java-agent-demo-service" target="1.8" />

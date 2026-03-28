@@ -152,8 +152,8 @@
 
 - **后端**：Spring Boot 2.5+
 - **数据库**：MySQL 8.0+
-- **Web前端**：React 18+
-- **Android端**：Kotlin + Jetpack Compose
+- **Web前端**：Vue 3+
+- **移动端**：Flutter
 - **云存储**：对象存储服务（如OSS）
 - **认证**：JWT
 
