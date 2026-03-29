@@ -4,6 +4,16 @@
       <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">注册</h1>
       <form @submit.prevent="register" class="space-y-4">
         <div>
+          <label for="username" class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+          <input 
+            type="text" 
+            id="username" 
+            v-model="form.username" 
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+        <div>
           <label for="email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
           <input 
             type="email" 
@@ -54,6 +64,7 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const form = ref({
+  username: '',
   email: '',
   password: '',
   nickname: ''

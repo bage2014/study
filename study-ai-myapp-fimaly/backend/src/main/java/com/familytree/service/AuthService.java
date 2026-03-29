@@ -47,6 +47,7 @@ public class AuthService {
         
         // Create new user
         User user = new User();
+        user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
