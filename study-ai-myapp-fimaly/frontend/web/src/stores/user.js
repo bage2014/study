@@ -8,68 +8,85 @@ export const useUserStore = defineStore('user', {
     loading: false,
     error: null
   }),
-  
+
   getters: {
-    isLoggedIn: (state) => !!state.token,
+    isAuthenticated: (state) => !!state.token,
     currentUser: (state) => state.user
   },
-  
+
   actions: {
-    async login(email, password) {
+    async login(credentials) {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post('http://localhost:8080/api/auth/login', {
-          email,
-          password
+        const loginData = {
+          email: String(credentials.email),
+          password: String(credentials.password)
+        }
+        const response = await axios.post('/api/auth/login', loginData, {
+          headers: { 'Content-Type': 'application/json' }
         })
-        this.token = response.data.token
-        localStorage.setItem('token', this.token)
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-        await this.fetchUser()
-        return response.data
+        
+        // 从新的返回格式中提取token
+        if (response.data.code === 200 && response.data.data) {
+          this.token = response.data.data.token
+          localStorage.setItem('token', this.token)
+          axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+          await this.fetchCurrentUser()
+        } else {
+          throw new Error(response.data.message || 'Login failed')
+        }
       } catch (error) {
-        this.error = error.response?.data?.message || 'Login failed'
+        this.error = error.response?.data?.message || error.message
         throw error
       } finally {
         this.loading = false
       }
     },
-    
-    async register(email, phone, password, nickname) {
+
+    async register(credentials) {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post('http://localhost:8080/api/auth/register', {
-          email,
-          phone,
-          password,
-          nickname
-        })
-        return response.data
+        const response = await axios.post('/api/auth/register', credentials)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200 && response.data.data) {
+          await this.login({
+            email: credentials.email,
+            password: credentials.password
+          })
+        } else {
+          throw new Error(response.data.message || 'Registration failed')
+        }
       } catch (error) {
-        this.error = error.response?.data?.message || 'Registration failed'
+        this.error = error.response?.data?.message || error.message
         throw error
       } finally {
         this.loading = false
       }
     },
-    
-    async fetchUser() {
+
+    async fetchCurrentUser() {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('http://localhost:8080/api/auth/me')
-        this.user = response.data
-        return response.data
+        const response = await axios.get('/api/auth/me')
+        
+        // 从新的返回格式中提取用户数据
+        if (response.data.code === 200 && response.data.data) {
+          this.user = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch user')
+        }
       } catch (error) {
-        this.error = error.response?.data?.message || 'Failed to fetch user'
-        throw error
+        this.error = error.response?.data?.message || error.message
+        this.logout()
       } finally {
         this.loading = false
       }
     },
-    
+
     logout() {
       this.user = null
       this.token = null

@@ -1,4 +1,4 @@
-@reference tailwind;
+@import "tailwindcss";
 
 @tailwind base;
 @tailwind components;

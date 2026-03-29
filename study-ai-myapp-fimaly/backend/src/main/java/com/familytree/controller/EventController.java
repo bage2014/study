@@ -1,61 +1,79 @@
 package com.familytree.controller;
 
+import com.familytree.dto.ApiResponse;
 import com.familytree.model.Event;
 import com.familytree.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/families/{familyId}/events")
+@RequestMapping("/api/events")
 public class EventController {
     @Autowired
     private EventService eventService;
     
     @PostMapping
-    public ResponseEntity<Event> addEvent(@PathVariable Long familyId, @RequestBody Event event) {
-        Event createdEvent = eventService.addEvent(
-                familyId,
-                event.getName(),
-                event.getDescription(),
-                event.getEventDate(),
-                event.getRelatedMembers(),
-                event.getPhoto()
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdEvent);
+    public ApiResponse<Event> createEvent(@RequestBody Event event) {
+        try {
+            Event createdEvent = eventService.createEvent(
+                    event.getTitle(),
+                    event.getDescription(),
+                    event.getDate(),
+                    event.getLocation(),
+                    event.getFamilyId()
+            );
+            return ApiResponse.success(createdEvent);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @GetMapping
-    public ResponseEntity<List<Event>> getEvents(@PathVariable Long familyId) {
-        List<Event> events = eventService.getEventsByFamilyId(familyId);
-        return ResponseEntity.ok(events);
+    public ApiResponse<List<Event>> getEvents() {
+        try {
+            List<Event> events = eventService.getEvents();
+            return ApiResponse.success(events);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEvent(@PathVariable Long id) {
-        Event event = eventService.getEventById(id);
-        return ResponseEntity.ok(event);
+    public ApiResponse<Event> getEvent(@PathVariable Long id) {
+        try {
+            Event event = eventService.getEventById(id);
+            return ApiResponse.success(event);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
-        Event updatedEvent = eventService.updateEvent(
-                id,
-                event.getName(),
-                event.getDescription(),
-                event.getEventDate(),
-                event.getRelatedMembers(),
-                event.getPhoto()
-        );
-        return ResponseEntity.ok(updatedEvent);
+    public ApiResponse<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
+        try {
+            Event updatedEvent = eventService.updateEvent(
+                    id,
+                    event.getTitle(),
+                    event.getDescription(),
+                    event.getDate(),
+                    event.getLocation(),
+                    event.getFamilyId()
+            );
+            return ApiResponse.success(updatedEvent);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
-        eventService.deleteEvent(id);
-        return ResponseEntity.noContent().build();
+    public ApiResponse<Void> deleteEvent(@PathVariable Long id) {
+        try {
+            eventService.deleteEvent(id);
+            return ApiResponse.success(null);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 }

@@ -53,7 +53,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-@reference tailwind;
+@import "tailwindcss";
 
 .family-tree-container {
   overflow-x: auto;

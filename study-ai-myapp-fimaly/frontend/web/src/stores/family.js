@@ -5,91 +5,119 @@ export const useFamilyStore = defineStore('family', {
   state: () => ({
     families: [],
     currentFamily: null,
-    members: [],
     loading: false,
     error: null
   }),
-  
+
   getters: {
-    familyList: (state) => state.families,
-    currentFamilyDetails: (state) => state.currentFamily,
-    familyMembers: (state) => state.members
+    allFamilies: (state) => state.families,
+    selectedFamily: (state) => state.currentFamily
   },
-  
+
   actions: {
     async fetchFamilies() {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('http://localhost:8080/api/families')
-        this.families = response.data
-        return response.data
+        const response = await axios.get('/api/families')
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200 && response.data.data) {
+          this.families = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch families')
+        }
       } catch (error) {
-        this.error = error.response?.data?.message || 'Failed to fetch families'
+        this.error = error.response?.data?.message || error.message
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async fetchFamily(id) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axios.get(`/api/families/${id}`)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200 && response.data.data) {
+          this.currentFamily = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch family')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || error.message
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async createFamily(familyData) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axios.post('/api/families', familyData)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200 && response.data.data) {
+          this.families.push(response.data.data)
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to create family')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || error.message
         throw error
       } finally {
         this.loading = false
       }
     },
-    
-    async createFamily(name, description, avatar) {
+
+    async updateFamily(id, familyData) {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post('http://localhost:8080/api/families', {
-          name,
-          description,
-          avatar
-        })
-        this.families.push(response.data)
-        return response.data
+        const response = await axios.put(`/api/families/${id}`, familyData)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200 && response.data.data) {
+          const index = this.families.findIndex(f => f.id === id)
+          if (index !== -1) {
+            this.families[index] = response.data.data
+          }
+          if (this.currentFamily && this.currentFamily.id === id) {
+            this.currentFamily = response.data.data
+          }
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to update family')
+        }
       } catch (error) {
-        this.error = error.response?.data?.message || 'Failed to create family'
+        this.error = error.response?.data?.message || error.message
         throw error
       } finally {
         this.loading = false
       }
     },
-    
-    async fetchFamilyDetails(familyId) {
+
+    async deleteFamily(id) {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get(`http://localhost:8080/api/families/${familyId}`)
-        this.currentFamily = response.data
-        return response.data
+        const response = await axios.delete(`/api/families/${id}`)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200) {
+          this.families = this.families.filter(f => f.id !== id)
+          if (this.currentFamily && this.currentFamily.id === id) {
+            this.currentFamily = null
+          }
+        } else {
+          throw new Error(response.data.message || 'Failed to delete family')
+        }
       } catch (error) {
-        this.error = error.response?.data?.message || 'Failed to fetch family details'
-        throw error
-      } finally {
-        this.loading = false
-      }
-    },
-    
-    async fetchFamilyMembers(familyId) {
-      this.loading = true
-      this.error = null
-      try {
-        const response = await axios.get(`http://localhost:8080/api/families/${familyId}/members`)
-        this.members = response.data
-        return response.data
-      } catch (error) {
-        this.error = error.response?.data?.message || 'Failed to fetch family members'
-        throw error
-      } finally {
-        this.loading = false
-      }
-    },
-    
-    async addFamilyMember(familyId, member) {
-      this.loading = true
-      this.error = null
-      try {
-        const response = await axios.post(`http://localhost:8080/api/families/${familyId}/members`, member)
-        this.members.push(response.data)
-        return response.data
-      } catch (error) {
-        this.error = error.response?.data?.message || 'Failed to add family member'
+        this.error = error.response?.data?.message || error.message
         throw error
       } finally {
         this.loading = false

@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Data
@@ -20,13 +20,13 @@ public class Family {
     @Column(name = "name", nullable = false)
     private String name;
     
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     
     @Column(name = "avatar")
     private String avatar;
     
-    @Column(name = "creator_id", nullable = false)
+    @Column(name = "creator_id")
     private Long creatorId;
     
     @Column(name = "created_at", nullable = false, updatable = false)

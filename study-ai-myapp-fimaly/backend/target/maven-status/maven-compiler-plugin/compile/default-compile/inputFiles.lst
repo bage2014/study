@@ -17,6 +17,7 @@
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/repository/EventRepository.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/model/Permission.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/controller/MemberController.java
+/Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/exception/GlobalExceptionHandler.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/service/PermissionService.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/service/MemberService.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/repository/RelationshipRepository.java
@@ -26,9 +27,11 @@
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/repository/UserRepository.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/config/JwtAuthenticationFilter.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/utils/JwtUtils.java
+/Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/service/UserDetailsServiceImpl.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/repository/FamilyRepository.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/model/User.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/service/MediaService.java
+/Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/dto/ApiResponse.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/controller/MediaController.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/model/Relationship.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/controller/FamilyController.java

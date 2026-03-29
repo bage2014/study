@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Data
@@ -20,16 +20,22 @@ public class Media {
     @Column(name = "family_id", nullable = false)
     private Long familyId;
     
-    @Column(name = "type", nullable = false)
+    @Column(name = "member_id")
+    private Long memberId;
+    
+    @Column(name = "type", nullable = false) // photo, video, document
     private String type;
     
     @Column(name = "url", nullable = false)
     private String url;
     
-    @Column(name = "description")
+    @Column(name = "title")
+    private String title;
+    
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     
-    @Column(name = "uploaded_by", nullable = false)
+    @Column(name = "uploaded_by")
     private Long uploadedBy;
     
     @Column(name = "uploaded_at", nullable = false, updatable = false)

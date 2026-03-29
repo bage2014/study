@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Data
@@ -20,8 +20,8 @@ public class Event {
     @Column(name = "family_id", nullable = false)
     private Long familyId;
     
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "title", nullable = false)
+    private String title;
     
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
@@ -30,11 +30,8 @@ public class Event {
     @Temporal(TemporalType.DATE)
     private Date eventDate;
     
-    @Column(name = "related_members")
-    private String relatedMembers;
-    
-    @Column(name = "photo")
-    private String photo;
+    @Column(name = "location")
+    private String location;
     
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

@@ -1,10 +1,9 @@
 package com.familytree.controller;
 
+import com.familytree.dto.ApiResponse;
 import com.familytree.model.Family;
 import com.familytree.service.FamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,42 +15,62 @@ public class FamilyController {
     private FamilyService familyService;
     
     @PostMapping
-    public ResponseEntity<Family> createFamily(@RequestAttribute("userId") Long userId, @RequestBody Family family) {
-        Family createdFamily = familyService.createFamily(
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar(),
-                userId
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdFamily);
+    public ApiResponse<Family> createFamily(@RequestAttribute("userId") Long userId, @RequestBody Family family) {
+        try {
+            Family createdFamily = familyService.createFamily(
+                    family.getName(),
+                    family.getDescription(),
+                    family.getAvatar(),
+                    userId
+            );
+            return ApiResponse.success(createdFamily);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @GetMapping
-    public ResponseEntity<List<Family>> getFamilies(@RequestAttribute("userId") Long userId) {
-        List<Family> families = familyService.getFamiliesByCreatorId(userId);
-        return ResponseEntity.ok(families);
+    public ApiResponse<List<Family>> getFamilies(@RequestAttribute("userId") Long userId) {
+        try {
+            List<Family> families = familyService.getFamiliesByCreatorId(userId);
+            return ApiResponse.success(families);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Family> getFamily(@PathVariable Long id) {
-        Family family = familyService.getFamilyById(id);
-        return ResponseEntity.ok(family);
+    public ApiResponse<Family> getFamily(@PathVariable Long id) {
+        try {
+            Family family = familyService.getFamilyById(id);
+            return ApiResponse.success(family);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Family> updateFamily(@PathVariable Long id, @RequestBody Family family) {
-        Family updatedFamily = familyService.updateFamily(
-                id,
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar()
-        );
-        return ResponseEntity.ok(updatedFamily);
+    public ApiResponse<Family> updateFamily(@PathVariable Long id, @RequestBody Family family) {
+        try {
+            Family updatedFamily = familyService.updateFamily(
+                    id,
+                    family.getName(),
+                    family.getDescription(),
+                    family.getAvatar()
+            );
+            return ApiResponse.success(updatedFamily);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFamily(@PathVariable Long id) {
-        familyService.deleteFamily(id);
-        return ResponseEntity.noContent().build();
+    public ApiResponse<Void> deleteFamily(@PathVariable Long id) {
+        try {
+            familyService.deleteFamily(id);
+            return ApiResponse.success(null);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 }

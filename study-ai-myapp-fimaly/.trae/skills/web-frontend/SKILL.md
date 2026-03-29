@@ -1,144 +1,124 @@
----
-name: "web-frontend"
-description: "Provides guidance for web frontend development using Vue 3+, including component design, state management, and responsive UI implementation. Invoke when working on web frontend-related tasks or when needing frontend architecture advice."
----
+# 前端Web项目规范
 
-# Web Frontend Development
+## 技术栈
+- **框架**: Vue 3.5.30+
+- **构建工具**: Vite 8.0.1+
+- **状态管理**: Pinia 3.0.4+
+- **路由**: Vue Router 4.6.4+
+- **HTTP客户端**: Axios 1.14.0+
+- **CSS框架**: Tailwind CSS 4.2.2+
+- **PostCSS**: 8.5.8+
+- **Autoprefixer**: 10.4.27+
 
-This skill provides comprehensive guidance for developing the web frontend of the Family Tree App using Vue 3+.
-
-## Core Technologies
-
-- **Vue 3+**
-- **Vue Router**
-- **Pinia** (State Management)
-- **Axios** (HTTP Requests)
-- **Tailwind CSS** (Styling)
-- **Vite** (Build Tool)
-
-## Project Structure
-
+## 项目结构
 ```
 frontend/web/
 ├── src/
-│   ├── components/        # Reusable components
-│   │   ├── layout/        # Layout components
-│   │   ├── common/        # Common components
-│   │   └── features/      # Feature-specific components
-│   ├── views/             # Page components
-│   ├── composables/       # Custom composable functions
-│   ├── services/          # API services
-│   ├── stores/            # Pinia stores
-│   ├── utils/             # Utility functions
-│   ├── styles/            # Global styles
-│   ├── router/            # Vue Router configuration
-│   └── App.vue            # Application entry
-├── public/                # Static assets
-├── index.html             # HTML template
-├── package.json           # NPM configuration
-└── vite.config.js         # Vite configuration
+│   ├── assets/          # 静态资源
+│   ├── components/      # 组件
+│   ├── router/          # 路由配置
+│   ├── stores/          # Pinia状态管理
+│   ├── views/           # 页面视图
+│   ├── App.vue          # 应用根组件
+│   ├── main.js          # 应用入口
+│   └── style.css        # 全局样式
+├── public/              # 公共资源
+├── index.html           # HTML模板
+├── vite.config.js       # Vite配置
+└── package.json         # 项目配置
 ```
 
-## Key Features
+## 编码规范
 
-### User Interface
-- Responsive design with Tailwind CSS
-- Clean, modern UI components
-- Consistent design system
-- Accessibility support
+### 命名规范
+- **文件命名**: 小写字母，使用连字符分隔，如 `login-view.vue`
+- **组件命名**: 首字母大写，驼峰命名，如 `HelloWorld.vue`
+- **变量命名**: 首字母小写，驼峰命名，如 `userStore`
+- **常量命名**: 全大写，下划线分隔，如 `API_BASE_URL`
+- **方法命名**: 首字母小写，驼峰命名，如 `loginUser`
 
-### Navigation
-- Vue Router for client-side routing
-- Protected routes for authenticated users
-- Nested routes for complex views
+### 代码风格
+- 使用 2 空格缩进
+- 组件使用 `<script setup>` 语法
+- 模板使用 PascalCase 命名组件
+- 样式使用 Tailwind CSS 类名
+- 注释清晰，说明组件功能和参数含义
 
-### State Management
-- Pinia for global state management
-- Reactive data handling
-- Persistent state with localStorage
+## 核心规范
 
-### API Integration
-- Axios for HTTP requests
-- Interceptors for authentication
-- Error handling and loading states
+### 1. 组件规范
+- 组件应遵循单一职责原则
+- 组件命名应清晰表达其功能
+- 组件 props 应定义类型和默认值
+- 组件事件应使用 kebab-case 命名
+- 复杂组件应拆分为更小的子组件
 
-### Core Pages
+### 2. 状态管理规范
+- 使用 Pinia 进行状态管理
+- 按功能模块划分 store
+- 状态定义应清晰，包含必要的类型注释
+- 异步操作应使用 async/await
+- 状态更新应通过 actions 进行
 
-#### Login/Register
-- Authentication forms
-- Password reset functionality
-- Social login options
+### 3. 路由规范
+- 使用 Vue Router 4
+- 路由配置应按模块组织
+- 路由路径使用 kebab-case
+- 路由守卫应统一管理
+- 懒加载路由以优化性能
 
-#### Dashboard
-- Family overview
-- Recent activities
-- Quick access to key features
+### 4. HTTP请求规范
+- 使用 Axios 进行 HTTP 请求
+- 配置统一的 baseURL 和拦截器
+- 请求和响应数据应进行类型检查
+- 错误处理应统一管理
+- API 调用应封装在 store 或单独的服务中
 
-#### Family Tree
-- Interactive family tree visualization
-- Zoom and pan functionality
-- Member node interactions
+### 5. 样式规范
+- 使用 Tailwind CSS 进行样式开发
+- 避免使用内联样式
+- 自定义样式应使用 `@layer` 指令
+- 响应式设计应使用 Tailwind 的响应式类
+- 主题配置应在 `tailwind.config.js` 中定义
 
-#### Member Management
-- Member list with search and filter
-- Member detail view
-- Add/edit member forms
+### 6. 表单处理规范
+- 使用 v-model 进行双向绑定
+- 表单验证应在提交前进行
+- 错误信息应清晰显示
+- 表单提交应使用异步操作
+- 提交状态应提供视觉反馈
 
-#### History Records
-- Timeline-based event display
-- Event creation and editing
-- Event filtering
+### 7. 错误处理规范
+- 全局错误处理应在 Axios 拦截器中实现
+- 页面级错误应在组件中捕获并显示
+- 错误信息应友好且具有指导性
+- 关键操作应提供错误重试机制
 
-#### Media Library
-- Photo grid display
-- Upload functionality
-- Media categorization
+### 8. 性能优化规范
+- 组件懒加载
+- 路由懒加载
+- 图片优化
+- 代码分割
+- 缓存策略
 
-## Component Design
+## 开发流程
+1. 需求分析与设计
+2. 页面结构设计
+3. 组件开发
+4. 状态管理实现
+5. 路由配置
+6. API 集成
+7. 样式开发
+8. 测试与调试
+9. 代码审查
+10. 构建与部署
 
-### Reusable Components
-- Button variants
-- Form inputs
-- Cards
-- Modals
-- Alerts
-- Loading indicators
-
-### Feature Components
-- FamilyTreeVisualizer
-- MemberCard
-- EventTimeline
-- MediaGrid
-- InvitationForm
-
-## Styling
-
-### Tailwind CSS Configuration
-- Custom color palette
-- Responsive breakpoints
-- Typography settings
-- Component-specific utilities
-
-### Design System
-- Consistent spacing
-- Typography hierarchy
-- Color usage guidelines
-- Component sizing
-
-## Performance Optimization
-- Code splitting
-- Lazy loading
-- Image optimization
-- Caching strategies
-- Minification and bundling
-
-## Testing
-- Unit tests with Vitest
-- Component tests with Vue Test Utils
-- End-to-end tests with Cypress
-
-## Deployment
-- Build optimization
-- Static site hosting
-- CI/CD pipeline
-- Environment-specific configurations
+## 最佳实践
+- 遵循 Vue 3 组合式 API 最佳实践
+- 使用 TypeScript 增强类型安全性
+- 组件复用与抽象
+- 响应式设计
+- 可访问性考虑
+- 国际化支持
+- 单元测试与端到端测试
+- 代码格式化与 linting

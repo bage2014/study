@@ -1,26 +1,25 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import pinia from './stores'
+import store from './stores'
 import axios from 'axios'
-import './style.css'
 
-// Set up axios defaults
+// 配置axios
 axios.defaults.baseURL = 'http://localhost:8080'
-axios.defaults.headers.common['Content-Type'] = 'application/json'
+axios.defaults.withCredentials = true
 
-// Add token to axios headers if it exists in localStorage
-const token = localStorage.getItem('token')
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-}
+// 响应拦截器
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response && error.response.status === 401) {
+      store.dispatch('user/logout')
+    }
+    return Promise.reject(error)
+  }
+)
 
-// Create Vue app
 const app = createApp(App)
-
-// Use plugins
 app.use(router)
-app.use(pinia)
-
-// Mount app
+app.use(store)
 app.mount('#app')

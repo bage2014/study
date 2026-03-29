@@ -1,47 +1,60 @@
 package com.familytree.controller;
 
+import com.familytree.dto.ApiResponse;
 import com.familytree.model.Media;
 import com.familytree.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/families/{familyId}/media")
+@RequestMapping("/api/media")
 public class MediaController {
     @Autowired
     private MediaService mediaService;
     
     @PostMapping
-    public ResponseEntity<Media> uploadMedia(@PathVariable Long familyId, @RequestAttribute("userId") Long userId, @RequestBody Media media) {
-        Media uploadedMedia = mediaService.uploadMedia(
-                familyId,
-                media.getType(),
-                media.getUrl(),
-                media.getDescription(),
-                userId
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(uploadedMedia);
+    public ApiResponse<Media> uploadMedia(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("familyId") Long familyId,
+            @RequestParam("description") String description) {
+        try {
+            Media uploadedMedia = mediaService.uploadMedia(file, familyId, description);
+            return ApiResponse.success(uploadedMedia);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @GetMapping
-    public ResponseEntity<List<Media>> getMedia(@PathVariable Long familyId) {
-        List<Media> mediaList = mediaService.getMediaByFamilyId(familyId);
-        return ResponseEntity.ok(mediaList);
+    public ApiResponse<List<Media>> getMedia() {
+        try {
+            List<Media> mediaList = mediaService.getMedia();
+            return ApiResponse.success(mediaList);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
-    @GetMapping("/type/{type}")
-    public ResponseEntity<List<Media>> getMediaByType(@PathVariable Long familyId, @PathVariable String type) {
-        List<Media> mediaList = mediaService.getMediaByFamilyIdAndType(familyId, type);
-        return ResponseEntity.ok(mediaList);
+    @GetMapping("/{id}")
+    public ApiResponse<Media> getMedia(@PathVariable Long id) {
+        try {
+            Media media = mediaService.getMediaById(id);
+            return ApiResponse.success(media);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMedia(@PathVariable Long id) {
-        mediaService.deleteMedia(id);
-        return ResponseEntity.noContent().build();
+    public ApiResponse<Void> deleteMedia(@PathVariable Long id) {
+        try {
+            mediaService.deleteMedia(id);
+            return ApiResponse.success(null);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 }

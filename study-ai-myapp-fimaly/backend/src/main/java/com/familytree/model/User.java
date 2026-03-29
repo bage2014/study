@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Data
@@ -17,20 +17,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+    
+    @Column(name = "password", nullable = false)
+    private String password;
+    
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
     
     @Column(name = "phone", unique = true)
     private String phone;
     
-    @Column(name = "password", nullable = false)
-    private String password;
-    
     @Column(name = "nickname")
     private String nickname;
-    
-    @Column(name = "avatar")
-    private String avatar;
     
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

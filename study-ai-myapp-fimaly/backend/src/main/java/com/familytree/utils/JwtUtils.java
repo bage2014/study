@@ -40,6 +40,10 @@ public class JwtUtils {
             return null;
         }
     }
+    
+    public Long extractUserId(String token) {
+        return getUserIdFromToken(token);
+    }
 
     public boolean validateToken(String token) {
         try {

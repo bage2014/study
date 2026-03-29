@@ -1,10 +1,9 @@
 package com.familytree.controller;
 
+import com.familytree.dto.ApiResponse;
 import com.familytree.model.Permission;
 import com.familytree.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,40 +15,46 @@ public class PermissionController {
     private PermissionService permissionService;
     
     @PostMapping
-    public ResponseEntity<Permission> addPermission(@RequestBody Permission permission) {
-        Permission createdPermission = permissionService.addPermission(
-                permission.getUserId(),
-                permission.getFamilyId(),
-                permission.getPermissionLevel()
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPermission);
+    public ApiResponse<Permission> assignPermission(@RequestBody Permission permission) {
+        try {
+            Permission createdPermission = permissionService.assignPermission(
+                    permission.getUserId(),
+                    permission.getFamilyId(),
+                    permission.getRole()
+            );
+            return ApiResponse.success(createdPermission);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Permission>> getPermissionsByUserId(@PathVariable Long userId) {
-        List<Permission> permissions = permissionService.getPermissionsByUserId(userId);
-        return ResponseEntity.ok(permissions);
+    @GetMapping
+    public ApiResponse<List<Permission>> getPermissions() {
+        try {
+            List<Permission> permissions = permissionService.getPermissions();
+            return ApiResponse.success(permissions);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
-    @GetMapping("/family/{familyId}")
-    public ResponseEntity<List<Permission>> getPermissionsByFamilyId(@PathVariable Long familyId) {
-        List<Permission> permissions = permissionService.getPermissionsByFamilyId(familyId);
-        return ResponseEntity.ok(permissions);
-    }
-    
-    @PutMapping("/user/{userId}/family/{familyId}")
-    public ResponseEntity<Permission> updatePermission(@PathVariable Long userId, @PathVariable Long familyId, @RequestBody Permission permission) {
-        Permission updatedPermission = permissionService.updatePermission(
-                userId,
-                familyId,
-                permission.getPermissionLevel()
-        );
-        return ResponseEntity.ok(updatedPermission);
+    @PutMapping("/{id}")
+    public ApiResponse<Permission> updatePermission(@PathVariable Long id, @RequestBody Permission permission) {
+        try {
+            Permission updatedPermission = permissionService.updatePermission(id, permission.getRole());
+            return ApiResponse.success(updatedPermission);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePermission(@PathVariable Long id) {
-        permissionService.deletePermission(id);
-        return ResponseEntity.noContent().build();
+    public ApiResponse<Void> deletePermission(@PathVariable Long id) {
+        try {
+            permissionService.deletePermission(id);
+            return ApiResponse.success(null);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 }

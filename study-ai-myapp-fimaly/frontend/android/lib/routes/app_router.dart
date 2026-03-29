@@ -29,14 +29,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/family-tree',
       builder: (context, state) {
-        final familyId = state.queryParameters['familyId'];
+        final familyId = state.uri.queryParameters['familyId'];
         return FamilyTreeView(familyId: familyId);
       },
     ),
     GoRoute(
       path: '/members',
       builder: (context, state) {
-        final familyId = state.queryParameters['familyId'];
+        final familyId = state.uri.queryParameters['familyId'];
         return MembersView(familyId: familyId);
       },
     ),
@@ -50,21 +50,21 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/events',
       builder: (context, state) {
-        final familyId = state.queryParameters['familyId'];
+        final familyId = state.uri.queryParameters['familyId'];
         return EventsView(familyId: familyId);
       },
     ),
     GoRoute(
       path: '/media',
       builder: (context, state) {
-        final familyId = state.queryParameters['familyId'];
+        final familyId = state.uri.queryParameters['familyId'];
         return MediaView(familyId: familyId);
       },
     ),
     GoRoute(
       path: '/family-management',
       builder: (context, state) {
-        final familyId = state.queryParameters['familyId'];
+        final familyId = state.uri.queryParameters['familyId'];
         return FamilyManagementView(familyId: familyId);
       },
     ),

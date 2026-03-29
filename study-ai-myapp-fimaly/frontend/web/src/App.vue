@@ -1,7 +1,6 @@
 <template>
   <div class="app">
-    <router-view v-if="isAuthenticated" />
-    <router-view v-else name="auth" />
+    <router-view />
   </div>
 </template>
 
@@ -14,7 +13,7 @@ const isAuthenticated = computed(() => userStore.isAuthenticated);
 </script>
 
 <style>
-@reference tailwind;
+@import "tailwindcss";
 
 body {
   margin: 0;

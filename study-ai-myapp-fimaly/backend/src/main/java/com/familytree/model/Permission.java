@@ -4,7 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +23,15 @@ public class Permission {
     @Column(name = "family_id", nullable = false)
     private Long familyId;
     
-    @Column(name = "permission_level", nullable = false)
-    private String permissionLevel;
+    @Column(name = "role", nullable = false) // owner, admin, member, viewer
+    private String role;
+    
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+    }
 }

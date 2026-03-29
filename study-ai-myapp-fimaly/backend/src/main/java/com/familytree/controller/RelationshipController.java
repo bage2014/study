@@ -1,10 +1,9 @@
 package com.familytree.controller;
 
+import com.familytree.dto.ApiResponse;
 import com.familytree.model.Relationship;
 import com.familytree.service.RelationshipService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,24 +15,46 @@ public class RelationshipController {
     private RelationshipService relationshipService;
     
     @PostMapping
-    public ResponseEntity<Relationship> addRelationship(@RequestBody Relationship relationship) {
-        Relationship createdRelationship = relationshipService.addRelationship(
-                relationship.getMemberId1(),
-                relationship.getMemberId2(),
-                relationship.getRelationshipType()
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdRelationship);
+    public ApiResponse<Relationship> createRelationship(@RequestBody Relationship relationship) {
+        try {
+            Relationship createdRelationship = relationshipService.createRelationship(
+                    relationship.getMemberId1(),
+                    relationship.getMemberId2(),
+                    relationship.getRelationshipType()
+            );
+            return ApiResponse.success(createdRelationship);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
+    }
+    
+    @GetMapping
+    public ApiResponse<List<Relationship>> getRelationships() {
+        try {
+            List<Relationship> relationships = relationshipService.getRelationships();
+            return ApiResponse.success(relationships);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<List<Relationship>> getRelationshipsByMemberId(@PathVariable Long memberId) {
-        List<Relationship> relationships = relationshipService.getRelationshipsByMemberId(memberId);
-        return ResponseEntity.ok(relationships);
+    public ApiResponse<List<Relationship>> getRelationshipsByMemberId(@PathVariable Long memberId) {
+        try {
+            List<Relationship> relationships = relationshipService.getRelationshipsByMemberId(memberId);
+            return ApiResponse.success(relationships);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRelationship(@PathVariable Long id) {
-        relationshipService.deleteRelationship(id);
-        return ResponseEntity.noContent().build();
+    public ApiResponse<Void> deleteRelationship(@PathVariable Long id) {
+        try {
+            relationshipService.deleteRelationship(id);
+            return ApiResponse.success(null);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 }

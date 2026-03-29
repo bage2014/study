@@ -70,7 +70,7 @@ const register = async () => {
 </script>
 
 <style scoped>
-@reference tailwind;
+@import "tailwindcss";
 
 .primary-dark {
   @apply bg-blue-700;

@@ -1,154 +1,129 @@
----
-name: "flutter-mobile"
-description: "Provides guidance for Flutter mobile app development, including cross-platform UI implementation, state management, and device-specific features. Invoke when working on mobile app-related tasks or when needing Flutter architecture advice."
----
+# Flutter移动端项目规范
 
-# Flutter Mobile Development
+## 技术栈
+- **框架**: Flutter 3.3.0+
+- **Dart SDK**: >=3.3.0 <4.0.0
+- **状态管理**: Provider 6.1.2+
+- **本地存储**: Hive 2.2.3 + Hive Flutter 1.1.0
+- **网络请求**: Dio 5.4.3+1
+- **导航**: Go Router 13.2.1+
+- **UI组件**: Flutter SVG 2.0.10+1
+- **表单验证**: Form Validator 2.1.1+
+- **日期选择器**: Flutter DateTime Picker 1.5.1+
+- **图片选择器**: Image Picker 1.0.4+
+- **家族树可视化**: Flutter Fancy Tree View 1.3.0+
 
-This skill provides comprehensive guidance for developing the mobile app of the Family Tree App using Flutter.
-
-## Core Technologies
-
-- **Flutter 3.0+**
-- **Dart**
-- **Provider/Riverpod** (State Management)
-- **Dio** (HTTP Requests)
-- **Hive** (Local Storage)
-- **Flutter Bloc** (State Management)
-
-## Project Structure
-
+## 项目结构
 ```
-frontend/flutter/
-├── lib/
-│   ├── widgets/           # Reusable widgets
-│   ├── screens/           # Page screens
-│   ├── navigation/        # Navigation configuration
-│   ├── theme/             # App theme
-│   ├── data/              # Data layer
-│   │   ├── api/           # API services
-│   │   ├── database/      # Local database
-│   │   └── repository/    # Data repository
-│   ├── domain/            # Business logic
-│   │   ├── models/        # Data models
-│   │   └── usecases/      # Use cases
-│   ├── utils/             # Utility functions
-│   └── main.dart          # Application entry
-├── assets/                # Static assets
-├── pubspec.yaml           # Flutter dependencies
-└── analysis_options.yaml  # Linting configuration
+frontend/android/
+├── android/           # Android平台代码
+├── ios/               # iOS平台代码
+├── lib/               # Dart源代码
+│   ├── models/        # 数据模型
+│   ├── providers/     # 状态管理
+│   ├── routes/        # 路由配置
+│   ├── services/      # 服务层
+│   ├── views/         # 页面视图
+│   └── main.dart      # 应用入口
+├── linux/             # Linux平台代码
+├── macos/             # macOS平台代码
+├── pubspec.yaml       # 项目配置
+└── analysis_options.yaml # 代码分析配置
 ```
 
-## Key Features
+## 编码规范
 
-### User Interface
-- Material Design and Cupertino widgets
-- Adaptive layout for different screen sizes
-- Dark mode support
-- Responsive design
+### 命名规范
+- **文件命名**: 小写字母，使用下划线分隔，如 `auth_provider.dart`
+- **类名**: 首字母大写，驼峰命名，如 `AuthProvider`
+- **变量命名**: 首字母小写，驼峰命名，如 `userService`
+- **常量命名**: 全大写，下划线分隔，如 `API_BASE_URL`
+- **方法命名**: 首字母小写，驼峰命名，如 `loginUser`
+- **私有成员**: 以下划线开头，如 `_privateVariable`
 
-### Navigation
-- Flutter Navigator 2.0
-- Named routes
-- Deep linking support
-- Bottom navigation bar
+### 代码风格
+- 使用 2 空格缩进
+- 每行不超过 80 个字符
+- 方法体之间空一行
+- 类成员之间空一行
+- 注释清晰，说明方法功能和参数含义
+- 遵循 Dart 官方风格指南
 
-### State Management
-- Provider for simple state
-- Riverpod for complex state
-- Flutter Bloc for business logic
-- StatefulWidget for local state
+## 核心规范
 
-### API Integration
-- Dio for HTTP requests
-- Interceptors for authentication
-- Offline support with Hive
-- Error handling and retry logic
+### 1. 状态管理规范
+- 使用 Provider 进行状态管理
+- 按功能模块划分 Provider
+- 状态定义应清晰，包含必要的类型注释
+- 异步操作应使用 async/await
+- 状态更新应通过 notifyListeners() 通知
 
-### Core Screens
+### 2. 路由规范
+- 使用 Go Router 进行导航
+- 路由配置应按模块组织
+- 路由路径使用 kebab-case
+- 路由守卫应统一管理
+- 懒加载页面以优化性能
 
-#### Login/Register
-- Authentication forms
-- Biometric authentication
-- Social login options
+### 3. 网络请求规范
+- 使用 Dio 进行 HTTP 请求
+- 配置统一的 baseURL 和拦截器
+- 请求和响应数据应进行类型检查
+- 错误处理应统一管理
+- API 调用应封装在服务层
 
-#### Home
-- Family overview
-- Quick access to features
-- Recent activities
+### 4. 本地存储规范
+- 使用 Hive 进行本地存储
+- 数据模型应实现 HiveObject
+- 类型适配器应正确注册
+- 存储操作应封装在服务层
 
-#### Family Tree
-- Interactive family tree visualization
-- Touch gestures (zoom, pan)
-- Member node interactions
+### 5. UI 组件规范
+- 遵循 Material Design 设计规范
+- 组件应遵循单一职责原则
+- 复杂组件应拆分为更小的子组件
+- 响应式设计应考虑不同屏幕尺寸
+- 主题配置应统一管理
 
-#### Member Management
-- Member list with search
-- Member detail view
-- Add/edit member forms
+### 6. 表单处理规范
+- 使用 Form Validator 进行表单验证
+- 表单状态应通过 Provider 管理
+- 错误信息应清晰显示
+- 表单提交应使用异步操作
+- 提交状态应提供视觉反馈
 
-#### History Records
-- Timeline-based event display
-- Event creation and editing
-- Event filtering
+### 7. 错误处理规范
+- 全局错误处理应在 Dio 拦截器中实现
+- 页面级错误应在组件中捕获并显示
+- 错误信息应友好且具有指导性
+- 关键操作应提供错误重试机制
 
-#### Media Library
-- Photo grid display
-- Camera integration
-- Media categorization
+### 8. 性能优化规范
+- 组件懒加载
+- 图片优化
+- 代码分割
+- 缓存策略
+- 避免不必要的重建
 
-## Widget Design
+## 开发流程
+1. 需求分析与设计
+2. 页面结构设计
+3. 数据模型定义
+4. 服务层实现
+5. 状态管理实现
+6. 路由配置
+7. UI 组件开发
+8. 测试与调试
+9. 代码审查
+10. 构建与部署
 
-### Reusable Widgets
-- Custom buttons
-- Form fields
-- Cards
-- Dialogs
-- Loading indicators
-- Empty states
-
-### Feature Widgets
-- FamilyTreeView
-- MemberCard
-- EventTimeline
-- MediaGrid
-- InvitationForm
-
-## Theme and Styling
-
-### App Theme
-- Custom color scheme
-- Typography settings
-- Spacing guidelines
-- Iconography
-
-### Platform Adaptation
-- Material Design for Android
-- Cupertino for iOS
-- Platform-specific features
-
-## Performance Optimization
-- Widget rebuilding optimization
-- Image caching
-- Network request optimization
-- Memory management
-- Code splitting
-
-## Device Integration
-- Camera access
-- Gallery access
-- Location services
-- Push notifications
-- Biometric authentication
-
-## Testing
-- Unit tests
-- Widget tests
-- Integration tests
-- E2E tests with Flutter Driver
-
-## Deployment
-- iOS App Store submission
-- Google Play Store submission
-- CI/CD pipeline
-- Version management
+## 最佳实践
+- 遵循 Flutter 官方最佳实践
+- 使用 null safety
+- 组件复用与抽象
+- 响应式设计
+- 可访问性考虑
+- 国际化支持
+- 单元测试与集成测试
+- 代码格式化与 linting
+- 性能监控与优化
