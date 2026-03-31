@@ -2,10 +2,6 @@
   <div class="min-h-screen flex items-center justify-center bg-gray-100">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
       <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">登录</h1>
-      <!-- 错误提示 -->
-      <div v-if="error" class="bg-red-50 border border-red-200 text-red-600 p-3 rounded-md mb-4">
-        {{ error }}
-      </div>
       <form @submit.prevent="login" class="space-y-4">
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
@@ -59,23 +55,12 @@ const form = ref({
   password: ''
 });
 
-const error = ref('');
-
 const login = async () => {
-  error.value = '';
   try {
     await userStore.login(form.value);
     router.push('/');
-  } catch (err) {
-    // 从错误对象中提取后端返回的message
-    if (err.response && err.response.data && err.response.data.message) {
-      error.value = err.response.data.message;
-    } else if (err.message) {
-      error.value = err.message;
-    } else {
-      error.value = '登录失败，请稍后重试';
-    }
-    console.error('登录失败:', err);
+  } catch (error) {
+    console.error('登录失败:', error);
   }
 };
 </script>

@@ -12,6 +12,7 @@
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/repository/MemberRepository.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/model/Member.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/service/EventService.java
+/Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/config/DataInitializer.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/config/SecurityConfig.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/service/FamilyService.java
 /Users/bage/bage/github/study/study-ai-myapp-fimaly/backend/src/main/java/com/familytree/repository/EventRepository.java
