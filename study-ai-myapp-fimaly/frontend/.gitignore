@@ -1,0 +1,103 @@
+# Flutter
+/build/
+
+# iOS
+/ios/Pods/
+/ios/Runner.xcworkspace/
+/ios/Runner/GeneratedPluginRegistrant.m
+/ios/Runner/GeneratedPluginRegistrant.h
+
+# Android
+/android/build/
+/android/app/build/
+/android/gradle/
+/android/gradle.properties
+/android/local.properties
+
+# IDE
+/.idea/
+/.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+
+# Dependencies
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Temporary files
+*.tmp
+*.temp
+
+# Test
+/coverage/
+
+# Documentation
+/doc/
+
+# Generated files
+/lib/generated/
+
+# Analysis
+analysis_options.yaml
+
+# Package files
+*.pubspec.lock
+
+# Dart
+.dart_tool/
+
+# Flutter
+.flutter/
+
+# VS Code
+.vscode/
+
+# Android Studio
+.idea/
+
+# Xcode
+xcuserdata/
+*.xcodeproj/
+*.xcworkspace/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Linux
+*~
+
+# Build artifacts
+*.apk
+*.ipa
+*.dylib
+*.so
+
+# Test coverage
+coverage/
+
+# Flutter web
+/web/build/
+/web/assets/
+
+# Flutter desktop
+/linux/build/
+/macos/build/
+/windows/build/
