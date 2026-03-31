@@ -5,6 +5,9 @@ import com.familytree.dto.RegisterRequest;
 import com.familytree.model.User;
 import com.familytree.repository.UserRepository;
 import com.familytree.utils.JwtUtils;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AuthService {
     @Autowired
     private UserRepository userRepository;
@@ -26,8 +30,10 @@ public class AuthService {
     public String login(LoginRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
         if (userOptional.isPresent()) {
+            log.info("User found: {}", userOptional.get());
             User user = userOptional.get();
             if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                log.info("Password matches");
                 return jwtUtils.generateToken(user.getId());
             }
         }
