@@ -13,38 +13,37 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
     
-    public Event addEvent(Long familyId, String name, String description, Date eventDate, String relatedMembers, String photo) {
+    public Event createEvent(String title, String description, Date date, String location, Long familyId) {
         Event event = new Event();
-        event.setFamilyId(familyId);
-        event.setName(name);
+        event.setTitle(title);
         event.setDescription(description);
-        event.setEventDate(eventDate);
-        event.setRelatedMembers(relatedMembers);
-        event.setPhoto(photo);
+        event.setEventDate(date);
+        event.setLocation(location);
+        event.setFamilyId(familyId);
         event.setCreatedAt(new Date());
         return eventRepository.save(event);
     }
     
-    public List<Event> getEventsByFamilyId(Long familyId) {
-        return eventRepository.findByFamilyId(familyId);
+    public List<Event> getEvents() {
+        return eventRepository.findAll();
     }
     
-    public Event getEventById(Long eventId) {
-        return eventRepository.findById(eventId)
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
     }
     
-    public Event updateEvent(Long eventId, String name, String description, Date eventDate, String relatedMembers, String photo) {
-        Event event = getEventById(eventId);
-        if (name != null) event.setName(name);
+    public Event updateEvent(Long id, String title, String description, Date date, String location, Long familyId) {
+        Event event = getEventById(id);
+        if (title != null) event.setTitle(title);
         if (description != null) event.setDescription(description);
-        if (eventDate != null) event.setEventDate(eventDate);
-        if (relatedMembers != null) event.setRelatedMembers(relatedMembers);
-        if (photo != null) event.setPhoto(photo);
+        if (date != null) event.setEventDate(date);
+        if (location != null) event.setLocation(location);
+        if (familyId != null) event.setFamilyId(familyId);
         return eventRepository.save(event);
     }
     
-    public void deleteEvent(Long eventId) {
-        eventRepository.deleteById(eventId);
+    public void deleteEvent(Long id) {
+        eventRepository.deleteById(id);
     }
 }

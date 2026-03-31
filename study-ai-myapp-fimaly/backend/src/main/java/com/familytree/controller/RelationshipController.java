@@ -18,8 +18,8 @@ public class RelationshipController {
     public ApiResponse<Relationship> createRelationship(@RequestBody Relationship relationship) {
         try {
             Relationship createdRelationship = relationshipService.createRelationship(
-                    relationship.getMemberId1(),
-                    relationship.getMemberId2(),
+                    relationship.getMember1Id(),
+                    relationship.getMember2Id(),
                     relationship.getRelationshipType()
             );
             return ApiResponse.success(createdRelationship);

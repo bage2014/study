@@ -103,9 +103,189 @@ public class ApiResponse<T> {
 - 敏感配置使用环境变量注入
 
 ### 8. 测试规范
-- 单元测试覆盖核心业务逻辑
-- 集成测试验证接口功能
-- 使用 `@SpringBootTest` 进行集成测试
+- **单元测试**：覆盖核心业务逻辑，所有controller接口必须编写单元测试
+- **集成测试**：验证接口功能，确保各组件协同工作
+- **测试要求**：
+  - 每个controller方法都必须有对应的测试用例
+  - 测试用例必须包含成功场景和失败场景
+  - 使用 `@SpringBootTest` 进行集成测试
+  - 使用 Mockito 进行单元测试
+
+### 9. Controller 测试规范
+
+#### 9.1 测试类结构
+```java
+package com.familytree.controller;
+
+import com.familytree.dto.ApiResponse;
+import com.familytree.model.[ModelName];
+import com.familytree.service.[ServiceName];
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class [ControllerName]Test {
+    @Mock
+    private [ServiceName] [serviceName];
+    
+    @InjectMocks
+    private [ControllerName] [controllerName];
+    
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+    
+    // 测试方法...
+}
+```
+
+#### 9.2 测试方法模板
+
+##### 成功场景测试
+```java
+@Test
+void test[MethodName]Success() {
+    // Arrange
+    // 准备测试数据和mock行为
+    
+    // Act
+    // 调用被测试的方法
+    
+    // Assert
+    // 验证返回结果和mock调用
+    assertNotNull(response);
+    assertEquals(200, response.getCode());
+    assertEquals("Success", response.getMessage());
+    assertNotNull(response.getData());
+    verify([serviceName], times(1)).[methodName](...);
+}
+```
+
+##### 失败场景测试
+```java
+@Test
+void test[MethodName]Failure() {
+    // Arrange
+    // 准备测试数据和mock异常行为
+    
+    // Act
+    // 调用被测试的方法
+    
+    // Assert
+    // 验证返回结果和mock调用
+    assertNotNull(response);
+    assertEquals(400, response.getCode());
+    assertEquals(errorMessage, response.getMessage());
+    assertNull(response.getData());
+    verify([serviceName], times(1)).[methodName](...);
+}
+```
+
+#### 9.3 测试覆盖范围
+每个controller的测试应覆盖以下场景：
+- 所有HTTP方法（GET、POST、PUT、DELETE）
+- 成功场景
+- 失败场景（异常处理）
+- 边界情况
+
+#### 9.4 测试执行命令
+```bash
+cd backend && mvn test
+```
+
+#### 9.5 测试结果验证
+- 所有测试应通过（Failures: 0, Errors: 0）
+- 代码覆盖率应达到合理水平
+
+#### 9.6 示例测试类
+以AuthControllerTest为例：
+```java
+package com.familytree.controller;
+
+import com.familytree.dto.ApiResponse;
+import com.familytree.dto.LoginRequest;
+import com.familytree.dto.RegisterRequest;
+import com.familytree.model.User;
+import com.familytree.service.AuthService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class AuthControllerTest {
+    @Mock
+    private AuthService authService;
+    
+    @InjectMocks
+    private AuthController authController;
+    
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+    
+    @Test
+    void testLoginSuccess() {
+        // Arrange
+        LoginRequest request = new LoginRequest();
+        request.setEmail("test@example.com");
+        request.setPassword("password");
+        
+        String token = "test-token";
+        when(authService.login(request)).thenReturn(token);
+        
+        // Act
+        ApiResponse<Map<String, Object>> response = authController.login(request);
+        
+        // Assert
+        assertNotNull(response);
+        assertEquals(200, response.getCode());
+        assertEquals("Success", response.getMessage());
+        assertNotNull(response.getData());
+        assertEquals(token, response.getData().get("token"));
+        verify(authService, times(1)).login(request);
+    }
+    
+    @Test
+    void testLoginFailure() {
+        // Arrange
+        LoginRequest request = new LoginRequest();
+        request.setEmail("test@example.com");
+        request.setPassword("password");
+        
+        String errorMessage = "Invalid email or password";
+        when(authService.login(request)).thenThrow(new RuntimeException(errorMessage));
+        
+        // Act
+        ApiResponse<Map<String, Object>> response = authController.login(request);
+        
+        // Assert
+        assertNotNull(response);
+        assertEquals(400, response.getCode());
+        assertEquals(errorMessage, response.getMessage());
+        assertNull(response.getData());
+        verify(authService, times(1)).login(request);
+    }
+    
+    // 其他测试方法...
+}
+```
 
 ## 开发流程
 1. 需求分析与设计

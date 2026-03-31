@@ -16,12 +16,13 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    // 生成足够安全的密钥，在类初始化时生成一次
+    // 使用固定的签名密钥
     private final SecretKey signingKey;
 
     public JwtUtils() {
-        // 生成一个256位的安全密钥
-        this.signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        // 使用固定的密钥字符串，实际生产环境应该从配置文件中读取
+        String secretString = "familytree-secret-key-2026-03-31"; // 固定密钥
+        this.signingKey = Keys.hmacShaKeyFor(secretString.getBytes());
     }
 
     public String generateToken(Long userId) {

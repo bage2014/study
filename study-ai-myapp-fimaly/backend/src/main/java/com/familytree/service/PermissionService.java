@@ -12,34 +12,26 @@ public class PermissionService {
     @Autowired
     private PermissionRepository permissionRepository;
     
-    public Permission addPermission(Long userId, Long familyId, String permissionLevel) {
+    public Permission assignPermission(Long userId, Long familyId, String role) {
         Permission permission = new Permission();
         permission.setUserId(userId);
         permission.setFamilyId(familyId);
-        permission.setPermissionLevel(permissionLevel);
+        permission.setRole(role);
         return permissionRepository.save(permission);
     }
     
-    public List<Permission> getPermissionsByUserId(Long userId) {
-        return permissionRepository.findByUserId(userId);
+    public List<Permission> getPermissions() {
+        return permissionRepository.findAll();
     }
     
-    public List<Permission> getPermissionsByFamilyId(Long familyId) {
-        return permissionRepository.findByFamilyId(familyId);
-    }
-    
-    public Permission getPermissionByUserIdAndFamilyId(Long userId, Long familyId) {
-        return permissionRepository.findByUserIdAndFamilyId(userId, familyId)
+    public Permission updatePermission(Long id, String role) {
+        Permission permission = permissionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Permission not found"));
-    }
-    
-    public Permission updatePermission(Long userId, Long familyId, String permissionLevel) {
-        Permission permission = getPermissionByUserIdAndFamilyId(userId, familyId);
-        permission.setPermissionLevel(permissionLevel);
+        permission.setRole(role);
         return permissionRepository.save(permission);
     }
     
-    public void deletePermission(Long permissionId) {
-        permissionRepository.deleteById(permissionId);
+    public void deletePermission(Long id) {
+        permissionRepository.deleteById(id);
     }
 }

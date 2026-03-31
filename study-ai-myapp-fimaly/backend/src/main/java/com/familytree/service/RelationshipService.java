@@ -12,27 +12,26 @@ public class RelationshipService {
     @Autowired
     private RelationshipRepository relationshipRepository;
     
-    public Relationship addRelationship(Long memberId1, Long memberId2, String relationshipType) {
+    public Relationship createRelationship(Long member1Id, Long member2Id, String relationshipType) {
         Relationship relationship = new Relationship();
-        relationship.setMemberId1(memberId1);
-        relationship.setMemberId2(memberId2);
+        relationship.setMember1Id(member1Id);
+        relationship.setMember2Id(member2Id);
         relationship.setRelationshipType(relationshipType);
         return relationshipRepository.save(relationship);
     }
     
+    public List<Relationship> getRelationships() {
+        return relationshipRepository.findAll();
+    }
+    
     public List<Relationship> getRelationshipsByMemberId(Long memberId) {
-        List<Relationship> relationships1 = relationshipRepository.findByMemberId1(memberId);
-        List<Relationship> relationships2 = relationshipRepository.findByMemberId2(memberId);
+        List<Relationship> relationships1 = relationshipRepository.findByMember1Id(memberId);
+        List<Relationship> relationships2 = relationshipRepository.findByMember2Id(memberId);
         relationships1.addAll(relationships2);
         return relationships1;
     }
     
-    public Relationship getRelationshipById(Long relationshipId) {
-        return relationshipRepository.findById(relationshipId)
-                .orElseThrow(() -> new RuntimeException("Relationship not found"));
-    }
-    
-    public void deleteRelationship(Long relationshipId) {
-        relationshipRepository.deleteById(relationshipId);
+    public void deleteRelationship(Long id) {
+        relationshipRepository.deleteById(id);
     }
 }

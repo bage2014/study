@@ -40,6 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            
+            // Set userId as request attribute for controllers to use
+            request.setAttribute("userId", userId);
         }
         
         filterChain.doFilter(request, response);

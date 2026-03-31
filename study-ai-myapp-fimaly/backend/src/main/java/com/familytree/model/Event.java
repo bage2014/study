@@ -28,7 +28,7 @@ public class Event {
     
     @Column(name = "event_date")
     @Temporal(TemporalType.DATE)
-    private Date eventDate;
+    private Date date;
     
     @Column(name = "location")
     private String location;
