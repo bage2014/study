@@ -100,6 +100,7 @@
 <script>
 import { useUserStore } from '../stores/user'
 import { useFamilyStore } from '../stores/family'
+import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 
 export default {
@@ -107,19 +108,20 @@ export default {
   setup() {
     const userStore = useUserStore()
     const familyStore = useFamilyStore()
+    const router = useRouter()
 
     const navigateTo = (path) => {
-      window.location.href = path
+      router.push(path)
     }
 
     const handleLogout = () => {
       userStore.logout()
-      window.location.href = '/login'
+      router.push('/login')
     }
 
     onMounted(async () => {
       if (!userStore.user) {
-        await userStore.fetchUser()
+        await userStore.fetchCurrentUser()
       }
       await familyStore.fetchFamilies()
     })

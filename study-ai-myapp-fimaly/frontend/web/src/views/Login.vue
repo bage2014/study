@@ -58,7 +58,7 @@ const form = ref({
 const login = async () => {
   try {
     await userStore.login(form.value);
-    router.push('/');
+    router.push('/home');
   } catch (error) {
     console.error('登录失败:', error);
   }
