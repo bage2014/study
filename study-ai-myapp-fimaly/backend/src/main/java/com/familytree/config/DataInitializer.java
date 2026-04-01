@@ -7,10 +7,12 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 
 @Component
+@Slf4j
 public class DataInitializer implements ApplicationRunner {
 
     @Autowired
@@ -37,6 +39,6 @@ public class DataInitializer implements ApplicationRunner {
         user.setPassword(passwordEncoder.encode(password));
         user.setCreatedAt(new Date());
         userRepository.save(user);
-        System.out.println("Created default user: " + username);
+        log.info("Created default user: {}", username);
     }
 }

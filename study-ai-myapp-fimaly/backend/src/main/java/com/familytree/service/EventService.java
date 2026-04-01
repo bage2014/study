@@ -17,7 +17,7 @@ public class EventService {
         Event event = new Event();
         event.setTitle(title);
         event.setDescription(description);
-        event.setEventDate(date);
+        event.setDate(date);
         event.setLocation(location);
         event.setFamilyId(familyId);
         event.setCreatedAt(new Date());
@@ -37,7 +37,7 @@ public class EventService {
         Event event = getEventById(id);
         if (title != null) event.setTitle(title);
         if (description != null) event.setDescription(description);
-        if (date != null) event.setEventDate(date);
+        if (date != null) event.setDate(date);
         if (location != null) event.setLocation(location);
         if (familyId != null) event.setFamilyId(familyId);
         return eventRepository.save(event);

@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -130,10 +132,21 @@ class AuthControllerTest {
         user.setId(userId);
         user.setEmail("test@example.com");
         
+        // 模拟 SecurityContext 和 Authentication
+        Authentication authentication = mock(Authentication.class);
+        org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
+                userId.toString(), "password", java.util.Collections.emptyList());
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        
         when(authService.getUserById(userId)).thenReturn(user);
         
         // Act
-        ApiResponse<User> response = authController.getCurrentUser(userId);
+        ApiResponse<User> response = authController.getCurrentUser();
         
         // Assert
         assertNotNull(response);
@@ -142,6 +155,9 @@ class AuthControllerTest {
         assertNotNull(response.getData());
         assertEquals(user, response.getData());
         verify(authService, times(1)).getUserById(userId);
+        
+        // 清理 SecurityContext
+        SecurityContextHolder.clearContext();
     }
     
     @Test
@@ -150,10 +166,21 @@ class AuthControllerTest {
         Long userId = 1L;
         String errorMessage = "User not found";
         
+        // 模拟 SecurityContext 和 Authentication
+        Authentication authentication = mock(Authentication.class);
+        org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
+                userId.toString(), "password", java.util.Collections.emptyList());
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        
         when(authService.getUserById(userId)).thenThrow(new RuntimeException(errorMessage));
         
         // Act
-        ApiResponse<User> response = authController.getCurrentUser(userId);
+        ApiResponse<User> response = authController.getCurrentUser();
         
         // Assert
         assertNotNull(response);
@@ -161,5 +188,49 @@ class AuthControllerTest {
         assertEquals(errorMessage, response.getMessage());
         assertNull(response.getData());
         verify(authService, times(1)).getUserById(userId);
+        
+        // 清理 SecurityContext
+        SecurityContextHolder.clearContext();
+    }
+    
+    @Test
+    void testGetCurrentUserUnauthenticated() {
+        // Arrange - 未设置 SecurityContext，模拟未登录状态
+        
+        // Act
+        ApiResponse<User> response = authController.getCurrentUser();
+        
+        // Assert
+        assertNotNull(response);
+        assertEquals(400, response.getCode());
+        assertEquals("User not authenticated", response.getMessage());
+        assertNull(response.getData());
+        verify(authService, times(0)).getUserById(anyLong());
+    }
+    
+    @Test
+    void testGetCurrentUserInvalidPrincipal() {
+        // Arrange
+        // 模拟 SecurityContext 和 Authentication，但 principal 不是 UserDetails
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authentication.getPrincipal()).thenReturn("invalid-principal");
+        
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        
+        // Act
+        ApiResponse<User> response = authController.getCurrentUser();
+        
+        // Assert
+        assertNotNull(response);
+        assertEquals(400, response.getCode());
+        assertEquals("Invalid principal", response.getMessage());
+        assertNull(response.getData());
+        verify(authService, times(0)).getUserById(anyLong());
+        
+        // 清理 SecurityContext
+        SecurityContextHolder.clearContext();
     }
 }

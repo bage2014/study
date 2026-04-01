@@ -2,10 +2,10 @@ package com.familytree.utils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,9 +20,11 @@ public class JwtUtils {
     private final SecretKey signingKey;
 
     public JwtUtils() {
-        // 使用固定的密钥字符串，实际生产环境应该从配置文件中读取
-        String secretString = "familytree-secret-key-2026-03-31"; // 固定密钥
-        this.signingKey = Keys.hmacShaKeyFor(secretString.getBytes());
+        // 使用固定的密钥字符串
+        // 注意：实际生产环境应该从配置文件中读取密钥
+        String secret = "familytree-secret-key-2024";
+        byte[] keyBytes = secret.getBytes();
+        this.signingKey = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS512.getJcaName());
     }
 
     public String generateToken(Long userId) {
@@ -33,7 +35,7 @@ public class JwtUtils {
                 .setSubject(userId.toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(signingKey, SignatureAlgorithm.HS512)
+                .signWith(SignatureAlgorithm.HS512, signingKey)
                 .compact();
     }
 
@@ -55,7 +57,9 @@ public class JwtUtils {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token);
+            Jwts.parser()
+                    .setSigningKey(signingKey)
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
