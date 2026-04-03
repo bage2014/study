@@ -24,7 +24,17 @@
       </div>
 
       <!-- Quick Actions -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
+        <div @click="navigateTo('/family-management')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-100 text-red-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">家族管理</h3>
+          <p class="mt-2 text-sm text-gray-600">新建、编辑、退出家族</p>
+        </div>
+
         <div @click="navigateTo('/family-tree')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
           <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-primary mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,7 +52,7 @@
             </svg>
           </div>
           <h3 class="text-lg font-medium text-gray-900">成员管理</h3>
-          <p class="mt-2 text-sm text-gray-600">管理家族成员</p>
+          <p class="mt-2 text-sm text-gray-600">查看、新建、编辑成员</p>
         </div>
 
         <div @click="navigateTo('/relationships')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
@@ -52,7 +62,7 @@
             </svg>
           </div>
           <h3 class="text-lg font-medium text-gray-900">关系管理</h3>
-          <p class="mt-2 text-sm text-gray-600">管理成员关系</p>
+          <p class="mt-2 text-sm text-gray-600">绑定成员关系</p>
         </div>
 
         <div @click="navigateTo('/events')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
@@ -84,7 +94,7 @@
         </div>
         <div v-else-if="families.length === 0" class="text-center py-8">
           <p class="text-gray-600">您还没有创建家族</p>
-          <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+          <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200">
             创建家族
           </button>
         </div>

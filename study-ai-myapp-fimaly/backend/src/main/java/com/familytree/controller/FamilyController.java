@@ -3,6 +3,7 @@ package com.familytree.controller;
 import com.familytree.dto.ApiResponse;
 import com.familytree.model.Family;
 import com.familytree.service.FamilyService;
+import com.familytree.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,9 @@ import java.util.List;
 public class FamilyController {
     @Autowired
     private FamilyService familyService;
+    
+    @Autowired
+    private PermissionService permissionService;
     
     @PostMapping
     public ApiResponse<Family> createFamily(@RequestAttribute("userId") Long userId, @RequestBody Family family) {
@@ -68,6 +72,16 @@ public class FamilyController {
     public ApiResponse<Void> deleteFamily(@PathVariable Long id) {
         try {
             familyService.deleteFamily(id);
+            return ApiResponse.success(null);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
+    }
+    
+    @PostMapping("/{id}/leave")
+    public ApiResponse<Void> leaveFamily(@RequestAttribute("userId") Long userId, @PathVariable Long id) {
+        try {
+            permissionService.removeUserFromFamily(userId, id);
             return ApiResponse.success(null);
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage());

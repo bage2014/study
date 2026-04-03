@@ -10,6 +10,7 @@ import Media from '../views/Media.vue'
 import FamilyManagement from '../views/FamilyManagement.vue'
 import Settings from '../views/Settings.vue'
 import Relationships from '../views/Relationships.vue'
+import MemberSearch from '../views/MemberSearch.vue'
 
 const routes = [
   {
@@ -83,6 +84,12 @@ const routes = [
     path: '/relationships',
     name: 'Relationships',
     component: Relationships,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/member-search',
+    name: 'MemberSearch',
+    component: MemberSearch,
     meta: { requiresAuth: true }
   },
   // 404 page

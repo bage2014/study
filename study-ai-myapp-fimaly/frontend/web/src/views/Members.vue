@@ -27,10 +27,29 @@
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
-          <select id="family" v-model="selectedFamilyId" @change="fetchMembers" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary">
-            <option value="">请选择家族</option>
-            <option v-for="family in familyStore.families" :key="family.id" :value="family.id">{{ family.name }}</option>
-          </select>
+          <div class="flex space-x-2">
+            <select id="family" v-model="selectedFamilyId" @change="fetchMembers" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary">
+              <option value="">请选择家族</option>
+              <option v-for="family in familyStore.families" :key="family.id" :value="family.id">{{ family.name }}</option>
+            </select>
+            <button 
+              @click="viewOrEditFamily" 
+              :disabled="!selectedFamilyId"
+              class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              查看/编辑家族
+            </button>
+          </div>
+          
+          <!-- Current Family Info -->
+          <div v-if="selectedFamily" class="mt-4 p-4 bg-blue-50 rounded-md">
+            <h3 class="text-sm font-medium text-gray-900 mb-2">当前家族信息</h3>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <div><span class="font-medium">家族名称:</span> {{ selectedFamily.name }}</div>
+              <div><span class="font-medium">创建时间:</span> {{ formatDate(selectedFamily.createdAt) }}</div>
+              <div class="col-span-2"><span class="font-medium">描述:</span> {{ selectedFamily.description || '无描述' }}</div>
+            </div>
+          </div>
         </div>
 
         <!-- Members List -->
@@ -134,6 +153,14 @@
               <input type="date" id="deathDate" v-model="form.deathDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
             </div>
             <div>
+              <label for="phone" class="block text-sm font-medium text-gray-700">手机号</label>
+              <input type="tel" id="phone" v-model="form.phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">邮箱</label>
+              <input type="email" id="email" v-model="form.email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+            </div>
+            <div>
               <label for="details" class="block text-sm font-medium text-gray-700">详细信息</label>
               <textarea id="details" v-model="form.details" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></textarea>
             </div>
@@ -144,6 +171,33 @@
             </button>
             <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
               {{ memberStore.loading ? '保存中...' : '保存' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Family Edit Modal -->
+    <div v-if="showFamilyModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">编辑家族</h3>
+        <form @submit.prevent="handleFamilySubmit">
+          <div class="space-y-4">
+            <div>
+              <label for="familyName" class="block text-sm font-medium text-gray-700">家族名称</label>
+              <input type="text" id="familyName" v-model="familyForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+            </div>
+            <div>
+              <label for="familyDescription" class="block text-sm font-medium text-gray-700">家族描述</label>
+              <textarea id="familyDescription" v-model="familyForm.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></textarea>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end">
+            <button type="button" @click="showFamilyModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+              取消
+            </button>
+            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+              {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
@@ -166,13 +220,20 @@ export default {
     const router = useRouter()
     const selectedFamilyId = ref('')
     const showModal = ref(false)
+    const showFamilyModal = ref(false)
     const editingMember = ref(null)
     const form = ref({
       name: '',
       gender: '',
       birthDate: '',
       deathDate: '',
+      phone: '',
+      email: '',
       details: ''
+    })
+    const familyForm = ref({
+      name: '',
+      description: ''
     })
 
     const navigateTo = (path) => {
@@ -189,16 +250,42 @@ export default {
       return memberStore.getMembersByFamilyId(selectedFamilyId.value)
     })
 
+    const selectedFamily = computed(() => {
+      if (!selectedFamilyId.value) return null
+      return familyStore.families.find(f => f.id === selectedFamilyId.value)
+    })
+
+    const formatDate = (dateString) => {
+      if (!dateString) return '未知'
+      const date = new Date(dateString)
+      return date.toLocaleDateString('zh-CN')
+    }
+
     const openAddMemberModal = () => {
+      if (!selectedFamilyId.value) {
+        alert('请先选择家族')
+        return
+      }
       editingMember.value = null
       form.value = {
         name: '',
         gender: '',
         birthDate: '',
         deathDate: '',
+        phone: '',
+        email: '',
         details: ''
       }
       showModal.value = true
+    }
+
+    const viewOrEditFamily = () => {
+      if (!selectedFamily.value) return
+      familyForm.value = {
+        name: selectedFamily.value.name,
+        description: selectedFamily.value.description || ''
+      }
+      showFamilyModal.value = true
     }
 
     const editMember = (member) => {
@@ -208,6 +295,8 @@ export default {
         gender: member.gender,
         birthDate: member.birthDate,
         deathDate: member.deathDate,
+        phone: member.phone || '',
+        email: member.email || '',
         details: member.details
       }
       showModal.value = true
@@ -245,6 +334,17 @@ export default {
       }
     }
 
+    const handleFamilySubmit = async () => {
+      try {
+        await familyStore.updateFamily(selectedFamilyId.value, familyForm.value)
+        alert('家族更新成功')
+        showFamilyModal.value = false
+        await familyStore.fetchFamilies()
+      } catch (error) {
+        alert('家族更新失败: ' + (error.response?.data?.message || error.message))
+      }
+    }
+
     onMounted(async () => {
       await familyStore.fetchFamilies()
     })
@@ -253,16 +353,22 @@ export default {
       familyStore,
       memberStore,
       familyMembers,
+      selectedFamily,
       selectedFamilyId,
       showModal,
+      showFamilyModal,
       editingMember,
       form,
+      familyForm,
       navigateTo,
       fetchMembers,
+      formatDate,
       openAddMemberModal,
+      viewOrEditFamily,
       editMember,
       deleteMember,
-      handleSubmit
+      handleSubmit,
+      handleFamilySubmit
     }
   }
 }

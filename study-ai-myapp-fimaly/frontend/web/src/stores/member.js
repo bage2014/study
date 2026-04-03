@@ -50,6 +50,26 @@ export const useMemberStore = defineStore('member', {
         this.loading = false
       }
     },
+    async searchMembers(searchData) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axios.get('/api/members/search', {
+          params: searchData
+        })
+        if (response.data.code === 200 && response.data.data) {
+          this.members = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to search members')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || error.message
+        console.error('Failed to search members:', error)
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
     async fetchMember(id) {
       this.loading = true
       this.error = null

@@ -34,4 +34,10 @@ public class PermissionService {
     public void deletePermission(Long id) {
         permissionRepository.deleteById(id);
     }
+    
+    public void removeUserFromFamily(Long userId, Long familyId) {
+        Permission permission = permissionRepository.findByUserIdAndFamilyId(userId, familyId)
+                .orElseThrow(() -> new RuntimeException("Permission not found"));
+        permissionRepository.delete(permission);
+    }
 }

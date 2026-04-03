@@ -56,7 +56,9 @@ class MemberControllerTest {
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
-                member.getDetails()
+                member.getDetails(),
+                null,
+                null
         )).thenReturn(createdMember);
         
         // Act
@@ -75,7 +77,9 @@ class MemberControllerTest {
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
-                member.getDetails()
+                member.getDetails(),
+                null,
+                null
         );
     }
     
@@ -99,7 +103,9 @@ class MemberControllerTest {
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
-                member.getDetails()
+                member.getDetails(),
+                null,
+                null
         )).thenThrow(new RuntimeException(errorMessage));
         
         // Act
@@ -117,7 +123,9 @@ class MemberControllerTest {
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
-                member.getDetails()
+                member.getDetails(),
+                null,
+                null
         );
     }
     
@@ -236,7 +244,9 @@ class MemberControllerTest {
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
-                member.getDetails()
+                member.getDetails(),
+                null,
+                null
         )).thenReturn(updatedMember);
         
         // Act
@@ -255,7 +265,9 @@ class MemberControllerTest {
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
-                member.getDetails()
+                member.getDetails(),
+                null,
+                null
         );
     }
     
@@ -279,7 +291,9 @@ class MemberControllerTest {
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
-                member.getDetails()
+                member.getDetails(),
+                null,
+                null
         )).thenThrow(new RuntimeException(errorMessage));
         
         // Act
@@ -297,7 +311,9 @@ class MemberControllerTest {
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
-                member.getDetails()
+                member.getDetails(),
+                null,
+                null
         );
     }
     

@@ -23,27 +23,51 @@
             <form @submit.prevent="handleCreateRelationship" class="space-y-4">
               <div>
                 <label for="member1Id" class="block text-sm font-medium text-gray-700 mb-1">成员1</label>
-                <select 
-                  id="member1Id" 
-                  v-model="form.member1Id" 
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">请选择成员</option>
-                  <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
-                </select>
+                <div class="flex space-x-2">
+                  <select 
+                    id="member1Id" 
+                    v-model="form.member1Id" 
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="">请选择成员</option>
+                    <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
+                  </select>
+                  <button 
+                    type="button"
+                    @click="searchMember(1)"
+                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                  >
+                    搜索
+                  </button>
+                </div>
+                <p v-if="selectedMember1" class="mt-1 text-sm text-gray-600">
+                  已选择: {{ selectedMember1.name }} (ID: {{ selectedMember1.id }})
+                </p>
               </div>
               <div>
                 <label for="member2Id" class="block text-sm font-medium text-gray-700 mb-1">成员2</label>
-                <select 
-                  id="member2Id" 
-                  v-model="form.member2Id" 
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">请选择成员</option>
-                  <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
-                </select>
+                <div class="flex space-x-2">
+                  <select 
+                    id="member2Id" 
+                    v-model="form.member2Id" 
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="">请选择成员</option>
+                    <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
+                  </select>
+                  <button 
+                    type="button"
+                    @click="searchMember(2)"
+                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                  >
+                    搜索
+                  </button>
+                </div>
+                <p v-if="selectedMember2" class="mt-1 text-sm text-gray-600">
+                  已选择: {{ selectedMember2.name }} (ID: {{ selectedMember2.id }})
+                </p>
               </div>
               <div>
                 <label for="relationshipType" class="block text-sm font-medium text-gray-700 mb-1">关系类型</label>
@@ -161,8 +185,8 @@
 <script>
 import { useRelationshipStore } from '../stores/relationship'
 import { useMemberStore } from '../stores/member'
-import { useRouter } from 'vue-router'
-import { ref, computed, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { ref, computed, onMounted, watch } from 'vue'
 
 export default {
   name: 'Relationships',
@@ -170,6 +194,7 @@ export default {
     const relationshipStore = useRelationshipStore()
     const memberStore = useMemberStore()
     const router = useRouter()
+    const route = useRoute()
 
     const form = ref({
       member1Id: '',
@@ -178,10 +203,44 @@ export default {
     })
 
     const searchMemberId = ref('')
+    const currentSearchTarget = ref(null)
 
     const navigateTo = (path) => {
       router.push(path)
     }
+
+    const searchMember = (target) => {
+      currentSearchTarget.value = target
+      router.push({
+        path: '/member-search',
+        query: {
+          from: 'relationships',
+          memberId: target
+        }
+      })
+    }
+
+    const selectedMember1 = computed(() => {
+      if (!form.value.member1Id) return null
+      return memberStore.members.find(m => m.id === form.value.member1Id)
+    })
+
+    const selectedMember2 = computed(() => {
+      if (!form.value.member2Id) return null
+      return memberStore.members.find(m => m.id === form.value.member2Id)
+    })
+
+    watch(() => route.query.selectedMemberId, (newVal) => {
+      if (newVal) {
+        const target = route.query.memberId
+        if (target === '1') {
+          form.value.member1Id = parseInt(newVal)
+        } else if (target === '2') {
+          form.value.member2Id = parseInt(newVal)
+        }
+        router.replace({ query: {} })
+      }
+    }, { immediate: true })
 
     const handleCreateRelationship = async () => {
       try {
@@ -269,11 +328,15 @@ export default {
     return {
       form,
       searchMemberId,
+      currentSearchTarget,
       relationshipStore,
       memberStore,
       members: memberStore.members,
       filteredRelationships,
+      selectedMember1,
+      selectedMember2,
       navigateTo,
+      searchMember,
       handleCreateRelationship,
       handleDelete,
       handleSearch,

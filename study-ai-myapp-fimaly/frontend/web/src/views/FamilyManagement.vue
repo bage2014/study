@@ -13,7 +13,7 @@
             <h1 class="text-xl font-bold text-gray-900">家族管理</h1>
           </div>
           <div class="flex items-center">
-            <button @click="openCreateModal" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+            <button @click="openCreateModal" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200">
               创建家族
             </button>
           </div>
@@ -46,6 +46,11 @@
                 <button @click="editFamily(family)" class="text-green-600 hover:text-green-800 mr-3">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+                <button @click="leaveFamily(family.id)" class="text-orange-600 hover:text-orange-800 mr-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
                 </button>
                 <button @click="deleteFamily(family.id)" class="text-red-600 hover:text-red-800">
@@ -97,7 +102,7 @@
             <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-all duration-200">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
@@ -172,6 +177,17 @@ export default {
       }
     }
 
+    const leaveFamily = async (familyId) => {
+      if (confirm('确定要退出这个家族吗？')) {
+        try {
+          await familyStore.leaveFamily(familyId)
+          alert('家族退出成功')
+        } catch (error) {
+          alert('家族退出失败: ' + (error.response?.data?.message || error.message))
+        }
+      }
+    }
+
     const handleFileChange = (event) => {
       selectedFile.value = event.target.files[0]
     }
@@ -207,6 +223,7 @@ export default {
       openCreateModal,
       editFamily,
       deleteFamily,
+      leaveFamily,
       handleFileChange,
       handleSubmit
     }
