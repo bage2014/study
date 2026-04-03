@@ -88,6 +88,70 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    async updateProfile(profileData) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axios.put('/api/users/profile', profileData)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200 && response.data.data) {
+          this.user = response.data.data
+          localStorage.setItem('user', JSON.stringify(this.user))
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to update profile')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || error.message
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async changePassword(passwordData) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axios.put('/api/users/password', passwordData)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200) {
+          return response.data
+        } else {
+          throw new Error(response.data.message || 'Failed to change password')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || error.message
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async updatePrivacySettings(settings) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axios.put('/api/users/privacy', settings)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200 && response.data.data) {
+          this.user = response.data.data
+          localStorage.setItem('user', JSON.stringify(this.user))
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to update privacy settings')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || error.message
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+
     logout() {
       this.user = null
       this.token = null

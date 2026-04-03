@@ -34,7 +34,7 @@
         </div>
 
         <!-- Events List -->
-        <div v-if="loading" class="flex justify-center py-16">
+        <div v-if="eventStore.loading" class="flex justify-center py-16">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
         <div v-else-if="events.length === 0" class="text-center py-16">
@@ -93,15 +93,19 @@
             </div>
             <div>
               <label for="relatedMembers" class="block text-sm font-medium text-gray-700">相关成员</label>
-              <input type="text" id="relatedMembers" v-model="form.relatedMembers" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" placeholder="用逗号分隔多个成员">
+              <input type="text" id="relatedMembers" v-model="form.relatedMembers" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" placeholder="用逗号分隔多个成员ID">
+            </div>
+            <div>
+              <label for="photo" class="block text-sm font-medium text-gray-700">照片</label>
+              <input type="file" id="photo" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
             </div>
           </div>
           <div class="mt-6 flex justify-end">
             <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
               取消
             </button>
-            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-              保存
+            <button type="submit" :disabled="eventStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+              {{ eventStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
@@ -111,18 +115,21 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useFamilyStore } from '../stores/family'
+import { useEventStore } from '../stores/event'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Events',
   setup() {
     const familyStore = useFamilyStore()
+    const eventStore = useEventStore()
+    const router = useRouter()
     const selectedFamilyId = ref('')
-    const loading = ref(false)
     const showModal = ref(false)
     const editingEvent = ref(null)
-    const events = ref([])
+    const selectedFile = ref(null)
     const form = ref({
       name: '',
       description: '',
@@ -131,42 +138,16 @@ export default {
     })
 
     const navigateTo = (path) => {
-      window.location.href = path
+      router.push(path)
     }
+
+    const events = computed(() => {
+      return eventStore.getEventsByFamilyId(selectedFamilyId.value)
+    })
 
     const fetchEvents = async () => {
       if (selectedFamilyId.value) {
-        loading.value = true
-        // 模拟API请求
-        setTimeout(() => {
-          events.value = [
-            {
-              id: 1,
-              name: '张三出生',
-              description: '张三出生于1920年1月1日',
-              eventDate: '1920-01-01',
-              relatedMembers: '张三',
-              photo: null
-            },
-            {
-              id: 2,
-              name: '张三结婚',
-              description: '张三与李四结婚',
-              eventDate: '1940-01-01',
-              relatedMembers: '张三, 李四',
-              photo: null
-            },
-            {
-              id: 3,
-              name: '张小明出生',
-              description: '张三和李四的儿子张小明出生',
-              eventDate: '1945-01-01',
-              relatedMembers: '张三, 李四, 张小明',
-              photo: null
-            }
-          ]
-          loading.value = false
-        }, 1000)
+        await eventStore.fetchEventsByFamilyId(selectedFamilyId.value)
       }
     }
 
@@ -178,6 +159,7 @@ export default {
         eventDate: '',
         relatedMembers: ''
       }
+      selectedFile.value = null
       showModal.value = true
     }
 
@@ -189,35 +171,60 @@ export default {
         eventDate: event.eventDate,
         relatedMembers: event.relatedMembers
       }
+      selectedFile.value = null
       showModal.value = true
     }
 
-    const deleteEvent = (eventId) => {
+    const deleteEvent = async (eventId) => {
       if (confirm('确定要删除这个事件吗？')) {
-        // 这里应该调用删除事件的API
-        console.log('删除事件:', eventId)
-        events.value = events.value.filter(event => event.id !== eventId)
+        try {
+          await eventStore.deleteEvent(eventId)
+          alert('事件删除成功')
+        } catch (error) {
+          alert('事件删除失败: ' + (error.response?.data?.message || error.message))
+        }
       }
     }
 
-    const handleSubmit = () => {
-      if (editingEvent.value) {
-        // 编辑事件
-        console.log('编辑事件:', form.value)
-        const index = events.value.findIndex(event => event.id === editingEvent.value.id)
-        if (index !== -1) {
-          events.value[index] = { ...editingEvent.value, ...form.value }
-        }
-      } else {
-        // 添加事件
-        const newEvent = {
-          id: events.value.length + 1,
+    const handleFileChange = (event) => {
+      selectedFile.value = event.target.files[0]
+    }
+
+    const handleSubmit = async () => {
+      try {
+        const eventData = {
           ...form.value,
-          photo: null
+          familyId: selectedFamilyId.value
         }
-        events.value.push(newEvent)
+
+        // 如果有文件上传，需要处理文件
+        if (selectedFile.value) {
+          const formData = new FormData()
+          formData.append('file', selectedFile.value)
+          formData.append('name', eventData.name)
+          formData.append('description', eventData.description)
+          formData.append('eventDate', eventData.eventDate)
+          formData.append('relatedMembers', eventData.relatedMembers)
+          formData.append('familyId', eventData.familyId)
+
+          // 这里应该调用文件上传API
+          // const uploadResponse = await axios.post('/api/upload', formData)
+          // eventData.photo = uploadResponse.data.url
+        }
+
+        if (editingEvent.value) {
+          // 编辑事件
+          await eventStore.updateEvent(editingEvent.value.id, eventData)
+          alert('事件更新成功')
+        } else {
+          // 添加事件
+          await eventStore.createEvent(eventData)
+          alert('事件添加成功')
+        }
+        showModal.value = false
+      } catch (error) {
+        alert('操作失败: ' + (error.response?.data?.message || error.message))
       }
-      showModal.value = false
     }
 
     onMounted(async () => {
@@ -225,10 +232,11 @@ export default {
     })
 
     return {
+      familyStore,
+      eventStore,
       families: familyStore.families,
       events,
       selectedFamilyId,
-      loading,
       showModal,
       editingEvent,
       form,
@@ -237,6 +245,7 @@ export default {
       openAddEventModal,
       editEvent,
       deleteEvent,
+      handleFileChange,
       handleSubmit
     }
   }

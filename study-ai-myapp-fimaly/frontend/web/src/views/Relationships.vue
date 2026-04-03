@@ -22,24 +22,28 @@
             <h2 class="text-lg font-medium text-gray-900 mb-4">添加关系</h2>
             <form @submit.prevent="handleCreateRelationship" class="space-y-4">
               <div>
-                <label for="member1Id" class="block text-sm font-medium text-gray-700 mb-1">成员1 ID</label>
-                <input 
-                  type="number" 
+                <label for="member1Id" class="block text-sm font-medium text-gray-700 mb-1">成员1</label>
+                <select 
                   id="member1Id" 
                   v-model="form.member1Id" 
                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
-                />
+                >
+                  <option value="">请选择成员</option>
+                  <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
+                </select>
               </div>
               <div>
-                <label for="member2Id" class="block text-sm font-medium text-gray-700 mb-1">成员2 ID</label>
-                <input 
-                  type="number" 
+                <label for="member2Id" class="block text-sm font-medium text-gray-700 mb-1">成员2</label>
+                <select 
                   id="member2Id" 
                   v-model="form.member2Id" 
                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
-                />
+                >
+                  <option value="">请选择成员</option>
+                  <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
+                </select>
               </div>
               <div>
                 <label for="relationshipType" class="block text-sm font-medium text-gray-700 mb-1">关系类型</label>
@@ -69,10 +73,10 @@
               </div>
               <button 
                 type="submit" 
-                :disabled="loading"
+                :disabled="relationshipStore.loading"
                 class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
               >
-                {{ loading ? '添加中...' : '添加关系' }}
+                {{ relationshipStore.loading ? '添加中...' : '添加关系' }}
               </button>
             </form>
           </div>
@@ -107,15 +111,15 @@
               </div>
             </div>
 
-            <div v-if="loading" class="flex justify-center py-8">
+            <div v-if="relationshipStore.loading" class="flex justify-center py-8">
               <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
             </div>
-            <div v-else-if="relationships.length === 0" class="text-center py-8">
+            <div v-else-if="filteredRelationships.length === 0" class="text-center py-8">
               <p class="text-gray-600">暂无关系数据</p>
             </div>
             <div v-else class="space-y-4">
               <div 
-                v-for="relationship in relationships" 
+                v-for="relationship in filteredRelationships" 
                 :key="relationship.id" 
                 class="border rounded-md p-4 hover:shadow-md"
               >
@@ -124,11 +128,11 @@
                     <div class="flex items-center space-x-4">
                       <div class="flex items-center space-x-2">
                         <span class="text-sm font-medium text-gray-700">成员1:</span>
-                        <span class="text-sm text-gray-900">{{ relationship.member1Id }}</span>
+                        <span class="text-sm text-gray-900">{{ getMemberName(relationship.member1Id) }}</span>
                       </div>
                       <div class="flex items-center space-x-2">
                         <span class="text-sm font-medium text-gray-700">成员2:</span>
-                        <span class="text-sm text-gray-900">{{ relationship.member2Id }}</span>
+                        <span class="text-sm text-gray-900">{{ getMemberName(relationship.member2Id) }}</span>
                       </div>
                       <div class="flex items-center space-x-2">
                         <span class="text-sm font-medium text-gray-700">关系:</span>
@@ -156,13 +160,15 @@
 
 <script>
 import { useRelationshipStore } from '../stores/relationship'
+import { useMemberStore } from '../stores/member'
 import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 export default {
   name: 'Relationships',
   setup() {
     const relationshipStore = useRelationshipStore()
+    const memberStore = useMemberStore()
     const router = useRouter()
 
     const form = ref({
@@ -172,16 +178,12 @@ export default {
     })
 
     const searchMemberId = ref('')
-    const relationships = ref([])
-
-    const loading = ref(false)
 
     const navigateTo = (path) => {
       router.push(path)
     }
 
     const handleCreateRelationship = async () => {
-      loading.value = true
       try {
         await relationshipStore.createRelationship(form.value)
         alert('关系添加成功')
@@ -193,57 +195,35 @@ export default {
         await loadRelationships()
       } catch (error) {
         alert('关系添加失败: ' + (error.response?.data?.message || error.message))
-      } finally {
-        loading.value = false
       }
     }
 
     const handleDelete = async (id) => {
       if (confirm('确定要删除这个关系吗？')) {
-        loading.value = true
         try {
           await relationshipStore.deleteRelationship(id)
           alert('关系删除成功')
           await loadRelationships()
         } catch (error) {
           alert('关系删除失败: ' + (error.response?.data?.message || error.message))
-        } finally {
-          loading.value = false
         }
       }
     }
 
     const handleSearch = async () => {
-      if (!searchMemberId.value) {
-        await loadRelationships()
-        return
-      }
-      loading.value = true
-      try {
-        const result = await relationshipStore.fetchRelationshipsByMemberId(searchMemberId.value)
-        relationships.value = result
-      } catch (error) {
-        alert('搜索失败: ' + (error.response?.data?.message || error.message))
-      } finally {
-        loading.value = false
-      }
+      // 搜索功能已通过filteredRelationships计算属性实现
     }
 
-    const handleReset = async () => {
+    const handleReset = () => {
       searchMemberId.value = ''
-      await loadRelationships()
     }
 
     const loadRelationships = async () => {
-      loading.value = true
-      try {
-        await relationshipStore.fetchRelationships()
-        relationships.value = relationshipStore.relationships
-      } catch (error) {
-        alert('加载关系数据失败: ' + (error.response?.data?.message || error.message))
-      } finally {
-        loading.value = false
-      }
+      await relationshipStore.fetchRelationships()
+    }
+
+    const loadMembers = async () => {
+      await memberStore.fetchMembers()
     }
 
     const getRelationshipTypeText = (type) => {
@@ -267,21 +247,39 @@ export default {
       return typeMap[type] || type
     }
 
-    onMounted(() => {
-      loadRelationships()
+    const getMemberName = (memberId) => {
+      const member = memberStore.members.find(m => m.id === memberId)
+      return member ? member.name : memberId
+    }
+
+    const filteredRelationships = computed(() => {
+      if (!searchMemberId.value) {
+        return relationshipStore.relationships
+      }
+      return relationshipStore.relationships.filter(rel => 
+        rel.member1Id == searchMemberId.value || rel.member2Id == searchMemberId.value
+      )
+    })
+
+    onMounted(async () => {
+      await loadMembers()
+      await loadRelationships()
     })
 
     return {
       form,
       searchMemberId,
-      relationships,
-      loading,
+      relationshipStore,
+      memberStore,
+      members: memberStore.members,
+      filteredRelationships,
       navigateTo,
       handleCreateRelationship,
       handleDelete,
       handleSearch,
       handleReset,
-      getRelationshipTypeText
+      getRelationshipTypeText,
+      getMemberName
     }
   }
 }

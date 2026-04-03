@@ -25,17 +25,17 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="bg-white p-6 rounded-lg shadow">
         <!-- Families List -->
-        <div v-if="loading" class="flex justify-center py-16">
+        <div v-if="familyStore.loading" class="flex justify-center py-16">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
-        <div v-else-if="families.length === 0" class="text-center py-16">
+        <div v-else-if="familyStore.families.length === 0" class="text-center py-16">
           <p class="text-gray-600">您还没有创建家族</p>
           <button @click="openCreateModal" class="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
             创建第一个家族
           </button>
         </div>
         <div v-else class="space-y-4">
-          <div v-for="family in families" :key="family.id" class="border rounded-md p-4 hover:shadow-md">
+          <div v-for="family in familyStore.families" :key="family.id" class="border rounded-md p-4 hover:shadow-md">
             <div class="flex justify-between items-start">
               <div>
                 <h3 class="font-medium text-gray-900">{{ family.name }}</h3>
@@ -97,8 +97,8 @@
             <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
               取消
             </button>
-            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-              保存
+            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+              {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
@@ -110,12 +110,13 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { useFamilyStore } from '../stores/family'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'FamilyManagement',
   setup() {
     const familyStore = useFamilyStore()
-    const loading = ref(false)
+    const router = useRouter()
     const showModal = ref(false)
     const editingFamily = ref(null)
     const form = ref({
@@ -126,13 +127,11 @@ export default {
     const selectedFile = ref(null)
 
     const navigateTo = (path) => {
-      window.location.href = path
+      router.push(path)
     }
 
     const fetchFamilies = async () => {
-      loading.value = true
       await familyStore.fetchFamilies()
-      loading.value = false
     }
 
     const formatDate = (dateString) => {
@@ -162,12 +161,14 @@ export default {
       showModal.value = true
     }
 
-    const deleteFamily = (familyId) => {
+    const deleteFamily = async (familyId) => {
       if (confirm('确定要删除这个家族吗？')) {
-        // 这里应该调用删除家族的API
-        console.log('删除家族:', familyId)
-        // 模拟删除成功
-        familyStore.families = familyStore.families.filter(family => family.id !== familyId)
+        try {
+          await familyStore.deleteFamily(familyId)
+          alert('家族删除成功')
+        } catch (error) {
+          alert('家族删除失败: ' + (error.response?.data?.message || error.message))
+        }
       }
     }
 
@@ -176,22 +177,20 @@ export default {
     }
 
     const handleSubmit = async () => {
-      if (editingFamily.value) {
-        // 编辑家族
-        console.log('编辑家族:', form.value)
-        const index = familyStore.families.findIndex(family => family.id === editingFamily.value.id)
-        if (index !== -1) {
-          familyStore.families[index] = { ...editingFamily.value, ...form.value }
+      try {
+        if (editingFamily.value) {
+          // 编辑家族
+          await familyStore.updateFamily(editingFamily.value.id, form.value)
+          alert('家族更新成功')
+        } else {
+          // 创建家族
+          await familyStore.createFamily(form.value)
+          alert('家族创建成功')
         }
-      } else {
-        // 创建家族
-        await familyStore.createFamily(
-          form.value.name,
-          form.value.description,
-          form.value.avatar
-        )
+        showModal.value = false
+      } catch (error) {
+        alert('操作失败: ' + (error.response?.data?.message || error.message))
       }
-      showModal.value = false
     }
 
     onMounted(() => {
@@ -199,8 +198,7 @@ export default {
     })
 
     return {
-      families: familyStore.families,
-      loading,
+      familyStore,
       showModal,
       editingFamily,
       form,

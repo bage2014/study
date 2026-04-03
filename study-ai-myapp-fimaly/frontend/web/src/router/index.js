@@ -22,12 +22,14 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: { requiresGuest: true }
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: Register,
+    meta: { requiresGuest: true }
   },
   {
     path: '/home',
@@ -82,6 +84,11 @@ const routes = [
     name: 'Relationships',
     component: Relationships,
     meta: { requiresAuth: true }
+  },
+  // 404 page
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/home'
   }
 ]
 
@@ -93,10 +100,13 @@ const router = createRouter({
 // Navigation guard
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const requiresGuest = to.matched.some(record => record.meta.requiresGuest)
   const token = localStorage.getItem('token')
   
   if (requiresAuth && !token) {
     next('/login')
+  } else if (requiresGuest && token) {
+    next('/home')
   } else {
     next()
   }

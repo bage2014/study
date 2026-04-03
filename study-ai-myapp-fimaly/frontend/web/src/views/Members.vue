@@ -29,15 +29,15 @@
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
           <select id="family" v-model="selectedFamilyId" @change="fetchMembers" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary">
             <option value="">请选择家族</option>
-            <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
+            <option v-for="family in familyStore.families" :key="family.id" :value="family.id">{{ family.name }}</option>
           </select>
         </div>
 
         <!-- Members List -->
-        <div v-if="loading" class="flex justify-center py-16">
+        <div v-if="memberStore.loading" class="flex justify-center py-16">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
-        <div v-else-if="members.length === 0" class="text-center py-16">
+        <div v-else-if="familyMembers.length === 0" class="text-center py-16">
           <p class="text-gray-600">暂无成员数据</p>
         </div>
         <div v-else class="overflow-x-auto">
@@ -62,7 +62,7 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="member in members" :key="member.id">
+              <tr v-for="member in familyMembers" :key="member.id">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
                     <div class="flex-shrink-0 h-10 w-10">
@@ -142,8 +142,8 @@
             <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
               取消
             </button>
-            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-              保存
+            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+              {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
@@ -153,15 +153,18 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useFamilyStore } from '../stores/family'
+import { useMemberStore } from '../stores/member'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Members',
   setup() {
     const familyStore = useFamilyStore()
+    const memberStore = useMemberStore()
+    const router = useRouter()
     const selectedFamilyId = ref('')
-    const loading = ref(false)
     const showModal = ref(false)
     const editingMember = ref(null)
     const form = ref({
@@ -173,16 +176,18 @@ export default {
     })
 
     const navigateTo = (path) => {
-      window.location.href = path
+      router.push(path)
     }
 
     const fetchMembers = async () => {
       if (selectedFamilyId.value) {
-        loading.value = true
-        await familyStore.fetchFamilyMembers(selectedFamilyId.value)
-        loading.value = false
+        await memberStore.fetchMembersByFamilyId(selectedFamilyId.value)
       }
     }
+
+    const familyMembers = computed(() => {
+      return memberStore.getMembersByFamilyId(selectedFamilyId.value)
+    })
 
     const openAddMemberModal = () => {
       editingMember.value = null
@@ -208,23 +213,36 @@ export default {
       showModal.value = true
     }
 
-    const deleteMember = (memberId) => {
+    const deleteMember = async (memberId) => {
       if (confirm('确定要删除这个成员吗？')) {
-        // 这里应该调用删除成员的API
-        console.log('删除成员:', memberId)
+        try {
+          await memberStore.deleteMember(memberId)
+          alert('成员删除成功')
+        } catch (error) {
+          alert('成员删除失败: ' + (error.response?.data?.message || error.message))
+        }
       }
     }
 
     const handleSubmit = async () => {
-      if (editingMember.value) {
-        // 编辑成员
-        console.log('编辑成员:', form.value)
-      } else {
-        // 添加成员
-        await familyStore.addFamilyMember(selectedFamilyId.value, form.value)
+      try {
+        if (editingMember.value) {
+          // 编辑成员
+          await memberStore.updateMember(editingMember.value.id, form.value)
+          alert('成员更新成功')
+        } else {
+          // 添加成员
+          await memberStore.createMember({
+            ...form.value,
+            familyId: selectedFamilyId.value
+          })
+          alert('成员添加成功')
+        }
+        showModal.value = false
+        await fetchMembers()
+      } catch (error) {
+        alert('操作失败: ' + (error.response?.data?.message || error.message))
       }
-      showModal.value = false
-      await fetchMembers()
     }
 
     onMounted(async () => {
@@ -232,10 +250,10 @@ export default {
     })
 
     return {
-      families: familyStore.families,
-      members: familyStore.members,
+      familyStore,
+      memberStore,
+      familyMembers,
       selectedFamilyId,
-      loading,
       showModal,
       editingMember,
       form,

@@ -4,7 +4,7 @@
       <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">家族树</h1>
       <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-semibold text-gray-700">{{ currentFamily.name }}</h2>
+          <h2 class="text-xl font-semibold text-gray-700">{{ currentFamily?.name || '家族' }}</h2>
           <div class="space-x-2">
             <button @click="openAddMemberModal" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
               添加成员
@@ -14,20 +14,41 @@
             </button>
           </div>
         </div>
-        <div class="family-tree-container">
+        <div v-if="loading" class="flex justify-center py-16">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+        <div v-else-if="!currentFamily" class="text-center py-16">
+          <p class="text-gray-600">请选择家族</p>
+        </div>
+        <div v-else class="family-tree-container">
           <div class="family-tree">
             <!-- 家族树可视化 -->
-            <div class="flex justify-center">
-              <div class="tree-node bg-white border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center font-semibold text-blue-600">
-                我
-              </div>
+            <div v-if="familyMembers.length === 0" class="text-center py-16">
+              <p class="text-gray-600">暂无家族成员</p>
             </div>
-            <div class="flex justify-center mt-8 space-x-16">
-              <div class="tree-node bg-white border-2 border-gray-400 rounded-full w-16 h-16 flex items-center justify-center font-semibold text-gray-600">
-                父亲
+            <div v-else class="tree-levels">
+              <!-- 简单的家族树布局 -->
+              <div class="tree-level">
+                <div class="flex justify-center">
+                  <div 
+                    v-for="member in rootMembers" 
+                    :key="member.id" 
+                    class="tree-node bg-white border-2 border-blue-500 rounded-full w-20 h-20 flex items-center justify-center font-semibold text-blue-600"
+                  >
+                    {{ member.name }}
+                  </div>
+                </div>
               </div>
-              <div class="tree-node bg-white border-2 border-gray-400 rounded-full w-16 h-16 flex items-center justify-center font-semibold text-gray-600">
-                母亲
+              <div v-for="(level, index) in familyLevels" :key="index" class="tree-level mt-8">
+                <div class="flex justify-center space-x-8">
+                  <div 
+                    v-for="member in level" 
+                    :key="member.id" 
+                    class="tree-node bg-white border-2 border-gray-400 rounded-full w-16 h-16 flex items-center justify-center font-semibold text-gray-600"
+                  >
+                    {{ member.name }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -82,12 +103,18 @@
         <h3 class="text-lg font-medium text-gray-900 mb-4">添加关系</h3>
         <form @submit.prevent="handleAddRelationship" class="space-y-4">
           <div>
-            <label for="member1Id" class="block text-sm font-medium text-gray-700">成员1 ID</label>
-            <input type="number" id="member1Id" v-model="relationshipForm.member1Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <label for="member1Id" class="block text-sm font-medium text-gray-700">成员1</label>
+            <select id="member1Id" v-model="relationshipForm.member1Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+              <option value="">请选择成员</option>
+              <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
+            </select>
           </div>
           <div>
-            <label for="member2Id" class="block text-sm font-medium text-gray-700">成员2 ID</label>
-            <input type="number" id="member2Id" v-model="relationshipForm.member2Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <label for="member2Id" class="block text-sm font-medium text-gray-700">成员2</label>
+            <select id="member2Id" v-model="relationshipForm.member2Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+              <option value="">请选择成员</option>
+              <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
+            </select>
           </div>
           <div>
             <label for="relationshipType" class="block text-sm font-medium text-gray-700">关系类型</label>
@@ -125,13 +152,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useFamilyStore } from '../stores/family';
 import { useRelationshipStore } from '../stores/relationship';
+import { useMemberStore } from '../stores/member';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const familyStore = useFamilyStore();
 const relationshipStore = useRelationshipStore();
-const currentFamily = ref({ name: '我的家族' });
+const memberStore = useMemberStore();
+
+const currentFamily = ref(null);
 const showAddMemberModal = ref(false);
 const showAddRelationshipModal = ref(false);
 const loading = ref(false);
@@ -150,12 +182,69 @@ const relationshipForm = ref({
   relationshipType: ''
 });
 
-onMounted(async () => {
-  await familyStore.fetchFamilies();
-  if (familyStore.families.length > 0) {
-    currentFamily.value = familyStore.families[0];
+// 计算属性：家族成员
+const familyMembers = computed(() => {
+  return memberStore.getMembersByFamilyId(currentFamily.value?.id || '');
+});
+
+// 计算属性：根成员（没有父母的成员）
+const rootMembers = computed(() => {
+  // 简单实现：假设第一个成员是根成员
+  return familyMembers.value.slice(0, 1);
+});
+
+// 计算属性：家族树层级
+const familyLevels = computed(() => {
+  // 简单实现：将成员分成不同层级
+  const levels = [];
+  if (familyMembers.value.length > 1) {
+    // 第二层
+    const level2 = familyMembers.value.slice(1, 3);
+    if (level2.length > 0) {
+      levels.push(level2);
+    }
+    // 第三层
+    const level3 = familyMembers.value.slice(3);
+    if (level3.length > 0) {
+      levels.push(level3);
+    }
+  }
+  return levels;
+});
+
+// 监听路由参数变化
+watch(() => route.query.familyId, (newFamilyId) => {
+  if (newFamilyId) {
+    fetchFamilyData(newFamilyId);
   }
 });
+
+onMounted(async () => {
+  await familyStore.fetchFamilies();
+  const familyId = route.query.familyId || (familyStore.families.length > 0 ? familyStore.families[0].id : null);
+  if (familyId) {
+    fetchFamilyData(familyId);
+  }
+});
+
+const fetchFamilyData = async (familyId) => {
+  loading.value = true;
+  try {
+    // 获取家族信息
+    await familyStore.fetchFamily(familyId);
+    currentFamily.value = familyStore.currentFamily;
+    
+    // 获取家族成员
+    await memberStore.fetchMembersByFamilyId(familyId);
+    
+    // 获取家族关系
+    await relationshipStore.fetchRelationships();
+  } catch (error) {
+    console.error('获取家族数据失败:', error);
+  } finally {
+    loading.value = false;
+  }
+};
 
 const openAddMemberModal = () => {
   memberForm.value = {
@@ -180,13 +269,16 @@ const openAddRelationshipModal = () => {
 const handleAddMember = async () => {
   loading.value = true;
   try {
-    if (familyStore.families.length > 0) {
-      const familyId = familyStore.families[0].id;
-      await familyStore.addFamilyMember(familyId, memberForm.value);
+    if (currentFamily.value) {
+      const familyId = currentFamily.value.id;
+      await memberStore.createMember({
+        ...memberForm.value,
+        familyId
+      });
       alert('成员添加成功');
       showAddMemberModal.value = false;
     } else {
-      alert('请先创建家族');
+      alert('请先选择家族');
     }
   } catch (error) {
     alert('成员添加失败: ' + (error.response?.data?.message || error.message));
@@ -221,8 +313,30 @@ const handleAddRelationship = async () => {
   min-width: 800px;
 }
 
+.tree-level {
+  position: relative;
+}
+
+.tree-level:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background-color: #e5e7eb;
+  transform: translateX(-50%);
+}
+
 .tree-node {
   position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tree-node:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .tree-node::after {
@@ -234,5 +348,9 @@ const handleAddRelationship = async () => {
   height: 20px;
   background-color: #e5e7eb;
   transform: translateX(-50%);
+}
+
+.tree-level:last-child .tree-node::after {
+  display: none;
 }
 </style>

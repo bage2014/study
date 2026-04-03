@@ -38,8 +38,8 @@
               </div>
             </div>
             <div class="mt-4">
-              <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
-                更新个人信息
+              <button type="submit" :disabled="userStore.loading" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 disabled:opacity-50">
+                {{ userStore.loading ? '更新中...' : '更新个人信息' }}
               </button>
             </div>
           </form>
@@ -64,8 +64,8 @@
               </div>
             </div>
             <div class="mt-4">
-              <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
-                修改密码
+              <button type="submit" :disabled="userStore.loading" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 disabled:opacity-50">
+                {{ userStore.loading ? '修改中...' : '修改密码' }}
               </button>
             </div>
           </form>
@@ -91,8 +91,8 @@
             </div>
           </div>
           <div class="mt-4">
-            <button @click="updatePrivacy" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
-              更新隐私设置
+            <button @click="updatePrivacy" :disabled="userStore.loading" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 disabled:opacity-50">
+              {{ userStore.loading ? '更新中...' : '更新隐私设置' }}
             </button>
           </div>
         </div>
@@ -104,11 +104,13 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '../stores/user'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Settings',
   setup() {
     const userStore = useUserStore()
+    const router = useRouter()
     const profileForm = ref({
       email: '',
       phone: '',
@@ -125,25 +127,34 @@ export default {
     })
 
     const navigateTo = (path) => {
-      window.location.href = path
+      router.push(path)
     }
 
     const fetchUserProfile = async () => {
       if (!userStore.user) {
-        await userStore.fetchUser()
+        await userStore.fetchCurrentUser()
       }
       profileForm.value = {
         email: userStore.user.email,
         phone: userStore.user.phone || '',
         nickname: userStore.user.nickname || ''
       }
+      privacyForm.value = {
+        allowSearch: userStore.user.allowSearch !== false,
+        receiveNotifications: userStore.user.receiveNotifications !== false
+      }
     }
 
     const updateProfile = async () => {
-      // 这里应该调用更新个人信息的API
-      console.log('更新个人信息:', profileForm.value)
-      // 模拟更新成功
-      alert('个人信息更新成功！')
+      try {
+        await userStore.updateProfile({
+          phone: profileForm.value.phone,
+          nickname: profileForm.value.nickname
+        })
+        alert('个人信息更新成功！')
+      } catch (error) {
+        alert('个人信息更新失败: ' + (error.response?.data?.message || error.message))
+      }
     }
 
     const changePassword = async () => {
@@ -151,22 +162,29 @@ export default {
         alert('新密码和确认密码不一致！')
         return
       }
-      // 这里应该调用修改密码的API
-      console.log('修改密码:', passwordForm.value)
-      // 模拟更新成功
-      alert('密码修改成功！')
-      passwordForm.value = {
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
+      try {
+        await userStore.changePassword({
+          currentPassword: passwordForm.value.currentPassword,
+          newPassword: passwordForm.value.newPassword
+        })
+        alert('密码修改成功！')
+        passwordForm.value = {
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        }
+      } catch (error) {
+        alert('密码修改失败: ' + (error.response?.data?.message || error.message))
       }
     }
 
     const updatePrivacy = async () => {
-      // 这里应该调用更新隐私设置的API
-      console.log('更新隐私设置:', privacyForm.value)
-      // 模拟更新成功
-      alert('隐私设置更新成功！')
+      try {
+        await userStore.updatePrivacySettings(privacyForm.value)
+        alert('隐私设置更新成功！')
+      } catch (error) {
+        alert('隐私设置更新失败: ' + (error.response?.data?.message || error.message))
+      }
     }
 
     onMounted(() => {
@@ -174,6 +192,7 @@ export default {
     })
 
     return {
+      userStore,
       profileForm,
       passwordForm,
       privacyForm,

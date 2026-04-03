@@ -23,14 +23,17 @@
 
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div v-if="loading" class="flex justify-center py-16">
+      <div v-if="memberStore.loading" class="flex justify-center py-16">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+      <div v-else-if="!memberStore.currentMember" class="bg-white p-6 rounded-lg shadow text-center py-16">
+        <p class="text-gray-600">成员不存在</p>
       </div>
       <div v-else class="bg-white p-6 rounded-lg shadow">
         <!-- Member Profile -->
         <div class="flex flex-col md:flex-row items-center md:items-start mb-8">
           <div class="w-32 h-32 mb-4 md:mb-0 md:mr-8">
-            <img v-if="member?.photo" :src="member.photo" :alt="member.name" class="w-32 h-32 rounded-full object-cover">
+            <img v-if="memberStore.currentMember.photo" :src="memberStore.currentMember.photo" :alt="memberStore.currentMember.name" class="w-32 h-32 rounded-full object-cover">
             <div v-else class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -38,19 +41,19 @@
             </div>
           </div>
           <div class="flex-1">
-            <h2 class="text-2xl font-bold text-gray-900">{{ member?.name }}</h2>
+            <h2 class="text-2xl font-bold text-gray-900">{{ memberStore.currentMember.name }}</h2>
             <div class="mt-2 space-y-2">
               <div class="flex items-center">
                 <span class="w-24 text-sm font-medium text-gray-500">性别:</span>
-                <span class="text-sm text-gray-900">{{ member?.gender === 'male' ? '男' : '女' }}</span>
+                <span class="text-sm text-gray-900">{{ memberStore.currentMember.gender === 'male' ? '男' : '女' }}</span>
               </div>
               <div class="flex items-center">
                 <span class="w-24 text-sm font-medium text-gray-500">出生日期:</span>
-                <span class="text-sm text-gray-900">{{ member?.birthDate || '未知' }}</span>
+                <span class="text-sm text-gray-900">{{ memberStore.currentMember.birthDate || '未知' }}</span>
               </div>
               <div class="flex items-center">
                 <span class="w-24 text-sm font-medium text-gray-500">去世日期:</span>
-                <span class="text-sm text-gray-900">{{ member?.deathDate || '在世' }}</span>
+                <span class="text-sm text-gray-900">{{ memberStore.currentMember.deathDate || '在世' }}</span>
               </div>
               <div class="flex items-center">
                 <span class="w-24 text-sm font-medium text-gray-500">家族:</span>
@@ -64,7 +67,7 @@
         <div class="mb-8">
           <h3 class="text-lg font-medium text-gray-900 mb-4">详细信息</h3>
           <div class="bg-gray-50 p-4 rounded-md">
-            <p class="text-gray-700">{{ member?.details || '暂无详细信息' }}</p>
+            <p class="text-gray-700">{{ memberStore.currentMember.details || '暂无详细信息' }}</p>
           </div>
         </div>
 
@@ -145,8 +148,8 @@
             <button type="button" @click="showEditModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
               取消
             </button>
-            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-              保存
+            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+              {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
@@ -157,97 +160,93 @@
 
 <script>
 import { ref, onMounted } from 'vue'
+import { useMemberStore } from '../stores/member'
+import { useFamilyStore } from '../stores/family'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
   name: 'MemberDetail',
   setup() {
-    const memberId = 1 // 这里应该从路由参数中获取
-    const loading = ref(false)
+    const route = useRoute()
+    const router = useRouter()
+    const memberStore = useMemberStore()
+    const familyStore = useFamilyStore()
     const showEditModal = ref(false)
-    const member = ref(null)
     const currentFamily = ref(null)
     const relationships = ref([])
     const events = ref([])
     const editForm = ref({})
 
     const navigateTo = (path) => {
-      window.location.href = path
+      router.push(path)
     }
 
     const fetchMemberDetails = async () => {
-      loading.value = true
-      // 模拟API请求
-      setTimeout(() => {
-        member.value = {
-          id: 1,
-          name: '张三',
-          gender: 'male',
-          birthDate: '1920-01-01',
-          deathDate: '2000-12-31',
-          photo: null,
-          details: '张三是家族的创始人，出生于1920年，去世于2000年。他是一位勤劳的农民，养育了三个子女。'
-        }
-        currentFamily.value = {
-          id: 1,
-          name: '张氏家族'
-        }
-        relationships.value = [
-          {
-            id: 1,
-            relatedMember: {
+      const memberId = route.params.id
+      if (memberId) {
+        await memberStore.fetchMember(memberId)
+        if (memberStore.currentMember) {
+          // 这里可以添加获取家族信息、关系信息和事件信息的逻辑
+          // 暂时使用模拟数据
+          relationships.value = [
+            {
+              id: 1,
+              relatedMember: {
+                id: 2,
+                name: '李四',
+                photo: null
+              },
+              relationshipType: '配偶'
+            },
+            {
               id: 2,
-              name: '李四',
-              photo: null
+              relatedMember: {
+                id: 3,
+                name: '张小明',
+                photo: null
+              },
+              relationshipType: '父子'
+            }
+          ]
+          events.value = [
+            {
+              id: 1,
+              name: '张三出生',
+              description: '张三出生于1920年1月1日',
+              eventDate: '1920-01-01'
             },
-            relationshipType: '配偶'
-          },
-          {
-            id: 2,
-            relatedMember: {
-              id: 3,
-              name: '张小明',
-              photo: null
-            },
-            relationshipType: '父子'
-          }
-        ]
-        events.value = [
-          {
-            id: 1,
-            name: '张三出生',
-            description: '张三出生于1920年1月1日',
-            eventDate: '1920-01-01'
-          },
-          {
-            id: 2,
-            name: '张三结婚',
-            description: '张三与李四结婚',
-            eventDate: '1940-01-01'
-          }
-        ]
-        loading.value = false
-      }, 1000)
+            {
+              id: 2,
+              name: '张三结婚',
+              description: '张三与李四结婚',
+              eventDate: '1940-01-01'
+            }
+          ]
+        }
+      }
     }
 
     const editMember = () => {
-      editForm.value = {
-        name: member.value.name,
-        gender: member.value.gender,
-        birthDate: member.value.birthDate,
-        deathDate: member.value.deathDate,
-        details: member.value.details
+      if (memberStore.currentMember) {
+        editForm.value = {
+          name: memberStore.currentMember.name,
+          gender: memberStore.currentMember.gender,
+          birthDate: memberStore.currentMember.birthDate,
+          deathDate: memberStore.currentMember.deathDate,
+          details: memberStore.currentMember.details
+        }
+        showEditModal.value = true
       }
-      showEditModal.value = true
     }
 
-    const handleUpdate = () => {
-      // 这里应该调用更新成员的API
-      console.log('更新成员:', editForm.value)
-      member.value = {
-        ...member.value,
-        ...editForm.value
+    const handleUpdate = async () => {
+      try {
+        await memberStore.updateMember(memberStore.currentMember.id, editForm.value)
+        alert('成员信息更新成功')
+        showEditModal.value = false
+      } catch (error) {
+        alert('更新失败: ' + (error.response?.data?.message || error.message))
       }
-      showEditModal.value = false
     }
 
     onMounted(() => {
@@ -255,9 +254,8 @@ export default {
     })
 
     return {
-      loading,
+      memberStore,
       showEditModal,
-      member,
       currentFamily,
       relationships,
       events,

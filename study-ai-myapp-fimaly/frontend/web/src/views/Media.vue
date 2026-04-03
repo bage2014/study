@@ -52,7 +52,7 @@
         </div>
 
         <!-- Media Grid -->
-        <div v-if="loading" class="flex justify-center py-16">
+        <div v-if="mediaStore.loading" class="flex justify-center py-16">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
         <div v-else-if="filteredMedia.length === 0" class="text-center py-16">
@@ -116,8 +116,8 @@
             <button type="button" @click="showUploadModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
               取消
             </button>
-            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-              上传
+            <button type="submit" :disabled="mediaStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+              {{ mediaStore.loading ? '上传中...' : '上传' }}
             </button>
           </div>
         </form>
@@ -129,16 +129,18 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useFamilyStore } from '../stores/family'
+import { useMediaStore } from '../stores/media'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Media',
   setup() {
     const familyStore = useFamilyStore()
+    const mediaStore = useMediaStore()
+    const router = useRouter()
     const selectedFamilyId = ref('')
     const selectedType = ref('')
-    const loading = ref(false)
     const showUploadModal = ref(false)
-    const media = ref([])
     const uploadForm = ref({
       type: '',
       description: ''
@@ -146,54 +148,23 @@ export default {
     const selectedFile = ref(null)
 
     const navigateTo = (path) => {
-      window.location.href = path
+      router.push(path)
     }
 
     const fetchMedia = async () => {
       if (selectedFamilyId.value) {
-        loading.value = true
-        // 模拟API请求
-        setTimeout(() => {
-          media.value = [
-            {
-              id: 1,
-              type: 'photo',
-              url: 'https://via.placeholder.com/300x200?text=Family+Photo+1',
-              description: '家族合影1',
-              uploadedAt: new Date().toISOString()
-            },
-            {
-              id: 2,
-              type: 'photo',
-              url: 'https://via.placeholder.com/300x200?text=Family+Photo+2',
-              description: '家族合影2',
-              uploadedAt: new Date().toISOString()
-            },
-            {
-              id: 3,
-              type: 'video',
-              url: 'video.mp4',
-              description: '家族聚会视频',
-              uploadedAt: new Date().toISOString()
-            },
-            {
-              id: 4,
-              type: 'document',
-              url: 'document.pdf',
-              description: '家族族谱文档',
-              uploadedAt: new Date().toISOString()
-            }
-          ]
-          loading.value = false
-        }, 1000)
+        await mediaStore.fetchMediaByFamilyId(selectedFamilyId.value)
       }
     }
 
     const filteredMedia = computed(() => {
-      if (!selectedType.value) {
-        return media.value
+      if (!selectedFamilyId.value) {
+        return []
       }
-      return media.value.filter(m => m.type === selectedType.value)
+      if (!selectedType.value) {
+        return mediaStore.getMediaByFamilyId(selectedFamilyId.value)
+      }
+      return mediaStore.getMediaByFamilyAndType(selectedFamilyId.value, selectedType.value)
     })
 
     const formatDate = (dateString) => {
@@ -205,30 +176,43 @@ export default {
       selectedFile.value = event.target.files[0]
     }
 
-    const handleUpload = () => {
-      // 这里应该调用上传媒体的API
-      console.log('上传媒体:', uploadForm.value, selectedFile.value)
-      // 模拟上传成功
-      const newMedia = {
-        id: media.value.length + 1,
-        ...uploadForm.value,
-        url: uploadForm.value.type === 'photo' ? 'https://via.placeholder.com/300x200?text=New+Photo' : uploadForm.value.type === 'video' ? 'video.mp4' : 'document.pdf',
-        uploadedAt: new Date().toISOString()
+    const handleUpload = async () => {
+      if (!selectedFile.value) {
+        alert('请选择文件')
+        return
       }
-      media.value.push(newMedia)
-      showUploadModal.value = false
-      uploadForm.value = {
-        type: '',
-        description: ''
+      if (!selectedFamilyId.value) {
+        alert('请选择家族')
+        return
       }
-      selectedFile.value = null
+
+      try {
+        await mediaStore.uploadMedia(
+          selectedFamilyId.value,
+          selectedFile.value,
+          uploadForm.value.type,
+          uploadForm.value.description
+        )
+        alert('文件上传成功')
+        showUploadModal.value = false
+        uploadForm.value = {
+          type: '',
+          description: ''
+        }
+        selectedFile.value = null
+      } catch (error) {
+        alert('文件上传失败: ' + (error.response?.data?.message || error.message))
+      }
     }
 
-    const deleteMedia = (mediaId) => {
+    const deleteMedia = async (mediaId) => {
       if (confirm('确定要删除这个媒体文件吗？')) {
-        // 这里应该调用删除媒体的API
-        console.log('删除媒体:', mediaId)
-        media.value = media.value.filter(m => m.id !== mediaId)
+        try {
+          await mediaStore.deleteMedia(mediaId)
+          alert('文件删除成功')
+        } catch (error) {
+          alert('文件删除失败: ' + (error.response?.data?.message || error.message))
+        }
       }
     }
 
@@ -237,12 +221,12 @@ export default {
     })
 
     return {
+      familyStore,
+      mediaStore,
       families: familyStore.families,
-      media,
       filteredMedia,
       selectedFamilyId,
       selectedType,
-      loading,
       showUploadModal,
       uploadForm,
       navigateTo,
