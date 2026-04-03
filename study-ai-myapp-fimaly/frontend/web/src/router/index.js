@@ -9,6 +9,7 @@ import Events from '../views/Events.vue'
 import Media from '../views/Media.vue'
 import FamilyManagement from '../views/FamilyManagement.vue'
 import Settings from '../views/Settings.vue'
+import Relationships from '../views/Relationships.vue'
 
 const routes = [
   {
@@ -74,6 +75,12 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/relationships',
+    name: 'Relationships',
+    component: Relationships,
     meta: { requiresAuth: true }
   }
 ]

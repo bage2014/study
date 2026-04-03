@@ -24,7 +24,7 @@
       </div>
 
       <!-- Quick Actions -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         <div @click="navigateTo('/family-tree')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
           <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-primary mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,6 +45,16 @@
           <p class="mt-2 text-sm text-gray-600">管理家族成员</p>
         </div>
 
+        <div @click="navigateTo('/relationships')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">关系管理</h3>
+          <p class="mt-2 text-sm text-gray-600">管理成员关系</p>
+        </div>
+
         <div @click="navigateTo('/events')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
           <div class="flex items-center justify-center h-12 w-12 rounded-md bg-yellow-100 text-yellow-600 mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +66,7 @@
         </div>
 
         <div @click="navigateTo('/media')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
-          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-100 text-indigo-600 mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
