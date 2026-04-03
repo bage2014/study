@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: null,
+    user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
     token: localStorage.getItem('token') || null,
     loading: false,
     error: null
@@ -76,6 +76,7 @@ export const useUserStore = defineStore('user', {
         // 从新的返回格式中提取用户数据
         if (response.data.code === 200 && response.data.data) {
           this.user = response.data.data
+          localStorage.setItem('user', JSON.stringify(this.user))
         } else {
           throw new Error(response.data.message || 'Failed to fetch user')
         }
@@ -91,6 +92,7 @@ export const useUserStore = defineStore('user', {
       this.user = null
       this.token = null
       localStorage.removeItem('token')
+      localStorage.removeItem('user')
       delete axios.defaults.headers.common['Authorization']
     }
   }

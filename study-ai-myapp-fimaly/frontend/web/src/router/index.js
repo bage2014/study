@@ -13,7 +13,10 @@ import Settings from '../views/Settings.vue'
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: (to) => {
+      const token = localStorage.getItem('token')
+      return token ? '/home' : '/login'
+    }
   },
   {
     path: '/login',

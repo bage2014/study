@@ -51,8 +51,8 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const form = ref({
-  email: '',
-  password: ''
+  email: 'zhangsan@qq.com',
+  password: 'zhangsan'
 });
 
 const login = async () => {
