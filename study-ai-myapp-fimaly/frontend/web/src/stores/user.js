@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../utils/axios'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -23,7 +23,7 @@ export const useUserStore = defineStore('user', {
           email: String(credentials.email),
           password: String(credentials.password)
         }
-        const response = await axios.post('/api/auth/login', loginData, {
+        const response = await api.post('/auth/login', loginData, {
           headers: { 'Content-Type': 'application/json' }
         })
         
@@ -31,7 +31,6 @@ export const useUserStore = defineStore('user', {
         if (response.data.code === 200 && response.data.data) {
           this.token = response.data.data.token
           localStorage.setItem('token', this.token)
-          axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
           await this.fetchCurrentUser()
         } else {
           throw new Error(response.data.message || 'Login failed')
@@ -48,7 +47,7 @@ export const useUserStore = defineStore('user', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post('/api/auth/register', credentials)
+        const response = await api.post('/auth/register', credentials)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
@@ -71,7 +70,7 @@ export const useUserStore = defineStore('user', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('/api/auth/me')
+        const response = await api.get('/auth/me')
         
         // 从新的返回格式中提取用户数据
         if (response.data.code === 200 && response.data.data) {
@@ -92,7 +91,7 @@ export const useUserStore = defineStore('user', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.put('/api/users/profile', profileData)
+        const response = await api.put('/users/profile', profileData)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
@@ -114,7 +113,7 @@ export const useUserStore = defineStore('user', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.put('/api/users/password', passwordData)
+        const response = await api.put('/users/password', passwordData)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200) {
@@ -134,7 +133,7 @@ export const useUserStore = defineStore('user', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.put('/api/users/privacy', settings)
+        const response = await api.put('/users/privacy', settings)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
@@ -157,7 +156,6 @@ export const useUserStore = defineStore('user', {
       this.token = null
       localStorage.removeItem('token')
       localStorage.removeItem('user')
-      delete axios.defaults.headers.common['Authorization']
     }
   }
 })

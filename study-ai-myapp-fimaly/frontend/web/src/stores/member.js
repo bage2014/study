@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../utils/axios'
 
 export const useMemberStore = defineStore('member', {
   state: () => ({
@@ -20,7 +20,7 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('/api/members')
+        const response = await api.get('/members')
         if (response.data.code === 200 && response.data.data) {
           this.members = response.data.data
         } else {
@@ -37,7 +37,7 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get(`/api/members/family/${familyId}`)
+        const response = await api.get(`/families/${familyId}/members`)
         if (response.data.code === 200 && response.data.data) {
           this.members = response.data.data
         } else {
@@ -54,7 +54,7 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('/api/members/search', {
+        const response = await api.get('/members/search', {
           params: searchData
         })
         if (response.data.code === 200 && response.data.data) {
@@ -74,7 +74,7 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get(`/api/members/${id}`)
+        const response = await api.get(`/members/${id}`)
         if (response.data.code === 200 && response.data.data) {
           this.currentMember = response.data.data
         } else {
@@ -91,7 +91,8 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post('/api/members', memberData)
+        const { familyId, ...memberDataWithoutFamilyId } = memberData
+        const response = await api.post(`/families/${familyId}/members`, memberDataWithoutFamilyId)
         if (response.data.code === 200 && response.data.data) {
           this.members.push(response.data.data)
           return response.data.data
@@ -110,7 +111,7 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.put(`/api/members/${id}`, memberData)
+        const response = await api.put(`/members/${id}`, memberData)
         if (response.data.code === 200 && response.data.data) {
           const index = this.members.findIndex(m => m.id === id)
           if (index !== -1) {
@@ -135,7 +136,7 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.delete(`/api/members/${id}`)
+        const response = await api.delete(`/members/${id}`)
         if (response.data.code === 200) {
           this.members = this.members.filter(m => m.id !== id)
           if (this.currentMember && this.currentMember.id === id) {

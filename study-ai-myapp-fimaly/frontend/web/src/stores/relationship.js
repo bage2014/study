@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../utils/axios'
 
 export const useRelationshipStore = defineStore('relationship', {
   state: () => ({
@@ -21,7 +21,7 @@ export const useRelationshipStore = defineStore('relationship', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('/api/relationships')
+        const response = await api.get('/relationships')
         if (response.data.code === 200 && response.data.data) {
           this.relationships = response.data.data
         } else {
@@ -39,7 +39,7 @@ export const useRelationshipStore = defineStore('relationship', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get(`/api/relationships/member/${memberId}`)
+        const response = await api.get(`/relationships/member/${memberId}`)
         if (response.data.code === 200 && response.data.data) {
           return response.data.data
         } else {
@@ -57,7 +57,7 @@ export const useRelationshipStore = defineStore('relationship', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post('/api/relationships', relationshipData)
+        const response = await api.post('/relationships', relationshipData)
         if (response.data.code === 200 && response.data.data) {
           this.relationships.push(response.data.data)
           return response.data.data
@@ -76,7 +76,7 @@ export const useRelationshipStore = defineStore('relationship', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.delete(`/api/relationships/${id}`)
+        const response = await api.delete(`/relationships/${id}`)
         if (response.data.code === 200) {
           this.relationships = this.relationships.filter(r => r.id !== id)
         } else {

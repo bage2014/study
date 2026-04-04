@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../utils/axios'
 
 export const useEventStore = defineStore('event', {
   state: () => ({
@@ -22,7 +22,7 @@ export const useEventStore = defineStore('event', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('/api/events')
+        const response = await api.get('/events')
         this.events = response.data
       } catch (error) {
         this.error = error.message
@@ -35,7 +35,7 @@ export const useEventStore = defineStore('event', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get(`/api/events/family/${familyId}`)
+        const response = await api.get(`/events/family/${familyId}`)
         this.events = response.data
       } catch (error) {
         this.error = error.message
@@ -48,7 +48,7 @@ export const useEventStore = defineStore('event', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post('/api/events', eventData)
+        const response = await api.post('/events', eventData)
         this.events.push(response.data)
         return response.data
       } catch (error) {
@@ -63,7 +63,7 @@ export const useEventStore = defineStore('event', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.put(`/api/events/${id}`, eventData)
+        const response = await api.put(`/events/${id}`, eventData)
         const index = this.events.findIndex(event => event.id === id)
         if (index !== -1) {
           this.events[index] = response.data
@@ -81,7 +81,7 @@ export const useEventStore = defineStore('event', {
       this.loading = true
       this.error = null
       try {
-        await axios.delete(`/api/events/${id}`)
+        await api.delete(`/events/${id}`)
         this.events = this.events.filter(event => event.id !== id)
       } catch (error) {
         this.error = error.message

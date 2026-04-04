@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../utils/axios'
 
 export const useFamilyStore = defineStore('family', {
   state: () => ({
@@ -19,7 +19,7 @@ export const useFamilyStore = defineStore('family', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('/api/families')
+        const response = await api.get('/families')
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
@@ -38,7 +38,7 @@ export const useFamilyStore = defineStore('family', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get(`/api/families/${id}`)
+        const response = await api.get(`/families/${id}`)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
@@ -57,7 +57,7 @@ export const useFamilyStore = defineStore('family', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post('/api/families', familyData)
+        const response = await api.post('/families', familyData)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
@@ -78,7 +78,7 @@ export const useFamilyStore = defineStore('family', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.put(`/api/families/${id}`, familyData)
+        const response = await api.put(`/families/${id}`, familyData)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
@@ -105,7 +105,7 @@ export const useFamilyStore = defineStore('family', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.delete(`/api/families/${id}`)
+        const response = await api.delete(`/families/${id}`)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200) {
@@ -128,7 +128,7 @@ export const useFamilyStore = defineStore('family', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.post(`/api/families/${id}/leave`)
+        const response = await api.post(`/families/${id}/leave`)
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200) {

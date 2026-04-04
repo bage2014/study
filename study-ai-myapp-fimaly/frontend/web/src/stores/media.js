@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../utils/axios'
 
 export const useMediaStore = defineStore('media', {
   state: () => ({
@@ -23,7 +23,7 @@ export const useMediaStore = defineStore('media', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get('/api/media')
+        const response = await api.get('/media')
         this.media = response.data
       } catch (error) {
         this.error = error.message
@@ -36,7 +36,7 @@ export const useMediaStore = defineStore('media', {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get(`/api/media/family/${familyId}`)
+        const response = await api.get(`/media/family/${familyId}`)
         this.media = response.data
       } catch (error) {
         this.error = error.message
@@ -55,7 +55,7 @@ export const useMediaStore = defineStore('media', {
         formData.append('type', type)
         formData.append('description', description)
 
-        const response = await axios.post('/api/media/upload', formData, {
+        const response = await api.post('/media/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -74,7 +74,7 @@ export const useMediaStore = defineStore('media', {
       this.loading = true
       this.error = null
       try {
-        await axios.delete(`/api/media/${id}`)
+        await api.delete(`/media/${id}`)
         this.media = this.media.filter(item => item.id !== id)
       } catch (error) {
         this.error = error.message

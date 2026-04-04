@@ -7,7 +7,6 @@ import Members from '../views/Members.vue'
 import MemberDetail from '../views/MemberDetail.vue'
 import Events from '../views/Events.vue'
 import Media from '../views/Media.vue'
-import FamilyManagement from '../views/FamilyManagement.vue'
 import Settings from '../views/Settings.vue'
 import Relationships from '../views/Relationships.vue'
 import MemberSearch from '../views/MemberSearch.vue'
@@ -68,12 +67,7 @@ const routes = [
     component: Media,
     meta: { requiresAuth: true }
   },
-  {
-    path: '/family-management',
-    name: 'FamilyManagement',
-    component: FamilyManagement,
-    meta: { requiresAuth: true }
-  },
+
   {
     path: '/settings',
     name: 'Settings',
