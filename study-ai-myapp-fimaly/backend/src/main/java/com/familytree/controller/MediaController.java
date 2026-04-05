@@ -48,6 +48,16 @@ public class MediaController {
         }
     }
     
+    @GetMapping("/family")
+    public ApiResponse<List<Media>> getMediaByFamilyId(@RequestParam Long familyId) {
+        try {
+            List<Media> mediaList = mediaService.getMediaByFamilyId(familyId);
+            return ApiResponse.success(mediaList);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
+    }
+    
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteMedia(@PathVariable Long id) {
         try {

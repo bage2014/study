@@ -24,9 +24,13 @@ export const useMediaStore = defineStore('media', {
       this.error = null
       try {
         const response = await api.get('/media')
-        this.media = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.media = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch media')
+        }
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error('Failed to fetch media:', error)
       } finally {
         this.loading = false
@@ -36,10 +40,16 @@ export const useMediaStore = defineStore('media', {
       this.loading = true
       this.error = null
       try {
-        const response = await api.get(`/media/family/${familyId}`)
-        this.media = response.data
+        const response = await api.get('/media/family', {
+          params: { familyId }
+        })
+        if (response.data.code === 200 && response.data.data) {
+          this.media = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch media')
+        }
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error(`Failed to fetch media for family ${familyId}:`, error)
       } finally {
         this.loading = false
@@ -55,15 +65,19 @@ export const useMediaStore = defineStore('media', {
         formData.append('type', type)
         formData.append('description', description)
 
-        const response = await api.post('/media/upload', formData, {
+        const response = await api.post('/media', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         })
-        this.media.push(response.data)
-        return response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.media.push(response.data.data)
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to upload media')
+        }
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error('Failed to upload media:', error)
         throw error
       } finally {
@@ -74,10 +88,14 @@ export const useMediaStore = defineStore('media', {
       this.loading = true
       this.error = null
       try {
-        await api.delete(`/media/${id}`)
-        this.media = this.media.filter(item => item.id !== id)
+        const response = await api.delete(`/media/${id}`)
+        if (response.data.code === 200) {
+          this.media = this.media.filter(item => item.id !== id)
+        } else {
+          throw new Error(response.data.message || 'Failed to delete media')
+        }
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error(`Failed to delete media ${id}:`, error)
         throw error
       } finally {
