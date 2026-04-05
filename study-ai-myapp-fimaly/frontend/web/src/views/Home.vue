@@ -81,11 +81,11 @@
       <div class="bg-white p-6 rounded-lg shadow mb-8">
         <h3 class="text-lg font-medium text-gray-900 mb-4">家族概览</h3>
         <div v-if="loading" class="flex justify-center py-8">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
         </div>
         <div v-else-if="families.length === 0" class="text-center py-8">
           <p class="text-gray-600">您还没有创建家族</p>
-          <button @click="navigateTo('/family-tree')" class="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200">
+          <button @click="navigateTo('/family-tree')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
             创建家族
           </button>
         </div>
@@ -94,7 +94,7 @@
             <h4 class="font-medium text-gray-900">{{ family.name }}</h4>
             <p class="text-sm text-gray-600 mt-1">{{ family.description || '无描述' }}</p>
             <div class="mt-4 flex space-x-2">
-              <button @click="navigateTo(`/family-tree?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-primary text-white rounded-md hover:bg-blue-700">
+              <button @click="navigateTo(`/family-tree?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-green-500 text-white rounded-md hover:bg-green-600">
                 查看家族树
               </button>
               <button @click="navigateTo(`/family-tree?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">

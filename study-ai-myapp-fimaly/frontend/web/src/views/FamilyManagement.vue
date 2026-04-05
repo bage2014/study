@@ -13,7 +13,7 @@
             <h1 class="text-xl font-bold text-gray-900">家族管理</h1>
           </div>
           <div class="flex items-center">
-            <button @click="openCreateModal" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200">
+            <button @click="openCreateModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
               创建家族
             </button>
           </div>
@@ -26,11 +26,11 @@
       <div class="bg-white p-6 rounded-lg shadow">
         <!-- Families List -->
         <div v-if="familyStore.loading" class="flex justify-center py-16">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
         </div>
         <div v-else-if="familyStore.families.length === 0" class="text-center py-16">
           <p class="text-gray-600">您还没有创建家族</p>
-          <button @click="openCreateModal" class="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+          <button @click="openCreateModal" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
             创建第一个家族
           </button>
         </div>
@@ -61,7 +61,7 @@
               </div>
             </div>
             <div class="mt-4 flex space-x-2">
-              <button @click="navigateTo(`/family-tree?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-primary text-white rounded-md hover:bg-blue-700">
+              <button @click="navigateTo(`/family-tree?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-green-500 text-white rounded-md hover:bg-green-600">
                 查看家族树
               </button>
               <button @click="navigateTo(`/members?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
@@ -87,22 +87,22 @@
           <div class="space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700">家族名称</label>
-              <input type="text" id="name" v-model="form.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="text" id="name" v-model="form.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="description" class="block text-sm font-medium text-gray-700">描述</label>
-              <textarea id="description" v-model="form.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></textarea>
+              <textarea id="description" v-model="form.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
             </div>
             <div>
               <label for="avatar" class="block text-sm font-medium text-gray-700">家族头像</label>
-              <input type="file" id="avatar" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="file" id="avatar" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
           </div>
           <div class="mt-6 flex justify-end">
-            <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-all duration-200">
+            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 transition-all duration-200">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
