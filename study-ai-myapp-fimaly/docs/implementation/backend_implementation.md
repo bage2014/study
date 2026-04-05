@@ -185,28 +185,34 @@ sequenceDiagram
 
 #### 3.3.1 添加成员
 
-- **API**：`POST /api/families/{familyId}/members`
+- **API**：`POST /api/members`
 - **请求体**：
   ```json
   {
+    "familyId": "long",
     "name": "string",
     "gender": "string",
     "birthDate": "string",
     "deathDate": "string",
     "photo": "string",
-    "details": "string"
+    "details": "string",
+    "phone": "string",
+    "email": "string"
   }
   ```
 - **响应**：
   ```json
   {
     "id": "long",
+    "familyId": "long",
     "name": "string",
     "gender": "string",
     "birthDate": "string",
     "deathDate": "string",
     "photo": "string",
-    "details": "string"
+    "details": "string",
+    "phone": "string",
+    "email": "string"
   }
   ```
 - **实现逻辑**：
@@ -215,9 +221,35 @@ sequenceDiagram
   3. 创建成员
   4. 返回成员信息
 
-#### 3.3.2 更新成员
+#### 3.3.2 获取成员列表
 
-- **API**：`PUT /api/families/{familyId}/members/{memberId}`
+- **API**：`GET /api/members/family?familyId=1`
+- **响应**：
+  ```json
+  [
+    {
+      "id": "long",
+      "familyId": "long",
+      "name": "string",
+      "gender": "string",
+      "birthDate": "string",
+      "deathDate": "string",
+      "photo": "string",
+      "details": "string",
+      "phone": "string",
+      "email": "string"
+    }
+  ]
+  ```
+- **实现逻辑**：
+  1. 验证查询参数
+  2. 检查用户权限
+  3. 根据familyId查询成员列表
+  4. 返回成员列表
+
+#### 3.3.3 更新成员
+
+- **API**：`PUT /api/members/{memberId}`
 - **请求体**：
   ```json
   {
@@ -226,19 +258,24 @@ sequenceDiagram
     "birthDate": "string",
     "deathDate": "string",
     "photo": "string",
-    "details": "string"
+    "details": "string",
+    "phone": "string",
+    "email": "string"
   }
   ```
 - **响应**：
   ```json
   {
     "id": "long",
+    "familyId": "long",
     "name": "string",
     "gender": "string",
     "birthDate": "string",
     "deathDate": "string",
     "photo": "string",
-    "details": "string"
+    "details": "string",
+    "phone": "string",
+    "email": "string"
   }
   ```
 - **实现逻辑**：
