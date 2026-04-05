@@ -227,7 +227,17 @@
 - **数据同步**：前后端分离，通过API交互
 - **数据存储**：结构化数据存储在MySQL，多媒体文件存储在对象存储服务
 
-### 5.3 安全设计
+### 5.3 API设计规范
+
+- **参数传递**：
+  - GET请求：使用查询参数（query parameters）传递参数
+  - POST/PUT请求：使用请求体（request body）传递参数
+  - **禁止**：将参数直接放在URL路径中，例如 `/families/{familyId}/members` 这种形式是不允许的
+  - **正确示例**：
+    - GET请求：`/members/family?familyId=1`
+    - POST请求：`/members` 配合请求体 `{ "familyId": 1, "name": "张三" }`
+
+### 5.4 安全设计
 
 - **用户认证**：JWT token认证
 - **权限管理**：基于角色的访问控制（RBAC）

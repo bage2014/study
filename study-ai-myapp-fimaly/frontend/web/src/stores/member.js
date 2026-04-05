@@ -37,7 +37,9 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await api.get(`/families/${familyId}/members`)
+        const response = await api.get('/members/family', {
+          params: { familyId }
+        })
         if (response.data.code === 200 && response.data.data) {
           this.members = response.data.data
         } else {
@@ -91,8 +93,7 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const { familyId, ...memberDataWithoutFamilyId } = memberData
-        const response = await api.post(`/families/${familyId}/members`, memberDataWithoutFamilyId)
+        const response = await api.post('/members', memberData)
         if (response.data.code === 200 && response.data.data) {
           this.members.push(response.data.data)
           return response.data.data

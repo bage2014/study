@@ -65,7 +65,7 @@ class FamilyService {
   // Member-related methods
   Future<List<Member>> getFamilyMembers(int familyId) async {
     try {
-      final response = await _dio.get('/families/$familyId/members');
+      final response = await _dio.get('/members/family', queryParameters: {'familyId': familyId});
       return (response.data as List).map((json) => Member.fromJson(json)).toList();
     } catch (e) {
       throw Exception('Failed to get family members: $e');
@@ -74,7 +74,9 @@ class FamilyService {
 
   Future<Member> addFamilyMember(int familyId, Member member) async {
     try {
-      final response = await _dio.post('/families/$familyId/members', data: member.toJson());
+      final memberData = member.toJson();
+      memberData['familyId'] = familyId;
+      final response = await _dio.post('/members', data: memberData);
       return Member.fromJson(response.data);
     } catch (e) {
       throw Exception('Failed to add family member: $e');

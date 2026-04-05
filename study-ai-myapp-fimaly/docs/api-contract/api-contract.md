@@ -328,19 +328,22 @@
 ### 4.1 添加成员
 
 **请求**
-- URL: `/api/families/{familyId}/members`
+- URL: `/api/members`
 - 方法: `POST`
 - 请求头: `Authorization: Bearer <token>`
 - 内容类型: `application/json`
 - 请求体:
   ```json
   {
+    "familyId": 1,
     "name": "张三",
     "gender": "MALE",
     "birthDate": "1980-01-01",
     "deathDate": null,
     "photo": "https://example.com/photo.jpg",
-    "details": "这是成员详情"
+    "details": "这是成员详情",
+    "phone": null,
+    "email": null
   }
   ```
 
@@ -379,9 +382,11 @@
 ### 4.2 获取成员列表
 
 **请求**
-- URL: `/api/families/{familyId}/members`
+- URL: `/api/members/family`
 - 方法: `GET`
 - 请求头: `Authorization: Bearer <token>`
+- 查询参数:
+  - `familyId`: 家族ID（必填）
 
 **响应**
 - 状态码: `200 OK`
@@ -420,7 +425,7 @@
 ### 4.3 获取成员详情
 
 **请求**
-- URL: `/api/families/{familyId}/members/{id}`
+- URL: `/api/members/{id}`
 - 方法: `GET`
 - 请求头: `Authorization: Bearer <token>`
 
@@ -459,7 +464,7 @@
 ### 4.4 更新成员
 
 **请求**
-- URL: `/api/families/{familyId}/members/{id}`
+- URL: `/api/members/{id}`
 - 方法: `PUT`
 - 请求头: `Authorization: Bearer <token>`
 - 内容类型: `application/json`
@@ -471,7 +476,9 @@
     "birthDate": "1980-01-01",
     "deathDate": null,
     "photo": "https://example.com/new-photo.jpg",
-    "details": "更新后的成员详情"
+    "details": "更新后的成员详情",
+    "phone": null,
+    "email": null
   }
   ```
 
@@ -510,7 +517,7 @@
 ### 4.5 删除成员
 
 **请求**
-- URL: `/api/families/{familyId}/members/{id}`
+- URL: `/api/members/{id}`
 - 方法: `DELETE`
 - 请求头: `Authorization: Bearer <token>`
 

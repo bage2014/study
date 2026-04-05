@@ -14,11 +14,11 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
     
-    @PostMapping("/families/{familyId}/members")
-    public ApiResponse<Member> addMember(@PathVariable Long familyId, @RequestBody Member member) {
+    @PostMapping("/members")
+    public ApiResponse<Member> addMember(@RequestBody Member member) {
         try {
             Member createdMember = memberService.addMember(
-                    familyId,
+                    member.getFamilyId(),
                     member.getName(),
                     member.getGender(),
                     member.getBirthDate(),
@@ -34,8 +34,8 @@ public class MemberController {
         }
     }
     
-    @GetMapping("/families/{familyId}/members")
-    public ApiResponse<List<Member>> getMembers(@PathVariable Long familyId) {
+    @GetMapping("/members/family")
+    public ApiResponse<List<Member>> getMembers(@RequestParam Long familyId) {
         try {
             List<Member> members = memberService.getMembersByFamilyId(familyId);
             return ApiResponse.success(members);
