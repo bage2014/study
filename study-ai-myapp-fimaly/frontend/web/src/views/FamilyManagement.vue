@@ -12,9 +12,12 @@
             </button>
             <h1 class="text-xl font-bold text-gray-900">家族管理</h1>
           </div>
-          <div class="flex items-center">
-            <button @click="openCreateModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
-              创建家族
+          <div class="flex items-center space-x-3">
+            <button @click="openCreateFamilyModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+              新建家族
+            </button>
+            <button v-if="selectedFamily" @click="openFamilyDetailModal" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-200">
+              查看明细
             </button>
           </div>
         </div>
@@ -23,87 +26,296 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white p-6 rounded-lg shadow">
-        <!-- Families List -->
-        <div v-if="familyStore.loading" class="flex justify-center py-16">
+      <!-- Family Selector -->
+      <div class="bg-white p-6 rounded-lg shadow mb-6">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">选择家族</h2>
+        <div v-if="familyStore.loading" class="flex justify-center py-8">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
         </div>
-        <div v-else-if="familyStore.families.length === 0" class="text-center py-16">
-          <p class="text-gray-600">您还没有创建家族</p>
-          <button @click="openCreateModal" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+        <div v-else-if="familyStore.families.length === 0" class="text-center py-8">
+          <p class="text-gray-600">暂无家族数据</p>
+          <button @click="openCreateFamilyModal" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
             创建第一个家族
           </button>
         </div>
-        <div v-else class="space-y-4">
-          <div v-for="family in familyStore.families" :key="family.id" class="border rounded-md p-4 hover:shadow-md">
-            <div class="flex justify-between items-start">
-              <div>
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div 
+            v-for="family in familyStore.families" 
+            :key="family.id" 
+            @click="selectFamily(family)"
+            :class="['border rounded-md p-4 cursor-pointer hover:shadow-md transition-all', selectedFamily?.id === family.id ? 'border-primary bg-blue-50' : 'border-gray-200']"
+          >
+            <div class="flex items-center">
+              <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                <span class="text-lg font-bold text-gray-600">{{ family.name.charAt(0) }}</span>
+              </div>
+              <div class="flex-1">
                 <h3 class="font-medium text-gray-900">{{ family.name }}</h3>
-                <p class="text-sm text-gray-600 mt-1">{{ family.description || '无描述' }}</p>
-                <p class="text-xs text-gray-500 mt-1">创建于: {{ formatDate(family.createdAt) }}</p>
+                <p class="text-sm text-gray-600">{{ family.description || '无描述' }}</p>
               </div>
-              <div>
-                <button @click="editFamily(family)" class="text-green-600 hover:text-green-800 mr-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                </button>
-                <button @click="leaveFamily(family.id)" class="text-orange-600 hover:text-orange-800 mr-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
-                </button>
-                <button @click="deleteFamily(family.id)" class="text-red-600 hover:text-red-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                </button>
+              <div v-if="selectedFamily?.id === family.id" class="text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
               </div>
             </div>
-            <div class="mt-4 flex space-x-2">
-              <button @click="navigateTo(`/family-tree?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-green-500 text-white rounded-md hover:bg-green-600">
-                查看家族树
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected Family Content -->
+      <div v-if="selectedFamily" class="space-y-6">
+        <!-- Family Info -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">{{ selectedFamily.name }}</h2>
+              <p class="text-gray-600 mt-1">{{ selectedFamily.description || '无描述' }}</p>
+              <p class="text-sm text-gray-500 mt-2">创建于: {{ formatDate(selectedFamily.createdAt) }}</p>
+            </div>
+            <div class="flex space-x-2">
+              <button @click="openAddMemberModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+                添加成员
               </button>
-              <button @click="navigateTo(`/members?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
-                管理成员
-              </button>
-              <button @click="navigateTo(`/events?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
-                管理事件
-              </button>
-              <button @click="navigateTo(`/media?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
-                管理媒体
+              <button @click="openAddRelationshipModal" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 shadow-md hover:shadow-lg transition-all duration-200">
+                添加关系
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- Members List -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">家族成员</h3>
+          <div v-if="memberStore.loading" class="flex justify-center py-8">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+          </div>
+          <div v-else-if="familyMembers.length === 0" class="text-center py-8">
+            <p class="text-gray-600">暂无成员数据</p>
+          </div>
+          <div v-else class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">姓名</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">性别</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">出生日期</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr v-for="member in familyMembers" :key="member.id">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                        <span class="text-sm font-bold text-gray-600">{{ member.name.charAt(0) }}</span>
+                      </div>
+                      <span class="text-sm font-medium text-gray-900">{{ member.name }}</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      {{ member.gender === 'male' ? '男' : '女' }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ member.birthDate || '未知' }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button @click="editMember(member)" class="text-primary hover:text-blue-700 mr-3">编辑</button>
+                    <button @click="deleteMember(member.id)" class="text-red-600 hover:text-red-800">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Relationships List -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">关联关系</h3>
+          <div v-if="relationshipStore.loading" class="flex justify-center py-8">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+          </div>
+          <div v-else-if="familyRelationships.length === 0" class="text-center py-8">
+            <p class="text-gray-600">暂无关联关系</p>
+          </div>
+          <div v-else class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">成员1</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关系</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">成员2</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr v-for="relationship in familyRelationships" :key="relationship.id">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {{ getMemberName(relationship.member1Id) }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                      {{ relationship.relationshipType }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {{ getMemberName(relationship.member2Id) }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button @click="deleteRelationship(relationship.id)" class="text-red-600 hover:text-red-800">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Create/Edit Family Modal -->
-    <div v-if="showModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+    <!-- Create Family Modal -->
+    <div v-if="showCreateFamilyModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">{{ editingFamily ? '编辑家族' : '创建家族' }}</h3>
-        <form @submit.prevent="handleSubmit">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">新建家族</h3>
+        <form @submit.prevent="handleCreateFamily">
           <div class="space-y-4">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700">家族名称</label>
-              <input type="text" id="name" v-model="form.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="familyName" class="block text-sm font-medium text-gray-700">家族名称</label>
+              <input type="text" id="familyName" v-model="familyForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
-              <label for="description" class="block text-sm font-medium text-gray-700">描述</label>
-              <textarea id="description" v-model="form.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
-            </div>
-            <div>
-              <label for="avatar" class="block text-sm font-medium text-gray-700">家族头像</label>
-              <input type="file" id="avatar" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="familyDescription" class="block text-sm font-medium text-gray-700">描述</label>
+              <textarea id="familyDescription" v-model="familyForm.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
             </div>
           </div>
           <div class="mt-6 flex justify-end">
-            <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            <button type="button" @click="showCreateFamilyModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 transition-all duration-200">
+            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+              {{ familyStore.loading ? '创建中...' : '创建' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Family Detail Modal -->
+    <div v-if="showFamilyDetailModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">家族详情</h3>
+        <form @submit.prevent="handleUpdateFamily">
+          <div class="space-y-4">
+            <div>
+              <label for="editFamilyName" class="block text-sm font-medium text-gray-700">家族名称</label>
+              <input type="text" id="editFamilyName" v-model="familyForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+            <div>
+              <label for="editFamilyDescription" class="block text-sm font-medium text-gray-700">描述</label>
+              <textarea id="editFamilyDescription" v-model="familyForm.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" @click="handleDeleteFamily" class="bg-red-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-red-700">
+              删除家族
+            </button>
+            <button type="button" @click="showFamilyDetailModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+              取消
+            </button>
+            <button type="submit" :disabled="familyStore.loading" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
               {{ familyStore.loading ? '保存中...' : '保存' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div v-if="showAddMemberModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">{{ editingMember ? '编辑成员' : '添加成员' }}</h3>
+        <form @submit.prevent="handleAddMember">
+          <div class="space-y-4">
+            <div>
+              <label for="memberName" class="block text-sm font-medium text-gray-700">姓名</label>
+              <input type="text" id="memberName" v-model="memberForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+            <div>
+              <label for="memberGender" class="block text-sm font-medium text-gray-700">性别</label>
+              <select id="memberGender" v-model="memberForm.gender" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                <option value="">请选择</option>
+                <option value="male">男</option>
+                <option value="female">女</option>
+              </select>
+            </div>
+            <div>
+              <label for="memberBirthDate" class="block text-sm font-medium text-gray-700">出生日期</label>
+              <input type="date" id="memberBirthDate" v-model="memberForm.birthDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+            <div>
+              <label for="memberDeathDate" class="block text-sm font-medium text-gray-700">去世日期</label>
+              <input type="date" id="memberDeathDate" v-model="memberForm.deathDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+            <div>
+              <label for="memberDetails" class="block text-sm font-medium text-gray-700">详细信息</label>
+              <textarea id="memberDetails" v-model="memberForm.details" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end">
+            <button type="button" @click="showAddMemberModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+              取消
+            </button>
+            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+              {{ memberStore.loading ? '保存中...' : '保存' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add Relationship Modal -->
+    <div v-if="showAddRelationshipModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">添加关联关系</h3>
+        <form @submit.prevent="handleAddRelationship">
+          <div class="space-y-4">
+            <div>
+              <label for="member1" class="block text-sm font-medium text-gray-700">成员1</label>
+              <select id="member1" v-model="relationshipForm.member1Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <option value="">请选择成员</option>
+                <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
+              </select>
+            </div>
+            <div>
+              <label for="relationshipType" class="block text-sm font-medium text-gray-700">关系类型</label>
+              <select id="relationshipType" v-model="relationshipForm.relationshipType" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <option value="">请选择关系类型</option>
+                <option value="配偶">配偶</option>
+                <option value="父子">父子</option>
+                <option value="母子">母子</option>
+                <option value="父女">父女</option>
+                <option value="母女">母女</option>
+                <option value="兄弟">兄弟</option>
+                <option value="姐妹">姐妹</option>
+                <option value="兄妹">兄妹</option>
+                <option value="姐弟">姐弟</option>
+              </select>
+            </div>
+            <div>
+              <label for="member2" class="block text-sm font-medium text-gray-700">成员2</label>
+              <select id="member2" v-model="relationshipForm.member2Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <option value="">请选择成员</option>
+                <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end">
+            <button type="button" @click="showAddRelationshipModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+              取消
+            </button>
+            <button type="submit" :disabled="relationshipStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+              {{ relationshipStore.loading ? '添加中...' : '添加' }}
             </button>
           </div>
         </form>
@@ -113,119 +325,232 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useFamilyStore } from '../stores/family'
+import { useMemberStore } from '../stores/member'
+import { useRelationshipStore } from '../stores/relationship'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'FamilyManagement',
   setup() {
-    const familyStore = useFamilyStore()
     const router = useRouter()
-    const showModal = ref(false)
-    const editingFamily = ref(null)
-    const form = ref({
+    const familyStore = useFamilyStore()
+    const memberStore = useMemberStore()
+    const relationshipStore = useRelationshipStore()
+
+    const selectedFamily = ref(null)
+    const showCreateFamilyModal = ref(false)
+    const showFamilyDetailModal = ref(false)
+    const showAddMemberModal = ref(false)
+    const showAddRelationshipModal = ref(false)
+    const editingMember = ref(null)
+
+    const familyForm = ref({
       name: '',
-      description: '',
-      avatar: ''
+      description: ''
     })
-    const selectedFile = ref(null)
+
+    const memberForm = ref({
+      name: '',
+      gender: '',
+      birthDate: '',
+      deathDate: '',
+      details: ''
+    })
+
+    const relationshipForm = ref({
+      member1Id: '',
+      member2Id: '',
+      relationshipType: ''
+    })
+
+    const familyMembers = computed(() => {
+      if (!selectedFamily.value) return []
+      return memberStore.members.filter(member => member.familyId === selectedFamily.value.id)
+    })
+
+    const familyRelationships = computed(() => {
+      if (!selectedFamily.value) return []
+      return relationshipStore.relationships.filter(rel => {
+        const member1 = familyMembers.value.find(m => m.id === rel.member1Id)
+        const member2 = familyMembers.value.find(m => m.id === rel.member2Id)
+        return member1 && member2
+      })
+    })
 
     const navigateTo = (path) => {
       router.push(path)
     }
 
-    const fetchFamilies = async () => {
-      await familyStore.fetchFamilies()
+    const formatDate = (date) => {
+      if (!date) return '未知'
+      return new Date(date).toLocaleDateString('zh-CN')
     }
 
-    const formatDate = (dateString) => {
-      const date = new Date(dateString)
-      return date.toLocaleDateString()
+    const selectFamily = (family) => {
+      selectedFamily.value = family
+      memberStore.fetchMembers(family.id)
+      relationshipStore.fetchRelationships()
     }
 
-    const openCreateModal = () => {
-      editingFamily.value = null
-      form.value = {
-        name: '',
-        description: '',
-        avatar: ''
+    const openCreateFamilyModal = () => {
+      familyForm.value = { name: '', description: '' }
+      showCreateFamilyModal.value = true
+    }
+
+    const openFamilyDetailModal = () => {
+      if (!selectedFamily.value) return
+      familyForm.value = {
+        name: selectedFamily.value.name,
+        description: selectedFamily.value.description || ''
       }
-      selectedFile.value = null
-      showModal.value = true
+      showFamilyDetailModal.value = true
     }
 
-    const editFamily = (family) => {
-      editingFamily.value = family
-      form.value = {
-        name: family.name,
-        description: family.description,
-        avatar: family.avatar
-      }
-      selectedFile.value = null
-      showModal.value = true
+    const openAddMemberModal = () => {
+      editingMember.value = null
+      memberForm.value = { name: '', gender: '', birthDate: '', deathDate: '', details: '' }
+      showAddMemberModal.value = true
     }
 
-    const deleteFamily = async (familyId) => {
-      if (confirm('确定要删除这个家族吗？')) {
-        try {
-          await familyStore.deleteFamily(familyId)
-          alert('家族删除成功')
-        } catch (error) {
-          alert('家族删除失败: ' + (error.response?.data?.message || error.message))
-        }
-      }
+    const openAddRelationshipModal = () => {
+      relationshipForm.value = { member1Id: '', member2Id: '', relationshipType: '' }
+      showAddRelationshipModal.value = true
     }
 
-    const leaveFamily = async (familyId) => {
-      if (confirm('确定要退出这个家族吗？')) {
-        try {
-          await familyStore.leaveFamily(familyId)
-          alert('家族退出成功')
-        } catch (error) {
-          alert('家族退出失败: ' + (error.response?.data?.message || error.message))
-        }
-      }
-    }
-
-    const handleFileChange = (event) => {
-      selectedFile.value = event.target.files[0]
-    }
-
-    const handleSubmit = async () => {
+    const handleCreateFamily = async () => {
       try {
-        if (editingFamily.value) {
-          // 编辑家族
-          await familyStore.updateFamily(editingFamily.value.id, form.value)
-          alert('家族更新成功')
-        } else {
-          // 创建家族
-          await familyStore.createFamily(form.value)
-          alert('家族创建成功')
-        }
-        showModal.value = false
+        await familyStore.createFamily(familyForm.value)
+        showCreateFamilyModal.value = false
+        familyForm.value = { name: '', description: '' }
       } catch (error) {
-        alert('操作失败: ' + (error.response?.data?.message || error.message))
+        alert('创建家族失败: ' + (error.response?.data?.message || error.message))
       }
+    }
+
+    const handleUpdateFamily = async () => {
+      try {
+        await familyStore.updateFamily(selectedFamily.value.id, familyForm.value)
+        showFamilyDetailModal.value = false
+        selectedFamily.value = { ...selectedFamily.value, ...familyForm.value }
+      } catch (error) {
+        alert('更新家族失败: ' + (error.response?.data?.message || error.message))
+      }
+    }
+
+    const handleDeleteFamily = async () => {
+      if (!confirm('确定要删除这个家族吗？此操作不可恢复。')) return
+      try {
+        await familyStore.deleteFamily(selectedFamily.value.id)
+        showFamilyDetailModal.value = false
+        selectedFamily.value = null
+      } catch (error) {
+        alert('删除家族失败: ' + (error.response?.data?.message || error.message))
+      }
+    }
+
+    const handleAddMember = async () => {
+      try {
+        if (editingMember.value) {
+          await memberStore.updateMember(editingMember.value.id, memberForm.value)
+        } else {
+          await memberStore.createMember({
+            ...memberForm.value,
+            familyId: selectedFamily.value.id
+          })
+        }
+        showAddMemberModal.value = false
+        editingMember.value = null
+        memberForm.value = { name: '', gender: '', birthDate: '', deathDate: '', details: '' }
+      } catch (error) {
+        alert('保存成员失败: ' + (error.response?.data?.message || error.message))
+      }
+    }
+
+    const editMember = (member) => {
+      editingMember.value = member
+      memberForm.value = {
+        name: member.name,
+        gender: member.gender,
+        birthDate: member.birthDate || '',
+        deathDate: member.deathDate || '',
+        details: member.details || ''
+      }
+      showAddMemberModal.value = true
+    }
+
+    const deleteMember = async (memberId) => {
+      if (!confirm('确定要删除这个成员吗？')) return
+      try {
+        await memberStore.deleteMember(memberId)
+      } catch (error) {
+        alert('删除成员失败: ' + (error.response?.data?.message || error.message))
+      }
+    }
+
+    const handleAddRelationship = async () => {
+      try {
+        await relationshipStore.createRelationship({
+          ...relationshipForm.value,
+          familyId: selectedFamily.value.id
+        })
+        showAddRelationshipModal.value = false
+        relationshipForm.value = { member1Id: '', member2Id: '', relationshipType: '' }
+      } catch (error) {
+        alert('添加关系失败: ' + (error.response?.data?.message || error.message))
+      }
+    }
+
+    const deleteRelationship = async (relationshipId) => {
+      if (!confirm('确定要删除这个关系吗？')) return
+      try {
+        await relationshipStore.deleteRelationship(relationshipId)
+      } catch (error) {
+        alert('删除关系失败: ' + (error.response?.data?.message || error.message))
+      }
+    }
+
+    const getMemberName = (memberId) => {
+      const member = familyMembers.value.find(m => m.id === memberId)
+      return member ? member.name : '未知'
     }
 
     onMounted(() => {
-      fetchFamilies()
+      familyStore.fetchFamilies()
     })
 
     return {
       familyStore,
-      showModal,
-      editingFamily,
-      form,
+      memberStore,
+      relationshipStore,
+      selectedFamily,
+      showCreateFamilyModal,
+      showFamilyDetailModal,
+      showAddMemberModal,
+      showAddRelationshipModal,
+      editingMember,
+      familyForm,
+      memberForm,
+      relationshipForm,
+      familyMembers,
+      familyRelationships,
       navigateTo,
       formatDate,
-      openCreateModal,
-      editFamily,
-      deleteFamily,
-      leaveFamily,
-      handleFileChange,
-      handleSubmit
+      selectFamily,
+      openCreateFamilyModal,
+      openFamilyDetailModal,
+      openAddMemberModal,
+      openAddRelationshipModal,
+      handleCreateFamily,
+      handleUpdateFamily,
+      handleDeleteFamily,
+      handleAddMember,
+      editMember,
+      deleteMember,
+      handleAddRelationship,
+      deleteRelationship,
+      getMemberName
     }
   }
 }

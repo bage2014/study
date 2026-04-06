@@ -25,14 +25,26 @@
 
       <!-- Quick Actions -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-        <!-- 家族树（合并家族管理和家族树功能） -->
+        
+        <!-- 家族树 -->
         <div @click="navigateTo('/family-tree')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
           <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-primary mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">家族树</h3>
+          <p class="mt-2 text-sm text-gray-600">查看家族关系图</p>
+        </div>
+
+        <!-- 家族管理 -->
+        <div @click="navigateTo('/family-management')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-100 text-green-600 mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900">家族树</h3>
+          <h3 class="text-lg font-medium text-gray-900">家族管理</h3>
           <p class="mt-2 text-sm text-gray-600">管理家族、成员和关系</p>
         </div>
 
@@ -44,16 +56,6 @@
           </div>
           <h3 class="text-lg font-medium text-gray-900">成员管理</h3>
           <p class="mt-2 text-sm text-gray-600">查看、新建、编辑成员</p>
-        </div>
-
-        <div @click="navigateTo('/relationships')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
-          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-medium text-gray-900">关系管理</h3>
-          <p class="mt-2 text-sm text-gray-600">绑定成员关系</p>
         </div>
 
         <div @click="navigateTo('/events')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
@@ -94,10 +96,10 @@
             <h4 class="font-medium text-gray-900">{{ family.name }}</h4>
             <p class="text-sm text-gray-600 mt-1">{{ family.description || '无描述' }}</p>
             <div class="mt-4 flex space-x-2">
-              <button @click="navigateTo(`/family-tree?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-green-500 text-white rounded-md hover:bg-green-600">
+              <button @click="navigateTo(`/family-tree`)" class="px-3 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600">
                 查看家族树
               </button>
-              <button @click="navigateTo(`/family-tree?familyId=${family.id}`)" class="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
+              <button @click="navigateTo(`/family-management`)" class="px-3 py-1 text-sm bg-green-500 text-white rounded-md hover:bg-green-600">
                 管理
               </button>
             </div>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
+import FamilyManagement from '../views/FamilyManagement.vue'
 import FamilyTree from '../views/FamilyTree.vue'
 import Members from '../views/Members.vue'
 import MemberDetail from '../views/MemberDetail.vue'
@@ -35,6 +36,12 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/family-management',
+    name: 'FamilyManagement',
+    component: FamilyManagement,
     meta: { requiresAuth: true }
   },
   {
