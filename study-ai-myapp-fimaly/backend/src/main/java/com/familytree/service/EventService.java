@@ -46,4 +46,8 @@ public class EventService {
     public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
     }
+    
+    public List<Event> getEventsByFamilyId(Long familyId) {
+        return eventRepository.findByFamilyId(familyId);
+    }
 }

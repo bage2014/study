@@ -76,4 +76,14 @@ public class EventController {
             return ApiResponse.error(e.getMessage());
         }
     }
+    
+    @GetMapping("/family/{familyId}")
+    public ApiResponse<List<Event>> getEventsByFamilyId(@PathVariable Long familyId) {
+        try {
+            List<Event> events = eventService.getEventsByFamilyId(familyId);
+            return ApiResponse.success(events);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
+    }
 }

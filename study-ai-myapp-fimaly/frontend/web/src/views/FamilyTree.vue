@@ -491,7 +491,7 @@ export default {
 
     const handleAddRelationship = async () => {
       try {
-        await relationshipStore.addRelationship({
+        await relationshipStore.createRelationship({
           ...relationshipForm.value,
           familyId: selectedFamily.value.id
         })

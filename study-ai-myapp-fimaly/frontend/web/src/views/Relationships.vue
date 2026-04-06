@@ -22,6 +22,18 @@
             <h2 class="text-lg font-medium text-gray-900 mb-4">添加关系</h2>
             <form @submit.prevent="handleCreateRelationship" class="space-y-4">
               <div>
+                <label for="familyId" class="block text-sm font-medium text-gray-700 mb-1">选择家族</label>
+                <select 
+                  id="familyId" 
+                  v-model="form.familyId" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">请选择家族</option>
+                  <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
+                </select>
+              </div>
+              <div>
                 <label for="member1Id" class="block text-sm font-medium text-gray-700 mb-1">成员1</label>
                 <div class="flex space-x-2">
                   <select 
@@ -31,7 +43,7 @@
                     required
                   >
                     <option value="">请选择成员</option>
-                    <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
+                    <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
                   </select>
                   <button 
                     type="button"
@@ -55,7 +67,7 @@
                     required
                   >
                     <option value="">请选择成员</option>
-                    <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
+                    <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
                   </select>
                   <button 
                     type="button"
@@ -185,6 +197,7 @@
 <script>
 import { useRelationshipStore } from '../stores/relationship'
 import { useMemberStore } from '../stores/member'
+import { useFamilyStore } from '../stores/family'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, onMounted, watch } from 'vue'
 
@@ -193,14 +206,22 @@ export default {
   setup() {
     const relationshipStore = useRelationshipStore()
     const memberStore = useMemberStore()
+    const familyStore = useFamilyStore()
     const router = useRouter()
     const route = useRoute()
 
     const form = ref({
       member1Id: '',
       member2Id: '',
-      relationshipType: ''
+      relationshipType: '',
+      familyId: ''
     })
+
+    // 从URL参数获取familyId
+    const familyId = route.query.familyId
+    if (familyId) {
+      form.value.familyId = parseInt(familyId)
+    }
 
     const searchMemberId = ref('')
     const currentSearchTarget = ref(null)
@@ -228,6 +249,15 @@ export default {
     const selectedMember2 = computed(() => {
       if (!form.value.member2Id) return null
       return memberStore.members.find(m => m.id === form.value.member2Id)
+    })
+
+    const familyMembers = computed(() => {
+      if (!form.value.familyId) return []
+      return memberStore.members.filter(member => member.familyId === form.value.familyId)
+    })
+
+    const families = computed(() => {
+      return familyStore.families
     })
 
     watch(() => route.query.selectedMemberId, (newVal) => {
@@ -285,6 +315,10 @@ export default {
       await memberStore.fetchMembers()
     }
 
+    const loadFamilies = async () => {
+      await familyStore.fetchFamilies()
+    }
+
     const getRelationshipTypeText = (type) => {
       const typeMap = {
         'FATHER': '父亲',
@@ -321,6 +355,7 @@ export default {
     })
 
     onMounted(async () => {
+      await loadFamilies()
       await loadMembers()
       await loadRelationships()
     })
@@ -331,7 +366,10 @@ export default {
       currentSearchTarget,
       relationshipStore,
       memberStore,
+      familyStore,
       members: memberStore.members,
+      families,
+      familyMembers,
       filteredRelationships,
       selectedMember1,
       selectedMember2,

@@ -30,13 +30,16 @@ class RelationshipControllerTest {
     @Test
     void testCreateRelationshipSuccess() {
         // Arrange
+        Long familyId = 1L;
         Relationship relationship = new Relationship();
+        relationship.setFamilyId(familyId);
         relationship.setMember1Id(1L);
         relationship.setMember2Id(2L);
         relationship.setRelationshipType("Parent-Child");
         
         Relationship createdRelationship = new Relationship();
         createdRelationship.setId(1L);
+        createdRelationship.setFamilyId(familyId);
         createdRelationship.setMember1Id(1L);
         createdRelationship.setMember2Id(2L);
         createdRelationship.setRelationshipType("Parent-Child");
@@ -44,7 +47,8 @@ class RelationshipControllerTest {
         when(relationshipService.createRelationship(
                 relationship.getMember1Id(),
                 relationship.getMember2Id(),
-                relationship.getRelationshipType()
+                relationship.getRelationshipType(),
+                relationship.getFamilyId()
         )).thenReturn(createdRelationship);
         
         // Act
@@ -59,7 +63,8 @@ class RelationshipControllerTest {
         verify(relationshipService, times(1)).createRelationship(
                 relationship.getMember1Id(),
                 relationship.getMember2Id(),
-                relationship.getRelationshipType()
+                relationship.getRelationshipType(),
+                relationship.getFamilyId()
         );
     }
     
@@ -67,6 +72,7 @@ class RelationshipControllerTest {
     void testCreateRelationshipFailure() {
         // Arrange
         Relationship relationship = new Relationship();
+        relationship.setFamilyId(1L);
         relationship.setMember1Id(1L);
         relationship.setMember2Id(2L);
         relationship.setRelationshipType("Parent-Child");
@@ -75,7 +81,8 @@ class RelationshipControllerTest {
         when(relationshipService.createRelationship(
                 relationship.getMember1Id(),
                 relationship.getMember2Id(),
-                relationship.getRelationshipType()
+                relationship.getRelationshipType(),
+                relationship.getFamilyId()
         )).thenThrow(new RuntimeException(errorMessage));
         
         // Act
@@ -89,7 +96,8 @@ class RelationshipControllerTest {
         verify(relationshipService, times(1)).createRelationship(
                 relationship.getMember1Id(),
                 relationship.getMember2Id(),
-                relationship.getRelationshipType()
+                relationship.getRelationshipType(),
+                relationship.getFamilyId()
         );
     }
     

@@ -23,9 +23,13 @@ export const useEventStore = defineStore('event', {
       this.error = null
       try {
         const response = await api.get('/events')
-        this.events = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.events = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch events')
+        }
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error('Failed to fetch events:', error)
       } finally {
         this.loading = false
@@ -36,9 +40,13 @@ export const useEventStore = defineStore('event', {
       this.error = null
       try {
         const response = await api.get(`/events/family/${familyId}`)
-        this.events = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.events = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch events')
+        }
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error(`Failed to fetch events for family ${familyId}:`, error)
       } finally {
         this.loading = false
@@ -49,10 +57,14 @@ export const useEventStore = defineStore('event', {
       this.error = null
       try {
         const response = await api.post('/events', eventData)
-        this.events.push(response.data)
-        return response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.events.push(response.data.data)
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to create event')
+        }
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error('Failed to create event:', error)
         throw error
       } finally {
@@ -64,13 +76,17 @@ export const useEventStore = defineStore('event', {
       this.error = null
       try {
         const response = await api.put(`/events/${id}`, eventData)
-        const index = this.events.findIndex(event => event.id === id)
-        if (index !== -1) {
-          this.events[index] = response.data
+        if (response.data.code === 200 && response.data.data) {
+          const index = this.events.findIndex(event => event.id === id)
+          if (index !== -1) {
+            this.events[index] = response.data.data
+          }
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to update event')
         }
-        return response.data
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error(`Failed to update event ${id}:`, error)
         throw error
       } finally {
@@ -81,10 +97,14 @@ export const useEventStore = defineStore('event', {
       this.loading = true
       this.error = null
       try {
-        await api.delete(`/events/${id}`)
-        this.events = this.events.filter(event => event.id !== id)
+        const response = await api.delete(`/events/${id}`)
+        if (response.data.code === 200) {
+          this.events = this.events.filter(event => event.id !== id)
+        } else {
+          throw new Error(response.data.message || 'Failed to delete event')
+        }
       } catch (error) {
-        this.error = error.message
+        this.error = error.response?.data?.message || error.message
         console.error(`Failed to delete event ${id}:`, error)
         throw error
       } finally {

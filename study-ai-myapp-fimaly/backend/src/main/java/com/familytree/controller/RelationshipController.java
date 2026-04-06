@@ -20,7 +20,8 @@ public class RelationshipController {
             Relationship createdRelationship = relationshipService.createRelationship(
                     relationship.getMember1Id(),
                     relationship.getMember2Id(),
-                    relationship.getRelationshipType()
+                    relationship.getRelationshipType(),
+                    relationship.getFamilyId()
             );
             return ApiResponse.success(createdRelationship);
         } catch (Exception e) {

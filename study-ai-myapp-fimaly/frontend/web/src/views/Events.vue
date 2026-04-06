@@ -44,8 +44,8 @@
           <div v-for="event in events" :key="event.id" class="border rounded-md p-4 hover:shadow-md">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="font-medium text-gray-900">{{ event.name }}</h3>
-                <p class="text-sm text-gray-600 mt-1">{{ event.eventDate }}</p>
+                <h3 class="font-medium text-gray-900">{{ event.title }}</h3>
+                <p class="text-sm text-gray-600 mt-1">{{ event.date }}</p>
               </div>
               <div>
                 <button @click="editEvent(event)" class="text-green-600 hover:text-green-800 mr-3">
@@ -166,9 +166,9 @@ export default {
     const editEvent = (event) => {
       editingEvent.value = event
       form.value = {
-        name: event.name,
+        name: event.title,
         description: event.description,
-        eventDate: event.eventDate,
+        eventDate: event.date,
         relatedMembers: event.relatedMembers
       }
       selectedFile.value = null
@@ -193,7 +193,10 @@ export default {
     const handleSubmit = async () => {
       try {
         const eventData = {
-          ...form.value,
+          title: form.value.name,
+          description: form.value.description,
+          date: form.value.eventDate,
+          location: '', // 暂时为空，可根据需要添加
           familyId: selectedFamilyId.value
         }
 
@@ -201,10 +204,10 @@ export default {
         if (selectedFile.value) {
           const formData = new FormData()
           formData.append('file', selectedFile.value)
-          formData.append('name', eventData.name)
+          formData.append('title', eventData.title)
           formData.append('description', eventData.description)
-          formData.append('eventDate', eventData.eventDate)
-          formData.append('relatedMembers', eventData.relatedMembers)
+          formData.append('date', eventData.date)
+          formData.append('location', eventData.location)
           formData.append('familyId', eventData.familyId)
 
           // 这里应该调用文件上传API

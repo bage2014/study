@@ -12,11 +12,12 @@ public class RelationshipService {
     @Autowired
     private RelationshipRepository relationshipRepository;
     
-    public Relationship createRelationship(Long member1Id, Long member2Id, String relationshipType) {
+    public Relationship createRelationship(Long member1Id, Long member2Id, String relationshipType, Long familyId) {
         Relationship relationship = new Relationship();
         relationship.setMember1Id(member1Id);
         relationship.setMember2Id(member2Id);
         relationship.setRelationshipType(relationshipType);
+        relationship.setFamilyId(familyId);
         return relationshipRepository.save(relationship);
     }
     
