@@ -11,6 +11,7 @@ import Media from '../views/Media.vue'
 import Settings from '../views/Settings.vue'
 import Relationships from '../views/Relationships.vue'
 import MemberSearch from '../views/MemberSearch.vue'
+import ProgressPage from '../views/ProgressPage.vue'
 
 const routes = [
   {
@@ -91,6 +92,12 @@ const routes = [
     path: '/member-search',
     name: 'MemberSearch',
     component: MemberSearch,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/progress',
+    name: 'ProgressPage',
+    component: ProgressPage,
     meta: { requiresAuth: true }
   },
   // 404 page

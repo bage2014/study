@@ -7,8 +7,9 @@
           <div class="flex items-center">
             <h1 class="text-xl font-bold text-gray-900">家庭族谱</h1>
           </div>
-          <div class="flex items-center">
-            <button @click="handleLogout" class="ml-4 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+          <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-700">{{ user?.nickname || user?.email }}</span>
+            <button @click="handleLogout" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
               退出登录
             </button>
           </div>
@@ -19,24 +20,12 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-gray-900">欢迎回来，{{ user?.nickname || user?.email }}</h2>
+        <h2 class="text-2xl font-bold text-gray-900">欢迎回来</h2>
         <p class="mt-2 text-gray-600">管理您的家族信息</p>
       </div>
 
       <!-- Quick Actions -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-        
-        <!-- 家族树 -->
-        <div @click="navigateTo('/family-tree')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
-          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-primary mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-medium text-gray-900">家族树</h3>
-          <p class="mt-2 text-sm text-gray-600">查看家族关系图</p>
-        </div>
-
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
         <!-- 家族管理 -->
         <div @click="navigateTo('/family-management')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
           <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-100 text-green-600 mb-4">
@@ -46,6 +35,17 @@
           </div>
           <h3 class="text-lg font-medium text-gray-900">家族管理</h3>
           <p class="mt-2 text-sm text-gray-600">管理家族、成员和关系</p>
+        </div>
+
+        <!-- 家族树 -->
+        <div @click="navigateTo('/family-tree')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-primary mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">家族树</h3>
+          <p class="mt-2 text-sm text-gray-600">查看家族关系图</p>
         </div>
 
         <div @click="navigateTo('/members')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
@@ -77,6 +77,17 @@
           <h3 class="text-lg font-medium text-gray-900">多媒体库</h3>
           <p class="mt-2 text-sm text-gray-600">管理家族照片</p>
         </div>
+
+        <!-- 项目进度 -->
+        <div @click="navigateTo('/progress')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">项目进度</h3>
+          <p class="mt-2 text-sm text-gray-600">查看项目开发进度</p>
+        </div>
       </div>
 
       <!-- Family Overview -->
@@ -87,7 +98,7 @@
         </div>
         <div v-else-if="families.length === 0" class="text-center py-8">
           <p class="text-gray-600">您还没有创建家族</p>
-          <button @click="navigateTo('/family-tree')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+          <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
             创建家族
           </button>
         </div>
