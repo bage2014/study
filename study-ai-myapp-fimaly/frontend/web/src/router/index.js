@@ -12,6 +12,11 @@ import Settings from '../views/Settings.vue'
 import Relationships from '../views/Relationships.vue'
 import MemberSearch from '../views/MemberSearch.vue'
 import ProgressPage from '../views/ProgressPage.vue'
+import Milestones from '../views/Milestones.vue'
+import LocationMap from '../views/LocationMap.vue'
+import AiRelationshipAnalysis from '../views/AiRelationshipAnalysis.vue'
+import OperationLogs from '../views/OperationLogs.vue'
+import FamilyStories from '../views/FamilyStories.vue'
 
 const routes = [
   {
@@ -98,6 +103,36 @@ const routes = [
     path: '/progress',
     name: 'ProgressPage',
     component: ProgressPage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/milestones',
+    name: 'Milestones',
+    component: Milestones,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/location-map',
+    name: 'LocationMap',
+    component: LocationMap,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/ai-relationship-analysis',
+    name: 'AiRelationshipAnalysis',
+    component: AiRelationshipAnalysis,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/operation-logs',
+    name: 'OperationLogs',
+    component: OperationLogs,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/family-stories',
+    name: 'FamilyStories',
+    component: FamilyStories,
     meta: { requiresAuth: true }
   },
   // 404 page

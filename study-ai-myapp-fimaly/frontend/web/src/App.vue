@@ -1,15 +1,23 @@
 <template>
-  <div class="app">
+  <div class="min-h-screen bg-gray-50">
+    <Header v-if="isAuthenticated" />
     <router-view />
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useUserStore } from './stores/user';
+import Header from './components/Header.vue';
 
 const userStore = useUserStore();
 const isAuthenticated = computed(() => userStore.isAuthenticated);
+
+onMounted(async () => {
+  if (isAuthenticated.value && !userStore.user) {
+    await userStore.fetchCurrentUser();
+  }
+});
 </script>
 
 <style>

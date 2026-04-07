@@ -33,6 +33,7 @@ class MemberControllerTest {
         // Arrange
         Long familyId = 1L;
         Member member = new Member();
+        member.setFamilyId(familyId);
         member.setName("Test Member");
         member.setGender("Male");
         member.setBirthDate(new Date());
@@ -42,6 +43,7 @@ class MemberControllerTest {
         
         Member createdMember = new Member();
         createdMember.setId(1L);
+        createdMember.setFamilyId(familyId);
         createdMember.setName("Test Member");
         createdMember.setGender("Male");
         createdMember.setBirthDate(new Date());
@@ -50,19 +52,19 @@ class MemberControllerTest {
         createdMember.setDetails("Test Details");
         
         when(memberService.addMember(
-                familyId,
+                member.getFamilyId(),
                 member.getName(),
                 member.getGender(),
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
                 member.getDetails(),
-                null,
-                null
+                member.getPhone(),
+                member.getEmail()
         )).thenReturn(createdMember);
         
         // Act
-        ApiResponse<Member> response = memberController.addMember(familyId, member);
+        ApiResponse<Member> response = memberController.addMember(member);
         
         // Assert
         assertNotNull(response);
@@ -71,15 +73,15 @@ class MemberControllerTest {
         assertNotNull(response.getData());
         assertEquals(createdMember, response.getData());
         verify(memberService, times(1)).addMember(
-                familyId,
+                member.getFamilyId(),
                 member.getName(),
                 member.getGender(),
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
                 member.getDetails(),
-                null,
-                null
+                member.getPhone(),
+                member.getEmail()
         );
     }
     
@@ -88,6 +90,7 @@ class MemberControllerTest {
         // Arrange
         Long familyId = 1L;
         Member member = new Member();
+        member.setFamilyId(familyId);
         member.setName("Test Member");
         member.setGender("Male");
         member.setBirthDate(new Date());
@@ -97,19 +100,19 @@ class MemberControllerTest {
         
         String errorMessage = "Failed to add member";
         when(memberService.addMember(
-                familyId,
+                member.getFamilyId(),
                 member.getName(),
                 member.getGender(),
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
                 member.getDetails(),
-                null,
-                null
+                member.getPhone(),
+                member.getEmail()
         )).thenThrow(new RuntimeException(errorMessage));
         
         // Act
-        ApiResponse<Member> response = memberController.addMember(familyId, member);
+        ApiResponse<Member> response = memberController.addMember(member);
         
         // Assert
         assertNotNull(response);
@@ -117,15 +120,15 @@ class MemberControllerTest {
         assertEquals(errorMessage, response.getMessage());
         assertNull(response.getData());
         verify(memberService, times(1)).addMember(
-                familyId,
+                member.getFamilyId(),
                 member.getName(),
                 member.getGender(),
                 member.getBirthDate(),
                 member.getDeathDate(),
                 member.getPhoto(),
                 member.getDetails(),
-                null,
-                null
+                member.getPhone(),
+                member.getEmail()
         );
     }
     

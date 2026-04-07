@@ -1,22 +1,5 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <div class="flex items-center">
-            <h1 class="text-xl font-bold text-gray-900">家庭族谱</h1>
-          </div>
-          <div class="flex items-center space-x-4">
-            <span class="text-sm text-gray-700">{{ user?.nickname || user?.email }}</span>
-            <button @click="handleLogout" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-              退出登录
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="text-center mb-8">
@@ -87,6 +70,62 @@
           </div>
           <h3 class="text-lg font-medium text-gray-900">项目进度</h3>
           <p class="mt-2 text-sm text-gray-600">查看项目开发进度</p>
+        </div>
+
+        <!-- 成员大事件记录 -->
+        <div @click="navigateTo('/milestones')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-pink-100 text-pink-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">成员大事件</h3>
+          <p class="mt-2 text-sm text-gray-600">记录成员重要时刻</p>
+        </div>
+
+        <!-- 家族地理位置 -->
+        <div @click="navigateTo('/location-map')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-100 text-green-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">家族地理位置</h3>
+          <p class="mt-2 text-sm text-gray-600">查看成员位置</p>
+        </div>
+
+        <!-- AI关系分析 -->
+        <div @click="navigateTo('/ai-relationship-analysis')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-blue-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">AI关系分析</h3>
+          <p class="mt-2 text-sm text-gray-600">智能分析家族关系</p>
+        </div>
+
+        <!-- 操作日志记录 -->
+        <div @click="navigateTo('/operation-logs')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-gray-100 text-gray-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">操作日志</h3>
+          <p class="mt-2 text-sm text-gray-600">查看系统操作记录</p>
+        </div>
+
+        <!-- 家族故事生成 -->
+        <div @click="navigateTo('/family-stories')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-yellow-100 text-yellow-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">家族故事</h3>
+          <p class="mt-2 text-sm text-gray-600">生成家族故事</p>
         </div>
       </div>
 
