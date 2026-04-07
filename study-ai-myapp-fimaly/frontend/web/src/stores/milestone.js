@@ -20,7 +20,11 @@ export const useMilestoneStore = defineStore('milestone', {
       this.error = null
       try {
         const response = await axios.get(`/milestones/member/${memberId}`)
-        this.milestones = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.milestones = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch milestones')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to fetch milestones'
       } finally {
@@ -33,7 +37,11 @@ export const useMilestoneStore = defineStore('milestone', {
       this.error = null
       try {
         const response = await axios.get(`/milestones/member/${memberId}/public`)
-        this.milestones = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.milestones = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch public milestones')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to fetch public milestones'
       } finally {
@@ -46,7 +54,11 @@ export const useMilestoneStore = defineStore('milestone', {
       this.error = null
       try {
         const response = await axios.get(`/milestones/${id}`)
-        return response.data
+        if (response.data.code === 200 && response.data.data) {
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch milestone')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to fetch milestone'
         return null
@@ -60,8 +72,12 @@ export const useMilestoneStore = defineStore('milestone', {
       this.error = null
       try {
         const response = await axios.post('/milestones', milestone)
-        this.milestones.push(response.data)
-        return response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.milestones.push(response.data.data)
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to create milestone')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to create milestone'
         return null
@@ -75,11 +91,15 @@ export const useMilestoneStore = defineStore('milestone', {
       this.error = null
       try {
         const response = await axios.put(`/milestones/${id}`, milestone)
-        const index = this.milestones.findIndex(m => m.id === id)
-        if (index !== -1) {
-          this.milestones[index] = response.data
+        if (response.data.code === 200 && response.data.data) {
+          const index = this.milestones.findIndex(m => m.id === id)
+          if (index !== -1) {
+            this.milestones[index] = response.data.data
+          }
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to update milestone')
         }
-        return response.data
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to update milestone'
         return null
@@ -92,9 +112,13 @@ export const useMilestoneStore = defineStore('milestone', {
       this.loading = true
       this.error = null
       try {
-        await axios.delete(`/milestones/${id}`)
-        this.milestones = this.milestones.filter(m => m.id !== id)
-        return true
+        const response = await axios.delete(`/milestones/${id}`)
+        if (response.data.code === 200) {
+          this.milestones = this.milestones.filter(m => m.id !== id)
+          return true
+        } else {
+          throw new Error(response.data.message || 'Failed to delete milestone')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to delete milestone'
         return false

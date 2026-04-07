@@ -1,6 +1,7 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">家族地理位置</h1>
+  <div class="min-h-screen bg-gray-50">
+    <Header title="家族地理位置" />
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     <!-- 家族选择器 -->
     <div class="mb-4">
@@ -106,7 +107,8 @@
         获取当前位置
       </button>
     </div>
-  </div>
+  </main>
+</div>
 </template>
 
 <script setup>
@@ -114,10 +116,13 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useLocationStore } from '../stores/location'
 import { useMemberStore } from '../stores/member'
 import { useFamilyStore } from '../stores/family'
+import { useUserStore } from '../stores/user'
+import Header from '../components/Header.vue'
 
 const locationStore = useLocationStore()
 const memberStore = useMemberStore()
 const familyStore = useFamilyStore()
+const userStore = useUserStore()
 
 const selectedFamilyId = ref('')
 const selectedMemberId = ref('')
@@ -144,6 +149,9 @@ const familyMembers = computed(() => {
 })
 
 onMounted(async () => {
+  if (!userStore.user) {
+    await userStore.fetchCurrentUser()
+  }
   await familyStore.fetchFamilies()
   // 初始化地图
   initMap()

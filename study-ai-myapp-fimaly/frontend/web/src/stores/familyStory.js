@@ -15,8 +15,12 @@ export const useFamilyStoryStore = defineStore('familyStory', {
       this.error = null
       try {
         const response = await axios.get(`/stories/family/${familyId}`)
-        this.familyStory = response.data
-        return response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.familyStory = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to generate family story')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to generate family story'
         return ''
@@ -30,8 +34,12 @@ export const useFamilyStoryStore = defineStore('familyStory', {
       this.error = null
       try {
         const response = await axios.get(`/stories/member/${memberId}`)
-        this.memberStory = response.data
-        return response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.memberStory = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to generate member story')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to generate member story'
         return ''

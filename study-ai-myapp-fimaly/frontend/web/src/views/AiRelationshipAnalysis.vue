@@ -1,6 +1,7 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">AI关系分析</h1>
+  <div class="min-h-screen bg-gray-50">
+    <Header title="AI关系分析" />
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     <!-- 家族选择器 -->
     <div class="mb-4">
@@ -54,22 +55,29 @@
     <div v-else-if="selectedFamilyId" class="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
       <p class="text-gray-500">点击"分析关系"按钮开始分析家族关系</p>
     </div>
-  </div>
+  </main>
+</div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useAiRelationshipStore } from '../stores/aiRelationship'
 import { useFamilyStore } from '../stores/family'
+import { useUserStore } from '../stores/user'
+import Header from '../components/Header.vue'
 
 const aiRelationshipStore = useAiRelationshipStore()
 const familyStore = useFamilyStore()
+const userStore = useUserStore()
 
 const selectedFamilyId = ref('')
 
 const families = computed(() => familyStore.families)
 
 onMounted(async () => {
+  if (!userStore.user) {
+    await userStore.fetchCurrentUser()
+  }
   await familyStore.fetchFamilies()
 })
 

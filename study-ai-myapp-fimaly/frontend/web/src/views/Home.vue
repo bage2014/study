@@ -177,24 +177,14 @@ export default {
       router.push(path)
     }
 
-    const handleLogout = () => {
-      userStore.logout()
-      router.push('/login')
-    }
-
     onMounted(async () => {
-      if (!userStore.user) {
-        await userStore.fetchCurrentUser()
-      }
       await familyStore.fetchFamilies()
     })
 
     return {
-      user: userStore.user,
       families: familyStore.families,
       loading: familyStore.loading,
-      navigateTo,
-      handleLogout
+      navigateTo
     }
   }
 }

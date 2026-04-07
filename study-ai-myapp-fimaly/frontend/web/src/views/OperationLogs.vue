@@ -1,6 +1,7 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">操作日志记录</h1>
+  <div class="min-h-screen bg-gray-50">
+    <Header title="操作日志" />
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     <!-- 搜索和筛选 -->
     <div class="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -71,14 +72,18 @@
         <p class="text-gray-500">暂无操作日志记录</p>
       </div>
     </div>
-  </div>
+  </main>
+</div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useOperationLogStore } from '../stores/operationLog'
+import { useUserStore } from '../stores/user'
+import Header from '../components/Header.vue'
 
 const operationLogStore = useOperationLogStore()
+const userStore = useUserStore()
 
 const filter = ref({
   operationType: '',
@@ -87,6 +92,9 @@ const filter = ref({
 })
 
 onMounted(async () => {
+  if (!userStore.user) {
+    await userStore.fetchCurrentUser()
+  }
   await fetchLogs()
 })
 

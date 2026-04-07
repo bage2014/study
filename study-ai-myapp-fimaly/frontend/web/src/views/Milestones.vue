@@ -1,6 +1,7 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">成员大事件记录</h1>
+  <div class="min-h-screen bg-gray-50">
+    <Header title="成员大事件记录" />
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     <!-- 成员选择器 -->
     <div class="mb-4">
@@ -114,7 +115,8 @@
         </form>
       </div>
     </div>
-  </div>
+  </main>
+</div>
 </template>
 
 <script setup>
@@ -122,6 +124,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useMilestoneStore } from '../stores/milestone'
 import { useMemberStore } from '../stores/member'
 import { useUserStore } from '../stores/user'
+import Header from '../components/Header.vue'
 
 const milestoneStore = useMilestoneStore()
 const memberStore = useMemberStore()
@@ -142,6 +145,9 @@ const members = computed(() => memberStore.members)
 const milestones = computed(() => milestoneStore.milestones)
 
 onMounted(async () => {
+  if (!userStore.user) {
+    await userStore.fetchCurrentUser()
+  }
   await memberStore.fetchMembers()
 })
 

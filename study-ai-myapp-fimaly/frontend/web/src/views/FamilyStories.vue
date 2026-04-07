@@ -1,6 +1,7 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">家族故事生成</h1>
+  <div class="min-h-screen bg-gray-50">
+    <Header title="家族故事生成" />
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     <!-- 故事类型选择 -->
     <div class="mb-4">
@@ -66,7 +67,8 @@
     <div v-else class="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
       <p class="text-gray-500">请选择故事类型和对应的家族或成员，然后点击"生成故事"按钮</p>
     </div>
-  </div>
+  </main>
+</div>
 </template>
 
 <script setup>
@@ -74,10 +76,13 @@ import { ref, computed, onMounted } from 'vue'
 import { useFamilyStoryStore } from '../stores/familyStory'
 import { useFamilyStore } from '../stores/family'
 import { useMemberStore } from '../stores/member'
+import { useUserStore } from '../stores/user'
+import Header from '../components/Header.vue'
 
 const familyStoryStore = useFamilyStoryStore()
 const familyStore = useFamilyStore()
 const memberStore = useMemberStore()
+const userStore = useUserStore()
 
 const storyType = ref('family')
 const selectedFamilyId = ref('')
@@ -87,6 +92,9 @@ const families = computed(() => familyStore.families)
 const members = computed(() => memberStore.members)
 
 onMounted(async () => {
+  if (!userStore.user) {
+    await userStore.fetchCurrentUser()
+  }
   await familyStore.fetchFamilies()
   await memberStore.fetchMembers()
 })

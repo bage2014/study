@@ -14,7 +14,11 @@ export const useOperationLogStore = defineStore('operationLog', {
       this.error = null
       try {
         const response = await axios.get('/logs')
-        this.logs = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.logs = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch logs')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to fetch logs'
       } finally {
@@ -27,7 +31,11 @@ export const useOperationLogStore = defineStore('operationLog', {
       this.error = null
       try {
         const response = await axios.get(`/logs/operator/${operatorId}`)
-        this.logs = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.logs = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch logs by operator')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to fetch logs by operator'
       } finally {
@@ -40,7 +48,11 @@ export const useOperationLogStore = defineStore('operationLog', {
       this.error = null
       try {
         const response = await axios.get(`/logs/type/${operationType}`)
-        this.logs = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.logs = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch logs by operation type')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to fetch logs by operation type'
       } finally {
@@ -53,7 +65,11 @@ export const useOperationLogStore = defineStore('operationLog', {
       this.error = null
       try {
         const response = await axios.get(`/logs/time-range?startDate=${startDate}&endDate=${endDate}`)
-        this.logs = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.logs = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch logs by time range')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to fetch logs by time range'
       } finally {
@@ -66,7 +82,11 @@ export const useOperationLogStore = defineStore('operationLog', {
       this.error = null
       try {
         const response = await axios.get(`/logs/related/${relatedDataId}`)
-        this.logs = response.data
+        if (response.data.code === 200 && response.data.data) {
+          this.logs = response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to fetch logs by related data')
+        }
       } catch (error) {
         this.error = error.response?.data?.message || 'Failed to fetch logs by related data'
       } finally {
