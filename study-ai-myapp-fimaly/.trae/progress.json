@@ -1,6 +1,6 @@
 {
   "projectName": "家庭族谱APP",
-  "lastUpdated": "2026-04-06T12:00:00Z",
+  "lastUpdated": "2026-04-08T00:52:21Z",
   "completedFeatures": [
     {
       "id": "user-management",
@@ -49,23 +49,57 @@
       "name": "家族树菜单拆分",
       "description": "将家族树的展示单独形成一个菜单，原家族树页面更新名称为家族管理",
       "completedAt": "2026-04-06T10:00:00Z"
-    }
-  ],
-  "pendingTasks": [
+    },
+    {
+      "id": "milestone-management",
+      "name": "成员大事件记录",
+      "description": "记录家庭成员的大事件记录，支持富文本显示，包含图片和文本",
+      "completedAt": "2026-04-08T00:00:00Z"
+    },
+    {
+      "id": "operation-log",
+      "name": "操作日志记录",
+      "description": "记录所有的操作日志记录，包括操作人、操作说明、时间、备注等",
+      "completedAt": "2026-04-08T00:00:00Z"
+    },
     {
       "id": "ai-relationship-analysis",
       "name": "AI关系分析",
       "description": "基于现有数据自动推测和补全家族关系",
-      "priority": "high",
-      "dueDate": "2026-04-15"
+      "completedAt": "2026-04-08T00:00:00Z"
     },
     {
       "id": "family-story-generation",
       "name": "家族故事生成",
       "description": "基于家族成员信息和历史事件，自动生成家族故事",
-      "priority": "medium",
-      "dueDate": "2026-04-20"
+      "completedAt": "2026-04-08T00:00:00Z"
     },
+    {
+      "id": "family-location",
+      "name": "家族地理位置",
+      "description": "管理和展示家族成员的地理位置信息",
+      "completedAt": "2026-04-08T00:00:00Z"
+    },
+    {
+      "id": "unified-page-style",
+      "name": "统一页面样式",
+      "description": "为所有页面添加统一的头部样式，包含应用名称和登录用户",
+      "completedAt": "2026-04-08T00:00:00Z"
+    },
+    {
+      "id": "data-initialization",
+      "name": "数据初始化",
+      "description": "默认创建一个家族、家族里面默认初始化一些数据，其他接口和功能也默认初始化一些数据",
+      "completedAt": "2026-04-08T00:00:00Z"
+    },
+    {
+      "id": "login-redirection-fix",
+      "name": "登录跳转问题修复",
+      "description": "修复登录后打开相关页面时重新跳转到登录页面的问题",
+      "completedAt": "2026-04-08T00:00:00Z"
+    }
+  ],
+  "pendingTasks": [
     {
       "id": "cross-generation-communication",
       "name": "跨代沟通平台",
@@ -95,5 +129,5 @@
       "dueDate": "2026-04-10"
     }
   ],
-  "overallProgress": 75
+  "overallProgress": 90
 }
