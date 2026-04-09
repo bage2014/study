@@ -24,6 +24,19 @@
           />
         </div>
         <div>
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">确认密码</label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            v-model="form.confirmPassword" 
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <p v-if="form.password && form.confirmPassword && form.password !== form.confirmPassword" class="text-red-600 text-sm mt-1">
+            两次输入的密码不一致
+          </p>
+        </div>
+        <div>
           <label for="nickname" class="block text-sm font-medium text-gray-700 mb-1">昵称</label>
           <input 
             type="text" 
@@ -33,7 +46,7 @@
             required
           />
         </div>
-        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" :disabled="form.password && form.confirmPassword && form.password !== form.confirmPassword">
           注册
         </button>
         <div class="text-center mt-4">
@@ -56,12 +69,22 @@ const userStore = useUserStore();
 const form = ref({
   email: '',
   password: '',
+  confirmPassword: '',
   nickname: ''
 });
 
 const register = async () => {
+  if (form.value.password !== form.value.confirmPassword) {
+    alert('两次输入的密码不一致');
+    return;
+  }
+  
   try {
-    await userStore.register(form.value);
+    await userStore.register({
+      email: form.value.email,
+      password: form.value.password,
+      nickname: form.value.nickname
+    });
     router.push('/login');
   } catch (error) {
     console.error('注册失败:', error);
