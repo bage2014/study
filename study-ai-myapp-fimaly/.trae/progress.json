@@ -1,6 +1,6 @@
 {
   "projectName": "家庭族谱APP",
-  "lastUpdated": "2026-04-08T00:52:21Z",
+  "lastUpdated": "2026-04-13T00:00:00Z",
   "completedFeatures": [
     {
       "id": "user-management",
@@ -127,7 +127,98 @@
       "description": "实现进度文件的读取和更新功能",
       "priority": "medium",
       "dueDate": "2026-04-10"
+    },
+    {
+      "id": "smart-search",
+      "name": "智能搜索增强",
+      "description": "支持多维度搜索，提供搜索历史和推荐",
+      "priority": "high",
+      "dueDate": "2026-05-30"
+    },
+    {
+      "id": "personalized-home",
+      "name": "个性化首页",
+      "description": "根据用户使用习惯和家族动态，智能推荐相关内容",
+      "priority": "high",
+      "dueDate": "2026-06-05"
+    },
+    {
+      "id": "family-dna-analysis",
+      "name": "家族DNA分析集成",
+      "description": "与DNA测试服务集成，提供家族血缘分析",
+      "priority": "medium",
+      "dueDate": "2026-06-15"
+    },
+    {
+      "id": "family-culture",
+      "name": "家族文化传承",
+      "description": "记录家族传统习俗、节日庆典、家训家规等",
+      "priority": "medium",
+      "dueDate": "2026-06-20"
+    },
+    {
+      "id": "family-messenger",
+      "name": "家族即时通讯",
+      "description": "内置聊天功能，支持一对一和群组聊天",
+      "priority": "high",
+      "dueDate": "2026-06-25"
+    },
+    {
+      "id": "family-events",
+      "name": "家族活动管理",
+      "description": "创建、邀请、签到和记录家族活动",
+      "priority": "medium",
+      "dueDate": "2026-07-05"
+    },
+    {
+      "id": "ar-family-tree",
+      "name": "AR家族树展示",
+      "description": "使用增强现实技术，以三维形式展示家族树",
+      "priority": "low",
+      "dueDate": "2026-07-15"
+    },
+    {
+      "id": "voice-assistant",
+      "name": "AI语音助手",
+      "description": "支持语音输入和语音查询，方便老年用户使用",
+      "priority": "medium",
+      "dueDate": "2026-07-20"
+    },
+    {
+      "id": "family-achievements",
+      "name": "家族成就展示",
+      "description": "分享和庆祝家族成员的成就和里程碑",
+      "priority": "low",
+      "dueDate": "2026-07-25"
+    },
+    {
+      "id": "expert-consultation",
+      "name": "专家咨询服务",
+      "description": "提供专业家谱研究和咨询服务",
+      "priority": "low",
+      "dueDate": "2026-08-05"
+    },
+    {
+      "id": "data-export-import",
+      "name": "数据导出导入",
+      "description": "支持家族数据的导出和导入功能，方便数据迁移和备份",
+      "priority": "medium",
+      "dueDate": "2026-05-15"
+    },
+    {
+      "id": "family-tree-print",
+      "name": "家族树打印",
+      "description": "支持将家族树导出为PDF或图片格式，方便打印和分享",
+      "priority": "low",
+      "dueDate": "2026-05-20"
+    },
+    {
+      "id": "offline-mode",
+      "name": "离线模式",
+      "description": "支持离线浏览和编辑家族数据，网络恢复后自动同步",
+      "priority": "medium",
+      "dueDate": "2026-05-25"
     }
   ],
-  "overallProgress": 90
+  "overallProgress": 42
 }
