@@ -1,6 +1,6 @@
 {
   "projectName": "家庭族谱APP",
-  "lastUpdated": "2026-04-13T00:00:00Z",
+  "lastUpdated": "2026-04-14T00:00:00Z",
   "completedFeatures": [
     {
       "id": "user-management",
@@ -218,7 +218,14 @@
       "description": "支持离线浏览和编辑家族数据，网络恢复后自动同步",
       "priority": "medium",
       "dueDate": "2026-05-25"
+    },
+    {
+      "id": "family-administrator",
+      "name": "家族管理维护人",
+      "description": "为每个家族设置管理维护人，默认管理者为家族创建人，拥有家族的最高管理权限",
+      "priority": "high",
+      "dueDate": "2026-05-05"
     }
   ],
-  "overallProgress": 42
+  "overallProgress": 41
 }

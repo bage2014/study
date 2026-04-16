@@ -72,8 +72,12 @@
               <h2 class="text-2xl font-bold text-gray-900">{{ selectedFamily.name }}</h2>
               <p class="text-gray-600 mt-1">{{ selectedFamily.description || '无描述' }}</p>
               <p class="text-sm text-gray-500 mt-2">创建于: {{ formatDate(selectedFamily.createdAt) }}</p>
+              <p class="text-sm text-gray-500 mt-1">管理员: {{ getAdministratorName(selectedFamily.administratorId) }}</p>
             </div>
             <div class="flex space-x-2">
+              <button @click="openUpdateAdministratorModal" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 shadow-md hover:shadow-lg transition-all duration-200">
+                更改管理员
+              </button>
               <button @click="openAddMemberModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
                 添加成员
               </button>
@@ -321,6 +325,32 @@
         </form>
       </div>
     </div>
+
+    <!-- Update Administrator Modal -->
+    <div v-if="showUpdateAdministratorModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">更改管理员</h3>
+        <form @submit.prevent="handleUpdateAdministrator">
+          <div class="space-y-4">
+            <div>
+              <label for="newAdministrator" class="block text-sm font-medium text-gray-700">新管理员</label>
+              <select id="newAdministrator" v-model="administratorForm.administratorId" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <option value="">请选择成员</option>
+                <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end">
+            <button type="button" @click="showUpdateAdministratorModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+              取消
+            </button>
+            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+              {{ familyStore.loading ? '保存中...' : '保存' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -344,6 +374,7 @@ export default {
     const showFamilyDetailModal = ref(false)
     const showAddMemberModal = ref(false)
     const showAddRelationshipModal = ref(false)
+    const showUpdateAdministratorModal = ref(false)
     const editingMember = ref(null)
 
     const familyForm = ref({
@@ -361,8 +392,12 @@ export default {
 
     const relationshipForm = ref({
       member1Id: '',
-      member2Id: '',
-      relationshipType: ''
+      relationshipType: '',
+      member2Id: ''
+    })
+
+    const administratorForm = ref({
+      administratorId: ''
     })
 
     const familyMembers = computed(() => {
@@ -417,6 +452,33 @@ export default {
     const openAddRelationshipModal = () => {
       relationshipForm.value = { member1Id: '', member2Id: '', relationshipType: '' }
       showAddRelationshipModal.value = true
+    }
+
+    const openUpdateAdministratorModal = () => {
+      if (selectedFamily.value) {
+        administratorForm.value = {
+          administratorId: selectedFamily.value.administratorId
+        }
+        showUpdateAdministratorModal.value = true
+      }
+    }
+
+    const handleUpdateAdministrator = async () => {
+      if (!selectedFamily.value || !administratorForm.value.administratorId) return
+
+      try {
+        await familyStore.updateAdministrator(selectedFamily.value.id, administratorForm.value.administratorId)
+        showUpdateAdministratorModal.value = false
+        ElMessage.success('管理员更新成功')
+      } catch (error) {
+        ElMessage.error('管理员更新失败: ' + (error.message || '未知错误'))
+      }
+    }
+
+    const getAdministratorName = (administratorId) => {
+      if (!administratorId) return '无'
+      const member = memberStore.members.find(m => m.id === administratorId)
+      return member ? member.name : '未知'
     }
 
     const handleCreateFamily = async () => {
@@ -542,6 +604,9 @@ export default {
       openFamilyDetailModal,
       openAddMemberModal,
       openAddRelationshipModal,
+      openUpdateAdministratorModal,
+      handleUpdateAdministrator,
+      getAdministratorName,
       handleCreateFamily,
       handleUpdateFamily,
       handleDeleteFamily,
@@ -550,7 +615,9 @@ export default {
       deleteMember,
       handleAddRelationship,
       deleteRelationship,
-      getMemberName
+      getMemberName,
+      showUpdateAdministratorModal,
+      administratorForm
     }
   }
 }

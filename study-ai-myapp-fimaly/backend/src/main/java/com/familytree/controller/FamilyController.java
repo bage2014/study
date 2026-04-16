@@ -87,4 +87,28 @@ public class FamilyController {
             return ApiResponse.error(e.getMessage());
         }
     }
+    
+    @PutMapping("/{id}/administrator")
+    public ApiResponse<Family> updateAdministrator(@RequestAttribute("userId") Long userId, @PathVariable Long id, @RequestBody Long administratorId) {
+        try {
+            // 检查当前用户是否为管理员
+            if (!familyService.isAdministrator(id, userId)) {
+                return ApiResponse.error("Only administrator can update administrator");
+            }
+            Family updatedFamily = familyService.updateAdministrator(id, administratorId);
+            return ApiResponse.success(updatedFamily);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
+    }
+    
+    @GetMapping("/{id}/administrator")
+    public ApiResponse<Boolean> isAdministrator(@RequestAttribute("userId") Long userId, @PathVariable Long id) {
+        try {
+            boolean isAdmin = familyService.isAdministrator(id, userId);
+            return ApiResponse.success(isAdmin);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
+    }
 }

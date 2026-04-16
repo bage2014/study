@@ -19,6 +19,7 @@ public class FamilyService {
         family.setDescription(description);
         family.setAvatar(avatar);
         family.setCreatorId(creatorId);
+        family.setAdministratorId(creatorId); // 默认管理员为创建人
         family.setCreatedAt(new Date());
         return familyRepository.save(family);
     }
@@ -42,5 +43,16 @@ public class FamilyService {
     
     public void deleteFamily(Long familyId) {
         familyRepository.deleteById(familyId);
+    }
+    
+    public Family updateAdministrator(Long familyId, Long administratorId) {
+        Family family = getFamilyById(familyId);
+        family.setAdministratorId(administratorId);
+        return familyRepository.save(family);
+    }
+    
+    public boolean isAdministrator(Long familyId, Long userId) {
+        Family family = getFamilyById(familyId);
+        return family.getAdministratorId().equals(userId);
     }
 }

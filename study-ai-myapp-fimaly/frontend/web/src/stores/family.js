@@ -145,6 +145,53 @@ export const useFamilyStore = defineStore('family', {
       } finally {
         this.loading = false
       }
+    },
+
+    async updateAdministrator(id, administratorId) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await api.put(`/families/${id}/administrator`, administratorId)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200 && response.data.data) {
+          const index = this.families.findIndex(f => f.id === id)
+          if (index !== -1) {
+            this.families[index] = response.data.data
+          }
+          if (this.currentFamily && this.currentFamily.id === id) {
+            this.currentFamily = response.data.data
+          }
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to update administrator')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || error.message
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async isAdministrator(id) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await api.get(`/families/${id}/administrator`)
+        
+        // 从新的返回格式中提取数据
+        if (response.data.code === 200) {
+          return response.data.data
+        } else {
+          throw new Error(response.data.message || 'Failed to check administrator status')
+        }
+      } catch (error) {
+        this.error = error.response?.data?.message || error.message
+        throw error
+      } finally {
+        this.loading = false
+      }
     }
   }
 })
