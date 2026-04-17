@@ -3,7 +3,7 @@ name: "frontend-standard"
 description: "提供前端页面研发的标准规范，包括页面布局、组件使用、样式和代码规范。Invoke when developing new front-end pages or refactoring existing ones."
 ---
 
-# 前端页面研发标准
+# 前端开发标准规范
 
 ## 1. 页面布局结构
 
@@ -76,6 +76,7 @@ import Header from '../components/Header.vue'
 - 变量名称：camelCase（如 `userStore`）
 - 常量名称：SCREAMING_SNAKE_CASE（如 `API_BASE_URL`）
 - 函数名称：camelCase（如 `fetchData`）
+- 文件名称：组件文件使用 PascalCase，其他文件使用 kebab-case
 
 ### 4.2 代码结构
 - 使用 `<script setup>` 语法
@@ -86,6 +87,13 @@ import Header from '../components/Header.vue'
 - 关键逻辑添加注释
 - 复杂函数添加函数说明
 - 组件参数添加类型注释
+- 使用 JSDoc 格式进行函数和组件文档
+
+### 4.4 代码风格
+- 使用 ES6+ 语法
+- 代码缩进使用 2 个空格
+- 单行代码长度不超过 100 字符
+- 适当使用空行分隔逻辑块
 
 ## 5. 最佳实践
 
@@ -94,12 +102,14 @@ import Header from '../components/Header.vue'
 - 使用 `watch` 监听响应式数据变化
 - 避免在模板中直接使用复杂表达式
 - 合理使用 `v-if` 和 `v-show`
+- 组件懒加载和路由懒加载
 
 ### 5.2 用户体验
 - 添加加载状态（如 `loading` 动画）
 - 添加错误处理和错误提示
 - 表单验证和反馈
 - 响应式设计，适配不同设备
+- 合理的动画和过渡效果
 
 ### 5.3 安全规范
 - 防止 XSS 攻击，使用 `v-html` 时谨慎
@@ -165,6 +175,7 @@ import Header from '../components/Header.vue'
 - ESLint：代码质量检查
 - Prettier：代码格式化
 - Vitest：单元测试
+- Playwright：端到端测试
 
 ### 8.3 第三方服务
 - 高德地图 API：地理位置服务
