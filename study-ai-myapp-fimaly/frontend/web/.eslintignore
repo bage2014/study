@@ -1,0 +1,7 @@
+node_modules
+dist
+tests
+playwright-report
+test-results
+coverage
+*.config.js

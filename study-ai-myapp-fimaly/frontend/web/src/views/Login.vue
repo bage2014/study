@@ -66,9 +66,5 @@ const login = async () => {
 </script>
 
 <style scoped>
-@import "tailwindcss";
-
-.primary-dark {
-  @apply bg-blue-700;
-}
+/* 登录页面样式 */
 </style>

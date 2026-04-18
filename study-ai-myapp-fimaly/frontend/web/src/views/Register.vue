@@ -93,9 +93,5 @@ const register = async () => {
 </script>
 
 <style scoped>
-@import "tailwindcss";
-
-.primary-dark {
-  @apply bg-blue-700;
-}
+/* 注册页面样式 */
 </style>

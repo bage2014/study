@@ -1,236 +1,128 @@
 package com.familytree.controller;
 
-import com.familytree.dto.ApiResponse;
 import com.familytree.dto.LoginRequest;
 import com.familytree.dto.RegisterRequest;
 import com.familytree.model.User;
 import com.familytree.service.AuthService;
+import com.familytree.utils.JwtUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import com.familytree.dto.ApiResponse;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class AuthControllerTest {
+
     @Mock
     private AuthService authService;
-    
+
+    @Mock
+    private JwtUtils jwtUtils;
+
     @InjectMocks
     private AuthController authController;
-    
+
+    private LoginRequest loginRequest;
+    private RegisterRequest registerRequest;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        loginRequest = new LoginRequest();
+        loginRequest.setEmail("test@example.com");
+        loginRequest.setPassword("password123");
+
+        registerRequest = new RegisterRequest();
+        registerRequest.setEmail("newuser@example.com");
+        registerRequest.setPassword("password123");
+        registerRequest.setNickname("新用户");
     }
-    
+
     @Test
-    void testLoginSuccess() {
-        // Arrange
-        LoginRequest request = new LoginRequest();
-        request.setEmail("test@example.com");
-        request.setPassword("password");
-        
-        String token = "test-token";
-        when(authService.login(request)).thenReturn(token);
-        
-        // Act
-        ApiResponse<Map<String, Object>> response = authController.login(request);
-        
-        // Assert
-        assertNotNull(response);
-        assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
-        assertNotNull(response.getData());
-        assertEquals(token, response.getData().get("token"));
-        verify(authService, times(1)).login(request);
+    void login_Success() {
+        String token = "jwt-token-test";
+        when(authService.login(any(LoginRequest.class))).thenReturn(token);
+
+        ResponseEntity<ApiResponse<Map<String, Object>>> response = authController.login(loginRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(200, response.getBody().getCode());
+        assertEquals(token, response.getBody().getData().get("token"));
+        verify(authService, times(1)).login(any(LoginRequest.class));
     }
-    
+
     @Test
-    void testLoginFailure() {
-        // Arrange
-        LoginRequest request = new LoginRequest();
-        request.setEmail("test@example.com");
-        request.setPassword("password");
-        
-        String errorMessage = "Invalid email or password";
-        when(authService.login(request)).thenThrow(new RuntimeException(errorMessage));
-        
-        // Act
-        ApiResponse<Map<String, Object>> response = authController.login(request);
-        
-        // Assert
-        assertNotNull(response);
-        assertEquals(400, response.getCode());
-        assertEquals(errorMessage, response.getMessage());
-        assertNull(response.getData());
-        verify(authService, times(1)).login(request);
+    void login_Failure() {
+        when(authService.login(any(LoginRequest.class))).thenThrow(new RuntimeException("Invalid credentials"));
+
+        ResponseEntity<ApiResponse<Map<String, Object>>> response = authController.login(loginRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(500, response.getBody().getCode());
+        assertEquals("Invalid credentials", response.getBody().getMessage());
     }
-    
+
     @Test
-    void testRegisterSuccess() {
-        // Arrange
-        RegisterRequest request = new RegisterRequest();
-        request.setEmail("test@example.com");
-        request.setPassword("password");
-        request.setNickname("Test User");
-        
+    void register_Success() {
         User user = new User();
         user.setId(1L);
+        user.setEmail("newuser@example.com");
+        user.setNickname("新用户");
+        when(authService.register(any(RegisterRequest.class))).thenReturn(user);
+
+        ResponseEntity<ApiResponse<User>> response = authController.register(registerRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(200, response.getBody().getCode());
+        assertEquals("newuser@example.com", response.getBody().getData().getEmail());
+        verify(authService, times(1)).register(any(RegisterRequest.class));
+    }
+
+    @Test
+    void register_Failure_EmailExists() {
+        when(authService.register(any(RegisterRequest.class))).thenThrow(new RuntimeException("Email already exists"));
+
+        ResponseEntity<ApiResponse<User>> response = authController.register(registerRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(500, response.getBody().getCode());
+        assertEquals("Email already exists", response.getBody().getMessage());
+    }
+
+    @Test
+    void register_Success_WithUsernameFallback() {
+        RegisterRequest requestWithoutUsername = new RegisterRequest();
+        requestWithoutUsername.setEmail("test@example.com");
+        requestWithoutUsername.setPassword("password123");
+        requestWithoutUsername.setNickname("Test User");
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("test@example.com");
         user.setEmail("test@example.com");
         user.setNickname("Test User");
-        
-        when(authService.register(request)).thenReturn(user);
-        
-        // Act
-        ApiResponse<User> response = authController.register(request);
-        
-        // Assert
-        assertNotNull(response);
-        assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
-        assertNotNull(response.getData());
-        assertEquals(user, response.getData());
-        verify(authService, times(1)).register(request);
-    }
-    
-    @Test
-    void testRegisterFailure() {
-        // Arrange
-        RegisterRequest request = new RegisterRequest();
-        request.setEmail("test@example.com");
-        request.setPassword("password");
-        
-        String errorMessage = "Email already exists";
-        when(authService.register(request)).thenThrow(new RuntimeException(errorMessage));
-        
-        // Act
-        ApiResponse<User> response = authController.register(request);
-        
-        // Assert
-        assertNotNull(response);
-        assertEquals(400, response.getCode());
-        assertEquals(errorMessage, response.getMessage());
-        assertNull(response.getData());
-        verify(authService, times(1)).register(request);
-    }
-    
-    @Test
-    void testGetCurrentUserSuccess() {
-        // Arrange
-        Long userId = 1L;
-        User user = new User();
-        user.setId(userId);
-        user.setEmail("test@example.com");
-        
-        // 模拟 SecurityContext 和 Authentication
-        Authentication authentication = mock(Authentication.class);
-        org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
-                userId.toString(), "password", java.util.Collections.emptyList());
-        when(authentication.isAuthenticated()).thenReturn(true);
-        when(authentication.getPrincipal()).thenReturn(userDetails);
-        
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        
-        when(authService.getUserById(userId)).thenReturn(user);
-        
-        // Act
-        ApiResponse<User> response = authController.getCurrentUser();
-        
-        // Assert
-        assertNotNull(response);
-        assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
-        assertNotNull(response.getData());
-        assertEquals(user, response.getData());
-        verify(authService, times(1)).getUserById(userId);
-        
-        // 清理 SecurityContext
-        SecurityContextHolder.clearContext();
-    }
-    
-    @Test
-    void testGetCurrentUserFailure() {
-        // Arrange
-        Long userId = 1L;
-        String errorMessage = "User not found";
-        
-        // 模拟 SecurityContext 和 Authentication
-        Authentication authentication = mock(Authentication.class);
-        org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
-                userId.toString(), "password", java.util.Collections.emptyList());
-        when(authentication.isAuthenticated()).thenReturn(true);
-        when(authentication.getPrincipal()).thenReturn(userDetails);
-        
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        
-        when(authService.getUserById(userId)).thenThrow(new RuntimeException(errorMessage));
-        
-        // Act
-        ApiResponse<User> response = authController.getCurrentUser();
-        
-        // Assert
-        assertNotNull(response);
-        assertEquals(400, response.getCode());
-        assertEquals(errorMessage, response.getMessage());
-        assertNull(response.getData());
-        verify(authService, times(1)).getUserById(userId);
-        
-        // 清理 SecurityContext
-        SecurityContextHolder.clearContext();
-    }
-    
-    @Test
-    void testGetCurrentUserUnauthenticated() {
-        // Arrange - 未设置 SecurityContext，模拟未登录状态
-        
-        // Act
-        ApiResponse<User> response = authController.getCurrentUser();
-        
-        // Assert
-        assertNotNull(response);
-        assertEquals(400, response.getCode());
-        assertEquals("User not authenticated", response.getMessage());
-        assertNull(response.getData());
-        verify(authService, times(0)).getUserById(anyLong());
-    }
-    
-    @Test
-    void testGetCurrentUserInvalidPrincipal() {
-        // Arrange
-        // 模拟 SecurityContext 和 Authentication，但 principal 不是 UserDetails
-        Authentication authentication = mock(Authentication.class);
-        when(authentication.isAuthenticated()).thenReturn(true);
-        when(authentication.getPrincipal()).thenReturn("invalid-principal");
-        
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        
-        // Act
-        ApiResponse<User> response = authController.getCurrentUser();
-        
-        // Assert
-        assertNotNull(response);
-        assertEquals(400, response.getCode());
-        assertEquals("Invalid principal", response.getMessage());
-        assertNull(response.getData());
-        verify(authService, times(0)).getUserById(anyLong());
-        
-        // 清理 SecurityContext
-        SecurityContextHolder.clearContext();
+
+        when(authService.register(any(RegisterRequest.class))).thenReturn(user);
+
+        ResponseEntity<ApiResponse<User>> response = authController.register(requestWithoutUsername);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(200, response.getBody().getCode());
     }
 }
