@@ -73,9 +73,118 @@
 
 ## 5. 验证工具
 
-### 5.1 前端验证工具
+### 5.1 前端验证工具（Playwright MCP）
 
-1. **Playwright**：用于端到端测试和视觉测试
+**Playwright是前端标准验证工具，用于端到端测试和视觉测试。**
+
+#### 5.1.1 Playwright配置
+
+```javascript
+// playwright.config.js
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: 'html',
+  use: {
+    baseURL: 'http://localhost:5173',
+    trace: 'on-first-retry',
+  },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+  ],
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+  },
+});
+```
+
+#### 5.1.2 测试用例编写规范
+
+```javascript
+import { test, expect } from '@playwright/test';
+
+test.describe('功能模块', () => {
+  test('测试场景描述', async ({ page }) => {
+    // 1. Arrange - 准备测试数据
+    const testData = { email: 'test@example.com', password: 'password123' };
+
+    // 2. Act - 执行操作
+    await page.goto('/login');
+    await page.fill('input[id="email"]', testData.email);
+    await page.fill('input[id="password"]', testData.password);
+    await page.click('button[type="submit"]');
+
+    // 3. Assert - 验证结果
+    await expect(page).toHaveURL('/home');
+  });
+});
+```
+
+#### 5.1.3 运行测试命令
+
+```bash
+# 运行所有测试
+npm test
+
+# 运行测试并显示UI（推荐）
+npm run test:ui
+
+# 运行特定测试文件
+npx playwright test tests/auth.spec.js
+
+# 运行特定测试用例
+npx playwright test --grep "登录"
+```
+
+#### 5.1.4 测试用例模板
+
+**登录功能测试模板：**
+```javascript
+test('should successfully login with valid credentials', async ({ page }) => {
+  await page.goto('/login');
+  await expect(page.locator('button[type="submit"]')).toContainText('登录');
+  await page.fill('input[id="email"]', 'bage@qq.com');
+  await page.fill('input[id="password"]', 'bage1234');
+  await page.click('button[type="submit"]');
+  await expect(page).toHaveURL('/home');
+});
+```
+
+**注册功能测试模板：**
+```javascript
+test('should successfully register a new user', async ({ page }) => {
+  const uniqueEmail = `test${Date.now()}@example.com`;
+  await page.goto('/register');
+  await expect(page.locator('button[type="submit"]')).toContainText('注册');
+  await page.fill('input[id="email"]', uniqueEmail);
+  await page.fill('input[id="password"]', 'password123');
+  await page.fill('input[id="confirmPassword"]', 'password123');
+  await page.fill('input[id="nickname"]', '测试用户');
+  await page.click('button[type="submit"]');
+  await expect(page).toHaveURL('/home');
+});
+```
+
+**表单验证测试模板：**
+```javascript
+test('should validate password mismatch', async ({ page }) => {
+  await page.goto('/register');
+  await page.fill('input[id="password"]', 'password123');
+  await page.fill('input[id="confirmPassword"]', 'differentpassword');
+  const submitButton = page.locator('button[type="submit"]');
+  await expect(submitButton).toBeDisabled();
+});
+```
+
 2. **Vitest**：用于单元测试和组件测试
 3. **ESLint**：用于代码质量检查
 

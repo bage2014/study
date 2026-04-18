@@ -11,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import com.familytree.dto.ApiResponse;
 
 import java.util.HashMap;
@@ -54,12 +52,11 @@ class AuthControllerTest {
         String token = "jwt-token-test";
         when(authService.login(any(LoginRequest.class))).thenReturn(token);
 
-        ResponseEntity<ApiResponse<Map<String, Object>>> response = authController.login(loginRequest);
+        ApiResponse<Map<String, Object>> response = authController.login(loginRequest);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(200, response.getBody().getCode());
-        assertEquals(token, response.getBody().getData().get("token"));
+        assertNotNull(response);
+        assertEquals(200, response.getCode());
+        assertEquals(token, response.getData().get("token"));
         verify(authService, times(1)).login(any(LoginRequest.class));
     }
 
@@ -67,12 +64,11 @@ class AuthControllerTest {
     void login_Failure() {
         when(authService.login(any(LoginRequest.class))).thenThrow(new RuntimeException("Invalid credentials"));
 
-        ResponseEntity<ApiResponse<Map<String, Object>>> response = authController.login(loginRequest);
+        ApiResponse<Map<String, Object>> response = authController.login(loginRequest);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(500, response.getBody().getCode());
-        assertEquals("Invalid credentials", response.getBody().getMessage());
+        assertNotNull(response);
+        assertEquals(500, response.getCode());
+        assertEquals("Invalid credentials", response.getMessage());
     }
 
     @Test
@@ -83,12 +79,11 @@ class AuthControllerTest {
         user.setNickname("新用户");
         when(authService.register(any(RegisterRequest.class))).thenReturn(user);
 
-        ResponseEntity<ApiResponse<User>> response = authController.register(registerRequest);
+        ApiResponse<User> response = authController.register(registerRequest);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(200, response.getBody().getCode());
-        assertEquals("newuser@example.com", response.getBody().getData().getEmail());
+        assertNotNull(response);
+        assertEquals(200, response.getCode());
+        assertEquals("newuser@example.com", response.getData().getEmail());
         verify(authService, times(1)).register(any(RegisterRequest.class));
     }
 
@@ -96,12 +91,11 @@ class AuthControllerTest {
     void register_Failure_EmailExists() {
         when(authService.register(any(RegisterRequest.class))).thenThrow(new RuntimeException("Email already exists"));
 
-        ResponseEntity<ApiResponse<User>> response = authController.register(registerRequest);
+        ApiResponse<User> response = authController.register(registerRequest);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(500, response.getBody().getCode());
-        assertEquals("Email already exists", response.getBody().getMessage());
+        assertNotNull(response);
+        assertEquals(500, response.getCode());
+        assertEquals("Email already exists", response.getMessage());
     }
 
     @Test
@@ -119,10 +113,9 @@ class AuthControllerTest {
 
         when(authService.register(any(RegisterRequest.class))).thenReturn(user);
 
-        ResponseEntity<ApiResponse<User>> response = authController.register(requestWithoutUsername);
+        ApiResponse<User> response = authController.register(requestWithoutUsername);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(200, response.getBody().getCode());
+        assertNotNull(response);
+        assertEquals(200, response.getCode());
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Main Content -->
+    <Header title="首页" />
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="text-center mb-8">
         <h2 class="text-2xl font-bold text-gray-900">欢迎回来</h2>
@@ -165,9 +165,13 @@ import { useUserStore } from '../stores/user'
 import { useFamilyStore } from '../stores/family'
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
+import Header from '../components/Header.vue'
 
 export default {
   name: 'Home',
+  components: {
+    Header
+  },
   setup() {
     const userStore = useUserStore()
     const familyStore = useFamilyStore()
@@ -178,6 +182,9 @@ export default {
     }
 
     onMounted(async () => {
+      if (!userStore.user) {
+        await userStore.fetchCurrentUser()
+      }
       await familyStore.fetchFamilies()
     })
 
