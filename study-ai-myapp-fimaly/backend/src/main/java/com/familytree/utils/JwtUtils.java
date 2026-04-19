@@ -2,10 +2,10 @@ package com.familytree.utils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,15 +16,12 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    // 使用固定的签名密钥
+    // 使用安全的签名密钥
     private final SecretKey signingKey;
 
     public JwtUtils() {
-        // 使用固定的密钥字符串
-        // 注意：实际生产环境应该从配置文件中读取密钥
-        String secret = "familytree-secret-key-2024";
-        byte[] keyBytes = secret.getBytes();
-        this.signingKey = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS512.getJcaName());
+        // 使用安全的密钥生成方法
+        this.signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     }
 
     public String generateToken(Long userId) {

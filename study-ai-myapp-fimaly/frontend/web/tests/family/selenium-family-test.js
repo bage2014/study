@@ -14,11 +14,11 @@ async function testFamilyManagementPage() {
     await runner.sleep(2000);
 
     // 导航到家族管理页面
-    await runner.navigateTo('/family');
+    await runner.navigateTo('/family-management');
     await runner.sleep(2000);
 
     const currentUrl = await runner.getCurrentUrl();
-    if (currentUrl.includes('/family')) {
+    if (currentUrl.includes('/family-management')) {
       runner.pass(`成功打开家族管理页面: ${currentUrl}`);
     } else {
       runner.fail(`未能打开家族管理页面，当前URL: ${currentUrl}`);
@@ -57,7 +57,7 @@ async function testFamilyListDisplay() {
     await runner.sleep(2000);
 
     // 导航到家族管理页面
-    await runner.navigateTo('/family');
+    await runner.navigateTo('/family-management');
     await runner.sleep(2000);
 
     // 检查是否有家族列表容器
@@ -105,11 +105,11 @@ async function testFamilyTreePage() {
     await runner.sleep(2000);
 
     // 导航到家族树页面
-    await runner.navigateTo('/family-tree');
+    await runner.navigateTo('/family-management-tree');
     await runner.sleep(2000);
 
     const currentUrl = await runner.getCurrentUrl();
-    if (currentUrl.includes('/family-tree')) {
+    if (currentUrl.includes('/family-management-tree')) {
       runner.pass(`成功打开家族树页面: ${currentUrl}`);
     } else {
       runner.fail(`未能打开家族树页面，当前URL: ${currentUrl}`);
@@ -148,7 +148,7 @@ async function testCreateFamilyButton() {
     await runner.sleep(2000);
 
     // 导航到家族管理页面
-    await runner.navigateTo('/family');
+    await runner.navigateTo('/family-management');
     await runner.sleep(2000);
 
     // 查找创建家族按钮

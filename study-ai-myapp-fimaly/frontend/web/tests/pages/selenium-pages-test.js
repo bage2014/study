@@ -14,11 +14,11 @@ async function testMemberEventsPage() {
     await runner.sleep(2000);
 
     // 导航到成员大事件页面
-    await runner.navigateTo('/member-events');
+    await runner.navigateTo('/events');
     await runner.sleep(2000);
 
     const currentUrl = await runner.getCurrentUrl();
-    if (currentUrl.includes('/member-events')) {
+    if (currentUrl.includes('/events')) {
       runner.pass(`成功打开成员大事件页面: ${currentUrl}`);
     } else {
       runner.fail(`未能打开成员大事件页面，当前URL: ${currentUrl}`);
@@ -100,11 +100,11 @@ async function testFamilyStoryPage() {
     await runner.sleep(2000);
 
     // 导航到家庭故事页面
-    await runner.navigateTo('/family-story');
+    await runner.navigateTo('/family-stories');
     await runner.sleep(2000);
 
     const currentUrl = await runner.getCurrentUrl();
-    if (currentUrl.includes('/family-story')) {
+    if (currentUrl.includes('/family-stories')) {
       runner.pass(`成功打开家庭故事页面: ${currentUrl}`);
     } else {
       runner.fail(`未能打开家庭故事页面，当前URL: ${currentUrl}`);
@@ -143,11 +143,11 @@ async function testFamilyLocationPage() {
     await runner.sleep(2000);
 
     // 导航到家族地理位置页面
-    await runner.navigateTo('/family-location');
+    await runner.navigateTo('/location-map');
     await runner.sleep(2000);
 
     const currentUrl = await runner.getCurrentUrl();
-    if (currentUrl.includes('/family-location')) {
+    if (currentUrl.includes('/location-map')) {
       runner.pass(`成功打开家族地理位置页面: ${currentUrl}`);
     } else {
       runner.fail(`未能打开家族地理位置页面，当前URL: ${currentUrl}`);
@@ -186,11 +186,11 @@ async function testAIRelationPage() {
     await runner.sleep(2000);
 
     // 导航到AI关系分析页面
-    await runner.navigateTo('/ai-relation');
+    await runner.navigateTo('/ai-relationship-analysis');
     await runner.sleep(2000);
 
     const currentUrl = await runner.getCurrentUrl();
-    if (currentUrl.includes('/ai-relation')) {
+    if (currentUrl.includes('/ai-relationship-analysis')) {
       runner.pass(`成功打开AI关系分析页面: ${currentUrl}`);
     } else {
       runner.fail(`未能打开AI关系分析页面，当前URL: ${currentUrl}`);

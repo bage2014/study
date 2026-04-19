@@ -14,11 +14,11 @@ async function testMemberManagementPage() {
     await runner.sleep(2000);
 
     // 导航到成员管理页面
-    await runner.navigateTo('/member');
+    await runner.navigateTo('/members');
     await runner.sleep(2000);
 
     const currentUrl = await runner.getCurrentUrl();
-    if (currentUrl.includes('/member')) {
+    if (currentUrl.includes('/members')) {
       runner.pass(`成功打开成员管理页面: ${currentUrl}`);
     } else {
       runner.fail(`未能打开成员管理页面，当前URL: ${currentUrl}`);
@@ -57,7 +57,7 @@ async function testMemberListDisplay() {
     await runner.sleep(2000);
 
     // 导航到成员管理页面
-    await runner.navigateTo('/member');
+    await runner.navigateTo('/members');
     await runner.sleep(2000);
 
     // 检查是否有成员列表容器
@@ -105,7 +105,7 @@ async function testAddMemberButton() {
     await runner.sleep(2000);
 
     // 导航到成员管理页面
-    await runner.navigateTo('/member');
+    await runner.navigateTo('/members');
     await runner.sleep(2000);
 
     // 查找添加成员按钮
@@ -141,7 +141,7 @@ async function testMemberDetailPage() {
     await runner.sleep(2000);
 
     // 导航到成员管理页面
-    await runner.navigateTo('/member');
+    await runner.navigateTo('/members');
     await runner.sleep(2000);
 
     // 尝试点击某个成员项进入详情页
@@ -152,7 +152,7 @@ async function testMemberDetailPage() {
         await runner.sleep(2000);
 
         const currentUrl = await runner.getCurrentUrl();
-        if (currentUrl.includes('/member')) {
+        if (currentUrl.includes('/members')) {
           runner.pass('成功进入成员详情页面');
         } else {
           runner.info(`当前URL: ${currentUrl}`);
