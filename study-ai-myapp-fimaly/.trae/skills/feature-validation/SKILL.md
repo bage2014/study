@@ -43,7 +43,7 @@
 
 1. **单元测试**：测试单个组件和函数的正确性
 2. **集成测试**：测试组件之间的交互和集成
-3. **端到端测试**：测试完整的功能流程和用户场景
+3. **端到端测试**：测试完整的功能流程和用户场景（使用Selenium）
 
 ### 3.3 性能验证
 
@@ -73,120 +73,249 @@
 
 ## 5. 验证工具
 
-### 5.1 前端验证工具（Playwright MCP）
+### 5.1 前端验证工具（Selenium）
 
-**Playwright是前端标准验证工具，用于端到端测试和视觉测试。**
+**Selenium是前端标准验证工具，用于端到端测试和UI自动化测试。所有测试验证功能都应基于Selenium UI模式进行验证，可视化观察测试执行过程。**
 
-#### 5.1.1 Playwright配置
+#### 5.1.1 Selenium配置
+
+**测试配置 (tests/selenium-config.js)：**
 
 ```javascript
-// playwright.config.js
-import { defineConfig, devices } from '@playwright/test';
+import { Builder, By, until } from 'selenium-webdriver';
+import chrome from 'selenium-webdriver/chrome.js';
 
-export default defineConfig({
-  testDir: './tests',
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
-  use: {
-    baseURL: 'http://localhost:5173',
-    trace: 'on-first-retry',
-  },
-  projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
-  ],
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
-});
+export class SeleniumTestRunner {
+  constructor(testName) {
+    this.testName = testName;
+    this.driver = null;
+    this.testsPassed = 0;
+    this.testsFailed = 0;
+    this.baseUrl = 'http://localhost:5173';
+  }
+
+  async setup(isHeadless = false) {
+    const chromeOptions = new chrome.Options();
+    if (isHeadless) {
+      chromeOptions.addArguments('--headless');
+    }
+    chromeOptions.addArguments('--no-sandbox');
+    chromeOptions.addArguments('--disable-dev-shm-usage');
+    chromeOptions.addArguments('--window-size=1920,1080');
+
+    this.driver = await new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(chromeOptions)
+      .build();
+
+    console.log(`\n=== ${this.testName} ===\n`);
+  }
+
+  async teardown() {
+    if (this.driver) {
+      await this.driver.quit();
+    }
+  }
+
+  async waitAndFindElement(locator, timeout = 5000) {
+    return await this.driver.wait(until.elementLocated(locator), timeout);
+  }
+
+  async navigateTo(path) {
+    await this.driver.get(this.baseUrl + path);
+    console.log(`  🌐 打开页面: ${this.baseUrl}${path}`);
+  }
+
+  async fillInput(locator, value) {
+    const element = await this.waitAndFindElement(locator);
+    await element.clear();
+    await element.sendKeys(value);
+    console.log(`  ✏️  输入内容: ${value.substring(0, 20)}...`);
+  }
+
+  async clickButton(locator) {
+    const element = await this.waitAndFindElement(locator);
+    await element.click();
+    console.log(`  🖱️  点击按钮`);
+  }
+
+  pass(message) {
+    console.log(`  ✅ ${message}`);
+    this.testsPassed++;
+  }
+
+  fail(message) {
+    console.log(`  ❌ ${message}`);
+    this.testsFailed++;
+  }
+
+  printSummary() {
+    console.log('\n=== 测试结果汇总 ===');
+    console.log(`✅ 通过: ${this.testsPassed}`);
+    console.log(`❌ 失败: ${this.testsFailed}`);
+  }
+}
 ```
 
 #### 5.1.2 测试用例编写规范
 
 ```javascript
-import { test, expect } from '@playwright/test';
+import { SeleniumTestRunner, By, until } from '../selenium-config.js';
 
-test.describe('功能模块', () => {
-  test('测试场景描述', async ({ page }) => {
-    // 1. Arrange - 准备测试数据
-    const testData = { email: 'test@example.com', password: 'password123' };
+async function testExample() {
+  const runner = new SeleniumTestRunner('示例测试');
+  await runner.setup(false); // UI模式，可以看到浏览器操作
 
-    // 2. Act - 执行操作
-    await page.goto('/login');
-    await page.fill('input[id="email"]', testData.email);
-    await page.fill('input[id="password"]', testData.password);
-    await page.click('button[type="submit"]');
+  try {
+    // 1. 导航到页面
+    await runner.navigateTo('/login');
+    await runner.waitAndFindElement(By.id('email'));
 
-    // 3. Assert - 验证结果
-    await expect(page).toHaveURL('/home');
-  });
-});
+    // 2. 执行操作
+    await runner.fillInput(By.id('email'), 'bage@qq.com');
+    await runner.fillInput(By.id('password'), 'bage1234');
+    await runner.clickButton(By.css('button[type="submit"]'));
+
+    // 3. 验证结果
+    await runner.sleep(3000);
+    const currentUrl = await runner.getCurrentUrl();
+    if (currentUrl.includes('/home')) {
+      runner.pass('登录成功，跳转到首页');
+    } else {
+      runner.fail(`登录失败，当前URL: ${currentUrl}`);
+    }
+
+  } catch (error) {
+    runner.fail(`测试过程出错: ${error.message}`);
+  } finally {
+    await runner.sleep(2000);
+    await runner.teardown();
+    runner.printSummary();
+  }
+}
 ```
 
 #### 5.1.3 运行测试命令
+
+**使用Selenium UI模式运行测试（推荐）：**
 
 ```bash
 # 运行所有测试
 npm test
 
-# 运行测试并显示UI（推荐）
-npm run test:ui
+# 运行认证测试
+npm run test:auth
 
-# 运行特定测试文件
-npx playwright test tests/auth.spec.js
+# 运行家族管理测试
+npm run test:family
 
-# 运行特定测试用例
-npx playwright test --grep "登录"
+# 运行成员管理测试
+npm run test:member
+
+# 运行全部测试
+npm run test:all
 ```
 
 #### 5.1.4 测试用例模板
 
 **登录功能测试模板：**
+
 ```javascript
-test('should successfully login with valid credentials', async ({ page }) => {
-  await page.goto('/login');
-  await expect(page.locator('button[type="submit"]')).toContainText('登录');
-  await page.fill('input[id="email"]', 'bage@qq.com');
-  await page.fill('input[id="password"]', 'bage1234');
-  await page.click('button[type="submit"]');
-  await expect(page).toHaveURL('/home');
-});
+async function testSuccessfulLogin() {
+  const runner = new SeleniumTestRunner('成功登录测试');
+  await runner.setup(false);
+
+  try {
+    await runner.navigateTo('/login');
+    await runner.waitAndFindElement(By.id('email'));
+
+    await runner.fillInput(By.id('email'), 'bage@qq.com');
+    await runner.fillInput(By.id('password'), 'bage1234');
+    await runner.clickButton(By.css('button[type="submit"]'));
+
+    await runner.sleep(3000);
+
+    const currentUrl = await runner.getCurrentUrl();
+    if (currentUrl.includes('/home')) {
+      runner.pass('登录成功，跳转到首页');
+    } else {
+      runner.fail(`登录失败，当前URL: ${currentUrl}`);
+    }
+  } catch (error) {
+    runner.fail(`测试过程出错: ${error.message}`);
+  } finally {
+    await runner.teardown();
+    runner.printSummary();
+  }
+}
 ```
 
 **注册功能测试模板：**
+
 ```javascript
-test('should successfully register a new user', async ({ page }) => {
-  const uniqueEmail = `test${Date.now()}@example.com`;
-  await page.goto('/register');
-  await expect(page.locator('button[type="submit"]')).toContainText('注册');
-  await page.fill('input[id="email"]', uniqueEmail);
-  await page.fill('input[id="password"]', 'password123');
-  await page.fill('input[id="confirmPassword"]', 'password123');
-  await page.fill('input[id="nickname"]', '测试用户');
-  await page.click('button[type="submit"]');
-  await expect(page).toHaveURL('/home');
-});
+async function testSuccessfulRegister() {
+  const runner = new SeleniumTestRunner('成功注册测试');
+  await runner.setup(false);
+
+  try {
+    await runner.navigateTo('/register');
+    await runner.waitAndFindElement(By.id('email'));
+
+    const uniqueEmail = `test${Date.now()}@example.com`;
+    await runner.fillInput(By.id('email'), uniqueEmail);
+    await runner.fillInput(By.id('password'), 'password123');
+    await runner.fillInput(By.id('confirmPassword'), 'password123');
+    await runner.fillInput(By.id('nickname'), '测试用户');
+    await runner.clickButton(By.css('button[type="submit"]'));
+
+    await runner.sleep(3000);
+
+    const currentUrl = await runner.getCurrentUrl();
+    if (currentUrl.includes('/home')) {
+      runner.pass('注册成功并自动登录');
+    } else {
+      runner.fail(`注册后URL: ${currentUrl}`);
+    }
+  } catch (error) {
+    runner.fail(`测试过程出错: ${error.message}`);
+  } finally {
+    await runner.teardown();
+    runner.printSummary();
+  }
+}
 ```
 
 **表单验证测试模板：**
-```javascript
-test('should validate password mismatch', async ({ page }) => {
-  await page.goto('/register');
-  await page.fill('input[id="password"]', 'password123');
-  await page.fill('input[id="confirmPassword"]', 'differentpassword');
-  const submitButton = page.locator('button[type="submit"]');
-  await expect(submitButton).toBeDisabled();
-});
-```
 
-2. **Vitest**：用于单元测试和组件测试
-3. **ESLint**：用于代码质量检查
+```javascript
+async function testPasswordMismatch() {
+  const runner = new SeleniumTestRunner('密码不匹配测试');
+  await runner.setup(false);
+
+  try {
+    await runner.navigateTo('/register');
+    await runner.waitAndFindElement(By.id('email'));
+
+    await runner.fillInput(By.id('email'), 'test@example.com');
+    await runner.fillInput(By.id('password'), 'password123');
+    await runner.fillInput(By.id('confirmPassword'), 'differentpassword');
+
+    const submitButton = await runner.driver.findElement(By.css('button[type="submit"]'));
+    const isDisabled = await submitButton.isDisabled();
+
+    if (isDisabled) {
+      runner.pass('密码不匹配时提交按钮被禁用');
+    } else {
+      runner.fail('密码不匹配时提交按钮未被禁用');
+    }
+  } catch (error) {
+    runner.fail(`测试过程出错: ${error.message}`);
+  } finally {
+    await runner.teardown();
+    runner.printSummary();
+  }
+}
+```
 
 ### 5.2 后端验证工具
 
@@ -220,72 +349,65 @@ test('should validate password mismatch', async ({ page }) => {
 3. **自动化**：尽可能使用自动化测试提高验证效率
 4. **持续验证**：在功能更新和变更时持续进行验证
 5. **文档化**：详细记录验证过程和结果
+6. **使用UI模式**：优先使用Selenium UI模式进行测试验证，便于人工查看测试执行过程
 
-## 8. 示例验证流程
+## 8. 测试目录结构
 
-### 8.1 家族管理维护人功能验证
+```
+tests/
+├── selenium-config.js           # Selenium测试配置和运行器
+├── run-all-tests.js             # 运行所有测试的主文件
+├── auth/                        # 认证功能测试
+│   └── selenium-auth-test.js
+├── family/                      # 家族管理测试
+│   └── selenium-family-test.js
+├── member/                      # 成员管理测试
+│   └── selenium-member-test.js
+└── pages/                       # 其他页面测试
+    └── selenium-pages-test.js
+```
 
-#### 8.1.1 验证准备
+## 9. 示例验证流程
+
+### 9.1 登录功能验证
+
+#### 9.1.1 验证准备
 
 1. **功能需求**：
-   - 家族创建时默认创建人为管理员
-   - 管理员可以更改家族的管理员
-   - 只有管理员可以更改管理员
-   - 显示当前家族的管理员信息
+   - 用户可以使用邮箱和密码登录
+   - 登录成功后跳转到首页
+   - 登录失败时显示错误提示
 
 2. **测试环境**：
-   - 后端服务运行在 http://localhost:8080
    - 前端服务运行在 http://localhost:5173
+   - 后端服务运行在 http://localhost:8080
    - 测试账号：bage@qq.com / bage1234
 
-#### 8.1.2 验证执行
+#### 9.1.2 验证执行
 
 1. **功能验证**：
-   - 登录系统，进入家族管理页面
-   - 创建新家族，验证创建人是否自动成为管理员
-   - 查看家族详情，验证管理员信息是否正确显示
-   - 点击"更改管理员"按钮，验证是否可以选择其他成员作为管理员
-   - 更改管理员，验证更改是否成功
-   - 以非管理员身份登录，验证是否无法更改管理员
+   - 测试登录页面加载
+   - 测试成功登录流程
+   - 测试登录失败流程
+   - 测试退出登录流程
 
 2. **边界测试**：
-   - 尝试将管理员更改为不存在的成员
-   - 尝试在未选择管理员的情况下提交
-   - 尝试以非管理员身份调用API更改管理员
+   - 测试空用户名登录
+   - 测试空密码登录
+   - 测试错误密码登录
 
 3. **性能验证**：
-   - 测试更改管理员的响应时间
-   - 测试在多个家族和成员的情况下的性能
+   - 测试登录响应时间
 
-#### 8.1.3 验证记录
+#### 9.1.3 验证记录
 
 | 测试用例 | 预期结果 | 实际结果 | 状态 |
 |---------|---------|---------|------|
-| 创建家族时默认创建人为管理员 | 创建人自动成为管理员 | 通过 | ✅ |
-| 管理员可以更改家族的管理员 | 管理员可以成功更改管理员 | 通过 | ✅ |
-| 只有管理员可以更改管理员 | 非管理员无法更改管理员 | 通过 | ✅ |
-| 显示当前家族的管理员信息 | 管理员信息正确显示 | 通过 | ✅ |
-| 尝试将管理员更改为不存在的成员 | 系统提示错误 | 通过 | ✅ |
-| 尝试在未选择管理员的情况下提交 | 系统提示错误 | 通过 | ✅ |
-| 尝试以非管理员身份调用API更改管理员 | 系统返回权限错误 | 通过 | ✅ |
+| 登录页面加载 | 页面正常显示登录表单 | 通过 | ✅ |
+| 成功登录 | 跳转到首页 | 通过 | ✅ |
+| 登录失败 | 停留在登录页面 | 通过 | ✅ |
+| 退出登录 | 跳转到登录页面 | 通过 | ✅ |
 
-#### 8.1.4 验证报告
-
-1. **验证总结**：
-   - 家族管理维护人功能已成功实现
-   - 所有测试用例都通过
-   - 功能符合需求描述
-
-2. **质量评估**：
-   - 功能正确性：✅ 完全符合需求
-   - 性能表现：✅ 响应时间合理
-   - 用户体验：✅ 操作流程清晰
-
-3. **建议改进**：
-   - 增加管理员变更的操作日志
-   - 提供管理员转让的确认机制
-   - 优化管理员权限的视觉提示
-
-## 9. 结论
+## 10. 结论
 
 功能验证是确保软件质量的重要环节，通过建立规范的验证流程和方法，可以有效地提高功能的正确性和可靠性。本规范为项目的功能验证提供了明确的指导，确保每个功能都经过充分的验证，减少缺陷和问题，提高用户满意度。
