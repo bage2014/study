@@ -1,33 +1,39 @@
 ---
 name: "frontend-validation"
-description: "提供前端页面验证的标准规范，使用Playwright进行端到端测试，确保页面功能和样式的完整性。Invoke when validating frontend pages or implementing testing strategies."
+description: "提供前端页面验证的标准规范，使用Selenium进行端到端测试，确保页面功能和样式的完整性。Invoke when validating frontend pages or implementing testing strategies."
 ---
 
 # 前端页面验证规范
 
 ## 1. 验证工具
 
-### 1.1 Playwright
+### 1.1 Selenium WebDriver
 - **用途**：端到端测试工具，用于验证前端页面的功能和样式
-- **安装**：`npm install --save-dev @playwright/test`
-- **配置**：通过`playwright.config.js`配置测试环境和参数
+- **安装**：`npm install --save-dev selenium-webdriver`
+- **配置**：通过`selenium-config.js`配置测试环境和参数
+- **浏览器驱动**：需要下载Chrome/Firefox/Edge浏览器驱动
 
 ### 1.2 测试环境
 - **开发服务器**：使用`npm run dev`启动本地开发服务器
-- **测试浏览器**：支持Chromium、Firefox、WebKit
+- **测试浏览器**：支持Chrome(Chromium)、Firefox、Edge
 - **Base URL**：默认设置为`http://localhost:5173`
 
 ## 2. 测试目录结构
 
 ```
 frontend/web/
-├── tests/              # 测试文件目录
-│   ├── auth.spec.js    # 认证相关测试
-│   ├── family.spec.js  # 家族管理相关测试
-│   ├── member.spec.js  # 成员管理相关测试
-│   └── ...             # 其他测试文件
-├── playwright.config.js # Playwright配置文件
-└── package.json        # 项目配置文件
+├── tests/                      # 测试文件目录
+│   ├── selenium-config.js      # Selenium配置和测试运行器
+│   ├── run-all-tests.js        # 运行所有测试
+│   ├── auth/                   # 认证相关测试
+│   │   └── selenium-auth-test.js
+│   ├── family/                 # 家族管理相关测试
+│   │   └── selenium-family-test.js
+│   ├── member/                 # 成员管理相关测试
+│   │   └── selenium-member-test.js
+│   └── pages/                  # 其他页面测试
+│       └── selenium-pages-test.js
+└── package.json                # 项目配置文件
 ```
 
 ## 3. 页面验证要点
@@ -62,6 +68,10 @@ frontend/web/
 - [ ] 添加/编辑家族功能正常
 - [ ] 家族删除功能正常
 - [ ] 管理员维护功能正常
+  - [ ] 管理员信息显示
+  - [ ] 更改管理员按钮可见（仅管理员可见）
+  - [ ] 更改管理员弹窗功能正常
+  - [ ] 管理员权限验证正常
 
 #### 3.2.3 成员管理页面
 - [ ] 页面标题正确显示
@@ -156,147 +166,190 @@ frontend/web/
 #### 4.1.1 命令行测试
 ```bash
 # 运行所有测试
-npm test
+node tests/run-all-tests.js
 
-# 运行指定测试文件
-npm test tests/auth.spec.js
+# 运行特定测试文件
+node tests/family/selenium-family-test.js
 
-# 运行特定测试
-npm test -- -g "login page"
+# 运行单个测试函数
+node -e "import('./tests/family/selenium-family-test.js').then(m => m.testUpdateAdministratorButton())"
 ```
 
-#### 4.1.2 UI测试
+#### 4.1.2 开发服务器
 ```bash
-# 启动Playwright UI
-npm run test:ui
+# 启动前端开发服务器（测试前需要先启动）
+cd frontend/web
+npm run dev
 ```
 
 ### 4.2 测试报告
-- 测试完成后生成HTML报告
-- 报告路径：`frontend/web/playwright-report/index.html`
-- 报告包含测试结果、截图和视频
+- 测试完成后在控制台输出测试结果
+- 显示通过/失败统计
+- 截图记录失败场景（如配置了截图功能）
 
-## 5. 测试最佳实践
+## 5. Selenium测试运行器
 
-### 5.1 测试用例设计
+### 5.1 SeleniumTestRunner 类
+```javascript
+class SeleniumTestRunner {
+  constructor(testName, headless = true)
+  async setup()
+  async navigateTo(path)
+  async waitAndFindElement(By)
+  async fillInput(By, value)
+  async clickButton(By)
+  async getCurrentUrl()
+  async sleep(ms)
+  pass(message)
+  fail(message)
+  info(message)
+  async teardown()
+  printSummary()
+}
+```
+
+### 5.2 By定位器
+```javascript
+By.id('element-id')
+By.css('.class-name')
+By.xpath("//button[contains(text(),'text')]")
+By.name('element-name')
+By.tagName('tag-name')
+```
+
+## 6. 测试最佳实践
+
+### 6.1 测试用例设计
 - **独立测试**：每个测试用例应独立执行，不依赖其他测试的状态
 - **明确断言**：每个测试用例应有明确的断言，验证页面功能和样式
 - **覆盖场景**：测试应覆盖正常场景和异常场景
-- **合理等待**：使用`waitForURL`、`waitForSelector`等方法确保页面加载完成
+- **合理等待**：使用`sleep`、`waitAndFindElement`等方法确保页面加载完成
 
-### 5.2 测试性能
-- **并行执行**：使用`fullyParallel: true`配置并行执行测试
-- **合理重试**：在CI环境中设置适当的重试次数
-- **资源管理**：测试完成后清理测试数据和状态
+### 6.2 测试性能
+- **并行限制**：避免同时运行过多测试实例
+- **合理等待**：使用适当的等待时间而非固定延迟
+- **资源管理**：测试完成后确保关闭浏览器实例
 
-### 5.3 测试维护
+### 6.3 测试维护
 - **定期更新**：随着页面功能变更，及时更新测试用例
 - **代码审查**：测试代码应与业务代码一样进行代码审查
 - **文档同步**：测试用例应与页面功能文档保持同步
 
-## 6. 示例测试用例
+## 7. 示例测试用例
 
-### 6.1 登录页面测试
+### 7.1 登录页面测试
 ```javascript
-test('login page has form', async ({ page }) => {
-  await page.goto('/');
-  
-  // Expect login form elements to be present
-  await expect(page.locator('input[type="email"]')).toBeVisible();
-  await expect(page.locator('input[type="password"]')).toBeVisible();
-  await expect(page.locator('button[type="submit"]')).toBeVisible();
-});
+async function testLoginPage() {
+  const runner = new SeleniumTestRunner('登录页面测试');
+  await runner.setup(false);
 
-test('login functionality', async ({ page }) => {
-  await page.goto('/');
-  
-  // Fill in login form
-  await page.fill('input[type="email"]', 'bage@qq.com');
-  await page.fill('input[type="password"]', 'bage1234');
-  
-  // Submit form
-  await page.click('button[type="submit"]');
-  
-  // Wait for navigation to home page
-  await page.waitForURL('/home');
-  
-  // Expect home page elements to be present
-  await expect(page.locator('h2')).toContainText('欢迎回来');
-});
+  try {
+    await runner.navigateTo('/login');
+    
+    // 检查登录表单元素
+    await runner.waitAndFindElement(By.id('email'));
+    await runner.waitAndFindElement(By.id('password'));
+    await runner.clickButton(By.css('button[type="submit"]'));
+    
+    runner.pass('登录页面加载正常');
+  } catch (error) {
+    runner.fail(`登录页面加载失败: ${error.message}`);
+  } finally {
+    await runner.teardown();
+    runner.printSummary();
+  }
+}
 ```
 
-### 6.2 注册页面测试
+### 7.2 家族管理员功能测试
 ```javascript
-test('register page has form', async ({ page }) => {
-  await page.goto('/register');
-  
-  // Expect register form elements to be present
-  await expect(page.locator('input[type="email"]')).toBeVisible();
-  await expect(page.locator('input[type="password"]')).toBeVisible();
-  await expect(page.locator('input[type="password"]').nth(1)).toBeVisible(); // Confirm password
-  await expect(page.locator('input[type="text"]')).toBeVisible(); // Nickname
-  await expect(page.locator('button[type="submit"]')).toBeVisible();
-});
+async function testUpdateAdministratorButton() {
+  const runner = new SeleniumTestRunner('更改管理员按钮测试');
+  await runner.setup(false);
 
-test('password confirmation validation', async ({ page }) => {
-  await page.goto('/register');
-  
-  // Fill in form with mismatched passwords
-  await page.fill('input[type="email"]', 'test@example.com');
-  await page.fill('input[type="password"]', 'password123');
-  await page.fill('input[type="password"]', 'password456');
-  await page.fill('input[type="text"]', 'Test User');
-  
-  // Submit form
-  await page.click('button[type="submit"]');
-  
-  // Expect error message
-  await expect(page.locator('p:text("两次输入的密码不一致")')).toBeVisible();
-});
+  try {
+    // 登录
+    await runner.navigateTo('/login');
+    await runner.fillInput(By.id('email'), 'bage@qq.com');
+    await runner.fillInput(By.id('password'), 'bage1234');
+    await runner.clickButton(By.css('button[type="submit"]'));
+    await runner.sleep(2000);
+
+    // 导航到家族管理页面
+    await runner.navigateTo('/family-management');
+    await runner.sleep(3000);
+
+    // 检查更改管理员按钮
+    const updateAdminButton = await runner.driver.findElement(
+      By.xpath("//button[contains(text(),'更改管理员')]")
+    );
+    
+    if (await updateAdminButton.isDisplayed()) {
+      runner.pass('更改管理员按钮存在并显示');
+    }
+  } catch (error) {
+    runner.fail(`测试失败: ${error.message}`);
+  } finally {
+    await runner.teardown();
+    runner.printSummary();
+  }
+}
 ```
 
-### 6.3 家族管理页面测试
+### 7.3 管理员权限验证测试
 ```javascript
-test('family management page has family list', async ({ page }) => {
-  // Login first
-  await page.goto('/');
-  await page.fill('input[type="email"]', 'bage@qq.com');
-  await page.fill('input[type="password"]', 'bage1234');
-  await page.click('button[type="submit"]');
-  await page.waitForURL('/home');
-  
-  // Navigate to family management page
-  await page.click('a[href="/family-management"]');
-  await page.waitForURL('/family-management');
-  
-  // Expect family list to be present
-  await expect(page.locator('table')).toBeVisible();
-  await expect(page.locator('th')).toHaveCount(4); // Name, Description, Members, Actions
-});
+async function testAdministratorPermission() {
+  const runner = new SeleniumTestRunner('管理员权限验证测试');
+  await runner.setup(false);
 
-test('family administrator functionality', async ({ page }) => {
-  // Login first
-  await page.goto('/');
-  await page.fill('input[type="email"]', 'bage@qq.com');
-  await page.fill('input[type="password"]', 'bage1234');
-  await page.click('button[type="submit"]');
-  await page.waitForURL('/home');
-  
-  // Navigate to family management page
-  await page.click('a[href="/family-management"]');
-  await page.waitForURL('/family-management');
-  
-  // Select a family
-  await page.click('tr:nth-child(2) td:nth-child(4) button:first-child');
-  
-  // Expect administrator section to be present
-  await expect(page.locator('p:text("管理员:")')).toBeVisible();
-  await expect(page.locator('button:text("更改管理员")')).toBeVisible();
-});
+  try {
+    // 登录
+    await runner.navigateTo('/login');
+    await runner.fillInput(By.id('email'), 'bage@qq.com');
+    await runner.fillInput(By.id('password'), 'bage1234');
+    await runner.clickButton(By.css('button[type="submit"]'));
+    await runner.sleep(2000);
+
+    // 导航到家族管理页面
+    await runner.navigateTo('/family-management');
+    await runner.sleep(3000);
+
+    // 管理员应该能看到更改管理员按钮
+    const changeAdminButton = await runner.driver.findElement(
+      By.xpath("//button[contains(text(),'更改管理员')]")
+    );
+    
+    if (await changeAdminButton.isDisplayed()) {
+      runner.pass('管理员可以看到更改管理员按钮');
+    }
+  } catch (error) {
+    runner.fail(`权限验证失败: ${error.message}`);
+  } finally {
+    await runner.teardown();
+    runner.printSummary();
+  }
+}
 ```
 
-## 7. 总结
+## 8. 家族管理员功能测试要点
 
-通过使用Playwright进行端到端测试，可以确保前端页面的功能和样式完整性，提高代码质量和用户体验。测试应覆盖所有关键页面和功能，确保页面在不同浏览器和设备上的一致性。
+### 8.1 管理员信息显示
+- [ ] 管理员名称正确显示
+- [ ] 管理员标识清晰可见
+
+### 8.2 更改管理员功能
+- [ ] 更改管理员按钮仅对当前管理员可见
+- [ ] 点击按钮打开模态框
+- [ ] 模态框包含成员选择器
+- [ ] 选择新管理员后保存成功
+- [ ] 保存后管理员信息更新
+
+### 8.3 权限控制
+- [ ] 非管理员用户看不到更改管理员按钮
+- [ ] 非管理员用户无法通过API直接更改管理员
+
+## 9. 总结
+
+通过使用Selenium进行端到端测试，可以确保前端页面的功能和样式完整性，提高代码质量和用户体验。测试应覆盖所有关键页面和功能，确保页面在不同浏览器和设备上的一致性。
 
 定期运行测试可以及时发现和解决问题，确保前端页面的稳定性和可靠性。同时，测试代码应与业务代码一样进行维护和更新，确保测试的有效性和准确性。

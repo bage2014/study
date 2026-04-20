@@ -12,7 +12,11 @@ import {
   testFamilyManagementPage,
   testFamilyListDisplay,
   testFamilyTreePage,
-  testCreateFamilyButton
+  testCreateFamilyButton,
+  testViewAdministrator,
+  testUpdateAdministratorButton,
+  testUpdateAdministratorModal,
+  testAdministratorPermission
 } from './family/selenium-family-test.js';
 
 import {
@@ -43,7 +47,6 @@ async function runAllTests() {
   console.log('每个测试模块执行完成后会暂停3秒，您可以查看测试结果\n');
 
   const allTests = [
-    // 认证测试
     { name: '认证测试 - 登录页面', fn: testLoginPage },
     { name: '认证测试 - 成功登录', fn: testSuccessfulLogin },
     { name: '认证测试 - 登录失败', fn: testFailedLogin },
@@ -52,19 +55,20 @@ async function runAllTests() {
     { name: '认证测试 - 成功注册', fn: testSuccessfulRegister },
     { name: '认证测试 - 密码不匹配', fn: testPasswordMismatch },
 
-    // 家族管理测试
     { name: '家族管理 - 页面加载', fn: testFamilyManagementPage },
     { name: '家族管理 - 列表显示', fn: testFamilyListDisplay },
     { name: '家族管理 - 家族树', fn: testFamilyTreePage },
     { name: '家族管理 - 创建按钮', fn: testCreateFamilyButton },
+    { name: '家族管理 - 查看管理员', fn: testViewAdministrator },
+    { name: '家族管理 - 更改管理员按钮', fn: testUpdateAdministratorButton },
+    { name: '家族管理 - 更改管理员弹窗', fn: testUpdateAdministratorModal },
+    { name: '家族管理 - 管理员权限验证', fn: testAdministratorPermission },
 
-    // 成员管理测试
     { name: '成员管理 - 页面加载', fn: testMemberManagementPage },
     { name: '成员管理 - 列表显示', fn: testMemberListDisplay },
     { name: '成员管理 - 添加按钮', fn: testAddMemberButton },
     { name: '成员管理 - 详情页', fn: testMemberDetailPage },
 
-    // 其他页面测试
     { name: '其他页面 - 成员大事件', fn: testMemberEventsPage },
     { name: '其他页面 - 操作日志', fn: testOperationLogsPage },
     { name: '其他页面 - 家庭故事', fn: testFamilyStoryPage },
@@ -87,7 +91,6 @@ async function runAllTests() {
       failedCount++;
     }
 
-    // 测试间隔
     console.log('\n⏳ 3秒后执行下一个测试...');
     await sleep(3000);
   }
