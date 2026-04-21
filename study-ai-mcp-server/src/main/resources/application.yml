@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: mcp-server
+  ai:
+    mcp:
+      server:
+        enabled: true
+        name: hello-world-mcp-server
+        version: 1.0.0
+        description: A simple MCP server with hello world tool
+
+server:
+  port: 8080
