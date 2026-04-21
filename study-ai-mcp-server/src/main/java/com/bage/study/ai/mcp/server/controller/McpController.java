@@ -1,6 +1,6 @@
-package com.example.mcp.controller;
+package com.bage.study.ai.mcp.server.controller;
 
-import com.example.mcp.tool.HelloWorldTool;
+import com.bage.study.ai.mcp.server.tool.HelloWorldTool;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
+    <groupId>com.bage.study.ai</groupId>
     <artifactId>mcp-server</artifactId>
     <version>1.0.0</version>
     <name>MCP Server</name>

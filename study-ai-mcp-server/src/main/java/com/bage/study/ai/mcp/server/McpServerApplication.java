@@ -1,4 +1,4 @@
-package com.example.mcp;
+package com.bage.study.ai.mcp.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
