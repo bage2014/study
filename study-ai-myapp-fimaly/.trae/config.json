@@ -1,0 +1,106 @@
+{
+  "project_name": "家庭族谱APP",
+  "project_description": "完整的家庭族谱应用，包括Web端、Flutter移动端和Spring Boot后端服务",
+  "technical_stack": {
+    "backend": {
+      "framework": "Spring Boot",
+      "version": "3.1.10",
+      "language": "Java",
+      "version": "21",
+      "database": "H2",
+      "build_tool": "Maven",
+      "dependencies": [
+        "Spring Security",
+        "Spring Data JPA",
+        "JWT",
+        "SpringDoc OpenAPI",
+        "Lombok"
+      ]
+    },
+    "frontend": {
+      "web": {
+        "framework": "Vue",
+        "version": "3.5.30",
+        "build_tool": "Vite",
+        "version": "8.0.1",
+        "libraries": [
+          "Vue Router",
+          "Pinia",
+          "TailwindCSS",
+          "Axios",
+          "D3.js"
+        ],
+        "testing": "Selenium WebDriver"
+      },
+      "mobile": {
+        "framework": "Flutter",
+        "language": "Dart"
+      }
+    }
+  },
+  "project_structure": {
+    "backend": {
+      "path": "backend/",
+      "main_source": "backend/src/main/java/",
+      "test_source": "backend/src/test/java/",
+      "config_file": "backend/pom.xml"
+    },
+    "frontend": {
+      "web": {
+        "path": "frontend/web/",
+        "main_source": "frontend/web/src/",
+        "test_source": "frontend/web/tests/",
+        "config_file": "frontend/web/package.json"
+      },
+      "mobile": {
+        "path": "frontend/android/",
+        "main_source": "frontend/android/lib/",
+        "config_file": "frontend/android/pubspec.yaml"
+      }
+    },
+    "docs": {
+      "path": "docs/"
+    }
+  },
+  "scripts": {
+    "backend": {
+      "build": "mvn clean package",
+      "run": "mvn spring-boot:run",
+      "test": "mvn test"
+    },
+    "frontend": {
+      "web": {
+        "dev": "npm run dev",
+        "build": "npm run build",
+        "test": "npm run test:all",
+        "test_auth": "npm run test:auth",
+        "test_family": "npm run test:family",
+        "test_member": "npm run test:member"
+      },
+      "mobile": {
+        "dev": "flutter run",
+        "build_android": "flutter build apk",
+        "build_ios": "flutter build ios"
+      }
+    }
+  },
+  "ports": {
+    "backend": 8080,
+    "frontend_web_dev": 5174
+  },
+  "testing": {
+    "backend": {
+      "framework": "JUnit 5",
+      "mock": "Mockito"
+    },
+    "frontend": {
+      "framework": "Selenium WebDriver",
+      "base_url": "http://localhost:5174"
+    }
+  },
+  "api_documentation": {
+    "type": "SpringDoc OpenAPI",
+    "url": "http://localhost:8080/swagger-ui.html"
+  },
+  "last_updated": "2026-04-20"
+}
