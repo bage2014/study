@@ -27,7 +27,7 @@ public class AuthController {
             response.put("token", token);
             return ApiResponse.success(response);
         } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
+            return ApiResponse.serverError(e.getMessage());
         }
     }
     
@@ -37,7 +37,7 @@ public class AuthController {
             User user = authService.register(request);
             return ApiResponse.success(user);
         } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
+            return ApiResponse.serverError(e.getMessage());
         }
     }
     

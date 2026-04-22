@@ -16,12 +16,21 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private long expiration;
 
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
     // 使用安全的签名密钥
     private final SecretKey signingKey;
 
-    public JwtUtils() {
-        // 使用安全的密钥生成方法
-        this.signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    public JwtUtils(@Value("${jwt.secret}") String jwtSecret) {
+        // 从配置文件读取密钥，如果没有提供则使用默认密钥
+        if (jwtSecret == null || jwtSecret.length() < 32) {
+            // 使用安全的密钥生成方法作为后备
+            this.signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        } else {
+            // 使用配置的密钥
+            this.signingKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        }
     }
 
     public String generateToken(Long userId) {
