@@ -1,15 +1,15 @@
-package com.bage.study.ai.mcp.server;
+package com.bage.study.ai.mcp.client;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication(scanBasePackages = "com.bage.study.ai")
-public class McpServerApplication {
+@SpringBootApplication
+public class McpClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(McpServerApplication.class, args);
+        SpringApplication.run(McpClientApplication.class, args);
     }
 
     @Bean

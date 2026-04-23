@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: mcp-client
+  ai:
+    mcp:
+      client:
+        enabled: true
+        name: mcp-client
+        version: 1.0.0
+        connections:
+          mcp-server:
+            url: http://localhost:8080
+
+server:
+  port: 8081
