@@ -1,5 +1,21 @@
 # 家庭族谱APP上线指南
 
+## 推荐部署方案
+
+根据预算和使用场景，推荐以下部署方案：
+
+| 方案 | 域名 | 服务器 | 月成本 | 适用场景 |
+|------|------|--------|--------|----------|
+| **最低成本** | Dynu免费域名 | 阿里云轻量 | ~3元 | 个人学习、测试项目 |
+| **性价比** | FreeDomain | 恒创科技香港 | ~20元 | 个人博客、小型网站 |
+| **正规专业** | 阿里云.com | 阿里云轻量 | ~5元 | 国内正式业务 |
+
+详细方案请参考：[域名与服务器调研报告](./HOSTING_RESEARCH.md)
+
+**阿里云轻量一键部署**：使用 [一键部署脚本](../scripts/deploy-aliyun.sh)，全自动安装Docker、Java、Node.js、PostgreSQL并完成部署。
+
+详细部署配置请参考：[阿里云部署配置](./ALIYUN_DEPLOY.md)
+
 ## 1. 系统要求
 
 ### 1.1 硬件要求
@@ -223,7 +239,7 @@ systemctl restart nginx
 
 - **技术支持**：your-email@example.com
 - **系统文档**：http://your_domain:8080/swagger-ui.html
-- **用户指南**：http://your_domain/help
+- **用户指南**：[用户指南](../user-guide/USER_GUIDE.md)
 
 ---
 

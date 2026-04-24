@@ -1,114 +1,114 @@
 ---
 name: "documentation"
-description: "Provides guidance for creating and maintaining project documentation, including PRD, technical specifications, and user guides. Invoke when working on documentation-related tasks or when needing documentation structure advice."
+description: "提供项目文档创建和维护的指导，包括PRD、技术规范和用户指南。在处理文档相关任务或需要文档结构建议时调用。"
 ---
 
-# Documentation
+# 文档规范
 
-This skill provides comprehensive guidance for creating and maintaining documentation for the Family Tree App project.
+本技能为家族树应用项目提供了全面的文档创建和维护指导。
 
-## Documentation Structure
+## 文档结构
 
 ```
 docs/
-├── product-research/     # Product research documents
-├── prd/                  # Product requirements document
-├── ui-design/            # UI/UX design documents
-├── implementation/       # Technical implementation documents
-└── ai-tools/             # AI tools research and integration
+├── product-research/     # 产品研究文档
+├── prd/                  # 产品需求文档
+├── ui-design/            # UI/UX设计文档
+├── implementation/       # 技术实现文档
+└── ai-tools/             # AI工具研究和集成
 ```
 
-## Key Documentation Types
+## 关键文档类型
 
-### Product Research
-- Market analysis
-- User requirements
-- Competitor analysis
-- Market opportunities
+### 产品研究
+- 市场分析
+- 用户需求
+- 竞争对手分析
+- 市场机会
 
-### Product Requirements Document (PRD)
-- Product overview
-- Core features
-- User flows
-- UI design guidelines
-- Technical requirements
-- Data models
-- Non-functional requirements
+### 产品需求文档（PRD）
+- 产品概述
+- 核心功能
+- 用户流程
+- UI设计指南
+- 技术要求
+- 数据模型
+- 非功能需求
 
-### UI/UX Design
-- Design system
-- Wireframes
-- Mockups
-- UI interaction design
-- User testing reports
+### UI/UX设计
+- 设计系统
+- 线框图
+- 原型图
+- UI交互设计
+- 用户测试报告
 
-### Technical Implementation
-- Backend implementation guide
-- Frontend implementation guide
-- API documentation
-- Database schema
-- Security considerations
+### 技术实现
+- 后端实现指南
+- 前端实现指南
+- API文档
+- 数据库架构
+- 安全考虑
 
-### AI Tools Integration
-- AI tools research
-- Tool paradigm recommendations
-- Integration guidelines
-- Performance considerations
+### AI工具集成
+- AI工具研究
+- 工具范式推荐
+- 集成指南
+- 性能考虑
 
-## Documentation Standards
+## 文档标准
 
-### Formatting
-- Markdown syntax
-- Consistent heading hierarchy
-- Clear and concise language
-- Proper use of lists and tables
-- Code blocks for technical content
+### 格式
+- Markdown语法
+- 一致的标题层级
+- 清晰简洁的语言
+- 正确使用列表和表格
+- 技术内容使用代码块
 
-### Content Guidelines
-- Start with an overview
-- Use clear, descriptive headings
-- Include relevant diagrams and visuals
-- Provide examples where appropriate
-- Maintain consistency across documents
+### 内容指南
+- 以概述开始
+- 使用清晰、描述性的标题
+- 包含相关的图表和视觉元素
+- 适当提供示例
+- 保持文档之间的一致性
 
-### Version Control
-- Track documentation changes with Git
-- Use meaningful commit messages
-- Review and update documentation regularly
-- Keep documentation in sync with code changes
+### 版本控制
+- 使用Git跟踪文档变更
+- 使用有意义的提交消息
+- 定期审查和更新文档
+- 保持文档与代码变更同步
 
-## Documentation Tools
-- Markdown editors
-- Diagram tools (Mermaid, Draw.io)
-- Documentation generators
-- Version control systems
+## 文档工具
+- Markdown编辑器
+- 图表工具（Mermaid, Draw.io）
+- 文档生成器
+- 版本控制系统
 
-## Best Practices
-- Document early and often
-- Involve stakeholders in documentation review
-- Keep documentation up to date
-- Make documentation accessible
-- Use templates for consistency
-- Include code examples where relevant
-- Document edge cases and limitations
+## 最佳实践
+- 尽早并经常文档化
+- 让利益相关者参与文档审查
+- 保持文档更新
+- 使文档易于访问
+- 使用模板保持一致性
+- 包含相关的代码示例
+- 记录边缘情况和限制
 
-## User Documentation
-- Installation guides
-- User manuals
-- FAQs
-- Troubleshooting guides
-- Release notes
+## 用户文档
+- 安装指南
+- 用户手册
+- 常见问题
+- 故障排除指南
+- 发布说明
 
-## Technical Documentation
-- API reference
-- Architecture diagrams
-- Database schema
-- Deployment guides
-- Development setup
+## 技术文档
+- API参考
+- 架构图
+- 数据库架构
+- 部署指南
+- 开发设置
 
-## Maintenance
-- Regular documentation reviews
-- Update documentation with new features
-- Remove outdated information
-- Improve documentation based on feedback
-- Ensure documentation is searchable
+## 维护
+- 定期文档审查
+- 随着新功能更新文档
+- 删除过时信息
+- 根据反馈改进文档
+- 确保文档可搜索

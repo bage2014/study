@@ -1,6 +1,6 @@
 ---
 name: "user-experience"
-description: "提供用户体验设计的标准规范，包括用户体验原则、方法、流程等。Invoke when designing or improving user experiences for the application."
+description: "提供用户体验设计的标准规范，包括用户体验原则、方法、流程等。在设计或改进应用程序的用户体验时调用。"
 ---
 
 # 用户体验设计规范
