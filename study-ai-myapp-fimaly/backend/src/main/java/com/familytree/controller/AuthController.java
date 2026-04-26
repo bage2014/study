@@ -5,72 +5,96 @@ import com.familytree.dto.LoginRequest;
 import com.familytree.dto.RegisterRequest;
 import com.familytree.model.User;
 import com.familytree.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
-@Slf4j
+@RequiredArgsConstructor
+@Validated
+@Tag(name = "认证", description = "用户认证和注册接口")
 public class AuthController {
-    @Autowired
-    private AuthService authService;
-    
+
+    private final AuthService authService;
+
+    @Operation(summary = "用户登录", description = "使用邮箱和密码登录系统，返回JWT令牌")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "登录成功",
+                    content = @Content(schema = @Schema(implementation = Map.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "参数错误"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "认证失败")
+    })
     @PostMapping("/login")
-    public ApiResponse<Map<String, Object>> login(@RequestBody LoginRequest request) {
+    public ApiResponse<Map<String, Object>> login(@Valid @RequestBody LoginRequest request) {
+        log.info("[用户登录] email={}", request.getEmail());
         try {
             String token = authService.login(request);
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
-            return ApiResponse.success(response);
-        } catch (Exception e) {
-            return ApiResponse.serverError(e.getMessage());
+            return ApiResponse.success(response, "登录成功");
+        } catch (RuntimeException e) {
+            log.warn("[用户登录] 失败: {}", e.getMessage());
+            return ApiResponse.error("A001", e.getMessage());
         }
     }
-    
+
+    @Operation(summary = "用户注册", description = "注册新用户，需要提供邮箱、密码和昵称")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "注册成功",
+                    content = @Content(schema = @Schema(implementation = User.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "参数错误或邮箱已存在")
+    })
     @PostMapping("/register")
-    public ApiResponse<User> register(@RequestBody RegisterRequest request) {
+    public ApiResponse<User> register(@Valid @RequestBody RegisterRequest request) {
+        log.info("[用户注册] email={}", request.getEmail());
         try {
             User user = authService.register(request);
-            return ApiResponse.success(user);
-        } catch (Exception e) {
-            return ApiResponse.serverError(e.getMessage());
+            return ApiResponse.success(user, "注册成功");
+        } catch (RuntimeException e) {
+            log.warn("[用户注册] 失败: {}", e.getMessage());
+            return ApiResponse.error("A002", e.getMessage());
         }
     }
-    
+
+    @Operation(summary = "获取当前用户", description = "从JWT令牌中解析用户信息")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "获取成功",
+                    content = @Content(schema = @Schema(implementation = User.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "用户未认证")
+    })
     @GetMapping("/me")
     public ApiResponse<User> getCurrentUser() {
-        try {
-            // 从SecurityContext中获取用户ID
-            org.springframework.security.core.Authentication authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
-            
-            if (authentication == null || !authentication.isAuthenticated()) {
-                log.info("User not authenticated");
-                return ApiResponse.error("User not authenticated");
-            }
-            
-            Object principal = authentication.getPrincipal();
-            log.info("Principal: {}", principal);
-            log.info("Principal class: {}", principal.getClass());
-            
-            if (principal instanceof org.springframework.security.core.userdetails.User) {
-                org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) principal;
-                String username = userDetails.getUsername();
-                log.info("Username: {}", username);
-                Long userId = Long.parseLong(username);
-                User user = authService.getUserById(userId);
-                return ApiResponse.success(user);
-            } else {
-                log.info("Principal is not UserDetails: {}", principal);
-                return ApiResponse.error("Invalid principal");
-            }
-        } catch (Exception e) {
-            log.info("Error in getCurrentUser: {}", e.getMessage());
-            e.printStackTrace();
-            return ApiResponse.error(e.getMessage());
+        org.springframework.security.core.Authentication authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            log.warn("[获取当前用户] 用户未认证");
+            return ApiResponse.unauthorized("用户未认证");
+        }
+
+        Object principal = authentication.getPrincipal();
+        log.debug("[获取当前用户] principal={}", principal);
+
+        if (principal instanceof org.springframework.security.core.userdetails.User) {
+            org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) principal;
+            String username = userDetails.getUsername();
+            Long userId = Long.parseLong(username);
+            User user = authService.getUserById(userId);
+            return ApiResponse.success(user);
+        } else {
+            log.warn("[获取当前用户] 无效的principal类型: {}", principal.getClass());
+            return ApiResponse.error("无效的用户信息");
         }
     }
 }

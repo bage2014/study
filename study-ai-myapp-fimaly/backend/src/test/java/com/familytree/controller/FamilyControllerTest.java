@@ -1,6 +1,6 @@
 package com.familytree.controller;
 
-import com.familytree.dto.ApiResponse;
+import com.familytree.dto.*;
 import com.familytree.model.Family;
 import com.familytree.service.FamilyService;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,10 +30,10 @@ class FamilyControllerTest {
     @Test
     void testCreateFamilySuccess() {
         Long userId = 1L;
-        Family family = new Family();
-        family.setName("Test Family");
-        family.setDescription("Test Description");
-        family.setAvatar("Test Avatar");
+        FamilyCreateRequest request = new FamilyCreateRequest();
+        request.setName("Test Family");
+        request.setDescription("Test Description");
+        request.setAvatar("Test Avatar");
 
         Family createdFamily = new Family();
         createdFamily.setId(1L);
@@ -42,23 +42,23 @@ class FamilyControllerTest {
         createdFamily.setAvatar("Test Avatar");
 
         when(familyService.createFamily(
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar(),
+                request.getName(),
+                request.getDescription(),
+                request.getAvatar(),
                 userId
         )).thenReturn(createdFamily);
 
-        ApiResponse<Family> response = familyController.createFamily(userId, family);
+        ApiResponse<Family> response = familyController.createFamily(userId, request);
 
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertEquals("家族创建成功", response.getMessage());
         assertNotNull(response.getData());
         assertEquals(createdFamily, response.getData());
         verify(familyService, times(1)).createFamily(
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar(),
+                request.getName(),
+                request.getDescription(),
+                request.getAvatar(),
                 userId
         );
     }
@@ -66,29 +66,29 @@ class FamilyControllerTest {
     @Test
     void testCreateFamilyFailure() {
         Long userId = 1L;
-        Family family = new Family();
-        family.setName("Test Family");
-        family.setDescription("Test Description");
-        family.setAvatar("Test Avatar");
+        FamilyCreateRequest request = new FamilyCreateRequest();
+        request.setName("Test Family");
+        request.setDescription("Test Description");
+        request.setAvatar("Test Avatar");
 
         String errorMessage = "Failed to create family";
         when(familyService.createFamily(
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar(),
+                request.getName(),
+                request.getDescription(),
+                request.getAvatar(),
                 userId
         )).thenThrow(new RuntimeException(errorMessage));
 
-        ApiResponse<Family> response = familyController.createFamily(userId, family);
+        ApiResponse<Family> response = familyController.createFamily(userId, request);
 
         assertNotNull(response);
         assertEquals(400, response.getCode());
         assertEquals(errorMessage, response.getMessage());
         assertNull(response.getData());
         verify(familyService, times(1)).createFamily(
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar(),
+                request.getName(),
+                request.getDescription(),
+                request.getAvatar(),
                 userId
         );
     }
@@ -113,7 +113,7 @@ class FamilyControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(families, response.getData());
         verify(familyService, times(1)).getFamiliesByCreatorId(userId);
@@ -147,7 +147,7 @@ class FamilyControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(family, response.getData());
         verify(familyService, times(1)).getFamilyById(familyId);
@@ -171,10 +171,10 @@ class FamilyControllerTest {
     @Test
     void testUpdateFamilySuccess() {
         Long familyId = 1L;
-        Family family = new Family();
-        family.setName("Updated Family");
-        family.setDescription("Updated Description");
-        family.setAvatar("Updated Avatar");
+        FamilyUpdateRequest request = new FamilyUpdateRequest();
+        request.setName("Updated Family");
+        request.setDescription("Updated Description");
+        request.setAvatar("Updated Avatar");
 
         Family updatedFamily = new Family();
         updatedFamily.setId(familyId);
@@ -184,43 +184,43 @@ class FamilyControllerTest {
 
         when(familyService.updateFamily(
                 familyId,
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar()
+                request.getName(),
+                request.getDescription(),
+                request.getAvatar()
         )).thenReturn(updatedFamily);
 
-        ApiResponse<Family> response = familyController.updateFamily(familyId, family);
+        ApiResponse<Family> response = familyController.updateFamily(familyId, request);
 
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertEquals("家族更新成功", response.getMessage());
         assertNotNull(response.getData());
         assertEquals(updatedFamily, response.getData());
         verify(familyService, times(1)).updateFamily(
                 familyId,
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar()
+                request.getName(),
+                request.getDescription(),
+                request.getAvatar()
         );
     }
 
     @Test
     void testUpdateFamilyFailure() {
         Long familyId = 1L;
-        Family family = new Family();
-        family.setName("Updated Family");
-        family.setDescription("Updated Description");
-        family.setAvatar("Updated Avatar");
+        FamilyUpdateRequest request = new FamilyUpdateRequest();
+        request.setName("Updated Family");
+        request.setDescription("Updated Description");
+        request.setAvatar("Updated Avatar");
 
         String errorMessage = "Failed to update family";
         when(familyService.updateFamily(
                 familyId,
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar()
+                request.getName(),
+                request.getDescription(),
+                request.getAvatar()
         )).thenThrow(new RuntimeException(errorMessage));
 
-        ApiResponse<Family> response = familyController.updateFamily(familyId, family);
+        ApiResponse<Family> response = familyController.updateFamily(familyId, request);
 
         assertNotNull(response);
         assertEquals(400, response.getCode());
@@ -228,9 +228,9 @@ class FamilyControllerTest {
         assertNull(response.getData());
         verify(familyService, times(1)).updateFamily(
                 familyId,
-                family.getName(),
-                family.getDescription(),
-                family.getAvatar()
+                request.getName(),
+                request.getDescription(),
+                request.getAvatar()
         );
     }
 
@@ -243,7 +243,7 @@ class FamilyControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertEquals("家族删除成功", response.getMessage());
         assertNull(response.getData());
         verify(familyService, times(1)).deleteFamily(familyId);
     }
@@ -280,7 +280,7 @@ class FamilyControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertEquals("管理员更新成功", response.getMessage());
         assertNotNull(response.getData());
         assertEquals(newAdministratorId, response.getData().getAdministratorId());
         verify(familyService, times(1)).isAdministrator(familyId, userId);
@@ -299,7 +299,7 @@ class FamilyControllerTest {
 
         assertNotNull(response);
         assertEquals(400, response.getCode());
-        assertEquals("Only administrator can update administrator", response.getMessage());
+        assertEquals("只有管理员可以执行此操作", response.getMessage());
         assertNull(response.getData());
         verify(familyService, times(1)).isAdministrator(familyId, userId);
         verify(familyService, never()).updateAdministrator(anyLong(), anyLong());
@@ -315,7 +315,7 @@ class FamilyControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertTrue(response.getData());
         verify(familyService, times(1)).isAdministrator(familyId, userId);
     }
@@ -330,7 +330,7 @@ class FamilyControllerTest {
 
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertFalse(response.getData());
         verify(familyService, times(1)).isAdministrator(familyId, userId);
     }

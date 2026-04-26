@@ -53,7 +53,7 @@ class PermissionControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(createdPermission, response.getData());
         verify(permissionService, times(1)).assignPermission(
@@ -119,7 +119,7 @@ class PermissionControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(permissions, response.getData());
         verify(permissionService, times(1)).getPermissions();
@@ -161,7 +161,7 @@ class PermissionControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(updatedPermission, response.getData());
         verify(permissionService, times(1)).updatePermission(permissionId, permission.getRole());
@@ -200,7 +200,7 @@ class PermissionControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNull(response.getData());
         verify(permissionService, times(1)).deletePermission(permissionId);
     }

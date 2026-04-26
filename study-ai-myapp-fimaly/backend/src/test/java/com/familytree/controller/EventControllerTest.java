@@ -60,7 +60,7 @@ class EventControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(createdEvent, response.getData());
         verify(eventService, times(1)).createEvent(
@@ -130,7 +130,7 @@ class EventControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(events, response.getData());
         verify(eventService, times(1)).getEvents();
@@ -169,7 +169,7 @@ class EventControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(event, response.getData());
         verify(eventService, times(1)).getEventById(eventId);
@@ -227,7 +227,7 @@ class EventControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(updatedEvent, response.getData());
         verify(eventService, times(1)).updateEvent(
@@ -291,7 +291,7 @@ class EventControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNull(response.getData());
         verify(eventService, times(1)).deleteEvent(eventId);
     }

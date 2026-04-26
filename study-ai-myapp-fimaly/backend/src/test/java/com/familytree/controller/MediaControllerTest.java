@@ -51,7 +51,7 @@ class MediaControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(uploadedMedia, response.getData());
         verify(mediaService, times(1)).uploadMedia(file, familyId, description);
@@ -99,7 +99,7 @@ class MediaControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(mediaList, response.getData());
         verify(mediaService, times(1)).getMedia();
@@ -138,7 +138,7 @@ class MediaControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(media, response.getData());
         verify(mediaService, times(1)).getMediaById(mediaId);
@@ -174,7 +174,7 @@ class MediaControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNull(response.getData());
         verify(mediaService, times(1)).deleteMedia(mediaId);
     }

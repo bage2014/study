@@ -57,7 +57,7 @@ class RelationshipControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(createdRelationship, response.getData());
         verify(relationshipService, times(1)).createRelationship(
@@ -127,7 +127,7 @@ class RelationshipControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(relationships, response.getData());
         verify(relationshipService, times(1)).getRelationships();
@@ -177,7 +177,7 @@ class RelationshipControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNotNull(response.getData());
         assertEquals(relationships, response.getData());
         verify(relationshipService, times(1)).getRelationshipsByMemberId(memberId);
@@ -213,7 +213,7 @@ class RelationshipControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(200, response.getCode());
-        assertEquals("Success", response.getMessage());
+        assertNull(response.getMessage());
         assertNull(response.getData());
         verify(relationshipService, times(1)).deleteRelationship(relationshipId);
     }

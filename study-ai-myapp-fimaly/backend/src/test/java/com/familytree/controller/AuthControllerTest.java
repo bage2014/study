@@ -67,7 +67,7 @@ class AuthControllerTest {
         ApiResponse<Map<String, Object>> response = authController.login(loginRequest);
 
         assertNotNull(response);
-        assertEquals(500, response.getCode());
+        assertEquals(400, response.getCode());
         assertEquals("Invalid credentials", response.getMessage());
     }
 
@@ -94,7 +94,7 @@ class AuthControllerTest {
         ApiResponse<User> response = authController.register(registerRequest);
 
         assertNotNull(response);
-        assertEquals(500, response.getCode());
+        assertEquals(400, response.getCode());
         assertEquals("Email already exists", response.getMessage());
     }
 
