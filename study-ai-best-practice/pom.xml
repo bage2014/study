@@ -20,6 +20,7 @@
 
     <modules>
         <module>study-ai-best-practice-hello</module>
+        <module>study-ai-best-practice-exception-analysis</module>
     </modules>
 
     <properties>
