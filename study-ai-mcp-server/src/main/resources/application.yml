@@ -8,15 +8,6 @@ spring:
         name: hello-world-mcp-server
         version: 1.0.0
         description: A simple MCP server with hello world tool
-      client:
-        enabled: true
-        name: mcp-client
-        version: 1.0.0
-        sse:
-          connections:
-            mcp-server:
-              url: http://localhost:8080
-              sse-endpoint: /sse
 
 server:
   port: 8080

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: study-ai-best-practice
+
+  ai:
+    openai:
+      base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}
+      api-key: ${DEEPSEEK_API_KEY:}
+      chat:
+        options:
+          model: ${DEEPSEEK_MODEL:deepseek-chat}
+          temperature: 0.7
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.study.ai: DEBUG
+    org.springframework.ai: DEBUG

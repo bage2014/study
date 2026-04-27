@@ -1,0 +1,46 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sensitive configuration - DO NOT commit API keys
+application-local.yml
+application-local.yaml
+application-local.properties
+**/application-local.yml
+**/application-local.yaml
+**/application-local.properties
+
+# Environment files with secrets
+.env
+.env.*
+*.env
+secrets.yml
+secrets.yaml
+credentials.yml
+credentials.yaml
+
+# Temp files
+*.tmp
+*.bak
