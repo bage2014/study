@@ -25,9 +25,7 @@ logs/
 Thumbs.db
 
 # Sensitive configuration - DO NOT commit API keys
-application-local.yml
-application-local.yaml
-application-local.properties
+
 **/application-local.yml
 **/application-local.yaml
 **/application-local.properties
