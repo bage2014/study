@@ -1,7 +1,7 @@
-package com.bage.study.ai.best.practice.exceptionanalysis.service;
+package com.bage.study.ai.best.practice.exception.analysis.service;
 
-import com.bage.study.ai.best.practice.exceptionanalysis.model.ProblemAnalysisRequest;
-import com.bage.study.ai.best.practice.exceptionanalysis.model.ProblemAnalysisResponse;
+import com.bage.study.ai.best.practice.exception.analysis.model.ProblemAnalysisRequest;
+import com.bage.study.ai.best.practice.exception.analysis.model.ProblemAnalysisResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

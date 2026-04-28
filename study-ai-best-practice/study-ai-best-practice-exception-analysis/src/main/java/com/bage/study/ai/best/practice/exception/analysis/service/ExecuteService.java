@@ -1,7 +1,7 @@
-package com.bage.study.ai.best.practice.exceptionanalysis.service;
+package com.bage.study.ai.best.practice.exception.analysis.service;
 
-import com.bage.study.ai.best.practice.exceptionanalysis.model.AnalysisStep;
-import com.bage.study.ai.best.practice.exceptionanalysis.mcp.McpToolManager;
+import com.bage.study.ai.best.practice.exception.analysis.model.AnalysisStep;
+import com.bage.study.ai.best.practice.exception.analysis.mcp.McpToolManager;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

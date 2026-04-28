@@ -1,8 +1,8 @@
-package com.bage.study.ai.best.practice.exceptionanalysis.controller;
+package com.bage.study.ai.best.practice.exception.analysis.controller;
 
-import com.bage.study.ai.best.practice.exceptionanalysis.model.ProblemAnalysisRequest;
-import com.bage.study.ai.best.practice.exceptionanalysis.model.ProblemAnalysisResponse;
-import com.bage.study.ai.best.practice.exceptionanalysis.service.AnalysisService;
+import com.bage.study.ai.best.practice.exception.analysis.model.ProblemAnalysisRequest;
+import com.bage.study.ai.best.practice.exception.analysis.model.ProblemAnalysisResponse;
+import com.bage.study.ai.best.practice.exception.analysis.service.AnalysisService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

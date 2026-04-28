@@ -24,7 +24,7 @@ study-ai-best-practice-exception-analysis/
 ├── pom.xml
 ├── README.md
 ├── .trae/skills/                            # Skill 合集
-└── src/main/java/com/bage/study/ai/best/practice/exceptionanalysis/
+└── src/main/java/com/bage/study/ai/best/practice/exception/analysis/
     ├── ExceptionAnalysisApplication.java    # 应用入口
     ├── config/                              # 配置模块
     ├── model/                               # 数据模型

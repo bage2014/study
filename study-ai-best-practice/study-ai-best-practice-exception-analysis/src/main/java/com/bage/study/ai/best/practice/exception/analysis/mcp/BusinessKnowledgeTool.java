@@ -1,4 +1,4 @@
-package com.bage.study.ai.best.practice.exceptionanalysis.mcp;
+package com.bage.study.ai.best.practice.exception.analysis.mcp;
 
 import org.springframework.stereotype.Component;
 

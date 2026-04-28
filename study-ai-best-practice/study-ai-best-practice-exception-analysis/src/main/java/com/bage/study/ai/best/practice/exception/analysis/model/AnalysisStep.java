@@ -1,4 +1,4 @@
-package com.bage.study.ai.best.practice.exceptionanalysis.model;
+package com.bage.study.ai.best.practice.exception.analysis.model;
 
 import java.time.LocalDateTime;
 

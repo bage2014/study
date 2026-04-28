@@ -4,7 +4,7 @@
 
 本次更新主要包含以下内容：
 - 模块重命名：从 `study-ai-best-practice-plan` 重命名为 `study-ai-best-practice-exception-analysis`
-- 包路径更新：从 `com.bage.study.ai.best.practice.plan` 更新为 `com.bage.study.ai.best.practice.exceptionanalysis`
+- 包路径更新：从 `com.bage.study.ai.best.practice.plan` 更新为 `com.bage.study.ai.best.practice.exception.analysis`
 - 启动类更新：从 `PlanApplication` 变更为 `ExceptionAnalysisApplication`
 - 生成优化方案文档：添加 `optimization-plan.md` 详细优化建议
 - 更新 Skill 文档：增加项目变更文档生成功能
@@ -20,7 +20,7 @@
 
 ### 2. 包路径更新
 - **旧包路径**：com.bage.study.ai.best.practice.plan
-- **新包路径**：com.bage.study.ai.best.practice.exceptionanalysis
+- **新包路径**：com.bage.study.ai.best.practice.exception.analysis
 - **变更文件**：
   - 所有 Java 源文件：更新 package 声明
   - 启动类：重命名并更新包路径
