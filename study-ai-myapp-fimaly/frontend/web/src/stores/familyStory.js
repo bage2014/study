@@ -3,49 +3,49 @@ import axios from '../utils/axios'
 
 export const useFamilyStoryStore = defineStore('familyStory', {
   state: () => ({
-    familyStory: '',
-    memberStory: '',
+    currentStory: null,
     loading: false,
-    error: null
+    error: null,
+    storyTypes: ['migration', 'biography', 'legend', 'default']
   }),
 
   actions: {
-    async generateFamilyStory(familyId) {
+    async generateFamilyStory(familyId, storyType = 'migration', keywords = []) {
       this.loading = true
       this.error = null
       try {
-        const response = await axios.get(`/stories/family/${familyId}`)
+        const response = await axios.post(`/ai/stories/generate/${familyId}`, {
+          storyType,
+          keywords
+        })
         if (response.data.code === 200 && response.data.data) {
-          this.familyStory = response.data.data
+          this.currentStory = response.data.data
           return response.data.data
         } else {
-          throw new Error(response.data.message || 'Failed to generate family story')
+          throw new Error(response.data.message || '故事生成失败')
         }
       } catch (error) {
-        this.error = error.response?.data?.message || 'Failed to generate family story'
-        return ''
+        this.error = error.response?.data?.message || error.message || '故事生成失败'
+        return null
       } finally {
         this.loading = false
       }
     },
 
-    async generateMemberStory(memberId) {
-      this.loading = true
-      this.error = null
+    async getStoryTypes() {
       try {
-        const response = await axios.get(`/stories/member/${memberId}`)
+        const response = await axios.get('/ai/stories/types')
         if (response.data.code === 200 && response.data.data) {
-          this.memberStory = response.data.data
-          return response.data.data
-        } else {
-          throw new Error(response.data.message || 'Failed to generate member story')
+          this.storyTypes = response.data.data
         }
       } catch (error) {
-        this.error = error.response?.data?.message || 'Failed to generate member story'
-        return ''
-      } finally {
-        this.loading = false
+        console.error('获取故事类型失败', error)
       }
+    },
+
+    clearStory() {
+      this.currentStory = null
+      this.error = null
     }
   }
 })

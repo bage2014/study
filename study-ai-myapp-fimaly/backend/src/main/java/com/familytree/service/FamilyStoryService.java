@@ -1,143 +1,224 @@
 package com.familytree.service;
 
-import com.familytree.model.Event;
+import com.familytree.dto.FamilyStoryRequest;
+import com.familytree.dto.FamilyStoryResponse;
+import com.familytree.model.Family;
 import com.familytree.model.Member;
-import com.familytree.repository.EventRepository;
+import com.familytree.repository.FamilyRepository;
 import com.familytree.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class FamilyStoryService {
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private EventRepository eventRepository;
 
-    public String generateFamilyStory(Long familyId) {
-        // 获取家族所有成员
+    private final FamilyRepository familyRepository;
+    private final MemberRepository memberRepository;
+
+    public FamilyStoryResponse generateFamilyStory(Long familyId, FamilyStoryRequest request) {
+        log.info("[AI家族故事] 开始为家族ID: {} 生成故事", familyId);
+
+        // 获取家族信息
+        Optional<Family> familyOpt = familyRepository.findById(familyId);
+        if (familyOpt.isEmpty()) {
+            throw new IllegalArgumentException("家族不存在");
+        }
+
+        Family family = familyOpt.get();
         List<Member> members = memberRepository.findAll().stream()
-                .filter(member -> member.getFamilyId().equals(familyId))
+                .filter(m -> familyId.equals(m.getFamilyId()))
                 .collect(Collectors.toList());
 
-        // 获取家族所有事件
-        List<Event> events = eventRepository.findAll().stream()
-                .filter(event -> event.getFamilyId().equals(familyId))
-                .collect(Collectors.toList());
+        // 准备上下文信息
+        Map<String, Object> context = buildContext(family, members, request);
 
-        // 生成家族故事
-        return generateStory(members, events, familyId);
+        // 根据故事类型生成内容
+        String storyContent = generateStoryByType(request.getStoryType(), context);
+        String title = generateTitle(request.getStoryType(), family.getName());
+
+        FamilyStoryResponse response = new FamilyStoryResponse(
+                UUID.randomUUID().toString(),
+                title,
+                storyContent,
+                request.getStoryType(),
+                request.getKeywords(),
+                "rule-based",
+                System.currentTimeMillis()
+        );
+
+        log.info("[AI家族故事] 完成故事生成");
+        return response;
     }
 
-    private String generateStory(List<Member> members, List<Event> events, Long familyId) {
-        if (members.isEmpty()) {
-            return "该家族暂无成员信息，无法生成故事。";
-        }
+    private Map<String, Object> buildContext(Family family, List<Member> members, FamilyStoryRequest request) {
+        Map<String, Object> context = new HashMap<>();
+        context.put("familyName", family.getName());
+        context.put("memberCount", members.size());
+        context.put("members", members.stream()
+                .map(m -> {
+                    Map<String, String> memberInfo = new HashMap<>();
+                    memberInfo.put("name", m.getName());
+                    memberInfo.put("gender", m.getGender());
+                    if (m.getBirthDate() != null) {
+                        memberInfo.put("birthYear", String.valueOf(m.getBirthDate().getYear()));
+                    }
+                    return memberInfo;
+                })
+                .collect(Collectors.toList()));
+        context.put("keywords", request.getKeywords() != null ? request.getKeywords() : Collections.emptyList());
+        return context;
+    }
+
+    private String generateTitle(String storyType, String familyName) {
+        return switch (storyType != null ? storyType : "migration") {
+            case "migration" -> String.format("%s家族的迁徙之路", familyName);
+            case "biography" -> String.format("%s家族人物传记", familyName);
+            case "legend" -> String.format("%s家族的传奇故事", familyName);
+            default -> String.format("%s家族的故事", familyName);
+        };
+    }
+
+    private String generateStoryByType(String storyType, Map<String, Object> context) {
+        return switch (storyType != null ? storyType : "migration") {
+            case "migration" -> generateMigrationStory(context);
+            case "biography" -> generateBiographyStory(context);
+            case "legend" -> generateLegendStory(context);
+            default -> generateGeneralStory(context);
+        };
+    }
+
+    private String generateMigrationStory(Map<String, Object> context) {
+        String familyName = (String) context.get("familyName");
+        List<?> members = (List<?>) context.get("members");
+        int memberCount = (Integer) context.get("memberCount");
 
         StringBuilder story = new StringBuilder();
+        story.append("# ").append(familyName).append("家族的迁徙之路\n\n");
+        story.append("## 前言\n\n");
+        story.append("这是一个关于").append(familyName).append("家族的故事，记录了家族的变迁和发展。\n\n");
+        story.append("目前家族共").append(memberCount).append("位成员，分布在不同地区。\n\n");
 
-        // 开头
-        story.append("在一个充满爱的家族里，");
-        story.append("家族的故事开始于...\n\n");
+        story.append("## 历史追溯\n\n");
+        story.append("家族的历史可以追溯到很久以前，祖先们从原居地出发，经过长途跋涉，");
+        story.append("最终在新的土地上扎根，建立了新的家园。\n\n");
 
-        // 介绍主要成员
-        story.append("家族成员包括：\n");
-        for (Member member : members) {
-            story.append("- ");
-            story.append(member.getName());
-            if (member.getBirthDate() != null) {
-                story.append("，出生于");
-                story.append(member.getBirthDate().getYear() + 1900);
-                story.append("年");
-            }
-            story.append("\n");
-        }
-        story.append("\n");
-
-        // 描述重要事件
-        if (!events.isEmpty()) {
-            story.append("家族经历了许多重要事件：\n");
-            for (Event event : events) {
-                story.append("- ");
-                story.append(event.getTitle());
-                if (event.getDate() != null) {
-                    story.append("，发生于");
-                    story.append(event.getDate().getYear() + 1900);
-                    story.append("年");
+        if (members != null && !members.isEmpty()) {
+            story.append("## 家族成员\n\n");
+            for (Object memberObj : members) {
+                Map<?, ?> memberInfo = (Map<?, ?>) memberObj;
+                String name = (String) memberInfo.get("name");
+                story.append("- **").append(name).append("**");
+                if (memberInfo.containsKey("birthYear")) {
+                    story.append("（出生于").append(memberInfo.get("birthYear")).append("年）");
                 }
-                story.append("：");
-                story.append(event.getDescription());
                 story.append("\n");
             }
-            story.append("\n");
         }
 
-        // 结尾
-        story.append("这个家族的故事还在继续，");
-        story.append("每一位成员都在为家族的繁荣和传承贡献自己的力量。");
-        story.append("未来，");
-        story.append("家族将继续书写属于自己的辉煌篇章。");
+        story.append("\n## 家族精神\n\n");
+        story.append(familyName).append("家族代代相传的精神：\n");
+        story.append("- **勤劳勇敢**：通过辛勤劳动创造幸福生活\n");
+        story.append("- **团结互助**：家族成员之间互相帮助、共同进步\n");
+        story.append("- **尊祖敬宗**：尊敬祖先，传承家族优良传统\n");
+
+        story.append("\n## 结语\n\n");
+        story.append("家族的故事还在继续，每一位成员都是家族历史的书写者。");
+        story.append("让我们共同努力，把家族的精神传承下去，创造更美好的明天。\n");
 
         return story.toString();
     }
 
-    public String generateMemberStory(Long memberId) {
-        // 获取成员信息
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+    private String generateBiographyStory(Map<String, Object> context) {
+        String familyName = (String) context.get("familyName");
+        List<?> members = (List<?>) context.get("members");
 
-        // 获取与该成员相关的事件
-        List<Event> events = eventRepository.findAll().stream()
-                .filter(event -> event.getFamilyId().equals(member.getFamilyId()))
-                .collect(Collectors.toList());
+        StringBuilder story = new StringBuilder();
+        story.append("# ").append(familyName).append("家族人物传记\n\n");
 
-        // 生成成员故事
-        return generateMemberStory(member, events);
+        story.append("## 序言\n\n");
+        story.append("本传记记录了").append(familyName).append("家族成员的生平事迹，");
+        story.append("展现了家族成员的风采和成就。\n\n");
+
+        if (members != null && !members.isEmpty()) {
+            for (Object memberObj : members) {
+                Map<?, ?> memberInfo = (Map<?, ?>) memberObj;
+                String name = (String) memberInfo.get("name");
+                story.append("## ").append(name).append("\n\n");
+                story.append(name).append("是").append(familyName).append("家族的重要成员，");
+                story.append("为家族的发展做出了自己的贡献。\n\n");
+
+                String birthYear = (String) memberInfo.get("birthYear");
+                if (birthYear != null) {
+                    story.append("出生于").append(birthYear).append("年，在成长过程中，");
+                    story.append("深受家族传统文化的熏陶，养成了优良的品质。\n\n");
+                }
+
+                story.append("[这里可以补充").append(name).append("的具体事迹和成就]\n\n");
+            }
+        }
+
+        story.append("## 后记\n\n");
+        story.append("家族的发展离不开每一位成员的努力。");
+        story.append("让我们以前辈为榜样，为家族的繁荣贡献自己的力量。\n");
+
+        return story.toString();
     }
 
-    private String generateMemberStory(Member member, List<Event> events) {
+    private String generateLegendStory(Map<String, Object> context) {
+        String familyName = (String) context.get("familyName");
+
         StringBuilder story = new StringBuilder();
+        story.append("# ").append(familyName).append("家族的传奇故事\n\n");
 
-        // 开头
-        story.append(member.getName());
-        story.append("的故事开始于");
-        if (member.getBirthDate() != null) {
-            story.append(member.getBirthDate().getYear() + 1900);
-            story.append("年");
-        }
-        story.append("...\n\n");
+        story.append("## 起源传说\n\n");
+        story.append("相传，").append(familyName).append("家族的祖先在很久以前，");
+        story.append("从远方的故土出发，历经艰难险阻，最终在这片土地上定居。\n\n");
 
-        // 描述成员基本信息
-        story.append("作为家族的一员，");
-        story.append(member.getName());
-        story.append("在家族中扮演着重要的角色。\n\n");
+        story.append("## 家族的荣耀\n\n");
+        story.append("在历史的长河中，").append(familyName).append("家族曾经有过辉煌的时期，");
+        story.append("先辈们通过自己的智慧和努力，为家族赢得了荣誉。\n\n");
 
-        // 描述相关事件
-        if (!events.isEmpty()) {
-            story.append(member.getName());
-            story.append("经历了以下重要事件：\n");
-            for (Event event : events) {
-                story.append("- ");
-                story.append(event.getTitle());
-                if (event.getDate() != null) {
-                    story.append("，发生于");
-                    story.append(event.getDate().getYear() + 1900);
-                    story.append("年");
-                }
-                story.append("：");
-                story.append(event.getDescription());
-                story.append("\n");
-            }
-            story.append("\n");
-        }
+        story.append("## 古老的家训\n\n");
+        story.append("家族代代相传的家训：\n");
+        story.append("```\n");
+        story.append("耕读传家，勤俭持家\n");
+        story.append("尊老爱幼，和睦相处\n");
+        story.append("诚信做人，踏实做事\n");
+        story.append("```\n\n");
 
-        // 结尾
-        story.append(member.getName());
-        story.append("的故事是家族历史中不可或缺的一部分，");
-        story.append("他/她的经历和贡献将永远被家族铭记。");
+        story.append("## 故事的延续\n\n");
+        story.append("这些传奇故事虽然发生在很久以前，但它们一直激励着家族的后人。");
+        story.append("在新的时代，我们要继承和发扬家族的优良传统，创造新的传奇。\n");
+
+        return story.toString();
+    }
+
+    private String generateGeneralStory(Map<String, Object> context) {
+        String familyName = (String) context.get("familyName");
+
+        StringBuilder story = new StringBuilder();
+        story.append("# ").append(familyName).append("家族的故事\n\n");
+
+        story.append("这是").append(familyName).append("家族的故事，记录了家族的发展历程，");
+        story.append("展现了家族成员之间深厚的亲情。\n\n");
+
+        story.append("## 家族的根\n\n");
+        story.append("每个家族都有自己的根源，").append(familyName).append("家族也不例外。");
+        story.append("无论我们走到哪里，都不能忘记自己的根。\n\n");
+
+        story.append("## 家族的树\n\n");
+        story.append("家族就像一棵大树，每一位成员都是树上的一片叶子。");
+        story.append("树叶虽然各不相同，但都同根同源，共同组成了茂密的树冠。\n\n");
+
+        story.append("## 家族的未来\n\n");
+        story.append("家族的未来充满希望，需要每一位成员共同努力。");
+        story.append("让我们携手共进，创造家族更美好的明天！\n");
 
         return story.toString();
     }

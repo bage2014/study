@@ -95,6 +95,12 @@
             <version>${springdoc.version}</version>
         </dependency>
 
+        <!-- Spring Boot Web Client for AI API calls -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
         <!-- Spring Boot Actuator for Monitoring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
