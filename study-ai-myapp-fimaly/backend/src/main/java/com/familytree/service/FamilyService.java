@@ -104,6 +104,11 @@ public class FamilyService {
     public boolean isAdministrator(Long familyId, Long userId) {
         log.debug("[检查管理员权限] familyId={}, userId={}", familyId, userId);
         Family family = getFamilyById(familyId);
-        return family.getAdministratorId().equals(userId);
+        Long adminId = family.getAdministratorId();
+        if (adminId == null) {
+            // 如果管理员ID为空，允许创建者进行操作
+            return family.getCreatorId().equals(userId);
+        }
+        return adminId.equals(userId);
     }
 }

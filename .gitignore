@@ -26,3 +26,4 @@ study-ai/myappendpoint/src/main/resources/local.properties
 hs_err_pid*
 replay_pid*
 *.class
+/study-ai-myapp-fimaly/.vscode

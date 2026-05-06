@@ -95,6 +95,7 @@ public class DataInitializer implements ApplicationRunner {
         family.setName(name);
         family.setDescription(description);
         family.setCreatorId(creatorId);
+        family.setAdministratorId(creatorId);
         familyRepository.save(family);
         log.info("Created default family: {}", name);
         return family;
