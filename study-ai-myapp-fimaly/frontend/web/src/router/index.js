@@ -15,6 +15,7 @@ import ProgressPage from '../views/ProgressPage.vue'
 import Milestones from '../views/Milestones.vue'
 import LocationMap from '../views/LocationMap.vue'
 import AiRelationshipAnalysis from '../views/AiRelationshipAnalysis.vue'
+import ImageImportAnalysis from '../views/ImageImportAnalysis.vue'
 import OperationLogs from '../views/OperationLogs.vue'
 import FamilyStories from '../views/FamilyStories.vue'
 
@@ -121,6 +122,12 @@ const routes = [
     path: '/ai-relationship-analysis',
     name: 'AiRelationshipAnalysis',
     component: AiRelationshipAnalysis,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/image-import-analysis',
+    name: 'ImageImportAnalysis',
+    component: ImageImportAnalysis,
     meta: { requiresAuth: true }
   },
   {

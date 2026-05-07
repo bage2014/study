@@ -199,6 +199,13 @@
       "dueDate": "2026-08-05"
     },
     {
+      "id": "image-import-analysis",
+      "name": "图片导入解析",
+      "description": "上传家族关系图图片（PNG/JPG），通过AI解析图片内容，自动识别家族成员和关系，并添加/更新到当前家族关系中",
+      "priority": "high",
+      "dueDate": "2026-05-06"
+    },
+    {
       "id": "data-export-import",
       "name": "数据导出导入",
       "description": "支持家族数据的导出和导入功能，方便数据迁移和备份",

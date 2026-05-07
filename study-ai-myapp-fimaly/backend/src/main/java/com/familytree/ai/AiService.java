@@ -177,6 +177,35 @@ public class AiService {
         return result;
     }
 
+    public Map<String, Object> analyzeImage(String imageBase64, String imageName) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            AiProvider provider = getActiveProvider();
+            if (provider == null) {
+                result.put("success", false);
+                result.put("error", "AI服务不可用");
+                return result;
+            }
+
+            AiProvider.AiResponse response = provider.analyzeImage(imageBase64, imageName);
+
+            result.put("success", response.isSuccess());
+            if (response.isSuccess()) {
+                result.put("content", response.getContent());
+                result.put("metadata", response.getMetadata());
+            } else {
+                result.put("error", response.getErrorMessage());
+            }
+        } catch (Exception e) {
+            log.error("[AI服务] 图片分析失败: {}", e.getMessage(), e);
+            result.put("success", false);
+            result.put("error", e.getMessage());
+        }
+
+        return result;
+    }
+
     public Map<String, Object> getServiceStatus() {
         Map<String, Object> status = new HashMap<>();
         status.put("enabled", aiProperties.isEnabled());

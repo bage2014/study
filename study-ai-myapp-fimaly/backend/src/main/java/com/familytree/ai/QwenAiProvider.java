@@ -57,6 +57,77 @@ public class QwenAiProvider implements AiProvider {
         }
     }
 
+    @Override
+    public AiResponse analyzeImage(String imageBase64, String imageName) {
+        try {
+            String content = callQwenMultimodalApi(imageBase64);
+            return SimpleAiResponse.success(content);
+        } catch (Exception e) {
+            log.error("[通义千问] 图片分析失败", e);
+            return SimpleAiResponse.error("图片分析失败: " + e.getMessage());
+        }
+    }
+
+    private String callQwenMultimodalApi(String imageBase64) {
+        AiProperties.ProviderConfig config = aiProperties.getProviders().get("qwen");
+        if (config == null || config.getApiKey() == null || config.getApiKey().isEmpty()) {
+            throw new IllegalStateException("通义千问API配置未设置");
+        }
+
+        String apiKey = config.getApiKey();
+        String model = config.getModel() != null ? config.getModel() : "qwen-vl-plus";
+        String endpoint = config.getEndpoint() != null ? config.getEndpoint() : "https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation";
+
+        WebClient webClient = webClientBuilder.build();
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", model);
+
+        Map<String, Object> input = new HashMap<>();
+        input.put("messages", new Object[]{
+                Map.of("role", "system", "content", "你是一个专业的家族关系图分析专家。请分析图片中的家族关系图，识别所有家族成员及其之间的关系。"),
+                Map.of("role", "user", "content", new Object[]{
+                        Map.of("type", "text", "text", "请分析这张家族关系图，识别所有家族成员及其关系。输出格式要求：\n\n成员列表：\n- 姓名1, 性别（男/女）, 出生年份（如能识别）\n- 姓名2, 性别（男/女）, 出生年份（如能识别）\n\n关系列表：\n- 姓名1 与 姓名2 的关系: 父子/母子/兄弟姐妹/祖孙/配偶等\n\n请尽可能详细地识别所有成员和关系。"),
+                        Map.of("type", "image", "image", imageBase64)
+                })
+        });
+        requestBody.put("input", input);
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("temperature", 0.5);
+        parameters.put("max_tokens", 2000);
+        requestBody.put("parameters", parameters);
+
+        try {
+            Mono<String> responseMono = webClient.post()
+                    .uri(endpoint)
+                    .header("Authorization", "Bearer " + apiKey)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(String.class);
+
+            String response = responseMono.block();
+
+            if (response != null) {
+                JsonNode rootNode = objectMapper.readTree(response);
+                JsonNode outputNode = rootNode.path("output");
+                JsonNode choicesNode = outputNode.path("choices");
+                if (choicesNode.isArray() && choicesNode.size() > 0) {
+                    JsonNode firstChoice = choicesNode.get(0);
+                    JsonNode messageNode = firstChoice.path("message");
+                    JsonNode contentNode = messageNode.path("content");
+                    return contentNode.asText();
+                }
+            }
+
+            return "API响应异常";
+        } catch (Exception e) {
+            log.error("[通义千问] 多模态API调用失败", e);
+            throw new RuntimeException("多模态API调用失败", e);
+        }
+    }
+
     private String buildPredictPrompt(Map<String, Object> params) {
         StringBuilder prompt = new StringBuilder();
         prompt.append("你是一个专业的族谱关系分析专家。\n\n");

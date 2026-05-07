@@ -12,6 +12,8 @@ public interface AiProvider {
 
     AiResponse generateStory(AiStoryRequest request);
 
+    AiResponse analyzeImage(String imageBase64, String imageName);
+
     interface AiRequest {
         String getType();
         Map<String, Object> getParams();
