@@ -3,6 +3,7 @@
 #================================================================
 # 家庭族谱APP - 阿里云一键部署脚本
 # 适用于阿里云轻量应用服务器（Ubuntu 22.04）
+# 使用MySQL数据库
 #================================================================
 
 set -e
@@ -127,7 +128,7 @@ install_maven() {
 create_directories() {
     print_step "6" "创建项目目录结构..."
     mkdir -p $PROJECT_DIR
-    mkdir -p $PROJECT_DIR/postgres-data
+    mkdir -p $PROJECT_DIR/mysql-data
     mkdir -p $PROJECT_DIR/logs
     mkdir -p $PROJECT_DIR/backups
     mkdir -p $PROJECT_DIR/frontend
@@ -148,6 +149,7 @@ clone_project() {
 
     read -p "项目文件已准备好？(y/n): " -n 1 -r
     echo
+
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         print_error "请先准备好项目文件"
         exit 1
@@ -196,38 +198,42 @@ build_frontend() {
     fi
 }
 
-# 启动数据库
+# 启动MySQL数据库
 start_database() {
-    print_step "10" "启动PostgreSQL数据库..."
+    print_step "10" "启动MySQL数据库..."
 
     # 创建Docker网络
     docker network create familytree-network 2>/dev/null || true
 
     # 停止已有容器（如果存在）
-    docker stop familytree-postgres 2>/dev/null || true
-    docker rm familytree-postgres 2>/dev/null || true
+    docker stop familytree-mysql 2>/dev/null || true
+    docker rm familytree-mysql 2>/dev/null || true
 
-    # 启动PostgreSQL
+    # 启动MySQL
     docker run -d \
-        --name familytree-postgres \
+        --name familytree-mysql \
         --network familytree-network \
-        -e POSTGRES_DB=family_tree \
-        -e POSTGRES_USER=familytree \
-        -e POSTGRES_PASSWORD=$DB_PASSWORD \
-        -e POSTGRES_INITDB_ARGS="-E UTF8" \
-        -v $PROJECT_DIR/postgres-data:/var/lib/postgresql/data \
-        -p 5432:5432 \
+        -e MYSQL_ROOT_PASSWORD=$DB_PASSWORD \
+        -e MYSQL_DATABASE=family_tree \
+        -e MYSQL_USER=familytree \
+        -e MYSQL_PASSWORD=$DB_PASSWORD \
+        -v $PROJECT_DIR/mysql-data:/var/lib/mysql \
+        -p 3306:3306 \
         --restart unless-stopped \
-        postgres:15-alpine
+        mysql:8.0 \
+        --character-set-server=utf8mb4 \
+        --collation-server=utf8mb4_unicode_ci \
+        --default-time-zone=+08:00
 
     # 等待数据库启动
-    sleep 10
+    sleep 15
 
     # 验证数据库
-    if docker exec familytree-postgres pg_isready -U familytree > /dev/null 2>&1; then
+    if docker exec familytree-mysql mysqladmin ping -u familytree -p$DB_PASSWORD --silent; then
         print_success "数据库启动完成"
     else
         print_error "数据库启动失败"
+        docker logs familytree-mysql
         exit 1
     fi
 }
@@ -249,7 +255,7 @@ COPY target/backend-1.0.0.jar app.jar
 EXPOSE 8080
 
 ENV SPRING_PROFILES_ACTIVE=prod
-ENV SPRING_DATASOURCE_URL=jdbc:postgresql://familytree-postgres:5432/family_tree
+ENV SPRING_DATASOURCE_URL=jdbc:mysql://familytree-mysql:3306/family_tree?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=utf8
 ENV SPRING_DATASOURCE_USERNAME=familytree
 ENV SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD
 ENV JWT_SECRET=$JWT_SECRET
@@ -274,7 +280,7 @@ EOF
         familytree-backend:latest
 
     # 等待服务启动
-    sleep 15
+    sleep 20
 
     # 验证服务
     if curl -s http://localhost:8080/actuator/health > /dev/null 2>&1; then
@@ -356,6 +362,7 @@ setup_firewall() {
     ufw allow 80/tcp
     ufw allow 443/tcp
     ufw allow 8080/tcp
+    ufw allow 3306/tcp
 
     echo "y" | ufw enable
 
@@ -372,7 +379,7 @@ DATE=\$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR=$PROJECT_DIR/backups
 mkdir -p \$BACKUP_DIR
 
-docker exec familytree-postgres pg_dump -U familytree family_tree > \$BACKUP_DIR/familytree_\$DATE.sql
+docker exec familytree-mysql mysqldump -u familytree -p$DB_PASSWORD family_tree > \$BACKUP_DIR/familytree_\$DATE.sql
 
 find \$BACKUP_DIR -name "familytree_*.sql" -mtime +7 -delete
 
@@ -404,7 +411,7 @@ print_deployment_info() {
     echo ""
     echo -e "${GREEN}服务管理：${NC}"
     echo -e "  查看后端日志: docker logs -f familytree-backend"
-    echo -e "  查看数据库日志: docker logs -f familytree-postgres"
+    echo -e "  查看数据库日志: docker logs -f familytree-mysql"
     echo -e "  重启后端: docker restart familytree-backend"
     echo -e "  备份数据库: $PROJECT_DIR/backup.sh"
     echo ""

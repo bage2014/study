@@ -43,7 +43,14 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- PostgreSQL Database -->
+        <!-- MySQL Database -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- PostgreSQL Database (for testing) -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
