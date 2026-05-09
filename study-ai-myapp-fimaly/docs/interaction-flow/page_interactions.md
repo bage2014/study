@@ -529,17 +529,17 @@ flowchart TD
     A[进入大事件页] --> B[加载事件列表]
     B --> C[显示列表]
     C --> D{用户操作}
-    D -->|点击添加| E[右侧抽屉滑入]
-    D -->|点击编辑| F[显示编辑表单]
-    D -->|点击删除| G[确认删除]
-    E --> H[填写信息]
-    H --> I[点击保存]
-    I --> J[显示成功Toast]
-    J --> K[新事件滑入]
-    F --> L[修改信息]
-    L --> M[点击保存]
-    M --> N[显示成功Toast]
-    G --> O[事件淡出]
+D -->|点击添加| E[右侧抽屉滑入]
+D -->|点击编辑| F[显示编辑表单]
+D -->|点击删除| G[确认删除]
+E --> H[填写信息]
+H --> I[点击保存]
+I --> J[显示成功Toast]
+J --> K[新事件滑入]
+F --> L[修改信息]
+L --> M[点击保存]
+M --> N[显示成功Toast]
+G --> O[事件淡出]
 ```
 
 ### 视觉反馈
@@ -857,3 +857,211 @@ flowchart TD
 | zoomIn | 缩放进入 | 0.2s | 对话框 |
 | pulse | 脉冲闪烁 | 1s | 搜索高亮 |
 | shake | 左右抖动 | 0.5s | 错误提示 |
+
+---
+
+## 附录B：页面统一交互规范
+
+### B.1 页面布局统一规范
+
+#### B.1.1 页面结构
+
+所有页面应遵循统一的布局结构：
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Header (统一头部导航)                                       │
+│  - 返回按钮 + 页面标题 + 操作按钮 + 用户信息                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Main Content (主内容区)                                     │
+│  - 统一容器: max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8     │
+│  - 背景色: bg-gray-50                                        │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│  Footer (可选)                                               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### B.1.2 内容区域规范
+
+| 元素 | 样式类 | 说明 |
+|------|--------|------|
+| 页面容器 | `min-h-screen bg-gray-50` | 最小全屏高度，浅灰背景 |
+| 内容容器 | `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8` | 响应式最大宽度，统一内边距 |
+| 卡片容器 | `bg-white p-6 rounded-lg shadow` | 白色背景，统一圆角和阴影 |
+| 标题样式 | `text-lg font-medium text-gray-900` | 统一标题样式 |
+
+### B.2 组件样式统一规范
+
+#### B.2.1 按钮样式
+
+| 按钮类型 | 样式类 | 使用场景 |
+|----------|--------|----------|
+| 主要按钮 | `px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200` | 创建、保存、确认等主要操作 |
+| 次要按钮 | `px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 shadow-md hover:shadow-lg transition-all duration-200` | 取消、返回等次要操作 |
+| 危险按钮 | `px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 shadow-md hover:shadow-lg transition-all duration-200` | 删除、退出等危险操作 |
+| 文字按钮 | `text-green-600 hover:text-green-800 font-medium` | 链接、查看详情等 |
+
+#### B.2.2 表单样式
+
+| 元素 | 样式类 | 说明 |
+|------|--------|------|
+| 输入框 | `w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent` | 统一输入框样式 |
+| 选择框 | `w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent` | 统一下拉选择样式 |
+| 文本域 | `w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent` | 统一文本域样式 |
+| 错误状态 | `border-red-500 focus:ring-red-500` | 验证错误时添加 |
+| 标签 | `block text-sm font-medium text-gray-700 mb-1` | 统一标签样式 |
+
+#### B.2.3 表格样式
+
+| 元素 | 样式类 | 说明 |
+|------|--------|------|
+| 表格容器 | `min-w-full divide-y divide-gray-200` | 基础表格样式 |
+| 表头 | `bg-gray-50` | 表头背景色 |
+| 表头文字 | `px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider` | 表头文字样式 |
+| 表体 | `bg-white divide-y divide-gray-200` | 表体样式 |
+| 行悬停 | `hover:bg-gray-50` | 行悬停效果 |
+| 单元格 | `px-6 py-4 whitespace-nowrap` | 单元格内边距 |
+
+#### B.2.4 卡片样式
+
+| 元素 | 样式类 | 说明 |
+|------|--------|------|
+| 基础卡片 | `bg-white p-6 rounded-lg shadow` | 基础卡片样式 |
+| 悬停卡片 | `bg-white p-6 rounded-lg shadow hover:shadow-lg transition-all duration-200` | 带悬停效果 |
+| 选中卡片 | `border-2 border-green-500 bg-green-50` | 选中状态样式 |
+| 功能卡片 | `bg-white p-5 rounded-xl shadow-sm cursor-pointer border-2 border-transparent hover:border-green-300 hover:shadow-lg transition-all duration-300` | 首页功能卡片 |
+
+### B.3 交互反馈统一规范
+
+#### B.3.1 加载状态
+
+| 场景 | 样式 | 说明 |
+|------|------|------|
+| 页面加载 | `flex justify-center py-8` + 旋转动画 | 居中显示加载动画 |
+| 按钮加载 | 按钮内显示旋转图标 + 禁用状态 | 防止重复提交 |
+| 列表加载 | 骨架屏或旋转动画 | 数据加载时显示 |
+| 旋转动画 | `animate-spin rounded-full h-12 w-12 border-b-2 border-green-500` | 统一旋转动画样式 |
+
+#### B.3.2 空状态
+
+| 场景 | 样式 | 说明 |
+|------|------|------|
+| 空列表 | `text-center py-16` + 提示文字 + 操作按钮 | 居中显示空状态提示 |
+| 无数据 | `text-gray-600` 灰色文字提示 | 统一空状态文字颜色 |
+
+#### B.3.3 确认对话框
+
+所有删除等危险操作必须显示确认对话框：
+
+```javascript
+if (confirm('确定要删除吗？此操作不可恢复。')) {
+  // 执行删除操作
+}
+```
+
+### B.4 页面特定规范
+
+#### B.4.1 家族选择器规范
+
+所有需要选择家族的页面应使用统一的家族选择器：
+
+```vue
+<!-- 家族选择器 -->
+<div class="bg-white p-6 rounded-lg shadow mb-6">
+  <h2 class="text-lg font-medium text-gray-900 mb-4">选择家族</h2>
+  <div v-if="familyStore.loading" class="flex justify-center py-8">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+  </div>
+  <div v-else-if="familyStore.families.length === 0" class="text-center py-8">
+    <p class="text-gray-600">暂无家族数据</p>
+    <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+      去创建家族
+    </button>
+  </div>
+  <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div 
+      v-for="family in familyStore.families" 
+      :key="family.id" 
+      @click="selectFamily(family)"
+      :class="['border rounded-md p-4 cursor-pointer hover:shadow-md transition-all', selectedFamily?.id === family.id ? 'border-green-500 bg-green-50' : 'border-gray-200']"
+    >
+      <div class="flex items-center">
+        <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+          <span class="text-lg font-bold text-gray-600">{{ family.name.charAt(0) }}</span>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-medium text-gray-900">{{ family.name }}</h3>
+          <p class="text-sm text-gray-600">{{ family.description || '无描述' }}</p>
+        </div>
+        <div v-if="selectedFamily?.id === family.id" class="text-green-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+#### B.4.2 模态框规范
+
+所有模态框应使用统一的样式：
+
+```vue
+<!-- 模态框 -->
+<div v-if="showModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 animate-fade-in">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">标题</h3>
+    <!-- 表单内容 -->
+    <div class="mt-6 flex justify-end">
+      <button @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+        取消
+      </button>
+      <button @click="handleSubmit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600">
+        确认
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+#### B.4.3 操作按钮组规范
+
+页面头部操作按钮应统一放置在 Header 组件的 actions 插槽中：
+
+```vue
+<Header title="页面标题">
+  <template #actions>
+    <button @click="handleAction" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+      操作按钮
+    </button>
+  </template>
+</Header>
+```
+
+### B.5 响应式规范
+
+| 断点 | 宽度 | 布局调整 |
+|------|------|----------|
+| 移动端 | < 640px | 单列布局，简化导航 |
+| 平板 | 640px - 1024px | 双列布局 |
+| 桌面 | > 1024px | 多列布局，完整功能 |
+
+### B.6 色彩使用规范
+
+| 颜色 | 色值 | 使用场景 |
+|------|------|----------|
+| 主色 | `#10B981` | 主要按钮、成功状态、选中状态 |
+| 主色深 | `#059669` | 悬停状态 |
+| 辅助色 | `#3B82F6` | 链接、信息提示 |
+| 成功色 | `#10B981` | 成功消息、完成状态 |
+| 警告色 | `#F59E0B` | 警告消息、待处理状态 |
+| 错误色 | `#EF4444` | 错误消息、删除操作 |
+| 背景色 | `#F9FAFB` | 页面背景 |
+| 卡片背景 | `#FFFFFF` | 卡片背景 |
+| 边框色 | `#E5E7EB` | 边框、分隔线 |
+| 文字主色 | `#111827` | 主要文字 |
+| 文字次色 | `#6B7280` | 次要文字、说明文字 |

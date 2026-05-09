@@ -16,15 +16,15 @@
               </div>
               <div>
                 <label for="phone" class="block text-sm font-medium text-gray-700">手机号</label>
-                <input type="tel" id="phone" v-model="profileForm.phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <input type="tel" id="phone" v-model="profileForm.phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
               </div>
               <div>
                 <label for="nickname" class="block text-sm font-medium text-gray-700">昵称</label>
-                <input type="text" id="nickname" v-model="profileForm.nickname" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <input type="text" id="nickname" v-model="profileForm.nickname" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
               </div>
             </div>
             <div class="mt-4">
-              <button type="submit" :disabled="userStore.loading" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 disabled:opacity-50">
+              <button type="submit" :disabled="userStore.loading" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50">
                 {{ userStore.loading ? '更新中...' : '更新个人信息' }}
               </button>
             </div>
@@ -38,19 +38,19 @@
             <div class="space-y-4">
               <div>
                 <label for="currentPassword" class="block text-sm font-medium text-gray-700">当前密码</label>
-                <input type="password" id="currentPassword" v-model="passwordForm.currentPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <input type="password" id="currentPassword" v-model="passwordForm.currentPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
               </div>
               <div>
                 <label for="newPassword" class="block text-sm font-medium text-gray-700">新密码</label>
-                <input type="password" id="newPassword" v-model="passwordForm.newPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <input type="password" id="newPassword" v-model="passwordForm.newPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
               </div>
               <div>
                 <label for="confirmPassword" class="block text-sm font-medium text-gray-700">确认新密码</label>
-                <input type="password" id="confirmPassword" v-model="passwordForm.confirmPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                <input type="password" id="confirmPassword" v-model="passwordForm.confirmPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
               </div>
             </div>
             <div class="mt-4">
-              <button type="submit" :disabled="userStore.loading" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 disabled:opacity-50">
+              <button type="submit" :disabled="userStore.loading" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50">
                 {{ userStore.loading ? '修改中...' : '修改密码' }}
               </button>
             </div>
@@ -65,19 +65,19 @@
               <span class="text-sm text-gray-700">允许其他用户搜索到我的家族</span>
               <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" v-model="privacyForm.allowSearch" class="sr-only peer">
-                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
               </label>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-sm text-gray-700">接收家族活动通知</span>
               <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" v-model="privacyForm.receiveNotifications" class="sr-only peer">
-                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
               </label>
             </div>
           </div>
           <div class="mt-4">
-            <button @click="updatePrivacy" :disabled="userStore.loading" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 disabled:opacity-50">
+            <button @click="updatePrivacy" :disabled="userStore.loading" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50">
               {{ userStore.loading ? '更新中...' : '更新隐私设置' }}
             </button>
           </div>

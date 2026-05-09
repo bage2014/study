@@ -250,12 +250,102 @@ description: "提供设计系统的标准规范，包括设计原则、视觉风
 - **定期更新**：根据产品迭代更新设计规范
 - **反馈收集**：收集用户和开发团队的反馈
 
-## 10. 最佳实践
+## 10. 页面统一规范
+
+### 10.1 页面布局统一
+
+所有页面应遵循统一的布局结构：
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Header (统一头部导航)                                       │
+│  - 返回按钮 + 页面标题 + 操作按钮 + 用户信息                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Main Content (主内容区)                                     │
+│  - 统一容器: max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8     │
+│  - 背景色: bg-gray-50                                        │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│  Footer (可选)                                               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 10.2 组件样式统一
+
+#### 按钮规范
+
+| 按钮类型 | Tailwind 类名 |
+|----------|---------------|
+| 主要按钮 | `px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200` |
+| 次要按钮 | `px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 shadow-md hover:shadow-lg transition-all duration-200` |
+| 危险按钮 | `px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 shadow-md hover:shadow-lg transition-all duration-200` |
+
+#### 表单规范
+
+| 元素 | Tailwind 类名 |
+|------|---------------|
+| 输入框 | `w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent` |
+| 选择框 | `w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent` |
+| 错误状态 | `border-red-500 focus:ring-red-500` |
+
+#### 卡片规范
+
+| 元素 | Tailwind 类名 |
+|------|---------------|
+| 基础卡片 | `bg-white p-6 rounded-lg shadow` |
+| 悬停卡片 | `bg-white p-6 rounded-lg shadow hover:shadow-lg transition-all duration-200` |
+| 选中卡片 | `border-2 border-green-500 bg-green-50` |
+
+#### 表格规范
+
+| 元素 | Tailwind 类名 |
+|------|---------------|
+| 表格容器 | `min-w-full divide-y divide-gray-200` |
+| 表头 | `bg-gray-50` |
+| 行悬停 | `hover:bg-gray-50` |
+
+### 10.3 页面统一范围
+
+| 页面类别 | 包含页面 | 统一内容 |
+|----------|----------|----------|
+| 认证页面 | 登录页、注册页 | 表单样式、按钮样式、错误提示 |
+| 首页 | 首页 | 卡片样式、导航交互 |
+| 家族管理 | 家族管理页、家族树页 | 家族选择器、操作按钮、数据展示 |
+| 成员管理 | 成员列表页、成员详情页、成员搜索页 | 成员卡片、列表样式、编辑表单 |
+| 关系管理 | 关系管理页 | 关系选择器、表单布局 |
+| 历史记录 | 历史记录页、成员大事件页 | 时间轴样式、事件卡片 |
+| 多媒体 | 多媒体库页 | 网格布局、媒体卡片、上传交互 |
+| 系统管理 | 操作日志页、项目进度页 | 表格样式、筛选器 |
+| AI功能 | AI关系分析页、家族故事页、图片导入页 | 结果展示、加载状态 |
+| 地图功能 | 成员位置页 | 地图容器、标记样式 |
+| 个人中心 | 个人信息页 | 表单样式、头像上传 |
+
+### 10.4 交互反馈统一
+
+#### 加载状态
+
+| 场景 | 样式 |
+|------|------|
+| 页面加载 | `flex justify-center py-8` + 旋转动画 |
+| 旋转动画 | `animate-spin rounded-full h-12 w-12 border-b-2 border-green-500` |
+
+#### Toast提示
+
+| 类型 | 颜色 | 用途 |
+|------|------|------|
+| success | 绿色背景 | 操作成功 |
+| error | 红色背景 | 操作失败 |
+| warning | 黄色背景 | 警告信息 |
+| info | 蓝色背景 | 一般信息 |
+
+## 11. 最佳实践
 
 - **组件复用**：使用设计系统中的组件，保持一致性
 - **设计系统维护**：定期更新和优化设计系统
 - **用户测试**：进行用户测试，验证设计效果
 - **性能考虑**：设计时考虑性能影响，如图片大小和动画复杂度
 - **可访问性**：确保设计符合可访问性标准
+- **页面统一**：遵循页面统一规范，确保所有页面风格一致
 
 通过遵循本设计系统规范，可以确保应用的设计风格一致、用户体验良好，同时提高设计和开发效率。

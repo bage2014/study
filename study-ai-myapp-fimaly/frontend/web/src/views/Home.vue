@@ -249,7 +249,7 @@
             <div class="mt-4 flex space-x-2">
               <button 
                 @click.stop="navigateTo(`/family-tree`)" 
-                class="flex-1 px-4 py-1.5 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors btn-active text-center"
+                class="flex-1 px-4 py-1.5 text-sm bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors btn-active text-center"
               >
                 查看家族树
               </button>

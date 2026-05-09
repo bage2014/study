@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="成员详情">
       <template #actions>
-        <button @click="editMember" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+        <button @click="editMember" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
           编辑
         </button>
       </template>
@@ -11,7 +11,7 @@
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div v-if="memberStore.loading" class="flex justify-center py-16">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
       </div>
       <div v-else-if="!memberStore.currentMember" class="bg-white p-6 rounded-lg shadow text-center py-16">
         <p class="text-gray-600">成员不存在</p>
@@ -109,33 +109,33 @@
           <div class="space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700">姓名</label>
-              <input type="text" id="name" v-model="editForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="text" id="name" v-model="editForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="gender" class="block text-sm font-medium text-gray-700">性别</label>
-              <select id="gender" v-model="editForm.gender" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <select id="gender" v-model="editForm.gender" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
                 <option value="male">男</option>
                 <option value="female">女</option>
               </select>
             </div>
             <div>
               <label for="birthDate" class="block text-sm font-medium text-gray-700">出生日期</label>
-              <input type="date" id="birthDate" v-model="editForm.birthDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="date" id="birthDate" v-model="editForm.birthDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="deathDate" class="block text-sm font-medium text-gray-700">去世日期</label>
-              <input type="date" id="deathDate" v-model="editForm.deathDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="date" id="deathDate" v-model="editForm.deathDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="details" class="block text-sm font-medium text-gray-700">详细信息</label>
-              <textarea id="details" v-model="editForm.details" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></textarea>
+              <textarea id="details" v-model="editForm.details" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
             </div>
           </div>
           <div class="mt-6 flex justify-end">
-            <button type="button" @click="showEditModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <button type="button" @click="showEditModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
               取消
             </button>
-            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
               {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>

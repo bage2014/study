@@ -198,6 +198,63 @@
 | P0 | family-administrator | 家族管理维护人 | 明确权限管理 |
 | P0 | family-messenger | 家族即时通讯 | 增强家族互动 |
 | P1 | data-export-import | 数据导出导入 | 数据迁移和备份 |
+
+### 2.2.5 页面统一需求
+
+为确保整个应用的用户体验一致性，需要对所有页面进行统一的交互和视觉风格设计。
+
+#### 页面统一目标
+
+| 目标 | 描述 | 优先级 |
+|------|------|--------|
+| 视觉一致性 | 所有页面使用统一的色彩、字体、间距、圆角等设计规范 | P0 |
+| 交互一致性 | 相同类型的操作保持一致的交互模式和反馈方式 | P0 |
+| 组件复用 | 使用统一的组件库，减少重复代码 | P0 |
+| 响应式统一 | 所有页面遵循相同的响应式设计策略 | P1 |
+| 动画统一 | 统一的过渡动画和微交互效果 | P1 |
+
+#### 页面统一范围
+
+| 页面类别 | 包含页面 | 统一内容 |
+|----------|----------|----------|
+| 认证页面 | 登录页、注册页 | 表单样式、按钮样式、错误提示 |
+| 首页 | 首页 | 卡片样式、导航交互 |
+| 家族管理 | 家族管理页、家族树页 | 家族选择器、操作按钮、数据展示 |
+| 成员管理 | 成员列表页、成员详情页、成员搜索页 | 成员卡片、列表样式、编辑表单 |
+| 关系管理 | 关系管理页 | 关系选择器、表单布局 |
+| 历史记录 | 历史记录页、成员大事件页 | 时间轴样式、事件卡片 |
+| 多媒体 | 多媒体库页 | 网格布局、媒体卡片、上传交互 |
+| 系统管理 | 操作日志页、项目进度页 | 表格样式、筛选器 |
+| AI功能 | AI关系分析页、家族故事页、图片导入页 | 结果展示、加载状态 |
+| 地图功能 | 成员位置页 | 地图容器、标记样式 |
+| 个人中心 | 个人信息页 | 表单样式、头像上传 |
+
+#### 统一设计规范
+
+**色彩系统**：
+- 主色调：绿色系列（`#10B981` - `#059669`）
+- 辅助色：蓝色系列（`#3B82F6` - `#2563EB`）
+- 成功色：`#10B981`
+- 警告色：`#F59E0B`
+- 错误色：`#EF4444`
+
+**按钮规范**：
+- 主要按钮：`bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow hover:shadow-lg transition-all duration-200`
+- 次要按钮：`bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow hover:shadow-lg transition-all duration-200`
+- 危险按钮：`bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow hover:shadow-lg transition-all duration-200`
+
+**卡片规范**：
+- 基础卡片：`bg-white p-6 rounded-lg shadow`
+- 悬停效果：`hover:shadow-lg transition-all duration-200`
+
+**表单规范**：
+- 输入框：`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`
+- 错误状态：`border-red-500 focus:ring-red-500`
+
+**表格规范**：
+- 基础表格：`min-w-full divide-y divide-gray-200`
+- 表头：`bg-gray-50`
+- 行悬停：`hover:bg-gray-50`
 | P1 | voice-assistant | AI语音助手 | 适老化优化 |
 | P2 | family-health-records | 家族健康档案 | 拓展健康管理 |
 

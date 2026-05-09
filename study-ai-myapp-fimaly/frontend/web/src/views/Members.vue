@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="成员管理">
       <template #actions>
-        <button @click="openAddMemberModal" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+        <button @click="openAddMemberModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
           添加成员
         </button>
       </template>
@@ -15,7 +15,7 @@
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
           <div class="flex space-x-2">
-            <select id="family" v-model="selectedFamilyId" @change="fetchMembers" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary">
+            <select id="family" v-model="selectedFamilyId" @change="fetchMembers" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500">
               <option value="">请选择家族</option>
               <option v-for="family in familyStore.families" :key="family.id" :value="family.id">{{ family.name }}</option>
             </select>
@@ -41,7 +41,7 @@
 
         <!-- Members List -->
         <div v-if="memberStore.loading" class="flex justify-center py-16">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
         </div>
         <div v-else-if="familyMembers.length === 0" class="text-center py-16">
           <p class="text-gray-600">暂无成员数据</p>
@@ -96,7 +96,7 @@
                   {{ member.deathDate || '在世' }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button @click="navigateTo(`/member/${member.id}`)" class="text-primary hover:text-blue-700 mr-3">
+                  <button @click="navigateTo(`/member/${member.id}`)" class="text-green-600 hover:text-green-800 mr-3">
                     查看
                   </button>
                   <button @click="editMember(member)" class="text-green-600 hover:text-green-800 mr-3">
@@ -121,11 +121,11 @@
           <div class="space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700">姓名</label>
-              <input type="text" id="name" v-model="form.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="text" id="name" v-model="form.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="gender" class="block text-sm font-medium text-gray-700">性别</label>
-              <select id="gender" v-model="form.gender" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <select id="gender" v-model="form.gender" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
                 <option value="">请选择</option>
                 <option value="male">男</option>
                 <option value="female">女</option>
@@ -133,30 +133,30 @@
             </div>
             <div>
               <label for="birthDate" class="block text-sm font-medium text-gray-700">出生日期</label>
-              <input type="date" id="birthDate" v-model="form.birthDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="date" id="birthDate" v-model="form.birthDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="deathDate" class="block text-sm font-medium text-gray-700">去世日期</label>
-              <input type="date" id="deathDate" v-model="form.deathDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="date" id="deathDate" v-model="form.deathDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="phone" class="block text-sm font-medium text-gray-700">手机号</label>
-              <input type="tel" id="phone" v-model="form.phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="tel" id="phone" v-model="form.phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="email" class="block text-sm font-medium text-gray-700">邮箱</label>
-              <input type="email" id="email" v-model="form.email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="email" id="email" v-model="form.email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="details" class="block text-sm font-medium text-gray-700">详细信息</label>
-              <textarea id="details" v-model="form.details" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></textarea>
+              <textarea id="details" v-model="form.details" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
             </div>
           </div>
           <div class="mt-6 flex justify-end">
-            <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
               取消
             </button>
-            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
               {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
@@ -172,18 +172,18 @@
           <div class="space-y-4">
             <div>
               <label for="familyName" class="block text-sm font-medium text-gray-700">家族名称</label>
-              <input type="text" id="familyName" v-model="familyForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="text" id="familyName" v-model="familyForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="familyDescription" class="block text-sm font-medium text-gray-700">家族描述</label>
-              <textarea id="familyDescription" v-model="familyForm.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></textarea>
+              <textarea id="familyDescription" v-model="familyForm.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
             </div>
           </div>
           <div class="mt-6 flex justify-end">
-            <button type="button" @click="showFamilyModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <button type="button" @click="showFamilyModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>

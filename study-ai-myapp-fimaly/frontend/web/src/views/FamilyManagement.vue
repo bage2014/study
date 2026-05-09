@@ -30,7 +30,7 @@
             v-for="family in familyStore.families" 
             :key="family.id" 
             @click="selectFamily(family)"
-            :class="['border rounded-md p-4 cursor-pointer hover:shadow-md transition-all', selectedFamily?.id === family.id ? 'border-primary bg-blue-50' : 'border-gray-200']"
+            :class="['border rounded-md p-4 cursor-pointer hover:shadow-md transition-all', selectedFamily?.id === family.id ? 'border-green-500 bg-blue-50' : 'border-gray-200']"
           >
             <div class="flex items-center">
               <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
@@ -40,7 +40,7 @@
                 <h3 class="font-medium text-gray-900">{{ family.name }}</h3>
                 <p class="text-sm text-gray-600">{{ family.description || '无描述' }}</p>
               </div>
-              <div v-if="selectedFamily?.id === family.id" class="text-primary">
+              <div v-if="selectedFamily?.id === family.id" class="text-green-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
@@ -62,7 +62,7 @@
               <p class="text-sm text-gray-500 mt-1">管理员: {{ getAdministratorName(selectedFamily.administratorId) }}</p>
             </div>
             <div class="flex space-x-2">
-              <button @click="openUpdateAdministratorModal" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 shadow-md hover:shadow-lg transition-all duration-200">
+              <button @click="openUpdateAdministratorModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
                 更改管理员
               </button>
               <button @click="openAddMemberModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
@@ -113,7 +113,7 @@
                     {{ member.birthDate || '未知' }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button @click="editMember(member)" class="text-primary hover:text-blue-700 mr-3">编辑</button>
+                    <button @click="editMember(member)" class="text-green-600 hover:text-green-800 mr-3">编辑</button>
                     <button @click="deleteMember(member.id)" class="text-red-600 hover:text-red-800">删除</button>
                   </td>
                 </tr>
@@ -273,14 +273,14 @@
           <div class="space-y-4">
             <div>
               <label for="member1" class="block text-sm font-medium text-gray-700">成员1</label>
-              <select id="member1" v-model="relationshipForm.member1Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <select id="member1" v-model="relationshipForm.member1Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
                 <option value="">请选择成员</option>
                 <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
               </select>
             </div>
             <div>
               <label for="relationshipType" class="block text-sm font-medium text-gray-700">关系类型</label>
-              <select id="relationshipType" v-model="relationshipForm.relationshipType" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <select id="relationshipType" v-model="relationshipForm.relationshipType" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
                 <option value="">请选择关系类型</option>
                 <option value="配偶">配偶</option>
                 <option value="父子">父子</option>
@@ -295,7 +295,7 @@
             </div>
             <div>
               <label for="member2" class="block text-sm font-medium text-gray-700">成员2</label>
-              <select id="member2" v-model="relationshipForm.member2Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <select id="member2" v-model="relationshipForm.member2Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
                 <option value="">请选择成员</option>
                 <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
               </select>
@@ -321,7 +321,7 @@
           <div class="space-y-4">
             <div>
               <label for="newAdministrator" class="block text-sm font-medium text-gray-700">新管理员</label>
-              <select id="newAdministrator" v-model="administratorForm.administratorId" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <select id="newAdministrator" v-model="administratorForm.administratorId" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
                 <option value="">请选择成员</option>
                 <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
               </select>
@@ -331,7 +331,7 @@
             <button type="button" @click="showUpdateAdministratorModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>

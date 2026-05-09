@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="历史记录">
       <template #actions>
-        <button @click="openAddEventModal" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+        <button @click="openAddEventModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
           添加事件
         </button>
       </template>
@@ -14,7 +14,7 @@
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
-          <select id="family" v-model="selectedFamilyId" @change="fetchEvents" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary">
+          <select id="family" v-model="selectedFamilyId" @change="fetchEvents" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500">
             <option value="">请选择家族</option>
             <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
           </select>
@@ -22,7 +22,7 @@
 
         <!-- Events List -->
         <div v-if="eventStore.loading" class="flex justify-center py-16">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
         </div>
         <div v-else-if="events.length === 0" class="text-center py-16">
           <p class="text-gray-600">暂无事件数据</p>
@@ -68,30 +68,30 @@
           <div class="space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700">事件名称</label>
-              <input type="text" id="name" v-model="form.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="text" id="name" v-model="form.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="description" class="block text-sm font-medium text-gray-700">描述</label>
-              <textarea id="description" v-model="form.description" rows="3" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></textarea>
+              <textarea id="description" v-model="form.description" rows="3" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
             </div>
             <div>
               <label for="eventDate" class="block text-sm font-medium text-gray-700">日期</label>
-              <input type="date" id="eventDate" v-model="form.eventDate" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="date" id="eventDate" v-model="form.eventDate" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="relatedMembers" class="block text-sm font-medium text-gray-700">相关成员</label>
-              <input type="text" id="relatedMembers" v-model="form.relatedMembers" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" placeholder="用逗号分隔多个成员ID">
+              <input type="text" id="relatedMembers" v-model="form.relatedMembers" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" placeholder="用逗号分隔多个成员ID">
             </div>
             <div>
               <label for="photo" class="block text-sm font-medium text-gray-700">照片</label>
-              <input type="file" id="photo" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="file" id="photo" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
           </div>
           <div class="mt-6 flex justify-end">
-            <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <button type="button" @click="showModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
               取消
             </button>
-            <button type="submit" :disabled="eventStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+            <button type="submit" :disabled="eventStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
               {{ eventStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>

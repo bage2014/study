@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="多媒体库">
       <template #actions>
-        <button @click="openUploadModal" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+        <button @click="openUploadModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
           上传媒体
         </button>
       </template>
@@ -14,7 +14,7 @@
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
-          <select id="family" v-model="selectedFamilyId" @change="fetchMedia" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary">
+          <select id="family" v-model="selectedFamilyId" @change="fetchMedia" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500">
             <option value="">请选择家族</option>
             <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
           </select>
@@ -23,16 +23,16 @@
         <!-- Media Type Filter -->
         <div class="mb-6">
           <div class="flex space-x-2">
-            <button @click="selectedType = ''" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === '' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
+            <button @click="selectedType = ''" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === '' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
               全部
             </button>
-            <button @click="selectedType = 'photo'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'photo' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
+            <button @click="selectedType = 'photo'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'photo' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
               照片
             </button>
-            <button @click="selectedType = 'video'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'video' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
+            <button @click="selectedType = 'video'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'video' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
               视频
             </button>
-            <button @click="selectedType = 'document'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'document' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
+            <button @click="selectedType = 'document'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'document' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
               文档
             </button>
           </div>
@@ -40,7 +40,7 @@
 
         <!-- Media Grid -->
         <div v-if="mediaStore.loading" class="flex justify-center py-16">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
         </div>
         <div v-else-if="filteredMedia.length === 0" class="text-center py-16">
           <p class="text-gray-600">暂无媒体文件</p>
@@ -83,7 +83,7 @@
           <div class="space-y-4">
             <div>
               <label for="mediaType" class="block text-sm font-medium text-gray-700">媒体类型</label>
-              <select id="mediaType" v-model="uploadForm.type" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <select id="mediaType" v-model="uploadForm.type" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
                 <option value="">请选择</option>
                 <option value="photo">照片</option>
                 <option value="video">视频</option>
@@ -92,18 +92,18 @@
             </div>
             <div>
               <label for="mediaFile" class="block text-sm font-medium text-gray-700">文件</label>
-              <input type="file" id="mediaFile" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="file" id="mediaFile" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
             <div>
               <label for="description" class="block text-sm font-medium text-gray-700">描述</label>
-              <input type="text" id="description" v-model="uploadForm.description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+              <input type="text" id="description" v-model="uploadForm.description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
             </div>
           </div>
           <div class="mt-6 flex justify-end">
-            <button type="button" @click="showUploadModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            <button type="button" @click="showUploadModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
               取消
             </button>
-            <button type="submit" :disabled="mediaStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50">
+            <button type="submit" :disabled="mediaStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
               {{ mediaStore.loading ? '上传中...' : '上传' }}
             </button>
           </div>

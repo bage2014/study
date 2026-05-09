@@ -27,7 +27,7 @@
             v-for="family in familyStore.families" 
             :key="family.id" 
             @click="selectFamily(family)"
-            :class="['border rounded-md p-4 cursor-pointer hover:shadow-md transition-all', selectedFamily?.id === family.id ? 'border-primary bg-blue-50' : 'border-gray-200']"
+            :class="['border rounded-md p-4 cursor-pointer hover:shadow-md transition-all', selectedFamily?.id === family.id ? 'border-green-500 bg-blue-50' : 'border-gray-200']"
           >
             <div class="flex items-center">
               <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
@@ -37,7 +37,7 @@
                 <h3 class="font-medium text-gray-900">{{ family.name }}</h3>
                 <p class="text-sm text-gray-600">{{ family.description || '无描述' }}</p>
               </div>
-              <div v-if="selectedFamily?.id === family.id" class="text-primary">
+              <div v-if="selectedFamily?.id === family.id" class="text-green-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
