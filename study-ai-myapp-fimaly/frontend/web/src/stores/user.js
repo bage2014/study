@@ -6,7 +6,14 @@ export const useUserStore = defineStore('user', {
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
     token: localStorage.getItem('token') || null,
     loading: false,
-    error: null
+    error: null,
+    // Toast状态
+    toastVisible: false,
+    toastMessage: '',
+    toastType: 'info',
+    // Loading状态
+    loadingVisible: false,
+    loadingText: '加载中...'
   }),
 
   getters: {
@@ -156,6 +163,34 @@ export const useUserStore = defineStore('user', {
       this.token = null
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+    },
+
+    // Toast方法
+    showToast(message, type = 'info') {
+      this.toastMessage = message
+      this.toastType = type
+      this.toastVisible = true
+      // 3秒后自动隐藏
+      setTimeout(() => {
+        this.hideToast()
+      }, 3000)
+    },
+
+    hideToast() {
+      this.toastVisible = false
+      this.toastMessage = ''
+      this.toastType = 'info'
+    },
+
+    // Loading方法
+    showLoading(text = '加载中...') {
+      this.loadingText = text
+      this.loadingVisible = true
+    },
+
+    hideLoading() {
+      this.loadingVisible = false
+      this.loadingText = '加载中...'
     }
   }
 })
