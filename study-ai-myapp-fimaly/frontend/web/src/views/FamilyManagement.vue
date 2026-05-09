@@ -2,19 +2,19 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="家族管理">
       <template #actions>
-        <button @click="openCreateFamilyModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+        <button @click="openCreateFamilyModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
           新建家族
         </button>
-        <button v-if="selectedFamily" @click="openFamilyDetailModal" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-200">
+        <button v-if="selectedFamily" @click="openFamilyDetailModal" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
           查看明细
         </button>
       </template>
     </Header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <!-- Family Selector -->
-      <div class="bg-white p-6 rounded-lg shadow mb-6">
+      <div class="bg-white p-6 rounded-lg shadow mb-6 animate-slide-up">
         <h2 class="text-lg font-medium text-gray-900 mb-4">选择家族</h2>
         <div v-if="familyStore.loading" class="flex justify-center py-8">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
@@ -27,20 +27,22 @@
         </div>
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div 
-            v-for="family in familyStore.families" 
+            v-for="(family, index) in familyStore.families" 
             :key="family.id" 
             @click="selectFamily(family)"
-            :class="['border rounded-md p-4 cursor-pointer hover:shadow-md transition-all', selectedFamily?.id === family.id ? 'border-green-500 bg-blue-50' : 'border-gray-200']"
+            :class="['border rounded-lg p-5 cursor-pointer transition-all duration-300 transform', selectedFamily?.id === family.id ? 'border-green-500 bg-green-50 shadow-lg scale-105' : 'border-gray-200 hover:shadow-lg hover:-translate-y-1 hover:border-green-300']"
+            :style="{ animationDelay: `${index * 50}ms` }"
+            class="animate-fade-in"
           >
             <div class="flex items-center">
-              <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                <span class="text-lg font-bold text-gray-600">{{ family.name.charAt(0) }}</span>
+              <div :class="['w-14 h-14 rounded-xl flex items-center justify-center mr-4 transition-all duration-300', selectedFamily?.id === family.id ? 'bg-gradient-to-br from-green-400 to-green-600' : 'bg-gradient-to-br from-green-100 to-green-200']">
+                <span :class="['text-xl font-bold', selectedFamily?.id === family.id ? 'text-white' : 'text-green-600']">{{ family.name.charAt(0) }}</span>
               </div>
               <div class="flex-1">
-                <h3 class="font-medium text-gray-900">{{ family.name }}</h3>
-                <p class="text-sm text-gray-600">{{ family.description || '无描述' }}</p>
+                <h3 :class="['font-semibold text-lg', selectedFamily?.id === family.id ? 'text-green-700' : 'text-gray-900']">{{ family.name }}</h3>
+                <p class="text-sm text-gray-600 mt-1">{{ family.description || '无描述' }}</p>
               </div>
-              <div v-if="selectedFamily?.id === family.id" class="text-green-600">
+              <div v-if="selectedFamily?.id === family.id" class="text-green-600 transform scale-110">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>

@@ -3,28 +3,35 @@
     <Header title="设置"></Header>
 
     <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white p-6 rounded-lg shadow">
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden animate-slide-up">
         <!-- Personal Information -->
-        <div class="mb-8">
-          <h2 class="text-lg font-medium text-gray-900 mb-4">个人信息</h2>
+        <div class="p-6 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900">个人信息</h2>
+          </div>
           <form @submit.prevent="updateProfile">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">邮箱</label>
-                <input type="email" id="email" v-model="profileForm.email" disabled class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50">
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">邮箱</label>
+                <input type="email" id="email" v-model="profileForm.email" disabled class="mt-1 block w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed">
               </div>
               <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700">手机号</label>
-                <input type="tel" id="phone" v-model="profileForm.phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1.5">手机号</label>
+                <input type="tel" id="phone" v-model="profileForm.phone" class="mt-1 block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-500 transition-all duration-200">
               </div>
               <div>
-                <label for="nickname" class="block text-sm font-medium text-gray-700">昵称</label>
-                <input type="text" id="nickname" v-model="profileForm.nickname" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                <label for="nickname" class="block text-sm font-medium text-gray-700 mb-1.5">昵称</label>
+                <input type="text" id="nickname" v-model="profileForm.nickname" class="mt-1 block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-500 transition-all duration-200">
               </div>
             </div>
             <div class="mt-4">
-              <button type="submit" :disabled="userStore.loading" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50">
+              <button type="submit" :disabled="userStore.loading" class="px-5 py-2.5 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
                 {{ userStore.loading ? '更新中...' : '更新个人信息' }}
               </button>
             </div>
@@ -32,25 +39,32 @@
         </div>
 
         <!-- Change Password -->
-        <div class="mb-8">
-          <h2 class="text-lg font-medium text-gray-900 mb-4">修改密码</h2>
+        <div class="p-6 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900">修改密码</h2>
+          </div>
           <form @submit.prevent="changePassword">
             <div class="space-y-4">
               <div>
-                <label for="currentPassword" class="block text-sm font-medium text-gray-700">当前密码</label>
-                <input type="password" id="currentPassword" v-model="passwordForm.currentPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-1.5">当前密码</label>
+                <input type="password" id="currentPassword" v-model="passwordForm.currentPassword" required class="mt-1 block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-500 transition-all duration-200">
               </div>
               <div>
-                <label for="newPassword" class="block text-sm font-medium text-gray-700">新密码</label>
-                <input type="password" id="newPassword" v-model="passwordForm.newPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1.5">新密码</label>
+                <input type="password" id="newPassword" v-model="passwordForm.newPassword" required class="mt-1 block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-500 transition-all duration-200">
               </div>
               <div>
-                <label for="confirmPassword" class="block text-sm font-medium text-gray-700">确认新密码</label>
-                <input type="password" id="confirmPassword" v-model="passwordForm.confirmPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1.5">确认新密码</label>
+                <input type="password" id="confirmPassword" v-model="passwordForm.confirmPassword" required class="mt-1 block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-500 transition-all duration-200">
               </div>
             </div>
             <div class="mt-4">
-              <button type="submit" :disabled="userStore.loading" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50">
+              <button type="submit" :disabled="userStore.loading" class="px-5 py-2.5 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
                 {{ userStore.loading ? '修改中...' : '修改密码' }}
               </button>
             </div>
@@ -58,26 +72,33 @@
         </div>
 
         <!-- Privacy Settings -->
-        <div>
-          <h2 class="text-lg font-medium text-gray-900 mb-4">隐私设置</h2>
+        <div class="p-6 hover:bg-gray-50 transition-colors duration-200">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900">隐私设置</h2>
+          </div>
           <div class="space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-green-50 transition-colors duration-200">
               <span class="text-sm text-gray-700">允许其他用户搜索到我的家族</span>
               <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" v-model="privacyForm.allowSearch" class="sr-only peer">
-                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                <div class="w-12 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 shadow-inner"></div>
               </label>
             </div>
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-green-50 transition-colors duration-200">
               <span class="text-sm text-gray-700">接收家族活动通知</span>
               <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" v-model="privacyForm.receiveNotifications" class="sr-only peer">
-                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                <div class="w-12 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 shadow-inner"></div>
               </label>
             </div>
           </div>
           <div class="mt-4">
-            <button @click="updatePrivacy" :disabled="userStore.loading" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50">
+            <button @click="updatePrivacy" :disabled="userStore.loading" class="px-5 py-2.5 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
               {{ userStore.loading ? '更新中...' : '更新隐私设置' }}
             </button>
           </div>

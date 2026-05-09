@@ -2,11 +2,18 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="家族关系管理"></Header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-1">
-          <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">添加关系</h2>
+        <div class="lg:col-span-1 animate-slide-in-left">
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </div>
+              <h2 class="text-lg font-semibold text-gray-900">添加关系</h2>
+            </div>
             <form @submit.prevent="handleCreateRelationship" class="space-y-4">
               <div>
                 <label for="familyId" class="block text-sm font-medium text-gray-700 mb-1">选择家族</label>
@@ -35,7 +42,7 @@
                   <button 
                     type="button"
                     @click="searchMember(1)"
-                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                    class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
                   >
                     搜索
                   </button>
@@ -59,7 +66,7 @@
                   <button 
                     type="button"
                     @click="searchMember(2)"
-                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                    class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
                   >
                     搜索
                   </button>

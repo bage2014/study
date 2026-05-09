@@ -2,15 +2,15 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="多媒体库">
       <template #actions>
-        <button @click="openUploadModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+        <button @click="openUploadModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
           上传媒体
         </button>
       </template>
     </Header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white p-6 rounded-lg shadow">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+      <div class="bg-white p-6 rounded-lg shadow animate-slide-up">
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
@@ -46,29 +46,46 @@
           <p class="text-gray-600">暂无媒体文件</p>
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <div v-for="media in filteredMedia" :key="media.id" class="border rounded-md overflow-hidden hover:shadow-md">
-            <div class="relative">
-              <img v-if="media.type === 'photo'" :src="media.url" :alt="media.description" class="w-full h-48 object-cover">
-              <div v-else-if="media.type === 'video'" class="w-full h-48 bg-gray-200 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+          <div v-for="(media, index) in filteredMedia" :key="media.id" class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group animate-fade-in" :style="{ animationDelay: `${index * 30}ms` }">
+            <div class="relative overflow-hidden">
+              <img v-if="media.type === 'photo'" :src="media.url" :alt="media.description" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div v-else-if="media.type === 'video'" class="w-full h-48 bg-gradient-to-br from-indigo-100 to-indigo-200 flex items-center justify-center">
+                <div class="w-16 h-16 rounded-full bg-white/80 flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
               </div>
-              <div v-else class="w-full h-48 bg-gray-200 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
+              <div v-else class="w-full h-48 bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
+                <div class="w-16 h-16 rounded-lg bg-white/80 flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
               </div>
-              <button @click="deleteMedia(media.id)" class="absolute top-2 right-2 bg-white rounded-full p-1 text-red-600 hover:text-red-800">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <button @click.stop="previewMedia(media)" class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg transform scale-0 group-hover:scale-100 transition-transform duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </button>
+              </div>
+              <button @click.stop="deleteMedia(media.id)" class="absolute top-2 right-2 bg-white/90 rounded-full p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 shadow-md transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
               </button>
             </div>
-            <div class="p-4">
-              <p class="text-sm font-medium text-gray-900">{{ media.description || '无描述' }}</p>
-              <p class="text-xs text-gray-500 mt-1">{{ formatDate(media.uploadedAt) }}</p>
+            <div class="p-4 bg-gray-50">
+              <p class="text-sm font-medium text-gray-900 truncate">{{ media.description || '无描述' }}</p>
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-xs text-gray-500">{{ formatDate(media.uploadedAt) }}</span>
+                <span :class="['px-2 py-0.5 rounded-full text-xs font-medium', media.type === 'photo' ? 'bg-green-100 text-green-700' : media.type === 'video' ? 'bg-indigo-100 text-indigo-700' : 'bg-purple-100 text-purple-700']">
+                  {{ media.type === 'photo' ? '照片' : media.type === 'video' ? '视频' : '文档' }}
+                </span>
+              </div>
             </div>
           </div>
         </div>

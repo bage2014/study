@@ -2,15 +2,15 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="历史记录">
       <template #actions>
-        <button @click="openAddEventModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+        <button @click="openAddEventModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
           添加事件
         </button>
       </template>
     </Header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white p-6 rounded-lg shadow">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+      <div class="bg-white p-6 rounded-lg shadow animate-slide-up">
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
@@ -28,32 +28,41 @@
           <p class="text-gray-600">暂无事件数据</p>
         </div>
         <div v-else class="space-y-4">
-          <div v-for="event in events" :key="event.id" class="border rounded-md p-4 hover:shadow-md">
+          <div v-for="(event, index) in events" :key="event.id" class="border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer animate-fade-in" :style="{ animationDelay: `${index * 50}ms` }">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="font-medium text-gray-900">{{ event.title }}</h3>
-                <p class="text-sm text-gray-600 mt-1">{{ event.date }}</p>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center mr-3 flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-gray-900 text-lg">{{ event.title }}</h3>
+                    <p class="text-sm text-gray-500 mt-0.5">{{ event.date }}</p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <button @click="editEvent(event)" class="text-green-600 hover:text-green-800 mr-3">
+              <div class="flex space-x-2">
+                <button @click.stop="editEvent(event)" class="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition-all duration-200 transform hover:scale-110">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 </button>
-                <button @click="deleteEvent(event.id)" class="text-red-600 hover:text-red-800">
+                <button @click.stop="deleteEvent(event.id)" class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all duration-200 transform hover:scale-110">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
               </div>
             </div>
-            <p class="mt-2 text-gray-700">{{ event.description }}</p>
-            <div v-if="event.relatedMembers" class="mt-2">
+            <p class="mt-4 text-gray-700 leading-relaxed">{{ event.description }}</p>
+            <div v-if="event.relatedMembers" class="mt-3 flex items-center">
               <span class="text-sm font-medium text-gray-500">相关成员:</span>
-              <span class="text-sm text-gray-700 ml-2">{{ event.relatedMembers }}</span>
+              <span class="text-sm text-green-600 ml-2">{{ event.relatedMembers }}</span>
             </div>
             <div v-if="event.photo" class="mt-4">
-              <img :src="event.photo" :alt="event.name" class="max-w-xs rounded-md">
+              <img :src="event.photo" :alt="event.name" class="max-w-xs rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
             </div>
           </div>
         </div>
