@@ -27,3 +27,4 @@ hs_err_pid*
 replay_pid*
 *.class
 /study-ai-myapp-fimaly/.vscode
+/study-ai-myapp-fimaly/backend/uploads

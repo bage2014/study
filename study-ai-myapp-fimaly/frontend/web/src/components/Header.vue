@@ -13,9 +13,19 @@
         <div class="flex items-center space-x-3">
           <slot name="actions"></slot>
           <div class="flex items-center space-x-4">
-            <span class="text-sm text-gray-700">{{ user?.nickname || user?.email }}</span>
+            <!-- 用户头像（点击跳转个人信息） -->
+            <div class="relative">
+              <img 
+                :src="userAvatarUrl || defaultAvatar" 
+                :alt="displayName"
+                class="w-8 h-8 rounded-full object-cover border-2 border-gray-200 cursor-pointer hover:border-gray-400"
+                @click="navigateTo('/profile')"
+              />
+            </div>
+            <!-- 用户名（优先昵称，为空显示邮箱） -->
+            <span class="text-sm text-gray-700">{{ displayName }}</span>
             <button @click="handleLogout" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-              退出登录
+              退出
             </button>
           </div>
         </div>
@@ -25,9 +35,9 @@
 </template>
 
 <script>
+import { computed, ref, onMounted } from 'vue'
 import { useUserStore } from '../stores/user'
 import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
 
 export default {
   name: 'Header',
@@ -40,6 +50,15 @@ export default {
   setup() {
     const userStore = useUserStore()
     const router = useRouter()
+    const userAvatarUrl = ref('')
+    const defaultAvatar = 'https://via.placeholder.com/32'
+
+    // 优先显示昵称，为空时显示邮箱
+    const displayName = computed(() => {
+      const user = userStore.user
+      if (!user) return '未登录'
+      return user.nickname || user.email || '未设置'
+    })
 
     const handleLogout = () => {
       userStore.logout()
@@ -50,14 +69,37 @@ export default {
       router.push(path)
     }
 
+    const loadUserAvatar = async () => {
+      const user = userStore.user
+      if (user && user.avatar) {
+        try {
+          const response = await fetch(user.avatar, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          })
+          if (response.ok) {
+            const blob = await response.blob()
+            userAvatarUrl.value = URL.createObjectURL(blob)
+          }
+        } catch (error) {
+          console.error('Failed to load user avatar:', error)
+        }
+      }
+    }
+
     onMounted(async () => {
       if (!userStore.user) {
         await userStore.fetchCurrentUser()
       }
+      await loadUserAvatar()
     })
 
     return {
       user: userStore.user,
+      displayName,
+      userAvatarUrl,
+      defaultAvatar,
       handleLogout,
       navigateTo
     }

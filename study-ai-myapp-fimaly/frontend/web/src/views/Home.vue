@@ -83,7 +83,7 @@
           <p class="mt-2 text-sm text-gray-600">记录成员重要时刻</p>
         </div>
 
-        <!-- 家族地理位置 -->
+        <!-- 成员位置 -->
         <div @click="navigateTo('/location-map')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
           <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-100 text-green-600 mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -91,7 +91,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900">家族地理位置</h3>
+          <h3 class="text-lg font-medium text-gray-900">成员位置</h3>
           <p class="mt-2 text-sm text-gray-600">查看成员位置</p>
         </div>
 
@@ -126,6 +126,17 @@
           </div>
           <h3 class="text-lg font-medium text-gray-900">家族故事</h3>
           <p class="mt-2 text-sm text-gray-600">生成家族故事</p>
+        </div>
+
+        <!-- 图片导入 -->
+        <div @click="navigateTo('/image-import-analysis')" class="bg-white p-6 rounded-lg shadow hover:shadow-md cursor-pointer">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-100 text-indigo-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">图片导入</h3>
+          <p class="mt-2 text-sm text-gray-600">上传家族关系图自动解析</p>
         </div>
       </div>
 

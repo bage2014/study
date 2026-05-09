@@ -18,6 +18,7 @@ import AiRelationshipAnalysis from '../views/AiRelationshipAnalysis.vue'
 import ImageImportAnalysis from '../views/ImageImportAnalysis.vue'
 import OperationLogs from '../views/OperationLogs.vue'
 import FamilyStories from '../views/FamilyStories.vue'
+import Profile from '../views/Profile.vue'
 
 const routes = [
   {
@@ -140,6 +141,12 @@ const routes = [
     path: '/family-stories',
     name: 'FamilyStories',
     component: FamilyStories,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
     meta: { requiresAuth: true }
   },
   // 404 page
