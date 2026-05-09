@@ -1,25 +1,12 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <div class="flex items-center">
-            <button @click="navigateTo('/members')" class="mr-4 text-gray-600 hover:text-gray-900">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </button>
-            <h1 class="text-xl font-bold text-gray-900">成员详情</h1>
-          </div>
-          <div class="flex items-center">
-            <button @click="editMember" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
-              编辑
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
+    <Header title="成员详情">
+      <template #actions>
+        <button @click="editMember" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+          编辑
+        </button>
+      </template>
+    </Header>
 
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -163,9 +150,13 @@ import { ref, onMounted } from 'vue'
 import { useMemberStore } from '../stores/member'
 import { useFamilyStore } from '../stores/family'
 import { useRoute, useRouter } from 'vue-router'
+import Header from '../components/Header.vue'
 
 export default {
   name: 'MemberDetail',
+  components: {
+    Header
+  },
   setup() {
     const route = useRoute()
     const router = useRouter()

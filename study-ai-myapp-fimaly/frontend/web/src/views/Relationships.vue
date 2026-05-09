@@ -1,19 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <header class="bg-white shadow">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <div class="flex items-center">
-            <h1 class="text-xl font-bold text-gray-900">家族关系管理</h1>
-          </div>
-          <div class="flex items-center">
-            <button @click="navigateTo('/home')" class="ml-4 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
-              返回首页
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
+    <Header title="家族关系管理"></Header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -200,9 +187,13 @@ import { useMemberStore } from '../stores/member'
 import { useFamilyStore } from '../stores/family'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, onMounted, watch } from 'vue'
+import Header from '../components/Header.vue'
 
 export default {
   name: 'Relationships',
+  components: {
+    Header
+  },
   setup() {
     const relationshipStore = useRelationshipStore()
     const memberStore = useMemberStore()

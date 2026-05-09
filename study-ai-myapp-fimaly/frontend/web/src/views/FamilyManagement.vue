@@ -1,28 +1,15 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <div class="flex items-center">
-            <button @click="navigateTo('/home')" class="mr-4 text-gray-600 hover:text-gray-900">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </button>
-            <h1 class="text-xl font-bold text-gray-900">家族管理</h1>
-          </div>
-          <div class="flex items-center space-x-3">
-            <button @click="openCreateFamilyModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
-              新建家族
-            </button>
-            <button v-if="selectedFamily" @click="openFamilyDetailModal" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-200">
-              查看明细
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
+    <Header title="家族管理">
+      <template #actions>
+        <button @click="openCreateFamilyModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+          新建家族
+        </button>
+        <button v-if="selectedFamily" @click="openFamilyDetailModal" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-200">
+          查看明细
+        </button>
+      </template>
+    </Header>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -356,6 +343,7 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
+import Header from '../components/Header.vue'
 import { useFamilyStore } from '../stores/family'
 import { useMemberStore } from '../stores/member'
 import { useRelationshipStore } from '../stores/relationship'
@@ -363,6 +351,9 @@ import { useRouter } from 'vue-router'
 
 export default {
   name: 'FamilyManagement',
+  components: {
+    Header
+  },
   setup() {
     const router = useRouter()
     const familyStore = useFamilyStore()
