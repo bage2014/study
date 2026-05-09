@@ -1,12 +1,19 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <Header title="成员大事件记录" />
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
 
     <!-- 成员选择器 -->
-    <div class="mb-4">
-      <label class="block text-sm font-medium text-gray-700 mb-1">选择成员</label>
-      <select v-model="selectedMemberId" @change="fetchMilestones" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+    <div class="bg-white p-6 rounded-xl shadow-lg mb-6 animate-slide-up">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center mr-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h2 class="text-lg font-semibold text-gray-900">选择成员</h2>
+      </div>
+      <select v-model="selectedMemberId" @change="fetchMilestones" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
         <option value="">请选择成员</option>
         <option v-for="member in members" :key="member.id" :value="member.id">
           {{ member.name }}
@@ -26,27 +33,35 @@
 
     <!-- 大事件列表 -->
     <div v-else-if="milestones.length > 0" class="space-y-4">
-      <div v-for="milestone in milestones" :key="milestone.id" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+      <div v-for="(milestone, index) in milestones" :key="milestone.id" class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in" :style="{ animationDelay: `${index * 30}ms` }">
         <div class="flex justify-between items-start">
-          <h2 class="text-lg font-semibold">{{ milestone.title }}</h2>
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center mr-3 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900">{{ milestone.title }}</h2>
+          </div>
           <div class="flex space-x-2">
-            <button @click="editMilestone(milestone)" class="text-blue-600 hover:text-blue-800">
+            <button @click="editMilestone(milestone)" class="text-blue-500 hover:text-blue-600 p-2 hover:bg-blue-50 rounded-lg transition-all duration-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
             </button>
-            <button @click="deleteMilestone(milestone.id)" class="text-red-600 hover:text-red-800">
+            <button @click="deleteMilestone(milestone.id)" class="text-red-500 hover:text-red-600 p-2 hover:bg-red-50 rounded-lg transition-all duration-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </button>
           </div>
         </div>
-        <div class="mt-2 text-sm text-gray-600">
-          <p>创建时间：{{ formatDate(milestone.createdAt) }}</p>
-          <p>更新时间：{{ formatDate(milestone.updatedAt) }}</p>
+        <div class="mt-2 text-sm text-gray-500">
+          <span>创建时间：{{ formatDate(milestone.createdAt) }}</span>
+          <span class="mx-2">|</span>
+          <span>更新时间：{{ formatDate(milestone.updatedAt) }}</span>
         </div>
-        <div class="mt-4" v-html="milestone.content"></div>
+        <div class="mt-4 text-gray-700" v-html="milestone.content"></div>
       </div>
     </div>
 

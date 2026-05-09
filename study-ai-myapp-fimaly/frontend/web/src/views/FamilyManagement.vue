@@ -168,25 +168,32 @@
     </main>
 
     <!-- Create Family Modal -->
-    <div v-if="showCreateFamilyModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">新建家族</h3>
+    <div v-if="showCreateFamilyModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showCreateFamilyModal = false">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">新建家族</h3>
+        </div>
         <form @submit.prevent="handleCreateFamily">
           <div class="space-y-4">
             <div>
-              <label for="familyName" class="block text-sm font-medium text-gray-700">家族名称</label>
-              <input type="text" id="familyName" v-model="familyForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="familyName" class="block text-sm font-medium text-gray-700 mb-1.5">家族名称</label>
+              <input type="text" id="familyName" v-model="familyForm.name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="familyDescription" class="block text-sm font-medium text-gray-700">描述</label>
-              <textarea id="familyDescription" v-model="familyForm.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
+              <label for="familyDescription" class="block text-sm font-medium text-gray-700 mb-1.5">描述</label>
+              <textarea id="familyDescription" v-model="familyForm.description" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"></textarea>
             </div>
           </div>
-          <div class="mt-6 flex justify-end">
-            <button type="button" @click="showCreateFamilyModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" @click="showCreateFamilyModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+            <button type="submit" :disabled="familyStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
               {{ familyStore.loading ? '创建中...' : '创建' }}
             </button>
           </div>
@@ -195,28 +202,35 @@
     </div>
 
     <!-- Family Detail Modal -->
-    <div v-if="showFamilyDetailModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">家族详情</h3>
+    <div v-if="showFamilyDetailModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showFamilyDetailModal = false">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">家族详情</h3>
+        </div>
         <form @submit.prevent="handleUpdateFamily">
           <div class="space-y-4">
             <div>
-              <label for="editFamilyName" class="block text-sm font-medium text-gray-700">家族名称</label>
-              <input type="text" id="editFamilyName" v-model="familyForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="editFamilyName" class="block text-sm font-medium text-gray-700 mb-1.5">家族名称</label>
+              <input type="text" id="editFamilyName" v-model="familyForm.name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="editFamilyDescription" class="block text-sm font-medium text-gray-700">描述</label>
-              <textarea id="editFamilyDescription" v-model="familyForm.description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
+              <label for="editFamilyDescription" class="block text-sm font-medium text-gray-700 mb-1.5">描述</label>
+              <textarea id="editFamilyDescription" v-model="familyForm.description" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"></textarea>
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="handleDeleteFamily" class="bg-red-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-red-700">
+            <button type="button" @click="handleDeleteFamily" class="px-4 py-2.5 bg-red-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-red-600 hover:-translate-y-0.5 transition-all duration-200">
               删除家族
             </button>
-            <button type="button" @click="showFamilyDetailModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+            <button type="button" @click="showFamilyDetailModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+            <button type="submit" :disabled="familyStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
@@ -225,41 +239,48 @@
     </div>
 
     <!-- Add Member Modal -->
-    <div v-if="showAddMemberModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">{{ editingMember ? '编辑成员' : '添加成员' }}</h3>
+    <div v-if="showAddMemberModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showAddMemberModal = false">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">{{ editingMember ? '编辑成员' : '添加成员' }}</h3>
+        </div>
         <form @submit.prevent="handleAddMember">
           <div class="space-y-4">
             <div>
-              <label for="memberName" class="block text-sm font-medium text-gray-700">姓名</label>
-              <input type="text" id="memberName" v-model="memberForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="memberName" class="block text-sm font-medium text-gray-700 mb-1.5">姓名</label>
+              <input type="text" id="memberName" v-model="memberForm.name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="memberGender" class="block text-sm font-medium text-gray-700">性别</label>
-              <select id="memberGender" v-model="memberForm.gender" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="memberGender" class="block text-sm font-medium text-gray-700 mb-1.5">性别</label>
+              <select id="memberGender" v-model="memberForm.gender" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
                 <option value="">请选择</option>
                 <option value="male">男</option>
                 <option value="female">女</option>
               </select>
             </div>
             <div>
-              <label for="memberBirthDate" class="block text-sm font-medium text-gray-700">出生日期</label>
-              <input type="date" id="memberBirthDate" v-model="memberForm.birthDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="memberBirthDate" class="block text-sm font-medium text-gray-700 mb-1.5">出生日期</label>
+              <input type="date" id="memberBirthDate" v-model="memberForm.birthDate" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="memberDeathDate" class="block text-sm font-medium text-gray-700">去世日期</label>
-              <input type="date" id="memberDeathDate" v-model="memberForm.deathDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="memberDeathDate" class="block text-sm font-medium text-gray-700 mb-1.5">去世日期</label>
+              <input type="date" id="memberDeathDate" v-model="memberForm.deathDate" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="memberDetails" class="block text-sm font-medium text-gray-700">详细信息</label>
-              <textarea id="memberDetails" v-model="memberForm.details" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
+              <label for="memberDetails" class="block text-sm font-medium text-gray-700 mb-1.5">详细信息</label>
+              <textarea id="memberDetails" v-model="memberForm.details" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"></textarea>
             </div>
           </div>
-          <div class="mt-6 flex justify-end">
-            <button type="button" @click="showAddMemberModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" @click="showAddMemberModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
               取消
             </button>
-            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+            <button type="submit" :disabled="memberStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
               {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
@@ -268,21 +289,28 @@
     </div>
 
     <!-- Add Relationship Modal -->
-    <div v-if="showAddRelationshipModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">添加关联关系</h3>
+    <div v-if="showAddRelationshipModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showAddRelationshipModal = false">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">添加关联关系</h3>
+        </div>
         <form @submit.prevent="handleAddRelationship">
           <div class="space-y-4">
             <div>
-              <label for="member1" class="block text-sm font-medium text-gray-700">成员1</label>
-              <select id="member1" v-model="relationshipForm.member1Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="member1" class="block text-sm font-medium text-gray-700 mb-1.5">成员1</label>
+              <select id="member1" v-model="relationshipForm.member1Id" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
                 <option value="">请选择成员</option>
                 <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
               </select>
             </div>
             <div>
-              <label for="relationshipType" class="block text-sm font-medium text-gray-700">关系类型</label>
-              <select id="relationshipType" v-model="relationshipForm.relationshipType" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="relationshipType" class="block text-sm font-medium text-gray-700 mb-1.5">关系类型</label>
+              <select id="relationshipType" v-model="relationshipForm.relationshipType" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
                 <option value="">请选择关系类型</option>
                 <option value="配偶">配偶</option>
                 <option value="父子">父子</option>
@@ -296,18 +324,18 @@
               </select>
             </div>
             <div>
-              <label for="member2" class="block text-sm font-medium text-gray-700">成员2</label>
-              <select id="member2" v-model="relationshipForm.member2Id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="member2" class="block text-sm font-medium text-gray-700 mb-1.5">成员2</label>
+              <select id="member2" v-model="relationshipForm.member2Id" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
                 <option value="">请选择成员</option>
                 <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
               </select>
             </div>
           </div>
-          <div class="mt-6 flex justify-end">
-            <button type="button" @click="showAddRelationshipModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" @click="showAddRelationshipModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
               取消
             </button>
-            <button type="submit" :disabled="relationshipStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+            <button type="submit" :disabled="relationshipStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
               {{ relationshipStore.loading ? '添加中...' : '添加' }}
             </button>
           </div>
@@ -316,24 +344,31 @@
     </div>
 
     <!-- Update Administrator Modal -->
-    <div v-if="showUpdateAdministratorModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">更改管理员</h3>
+    <div v-if="showUpdateAdministratorModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showUpdateAdministratorModal = false">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-100 to-cyan-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">更改管理员</h3>
+        </div>
         <form @submit.prevent="handleUpdateAdministrator">
           <div class="space-y-4">
             <div>
-              <label for="newAdministrator" class="block text-sm font-medium text-gray-700">新管理员</label>
-              <select id="newAdministrator" v-model="administratorForm.administratorId" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="newAdministrator" class="block text-sm font-medium text-gray-700 mb-1.5">新管理员</label>
+              <select id="newAdministrator" v-model="administratorForm.administratorId" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
                 <option value="">请选择成员</option>
                 <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
               </select>
             </div>
           </div>
-          <div class="mt-6 flex justify-end">
-            <button type="button" @click="showUpdateAdministratorModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" @click="showUpdateAdministratorModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 hover:shadow-lg disabled:opacity-50 transition-all duration-200">
+            <button type="submit" :disabled="familyStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>

@@ -1,18 +1,24 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <Header title="个人信息" />
-    <main class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white rounded-lg shadow">
+    <main class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+      <div class="bg-white rounded-xl shadow-lg animate-slide-up">
         <!-- Profile Picture Section -->
-        <div class="border-b px-6 py-6">
+        <div class="border-b border-gray-100 px-6 py-6">
           <div class="flex items-center">
             <div class="relative">
               <img 
-                :src="avatarUrl || 'https://via.placeholder.com/120'" 
+                v-if="avatarUrl" 
+                :src="avatarUrl" 
                 :alt="profile.nickname || profile.username"
-                class="w-24 h-24 rounded-full object-cover border-4 border-gray-200"
+                class="w-24 h-24 rounded-full object-cover border-4 border-gray-200 hover:border-green-300 transition-all duration-300"
               />
-              <label class="absolute bottom-0 right-0 bg-green-500 text-white rounded-full p-2 hover:bg-green-600 cursor-pointer">
+              <div v-else class="w-24 h-24 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center border-4 border-gray-200 hover:border-green-300 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <label class="absolute bottom-0 right-0 bg-green-500 text-white rounded-full p-2 hover:bg-green-600 cursor-pointer shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -44,14 +50,22 @@
 
         <!-- Form Section -->
         <div class="p-6">
-          <form @submit.prevent="updateProfile" class="space-y-6">
+          <div class="flex items-center mb-6">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900">编辑个人信息</h2>
+          </div>
+          <form @submit.prevent="updateProfile" class="space-y-5">
             <!-- Nickname -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">昵称</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">昵称</label>
               <input 
                 v-model="formData.nickname"
                 type="text" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="请输入昵称"
                 maxlength="50"
               />
@@ -59,11 +73,11 @@
 
             <!-- Username -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">用户名</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">用户名</label>
               <input 
                 v-model="formData.username"
                 type="text" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50"
                 disabled
                 placeholder="用户名"
               />
@@ -71,33 +85,33 @@
 
             <!-- Email -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">邮箱</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">邮箱</label>
               <input 
                 v-model="formData.email"
                 type="email" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="请输入邮箱"
               />
             </div>
 
             <!-- Phone -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">手机号</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">手机号</label>
               <input 
                 v-model="formData.phone"
                 type="tel" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="请输入手机号"
                 maxlength="11"
               />
             </div>
 
             <!-- Submit Button -->
-            <div class="flex justify-end space-x-4">
+            <div class="flex justify-end space-x-3 pt-4">
               <button 
                 type="button" 
                 @click="resetForm"
-                class="px-6 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                class="px-5 py-2.5 text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all duration-200 hover:-translate-y-0.5"
               >
                 重置
               </button>

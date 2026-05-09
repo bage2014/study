@@ -93,14 +93,21 @@
     </main>
 
     <!-- Upload Media Modal -->
-    <div v-if="showUploadModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">上传媒体</h3>
+    <div v-if="showUploadModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showUploadModal = false">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">上传媒体</h3>
+        </div>
         <form @submit.prevent="handleUpload">
           <div class="space-y-4">
             <div>
-              <label for="mediaType" class="block text-sm font-medium text-gray-700">媒体类型</label>
-              <select id="mediaType" v-model="uploadForm.type" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="mediaType" class="block text-sm font-medium text-gray-700 mb-1.5">媒体类型</label>
+              <select id="mediaType" v-model="uploadForm.type" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
                 <option value="">请选择</option>
                 <option value="photo">照片</option>
                 <option value="video">视频</option>
@@ -108,19 +115,19 @@
               </select>
             </div>
             <div>
-              <label for="mediaFile" class="block text-sm font-medium text-gray-700">文件</label>
-              <input type="file" id="mediaFile" @change="handleFileChange" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="mediaFile" class="block text-sm font-medium text-gray-700 mb-1.5">文件</label>
+              <input type="file" id="mediaFile" @change="handleFileChange" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="description" class="block text-sm font-medium text-gray-700">描述</label>
-              <input type="text" id="description" v-model="uploadForm.description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="description" class="block text-sm font-medium text-gray-700 mb-1.5">描述</label>
+              <input type="text" id="description" v-model="uploadForm.description" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
           </div>
-          <div class="mt-6 flex justify-end">
-            <button type="button" @click="showUploadModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" @click="showUploadModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
               取消
             </button>
-            <button type="submit" :disabled="mediaStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
+            <button type="submit" :disabled="mediaStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
               {{ mediaStore.loading ? '上传中...' : '上传' }}
             </button>
           </div>

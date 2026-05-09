@@ -1,15 +1,22 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <Header title="AI关系预测" />
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
 
-      <div class="mb-6 bg-white rounded-lg shadow p-6">
-        <h2 class="text-lg font-semibold mb-4">智能关系预测</h2>
+      <div class="mb-6 bg-white rounded-xl shadow-lg p-6 animate-slide-up">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-100 to-cyan-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">智能关系预测</h2>
+        </div>
         <p class="text-gray-600 mb-4">基于家族成员的年龄、姓名、性别等多维度信息，AI将分析并预测可能的家族关系。</p>
 
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">选择家族</label>
-          <select v-model="selectedFamilyId" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">选择家族</label>
+          <select v-model="selectedFamilyId" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             <option value="">请选择家族</option>
             <option v-for="family in families" :key="family.id" :value="family.id">
               {{ family.name }}
@@ -20,7 +27,7 @@
         <button
           @click="analyzeRelationships"
           :disabled="!selectedFamilyId || aiRelationshipStore.loading"
-          class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md disabled:bg-gray-400 transition-colors"
+          class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl disabled:bg-gray-400 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
         >
           {{ aiRelationshipStore.loading ? '分析中...' : '开始分析' }}
         </button>

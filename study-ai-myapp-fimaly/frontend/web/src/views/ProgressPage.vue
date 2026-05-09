@@ -3,7 +3,7 @@
     <Header title="项目进度"></Header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <div v-if="loading" class="flex justify-center py-8">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
       </div>
@@ -12,8 +12,15 @@
       </div>
       <div v-else>
         <!-- Overall Progress -->
-        <div class="bg-white p-6 rounded-lg shadow mb-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">整体进度</h3>
+        <div class="bg-white p-6 rounded-xl shadow-lg mb-6 animate-slide-up">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">整体进度</h3>
+          </div>
           <div class="flex justify-between mb-2">
             <span class="text-sm font-medium text-gray-700">完成度</span>
             <span class="text-sm font-medium text-green-600">{{ progress.overallProgress }}%</span>

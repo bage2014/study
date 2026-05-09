@@ -2,42 +2,56 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="家族树">
       <template #actions>
-        <button @click="navigateTo('/family-management')" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+        <button @click="navigateTo('/family-management')" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
           家族管理
         </button>
       </template>
     </Header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <!-- Family Selector -->
-      <div class="bg-white p-6 rounded-lg shadow mb-6">
-        <h2 class="text-lg font-medium text-gray-900 mb-4">选择家族</h2>
+      <div class="bg-white p-6 rounded-xl shadow-lg mb-6 animate-slide-up">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">选择家族</h2>
+        </div>
         <div v-if="familyStore.loading" class="flex justify-center py-8">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
         </div>
         <div v-else-if="familyStore.families.length === 0" class="text-center py-8">
+          <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
           <p class="text-gray-600">暂无家族数据</p>
-          <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+          <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
             去创建家族
           </button>
         </div>
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div 
-            v-for="family in familyStore.families" 
+            v-for="(family, index) in familyStore.families" 
             :key="family.id" 
             @click="selectFamily(family)"
-            :class="['border rounded-md p-4 cursor-pointer hover:shadow-md transition-all', selectedFamily?.id === family.id ? 'border-green-500 bg-blue-50' : 'border-gray-200']"
+            :class="['border rounded-xl p-5 cursor-pointer transition-all duration-300 transform', selectedFamily?.id === family.id ? 'border-green-500 bg-green-50 shadow-lg scale-105' : 'border-gray-200 hover:shadow-lg hover:-translate-y-1 hover:border-green-300']"
+            :style="{ animationDelay: `${index * 50}ms` }"
+            class="animate-fade-in"
           >
             <div class="flex items-center">
-              <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                <span class="text-lg font-bold text-gray-600">{{ family.name.charAt(0) }}</span>
+              <div :class="['w-14 h-14 rounded-xl flex items-center justify-center mr-4 transition-all duration-300', selectedFamily?.id === family.id ? 'bg-gradient-to-br from-green-400 to-green-600' : 'bg-gradient-to-br from-green-100 to-green-200']">
+                <span :class="['text-xl font-bold', selectedFamily?.id === family.id ? 'text-white' : 'text-green-600']">{{ family.name.charAt(0) }}</span>
               </div>
               <div class="flex-1">
-                <h3 class="font-medium text-gray-900">{{ family.name }}</h3>
+                <h3 class="font-semibold text-gray-900">{{ family.name }}</h3>
                 <p class="text-sm text-gray-600">{{ family.description || '无描述' }}</p>
               </div>
-              <div v-if="selectedFamily?.id === family.id" class="text-green-600">
+              <div v-if="selectedFamily?.id === family.id" class="text-green-600 animate-scale-in">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
@@ -50,29 +64,41 @@
       <!-- Selected Family Content -->
       <div v-if="selectedFamily" class="space-y-6">
         <!-- Family Info -->
-        <div class="bg-white p-6 rounded-lg shadow">
+        <div class="bg-white p-6 rounded-xl shadow-lg animate-slide-in-left">
           <div class="flex justify-between items-start">
             <div>
               <h2 class="text-2xl font-bold text-gray-900">{{ selectedFamily.name }}</h2>
               <p class="text-gray-600 mt-1">{{ selectedFamily.description || '无描述' }}</p>
               <p class="text-sm text-gray-500 mt-2">创建于: {{ formatDate(selectedFamily.createdAt) }}</p>
             </div>
-            <button @click="navigateTo('/family-management')" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+            <button @click="navigateTo('/family-management')" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
               管理家族
             </button>
           </div>
         </div>
 
         <!-- Family Relationship Graph -->
-        <div class="bg-white p-6 rounded-lg shadow">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">家族关系图</h3>
+        <div class="bg-white p-6 rounded-xl shadow-lg animate-slide-in-right">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">家族关系图</h3>
+          </div>
           <div v-if="familyMembers.length === 0 || familyRelationships.length === 0" class="text-center py-8">
+            <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
             <p class="text-gray-600">暂无足够的成员和关系数据来显示家族关系图</p>
-            <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+            <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
               去添加成员和关系
             </button>
           </div>
-          <div v-else class="h-96 w-full border rounded-lg">
+          <div v-else class="h-96 w-full border border-gray-200 rounded-xl bg-gray-50">
             <div ref="graphContainer" class="w-full h-full"></div>
           </div>
         </div>

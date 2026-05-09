@@ -3,29 +3,36 @@
     <Header title="成员搜索"></Header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white p-6 rounded-lg shadow">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+      <div class="bg-white p-6 rounded-xl shadow-lg animate-slide-up">
         <!-- Search Form -->
         <div class="mb-6">
-          <h2 class="text-lg font-medium text-gray-900 mb-4">搜索成员</h2>
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900">搜索成员</h2>
+          </div>
           <form @submit.prevent="handleSearch" class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">手机号</label>
+              <label for="phone" class="block text-sm font-medium text-gray-700 mb-1.5">手机号</label>
               <input 
                 type="tel" 
                 id="phone" 
                 v-model="searchForm.phone" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="输入手机号"
               />
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">邮箱</label>
               <input 
                 type="email" 
                 id="email" 
                 v-model="searchForm.email" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 placeholder="输入邮箱"
               />
             </div>
@@ -33,7 +40,7 @@
               <button 
                 type="submit" 
                 :disabled="memberStore.loading"
-                class="w-full px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50"
+                class="w-full px-4 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 disabled:opacity-50 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
               >
                 {{ memberStore.loading ? '搜索中...' : '搜索' }}
               </button>

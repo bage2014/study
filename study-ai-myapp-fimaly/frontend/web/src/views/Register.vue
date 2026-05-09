@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md animate-fade-in">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-blue-50 to-indigo-100 animate-gradient-flow">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md animate-scale-in">
       <!-- Logo区域 -->
       <div class="text-center mb-6">
         <div class="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4">

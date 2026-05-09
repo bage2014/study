@@ -1,17 +1,24 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <Header title="AI家族故事" />
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
 
-      <div class="mb-6 bg-white rounded-lg shadow p-6">
-        <h2 class="text-lg font-semibold mb-4">智能故事生成</h2>
+      <div class="mb-6 bg-white rounded-xl shadow-lg p-6 animate-slide-up">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">智能故事生成</h2>
+        </div>
         <p class="text-gray-600 mb-4">基于家族成员信息，AI将为您创作独特的家族故事，记录家族的历史与传承。</p>
 
         <div class="grid md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">选择家族</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">选择家族</label>
             <select v-model="selectedFamilyId"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
               <option value="">请选择家族</option>
               <option v-for="family in families" :key="family.id" :value="family.id">
                 {{ family.name }}
@@ -20,9 +27,9 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">故事类型</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">故事类型</label>
             <select v-model="selectedStoryType"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
               <option value="migration">迁徙故事</option>
               <option value="biography">人物传记</option>
               <option value="legend">传奇故事</option>
@@ -32,16 +39,16 @@
         </div>
 
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">关键词（可选）</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">关键词（可选）</label>
           <input v-model="keywords" type="text"
                  placeholder="输入关键词，用逗号分隔，如：传承、孝道、勤劳"
-                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                 class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
         </div>
 
         <button
           @click="generateStory"
           :disabled="!selectedFamilyId || familyStoryStore.loading"
-          class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md disabled:bg-gray-400 transition-colors"
+          class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl disabled:bg-gray-400 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
         >
           {{ familyStoryStore.loading ? '生成中...' : '生成故事' }}
         </button>

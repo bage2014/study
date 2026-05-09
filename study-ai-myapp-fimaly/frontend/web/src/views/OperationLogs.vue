@@ -1,30 +1,40 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <Header title="操作日志" />
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
 
     <!-- 搜索和筛选 -->
-    <div class="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">操作类型</label>
-        <select v-model="filter.operationType" @change="fetchLogs" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
-          <option value="">全部</option>
-          <option value="CREATE">创建</option>
-          <option value="UPDATE">更新</option>
-          <option value="DELETE">删除</option>
-          <option value="READ">读取</option>
-          <option value="OTHER">其他</option>
-        </select>
+    <div class="bg-white p-6 rounded-xl shadow-lg mb-6 animate-slide-up">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center mr-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h2 class="text-lg font-semibold text-gray-900">筛选条件</h2>
       </div>
-      
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">开始日期</label>
-        <input v-model="filter.startDate" type="datetime-local" @change="fetchLogs" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
-      </div>
-      
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">结束日期</label>
-        <input v-model="filter.endDate" type="datetime-local" @change="fetchLogs" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">操作类型</label>
+          <select v-model="filter.operationType" @change="fetchLogs" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+            <option value="">全部</option>
+            <option value="CREATE">创建</option>
+            <option value="UPDATE">更新</option>
+            <option value="DELETE">删除</option>
+            <option value="READ">读取</option>
+            <option value="OTHER">其他</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">开始日期</label>
+          <input v-model="filter.startDate" type="datetime-local" @change="fetchLogs" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">结束日期</label>
+          <input v-model="filter.endDate" type="datetime-local" @change="fetchLogs" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+        </div>
       </div>
     </div>
 

@@ -21,28 +21,39 @@
 
 | 颜色名称 | 色值 | 用途 |
 |---------|------|------|
-| 主色 | #8B5A2B | 品牌标识、主要按钮、重要信息强调 |
-| 主色暗 | #6B4423 | 按钮 hover 状态、边框 |
-| 主色亮 | #A0764B | 次要按钮、背景色 |
+| 主色 | #22C55E | 品牌标识、主要按钮、重要信息强调 |
+| 主色暗 | #16A34A | 按钮 hover 状态、边框 |
+| 主色亮 | #4ADE80 | 次要按钮、背景色 |
 
 ### 2.2 辅助色
 
 | 颜色名称 | 色值 | 用途 |
 |---------|------|------|
-| 辅助色 | #4CAF50 | 成功状态、确认按钮 |
-| 警告色 | #FFC107 | 警告状态、提示信息 |
-| 错误色 | #F44336 | 错误状态、删除按钮 |
-| 信息色 | #2196F3 | 信息提示、链接 |
+| 成功色 | #22C55E | 成功状态、确认按钮、主要操作 |
+| 警告色 | #F59E0B | 警告状态、提示信息 |
+| 错误色 | #EF4444 | 错误状态、删除按钮 |
+| 信息色 | #3B82F6 | 信息提示、链接 |
+| 紫色 | #8B5CF6 | AI功能、特殊强调 |
+| 青色 | #06B6D4 | 科技感功能、特殊强调 |
 
 ### 2.3 中性色
 
 | 颜色名称 | 色值 | 用途 |
 |---------|------|------|
 | 白色 | #FFFFFF | 背景色、文本背景 |
-| 浅灰 | #F5F5F5 | 卡片背景、分隔线 |
-| 中灰 | #E0E0E0 | 边框、禁用状态 |
-| 深灰 | #9E9E9E | 次要文本、提示信息 |
-| 黑色 | #212121 | 主要文本、标题 |
+| 浅灰 | #F3F4F6 | 页面背景、卡片背景 |
+| 中灰 | #E5E7EB | 边框、分隔线 |
+| 深灰 | #6B7280 | 次要文本、提示信息 |
+| 黑色 | #111827 | 主要文本、标题 |
+
+### 2.4 渐变背景
+
+| 渐变名称 | 色值 | 用途 |
+|---------|------|------|
+| 绿色渐变 | from-green-100 to-green-200 | 默认头像背景、成功状态 |
+| 紫色渐变 | from-purple-100 to-purple-200 | AI功能模块、创意功能 |
+| 蓝色渐变 | from-blue-100 to-blue-200 | 信息提示模块 |
+| 登录页渐变 | from-green-50 via-blue-50 to-indigo-100 | 登录/注册页面背景 |
 
 ## 3. 字体规范
 
@@ -141,6 +152,116 @@
 - **图标大小**：24px
 - **文本大小**：12px
 
+### 5.7 头像组件
+
+#### 5.7.1 默认头像规范
+
+| 尺寸 | 应用场景 |
+|------|---------|
+| 40px (w-10) | 列表项、表格行 |
+| 32px (w-8) | 导航栏用户头像 |
+| 96px (w-24) | 个人信息页面 |
+
+#### 5.7.2 头像样式
+
+- **有头像**：圆形图片，`object-cover`，灰色边框
+- **无头像**：绿色渐变背景（`from-green-100 to-green-200`）+ 用户图标
+- **悬停效果**：边框变为主色（`hover:border-green-400`），过渡动画200ms
+
+#### 5.7.3 头像HTML模板
+
+```html
+<!-- 有头像时显示图片 -->
+<img 
+  v-if="avatarUrl" 
+  :src="avatarUrl" 
+  :alt="displayName"
+  class="rounded-full object-cover border-2 border-gray-200 hover:border-green-400 transition-all duration-200"
+/>
+
+<!-- 无头像时显示默认图标 -->
+<div v-else class="rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center border-2 border-gray-200 hover:border-green-400 transition-all duration-200">
+  <svg xmlns="http://www.w3.org/2000/svg" class="text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+</div>
+```
+
+### 5.8 卡片组件
+
+- **样式**：白色背景，阴影效果，圆角12px（`rounded-xl`）
+- **阴影**：`shadow-lg`，hover时增强为`shadow-xl`
+- **内边距**：16px
+- **间距**：16px
+- **悬停效果**：上移2px（`hover:-translate-y-1`），过渡动画300ms
+
+### 5.9 弹框（Modal）组件
+
+#### 5.9.1 弹框结构
+
+| 层级 | 样式 | 说明 |
+|------|------|------|
+| 遮罩层 | `fixed inset-0 bg-black/50` | 半透明黑色背景 |
+| 弹框容器 | `rounded-xl shadow-2xl` | 圆角卡片样式 |
+| 弹框内容 | `max-w-md w-full p-6` | 居中白色面板 |
+
+#### 5.9.2 弹框动画
+
+| 动画 | 层级 | 效果 |
+|------|------|------|
+| `animate-fade-in` | 遮罩层 | 淡入效果 300ms |
+| `animate-scale-in` | 弹框内容 | 缩放进入 300ms |
+
+#### 5.9.3 弹框HTML模板
+
+```html
+<!-- 遮罩层 -->
+<div v-if="showModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showModal = false">
+  <!-- 弹框内容 -->
+  <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+    <!-- 标题区 -->
+    <div class="flex items-center mb-4">
+      <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="..." />
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-900">弹框标题</h3>
+    </div>
+    <!-- 表单内容 -->
+    <form>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">标签</label>
+          <input type="text" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+        </div>
+      </div>
+      <!-- 按钮区 -->
+      <div class="mt-6 flex justify-end space-x-3">
+        <button type="button" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+          取消
+        </button>
+        <button type="submit" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200">
+          确认
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+```
+
+#### 5.9.4 不同功能弹框的图标颜色
+
+| 功能类型 | 图标渐变 | 图标颜色 |
+|---------|---------|---------|
+| 用户/成员相关 | `from-green-100 to-green-200` | `text-green-600` |
+| 家族相关 | `from-purple-100 to-purple-200` | `text-purple-600` |
+| 编辑相关 | `from-blue-100 to-blue-200` | `text-blue-600` |
+| 日期/事件相关 | `from-orange-100 to-orange-200` | `text-orange-600` |
+| 媒体相关 | `from-pink-100 to-pink-200` | `text-pink-600` |
+| 关系相关 | `from-amber-100 to-amber-200` | `text-amber-600` |
+| 安全/管理员相关 | `from-cyan-100 to-cyan-200` | `text-cyan-600` |
+
 ## 6. 图标规范
 
 ### 6.1 图标风格
@@ -224,10 +345,75 @@
 
 ### 8.1 动画效果
 
-- **过渡动画**：页面切换使用淡入淡出效果，持续时间300ms
-- **按钮反馈**：点击按钮时有轻微的缩放效果，持续时间100ms
-- **滚动效果**：平滑滚动，避免突兀的跳转
-- **加载状态**：使用骨架屏或加载动画，提升用户体验
+#### 8.1.1 页面进入动画
+
+| 动画名称 | 效果 | 持续时间 | 应用场景 |
+|---------|------|---------|---------|
+| `animate-fade-in` | 淡入效果 | 500ms | 页面整体进入 |
+| `animate-slide-up` | 从下方滑入 | 500ms | 卡片、表单区域 |
+| `animate-slide-in-left` | 从左侧滑入 | 400ms | 侧边栏、次要内容 |
+| `animate-slide-in-right` | 从右侧滑入 | 400ms | 详情面板 |
+| `animate-scale-in` | 缩放进入 | 300ms | 弹窗、模态框 |
+
+#### 8.1.2 元素交互动画
+
+| 动画类型 | 效果 | 持续时间 | 应用场景 |
+|---------|------|---------|---------|
+| 悬停缩放 | `hover:scale-105` | 200ms | 卡片、按钮 |
+| 悬停上移 | `hover:-translate-y-1` | 300ms | 卡片 |
+| 按钮反馈 | `hover:-translate-y-0.5` | 200ms | 按钮 |
+| 边框变化 | `hover:border-green-400` | 200ms | 头像、卡片 |
+| 阴影增强 | `hover:shadow-lg` | 200ms | 卡片、按钮 |
+
+#### 8.1.3 CSS动画代码
+
+```css
+/* 页面进入动画 */
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.4s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out forwards;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+```
 
 ### 8.2 手势操作
 
@@ -239,6 +425,19 @@
 - **成功反馈**：操作成功后显示绿色提示信息，持续2秒
 - **错误反馈**：操作失败后显示红色错误信息，持续3秒
 - **加载反馈**：操作过程中显示加载动画，避免用户等待焦虑
+
+### 8.4 按钮交互规范
+
+| 按钮类型 | 样式 | 悬停效果 |
+|---------|------|---------|
+| 主要按钮 | 绿色背景、白色文本、圆角12px | 背景加深、阴影增强、轻微上移 |
+| 次要按钮 | 白色背景、绿色边框、绿色文本 | 边框加深、阴影增强 |
+| 文本按钮 | 无背景、绿色文本 | 文本颜色加深 |
+
+### 8.5 列表项交互
+
+- **悬停效果**：背景色变浅（`hover:bg-green-50`），过渡200ms
+- **选中状态**：边框高亮（`border-green-500`），背景色高亮（`bg-green-50`）
 
 ## 9. 无障碍设计
 

@@ -2,18 +2,25 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="图片导入解析" />
     
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <!-- 页面说明 -->
-      <div class="mb-6 bg-white rounded-lg shadow p-6">
-        <h2 class="text-lg font-semibold mb-2">图片导入解析家族关系</h2>
+      <div class="mb-6 bg-white rounded-xl shadow-lg p-6 animate-slide-up">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-100 to-rose-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">图片导入解析家族关系</h2>
+        </div>
         <p class="text-gray-600">上传家族关系图图片，AI将自动识别家族成员及其关系</p>
       </div>
 
       <!-- 上传区域 -->
-      <div v-if="!parseResult" class="bg-white rounded-lg shadow p-6">
+      <div v-if="!parseResult" class="bg-white rounded-xl shadow-lg p-6 animate-slide-in-left">
         <div 
-          class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-12 text-center cursor-pointer transition-all duration-200 hover:border-green-400 hover:bg-green-50"
-          :class="{ 'border-green-500 bg-green-50': isDragOver }"
+          class="upload-area border-2 border-dashed border-gray-300 rounded-xl p-12 text-center cursor-pointer transition-all duration-300 hover:border-green-500 hover:bg-green-50 hover:shadow-md"
+          :class="{ 'border-green-500 bg-green-50 shadow-md': isDragOver }"
           @drop.prevent="handleDrop"
           @dragover.prevent="isDragOver = true"
           @dragleave="isDragOver = false"
@@ -26,12 +33,12 @@
             class="hidden"
             @change="handleFileSelect"
           />
-          <div class="text-green-500 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center transition-transform duration-300 hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
           </div>
-          <p class="text-lg font-medium text-gray-700 mb-2">点击或拖拽上传图片</p>
+          <p class="text-lg font-semibold text-gray-900 mb-2">点击或拖拽上传图片</p>
           <p class="text-sm text-gray-500">支持 PNG、JPG 格式，最大 10MB</p>
         </div>
 

@@ -14,13 +14,18 @@
           <slot name="actions"></slot>
           <div class="flex items-center space-x-4">
             <!-- 用户头像（点击跳转个人信息） -->
-            <div class="relative">
+            <div class="relative cursor-pointer" @click="navigateTo('/profile')">
               <img 
-                :src="userAvatarUrl || defaultAvatar" 
+                v-if="userAvatarUrl" 
+                :src="userAvatarUrl" 
                 :alt="displayName"
-                class="w-8 h-8 rounded-full object-cover border-2 border-gray-200 cursor-pointer hover:border-gray-400"
-                @click="navigateTo('/profile')"
+                class="w-8 h-8 rounded-full object-cover border-2 border-gray-200 hover:border-green-400 transition-all duration-200"
               />
+              <div v-else class="w-8 h-8 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center border-2 border-gray-200 hover:border-green-400 transition-all duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
             </div>
             <!-- 用户名（优先昵称，为空显示邮箱） -->
             <span class="text-sm text-gray-700">{{ displayName }}</span>
@@ -51,7 +56,6 @@ export default {
     const userStore = useUserStore()
     const router = useRouter()
     const userAvatarUrl = ref('')
-    const defaultAvatar = 'https://via.placeholder.com/32'
 
     // 优先显示昵称，为空时显示邮箱
     const displayName = computed(() => {
@@ -99,7 +103,6 @@ export default {
       user: userStore.user,
       displayName,
       userAvatarUrl,
-      defaultAvatar,
       handleLogout,
       navigateTo
     }

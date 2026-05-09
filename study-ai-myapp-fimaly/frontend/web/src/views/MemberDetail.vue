@@ -139,40 +139,47 @@
     </main>
 
     <!-- Edit Member Modal -->
-    <div v-if="showEditModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">编辑成员信息</h3>
+    <div v-if="showEditModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showEditModal = false">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">编辑成员信息</h3>
+        </div>
         <form @submit.prevent="handleUpdate">
           <div class="space-y-4">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700">姓名</label>
-              <input type="text" id="name" v-model="editForm.name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="name" class="block text-sm font-medium text-gray-700 mb-1.5">姓名</label>
+              <input type="text" id="name" v-model="editForm.name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="gender" class="block text-sm font-medium text-gray-700">性别</label>
-              <select id="gender" v-model="editForm.gender" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="gender" class="block text-sm font-medium text-gray-700 mb-1.5">性别</label>
+              <select id="gender" v-model="editForm.gender" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
                 <option value="male">男</option>
                 <option value="female">女</option>
               </select>
             </div>
             <div>
-              <label for="birthDate" class="block text-sm font-medium text-gray-700">出生日期</label>
-              <input type="date" id="birthDate" v-model="editForm.birthDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-1.5">出生日期</label>
+              <input type="date" id="birthDate" v-model="editForm.birthDate" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="deathDate" class="block text-sm font-medium text-gray-700">去世日期</label>
-              <input type="date" id="deathDate" v-model="editForm.deathDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <label for="deathDate" class="block text-sm font-medium text-gray-700 mb-1.5">去世日期</label>
+              <input type="date" id="deathDate" v-model="editForm.deathDate" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
             </div>
             <div>
-              <label for="details" class="block text-sm font-medium text-gray-700">详细信息</label>
-              <textarea id="details" v-model="editForm.details" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"></textarea>
+              <label for="details" class="block text-sm font-medium text-gray-700 mb-1.5">详细信息</label>
+              <textarea id="details" v-model="editForm.details" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"></textarea>
             </div>
           </div>
-          <div class="mt-6 flex justify-end">
-            <button type="button" @click="showEditModal = false" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" @click="showEditModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
               取消
             </button>
-            <button type="submit" :disabled="memberStore.loading" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50">
+            <button type="submit" :disabled="memberStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
               {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
