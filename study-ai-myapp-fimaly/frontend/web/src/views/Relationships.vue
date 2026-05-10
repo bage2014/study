@@ -20,7 +20,7 @@
                 <select 
                   id="familyId" 
                   v-model="form.familyId" 
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  class="form-select"
                   required
                 >
                   <option value="">请选择家族</option>
@@ -33,7 +33,7 @@
                   <select 
                     id="member1Id" 
                     v-model="form.member1Id" 
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    class="form-select flex-1"
                     required
                   >
                     <option value="">请选择成员</option>
@@ -42,7 +42,7 @@
                   <button 
                     type="button"
                     @click="searchMember(1)"
-                    class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+                    class="btn-primary btn-sm"
                   >
                     搜索
                   </button>
@@ -57,7 +57,7 @@
                   <select 
                     id="member2Id" 
                     v-model="form.member2Id" 
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    class="form-select flex-1"
                     required
                   >
                     <option value="">请选择成员</option>
@@ -66,7 +66,7 @@
                   <button 
                     type="button"
                     @click="searchMember(2)"
-                    class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+                    class="btn-primary btn-sm"
                   >
                     搜索
                   </button>
@@ -80,7 +80,7 @@
                 <select 
                   id="relationshipType" 
                   v-model="form.relationshipType" 
-                  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  class="form-select"
                   required
                 >
                   <option value="">请选择关系类型</option>
@@ -104,7 +104,7 @@
               <button 
                 type="submit" 
                 :disabled="relationshipStore.loading"
-                class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 disabled:opacity-50"
+                class="btn-primary w-full"
               >
                 {{ relationshipStore.loading ? '添加中...' : '添加关系' }}
               </button>
@@ -124,17 +124,17 @@
                   id="searchMemberId" 
                   v-model="searchMemberId" 
                   placeholder="输入成员ID"
-                  class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  class="input-field flex-1"
                 />
                 <button 
                   @click="handleSearch"
-                  class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                  class="btn-primary btn-sm"
                 >
                   搜索
                 </button>
                 <button 
                   @click="handleReset"
-                  class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+                  class="btn-secondary btn-sm"
                 >
                   重置
                 </button>
@@ -185,6 +185,31 @@
         </div>
       </div>
     </main>
+
+    <!-- Delete Confirm Modal -->
+    <ConfirmModal 
+      :visible="showDeleteConfirm"
+      title="确认删除"
+      message="确定要删除这个关系吗？"
+      type="delete"
+      @confirm="confirmDelete"
+      @cancel="showDeleteConfirm = false"
+    />
+
+    <!-- Message Modal -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -195,11 +220,15 @@ import { useFamilyStore } from '../stores/family'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, onMounted, watch } from 'vue'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
+import ConfirmModal from '../components/ConfirmModal.vue'
 
 export default {
   name: 'Relationships',
   components: {
-    Header
+    Header,
+    Modal,
+    ConfirmModal
   },
   setup() {
     const relationshipStore = useRelationshipStore()
@@ -207,6 +236,20 @@ export default {
     const familyStore = useFamilyStore()
     const router = useRouter()
     const route = useRoute()
+
+    const showDeleteConfirm = ref(false)
+    const showMessageModal = ref(false)
+    const deletingRelationshipId = ref(null)
+    const messageModalTitle = ref('')
+    const messageModalContent = ref('')
+    const messageModalIcon = ref('info')
+
+    const showMessage = (title, content, icon = 'info') => {
+      messageModalTitle.value = title
+      messageModalContent.value = content
+      messageModalIcon.value = icon
+      showMessageModal.value = true
+    }
 
     const form = ref({
       member1Id: '',
@@ -273,7 +316,7 @@ export default {
     const handleCreateRelationship = async () => {
       try {
         await relationshipStore.createRelationship(form.value)
-        alert('关系添加成功')
+        showMessage('操作成功', '关系添加成功', 'success')
         form.value = {
           member1Id: '',
           member2Id: '',
@@ -281,19 +324,25 @@ export default {
         }
         await loadRelationships()
       } catch (error) {
-        alert('关系添加失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '关系添加失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
-    const handleDelete = async (id) => {
-      if (confirm('确定要删除这个关系吗？')) {
-        try {
-          await relationshipStore.deleteRelationship(id)
-          alert('关系删除成功')
-          await loadRelationships()
-        } catch (error) {
-          alert('关系删除失败: ' + (error.response?.data?.message || error.message))
-        }
+    const handleDelete = (id) => {
+      deletingRelationshipId.value = id
+      showDeleteConfirm.value = true
+    }
+
+    const confirmDelete = async () => {
+      try {
+        await relationshipStore.deleteRelationship(deletingRelationshipId.value)
+        showMessage('操作成功', '关系删除成功', 'success')
+        await loadRelationships()
+      } catch (error) {
+        showMessage('操作失败', '关系删除失败: ' + (error.response?.data?.message || error.message), 'error')
+      } finally {
+        showDeleteConfirm.value = false
+        deletingRelationshipId.value = null
       }
     }
 
@@ -362,6 +411,11 @@ export default {
       form,
       searchMemberId,
       currentSearchTarget,
+      showDeleteConfirm,
+      showMessageModal,
+      messageModalTitle,
+      messageModalContent,
+      messageModalIcon,
       relationshipStore,
       memberStore,
       familyStore,
@@ -375,6 +429,7 @@ export default {
       searchMember,
       handleCreateRelationship,
       handleDelete,
+      confirmDelete,
       handleSearch,
       handleReset,
       getRelationshipTypeText,

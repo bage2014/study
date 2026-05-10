@@ -65,7 +65,7 @@
               <input 
                 v-model="formData.nickname"
                 type="text" 
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                class="input-field"
                 placeholder="请输入昵称"
                 maxlength="50"
               />
@@ -77,7 +77,7 @@
               <input 
                 v-model="formData.username"
                 type="text" 
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50"
+                class="input-field bg-gray-50"
                 disabled
                 placeholder="用户名"
               />
@@ -89,7 +89,7 @@
               <input 
                 v-model="formData.email"
                 type="email" 
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                class="input-field"
                 placeholder="请输入邮箱"
               />
             </div>
@@ -100,7 +100,7 @@
               <input 
                 v-model="formData.phone"
                 type="tel" 
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                class="input-field"
                 placeholder="请输入手机号"
                 maxlength="11"
               />
@@ -111,14 +111,14 @@
               <button 
                 type="button" 
                 @click="resetForm"
-                class="px-5 py-2.5 text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all duration-200 hover:-translate-y-0.5"
+                class="btn-secondary"
               >
                 重置
               </button>
               <button 
                 type="submit" 
                 :disabled="loading"
-                class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-green-300"
+                class="btn-primary"
               >
                 <span v-if="loading" class="flex items-center">
                   <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -134,6 +134,21 @@
         </div>
       </div>
     </main>
+
+    <!-- 消息提示弹框 -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -142,11 +157,13 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
 
 export default {
   name: 'Profile',
   components: {
-    Header
+    Header,
+    Modal
   },
   setup() {
     const router = useRouter()
@@ -163,6 +180,19 @@ export default {
       nickname: '',
       avatar: ''
     })
+
+    // 消息弹框状态
+    const showMessageModal = ref(false)
+    const messageModalTitle = ref('')
+    const messageModalContent = ref('')
+    const messageModalIcon = ref('info')
+
+    const showMessage = (title, content, icon = 'info') => {
+      messageModalTitle.value = title
+      messageModalContent.value = content
+      messageModalIcon.value = icon
+      showMessageModal.value = true
+    }
 
     const formData = reactive({
       nickname: '',
@@ -232,15 +262,15 @@ export default {
         })
         const result = await response.json()
         if (result.success) {
-          alert('个人信息更新成功')
+          showMessage('操作成功', '个人信息更新成功', 'success')
           profile.value = result.data
           userStore.user = result.data
         } else {
-          alert('更新失败: ' + result.message)
+          showMessage('操作失败', '更新失败: ' + result.message, 'error')
         }
       } catch (error) {
         console.error('Failed to update profile:', error)
-        alert('更新失败: ' + error.message)
+        showMessage('操作失败', '更新失败: ' + error.message, 'error')
       } finally {
         loading.value = false
       }
@@ -253,14 +283,14 @@ export default {
       // 验证文件类型
       const validTypes = ['image/jpeg', 'image/png', 'image/gif']
       if (!validTypes.includes(file.type)) {
-        alert('只支持JPG、PNG、GIF格式的图片')
+        showMessage('提示', '只支持JPG、PNG、GIF格式的图片', 'warning')
         return
       }
 
       // 验证文件大小（5MB）
       const maxSize = 5 * 1024 * 1024
       if (file.size > maxSize) {
-        alert('图片大小不能超过5MB')
+        showMessage('提示', '图片大小不能超过5MB', 'warning')
         return
       }
 
@@ -283,13 +313,13 @@ export default {
           userStore.user.avatar = result.avatarUrl
           // 重新加载头像（携带token）
           await loadAvatar(result.avatarUrl)
-          alert('头像上传成功')
+          showMessage('操作成功', '头像上传成功', 'success')
         } else {
-          alert('头像上传失败: ' + result.message)
+          showMessage('操作失败', '头像上传失败: ' + result.message, 'error')
         }
       } catch (error) {
         console.error('Failed to upload avatar:', error)
-        alert('头像上传失败: ' + error.message)
+        showMessage('操作失败', '头像上传失败: ' + error.message, 'error')
       } finally {
         uploading.value = false
         // 重置input，允许重复上传同一文件
@@ -309,15 +339,19 @@ export default {
     })
 
     return {
-      profile,
-      formData,
+      avatarInput,
       loading,
       uploading,
       avatarUrl,
-      avatarInput,
+      profile,
+      formData,
+      showMessageModal,
+      messageModalTitle,
+      messageModalContent,
+      messageModalIcon,
       updateProfile,
-      resetForm,
-      handleAvatarUpload
+      handleAvatarUpload,
+      resetForm
     }
   }
 }

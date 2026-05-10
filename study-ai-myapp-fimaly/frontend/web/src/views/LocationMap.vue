@@ -138,6 +138,21 @@
       </button>
     </div>
   </main>
+
+  <!-- Message Modal -->
+  <Modal 
+    :visible="showMessageModal" 
+    :title="messageModalTitle" 
+    :icon="messageModalIcon"
+    @close="showMessageModal = false"
+  >
+    <p class="text-gray-700">{{ messageModalContent }}</p>
+    <template #footer>
+      <button @click="showMessageModal = false" class="btn-primary w-full">
+        确定
+      </button>
+    </template>
+  </Modal>
 </div>
 </template>
 
@@ -148,11 +163,24 @@ import { useMemberStore } from '../stores/member'
 import { useFamilyStore } from '../stores/family'
 import { useUserStore } from '../stores/user'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
 
 const locationStore = useLocationStore()
 const memberStore = useMemberStore()
 const familyStore = useFamilyStore()
 const userStore = useUserStore()
+
+const showMessageModal = ref(false)
+const messageModalTitle = ref('')
+const messageModalContent = ref('')
+const messageModalIcon = ref('info')
+
+const showMessage = (title, content, icon = 'info') => {
+  messageModalTitle.value = title
+  messageModalContent.value = content
+  messageModalIcon.value = icon
+  showMessageModal.value = true
+}
 
 const selectedFamilyId = ref('')
 const selectedMemberId = ref('')
@@ -314,11 +342,11 @@ const getCurrentLocation = () => {
       },
       (error) => {
         console.error('Error getting location:', error)
-        alert('无法获取当前位置，请手动输入')
+        showMessage('提示', '无法获取当前位置，请手动输入', 'warning')
       }
     )
   } else {
-    alert('您的浏览器不支持地理定位')
+    showMessage('提示', '您的浏览器不支持地理定位', 'warning')
   }
 }
 </script>

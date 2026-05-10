@@ -211,3 +211,258 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ==================== */
+/* Unified Button Styles */
+/* ==================== */
+
+/* Primary Button - Green */
+.btn-primary {
+  @apply px-4 py-2.5 bg-green-500 text-white rounded-xl font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer active:scale-98;
+}
+
+.btn-primary:disabled {
+  @apply opacity-50 cursor-not-allowed hover:translate-y-0 hover:shadow-md;
+}
+
+/* Secondary Button - Outline */
+.btn-secondary {
+  @apply px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 cursor-pointer active:scale-98;
+}
+
+/* Danger Button - Red */
+.btn-danger {
+  @apply px-4 py-2.5 bg-red-500 text-white rounded-xl font-medium shadow-md hover:shadow-lg hover:bg-red-600 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer active:scale-98;
+}
+
+.btn-danger:disabled {
+  @apply opacity-50 cursor-not-allowed hover:translate-y-0 hover:shadow-md;
+}
+
+/* Purple Button */
+.btn-purple {
+  @apply px-4 py-2.5 bg-purple-600 text-white rounded-xl font-medium shadow-md hover:shadow-lg hover:bg-purple-700 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer active:scale-98;
+}
+
+/* Small Button */
+.btn-sm {
+  @apply px-3 py-1.5 text-sm;
+}
+
+/* Large Button */
+.btn-lg {
+  @apply px-6 py-3 text-base;
+}
+
+/* Text Button */
+.btn-text {
+  @apply text-green-600 hover:text-green-800 font-medium transition-colors duration-150 cursor-pointer;
+}
+
+.btn-text-danger {
+  @apply text-red-600 hover:text-red-800 font-medium transition-colors duration-150 cursor-pointer;
+}
+
+/* ==================== */
+/* Clickable Elements */
+/* ==================== */
+
+/* Base clickable class */
+.clickable {
+  @apply cursor-pointer transition-all duration-200;
+}
+
+.clickable:hover {
+  @apply opacity-80;
+}
+
+/* Card hover effect */
+.card-hover {
+  @apply cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+}
+
+/* ==================== */
+/* Input Styles */
+/* ==================== */
+
+/* Unified input style */
+.input-field {
+  @apply w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200;
+}
+
+/* Select field */
+.select-field {
+  @apply w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 cursor-pointer;
+}
+
+/* Textarea field */
+.textarea-field {
+  @apply w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 resize-none;
+}
+
+/* ==================== */
+/* Table Styles */
+/* ==================== */
+
+/* Unified table container */
+.table-container {
+  @apply overflow-x-auto rounded-xl border border-gray-100;
+}
+
+/* Unified table */
+.table-base {
+  @apply min-w-full divide-y divide-gray-100;
+}
+
+/* Table header */
+.table-header {
+  @apply bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider;
+}
+
+.table-header-cell {
+  @apply px-6 py-3;
+}
+
+/* Table body */
+.table-body {
+  @apply bg-white divide-y divide-gray-100;
+}
+
+.table-row {
+  @apply hover:bg-gray-50 transition-colors duration-150;
+}
+
+.table-cell {
+  @apply px-6 py-4 whitespace-nowrap text-sm text-gray-600;
+}
+
+/* ==================== */
+/* Card Styles */
+/* ==================== */
+
+/* Unified card */
+.card-base {
+  @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100;
+}
+
+.card-hover {
+  @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300 hover:-translate-y-1 cursor-pointer;
+}
+
+/* ==================== */
+/* Filter/Select Button Styles */
+/* ==================== */
+
+/* Filter button - active state */
+.filter-btn-active {
+  @apply bg-green-500 text-white shadow-md;
+}
+
+/* Filter button - inactive state */
+.filter-btn-inactive {
+  @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+}
+
+/* Unified filter button */
+.filter-btn {
+  @apply px-4 py-2 rounded-xl text-sm font-medium cursor-pointer transition-all duration-200;
+}
+
+/* ==================== */
+/* Badge Styles */
+/* ==================== */
+
+/* Status badge */
+.badge {
+  @apply px-2 inline-flex text-xs leading-5 font-semibold rounded-full;
+}
+
+.badge-success {
+  @apply bg-green-100 text-green-800;
+}
+
+.badge-warning {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.badge-danger {
+  @apply bg-red-100 text-red-800;
+}
+
+.badge-info {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.badge-gray {
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* ==================== */
+/* Form Label Styles */
+/* ==================== */
+
+/* Unified form label */
+.form-label {
+  @apply block text-sm font-medium text-gray-700 mb-1.5;
+}
+
+/* ==================== */
+/* Select Dropdown Styles */
+/* ==================== */
+
+/* Unified select dropdown */
+.form-select {
+  @apply w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 cursor-pointer bg-white;
+}
+
+/* ==================== */
+/* Empty State Styles */
+/* ==================== */
+
+/* Empty state container */
+.empty-state {
+  @apply text-center py-12;
+}
+
+.empty-state-icon {
+  @apply mx-auto h-12 w-12 text-gray-400 mb-4;
+}
+
+.empty-state-title {
+  @apply text-lg font-medium text-gray-900 mb-2;
+}
+
+.empty-state-description {
+  @apply text-gray-500 mb-6;
+}
+
+/* ==================== */
+/* Loading State Styles */
+/* ==================== */
+
+/* Loading spinner */
+.loading-spinner {
+  @apply animate-spin rounded-full h-10 w-10 border-b-2 border-green-500;
+}
+
+.loading-container {
+  @apply flex justify-center items-center py-12;
+}
+
+/* ==================== */
+/* Date Input Styles */
+/* ==================== */
+
+/* Unified date input */
+.date-input {
+  @apply w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 cursor-pointer;
+}
+
+/* ==================== */
+/* File Input Styles */
+/* ==================== */
+
+/* Unified file input */
+.file-input {
+  @apply w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100 cursor-pointer;
+}

@@ -46,7 +46,7 @@
         <div class="mt-6">
           <label class="block text-sm font-medium text-gray-700 mb-2">选择目标家族</label>
           <select v-model="selectedFamilyId" 
-                  class="w-full md:w-1/2 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                  class="form-select">
             <option value="">请选择家族</option>
             <option v-for="family in families" :key="family.id" :value="family.id">
               {{ family.name }}
@@ -57,7 +57,7 @@
         <!-- 上传按钮 -->
         <div class="mt-6">
           <button 
-            class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            class="btn-primary"
             :disabled="!selectedFile || !selectedFamilyId || isLoading"
             @click="parseImage"
           >
@@ -174,12 +174,28 @@
         </div>
       </div>
     </main>
+
+    <!-- Message Modal -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import Header from '../components/Header.vue';
+import Modal from '../components/Modal.vue';
 import { useFamilyStore } from '../stores/family';
 import { useImageParseStore } from '../stores/imageParse';
 
@@ -195,6 +211,18 @@ const isSaving = ref(false);
 const parseResult = ref(null);
 const showSuccess = ref(false);
 const families = ref([]);
+
+const showMessageModal = ref(false);
+const messageModalTitle = ref('');
+const messageModalContent = ref('');
+const messageModalIcon = ref('info');
+
+const showMessage = (title, content, icon = 'info') => {
+  messageModalTitle.value = title;
+  messageModalContent.value = content;
+  messageModalIcon.value = icon;
+  showMessageModal.value = true;
+};
 
 onMounted(() => {
   loadFamilies();
@@ -233,12 +261,12 @@ const validateFile = (file) => {
   const validTypes = ['image/png', 'image/jpeg'];
   
   if (!validTypes.includes(file.type)) {
-    alert('请上传PNG或JPG格式的图片');
+    showMessage('提示', '请上传PNG或JPG格式的图片', 'warning');
     return;
   }
   
   if (file.size > maxSize) {
-    alert('图片大小不能超过10MB');
+    showMessage('提示', '图片大小不能超过10MB', 'warning');
     return;
   }
   
@@ -255,7 +283,7 @@ const parseImage = async () => {
     parseResult.value = result;
   } catch (error) {
     console.error('图片解析失败:', error);
-    alert('图片解析失败，请重试');
+    showMessage('操作失败', '图片解析失败，请重试', 'error');
   } finally {
     isLoading.value = false;
   }
@@ -289,7 +317,7 @@ const saveResult = async () => {
     showSuccess.value = true;
   } catch (error) {
     console.error('保存失败:', error);
-    alert('保存失败，请重试');
+    showMessage('操作失败', '保存失败，请重试', 'error');
   } finally {
     isSaving.value = false;
   }

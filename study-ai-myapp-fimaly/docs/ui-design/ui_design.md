@@ -262,15 +262,207 @@
 | 关系相关 | `from-amber-100 to-amber-200` | `text-amber-600` |
 | 安全/管理员相关 | `from-cyan-100 to-cyan-200` | `text-cyan-600` |
 
-## 6. 图标规范
+## 6. 按钮规范
 
-### 6.1 图标风格
+### 6.1 按钮类型
+
+| 按钮类型 | 类名 | 用途 | 样式特征 |
+|---------|------|------|---------|
+| 主要按钮 | `btn-primary` | 主要操作，如提交、确认 | 绿色背景，白色文字，阴影 |
+| 次要按钮 | `btn-secondary` | 次要操作，如取消、返回 | 边框样式，灰色文字 |
+| 危险按钮 | `btn-danger` | 删除、危险操作 | 红色背景，白色文字 |
+| 紫色按钮 | `btn-purple` | 特殊操作，如添加关系 | 紫色背景，白色文字 |
+| 文字按钮 | `btn-text` | 辅助操作，如查看、编辑 | 绿色文字，无背景 |
+| 危险文字按钮 | `btn-text-danger` | 删除类文字操作 | 红色文字，无背景 |
+
+### 6.2 按钮尺寸
+
+| 尺寸 | 类名 | 说明 |
+|------|------|------|
+| 默认 | - | `px-4 py-2.5` |
+| 小 | `btn-sm` | `px-3 py-1.5 text-sm` |
+| 大 | `btn-lg` | `px-6 py-3 text-base` |
+
+### 6.3 按钮交互效果
+
+| 状态 | 效果 |
+|------|------|
+| hover | 阴影增强、颜色加深、上移0.5px |
+| active | 缩放至98% |
+| disabled | 透明度50%，禁止光标 |
+
+### 6.4 按钮HTML模板
+
+```html
+<!-- 主要按钮 -->
+<button class="btn-primary">确认</button>
+
+<!-- 次要按钮 -->
+<button class="btn-secondary">取消</button>
+
+<!-- 危险按钮 -->
+<button class="btn-danger">删除</button>
+
+<!-- 文字按钮 -->
+<button class="btn-text">编辑</button>
+```
+
+### 6.5 可点击元素
+
+| 类名 | 用途 |
+|------|------|
+| `clickable` | 通用可点击元素 |
+| `card-hover` | 卡片悬停效果（上移、阴影增强） |
+
+### 6.6 表格规范
+
+#### 6.6.1 表格结构
+
+| 元素 | 类名 | 说明 |
+|------|------|------|
+| 表格容器 | `table-container` | 带圆角和边框的容器 |
+| 表格基础 | `table-base` | 整宽、分割线样式 |
+| 表头行 | `table-header` | 灰色背景、大写字体 |
+| 表头单元格 | `table-header-cell` | 标准内边距 |
+| 表体 | `table-body` | 白色背景 |
+| 表格行 | `table-row` | 悬停效果 |
+| 表格单元格 | `table-cell` | 标准内边距 |
+
+#### 6.6.2 表格HTML模板
+
+```html
+<div class="table-container">
+  <table class="table-base">
+    <thead class="table-header">
+      <tr>
+        <th class="table-header-cell">列1</th>
+        <th class="table-header-cell">列2</th>
+      </tr>
+    </thead>
+    <tbody class="table-body">
+      <tr class="table-row">
+        <td class="table-cell">内容1</td>
+        <td class="table-cell">内容2</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+
+### 6.7 表单元素规范
+
+#### 6.7.1 输入框
+
+| 状态 | 类名 |
+|------|------|
+| 默认 | `input-field` |
+| 聚焦 | 自动（通过`:focus`实现） |
+
+```html
+<input type="text" class="input-field" placeholder="请输入">
+```
+
+#### 6.7.2 选择框
+
+| 状态 | 类名 |
+|------|------|
+| 默认 | `select-field` 或 `form-select` |
+
+```html
+<select class="form-select">
+  <option>选项1</option>
+  <option>选项2</option>
+</select>
+```
+
+#### 6.7.3 文本域
+
+| 状态 | 类名 |
+|------|------|
+| 默认 | `textarea-field` |
+
+```html
+<textarea class="textarea-field" rows="3"></textarea>
+```
+
+#### 6.7.4 表单标签
+
+```html
+<label class="form-label">标签文字</label>
+```
+
+### 6.8 徽章（Badge）规范
+
+| 类型 | 类名 | 用途 |
+|------|------|------|
+| 成功 | `badge badge-success` | 成功状态 |
+| 警告 | `badge badge-warning` | 警告状态 |
+| 危险 | `badge badge-danger` | 危险/错误状态 |
+| 信息 | `badge badge-info` | 信息状态 |
+| 灰色 | `badge badge-gray` | 默认/中性状态 |
+
+```html
+<span class="badge badge-success">在线</span>
+<span class="badge badge-danger">离线</span>
+```
+
+### 6.9 筛选按钮规范
+
+```html
+<!-- 选中状态 -->
+<button class="filter-btn filter-btn-active">全部</button>
+<!-- 未选中状态 -->
+<button class="filter-btn filter-btn-inactive">照片</button>
+```
+
+### 6.10 卡片规范
+
+| 类型 | 类名 | 说明 |
+|------|------|------|
+| 基础卡片 | `card-base` | 白色背景、圆角、阴影 |
+| 悬停卡片 | `card-hover` | 悬停时上移、阴影增强 |
+
+### 6.11 空状态规范
+
+```html
+<div class="empty-state">
+  <svg class="empty-state-icon">...</svg>
+  <h3 class="empty-state-title">暂无数据</h3>
+  <p class="empty-state-description">请先添加一些数据</p>
+  <button class="btn-primary">添加</button>
+</div>
+```
+
+### 6.12 加载状态规范
+
+```html
+<!-- 加载动画 -->
+<div class="loading-container">
+  <div class="loading-spinner"></div>
+</div>
+```
+
+### 6.13 日期选择器规范
+
+```html
+<input type="date" class="date-input">
+```
+
+### 6.14 文件上传规范
+
+```html
+<input type="file" class="file-input">
+```
+
+## 7. 图标规范
+
+### 7.1 图标风格
 
 - **风格**：线性图标，简约现代
 - **线条粗细**：2px
 - **圆角**：4px
 
-### 6.2 常用图标
+### 7.2 常用图标
 
 | 图标名称 | 用途 |
 |---------|------|
@@ -284,6 +476,221 @@
 | 删除 | 删除操作 |
 | 搜索 | 搜索功能 |
 | 分享 | 分享功能 |
+
+## 8. 统一组件规范
+
+### 8.1 弹框组件 (Modal)
+
+#### 8.1.1 组件概述
+
+`Modal` 是统一的消息提示弹框组件，用于替代原生 `alert()` 方法，提供一致的用户体验。
+
+#### 8.1.2 组件属性
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| visible | Boolean | false | 是否显示弹框 |
+| title | String | '' | 弹框标题 |
+| showClose | Boolean | true | 是否显示关闭按钮 |
+| size | String | 'md' | 弹框尺寸：sm/md/lg/xl |
+| icon | String | '' | 图标类型：add/edit/delete/info/warning/success/error |
+
+#### 8.1.3 使用示例
+
+```html
+<Modal 
+  :visible="showModal" 
+  title="操作成功" 
+  icon="success"
+  @close="showModal = false"
+>
+  <p>操作已成功完成</p>
+  <template #footer>
+    <button @click="showModal = false" class="btn-primary w-full">
+      确定
+    </button>
+  </template>
+</Modal>
+```
+
+### 8.2 确认对话框组件 (ConfirmModal)
+
+#### 8.2.1 组件概述
+
+`ConfirmModal` 是统一的确认对话框组件，用于删除、确认等需要用户二次确认的操作。
+
+#### 8.2.2 组件属性
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| visible | Boolean | false | 是否显示对话框 |
+| title | String | '确认操作' | 对话框标题 |
+| subtitle | String | '' | 副标题 |
+| message | String | '确定要执行此操作吗？' | 提示消息 |
+| type | String | 'confirm' | 类型：confirm/delete/warning |
+| confirmText | String | '确定' | 确认按钮文字 |
+| cancelText | String | '取消' | 取消按钮文字 |
+
+#### 8.2.3 使用示例
+
+```html
+<ConfirmModal 
+  :visible="showConfirm" 
+  title="确认删除"
+  message="确定要删除该成员吗？此操作不可撤销。"
+  type="delete"
+  @confirm="handleDelete"
+  @cancel="showConfirm = false"
+/>
+```
+
+### 8.3 Toast 组件
+
+#### 8.3.1 组件概述
+
+`Toast` 是轻量级消息提示组件，用于操作成功/失败等临时提示。
+
+## 9. 测试验证规范
+
+### 9.1 测试原则
+
+- **完整性**：覆盖所有功能点和边界情况
+- **一致性**：保持测试用例的规范和统一
+- **可重复性**：测试用例应可重复执行
+- **自动化**：尽可能使用自动化测试工具
+
+### 9.2 测试分类
+
+#### 9.2.1 功能测试
+
+| 测试项 | 测试内容 | 验证方式 |
+|--------|----------|----------|
+| 页面加载 | 页面能否正常加载 | 手动访问页面 |
+| 表单提交 | 表单验证、提交成功/失败 | 手动填写表单 |
+| 数据展示 | 数据是否正确显示 | 对比数据库数据 |
+| 按钮交互 | 按钮点击、状态变化 | 手动点击测试 |
+| 弹窗交互 | 弹窗显示、关闭、确认 | 手动操作测试 |
+
+#### 9.2.2 UI测试
+
+| 测试项 | 测试内容 | 验证方式 |
+|--------|----------|----------|
+| 响应式布局 | 不同屏幕尺寸显示 | 调整浏览器窗口 |
+| 样式一致性 | 组件样式符合规范 | 视觉检查 |
+| 动画效果 | 过渡动画正常播放 | 视觉检查 |
+
+#### 9.2.3 兼容性测试
+
+| 测试项 | 测试内容 | 验证方式 |
+|--------|----------|----------|
+| 浏览器兼容 | 主流浏览器正常显示 | 多浏览器测试 |
+| 移动端兼容 | 手机/平板正常显示 | 真机测试 |
+
+### 9.3 页面测试清单
+
+#### 9.3.1 登录页
+
+- [ ] 用户名/密码输入
+- [ ] 表单验证
+- [ ] 登录成功跳转
+- [ ] 登录失败提示
+- [ ] 注册链接跳转
+
+#### 9.3.2 注册页
+
+- [ ] 表单输入验证
+- [ ] 密码强度提示
+- [ ] 注册成功跳转
+- [ ] 注册失败提示
+
+#### 9.3.3 成员管理页
+
+- [ ] 成员列表展示
+- [ ] 添加成员
+- [ ] 编辑成员
+- [ ] 删除成员（含确认）
+- [ ] 去世标记显示
+- [ ] 筛选功能
+
+#### 9.3.4 成员详情页
+
+- [ ] 成员信息展示
+- [ ] 编辑功能
+- [ ] 去世标记显示
+- [ ] 关联关系展示
+
+#### 9.3.5 个人信息页
+
+- [ ] 信息展示
+- [ ] 头像上传
+- [ ] 信息编辑
+- [ ] 表单验证
+
+#### 9.3.6 家族树页
+
+- [ ] 树状结构展示
+- [ ] 节点交互
+- [ ] 缩放功能
+
+#### 9.3.7 事件管理页
+
+- [ ] 事件列表展示
+- [ ] 添加事件
+- [ ] 编辑事件
+- [ ] 删除事件
+
+#### 9.3.8 媒体管理页
+
+- [ ] 媒体列表展示
+- [ ] 上传功能
+- [ ] 删除功能
+- [ ] 预览功能
+
+#### 9.3.9 家族管理页
+
+- [ ] 家族列表展示
+- [ ] 创建家族
+- [ ] 编辑家族
+- [ ] 删除家族
+
+### 9.4 Bug 记录规范
+
+| 字段 | 说明 | 示例 |
+|------|------|------|
+| 标题 | 简明描述问题 | 编辑成员保存失败：性别格式不正确 |
+| 页面 | 问题所在页面 | Members.vue |
+| 步骤 | 复现步骤 | 1. 进入成员管理 2. 编辑成员 3. 选择性别 4. 点击保存 |
+| 预期 | 预期结果 | 保存成功，成员信息更新 |
+| 实际 | 实际结果 | 提示"性别格式不正确"，保存失败 |
+| 严重程度 | 问题严重程度 | 高/中/低 |
+
+## 10. 开发流程规范
+
+### 10.1 开发流程
+
+1. **需求分析**：理解需求，明确功能范围
+2. **设计评审**：确认UI设计、技术方案
+3. **代码开发**：按照规范编写代码
+4. **测试验证**：执行测试用例，确保功能正确
+5. **代码审查**：提交代码审查
+6. **部署上线**：部署到测试/生产环境
+
+### 10.2 代码规范
+
+- 使用统一的组件和样式类
+- 遵循Vue最佳实践
+- 添加必要的注释
+- 保持代码简洁、可读
+
+### 10.3 提交规范
+
+| 类型 | 说明 | 示例 |
+|------|------|------|
+| feat | 新功能 | feat: 添加头像上传弹框 |
+| fix | 修复bug | fix: 修复性别验证错误 |
+| style | 样式调整 | style: 统一按钮样式 |
+| docs | 文档更新 | docs: 更新UI规范文档 |
+| refactor | 代码重构 | refactor: 优化组件结构 |
 
 ## 7. 页面设计
 

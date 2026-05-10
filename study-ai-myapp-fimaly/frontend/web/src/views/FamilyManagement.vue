@@ -2,10 +2,10 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="家族管理">
       <template #actions>
-        <button @click="openCreateFamilyModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+        <button @click="openCreateFamilyModal" class="btn-primary">
           新建家族
         </button>
-        <button v-if="selectedFamily" @click="openFamilyDetailModal" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+        <button v-if="selectedFamily" @click="openFamilyDetailModal" class="btn-primary">
           查看明细
         </button>
       </template>
@@ -21,7 +21,7 @@
         </div>
         <div v-else-if="familyStore.families.length === 0" class="text-center py-8">
           <p class="text-gray-600">暂无家族数据</p>
-          <button @click="openCreateFamilyModal" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+          <button @click="openCreateFamilyModal" class="mt-4 btn-primary">
             创建第一个家族
           </button>
         </div>
@@ -64,13 +64,13 @@
               <p class="text-sm text-gray-500 mt-1">管理员: {{ getAdministratorName(selectedFamily.administratorId) }}</p>
             </div>
             <div class="flex space-x-2">
-              <button @click="openUpdateAdministratorModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+              <button @click="openUpdateAdministratorModal" class="btn-primary">
                 更改管理员
               </button>
-              <button @click="openAddMemberModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200">
+              <button @click="openAddMemberModal" class="btn-primary">
                 添加成员
               </button>
-              <button @click="openAddRelationshipModal" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 shadow-md hover:shadow-lg transition-all duration-200">
+              <button @click="openAddRelationshipModal" class="btn-purple">
                 添加关系
               </button>
             </div>
@@ -115,8 +115,8 @@
                     {{ member.birthDate || '未知' }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button @click="editMember(member)" class="text-green-600 hover:text-green-800 mr-3">编辑</button>
-                    <button @click="deleteMember(member.id)" class="text-red-600 hover:text-red-800">删除</button>
+                    <button @click="editMember(member)" class="btn-text mr-3">编辑</button>
+                    <button @click="deleteMember(member.id)" class="btn-text-danger">删除</button>
                   </td>
                 </tr>
               </tbody>
@@ -157,7 +157,7 @@
                     {{ getMemberName(relationship.member2Id) }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button @click="deleteRelationship(relationship.id)" class="text-red-600 hover:text-red-800">删除</button>
+                    <button @click="deleteRelationship(relationship.id)" class="btn-text-danger">删除</button>
                   </td>
                 </tr>
               </tbody>
@@ -190,10 +190,10 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showCreateFamilyModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showCreateFamilyModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="familyStore.loading" class="btn-primary">
               {{ familyStore.loading ? '创建中...' : '创建' }}
             </button>
           </div>
@@ -224,13 +224,13 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="handleDeleteFamily" class="px-4 py-2.5 bg-red-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-red-600 hover:-translate-y-0.5 transition-all duration-200">
+            <button type="button" @click="handleDeleteFamily" class="btn-danger">
               删除家族
             </button>
-            <button type="button" @click="showFamilyDetailModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showFamilyDetailModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="familyStore.loading" class="btn-primary">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
@@ -277,10 +277,10 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showAddMemberModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showAddMemberModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="memberStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="memberStore.loading" class="btn-primary">
               {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
@@ -332,10 +332,10 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showAddRelationshipModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showAddRelationshipModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="relationshipStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="relationshipStore.loading" class="btn-primary">
               {{ relationshipStore.loading ? '添加中...' : '添加' }}
             </button>
           </div>
@@ -365,22 +365,49 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showUpdateAdministratorModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showUpdateAdministratorModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="familyStore.loading" class="btn-primary">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Delete Confirm Modal -->
+    <ConfirmModal 
+      :visible="showDeleteConfirm"
+      :title="deleteConfirmTitle"
+      :message="deleteConfirmMessage"
+      type="delete"
+      @confirm="confirmDelete"
+      @cancel="showDeleteConfirm = false"
+    />
+
+    <!-- Message Modal -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
 <script>
 import { ref, computed, onMounted } from 'vue'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
+import ConfirmModal from '../components/ConfirmModal.vue'
 import { useFamilyStore } from '../stores/family'
 import { useMemberStore } from '../stores/member'
 import { useRelationshipStore } from '../stores/relationship'
@@ -389,7 +416,9 @@ import { useRouter } from 'vue-router'
 export default {
   name: 'FamilyManagement',
   components: {
-    Header
+    Header,
+    Modal,
+    ConfirmModal
   },
   setup() {
     const router = useRouter()
@@ -403,7 +432,23 @@ export default {
     const showAddMemberModal = ref(false)
     const showAddRelationshipModal = ref(false)
     const showUpdateAdministratorModal = ref(false)
+    const showDeleteConfirm = ref(false)
+    const showMessageModal = ref(false)
     const editingMember = ref(null)
+    const deletingType = ref('')
+    const deletingId = ref(null)
+    const deleteConfirmTitle = ref('确认删除')
+    const deleteConfirmMessage = ref('确定要删除吗？')
+    const messageModalTitle = ref('')
+    const messageModalContent = ref('')
+    const messageModalIcon = ref('info')
+
+    const showMessage = (title, content, icon = 'info') => {
+      messageModalTitle.value = title
+      messageModalContent.value = content
+      messageModalIcon.value = icon
+      showMessageModal.value = true
+    }
 
     const familyForm = ref({
       name: '',
@@ -514,8 +559,9 @@ export default {
         await familyStore.createFamily(familyForm.value)
         showCreateFamilyModal.value = false
         familyForm.value = { name: '', description: '' }
+        showMessage('操作成功', '家族创建成功', 'success')
       } catch (error) {
-        alert('创建家族失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '创建家族失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -524,37 +570,37 @@ export default {
         await familyStore.updateFamily(selectedFamily.value.id, familyForm.value)
         showFamilyDetailModal.value = false
         selectedFamily.value = { ...selectedFamily.value, ...familyForm.value }
+        showMessage('操作成功', '家族更新成功', 'success')
       } catch (error) {
-        alert('更新家族失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '更新家族失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
-    const handleDeleteFamily = async () => {
-      if (!confirm('确定要删除这个家族吗？此操作不可恢复。')) return
-      try {
-        await familyStore.deleteFamily(selectedFamily.value.id)
-        showFamilyDetailModal.value = false
-        selectedFamily.value = null
-      } catch (error) {
-        alert('删除家族失败: ' + (error.response?.data?.message || error.message))
-      }
+    const handleDeleteFamily = () => {
+      deletingType.value = 'family'
+      deletingId.value = selectedFamily.value.id
+      deleteConfirmTitle.value = '确认删除家族'
+      deleteConfirmMessage.value = '确定要删除这个家族吗？此操作不可恢复。'
+      showDeleteConfirm.value = true
     }
 
     const handleAddMember = async () => {
       try {
         if (editingMember.value) {
           await memberStore.updateMember(editingMember.value.id, memberForm.value)
+          showMessage('操作成功', '成员更新成功', 'success')
         } else {
           await memberStore.createMember({
             ...memberForm.value,
             familyId: selectedFamily.value.id
           })
+          showMessage('操作成功', '成员添加成功', 'success')
         }
         showAddMemberModal.value = false
         editingMember.value = null
         memberForm.value = { name: '', gender: '', birthDate: '', deathDate: '', details: '' }
       } catch (error) {
-        alert('保存成员失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '保存成员失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -570,13 +616,12 @@ export default {
       showAddMemberModal.value = true
     }
 
-    const deleteMember = async (memberId) => {
-      if (!confirm('确定要删除这个成员吗？')) return
-      try {
-        await memberStore.deleteMember(memberId)
-      } catch (error) {
-        alert('删除成员失败: ' + (error.response?.data?.message || error.message))
-      }
+    const deleteMember = (memberId) => {
+      deletingType.value = 'member'
+      deletingId.value = memberId
+      deleteConfirmTitle.value = '确认删除成员'
+      deleteConfirmMessage.value = '确定要删除这个成员吗？'
+      showDeleteConfirm.value = true
     }
 
     const handleAddRelationship = async () => {
@@ -587,17 +632,40 @@ export default {
         })
         showAddRelationshipModal.value = false
         relationshipForm.value = { member1Id: '', member2Id: '', relationshipType: '' }
+        showMessage('操作成功', '关系添加成功', 'success')
       } catch (error) {
-        alert('添加关系失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '添加关系失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
-    const deleteRelationship = async (relationshipId) => {
-      if (!confirm('确定要删除这个关系吗？')) return
+    const deleteRelationship = (relationshipId) => {
+      deletingType.value = 'relationship'
+      deletingId.value = relationshipId
+      deleteConfirmTitle.value = '确认删除关系'
+      deleteConfirmMessage.value = '确定要删除这个关系吗？'
+      showDeleteConfirm.value = true
+    }
+
+    const confirmDelete = async () => {
       try {
-        await relationshipStore.deleteRelationship(relationshipId)
+        if (deletingType.value === 'family') {
+          await familyStore.deleteFamily(deletingId.value)
+          showFamilyDetailModal.value = false
+          selectedFamily.value = null
+          showMessage('操作成功', '家族删除成功', 'success')
+        } else if (deletingType.value === 'member') {
+          await memberStore.deleteMember(deletingId.value)
+          showMessage('操作成功', '成员删除成功', 'success')
+        } else if (deletingType.value === 'relationship') {
+          await relationshipStore.deleteRelationship(deletingId.value)
+          showMessage('操作成功', '关系删除成功', 'success')
+        }
       } catch (error) {
-        alert('删除关系失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '删除失败: ' + (error.response?.data?.message || error.message), 'error')
+      } finally {
+        showDeleteConfirm.value = false
+        deletingType.value = ''
+        deletingId.value = null
       }
     }
 
@@ -619,6 +687,14 @@ export default {
       showFamilyDetailModal,
       showAddMemberModal,
       showAddRelationshipModal,
+      showUpdateAdministratorModal,
+      showDeleteConfirm,
+      showMessageModal,
+      deleteConfirmTitle,
+      deleteConfirmMessage,
+      messageModalTitle,
+      messageModalContent,
+      messageModalIcon,
       editingMember,
       familyForm,
       memberForm,
@@ -643,8 +719,8 @@ export default {
       deleteMember,
       handleAddRelationship,
       deleteRelationship,
+      confirmDelete,
       getMemberName,
-      showUpdateAdministratorModal,
       administratorForm
     }
   }

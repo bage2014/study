@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="成员管理">
       <template #actions>
-        <button @click="openAddMemberModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+        <button @click="openAddMemberModal" class="btn-primary">
           添加成员
         </button>
       </template>
@@ -15,14 +15,14 @@
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
           <div class="flex space-x-2">
-            <select id="family" v-model="selectedFamilyId" @change="fetchMembers" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500">
+            <select id="family" v-model="selectedFamilyId" @change="fetchMembers" class="form-select flex-1">
               <option value="">请选择家族</option>
               <option v-for="family in familyStore.families" :key="family.id" :value="family.id">{{ family.name }}</option>
             </select>
             <button 
               @click="viewOrEditFamily" 
               :disabled="!selectedFamilyId"
-              class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="btn-primary"
             >
               查看/编辑家族
             </button>
@@ -60,9 +60,6 @@
                   出生日期
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  去世日期
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   操作
                 </th>
               </tr>
@@ -80,7 +77,10 @@
                       </div>
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900">{{ member.name }}</div>
+                      <div class="text-sm font-medium text-gray-900 flex items-center">
+                        {{ member.name }}
+                        <span v-if="hasPassedAway(member.deathDate)" class="ml-2 px-2 py-0.5 text-xs bg-gray-100 text-gray-500 rounded-full">已去世</span>
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -92,24 +92,21 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ member.birthDate || '未知' }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {{ member.deathDate || '在世' }}
-                </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button @click="navigateTo(`/member/${member.id}`)" class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-150 transform hover:scale-110 inline-flex items-center">
+                  <button @click="navigateTo(`/member/${member.id}`)" class="btn-text mr-3 inline-flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                     查看
                   </button>
-                  <button @click="editMember(member)" class="text-green-600 hover:text-green-800 mr-3 transition-colors duration-150 transform hover:scale-110 inline-flex items-center">
+                  <button @click="editMember(member)" class="btn-text mr-3 inline-flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                     编辑
                   </button>
-                  <button @click="deleteMember(member.id)" class="text-red-600 hover:text-red-800 transition-colors duration-150 transform hover:scale-110 inline-flex items-center">
+                  <button @click="deleteMember(member.id)" class="btn-text-danger inline-flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
@@ -170,10 +167,10 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="memberStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="memberStore.loading" class="btn-primary">
               {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
@@ -196,24 +193,49 @@
           <div class="space-y-4">
             <div>
               <label for="familyName" class="block text-sm font-medium text-gray-700 mb-1.5">家族名称</label>
-              <input type="text" id="familyName" v-model="familyForm.name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+              <input type="text" id="familyName" v-model="familyForm.name" required class="input-field">
             </div>
             <div>
               <label for="familyDescription" class="block text-sm font-medium text-gray-700 mb-1.5">家族描述</label>
-              <textarea id="familyDescription" v-model="familyForm.description" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"></textarea>
+              <textarea id="familyDescription" v-model="familyForm.description" rows="3" class="input-field"></textarea>
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showFamilyModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showFamilyModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="familyStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="familyStore.loading" class="btn-primary">
               {{ familyStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Delete Confirm Modal -->
+    <ConfirmModal 
+      :visible="showDeleteConfirm"
+      title="确认删除"
+      message="确定要删除该成员吗？此操作不可撤销。"
+      type="delete"
+      @confirm="confirmDelete"
+      @cancel="showDeleteConfirm = false"
+    />
+
+    <!-- Message Modal -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -223,11 +245,15 @@ import { useFamilyStore } from '../stores/family'
 import { useMemberStore } from '../stores/member'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
+import ConfirmModal from '../components/ConfirmModal.vue'
 
 export default {
   name: 'Members',
   components: {
-    Header
+    Header,
+    Modal,
+    ConfirmModal
   },
   setup() {
     const familyStore = useFamilyStore()
@@ -236,7 +262,14 @@ export default {
     const selectedFamilyId = ref('')
     const showModal = ref(false)
     const showFamilyModal = ref(false)
+    const showDeleteConfirm = ref(false)
+    const showMessageModal = ref(false)
     const editingMember = ref(null)
+    const deletingMemberId = ref(null)
+    const messageModalTitle = ref('')
+    const messageModalContent = ref('')
+    const messageModalIcon = ref('info')
+
     const form = ref({
       name: '',
       gender: '',
@@ -250,6 +283,13 @@ export default {
       name: '',
       description: ''
     })
+
+    const showMessage = (title, content, icon = 'info') => {
+      messageModalTitle.value = title
+      messageModalContent.value = content
+      messageModalIcon.value = icon
+      showMessageModal.value = true
+    }
 
     const navigateTo = (path) => {
       router.push(path)
@@ -276,9 +316,16 @@ export default {
       return date.toLocaleDateString('zh-CN')
     }
 
+    const hasPassedAway = (deathDate) => {
+      if (!deathDate) return false
+      const death = new Date(deathDate)
+      const today = new Date()
+      return death <= today
+    }
+
     const openAddMemberModal = () => {
       if (!selectedFamilyId.value) {
-        alert('请先选择家族')
+        showMessage('提示', '请先选择家族', 'warning')
         return
       }
       editingMember.value = null
@@ -317,14 +364,20 @@ export default {
       showModal.value = true
     }
 
-    const deleteMember = async (memberId) => {
-      if (confirm('确定要删除这个成员吗？')) {
-        try {
-          await memberStore.deleteMember(memberId)
-          alert('成员删除成功')
-        } catch (error) {
-          alert('成员删除失败: ' + (error.response?.data?.message || error.message))
-        }
+    const deleteMember = (memberId) => {
+      deletingMemberId.value = memberId
+      showDeleteConfirm.value = true
+    }
+
+    const confirmDelete = async () => {
+      try {
+        await memberStore.deleteMember(deletingMemberId.value)
+        showMessage('操作成功', '成员删除成功', 'success')
+      } catch (error) {
+        showMessage('操作失败', '成员删除失败: ' + (error.response?.data?.message || error.message), 'error')
+      } finally {
+        showDeleteConfirm.value = false
+        deletingMemberId.value = null
       }
     }
 
@@ -333,30 +386,30 @@ export default {
         if (editingMember.value) {
           // 编辑成员
           await memberStore.updateMember(editingMember.value.id, form.value)
-          alert('成员更新成功')
+          showMessage('操作成功', '成员更新成功', 'success')
         } else {
           // 添加成员
           await memberStore.createMember({
             ...form.value,
             familyId: selectedFamilyId.value
           })
-          alert('成员添加成功')
+          showMessage('操作成功', '成员添加成功', 'success')
         }
         showModal.value = false
         await fetchMembers()
       } catch (error) {
-        alert('操作失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '操作失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
     const handleFamilySubmit = async () => {
       try {
         await familyStore.updateFamily(selectedFamilyId.value, familyForm.value)
-        alert('家族更新成功')
+        showMessage('操作成功', '家族更新成功', 'success')
         showFamilyModal.value = false
         await familyStore.fetchFamilies()
       } catch (error) {
-        alert('家族更新失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '家族更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -372,16 +425,23 @@ export default {
       selectedFamilyId,
       showModal,
       showFamilyModal,
+      showDeleteConfirm,
+      showMessageModal,
+      messageModalTitle,
+      messageModalContent,
+      messageModalIcon,
       editingMember,
       form,
       familyForm,
       navigateTo,
       fetchMembers,
       formatDate,
+      hasPassedAway,
       openAddMemberModal,
       viewOrEditFamily,
       editMember,
       deleteMember,
+      confirmDelete,
       handleSubmit,
       handleFamilySubmit
     }

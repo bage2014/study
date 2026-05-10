@@ -135,6 +135,8 @@ public class MemberService {
                gender.equals("女") ||
                gender.equals("MALE") ||
                gender.equals("FEMALE") ||
+               gender.equals("male") ||
+               gender.equals("female") ||
                gender.equals("OTHER");
     }
 }

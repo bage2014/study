@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="多媒体库">
       <template #actions>
-        <button @click="openUploadModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+        <button @click="openUploadModal" class="btn-primary">
           上传媒体
         </button>
       </template>
@@ -14,7 +14,7 @@
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
-          <select id="family" v-model="selectedFamilyId" @change="fetchMedia" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500">
+          <select id="family" v-model="selectedFamilyId" @change="fetchMedia" class="form-select">
             <option value="">请选择家族</option>
             <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
           </select>
@@ -23,16 +23,16 @@
         <!-- Media Type Filter -->
         <div class="mb-6">
           <div class="flex space-x-2">
-            <button @click="selectedType = ''" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === '' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
+            <button @click="selectedType = ''" :class="['px-4 py-2 rounded-xl text-sm font-medium cursor-pointer transition-all duration-200', selectedType === '' ? 'bg-green-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200']">
               全部
             </button>
-            <button @click="selectedType = 'photo'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'photo' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
+            <button @click="selectedType = 'photo'" :class="['px-4 py-2 rounded-xl text-sm font-medium cursor-pointer transition-all duration-200', selectedType === 'photo' ? 'bg-green-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200']">
               照片
             </button>
-            <button @click="selectedType = 'video'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'video' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
+            <button @click="selectedType = 'video'" :class="['px-4 py-2 rounded-xl text-sm font-medium cursor-pointer transition-all duration-200', selectedType === 'video' ? 'bg-green-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200']">
               视频
             </button>
-            <button @click="selectedType = 'document'" :class="['px-4 py-2 rounded-md text-sm font-medium', selectedType === 'document' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300']">
+            <button @click="selectedType = 'document'" :class="['px-4 py-2 rounded-xl text-sm font-medium cursor-pointer transition-all duration-200', selectedType === 'document' ? 'bg-green-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200']">
               文档
             </button>
           </div>
@@ -124,16 +124,41 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showUploadModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showUploadModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="mediaStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="mediaStore.loading" class="btn-primary">
               {{ mediaStore.loading ? '上传中...' : '上传' }}
             </button>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Delete Confirm Modal -->
+    <ConfirmModal 
+      :visible="showDeleteConfirm"
+      title="确认删除"
+      message="确定要删除该媒体文件吗？此操作不可撤销。"
+      type="delete"
+      @confirm="confirmDelete"
+      @cancel="showDeleteConfirm = false"
+    />
+
+    <!-- Message Modal -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -143,11 +168,15 @@ import { useFamilyStore } from '../stores/family'
 import { useMediaStore } from '../stores/media'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
+import ConfirmModal from '../components/ConfirmModal.vue'
 
 export default {
   name: 'Media',
   components: {
-    Header
+    Header,
+    Modal,
+    ConfirmModal
   },
   setup() {
     const familyStore = useFamilyStore()
@@ -156,11 +185,25 @@ export default {
     const selectedFamilyId = ref('')
     const selectedType = ref('')
     const showUploadModal = ref(false)
+    const showDeleteConfirm = ref(false)
+    const showMessageModal = ref(false)
+    const deletingMediaId = ref(null)
+    const selectedFile = ref(null)
+    const messageModalTitle = ref('')
+    const messageModalContent = ref('')
+    const messageModalIcon = ref('info')
+
     const uploadForm = ref({
       type: '',
       description: ''
     })
-    const selectedFile = ref(null)
+
+    const showMessage = (title, content, icon = 'info') => {
+      messageModalTitle.value = title
+      messageModalContent.value = content
+      messageModalIcon.value = icon
+      showMessageModal.value = true
+    }
 
     const navigateTo = (path) => {
       router.push(path)
@@ -193,11 +236,11 @@ export default {
 
     const handleUpload = async () => {
       if (!selectedFile.value) {
-        alert('请选择文件')
+        showMessage('提示', '请选择文件', 'warning')
         return
       }
       if (!selectedFamilyId.value) {
-        alert('请选择家族')
+        showMessage('提示', '请选择家族', 'warning')
         return
       }
 
@@ -208,7 +251,7 @@ export default {
           uploadForm.value.type,
           uploadForm.value.description
         )
-        alert('文件上传成功')
+        showMessage('操作成功', '文件上传成功', 'success')
         showUploadModal.value = false
         uploadForm.value = {
           type: '',
@@ -216,18 +259,24 @@ export default {
         }
         selectedFile.value = null
       } catch (error) {
-        alert('文件上传失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '文件上传失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
-    const deleteMedia = async (mediaId) => {
-      if (confirm('确定要删除这个媒体文件吗？')) {
-        try {
-          await mediaStore.deleteMedia(mediaId)
-          alert('文件删除成功')
-        } catch (error) {
-          alert('文件删除失败: ' + (error.response?.data?.message || error.message))
-        }
+    const deleteMedia = (mediaId) => {
+      deletingMediaId.value = mediaId
+      showDeleteConfirm.value = true
+    }
+
+    const confirmDelete = async () => {
+      try {
+        await mediaStore.deleteMedia(deletingMediaId.value)
+        showMessage('操作成功', '文件删除成功', 'success')
+      } catch (error) {
+        showMessage('操作失败', '文件删除失败: ' + (error.response?.data?.message || error.message), 'error')
+      } finally {
+        showDeleteConfirm.value = false
+        deletingMediaId.value = null
       }
     }
 
@@ -243,13 +292,19 @@ export default {
       selectedFamilyId,
       selectedType,
       showUploadModal,
+      showDeleteConfirm,
+      showMessageModal,
+      messageModalTitle,
+      messageModalContent,
+      messageModalIcon,
       uploadForm,
       navigateTo,
       fetchMedia,
       formatDate,
       handleFileChange,
       handleUpload,
-      deleteMedia
+      deleteMedia,
+      confirmDelete
     }
   }
 }

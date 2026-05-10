@@ -78,52 +78,60 @@
     </div>
 
     <!-- 添加/编辑大事件模态框 -->
-    <div v-if="showAddModal || showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 w-full max-w-2xl">
-        <h2 class="text-xl font-bold mb-4">{{ showAddModal ? '添加大事件' : '编辑大事件' }}</h2>
+    <div v-if="showAddModal || showEditModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in" @click.self="showAddModal = false; showEditModal = false; resetForm()">
+      <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 animate-scale-in">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-100 to-indigo-200 flex items-center justify-center mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">{{ showAddModal ? '添加大事件' : '编辑大事件' }}</h3>
+        </div>
         
         <form @submit.prevent="saveMilestone">
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">标题</label>
-            <input v-model="formData.title" type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" required>
-          </div>
-          
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">内容</label>
-            <div class="border border-gray-300 rounded-md">
-              <!-- 简单的富文本编辑器 -->
-              <div class="p-2 border-b border-gray-200 flex space-x-2">
-                <button type="button" @click="formatText('bold')" class="text-gray-600 hover:text-gray-900">
-                  <strong>B</strong>
-                </button>
-                <button type="button" @click="formatText('italic')" class="text-gray-600 hover:text-gray-900">
-                  <em>I</em>
-                </button>
-                <button type="button" @click="formatText('underline')" class="text-gray-600 hover:text-gray-900">
-                  <u>U</u>
-                </button>
-                <button type="button" @click="insertImage" class="text-gray-600 hover:text-gray-900">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </button>
+          <div class="space-y-4">
+            <div>
+              <label class="form-label">标题</label>
+              <input v-model="formData.title" type="text" class="input-field" required>
+            </div>
+            
+            <div>
+              <label class="form-label">内容</label>
+              <div class="border border-gray-200 rounded-xl overflow-hidden">
+                <div class="p-2 border-b border-gray-100 flex space-x-2">
+                  <button type="button" @click="formatText('bold')" class="text-gray-600 hover:text-gray-900 hover:bg-gray-100 p-1.5 rounded cursor-pointer transition-colors">
+                    <strong>B</strong>
+                  </button>
+                  <button type="button" @click="formatText('italic')" class="text-gray-600 hover:text-gray-900 hover:bg-gray-100 p-1.5 rounded cursor-pointer transition-colors">
+                    <em>I</em>
+                  </button>
+                  <button type="button" @click="formatText('underline')" class="text-gray-600 hover:text-gray-900 hover:bg-gray-100 p-1.5 rounded cursor-pointer transition-colors">
+                    <u>U</u>
+                  </button>
+                  <button type="button" @click="insertImage" class="text-gray-600 hover:text-gray-900 hover:bg-gray-100 p-1.5 rounded cursor-pointer transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </button>
+                </div>
+                <div contenteditable="true" v-html="formData.content" @input="updateContent" class="p-4 min-h-[200px] focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"></div>
               </div>
-              <div contenteditable="true" v-html="formData.content" @input="updateContent" class="p-3 min-h-[200px] focus:outline-none"></div>
+            </div>
+            
+            <div>
+              <label class="flex items-center cursor-pointer">
+                <input v-model="formData.isPublic" type="checkbox" class="w-4 h-4 text-green-500 border-gray-300 rounded focus:ring-green-500">
+                <span class="ml-2 text-sm text-gray-700">公开</span>
+              </label>
             </div>
           </div>
           
-          <div class="mb-4">
-            <label class="flex items-center">
-              <input v-model="formData.isPublic" type="checkbox" class="mr-2">
-              <span class="text-sm text-gray-700">公开</span>
-            </label>
-          </div>
-          
-          <div class="flex justify-end space-x-2">
-            <button type="button" @click="showAddModal = false; showEditModal = false; resetForm()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+          <div class="mt-6 flex justify-end space-x-3">
+            <button type="button" @click="showAddModal = false; showEditModal = false; resetForm()" class="btn-secondary">
               取消
             </button>
-            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">
+            <button type="submit" class="btn-primary">
               保存
             </button>
           </div>
@@ -131,6 +139,31 @@
       </div>
     </div>
   </main>
+
+  <!-- Delete Confirm Modal -->
+  <ConfirmModal 
+    :visible="showDeleteConfirm"
+    title="确认删除"
+    message="确定要删除这个大事件吗？"
+    type="delete"
+    @confirm="confirmDelete"
+    @cancel="showDeleteConfirm = false"
+  />
+
+  <!-- Message Modal -->
+  <Modal 
+    :visible="showMessageModal" 
+    :title="messageModalTitle" 
+    :icon="messageModalIcon"
+    @close="showMessageModal = false"
+  >
+    <p class="text-gray-700">{{ messageModalContent }}</p>
+    <template #footer>
+      <button @click="showMessageModal = false" class="btn-primary w-full">
+        确定
+      </button>
+    </template>
+  </Modal>
 </div>
 </template>
 
@@ -140,6 +173,8 @@ import { useMilestoneStore } from '../stores/milestone'
 import { useMemberStore } from '../stores/member'
 import { useUserStore } from '../stores/user'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
+import ConfirmModal from '../components/ConfirmModal.vue'
 
 const milestoneStore = useMilestoneStore()
 const memberStore = useMemberStore()
@@ -148,7 +183,20 @@ const userStore = useUserStore()
 const selectedMemberId = ref('')
 const showAddModal = ref(false)
 const showEditModal = ref(false)
+const showDeleteConfirm = ref(false)
+const showMessageModal = ref(false)
+const deletingMilestoneId = ref(null)
 const currentMilestoneId = ref(null)
+const messageModalTitle = ref('')
+const messageModalContent = ref('')
+const messageModalIcon = ref('info')
+
+const showMessage = (title, content, icon = 'info') => {
+  messageModalTitle.value = title
+  messageModalContent.value = content
+  messageModalIcon.value = icon
+  showMessageModal.value = true
+}
 
 const formData = ref({
   title: '',
@@ -226,9 +274,20 @@ const editMilestone = async (milestone) => {
   showEditModal.value = true
 }
 
-const deleteMilestone = async (id) => {
-  if (confirm('确定要删除这个大事件吗？')) {
-    await milestoneStore.deleteMilestone(id)
+const deleteMilestone = (id) => {
+  deletingMilestoneId.value = id
+  showDeleteConfirm.value = true
+}
+
+const confirmDelete = async () => {
+  try {
+    await milestoneStore.deleteMilestone(deletingMilestoneId.value)
+    showMessage('操作成功', '大事件删除成功', 'success')
+  } catch (error) {
+    showMessage('操作失败', '删除失败: ' + (error.response?.data?.message || error.message), 'error')
+  } finally {
+    showDeleteConfirm.value = false
+    deletingMilestoneId.value = null
   }
 }
 

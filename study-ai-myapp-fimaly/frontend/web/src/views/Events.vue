@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="历史记录">
       <template #actions>
-        <button @click="openAddEventModal" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+        <button @click="openAddEventModal" class="btn-primary">
           添加事件
         </button>
       </template>
@@ -14,7 +14,7 @@
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
-          <select id="family" v-model="selectedFamilyId" @change="fetchEvents" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500">
+          <select id="family" v-model="selectedFamilyId" @change="fetchEvents" class="form-select">
             <option value="">请选择家族</option>
             <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
           </select>
@@ -104,16 +104,41 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="eventStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="eventStore.loading" class="btn-primary">
               {{ eventStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Delete Confirm Modal -->
+    <ConfirmModal 
+      :visible="showDeleteConfirm"
+      title="确认删除"
+      message="确定要删除该事件吗？此操作不可撤销。"
+      type="delete"
+      @confirm="confirmDelete"
+      @cancel="showDeleteConfirm = false"
+    />
+
+    <!-- Message Modal -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -123,11 +148,15 @@ import { useFamilyStore } from '../stores/family'
 import { useEventStore } from '../stores/event'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
+import ConfirmModal from '../components/ConfirmModal.vue'
 
 export default {
   name: 'Events',
   components: {
-    Header
+    Header,
+    Modal,
+    ConfirmModal
   },
   setup() {
     const familyStore = useFamilyStore()
@@ -135,14 +164,28 @@ export default {
     const router = useRouter()
     const selectedFamilyId = ref('')
     const showModal = ref(false)
+    const showDeleteConfirm = ref(false)
+    const showMessageModal = ref(false)
     const editingEvent = ref(null)
+    const deletingEventId = ref(null)
     const selectedFile = ref(null)
+    const messageModalTitle = ref('')
+    const messageModalContent = ref('')
+    const messageModalIcon = ref('info')
+
     const form = ref({
       name: '',
       description: '',
       eventDate: '',
       relatedMembers: ''
     })
+
+    const showMessage = (title, content, icon = 'info') => {
+      messageModalTitle.value = title
+      messageModalContent.value = content
+      messageModalIcon.value = icon
+      showMessageModal.value = true
+    }
 
     const navigateTo = (path) => {
       router.push(path)
@@ -182,14 +225,20 @@ export default {
       showModal.value = true
     }
 
-    const deleteEvent = async (eventId) => {
-      if (confirm('确定要删除这个事件吗？')) {
-        try {
-          await eventStore.deleteEvent(eventId)
-          alert('事件删除成功')
-        } catch (error) {
-          alert('事件删除失败: ' + (error.response?.data?.message || error.message))
-        }
+    const deleteEvent = (eventId) => {
+      deletingEventId.value = eventId
+      showDeleteConfirm.value = true
+    }
+
+    const confirmDelete = async () => {
+      try {
+        await eventStore.deleteEvent(deletingEventId.value)
+        showMessage('操作成功', '事件删除成功', 'success')
+      } catch (error) {
+        showMessage('操作失败', '事件删除失败: ' + (error.response?.data?.message || error.message), 'error')
+      } finally {
+        showDeleteConfirm.value = false
+        deletingEventId.value = null
       }
     }
 
@@ -225,15 +274,15 @@ export default {
         if (editingEvent.value) {
           // 编辑事件
           await eventStore.updateEvent(editingEvent.value.id, eventData)
-          alert('事件更新成功')
+          showMessage('操作成功', '事件更新成功', 'success')
         } else {
           // 添加事件
           await eventStore.createEvent(eventData)
-          alert('事件添加成功')
+          showMessage('操作成功', '事件添加成功', 'success')
         }
         showModal.value = false
       } catch (error) {
-        alert('操作失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '操作失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -248,6 +297,11 @@ export default {
       events,
       selectedFamilyId,
       showModal,
+      showDeleteConfirm,
+      showMessageModal,
+      messageModalTitle,
+      messageModalContent,
+      messageModalIcon,
       editingEvent,
       form,
       navigateTo,
@@ -255,6 +309,7 @@ export default {
       openAddEventModal,
       editEvent,
       deleteEvent,
+      confirmDelete,
       handleFileChange,
       handleSubmit
     }

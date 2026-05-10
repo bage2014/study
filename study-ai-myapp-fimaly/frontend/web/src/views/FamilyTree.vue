@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="家族树">
       <template #actions>
-        <button @click="navigateTo('/family-management')" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+        <button @click="navigateTo('/family-management')" class="btn-primary">
           家族管理
         </button>
       </template>
@@ -30,7 +30,7 @@
             </svg>
           </div>
           <p class="text-gray-600">暂无家族数据</p>
-          <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+          <button @click="navigateTo('/family-management')" class="mt-4 btn-primary">
             去创建家族
           </button>
         </div>
@@ -71,7 +71,7 @@
               <p class="text-gray-600 mt-1">{{ selectedFamily.description || '无描述' }}</p>
               <p class="text-sm text-gray-500 mt-2">创建于: {{ formatDate(selectedFamily.createdAt) }}</p>
             </div>
-            <button @click="navigateTo('/family-management')" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+            <button @click="navigateTo('/family-management')" class="btn-primary">
               管理家族
             </button>
           </div>
@@ -94,7 +94,7 @@
               </svg>
             </div>
             <p class="text-gray-600">暂无足够的成员和关系数据来显示家族关系图</p>
-            <button @click="navigateTo('/family-management')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+            <button @click="navigateTo('/family-management')" class="mt-4 btn-primary">
               去添加成员和关系
             </button>
           </div>

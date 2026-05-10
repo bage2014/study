@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <Header title="成员详情">
       <template #actions>
-        <button @click="editMember" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+        <button @click="editMember" class="btn-primary">
           编辑
         </button>
       </template>
@@ -34,7 +34,10 @@
               </div>
             </div>
             <div class="flex-1">
-              <h2 class="text-3xl font-bold">{{ memberStore.currentMember.name }}</h2>
+              <h2 class="text-3xl font-bold flex items-center">
+                {{ memberStore.currentMember.name }}
+                <span v-if="hasPassedAway(memberStore.currentMember.deathDate)" class="ml-3 px-2 py-1 text-xs bg-gray-300 text-gray-700 rounded-full">已去世</span>
+              </h2>
               <div class="mt-3 space-y-2">
                 <div class="flex items-center">
                   <span class="w-24 text-sm font-medium text-white/80">性别:</span>
@@ -43,10 +46,6 @@
                 <div class="flex items-center">
                   <span class="w-24 text-sm font-medium text-white/80">出生日期:</span>
                   <span class="text-sm">{{ memberStore.currentMember.birthDate || '未知' }}</span>
-                </div>
-                <div class="flex items-center">
-                  <span class="w-24 text-sm font-medium text-white/80">去世日期:</span>
-                  <span class="text-sm">{{ memberStore.currentMember.deathDate || '在世' }}</span>
                 </div>
                 <div class="flex items-center">
                   <span class="w-24 text-sm font-medium text-white/80">家族:</span>
@@ -176,16 +175,31 @@
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
-            <button type="button" @click="showEditModal = false" class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+            <button type="button" @click="showEditModal = false" class="btn-secondary">
               取消
             </button>
-            <button type="submit" :disabled="memberStore.loading" class="px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium shadow-md hover:shadow-lg hover:bg-green-600 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50">
+            <button type="submit" :disabled="memberStore.loading" class="btn-primary">
               {{ memberStore.loading ? '保存中...' : '保存' }}
             </button>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Message Modal -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -195,11 +209,13 @@ import { useMemberStore } from '../stores/member'
 import { useFamilyStore } from '../stores/family'
 import { useRoute, useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
 
 export default {
   name: 'MemberDetail',
   components: {
-    Header
+    Header,
+    Modal
   },
   setup() {
     const route = useRoute()
@@ -207,13 +223,31 @@ export default {
     const memberStore = useMemberStore()
     const familyStore = useFamilyStore()
     const showEditModal = ref(false)
+    const showMessageModal = ref(false)
+    const messageModalTitle = ref('')
+    const messageModalContent = ref('')
+    const messageModalIcon = ref('info')
     const currentFamily = ref(null)
     const relationships = ref([])
     const events = ref([])
     const editForm = ref({})
 
+    const showMessage = (title, content, icon = 'info') => {
+      messageModalTitle.value = title
+      messageModalContent.value = content
+      messageModalIcon.value = icon
+      showMessageModal.value = true
+    }
+
     const navigateTo = (path) => {
       router.push(path)
+    }
+
+    const hasPassedAway = (deathDate) => {
+      if (!deathDate) return false
+      const death = new Date(deathDate)
+      const today = new Date()
+      return death <= today
     }
 
     const fetchMemberDetails = async () => {
@@ -277,10 +311,10 @@ export default {
     const handleUpdate = async () => {
       try {
         await memberStore.updateMember(memberStore.currentMember.id, editForm.value)
-        alert('成员信息更新成功')
+        showMessage('操作成功', '成员信息更新成功', 'success')
         showEditModal.value = false
       } catch (error) {
-        alert('更新失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -291,11 +325,16 @@ export default {
     return {
       memberStore,
       showEditModal,
+      showMessageModal,
+      messageModalTitle,
+      messageModalContent,
+      messageModalIcon,
       currentFamily,
       relationships,
       events,
       editForm,
       navigateTo,
+      hasPassedAway,
       editMember,
       handleUpdate
     }

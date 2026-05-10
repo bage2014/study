@@ -105,6 +105,21 @@
         </div>
       </div>
     </main>
+
+    <!-- Message Modal -->
+    <Modal 
+      :visible="showMessageModal" 
+      :title="messageModalTitle" 
+      :icon="messageModalIcon"
+      @close="showMessageModal = false"
+    >
+      <p class="text-gray-700">{{ messageModalContent }}</p>
+      <template #footer>
+        <button @click="showMessageModal = false" class="btn-primary w-full">
+          确定
+        </button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -113,15 +128,29 @@ import { ref, onMounted } from 'vue'
 import { useUserStore } from '../stores/user'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
+import Modal from '../components/Modal.vue'
 
 export default {
   name: 'Settings',
   components: {
-    Header
+    Header,
+    Modal
   },
   setup() {
     const userStore = useUserStore()
     const router = useRouter()
+    const showMessageModal = ref(false)
+    const messageModalTitle = ref('')
+    const messageModalContent = ref('')
+    const messageModalIcon = ref('info')
+
+    const showMessage = (title, content, icon = 'info') => {
+      messageModalTitle.value = title
+      messageModalContent.value = content
+      messageModalIcon.value = icon
+      showMessageModal.value = true
+    }
+
     const profileForm = ref({
       email: '',
       phone: '',
@@ -162,15 +191,15 @@ export default {
           phone: profileForm.value.phone,
           nickname: profileForm.value.nickname
         })
-        alert('个人信息更新成功！')
+        showMessage('操作成功', '个人信息更新成功！', 'success')
       } catch (error) {
-        alert('个人信息更新失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '个人信息更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
     const changePassword = async () => {
       if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
-        alert('新密码和确认密码不一致！')
+        showMessage('提示', '新密码和确认密码不一致！', 'warning')
         return
       }
       try {
@@ -178,23 +207,23 @@ export default {
           currentPassword: passwordForm.value.currentPassword,
           newPassword: passwordForm.value.newPassword
         })
-        alert('密码修改成功！')
+        showMessage('操作成功', '密码修改成功！', 'success')
         passwordForm.value = {
           currentPassword: '',
           newPassword: '',
           confirmPassword: ''
         }
       } catch (error) {
-        alert('密码修改失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '密码修改失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
     const updatePrivacy = async () => {
       try {
         await userStore.updatePrivacySettings(privacyForm.value)
-        alert('隐私设置更新成功！')
+        showMessage('操作成功', '隐私设置更新成功！', 'success')
       } catch (error) {
-        alert('隐私设置更新失败: ' + (error.response?.data?.message || error.message))
+        showMessage('操作失败', '隐私设置更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -204,6 +233,10 @@ export default {
 
     return {
       userStore,
+      showMessageModal,
+      messageModalTitle,
+      messageModalContent,
+      messageModalIcon,
       profileForm,
       passwordForm,
       privacyForm,
