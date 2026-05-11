@@ -9,7 +9,7 @@ export const useEventStore = defineStore('event', {
   }),
   getters: {
     getEventsByFamilyId: (state) => (familyId) => {
-      return state.events.filter(event => event.familyId === familyId)
+      return state.events.filter(event => String(event.familyId) === String(familyId))
     },
     getEventsByMemberId: (state) => (memberId) => {
       return state.events.filter(event => 

@@ -16,14 +16,12 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">操作类型</label>
-          <select v-model="filter.operationType" @change="fetchLogs" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-            <option value="">全部</option>
-            <option value="CREATE">创建</option>
-            <option value="UPDATE">更新</option>
-            <option value="DELETE">删除</option>
-            <option value="READ">读取</option>
-            <option value="OTHER">其他</option>
-          </select>
+          <Select
+            v-model="filter.operationType"
+            :options="operationTypeOptions"
+            placeholder="全部"
+            @change="fetchLogs"
+          />
         </div>
         
         <div>
@@ -91,6 +89,7 @@ import { ref, onMounted } from 'vue'
 import { useOperationLogStore } from '../stores/operationLog'
 import { useUserStore } from '../stores/user'
 import Header from '../components/Header.vue'
+import Select from '../components/Select.vue'
 
 const operationLogStore = useOperationLogStore()
 const userStore = useUserStore()
@@ -100,6 +99,14 @@ const filter = ref({
   startDate: '',
   endDate: ''
 })
+
+const operationTypeOptions = [
+  { value: 'CREATE', label: '创建' },
+  { value: 'UPDATE', label: '更新' },
+  { value: 'DELETE', label: '删除' },
+  { value: 'READ', label: '读取' },
+  { value: 'OTHER', label: '其他' }
+]
 
 onMounted(async () => {
   if (!userStore.user) {

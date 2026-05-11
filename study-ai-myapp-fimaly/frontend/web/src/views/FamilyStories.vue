@@ -17,24 +17,20 @@
         <div class="grid md:grid-cols-2 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1.5">选择家族</label>
-            <select v-model="selectedFamilyId"
-                    class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-              <option value="">请选择家族</option>
-              <option v-for="family in families" :key="family.id" :value="family.id">
-                {{ family.name }}
-              </option>
-            </select>
+            <Select
+              v-model="selectedFamilyId"
+              :options="familyOptions"
+              placeholder="请选择家族"
+            />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1.5">故事类型</label>
-            <select v-model="selectedStoryType"
-                    class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-              <option value="migration">迁徙故事</option>
-              <option value="biography">人物传记</option>
-              <option value="legend">传奇故事</option>
-              <option value="default">综合故事</option>
-            </select>
+            <Select
+              v-model="selectedStoryType"
+              :options="storyTypeOptions"
+              placeholder="请选择故事类型"
+            />
           </div>
         </div>
 
@@ -101,6 +97,7 @@ import { useFamilyStoryStore } from '../stores/familyStory'
 import { useFamilyStore } from '../stores/family'
 import { useUserStore } from '../stores/user'
 import Header from '../components/Header.vue'
+import Select from '../components/Select.vue'
 
 const familyStoryStore = useFamilyStoryStore()
 const familyStore = useFamilyStore()
@@ -111,6 +108,20 @@ const selectedStoryType = ref('migration')
 const keywords = ref('')
 
 const families = computed(() => familyStore.families)
+
+const familyOptions = computed(() => {
+  return families.value.map(family => ({
+    value: family.id,
+    label: family.name
+  }))
+})
+
+const storyTypeOptions = [
+  { value: 'migration', label: '迁徙故事' },
+  { value: 'biography', label: '人物传记' },
+  { value: 'legend', label: '传奇故事' },
+  { value: 'default', label: '综合故事' }
+]
 
 onMounted(async () => {
   if (!userStore.user) {

@@ -135,20 +135,6 @@
       </div>
     </main>
 
-    <!-- 消息提示弹框 -->
-    <Modal 
-      :visible="showMessageModal" 
-      :title="messageModalTitle" 
-      :icon="messageModalIcon"
-      @close="showMessageModal = false"
-    >
-      <p class="text-gray-700">{{ messageModalContent }}</p>
-      <template #footer>
-        <button @click="showMessageModal = false" class="btn-primary w-full">
-          确定
-        </button>
-      </template>
-    </Modal>
   </div>
 </template>
 
@@ -157,13 +143,11 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import Header from '../components/Header.vue'
-import Modal from '../components/Modal.vue'
 
 export default {
   name: 'Profile',
   components: {
-    Header,
-    Modal
+    Header
   },
   setup() {
     const router = useRouter()
@@ -181,17 +165,8 @@ export default {
       avatar: ''
     })
 
-    // 消息弹框状态
-    const showMessageModal = ref(false)
-    const messageModalTitle = ref('')
-    const messageModalContent = ref('')
-    const messageModalIcon = ref('info')
-
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
 
     const formData = reactive({
@@ -262,15 +237,15 @@ export default {
         })
         const result = await response.json()
         if (result.success) {
-          showMessage('操作成功', '个人信息更新成功', 'success')
+          showToastMsg('个人信息更新成功', 'success')
           profile.value = result.data
           userStore.user = result.data
         } else {
-          showMessage('操作失败', '更新失败: ' + result.message, 'error')
+          showToastMsg('更新失败: ' + result.message, 'error')
         }
       } catch (error) {
         console.error('Failed to update profile:', error)
-        showMessage('操作失败', '更新失败: ' + error.message, 'error')
+        showToastMsg('更新失败: ' + error.message, 'error')
       } finally {
         loading.value = false
       }
@@ -283,14 +258,14 @@ export default {
       // 验证文件类型
       const validTypes = ['image/jpeg', 'image/png', 'image/gif']
       if (!validTypes.includes(file.type)) {
-        showMessage('提示', '只支持JPG、PNG、GIF格式的图片', 'warning')
+        showToastMsg('只支持JPG、PNG、GIF格式的图片', 'warning')
         return
       }
 
       // 验证文件大小（5MB）
       const maxSize = 5 * 1024 * 1024
       if (file.size > maxSize) {
-        showMessage('提示', '图片大小不能超过5MB', 'warning')
+        showToastMsg('图片大小不能超过5MB', 'warning')
         return
       }
 
@@ -313,13 +288,13 @@ export default {
           userStore.user.avatar = result.avatarUrl
           // 重新加载头像（携带token）
           await loadAvatar(result.avatarUrl)
-          showMessage('操作成功', '头像上传成功', 'success')
+          showToastMsg('头像上传成功', 'success')
         } else {
-          showMessage('操作失败', '头像上传失败: ' + result.message, 'error')
+          showToastMsg('头像上传失败: ' + result.message, 'error')
         }
       } catch (error) {
         console.error('Failed to upload avatar:', error)
-        showMessage('操作失败', '头像上传失败: ' + error.message, 'error')
+        showToastMsg('头像上传失败: ' + error.message, 'error')
       } finally {
         uploading.value = false
         // 重置input，允许重复上传同一文件
@@ -345,10 +320,6 @@ export default {
       avatarUrl,
       profile,
       formData,
-      showMessageModal,
-      messageModalTitle,
-      messageModalContent,
-      messageModalIcon,
       updateProfile,
       handleAvatarUpload,
       resetForm

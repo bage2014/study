@@ -144,11 +144,8 @@ export default {
     const messageModalContent = ref('')
     const messageModalIcon = ref('info')
 
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
 
     const profileForm = ref({
@@ -191,15 +188,15 @@ export default {
           phone: profileForm.value.phone,
           nickname: profileForm.value.nickname
         })
-        showMessage('操作成功', '个人信息更新成功！', 'success')
+        showToastMsg('个人信息更新成功！', 'success')
       } catch (error) {
-        showMessage('操作失败', '个人信息更新失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('个人信息更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
     const changePassword = async () => {
       if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
-        showMessage('提示', '新密码和确认密码不一致！', 'warning')
+        showToastMsg('新密码和确认密码不一致！', 'warning')
         return
       }
       try {
@@ -207,23 +204,23 @@ export default {
           currentPassword: passwordForm.value.currentPassword,
           newPassword: passwordForm.value.newPassword
         })
-        showMessage('操作成功', '密码修改成功！', 'success')
+        showToastMsg('密码修改成功！', 'success')
         passwordForm.value = {
           currentPassword: '',
           newPassword: '',
           confirmPassword: ''
         }
       } catch (error) {
-        showMessage('操作失败', '密码修改失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('密码修改失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
     const updatePrivacy = async () => {
       try {
         await userStore.updatePrivacySettings(privacyForm.value)
-        showMessage('操作成功', '隐私设置更新成功！', 'success')
+        showToastMsg('隐私设置更新成功！', 'success')
       } catch (error) {
-        showMessage('操作失败', '隐私设置更新失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('隐私设置更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -233,17 +230,14 @@ export default {
 
     return {
       userStore,
-      showMessageModal,
-      messageModalTitle,
-      messageModalContent,
-      messageModalIcon,
       profileForm,
       passwordForm,
       privacyForm,
       navigateTo,
       updateProfile,
       changePassword,
-      updatePrivacy
+      updatePrivacy,
+      showToastMsg
     }
   }
 }

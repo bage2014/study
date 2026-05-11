@@ -9,13 +9,13 @@ export const useMediaStore = defineStore('media', {
   }),
   getters: {
     getMediaByFamilyId: (state) => (familyId) => {
-      return state.media.filter(item => item.familyId === familyId)
+      return state.media.filter(item => String(item.familyId) === String(familyId))
     },
     getMediaByType: (state) => (type) => {
       return state.media.filter(item => item.type === type)
     },
     getMediaByFamilyAndType: (state) => (familyId, type) => {
-      return state.media.filter(item => item.familyId === familyId && item.type === type)
+      return state.media.filter(item => String(item.familyId) === String(familyId) && item.type === type)
     }
   },
   actions: {

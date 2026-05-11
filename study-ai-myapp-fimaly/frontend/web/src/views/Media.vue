@@ -14,10 +14,13 @@
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
-          <select id="family" v-model="selectedFamilyId" @change="fetchMedia" class="form-select">
-            <option value="">请选择家族</option>
-            <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
-          </select>
+          <Select
+            id="family"
+            v-model="selectedFamilyId"
+            :options="familyOptions"
+            placeholder="请选择家族"
+            @change="fetchMedia"
+          />
         </div>
 
         <!-- Media Type Filter -->
@@ -107,12 +110,13 @@
           <div class="space-y-4">
             <div>
               <label for="mediaType" class="block text-sm font-medium text-gray-700 mb-1.5">媒体类型</label>
-              <select id="mediaType" v-model="uploadForm.type" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                <option value="">请选择</option>
-                <option value="photo">照片</option>
-                <option value="video">视频</option>
-                <option value="document">文档</option>
-              </select>
+              <Select
+                id="mediaType"
+                v-model="uploadForm.type"
+                :options="mediaTypeOptions"
+                placeholder="请选择"
+                required
+              />
             </div>
             <div>
               <label for="mediaFile" class="block text-sm font-medium text-gray-700 mb-1.5">文件</label>
@@ -145,20 +149,6 @@
       @cancel="showDeleteConfirm = false"
     />
 
-    <!-- Message Modal -->
-    <Modal 
-      :visible="showMessageModal" 
-      :title="messageModalTitle" 
-      :icon="messageModalIcon"
-      @close="showMessageModal = false"
-    >
-      <p class="text-gray-700">{{ messageModalContent }}</p>
-      <template #footer>
-        <button @click="showMessageModal = false" class="btn-primary w-full">
-          确定
-        </button>
-      </template>
-    </Modal>
   </div>
 </template>
 
@@ -168,14 +158,14 @@ import { useFamilyStore } from '../stores/family'
 import { useMediaStore } from '../stores/media'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
-import Modal from '../components/Modal.vue'
 import ConfirmModal from '../components/ConfirmModal.vue'
+import Select from '../components/Select.vue'
 
 export default {
   name: 'Media',
   components: {
     Header,
-    Modal,
+    Select,
     ConfirmModal
   },
   setup() {
@@ -186,24 +176,30 @@ export default {
     const selectedType = ref('')
     const showUploadModal = ref(false)
     const showDeleteConfirm = ref(false)
-    const showMessageModal = ref(false)
     const deletingMediaId = ref(null)
     const selectedFile = ref(null)
-    const messageModalTitle = ref('')
-    const messageModalContent = ref('')
-    const messageModalIcon = ref('info')
 
     const uploadForm = ref({
       type: '',
       description: ''
     })
 
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
+
+    const familyOptions = computed(() => {
+      return familyStore.families.map(family => ({
+        value: family.id,
+        label: family.name
+      }))
+    })
+
+    const mediaTypeOptions = [
+      { value: 'photo', label: '照片' },
+      { value: 'video', label: '视频' },
+      { value: 'document', label: '文档' }
+    ]
 
     const navigateTo = (path) => {
       router.push(path)
@@ -236,11 +232,11 @@ export default {
 
     const handleUpload = async () => {
       if (!selectedFile.value) {
-        showMessage('提示', '请选择文件', 'warning')
+        showToastMsg('请选择文件', 'warning')
         return
       }
       if (!selectedFamilyId.value) {
-        showMessage('提示', '请选择家族', 'warning')
+        showToastMsg('请选择家族', 'warning')
         return
       }
 
@@ -251,7 +247,7 @@ export default {
           uploadForm.value.type,
           uploadForm.value.description
         )
-        showMessage('操作成功', '文件上传成功', 'success')
+        showToastMsg('文件上传成功', 'success')
         showUploadModal.value = false
         uploadForm.value = {
           type: '',
@@ -259,7 +255,7 @@ export default {
         }
         selectedFile.value = null
       } catch (error) {
-        showMessage('操作失败', '文件上传失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('文件上传失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -271,9 +267,9 @@ export default {
     const confirmDelete = async () => {
       try {
         await mediaStore.deleteMedia(deletingMediaId.value)
-        showMessage('操作成功', '文件删除成功', 'success')
+        showToastMsg('文件删除成功', 'success')
       } catch (error) {
-        showMessage('操作失败', '文件删除失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('文件删除失败: ' + (error.response?.data?.message || error.message), 'error')
       } finally {
         showDeleteConfirm.value = false
         deletingMediaId.value = null
@@ -293,10 +289,6 @@ export default {
       selectedType,
       showUploadModal,
       showDeleteConfirm,
-      showMessageModal,
-      messageModalTitle,
-      messageModalContent,
-      messageModalIcon,
       uploadForm,
       navigateTo,
       fetchMedia,
@@ -304,7 +296,8 @@ export default {
       handleFileChange,
       handleUpload,
       deleteMedia,
-      confirmDelete
+      confirmDelete,
+      showToastMsg
     }
   }
 }

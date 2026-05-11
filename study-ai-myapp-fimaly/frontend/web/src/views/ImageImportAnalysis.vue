@@ -45,13 +45,11 @@
         <!-- 选择家族 -->
         <div class="mt-6">
           <label class="block text-sm font-medium text-gray-700 mb-2">选择目标家族</label>
-          <select v-model="selectedFamilyId" 
-                  class="form-select">
-            <option value="">请选择家族</option>
-            <option v-for="family in families" :key="family.id" :value="family.id">
-              {{ family.name }}
-            </option>
-          </select>
+          <Select
+            v-model="selectedFamilyId"
+            :options="familyOptions"
+            placeholder="请选择家族"
+          />
         </div>
 
         <!-- 上传按钮 -->
@@ -174,28 +172,13 @@
         </div>
       </div>
     </main>
-
-    <!-- Message Modal -->
-    <Modal 
-      :visible="showMessageModal" 
-      :title="messageModalTitle" 
-      :icon="messageModalIcon"
-      @close="showMessageModal = false"
-    >
-      <p class="text-gray-700">{{ messageModalContent }}</p>
-      <template #footer>
-        <button @click="showMessageModal = false" class="btn-primary w-full">
-          确定
-        </button>
-      </template>
-    </Modal>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import Header from '../components/Header.vue';
-import Modal from '../components/Modal.vue';
+import Select from '../components/Select.vue';
 import { useFamilyStore } from '../stores/family';
 import { useImageParseStore } from '../stores/imageParse';
 
@@ -212,16 +195,15 @@ const parseResult = ref(null);
 const showSuccess = ref(false);
 const families = ref([]);
 
-const showMessageModal = ref(false);
-const messageModalTitle = ref('');
-const messageModalContent = ref('');
-const messageModalIcon = ref('info');
+const familyOptions = computed(() => {
+  return families.value.map(family => ({
+    value: family.id,
+    label: family.name
+  }))
+});
 
-const showMessage = (title, content, icon = 'info') => {
-  messageModalTitle.value = title;
-  messageModalContent.value = content;
-  messageModalIcon.value = icon;
-  showMessageModal.value = true;
+const showToastMsg = (message, type = 'info') => {
+  window.showToastMessage(message, type)
 };
 
 onMounted(() => {
@@ -261,12 +243,12 @@ const validateFile = (file) => {
   const validTypes = ['image/png', 'image/jpeg'];
   
   if (!validTypes.includes(file.type)) {
-    showMessage('提示', '请上传PNG或JPG格式的图片', 'warning');
+    showToastMsg('请上传PNG或JPG格式的图片', 'warning');
     return;
   }
   
   if (file.size > maxSize) {
-    showMessage('提示', '图片大小不能超过10MB', 'warning');
+    showToastMsg('图片大小不能超过10MB', 'warning');
     return;
   }
   
@@ -283,7 +265,7 @@ const parseImage = async () => {
     parseResult.value = result;
   } catch (error) {
     console.error('图片解析失败:', error);
-    showMessage('操作失败', '图片解析失败，请重试', 'error');
+    showToastMsg('图片解析失败，请重试', 'error');
   } finally {
     isLoading.value = false;
   }
@@ -317,7 +299,7 @@ const saveResult = async () => {
     showSuccess.value = true;
   } catch (error) {
     console.error('保存失败:', error);
-    showMessage('操作失败', '保存失败，请重试', 'error');
+    showToastMsg('保存失败，请重试', 'error');
   } finally {
     isSaving.value = false;
   }

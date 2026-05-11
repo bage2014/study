@@ -156,10 +156,13 @@
             </div>
             <div>
               <label for="gender" class="block text-sm font-medium text-gray-700 mb-1.5">性别</label>
-              <select id="gender" v-model="editForm.gender" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                <option value="male">男</option>
-                <option value="female">女</option>
-              </select>
+              <Select
+                id="gender"
+                v-model="editForm.gender"
+                :options="genderOptions"
+                placeholder="请选择"
+                required
+              />
             </div>
             <div>
               <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-1.5">出生日期</label>
@@ -210,12 +213,14 @@ import { useFamilyStore } from '../stores/family'
 import { useRoute, useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
 import Modal from '../components/Modal.vue'
+import Select from '../components/Select.vue'
 
 export default {
   name: 'MemberDetail',
   components: {
     Header,
-    Modal
+    Modal,
+    Select
   },
   setup() {
     const route = useRoute()
@@ -232,12 +237,14 @@ export default {
     const events = ref([])
     const editForm = ref({})
 
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
+
+    const genderOptions = [
+      { value: 'male', label: '男' },
+      { value: 'female', label: '女' }
+    ]
 
     const navigateTo = (path) => {
       router.push(path)
@@ -311,10 +318,10 @@ export default {
     const handleUpdate = async () => {
       try {
         await memberStore.updateMember(memberStore.currentMember.id, editForm.value)
-        showMessage('操作成功', '成员信息更新成功', 'success')
+        showToastMsg('成员信息更新成功', 'success')
         showEditModal.value = false
       } catch (error) {
-        showMessage('操作失败', '更新失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -325,10 +332,6 @@ export default {
     return {
       memberStore,
       showEditModal,
-      showMessageModal,
-      messageModalTitle,
-      messageModalContent,
-      messageModalIcon,
       currentFamily,
       relationships,
       events,
@@ -336,7 +339,8 @@ export default {
       navigateTo,
       hasPassedAway,
       editMember,
-      handleUpdate
+      handleUpdate,
+      showToastMsg
     }
   }
 }

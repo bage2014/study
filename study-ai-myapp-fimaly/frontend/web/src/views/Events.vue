@@ -14,10 +14,13 @@
         <!-- Family Selector -->
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
-          <select id="family" v-model="selectedFamilyId" @change="fetchEvents" class="form-select">
-            <option value="">请选择家族</option>
-            <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
-          </select>
+          <Select
+            id="family"
+            v-model="selectedFamilyId"
+            :options="familyOptions"
+            placeholder="请选择家族"
+            @change="fetchEvents"
+          />
         </div>
 
         <!-- Events List -->
@@ -125,20 +128,6 @@
       @cancel="showDeleteConfirm = false"
     />
 
-    <!-- Message Modal -->
-    <Modal 
-      :visible="showMessageModal" 
-      :title="messageModalTitle" 
-      :icon="messageModalIcon"
-      @close="showMessageModal = false"
-    >
-      <p class="text-gray-700">{{ messageModalContent }}</p>
-      <template #footer>
-        <button @click="showMessageModal = false" class="btn-primary w-full">
-          确定
-        </button>
-      </template>
-    </Modal>
   </div>
 </template>
 
@@ -148,14 +137,14 @@ import { useFamilyStore } from '../stores/family'
 import { useEventStore } from '../stores/event'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
-import Modal from '../components/Modal.vue'
 import ConfirmModal from '../components/ConfirmModal.vue'
+import Select from '../components/Select.vue'
 
 export default {
   name: 'Events',
   components: {
     Header,
-    Modal,
+    Select,
     ConfirmModal
   },
   setup() {
@@ -165,13 +154,9 @@ export default {
     const selectedFamilyId = ref('')
     const showModal = ref(false)
     const showDeleteConfirm = ref(false)
-    const showMessageModal = ref(false)
     const editingEvent = ref(null)
     const deletingEventId = ref(null)
     const selectedFile = ref(null)
-    const messageModalTitle = ref('')
-    const messageModalContent = ref('')
-    const messageModalIcon = ref('info')
 
     const form = ref({
       name: '',
@@ -180,11 +165,8 @@ export default {
       relatedMembers: ''
     })
 
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
 
     const navigateTo = (path) => {
@@ -193,6 +175,13 @@ export default {
 
     const events = computed(() => {
       return eventStore.getEventsByFamilyId(selectedFamilyId.value)
+    })
+
+    const familyOptions = computed(() => {
+      return familyStore.families.map(family => ({
+        value: family.id,
+        label: family.name
+      }))
     })
 
     const fetchEvents = async () => {
@@ -233,9 +222,9 @@ export default {
     const confirmDelete = async () => {
       try {
         await eventStore.deleteEvent(deletingEventId.value)
-        showMessage('操作成功', '事件删除成功', 'success')
+        showToastMsg('事件删除成功', 'success')
       } catch (error) {
-        showMessage('操作失败', '事件删除失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('事件删除失败: ' + (error.response?.data?.message || error.message), 'error')
       } finally {
         showDeleteConfirm.value = false
         deletingEventId.value = null
@@ -274,15 +263,15 @@ export default {
         if (editingEvent.value) {
           // 编辑事件
           await eventStore.updateEvent(editingEvent.value.id, eventData)
-          showMessage('操作成功', '事件更新成功', 'success')
+          showToastMsg('事件更新成功', 'success')
         } else {
           // 添加事件
           await eventStore.createEvent(eventData)
-          showMessage('操作成功', '事件添加成功', 'success')
+          showToastMsg('事件添加成功', 'success')
         }
         showModal.value = false
       } catch (error) {
-        showMessage('操作失败', '操作失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('操作失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -298,10 +287,6 @@ export default {
       selectedFamilyId,
       showModal,
       showDeleteConfirm,
-      showMessageModal,
-      messageModalTitle,
-      messageModalContent,
-      messageModalIcon,
       editingEvent,
       form,
       navigateTo,
@@ -311,7 +296,8 @@ export default {
       deleteEvent,
       confirmDelete,
       handleFileChange,
-      handleSubmit
+      handleSubmit,
+      showToastMsg
     }
   }
 }

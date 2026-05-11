@@ -15,10 +15,14 @@
         <div class="mb-6">
           <label for="family" class="block text-sm font-medium text-gray-700 mb-2">选择家族</label>
           <div class="flex space-x-2">
-            <select id="family" v-model="selectedFamilyId" @change="fetchMembers" class="form-select flex-1">
-              <option value="">请选择家族</option>
-              <option v-for="family in familyStore.families" :key="family.id" :value="family.id">{{ family.name }}</option>
-            </select>
+            <Select
+              id="family"
+              v-model="selectedFamilyId"
+              :options="familyOptions"
+              placeholder="请选择家族"
+              @change="fetchMembers"
+              class="flex-1"
+            />
             <button 
               @click="viewOrEditFamily" 
               :disabled="!selectedFamilyId"
@@ -139,11 +143,13 @@
             </div>
             <div>
               <label for="gender" class="block text-sm font-medium text-gray-700 mb-1.5">性别</label>
-              <select id="gender" v-model="form.gender" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                <option value="">请选择</option>
-                <option value="male">男</option>
-                <option value="female">女</option>
-              </select>
+              <Select
+                id="gender"
+                v-model="form.gender"
+                :options="genderOptions"
+                placeholder="请选择"
+                required
+              />
             </div>
             <div>
               <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-1.5">出生日期</label>
@@ -221,21 +227,6 @@
       @confirm="confirmDelete"
       @cancel="showDeleteConfirm = false"
     />
-
-    <!-- Message Modal -->
-    <Modal 
-      :visible="showMessageModal" 
-      :title="messageModalTitle" 
-      :icon="messageModalIcon"
-      @close="showMessageModal = false"
-    >
-      <p class="text-gray-700">{{ messageModalContent }}</p>
-      <template #footer>
-        <button @click="showMessageModal = false" class="btn-primary w-full">
-          确定
-        </button>
-      </template>
-    </Modal>
   </div>
 </template>
 
@@ -245,14 +236,14 @@ import { useFamilyStore } from '../stores/family'
 import { useMemberStore } from '../stores/member'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
-import Modal from '../components/Modal.vue'
 import ConfirmModal from '../components/ConfirmModal.vue'
+import Select from '../components/Select.vue'
 
 export default {
   name: 'Members',
   components: {
     Header,
-    Modal,
+    Select,
     ConfirmModal
   },
   setup() {
@@ -263,12 +254,8 @@ export default {
     const showModal = ref(false)
     const showFamilyModal = ref(false)
     const showDeleteConfirm = ref(false)
-    const showMessageModal = ref(false)
     const editingMember = ref(null)
     const deletingMemberId = ref(null)
-    const messageModalTitle = ref('')
-    const messageModalContent = ref('')
-    const messageModalIcon = ref('info')
 
     const form = ref({
       name: '',
@@ -284,11 +271,8 @@ export default {
       description: ''
     })
 
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
 
     const navigateTo = (path) => {
@@ -304,6 +288,18 @@ export default {
     const familyMembers = computed(() => {
       return memberStore.getMembersByFamilyId(selectedFamilyId.value)
     })
+
+    const familyOptions = computed(() => {
+      return familyStore.families.map(family => ({
+        value: family.id,
+        label: family.name
+      }))
+    })
+
+    const genderOptions = [
+      { value: 'male', label: '男' },
+      { value: 'female', label: '女' }
+    ]
 
     const selectedFamily = computed(() => {
       if (!selectedFamilyId.value) return null
@@ -325,7 +321,7 @@ export default {
 
     const openAddMemberModal = () => {
       if (!selectedFamilyId.value) {
-        showMessage('提示', '请先选择家族', 'warning')
+        showToastMsg('请先选择家族', 'warning')
         return
       }
       editingMember.value = null
@@ -372,9 +368,9 @@ export default {
     const confirmDelete = async () => {
       try {
         await memberStore.deleteMember(deletingMemberId.value)
-        showMessage('操作成功', '成员删除成功', 'success')
+        showToastMsg('成员删除成功', 'success')
       } catch (error) {
-        showMessage('操作失败', '成员删除失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('成员删除失败: ' + (error.response?.data?.message || error.message), 'error')
       } finally {
         showDeleteConfirm.value = false
         deletingMemberId.value = null
@@ -386,30 +382,30 @@ export default {
         if (editingMember.value) {
           // 编辑成员
           await memberStore.updateMember(editingMember.value.id, form.value)
-          showMessage('操作成功', '成员更新成功', 'success')
+          showToastMsg('成员更新成功', 'success')
         } else {
           // 添加成员
           await memberStore.createMember({
             ...form.value,
             familyId: selectedFamilyId.value
           })
-          showMessage('操作成功', '成员添加成功', 'success')
+          showToastMsg('成员添加成功', 'success')
         }
         showModal.value = false
         await fetchMembers()
       } catch (error) {
-        showMessage('操作失败', '操作失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('操作失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
     const handleFamilySubmit = async () => {
       try {
         await familyStore.updateFamily(selectedFamilyId.value, familyForm.value)
-        showMessage('操作成功', '家族更新成功', 'success')
+        showToastMsg('家族更新成功', 'success')
         showFamilyModal.value = false
         await familyStore.fetchFamilies()
       } catch (error) {
-        showMessage('操作失败', '家族更新失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('家族更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -421,15 +417,12 @@ export default {
       familyStore,
       memberStore,
       familyMembers,
+      familyOptions,
       selectedFamily,
       selectedFamilyId,
       showModal,
       showFamilyModal,
       showDeleteConfirm,
-      showMessageModal,
-      messageModalTitle,
-      messageModalContent,
-      messageModalIcon,
       editingMember,
       form,
       familyForm,
@@ -443,7 +436,8 @@ export default {
       deleteMember,
       confirmDelete,
       handleSubmit,
-      handleFamilySubmit
+      handleFamilySubmit,
+      showToastMsg
     }
   }
 }

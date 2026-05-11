@@ -13,12 +13,12 @@
         </div>
         <h2 class="text-lg font-semibold text-gray-900">选择成员</h2>
       </div>
-      <select v-model="selectedMemberId" @change="fetchMilestones" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-        <option value="">请选择成员</option>
-        <option v-for="member in members" :key="member.id" :value="member.id">
-          {{ member.name }}
-        </option>
-      </select>
+      <Select
+        v-model="selectedMemberId"
+        :options="memberOptions"
+        placeholder="请选择成员"
+        @change="fetchMilestones"
+      />
     </div>
 
     <!-- 加载状态 -->
@@ -150,20 +150,6 @@
     @cancel="showDeleteConfirm = false"
   />
 
-  <!-- Message Modal -->
-  <Modal 
-    :visible="showMessageModal" 
-    :title="messageModalTitle" 
-    :icon="messageModalIcon"
-    @close="showMessageModal = false"
-  >
-    <p class="text-gray-700">{{ messageModalContent }}</p>
-    <template #footer>
-      <button @click="showMessageModal = false" class="btn-primary w-full">
-        确定
-      </button>
-    </template>
-  </Modal>
 </div>
 </template>
 
@@ -173,8 +159,8 @@ import { useMilestoneStore } from '../stores/milestone'
 import { useMemberStore } from '../stores/member'
 import { useUserStore } from '../stores/user'
 import Header from '../components/Header.vue'
-import Modal from '../components/Modal.vue'
 import ConfirmModal from '../components/ConfirmModal.vue'
+import Select from '../components/Select.vue'
 
 const milestoneStore = useMilestoneStore()
 const memberStore = useMemberStore()
@@ -184,18 +170,11 @@ const selectedMemberId = ref('')
 const showAddModal = ref(false)
 const showEditModal = ref(false)
 const showDeleteConfirm = ref(false)
-const showMessageModal = ref(false)
 const deletingMilestoneId = ref(null)
 const currentMilestoneId = ref(null)
-const messageModalTitle = ref('')
-const messageModalContent = ref('')
-const messageModalIcon = ref('info')
 
-const showMessage = (title, content, icon = 'info') => {
-  messageModalTitle.value = title
-  messageModalContent.value = content
-  messageModalIcon.value = icon
-  showMessageModal.value = true
+const showToastMsg = (message, type = 'info') => {
+  window.showToastMessage(message, type)
 }
 
 const formData = ref({
@@ -205,6 +184,13 @@ const formData = ref({
 })
 
 const members = computed(() => memberStore.members)
+const memberOptions = computed(() => {
+  return members.value.map(member => ({
+    value: member.id,
+    label: member.name
+  }))
+})
+
 const milestones = computed(() => milestoneStore.milestones)
 
 onMounted(async () => {
@@ -282,9 +268,9 @@ const deleteMilestone = (id) => {
 const confirmDelete = async () => {
   try {
     await milestoneStore.deleteMilestone(deletingMilestoneId.value)
-    showMessage('操作成功', '大事件删除成功', 'success')
+    showToastMsg('大事件删除成功', 'success')
   } catch (error) {
-    showMessage('操作失败', '删除失败: ' + (error.response?.data?.message || error.message), 'error')
+    showToastMsg('删除失败: ' + (error.response?.data?.message || error.message), 'error')
   } finally {
     showDeleteConfirm.value = false
     deletingMilestoneId.value = null

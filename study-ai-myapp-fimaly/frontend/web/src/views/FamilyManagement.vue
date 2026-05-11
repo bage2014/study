@@ -257,11 +257,13 @@
             </div>
             <div>
               <label for="memberGender" class="block text-sm font-medium text-gray-700 mb-1.5">性别</label>
-              <select id="memberGender" v-model="memberForm.gender" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                <option value="">请选择</option>
-                <option value="male">男</option>
-                <option value="female">女</option>
-              </select>
+              <Select
+                id="memberGender"
+                v-model="memberForm.gender"
+                :options="genderOptions"
+                placeholder="请选择"
+                required
+              />
             </div>
             <div>
               <label for="memberBirthDate" class="block text-sm font-medium text-gray-700 mb-1.5">出生日期</label>
@@ -303,32 +305,33 @@
           <div class="space-y-4">
             <div>
               <label for="member1" class="block text-sm font-medium text-gray-700 mb-1.5">成员1</label>
-              <select id="member1" v-model="relationshipForm.member1Id" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                <option value="">请选择成员</option>
-                <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
-              </select>
+              <Select
+                id="member1"
+                v-model="relationshipForm.member1Id"
+                :options="memberOptions"
+                placeholder="请选择成员"
+                required
+              />
             </div>
             <div>
               <label for="relationshipType" class="block text-sm font-medium text-gray-700 mb-1.5">关系类型</label>
-              <select id="relationshipType" v-model="relationshipForm.relationshipType" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                <option value="">请选择关系类型</option>
-                <option value="配偶">配偶</option>
-                <option value="父子">父子</option>
-                <option value="母子">母子</option>
-                <option value="父女">父女</option>
-                <option value="母女">母女</option>
-                <option value="兄弟">兄弟</option>
-                <option value="姐妹">姐妹</option>
-                <option value="兄妹">兄妹</option>
-                <option value="姐弟">姐弟</option>
-              </select>
+              <Select
+                id="relationshipType"
+                v-model="relationshipForm.relationshipType"
+                :options="relationshipTypeOptions"
+                placeholder="请选择关系类型"
+                required
+              />
             </div>
             <div>
               <label for="member2" class="block text-sm font-medium text-gray-700 mb-1.5">成员2</label>
-              <select id="member2" v-model="relationshipForm.member2Id" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                <option value="">请选择成员</option>
-                <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
-              </select>
+              <Select
+                id="member2"
+                v-model="relationshipForm.member2Id"
+                :options="memberOptions"
+                placeholder="请选择成员"
+                required
+              />
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
@@ -358,10 +361,13 @@
           <div class="space-y-4">
             <div>
               <label for="newAdministrator" class="block text-sm font-medium text-gray-700 mb-1.5">新管理员</label>
-              <select id="newAdministrator" v-model="administratorForm.administratorId" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                <option value="">请选择成员</option>
-                <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
-              </select>
+              <Select
+                id="newAdministrator"
+                v-model="administratorForm.administratorId"
+                :options="memberOptions"
+                placeholder="请选择成员"
+                required
+              />
             </div>
           </div>
           <div class="mt-6 flex justify-end space-x-3">
@@ -408,6 +414,7 @@ import { ref, computed, onMounted } from 'vue'
 import Header from '../components/Header.vue'
 import Modal from '../components/Modal.vue'
 import ConfirmModal from '../components/ConfirmModal.vue'
+import Select from '../components/Select.vue'
 import { useFamilyStore } from '../stores/family'
 import { useMemberStore } from '../stores/member'
 import { useRelationshipStore } from '../stores/relationship'
@@ -418,6 +425,7 @@ export default {
   components: {
     Header,
     Modal,
+    Select,
     ConfirmModal
   },
   setup() {
@@ -443,11 +451,8 @@ export default {
     const messageModalContent = ref('')
     const messageModalIcon = ref('info')
 
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
 
     const familyForm = ref({
@@ -485,6 +490,30 @@ export default {
         const member2 = familyMembers.value.find(m => m.id === rel.member2Id)
         return member1 && member2
       })
+    })
+
+    const genderOptions = [
+      { value: 'male', label: '男' },
+      { value: 'female', label: '女' }
+    ]
+
+    const relationshipTypeOptions = [
+      { value: '配偶', label: '配偶' },
+      { value: '父子', label: '父子' },
+      { value: '母子', label: '母子' },
+      { value: '父女', label: '父女' },
+      { value: '母女', label: '母女' },
+      { value: '兄弟', label: '兄弟' },
+      { value: '姐妹', label: '姐妹' },
+      { value: '兄妹', label: '兄妹' },
+      { value: '姐弟', label: '姐弟' }
+    ]
+
+    const memberOptions = computed(() => {
+      return familyMembers.value.map(member => ({
+        value: member.id,
+        label: member.name
+      }))
     })
 
     const navigateTo = (path) => {
@@ -559,9 +588,9 @@ export default {
         await familyStore.createFamily(familyForm.value)
         showCreateFamilyModal.value = false
         familyForm.value = { name: '', description: '' }
-        showMessage('操作成功', '家族创建成功', 'success')
+        showToastMsg('家族创建成功', 'success')
       } catch (error) {
-        showMessage('操作失败', '创建家族失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('创建家族失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -570,9 +599,9 @@ export default {
         await familyStore.updateFamily(selectedFamily.value.id, familyForm.value)
         showFamilyDetailModal.value = false
         selectedFamily.value = { ...selectedFamily.value, ...familyForm.value }
-        showMessage('操作成功', '家族更新成功', 'success')
+        showToastMsg('家族更新成功', 'success')
       } catch (error) {
-        showMessage('操作失败', '更新家族失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('更新家族失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -588,19 +617,19 @@ export default {
       try {
         if (editingMember.value) {
           await memberStore.updateMember(editingMember.value.id, memberForm.value)
-          showMessage('操作成功', '成员更新成功', 'success')
+          showToastMsg('成员更新成功', 'success')
         } else {
           await memberStore.createMember({
             ...memberForm.value,
             familyId: selectedFamily.value.id
           })
-          showMessage('操作成功', '成员添加成功', 'success')
+          showToastMsg('成员添加成功', 'success')
         }
         showAddMemberModal.value = false
         editingMember.value = null
         memberForm.value = { name: '', gender: '', birthDate: '', deathDate: '', details: '' }
       } catch (error) {
-        showMessage('操作失败', '保存成员失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('保存成员失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -632,9 +661,9 @@ export default {
         })
         showAddRelationshipModal.value = false
         relationshipForm.value = { member1Id: '', member2Id: '', relationshipType: '' }
-        showMessage('操作成功', '关系添加成功', 'success')
+        showToastMsg('关系添加成功', 'success')
       } catch (error) {
-        showMessage('操作失败', '添加关系失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('添加关系失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -652,16 +681,16 @@ export default {
           await familyStore.deleteFamily(deletingId.value)
           showFamilyDetailModal.value = false
           selectedFamily.value = null
-          showMessage('操作成功', '家族删除成功', 'success')
+          showToastMsg('家族删除成功', 'success')
         } else if (deletingType.value === 'member') {
           await memberStore.deleteMember(deletingId.value)
-          showMessage('操作成功', '成员删除成功', 'success')
+          showToastMsg('成员删除成功', 'success')
         } else if (deletingType.value === 'relationship') {
           await relationshipStore.deleteRelationship(deletingId.value)
-          showMessage('操作成功', '关系删除成功', 'success')
+          showToastMsg('关系删除成功', 'success')
         }
       } catch (error) {
-        showMessage('操作失败', '删除失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('删除失败: ' + (error.response?.data?.message || error.message), 'error')
       } finally {
         showDeleteConfirm.value = false
         deletingType.value = ''
@@ -689,12 +718,8 @@ export default {
       showAddRelationshipModal,
       showUpdateAdministratorModal,
       showDeleteConfirm,
-      showMessageModal,
       deleteConfirmTitle,
       deleteConfirmMessage,
-      messageModalTitle,
-      messageModalContent,
-      messageModalIcon,
       editingMember,
       familyForm,
       memberForm,
@@ -721,7 +746,8 @@ export default {
       deleteRelationship,
       confirmDelete,
       getMemberName,
-      administratorForm
+      administratorForm,
+      showToastMsg
     }
   }
 }

@@ -12,7 +12,7 @@ export const useMemberStore = defineStore('member', {
     allMembers: (state) => state.members,
     selectedMember: (state) => state.currentMember,
     getMembersByFamilyId: (state) => (familyId) => {
-      return state.members.filter(member => member.familyId === familyId)
+      return state.members.filter(member => String(member.familyId) === String(familyId))
     }
   },
   actions: {

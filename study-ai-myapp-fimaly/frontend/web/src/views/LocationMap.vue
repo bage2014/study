@@ -14,12 +14,12 @@
         </div>
         <h2 class="text-lg font-semibold text-gray-900">选择家族</h2>
       </div>
-      <select v-model="selectedFamilyId" @change="fetchFamilyMembers" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 hover:border-green-300">
-        <option value="">请选择家族</option>
-        <option v-for="family in families" :key="family.id" :value="family.id">
-          {{ family.name }}
-        </option>
-      </select>
+      <Select
+          v-model="selectedFamilyId"
+          :options="familyOptions"
+          placeholder="请选择家族"
+          @change="fetchFamilyMembers"
+        />
     </div>
 
     <!-- 成员列表 -->
@@ -81,12 +81,11 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">位置类型</label>
-            <select v-model="formData.locationType" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-              <option value="home">家</option>
-              <option value="work">工作</option>
-              <option value="school">学校</option>
-              <option value="other">其他</option>
-            </select>
+            <Select
+              v-model="formData.locationType"
+              :options="locationTypeOptions"
+              placeholder="请选择位置类型"
+            />
           </div>
           
           <div>
@@ -139,20 +138,6 @@
     </div>
   </main>
 
-  <!-- Message Modal -->
-  <Modal 
-    :visible="showMessageModal" 
-    :title="messageModalTitle" 
-    :icon="messageModalIcon"
-    @close="showMessageModal = false"
-  >
-    <p class="text-gray-700">{{ messageModalContent }}</p>
-    <template #footer>
-      <button @click="showMessageModal = false" class="btn-primary w-full">
-        确定
-      </button>
-    </template>
-  </Modal>
 </div>
 </template>
 
@@ -163,23 +148,15 @@ import { useMemberStore } from '../stores/member'
 import { useFamilyStore } from '../stores/family'
 import { useUserStore } from '../stores/user'
 import Header from '../components/Header.vue'
-import Modal from '../components/Modal.vue'
+import Select from '../components/Select.vue'
 
 const locationStore = useLocationStore()
 const memberStore = useMemberStore()
 const familyStore = useFamilyStore()
 const userStore = useUserStore()
 
-const showMessageModal = ref(false)
-const messageModalTitle = ref('')
-const messageModalContent = ref('')
-const messageModalIcon = ref('info')
-
-const showMessage = (title, content, icon = 'info') => {
-  messageModalTitle.value = title
-  messageModalContent.value = content
-  messageModalIcon.value = icon
-  showMessageModal.value = true
+const showToastMsg = (message, type = 'info') => {
+  window.showToastMessage(message, type)
 }
 
 const selectedFamilyId = ref('')
@@ -201,6 +178,20 @@ const formData = ref({
 })
 
 const families = computed(() => familyStore.families)
+const familyOptions = computed(() => {
+  return families.value.map(family => ({
+    value: family.id,
+    label: family.name
+  }))
+})
+
+const locationTypeOptions = [
+  { value: 'home', label: '家' },
+  { value: 'work', label: '工作' },
+  { value: 'school', label: '学校' },
+  { value: 'other', label: '其他' }
+]
+
 const familyMembers = computed(() => {
   if (!selectedFamilyId.value) return []
   return memberStore.members.filter(member => member.family.id === selectedFamilyId.value)
@@ -342,11 +333,11 @@ const getCurrentLocation = () => {
       },
       (error) => {
         console.error('Error getting location:', error)
-        showMessage('提示', '无法获取当前位置，请手动输入', 'warning')
+        showToastMsg('无法获取当前位置，请手动输入', 'warning')
       }
     )
   } else {
-    showMessage('提示', '您的浏览器不支持地理定位', 'warning')
+    showToastMsg('您的浏览器不支持地理定位', 'warning')
   }
 }
 </script>

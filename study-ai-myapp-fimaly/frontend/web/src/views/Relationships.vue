@@ -17,28 +17,26 @@
             <form @submit.prevent="handleCreateRelationship" class="space-y-4">
               <div>
                 <label for="familyId" class="block text-sm font-medium text-gray-700 mb-1">选择家族</label>
-                <select 
-                  id="familyId" 
-                  v-model="form.familyId" 
-                  class="form-select"
+                <Select
+                  id="familyId"
+                  v-model="form.familyId"
+                  :options="familyOptions"
+                  placeholder="请选择家族"
                   required
-                >
-                  <option value="">请选择家族</option>
-                  <option v-for="family in families" :key="family.id" :value="family.id">{{ family.name }}</option>
-                </select>
+                />
               </div>
               <div>
                 <label for="member1Id" class="block text-sm font-medium text-gray-700 mb-1">成员1</label>
                 <div class="flex space-x-2">
-                  <select 
-                    id="member1Id" 
-                    v-model="form.member1Id" 
-                    class="form-select flex-1"
-                    required
-                  >
-                    <option value="">请选择成员</option>
-                    <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
-                  </select>
+                  <div class="flex-1">
+                    <Select
+                      id="member1Id"
+                      v-model="form.member1Id"
+                      :options="member1Options"
+                      placeholder="请选择成员"
+                      required
+                    />
+                  </div>
                   <button 
                     type="button"
                     @click="searchMember(1)"
@@ -54,15 +52,15 @@
               <div>
                 <label for="member2Id" class="block text-sm font-medium text-gray-700 mb-1">成员2</label>
                 <div class="flex space-x-2">
-                  <select 
-                    id="member2Id" 
-                    v-model="form.member2Id" 
-                    class="form-select flex-1"
-                    required
-                  >
-                    <option value="">请选择成员</option>
-                    <option v-for="member in familyMembers" :key="member.id" :value="member.id">{{ member.name }}</option>
-                  </select>
+                  <div class="flex-1">
+                    <Select
+                      id="member2Id"
+                      v-model="form.member2Id"
+                      :options="member2Options"
+                      placeholder="请选择成员"
+                      required
+                    />
+                  </div>
                   <button 
                     type="button"
                     @click="searchMember(2)"
@@ -77,29 +75,13 @@
               </div>
               <div>
                 <label for="relationshipType" class="block text-sm font-medium text-gray-700 mb-1">关系类型</label>
-                <select 
-                  id="relationshipType" 
-                  v-model="form.relationshipType" 
-                  class="form-select"
+                <Select
+                  id="relationshipType"
+                  v-model="form.relationshipType"
+                  :options="relationshipTypeOptions"
+                  placeholder="请选择关系类型"
                   required
-                >
-                  <option value="">请选择关系类型</option>
-                  <option value="FATHER">父亲</option>
-                  <option value="MOTHER">母亲</option>
-                  <option value="SON">儿子</option>
-                  <option value="DAUGHTER">女儿</option>
-                  <option value="HUSBAND">丈夫</option>
-                  <option value="WIFE">妻子</option>
-                  <option value="BROTHER">兄弟</option>
-                  <option value="SISTER">姐妹</option>
-                  <option value="GRANDFATHER">祖父</option>
-                  <option value="GRANDMOTHER">祖母</option>
-                  <option value="GRANDSON">孙子</option>
-                  <option value="GRANDDAUGHTER">孙女</option>
-                  <option value="UNCLE">叔叔</option>
-                  <option value="AUNT">阿姨</option>
-                  <option value="COUSIN">堂表亲</option>
-                </select>
+                />
               </div>
               <button 
                 type="submit" 
@@ -196,20 +178,6 @@
       @cancel="showDeleteConfirm = false"
     />
 
-    <!-- Message Modal -->
-    <Modal 
-      :visible="showMessageModal" 
-      :title="messageModalTitle" 
-      :icon="messageModalIcon"
-      @close="showMessageModal = false"
-    >
-      <p class="text-gray-700">{{ messageModalContent }}</p>
-      <template #footer>
-        <button @click="showMessageModal = false" class="btn-primary w-full">
-          确定
-        </button>
-      </template>
-    </Modal>
   </div>
 </template>
 
@@ -220,14 +188,14 @@ import { useFamilyStore } from '../stores/family'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, onMounted, watch } from 'vue'
 import Header from '../components/Header.vue'
-import Modal from '../components/Modal.vue'
 import ConfirmModal from '../components/ConfirmModal.vue'
+import Select from '../components/Select.vue'
 
 export default {
   name: 'Relationships',
   components: {
     Header,
-    Modal,
+    Select,
     ConfirmModal
   },
   setup() {
@@ -238,17 +206,10 @@ export default {
     const route = useRoute()
 
     const showDeleteConfirm = ref(false)
-    const showMessageModal = ref(false)
     const deletingRelationshipId = ref(null)
-    const messageModalTitle = ref('')
-    const messageModalContent = ref('')
-    const messageModalIcon = ref('info')
 
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
 
     const form = ref({
@@ -301,6 +262,45 @@ export default {
       return familyStore.families
     })
 
+    const familyOptions = computed(() => {
+      return families.value.map(family => ({
+        value: family.id,
+        label: family.name
+      }))
+    })
+
+    const member1Options = computed(() => {
+      return familyMembers.value.map(member => ({
+        value: member.id,
+        label: member.name
+      }))
+    })
+
+    const member2Options = computed(() => {
+      return familyMembers.value.map(member => ({
+        value: member.id,
+        label: member.name
+      }))
+    })
+
+    const relationshipTypeOptions = [
+      { value: 'FATHER', label: '父亲' },
+      { value: 'MOTHER', label: '母亲' },
+      { value: 'SON', label: '儿子' },
+      { value: 'DAUGHTER', label: '女儿' },
+      { value: 'HUSBAND', label: '丈夫' },
+      { value: 'WIFE', label: '妻子' },
+      { value: 'BROTHER', label: '兄弟' },
+      { value: 'SISTER', label: '姐妹' },
+      { value: 'GRANDFATHER', label: '祖父' },
+      { value: 'GRANDMOTHER', label: '祖母' },
+      { value: 'GRANDSON', label: '孙子' },
+      { value: 'GRANDDAUGHTER', label: '孙女' },
+      { value: 'UNCLE', label: '叔叔' },
+      { value: 'AUNT', label: '阿姨' },
+      { value: 'COUSIN', label: '堂表亲' }
+    ]
+
     watch(() => route.query.selectedMemberId, (newVal) => {
       if (newVal) {
         const target = route.query.memberId
@@ -316,7 +316,7 @@ export default {
     const handleCreateRelationship = async () => {
       try {
         await relationshipStore.createRelationship(form.value)
-        showMessage('操作成功', '关系添加成功', 'success')
+        showToastMsg('关系添加成功', 'success')
         form.value = {
           member1Id: '',
           member2Id: '',
@@ -324,7 +324,7 @@ export default {
         }
         await loadRelationships()
       } catch (error) {
-        showMessage('操作失败', '关系添加失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('关系添加失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -336,10 +336,10 @@ export default {
     const confirmDelete = async () => {
       try {
         await relationshipStore.deleteRelationship(deletingRelationshipId.value)
-        showMessage('操作成功', '关系删除成功', 'success')
+        showToastMsg('关系删除成功', 'success')
         await loadRelationships()
       } catch (error) {
-        showMessage('操作失败', '关系删除失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('关系删除失败: ' + (error.response?.data?.message || error.message), 'error')
       } finally {
         showDeleteConfirm.value = false
         deletingRelationshipId.value = null

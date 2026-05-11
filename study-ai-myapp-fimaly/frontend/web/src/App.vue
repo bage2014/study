@@ -1,38 +1,20 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <router-view />
-    <Toast 
-      :visible="toastVisible" 
-      :message="toastMessage" 
-      :type="toastType" 
-    />
-    <Loading 
-      :visible="loadingVisible" 
-      :text="loadingText" 
-    />
+    <Toast />
+    <Loading />
   </div>
 </template>
 
 <script setup>import { computed, onMounted, provide } from 'vue';
 import { useUserStore } from './stores/user';
-import Toast from './components/Toast.vue';
+import Toast, { showToast } from './components/Toast.vue';
 import Loading from './components/Loading.vue';
 const userStore = useUserStore();
 const isAuthenticated = computed(() => userStore.isAuthenticated);
-// Toast状态
-const toastVisible = computed(() => userStore.toastVisible);
-const toastMessage = computed(() => userStore.toastMessage);
-const toastType = computed(() => userStore.toastType);
-// Loading状态
-const loadingVisible = computed(() => userStore.loadingVisible);
-const loadingText = computed(() => userStore.loadingText);
+
 // 提供全局方法
-provide('showToast', (message, type = 'info') => {
- userStore.showToast(message, type);
-});
-provide('hideToast', () => {
- userStore.hideToast();
-});
+provide('showToast', showToast);
 provide('showLoading', (text = '加载中...') => {
  userStore.showLoading(text);
 });

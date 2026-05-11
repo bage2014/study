@@ -125,20 +125,6 @@
       </div>
     </main>
 
-    <!-- Message Modal -->
-    <Modal 
-      :visible="showMessageModal" 
-      :title="messageModalTitle" 
-      :icon="messageModalIcon"
-      @close="showMessageModal = false"
-    >
-      <p class="text-gray-700">{{ messageModalContent }}</p>
-      <template #footer>
-        <button @click="showMessageModal = false" class="btn-primary w-full">
-          确定
-        </button>
-      </template>
-    </Modal>
   </div>
 </template>
 
@@ -148,28 +134,18 @@ import { useMemberStore } from '../stores/member'
 import { useFamilyStore } from '../stores/family'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
-import Modal from '../components/Modal.vue'
 
 export default {
   name: 'MemberSearch',
   components: {
-    Header,
-    Modal
+    Header
   },
   setup() {
     const memberStore = useMemberStore()
     const familyStore = useFamilyStore()
     const router = useRouter()
-    const showMessageModal = ref(false)
-    const messageModalTitle = ref('')
-    const messageModalContent = ref('')
-    const messageModalIcon = ref('info')
-
-    const showMessage = (title, content, icon = 'info') => {
-      messageModalTitle.value = title
-      messageModalContent.value = content
-      messageModalIcon.value = icon
-      showMessageModal.value = true
+    const showToastMsg = (message, type = 'info') => {
+      window.showToastMessage(message, type)
     }
 
     const searchForm = ref({
@@ -185,7 +161,7 @@ export default {
       try {
         await memberStore.searchMembers(searchForm.value)
       } catch (error) {
-        showMessage('操作失败', '搜索失败: ' + (error.response?.data?.message || error.message), 'error')
+        showToastMsg('搜索失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 
@@ -223,10 +199,6 @@ export default {
     return {
       memberStore,
       familyStore,
-      showMessageModal,
-      messageModalTitle,
-      messageModalContent,
-      messageModalIcon,
       searchForm,
       searchResults,
       navigateTo,
