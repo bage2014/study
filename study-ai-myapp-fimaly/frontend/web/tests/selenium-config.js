@@ -7,7 +7,7 @@ export class SeleniumTestRunner {
     this.driver = null;
     this.testsPassed = 0;
     this.testsFailed = 0;
-    this.baseUrl = 'http://localhost:5174';
+    this.baseUrl = 'http://localhost:5173';
   }
 
   async setup(isHeadless = false) {

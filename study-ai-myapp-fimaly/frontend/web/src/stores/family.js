@@ -82,11 +82,11 @@ export const useFamilyStore = defineStore('family', {
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
-          const index = this.families.findIndex(f => f.id === id)
+          const index = this.families.findIndex(f => String(f.id) === String(id))
           if (index !== -1) {
             this.families[index] = response.data.data
           }
-          if (this.currentFamily && this.currentFamily.id === id) {
+          if (this.currentFamily && String(this.currentFamily.id) === String(id)) {
             this.currentFamily = response.data.data
           }
           return response.data.data
@@ -109,8 +109,8 @@ export const useFamilyStore = defineStore('family', {
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200) {
-          this.families = this.families.filter(f => f.id !== id)
-          if (this.currentFamily && this.currentFamily.id === id) {
+          this.families = this.families.filter(f => String(f.id) !== String(id))
+          if (this.currentFamily && String(this.currentFamily.id) === String(id)) {
             this.currentFamily = null
           }
         } else {
@@ -132,8 +132,8 @@ export const useFamilyStore = defineStore('family', {
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200) {
-          this.families = this.families.filter(f => f.id !== id)
-          if (this.currentFamily && this.currentFamily.id === id) {
+          this.families = this.families.filter(f => String(f.id) !== String(id))
+          if (this.currentFamily && String(this.currentFamily.id) === String(id)) {
             this.currentFamily = null
           }
         } else {
@@ -155,11 +155,11 @@ export const useFamilyStore = defineStore('family', {
         
         // 从新的返回格式中提取数据
         if (response.data.code === 200 && response.data.data) {
-          const index = this.families.findIndex(f => f.id === id)
+          const index = this.families.findIndex(f => String(f.id) === String(id))
           if (index !== -1) {
             this.families[index] = response.data.data
           }
-          if (this.currentFamily && this.currentFamily.id === id) {
+          if (this.currentFamily && String(this.currentFamily.id) === String(id)) {
             this.currentFamily = response.data.data
           }
           return response.data.data

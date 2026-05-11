@@ -10,13 +10,13 @@ export const useLocationStore = defineStore('location', {
 
   getters: {
     getLocationsByMemberId: (state) => (memberId) => {
-      return state.locations.filter(location => location.member.id === memberId)
+      return state.locations.filter(location => String(location.member.id) === String(memberId))
     },
     getSharedLocationsByMemberId: (state) => (memberId) => {
-      return state.locations.filter(location => location.member.id === memberId && location.isShared)
+      return state.locations.filter(location => String(location.member.id) === String(memberId) && location.isShared)
     },
     getPrimaryLocationByMemberId: (state) => (memberId) => {
-      return state.locations.find(location => location.member.id === memberId && location.isPrimary)
+      return state.locations.find(location => String(location.member.id) === String(memberId) && location.isPrimary)
     }
   },
 

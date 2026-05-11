@@ -10,7 +10,7 @@ export const useMilestoneStore = defineStore('milestone', {
 
   getters: {
     getMilestonesByMemberId: (state) => (memberId) => {
-      return state.milestones.filter(milestone => milestone.member.id === memberId)
+      return state.milestones.filter(milestone => String(milestone.member.id) === String(memberId))
     }
   },
 

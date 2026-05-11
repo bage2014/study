@@ -571,9 +571,9 @@ export default {
       try {
         await familyStore.updateAdministrator(selectedFamily.value.id, administratorForm.value.administratorId)
         showUpdateAdministratorModal.value = false
-        ElMessage.success('管理员更新成功')
+        showToastMsg('管理员更新成功', 'success')
       } catch (error) {
-        ElMessage.error('管理员更新失败: ' + (error.message || '未知错误'))
+        showToastMsg('管理员更新失败: ' + (error.response?.data?.message || error.message), 'error')
       }
     }
 

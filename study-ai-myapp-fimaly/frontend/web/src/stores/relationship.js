@@ -11,7 +11,7 @@ export const useRelationshipStore = defineStore('relationship', {
   getters: {
     getRelationshipsByMemberId: (state) => (memberId) => {
       return state.relationships.filter(r => 
-        r.member1Id === memberId || r.member2Id === memberId
+        String(r.member1Id) === String(memberId) || String(r.member2Id) === String(memberId)
       )
     }
   },
