@@ -411,6 +411,10 @@ export default {
 
     onMounted(async () => {
       await familyStore.fetchFamilies()
+      if (familyStore.families.length > 0) {
+        selectedFamilyId.value = familyStore.families[0].id
+        await fetchMembers()
+      }
     })
 
     return {

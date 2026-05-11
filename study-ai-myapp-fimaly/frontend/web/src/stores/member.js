@@ -37,7 +37,7 @@ export const useMemberStore = defineStore('member', {
       this.loading = true
       this.error = null
       try {
-        const response = await api.get('/members/family', {
+        const response = await api.get('/members', {
           params: { familyId }
         })
         if (response.data.code === 200 && response.data.data) {
