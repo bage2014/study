@@ -54,29 +54,140 @@ const handleSubmit = () => {
 ```
 
 ### 2. API 规范
-- 统一管理 API 接口
-- 使用 axios 封装
+
+#### 2.1 统一请求封装
 
 ```javascript
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api'
-});
-
-api.interceptors.request.use(config => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  baseURL: 'http://localhost:8080/api',
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Accept': 'application/json'
   }
-  return config;
 });
+```
 
+#### 2.2 统一请求头
+
+所有请求必须携带以下统一请求头：
+
+| 请求头 | 说明 | 值示例 |
+|--------|------|--------|
+| `Content-Type` | 请求内容类型 | `application/json;charset=UTF-8` |
+| `Accept` | 接受类型 | `application/json` |
+| `Authorization` | 认证令牌（登录后） | `Bearer xxx.token.xxx` |
+| `X-Request-Id` | 请求唯一标识 | `uuid` |
+| `X-Client-Type` | 客户端类型 | `web` |
+| `X-Client-Version` | 客户端版本 | `1.0.0` |
+
+#### 2.3 请求拦截器
+
+```javascript
+import { v4 as uuidv4 } from 'uuid';
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    config.headers['X-Request-Id'] = uuidv4();
+    config.headers['X-Client-Type'] = 'web';
+    config.headers['X-Client-Version'] = '1.0.0';
+    
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+```
+
+#### 2.4 响应拦截器
+
+```javascript
+api.interceptors.response.use(
+  (response) => {
+    const { data } = response;
+    
+    if (data.code === 200) {
+      return data.data;
+    } else {
+      console.error('API Error:', data.message);
+      return Promise.reject(new Error(data.message));
+    }
+  },
+  (error) => {
+    if (error.response) {
+      const { status, data } = error.response;
+      
+      switch (status) {
+        case 401:
+          console.error('未授权，请重新登录');
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login';
+          break;
+        case 403:
+          console.error('无权限访问');
+          break;
+        case 404:
+          console.error('资源不存在');
+          break;
+        case 500:
+          console.error('服务器内部错误');
+          break;
+        default:
+          console.error('请求失败:', data?.message || error.message);
+      }
+    } else if (error.request) {
+      console.error('请求超时或网络异常');
+    } else {
+      console.error('请求配置错误:', error.message);
+    }
+    
+    return Promise.reject(error);
+  }
+);
+```
+
+#### 2.5 API 模块示例
+
+```javascript
 export const userAPI = {
   login: (data) => api.post('/users/login', data),
-  getUsers: () => api.get('/users')
+  logout: () => api.post('/users/logout'),
+  getUsers: (params) => api.get('/users', { params }),
+  getUserById: (id) => api.get(`/users/${id}`),
+  createUser: (data) => api.post('/users', data),
+  updateUser: (id, data) => api.put(`/users/${id}`, data),
+  deleteUser: (id) => api.delete(`/users/${id}`)
 };
 ```
+
+#### 2.6 响应格式
+
+后端统一返回格式：
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {},
+  "timestamp": 1715487600000
+}
+```
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `code` | number | 状态码，200 表示成功 |
+| `message` | string | 提示信息 |
+| `data` | any | 响应数据 |
+| `timestamp` | number | 时间戳 |
 
 ### 3. 路由规范
 - 使用 Vue Router
