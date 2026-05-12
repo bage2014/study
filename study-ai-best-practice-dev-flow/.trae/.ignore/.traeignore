@@ -1,0 +1,78 @@
+# Trae AI 忽略配置文件
+# 此文件定义 Trae AI 应该忽略的文件和目录
+# 格式类似于 .gitignore，支持 glob 模式
+
+# ==================== 版本控制 ====================
+.git/
+.github/
+
+# ==================== 构建输出 ====================
+# 后端编译输出
+best-practice-dev-flow-backend/target/
+*.jar
+*.war
+*.ear
+
+# 前端构建输出
+best-practice-dev-flow-frontend/dist/
+best-practice-dev-flow-frontend/.dist/
+best-practice-dev-flow-frontend/build/
+
+# ==================== 依赖目录 ====================
+node_modules/
+best-practice-dev-flow-frontend/node_modules/
+
+# ==================== 日志文件 ====================
+*.log
+logs/
+*.log.*
+
+# ==================== 环境配置 ====================
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+application-local.yml
+application-local.properties
+
+# ==================== 临时文件 ====================
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# ==================== 编辑器配置 ====================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ==================== 系统文件 ====================
+.DS_Store
+Thumbs.db
+
+# ==================== 测试输出 ====================
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# ==================== Maven 相关 ====================
+.mvn/
+mvnw
+mvnw.cmd
+
+# ==================== npm 相关 ====================
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ==================== 数据库文件 ====================
+*.db
+*.sqlite
+h2-data/
+
+# ==================== Docker ====================
+docker-compose.override.yml
