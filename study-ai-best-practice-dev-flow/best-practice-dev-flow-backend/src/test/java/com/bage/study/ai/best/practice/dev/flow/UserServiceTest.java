@@ -5,8 +5,13 @@ import com.bage.study.ai.best.practice.dev.flow.dto.LoginResponse;
 import com.bage.study.ai.best.practice.dev.flow.dto.RegisterRequest;
 import com.bage.study.ai.best.practice.dev.flow.dto.UserDTO;
 import com.bage.study.ai.best.practice.dev.flow.entity.User;
+import com.bage.study.ai.best.practice.dev.flow.exception.AuthenticationException;
+import com.bage.study.ai.best.practice.dev.flow.exception.EmailExistsException;
+import com.bage.study.ai.best.practice.dev.flow.exception.UserNotFoundException;
+import com.bage.study.ai.best.practice.dev.flow.exception.UsernameExistsException;
 import com.bage.study.ai.best.practice.dev.flow.repository.UserRepository;
 import com.bage.study.ai.best.practice.dev.flow.service.impl.UserServiceImpl;
+import com.bage.study.ai.best.practice.dev.flow.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,6 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -25,12 +31,15 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private JwtUtil jwtUtil;
+
     private UserServiceImpl userService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository);
+        userService = new UserServiceImpl(userRepository, jwtUtil);
     }
 
     @Test
@@ -65,7 +74,7 @@ class UserServiceTest {
 
         when(userRepository.existsByUsername("existing")).thenReturn(true);
 
-        assertThrows(RuntimeException.class, () -> userService.register(request));
+        assertThrows(UsernameExistsException.class, () -> userService.register(request));
         verify(userRepository, never()).save(any(User.class));
     }
 
@@ -79,8 +88,30 @@ class UserServiceTest {
         when(userRepository.existsByUsername(anyString())).thenReturn(false);
         when(userRepository.existsByEmail("existing@test.com")).thenReturn(true);
 
-        assertThrows(RuntimeException.class, () -> userService.register(request));
+        assertThrows(EmailExistsException.class, () -> userService.register(request));
         verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void testLogin_Success() {
+        LoginRequest request = new LoginRequest();
+        request.setUsername("admin");
+        request.setPassword("admin123");
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("admin");
+        user.setEmail("admin@test.com");
+        user.setPassword(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder().encode("admin123"));
+
+        when(userRepository.findByUsername("admin")).thenReturn(Optional.of(user));
+        when(jwtUtil.generateToken(anyString(), anyLong())).thenReturn("test-jwt-token");
+
+        LoginResponse result = userService.login(request);
+
+        assertNotNull(result);
+        assertEquals("admin", result.getUsername());
+        assertEquals("test-jwt-token", result.getToken());
     }
 
     @Test
@@ -91,7 +122,24 @@ class UserServiceTest {
 
         when(userRepository.findByUsername("nonexistent")).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> userService.login(request));
+        assertThrows(AuthenticationException.class, () -> userService.login(request));
+    }
+
+    @Test
+    void testLogin_InvalidPassword() {
+        LoginRequest request = new LoginRequest();
+        request.setUsername("admin");
+        request.setPassword("wrongpassword");
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("admin");
+        user.setEmail("admin@test.com");
+        user.setPassword(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder().encode("admin123"));
+
+        when(userRepository.findByUsername("admin")).thenReturn(Optional.of(user));
+
+        assertThrows(AuthenticationException.class, () -> userService.login(request));
     }
 
     @Test
@@ -116,7 +164,7 @@ class UserServiceTest {
     void testGetUserById_NotFound() {
         when(userRepository.findById(999L)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> userService.getUserById(999L));
+        assertThrows(UserNotFoundException.class, () -> userService.getUserById(999L));
     }
 
     @Test
@@ -133,6 +181,6 @@ class UserServiceTest {
     void testDeleteUser_NotFound() {
         when(userRepository.existsById(999L)).thenReturn(false);
 
-        assertThrows(RuntimeException.class, () -> userService.deleteUser(999L));
+        assertThrows(UserNotFoundException.class, () -> userService.deleteUser(999L));
     }
 }

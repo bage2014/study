@@ -1,7 +1,7 @@
 <template>
-  <a-card title="用户管理" :bordered="false">
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-      <a-button type="primary" @click="showAddModal = true">
+  <a-card title="用户管理" :bordered="false" class="user-table-card">
+    <div class="table-header">
+      <a-button type="primary" @click="openAddModal">
         <template #icon>
           <PlusOutlined />
         </template>
@@ -9,12 +9,18 @@
       </a-button>
     </div>
     
-    <a-table :columns="columns" :data-source="users" :row-key="'id'" :loading="loading">
+    <a-table 
+      :columns="columns" 
+      :data-source="users" 
+      :row-key="'id'" 
+      :loading="loading"
+      :pagination="{ pageSize: 10 }"
+    >
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
-          <a-space>
-            <a-button size="small" @click="handleEdit(record)">编辑</a-button>
-            <a-button size="small" danger @click="handleDelete(record)">删除</a-button>
+          <a-space size="small">
+            <a-button size="small" type="link" @click="handleEdit(record)">编辑</a-button>
+            <a-button size="small" type="link" danger @click="handleDelete(record)">删除</a-button>
           </a-space>
         </template>
       </template>
@@ -23,26 +29,26 @@
     <a-modal
       v-model:open="showAddModal"
       :title="editingUser ? '编辑用户' : '添加用户'"
-      :footer="null"
-      width="400px"
+      @cancel="resetForm"
+      width="450px"
     >
       <a-form :model="formData" layout="vertical">
         <a-form-item label="用户名" :required="true">
           <a-input
             v-model:value="formData.username"
-            placeholder="请输入用户名"
+            placeholder="请输入用户名（3-20位）"
           />
         </a-form-item>
         <a-form-item label="邮箱" :required="true">
           <a-input
             v-model:value="formData.email"
-            placeholder="请输入邮箱"
+            placeholder="请输入邮箱地址"
           />
         </a-form-item>
         <a-form-item label="密码" v-if="!editingUser" :required="true">
           <a-input-password
             v-model:value="formData.password"
-            placeholder="请输入密码"
+            placeholder="请输入密码（至少6位）"
           />
         </a-form-item>
         <a-form-item label="新密码" v-else>
@@ -51,19 +57,20 @@
             placeholder="留空则不修改密码"
           />
         </a-form-item>
-        <a-form-item>
-          <a-space>
-            <a-button @click="showAddModal = false">取消</a-button>
-            <a-button
-              type="primary"
-              @click="handleSubmit"
-              :loading="submitLoading"
-            >
-              {{ editingUser ? '保存' : '添加' }}
-            </a-button>
-          </a-space>
-        </a-form-item>
       </a-form>
+      
+      <template #footer>
+        <a-space>
+          <a-button @click="resetForm">取消</a-button>
+          <a-button
+            type="primary"
+            @click="handleSubmit"
+            :loading="submitLoading"
+          >
+            {{ editingUser ? '保存' : '添加' }}
+          </a-button>
+        </a-space>
+      </template>
     </a-modal>
   </a-card>
 </template>
@@ -72,6 +79,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { userApi } from '../api/user'
+import { message } from 'ant-design-vue'
 
 const users = ref([])
 const loading = ref(false)
@@ -86,18 +94,23 @@ const formData = reactive({
 })
 
 const columns = [
-  { title: 'ID', dataIndex: 'id', key: 'id' },
+  { title: 'ID', dataIndex: 'id', key: 'id', width: 80 },
   { title: '用户名', dataIndex: 'username', key: 'username' },
   { title: '邮箱', dataIndex: 'email', key: 'email' },
-  { title: '操作', key: 'action' }
+  { title: '操作', key: 'action', width: 120 }
 ]
 
 const loadUsers = async () => {
   loading.value = true
   try {
+    console.log('Loading users...')
+    const token = localStorage.getItem('token')
+    console.log('Current token:', token ? 'exists' : 'not found')
     users.value = await userApi.getAllUsers()
+    console.log('Users loaded:', users.value)
   } catch (error) {
-    alert(error.message)
+    console.error('Load users error:', error)
+    message.error(error.message || '获取用户列表失败')
   } finally {
     loading.value = false
   }
@@ -112,21 +125,23 @@ const handleEdit = (record) => {
 }
 
 const handleDelete = async (record) => {
-  if (!confirm(`确定要删除用户 ${record.username} 吗？`)) {
-    return
-  }
-  
   try {
     await userApi.deleteUser(record.id)
     await loadUsers()
-    alert('删除成功')
+    message.success('删除成功')
   } catch (error) {
-    alert(error.message)
+    message.error(error.message || '删除失败')
   }
 }
 
 const handleSubmit = async () => {
   if (!formData.username || !formData.email) {
+    message.warning('请填写完整信息')
+    return
+  }
+  
+  if (!editingUser.value && !formData.password) {
+    message.warning('请输入密码')
     return
   }
   
@@ -142,20 +157,16 @@ const handleSubmit = async () => {
     
     if (editingUser.value) {
       await userApi.updateUser(editingUser.value.id, data)
+      message.success('更新成功')
     } else {
-      if (!formData.password) {
-        alert('请输入密码')
-        submitLoading.value = false
-        return
-      }
       await userApi.register(formData.username, formData.email, formData.password)
+      message.success('添加成功')
     }
     
-    showAddModal.value = false
+    resetForm()
     await loadUsers()
-    alert(editingUser.value ? '更新成功' : '添加成功')
   } catch (error) {
-    alert(error.message)
+    message.error(error.message || '操作失败')
   } finally {
     submitLoading.value = false
   }
@@ -166,16 +177,29 @@ const resetForm = () => {
   formData.username = ''
   formData.email = ''
   formData.password = ''
+  showAddModal.value = false
 }
 
-const openModal = () => {
+const openAddModal = () => {
   resetForm()
   showAddModal.value = true
 }
 
-defineExpose({ openModal })
+defineExpose({ openModal: openAddModal, loadUsers })
 
 onMounted(() => {
   loadUsers()
 })
 </script>
+
+<style scoped>
+.user-table-card {
+  border-radius: 12px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+</style>

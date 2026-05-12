@@ -36,9 +36,15 @@ best-practice-dev-flow/
 │   ├── hooks/                  # Git 自动化钩子
 │   │   └── pre-commit.md
 │   └── rules/                  # 编码与质量规则
-│       ├── backend-testing.md
-│       ├── security.md
-│       └── observability.md
+│       ├── backend-testing.md    # 后端测试规则
+│       ├── frontend-testing.md   # 前端测试规则（Playwright）
+│       ├── security.md           # 安全规则
+│       ├── observability.md      # 可观测性规则
+│       ├── prd-spec.md           # PRD 规范文档
+│       ├── ux-spec.md            # 交互规范文档
+│       ├── contract-spec.md      # 契约生成规范
+│       ├── backend-code-spec.md  # 后端编码规范
+│       └── frontend-code-spec.md # 前端编码规范
 ├── .traecli/                   # 斜杠命令目录
 │   └── commands/               # 自定义命令
 │       ├── fullcycle.md
@@ -162,7 +168,7 @@ best-practice-dev-flow/
 
 ### 代码质量
 - **后端单元测试覆盖率**：≥ 85%
-- **前端 Playwright 测试**：核心流程 100% 覆盖
+- **前端 Playwright 测试**：核心流程 100% 覆盖，所有新增/修改功能必须先编写测试脚本
 - **代码规范**：通过 ESLint / Checkstyle 检查
 - **安全扫描**：无 SQL 注入、无硬编码密钥
 
@@ -175,6 +181,88 @@ best-practice-dev-flow/
 - 轨迹数据必须验证用户权限
 - 敏感信息必须加密传输（HTTPS）
 - 日志中严禁记录敏感信息
+
+---
+
+## 前端 Playwright UI 测试规范
+
+### 测试原则
+
+1. **测试先行**：所有前端功能开发必须先编写 Playwright 测试脚本，再实现功能代码
+2. **覆盖核心流程**：登录、用户管理、轨迹追踪等核心功能必须 100% 覆盖
+3. **自动化验证**：代码提交前必须通过所有 Playwright 测试
+4. **UI 模式验证**：支持在 IDE 内置浏览器中进行可视化验证，确保测试结果与实际用户体验一致
+
+### 测试文件结构
+
+```
+best-practice-dev-flow-ui/
+├── tests/                      # Playwright 测试目录
+│   ├── login.spec.js           # 登录功能测试
+│   ├── user-management.spec.js # 用户管理功能测试
+│   ├── track.spec.js           # 轨迹追踪功能测试
+│   └── [功能].spec.js          # 其他功能测试
+├── playwright.config.js        # Playwright 配置文件
+└── package.json                # 包含测试脚本
+```
+
+### 测试脚本命名规范
+
+| 测试类型 | 命名规则 | 示例 |
+|----------|----------|------|
+| 登录模块 | `login.spec.js` | 测试登录、退出、登录态持久化 |
+| 用户管理 | `user-management.spec.js` | 测试用户增删改查 |
+| 轨迹模块 | `track.spec.js` | 测试轨迹展示、添加 |
+
+### 测试用例编写规范
+
+每个测试文件应包含以下结构：
+
+```javascript
+import { test, expect } from '@playwright/test';
+
+test.describe('功能模块名称', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('http://localhost:5173');
+    await page.waitForLoadState('networkidle');
+  });
+
+  test('测试场景描述', async ({ page }) => {
+    // 步骤1：操作
+    // 步骤2：断言验证
+    // 步骤3：清理（如需要）
+  });
+});
+```
+
+### 测试执行命令
+
+| 命令 | 描述 |
+|------|------|
+| `npm test` | 运行所有测试并生成 HTML 报告 |
+| `npx playwright test --project=chromium` | 仅运行 Chromium 测试 |
+| `npx playwright test tests/user-management.spec.js` | 运行指定测试文件 |
+| `npx playwright show-report` | 查看测试报告 |
+| `npx playwright test --ui` | 启动 UI 模式进行交互式测试验证 |
+| `npx playwright test tests/login.spec.js --ui` | 指定测试文件启动 UI 模式 |
+
+### 测试覆盖要求
+
+| 功能模块 | 必须覆盖的场景 |
+|----------|----------------|
+| 登录 | 登录成功、登录失败、登录态持久化（刷新页面）、退出登录 |
+| 用户管理 | 用户列表展示、添加用户、编辑用户、删除用户 |
+| 轨迹追踪 | 轨迹展示、轨迹添加、轨迹删除 |
+
+### 新增需求测试流程
+
+1. **需求分析**：理解需求，确定需要测试的场景
+2. **编写测试脚本**：在 `tests/` 目录创建对应测试文件
+3. **运行测试**：执行 `npm test` 验证测试脚本
+4. **实现功能**：根据测试脚本实现前端功能
+5. **验证通过**：确保所有测试通过后提交代码
+
+---
 
 ---
 
@@ -203,3 +291,6 @@ best-practice-dev-flow/
 |------|------|----------|
 | v1.0 | 2026-05-12 | 初始化项目宪法 |
 | v1.1 | 2026-05-12 | 添加功能模块文档规范、更新角色权限、增加质量门槛 |
+| v1.2 | 2026-05-12 | 添加前端 Playwright UI 测试规范，强制测试先行原则 |
+| v1.3 | 2026-05-12 | 完善规则文档体系：PRD规范、交互规范、契约规范、前后端编码规范、前端测试规则 |
+| v1.4 | 2026-05-12 | 支持 Playwright UI 模式测试，支持 IDE 内置浏览器可视化验证 |

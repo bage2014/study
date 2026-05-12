@@ -87,9 +87,15 @@ best-practice-dev-flow/
 │   ├── hooks/                  # Git 自动化钩子
 │   │   └── pre-commit.md
 │   └── rules/                  # 编码与质量规则
-│       ├── backend-testing.md
-│       ├── security.md
-│       └── observability.md
+│       ├── backend-testing.md    # 后端测试规则
+│       ├── frontend-testing.md   # 前端测试规则（Playwright）
+│       ├── security.md           # 安全规则
+│       ├── observability.md      # 可观测性规则
+│       ├── prd-spec.md           # PRD 规范文档
+│       ├── ux-spec.md            # 交互规范文档
+│       ├── contract-spec.md      # 契约生成规范
+│       ├── backend-code-spec.md  # 后端编码规范
+│       └── frontend-code-spec.md # 前端编码规范
 ├── .traecli/                   # 斜杠命令目录
 │   └── commands/               # 自定义命令
 │       ├── fullcycle.md
@@ -317,3 +323,4 @@ cd best-practice-dev-flow-frontend && npm run test:e2e
 |------|------|----------|
 | v1.0 | 2026-05-12 | 初始化项目总览 |
 | v1.1 | 2026-05-12 | 更新功能模块状态、完善文档结构、添加角色权限、补充安全规范 |
+| v1.2 | 2026-05-12 | 同步更新规则文档体系：添加 PRD规范、交互规范、契约规范、前后端编码规范、前端测试规则 |

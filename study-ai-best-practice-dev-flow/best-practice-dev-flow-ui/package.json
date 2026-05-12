@@ -5,13 +5,18 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npx playwright test --reporter=html",
+    "test:ui": "npx playwright test --ui",
+    "test:chrome": "npx playwright test --project=chromium",
+    "test:report": "npx playwright show-report"
   },
   "dependencies": {
-    "vue": "^3.4.21",
-    "ant-design-vue": "^4.2.5"
+    "ant-design-vue": "^4.2.5",
+    "vue": "^3.4.21"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "vite": "^5.1.6"
   }

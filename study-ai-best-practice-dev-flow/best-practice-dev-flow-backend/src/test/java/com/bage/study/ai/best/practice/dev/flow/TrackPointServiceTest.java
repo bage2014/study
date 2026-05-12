@@ -3,6 +3,7 @@ package com.bage.study.ai.best.practice.dev.flow;
 import com.bage.study.ai.best.practice.dev.flow.dto.TrackPointDTO;
 import com.bage.study.ai.best.practice.dev.flow.dto.TrackPointRequest;
 import com.bage.study.ai.best.practice.dev.flow.entity.TrackPoint;
+import com.bage.study.ai.best.practice.dev.flow.exception.TrackPointNotFoundException;
 import com.bage.study.ai.best.practice.dev.flow.repository.TrackPointRepository;
 import com.bage.study.ai.best.practice.dev.flow.service.impl.TrackPointServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,15 +36,23 @@ class TrackPointServiceTest {
 
     @Test
     void testGetTrackPointsByUserId_Success() {
-        TrackPoint point1 = new TrackPoint(1L, 39.9042, 116.4074);
-        point1.setId(1L);
-        point1.setName("天安门");
-        point1.setCreatedAt(LocalDateTime.now());
+        TrackPoint point1 = TrackPoint.builder()
+                .id(1L)
+                .userId(1L)
+                .latitude(39.9042)
+                .longitude(116.4074)
+                .name("天安门")
+                .createdAt(LocalDateTime.now())
+                .build();
 
-        TrackPoint point2 = new TrackPoint(1L, 39.9142, 116.4174);
-        point2.setId(2L);
-        point2.setName("故宫");
-        point2.setCreatedAt(LocalDateTime.now().plusMinutes(30));
+        TrackPoint point2 = TrackPoint.builder()
+                .id(2L)
+                .userId(1L)
+                .latitude(39.9142)
+                .longitude(116.4174)
+                .name("故宫")
+                .createdAt(LocalDateTime.now().plusMinutes(30))
+                .build();
 
         when(trackPointRepository.findByUserIdOrderByCreatedAtAsc(1L))
                 .thenReturn(Arrays.asList(point1, point2));
@@ -58,11 +67,15 @@ class TrackPointServiceTest {
 
     @Test
     void testGetTrackPointById_Success() {
-        TrackPoint point = new TrackPoint(1L, 39.9042, 116.4074);
-        point.setId(1L);
-        point.setName("天安门");
-        point.setCreatedAt(LocalDateTime.now());
-        point.setUpdatedAt(LocalDateTime.now());
+        TrackPoint point = TrackPoint.builder()
+                .id(1L)
+                .userId(1L)
+                .latitude(39.9042)
+                .longitude(116.4074)
+                .name("天安门")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
         when(trackPointRepository.findById(1L)).thenReturn(Optional.of(point));
 
@@ -77,7 +90,7 @@ class TrackPointServiceTest {
     void testGetTrackPointById_NotFound() {
         when(trackPointRepository.findById(999L)).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> trackPointService.getTrackPointById(999L));
+        assertThrows(TrackPointNotFoundException.class, () -> trackPointService.getTrackPointById(999L));
     }
 
     @Test
@@ -133,11 +146,15 @@ class TrackPointServiceTest {
 
     @Test
     void testUpdateTrackPoint_Success() {
-        TrackPoint existing = new TrackPoint(1L, 39.9042, 116.4074);
-        existing.setId(1L);
-        existing.setName("旧名称");
-        existing.setCreatedAt(LocalDateTime.now());
-        existing.setUpdatedAt(LocalDateTime.now());
+        TrackPoint existing = TrackPoint.builder()
+                .id(1L)
+                .userId(1L)
+                .latitude(39.9042)
+                .longitude(116.4074)
+                .name("旧名称")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
         TrackPointRequest request = new TrackPointRequest();
         request.setName("新名称");
@@ -158,7 +175,7 @@ class TrackPointServiceTest {
 
         when(trackPointRepository.findById(999L)).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> trackPointService.updateTrackPoint(999L, request));
+        assertThrows(TrackPointNotFoundException.class, () -> trackPointService.updateTrackPoint(999L, request));
     }
 
     @Test
@@ -175,6 +192,6 @@ class TrackPointServiceTest {
     void testDeleteTrackPoint_NotFound() {
         when(trackPointRepository.existsById(999L)).thenReturn(false);
 
-        assertThrows(IllegalArgumentException.class, () -> trackPointService.deleteTrackPoint(999L));
+        assertThrows(TrackPointNotFoundException.class, () -> trackPointService.deleteTrackPoint(999L));
     }
 }

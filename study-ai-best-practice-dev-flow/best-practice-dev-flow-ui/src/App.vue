@@ -87,7 +87,7 @@
                 
                 <a-card hoverable class="feature-card">
                   <div class="feature-icon track-icon">
-                    <MapOutlined />
+                    <CompassOutlined />
                   </div>
                   <h3>轨迹追踪</h3>
                   <p>记录和展示用户位置轨迹，支持地图可视化</p>
@@ -107,7 +107,7 @@
           </template>
           
           <template v-else-if="currentPage === 'users'">
-            <UserTable ref="userTableRef" />
+            <UserTable :key="currentPage" ref="userTableRef" />
           </template>
           
           <template v-else-if="currentPage === 'track'">
@@ -138,7 +138,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { 
   HomeOutlined, 
   UserOutlined, 
@@ -153,6 +153,9 @@ import LoginModal from './components/LoginModal.vue'
 import RegisterModal from './components/RegisterModal.vue'
 import UserTable from './components/UserTable.vue'
 import TrackMap from './components/TrackMap.vue'
+import { authUtils } from './api/user'
+
+const STORAGE_KEY = 'devflow_user'
 
 const currentPage = ref('home')
 const showLoginModal = ref(false)
@@ -165,8 +168,29 @@ const onlineCount = ref(0)
 const trackCount = ref(0)
 const projectCount = ref(0)
 
+const saveUserToStorage = (user) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(user))
+}
+
+const getUserFromStorage = () => {
+  const stored = localStorage.getItem(STORAGE_KEY)
+  if (stored) {
+    try {
+      return JSON.parse(stored)
+    } catch (e) {
+      return null
+    }
+  }
+  return null
+}
+
+const removeUserFromStorage = () => {
+  localStorage.removeItem(STORAGE_KEY)
+}
+
 const handleLoginSuccess = (user) => {
   currentUser.value = user
+  saveUserToStorage(user)
   currentPage.value = 'home'
   loadStats()
 }
@@ -178,25 +202,61 @@ const handleRegisterSuccess = (user) => {
 
 const handleLogout = () => {
   currentUser.value = null
+  removeUserFromStorage()
+  authUtils.removeToken()
   currentPage.value = 'home'
+  onlineCount.value = 0
+  trackCount.value = 0
 }
 
 const loadStats = async () => {
+  if (!currentUser.value) return
+  
   try {
-    const response = await fetch('http://localhost:8080/api/users')
-    const users = await response.json()
-    onlineCount.value = users.length
+    const token = authUtils.getToken()
+    const response = await fetch('/api/users', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    })
+    if (response.ok) {
+      const users = await response.json()
+      onlineCount.value = users.length
+    }
     
-    const trackResponse = await fetch('http://localhost:8080/api/trackpoints?userId=1')
-    const tracks = await trackResponse.json()
-    trackCount.value = tracks.length
+    const trackResponse = await fetch('/api/trackpoints?userId=1', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    })
+    if (trackResponse.ok) {
+      const tracks = await trackResponse.json()
+      trackCount.value = tracks.length
+    }
   } catch (error) {
     console.error('加载统计数据失败:', error)
   }
 }
 
+const initAuth = () => {
+  const storedUser = getUserFromStorage()
+  const token = authUtils.getToken()
+  
+  if (storedUser && token) {
+    currentUser.value = storedUser
+    loadStats()
+  }
+}
+
+watch(currentPage, (newPage) => {
+  if (newPage === 'users' && userTableRef.value) {
+    setTimeout(() => {
+      userTableRef.value.loadUsers()
+    }, 100)
+  }
+})
+
 onMounted(() => {
-  loadStats()
+  initAuth()
+  if (!currentUser.value) {
+    loadStats()
+  }
 })
 </script>
 

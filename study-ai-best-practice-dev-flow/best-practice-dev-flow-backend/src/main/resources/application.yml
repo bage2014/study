@@ -28,3 +28,16 @@ logging:
   level:
     com.bage.study.ai.best.practice.dev.flow: DEBUG
     org.hibernate.SQL: DEBUG
+
+jwt:
+  secret: bage-study-ai-best-practice-dev-flow-jwt-secret-key-2024
+  expiration: 86400000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus, metrics
+  endpoint:
+    health:
+      show-details: always

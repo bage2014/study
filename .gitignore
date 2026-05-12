@@ -28,3 +28,4 @@ replay_pid*
 *.class
 /study-ai-myapp-fimaly/.vscode
 /study-ai-myapp-fimaly/backend/uploads
+/study-ai-best-practice-dev-flow/best-practice-dev-flow-ui/test-results

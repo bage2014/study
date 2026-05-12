@@ -1,0 +1,215 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: user-management.spec.js >> 用户管理功能 >> 添加用户 - 验证失败
+- Location: tests/user-management.spec.js:36:3
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded while running "beforeEach" hook.
+```
+
+```
+Error: locator.fill: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('input[placeholder="用户名"]')
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - img "user" [ref=e8]:
+          - img [ref=e9]
+        - generic [ref=e11]: DevFlow
+      - generic [ref=e12]:
+        - menu [ref=e13]:
+          - menuitem "home 首页" [ref=e14] [cursor=pointer]:
+            - img "home" [ref=e15]:
+              - img [ref=e16]
+            - generic [ref=e18]: 首页
+          - generic:
+            - generic:
+              - img:
+                - img
+        - button "login 登录" [ref=e20] [cursor=pointer]:
+          - img "login" [ref=e21]:
+            - img [ref=e22]
+          - generic [ref=e24]: 登录
+    - main [ref=e25]:
+      - generic [ref=e27]:
+        - generic [ref=e30]:
+          - img "star" [ref=e32]:
+            - img [ref=e33]
+          - heading "欢迎使用 DevFlow" [level=1] [ref=e35]
+          - paragraph [ref=e36]: 最佳实践开发流程管理系统
+          - generic [ref=e37]:
+            - generic [ref=e38]:
+              - generic [ref=e39]: 在线用户
+              - generic [ref=e40]:
+                - generic [ref=e42]: "0"
+                - generic [ref=e43]: 人
+            - generic [ref=e44]:
+              - generic [ref=e45]: 轨迹记录
+              - generic [ref=e46]:
+                - generic [ref=e48]: "0"
+                - generic [ref=e49]: 条
+            - generic [ref=e50]:
+              - generic [ref=e51]: 活跃项目
+              - generic [ref=e52]:
+                - generic [ref=e54]: "0"
+                - generic [ref=e55]: 个
+        - generic [ref=e56]:
+          - generic [ref=e58] [cursor=pointer]:
+            - img "user" [ref=e60]:
+              - img [ref=e61]
+            - heading "用户管理" [level=3] [ref=e63]
+            - paragraph [ref=e64]: 管理系统用户，支持注册、登录和权限管理
+          - generic [ref=e66] [cursor=pointer]:
+            - img "compass" [ref=e68]:
+              - img [ref=e69]
+            - heading "轨迹追踪" [level=3] [ref=e71]
+            - paragraph [ref=e72]: 记录和展示用户位置轨迹，支持地图可视化
+          - generic [ref=e74] [cursor=pointer]:
+            - img "bar-chart" [ref=e76]:
+              - img [ref=e77]
+            - heading "数据分析" [level=3] [ref=e79]
+            - paragraph [ref=e80]: 提供数据统计和分析报表功能
+            - button "即将上线" [disabled] [ref=e81]:
+              - generic [ref=e82]: 即将上线
+    - paragraph [ref=e84]: © 2024 DevFlow - 最佳实践开发流程管理系统
+  - dialog [ref=e86]:
+    - document:
+      - generic [ref=e89]:
+        - generic [ref=e90]:
+          - img "login" [ref=e92]:
+            - img [ref=e93]
+          - heading "欢迎回来" [level=2] [ref=e95]
+          - paragraph [ref=e96]: 登录您的账户
+        - generic [ref=e97]:
+          - generic [ref=e100]:
+            - generic [ref=e103]:
+              - img "user" [ref=e105]:
+                - img [ref=e106]
+              - textbox "用户名或邮箱" [ref=e108]
+            - generic:
+              - alert
+          - generic [ref=e111]:
+            - generic [ref=e114]:
+              - img "lock" [ref=e116]:
+                - img [ref=e117]
+              - textbox "密码" [ref=e119]
+              - img "eye-invisible" [ref=e121] [cursor=pointer]:
+                - img [ref=e122]
+            - generic:
+              - alert
+          - generic [ref=e125]:
+            - generic [ref=e126] [cursor=pointer]:
+              - checkbox "记住我" [ref=e128]
+              - generic [ref=e130]: 记住我
+            - link "忘记密码？" [ref=e131] [cursor=pointer]:
+              - /url: "#"
+          - button "登 录" [ref=e137] [cursor=pointer]:
+            - generic [ref=e138]: 登 录
+          - separator [ref=e139]:
+            - generic [ref=e140]: 或
+          - button "user-add 创建账户" [ref=e146] [cursor=pointer]:
+            - img "user-add" [ref=e147]:
+              - img [ref=e148]
+            - generic [ref=e150]: 创建账户
+        - generic [ref=e151]:
+          - paragraph [ref=e152]: 默认测试账户：
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - generic [ref=e155]: 管理员：
+              - generic [ref=e156]: admin / admin123
+            - generic [ref=e157]:
+              - generic [ref=e158]: 用户1：
+              - generic [ref=e159]: user1 / user123
+            - generic [ref=e160]:
+              - generic [ref=e161]: 用户2：
+              - generic [ref=e162]: user2 / user234
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | 
+  3  | test.describe('用户管理功能', () => {
+  4  |   test.beforeEach(async ({ page }) => {
+  5  |     await page.goto('http://localhost:5173');
+  6  |     await page.waitForLoadState('networkidle');
+  7  |     
+  8  |     await page.locator('.login-btn').click();
+> 9  |     await page.locator('input[placeholder="用户名"]').fill('admin');
+     |                                                    ^ Error: locator.fill: Test timeout of 30000ms exceeded.
+  10 |     await page.locator('input[placeholder="密码"]').fill('admin123');
+  11 |     await page.locator('.submit-btn').click();
+  12 |     
+  13 |     await expect(page.locator('.user-info')).toBeVisible();
+  14 |   });
+  15 | 
+  16 |   test('用户列表展示', async ({ page }) => {
+  17 |     await page.locator('.user-management-btn').click();
+  18 |     
+  19 |     await expect(page.locator('table')).toBeVisible();
+  20 |     await expect(page.locator('table tr')).toHaveCount(3);
+  21 |   });
+  22 | 
+  23 |   test('添加用户', async ({ page }) => {
+  24 |     await page.locator('.user-management-btn').click();
+  25 |     
+  26 |     await page.locator('.ant-btn-primary').click();
+  27 |     await page.locator('input[placeholder="请输入用户名（3-20位）"]').fill('testuser');
+  28 |     await page.locator('input[placeholder="请输入邮箱地址"]').fill('test@example.com');
+  29 |     await page.locator('input[placeholder="请输入密码（至少6位）"]').fill('password123');
+  30 |     await page.locator('.ant-modal-footer .ant-btn-primary').click();
+  31 |     
+  32 |     await expect(page.locator('.ant-message-success')).toBeVisible();
+  33 |     await expect(page.locator('table tr')).toHaveCount(4);
+  34 |   });
+  35 | 
+  36 |   test('添加用户 - 验证失败', async ({ page }) => {
+  37 |     await page.locator('.user-management-btn').click();
+  38 |     
+  39 |     await page.locator('.ant-btn-primary').click();
+  40 |     await page.locator('.ant-modal-footer .ant-btn-primary').click();
+  41 |     
+  42 |     await expect(page.locator('.ant-message-warning')).toBeVisible();
+  43 |   });
+  44 | 
+  45 |   test('编辑用户', async ({ page }) => {
+  46 |     await page.locator('.user-management-btn').click();
+  47 |     
+  48 |     await page.locator('table tr:last-child .ant-btn-link').first().click();
+  49 |     await page.locator('input[placeholder="请输入用户名（3-20位）"]').fill('updateduser');
+  50 |     await page.locator('.ant-modal-footer .ant-btn-primary').click();
+  51 |     
+  52 |     await expect(page.locator('.ant-message-success')).toBeVisible();
+  53 |     await expect(page.locator('table tr:last-child td:nth-child(2)')).toHaveText('updateduser');
+  54 |   });
+  55 | 
+  56 |   test('删除用户', async ({ page }) => {
+  57 |     await page.locator('.user-management-btn').click();
+  58 |     
+  59 |     const initialRowCount = await page.locator('table tr').count();
+  60 |     
+  61 |     await page.locator('table tr:last-child .ant-btn-link').last().click();
+  62 |     await page.locator('.ant-modal-confirm-btns .ant-btn-primary').click();
+  63 |     
+  64 |     await expect(page.locator('.ant-message-success')).toBeVisible();
+  65 |     await expect(page.locator('table tr')).toHaveCount(initialRowCount - 1);
+  66 |   });
+  67 | });
+```

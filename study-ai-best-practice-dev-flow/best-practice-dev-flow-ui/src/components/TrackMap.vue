@@ -13,8 +13,8 @@
     <a-modal
       v-model:open="isModalVisible"
       title="添加轨迹点"
-      :footer="null"
-      width="400px"
+      @cancel="isModalVisible = false"
+      width="450px"
     >
       <a-form :model="newPoint" layout="vertical">
         <a-form-item label="位置名称" :required="true">
@@ -24,9 +24,10 @@
           />
         </a-form-item>
         <a-form-item label="描述">
-          <a-input
+          <a-textarea
             v-model:value="newPoint.description"
             placeholder="请输入描述"
+            :rows="3"
           />
         </a-form-item>
         <a-form-item label="纬度">
@@ -41,13 +42,14 @@
             disabled
           />
         </a-form-item>
-        <a-form-item>
-          <a-space>
-            <a-button @click="isModalVisible = false">取消</a-button>
-            <a-button type="primary" @click="savePoint">保存</a-button>
-          </a-space>
-        </a-form-item>
       </a-form>
+      
+      <template #footer>
+        <a-space>
+          <a-button @click="isModalVisible = false">取消</a-button>
+          <a-button type="primary" @click="savePoint">保存</a-button>
+        </a-space>
+      </template>
     </a-modal>
   </div>
 </template>
@@ -55,6 +57,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { DeleteOutlined } from '@ant-design/icons-vue'
+import { trackApi } from '../api/user'
+import { message, Modal } from 'ant-design-vue'
 
 const mapContainer = ref(null)
 const isModalVisible = ref(false)
@@ -100,12 +104,10 @@ const handleMapClick = (e) => {
 
 const loadTrackPoints = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/trackpoints?userId=1')
-    const data = await response.json()
-    trackPoints.value = data
+    trackPoints.value = await trackApi.getTrackPoints(1)
     renderTrackPoints()
   } catch (error) {
-    console.error('加载轨迹点失败:', error)
+    message.error(error.message || '加载轨迹点失败')
   }
 }
 
@@ -120,7 +122,7 @@ const renderTrackPoints = () => {
     polyline.value = null
   }
   
-  if (trackPoints.value.length === 0) return
+  if (!baiduMap.value || trackPoints.value.length === 0) return
   
   trackPoints.value.forEach((point, index) => {
     const marker = new window.BMapGL.Marker(new window.BMapGL.Point(point.longitude, point.latitude))
@@ -156,13 +158,11 @@ const handleMarkerClick = (point) => {
 
 const deleteTrackPoint = async (id) => {
   try {
-    await fetch(`http://localhost:8080/api/trackpoints/${id}`, {
-      method: 'DELETE'
-    })
+    await trackApi.deleteTrackPoint(id)
     message.success('删除成功')
     loadTrackPoints()
   } catch (error) {
-    message.error('删除失败')
+    message.error(error.message || '删除失败')
   }
 }
 
@@ -173,18 +173,17 @@ const savePoint = async () => {
   }
   
   try {
-    await fetch('http://localhost:8080/api/trackpoints', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newPoint.value)
-    })
+    await trackApi.createTrackPoint(
+      newPoint.value.latitude,
+      newPoint.value.longitude,
+      newPoint.value.name,
+      newPoint.value.description
+    )
     message.success('保存成功')
     isModalVisible.value = false
     loadTrackPoints()
   } catch (error) {
-    message.error('保存失败')
+    message.error(error.message || '保存失败')
   }
 }
 
@@ -197,15 +196,13 @@ const clearAllPoints = () => {
     onOk: async () => {
       try {
         for (const point of trackPoints.value) {
-          await fetch(`http://localhost:8080/api/trackpoints/${point.id}`, {
-            method: 'DELETE'
-          })
+          await trackApi.deleteTrackPoint(point.id)
         }
         message.success('清空成功')
         trackPoints.value = []
         renderTrackPoints()
       } catch (error) {
-        message.error('清空失败')
+        message.error(error.message || '清空失败')
       }
     }
   })
