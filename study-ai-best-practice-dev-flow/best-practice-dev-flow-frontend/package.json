@@ -1,0 +1,30 @@
+{
+  "name": "best-practice-dev-flow-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test": "npx playwright test --reporter=html",
+    "test:chrome": "npx playwright test --project=chromium",
+    "test:report": "npx playwright show-report"
+  },
+  "dependencies": {
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.2",
+    "pinia": "^2.1.7",
+    "axios": "^1.6.8",
+    "uuid": "^9.0.1",
+    "element-plus": "^2.6.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.0",
+    "@types/uuid": "^9.0.8",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "vue-tsc": "^1.8.27"
+  }
+}

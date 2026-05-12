@@ -3,7 +3,7 @@
 # 前端服务启动脚本
 # 检查5173端口是否被占用，如果占用则关闭
 
-FRONTEND_DIR="best-practice-dev-flow-ui"
+FRONTEND_DIR="best-practice-dev-flow-frontend"
 PORT=5173
 
 echo "=================================="
