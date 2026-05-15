@@ -30,3 +30,6 @@ replay_pid*
 /study-ai-myapp-fimaly/backend/uploads
 /study-ai-best-practice-dev-flow/best-practice-dev-flow-ui/test-results
 /study-ai-best-practice-dev-flow/best-practice-dev-flow-frontend/node_modules
+/study-ai-best-practice-dev-flow/best-practice-dev-flow-frontend/playwright-report
+/study-ai-best-practice-dev-flow/best-practice-dev-flow-frontend/test-results
+/study-ai-best-practice-dev-flow/best-practice-dev-flow-frontend/dist

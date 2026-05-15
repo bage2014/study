@@ -26,7 +26,7 @@ const mediaTypeOptions = [
 
 async function loadMedia() {
   if (familyStore.currentFamily) {
-    mediaList.value = await mediaAPI.getByFamily(familyStore.currentFamily.id)
+    mediaList.value = await mediaAPI.getByFamily(familyStore.currentFamily.id) as unknown as any[]
   }
 }
 

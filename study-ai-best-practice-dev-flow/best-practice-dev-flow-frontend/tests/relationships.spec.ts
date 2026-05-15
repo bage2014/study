@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('家族管理功能', () => {
+test.describe('关系管理功能', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:5173/login')
     await page.waitForLoadState('networkidle')
@@ -13,7 +13,9 @@ test.describe('家族管理功能', () => {
     await page.waitForTimeout(1000)
   })
 
-  test('家族页面显示正确', async ({ page }) => {
-    await expect(page.locator('h1')).toHaveText('家族管理')
+  test('关系页面显示正确', async ({ page }) => {
+    await page.locator('.el-menu-item', { hasText: '关系管理' }).click()
+    await page.waitForURL('**/relationships')
+    await expect(page.locator('h1')).toHaveText('关系管理')
   })
 })

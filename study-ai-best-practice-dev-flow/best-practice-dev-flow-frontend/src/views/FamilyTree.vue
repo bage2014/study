@@ -11,8 +11,8 @@ const treeData = ref<any[]>([])
 
 async function loadData() {
   if (familyStore.currentFamily) {
-    members.value = await memberAPI.getByFamily(familyStore.currentFamily.id)
-    relationships.value = await relationshipAPI.getByFamily(familyStore.currentFamily.id)
+    members.value = await memberAPI.getByFamily(familyStore.currentFamily.id) as unknown as any[]
+    relationships.value = await relationshipAPI.getByFamily(familyStore.currentFamily.id) as unknown as any[]
     buildTree()
   }
 }

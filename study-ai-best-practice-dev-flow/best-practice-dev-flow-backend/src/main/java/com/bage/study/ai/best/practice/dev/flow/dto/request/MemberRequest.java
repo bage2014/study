@@ -30,4 +30,8 @@ public class MemberRequest {
     private String phone;
 
     private String email;
+
+    private String occupation;
+
+    private String education;
 }

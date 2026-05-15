@@ -33,13 +33,13 @@ const genderOptions = [
 
 async function loadMembers() {
   if (familyStore.currentFamily) {
-    members.value = await memberAPI.getByFamily(familyStore.currentFamily.id)
+    members.value = await memberAPI.getByFamily(familyStore.currentFamily.id) as unknown as any[]
   }
 }
 
 async function searchMembers() {
   if (searchKeyword.value.trim()) {
-    members.value = await memberAPI.search(searchKeyword.value)
+    members.value = await memberAPI.search(searchKeyword.value) as unknown as any[]
   } else {
     await loadMembers()
   }

@@ -11,21 +11,21 @@ export const useFamilyStore = defineStore('family', () => {
   )
 
   async function loadFamilies() {
-    families.value = await familyAPI.getByUser()
+    families.value = await familyAPI.getByUser() as unknown as FamilyDTO[]
     if (families.value.length > 0 && !currentFamily.value) {
       currentFamily.value = families.value[0]
     }
   }
 
   async function createFamily(data: FamilyRequest) {
-    const family = await familyAPI.create(data)
+    const family = await familyAPI.create(data) as unknown as FamilyDTO
     families.value.push(family)
     currentFamily.value = family
     return family
   }
 
   async function updateFamily(id: number, data: FamilyRequest) {
-    const family = await familyAPI.update(id, data)
+    const family = await familyAPI.update(id, data) as unknown as FamilyDTO
     const index = families.value.findIndex(f => f.id === id)
     if (index !== -1) {
       families.value[index] = family

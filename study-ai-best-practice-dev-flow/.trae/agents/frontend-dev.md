@@ -53,7 +53,7 @@ frontend-dev
 - CSS 类名：kebab-case
 
 ### 测试要求
-- 核心页面必须有 Playwright 测试
+- 核心页面必须有 Playwright 完整的用例测试，并基于IDE 内置浏览器 使用UI 模式进行验证
 - 测试覆盖率 ≥ 80%
 - 所有用户交互必须有测试
 
@@ -63,6 +63,6 @@ frontend-dev
 - 用户敏感信息必须加密传输
 
 ## 输出要求
-- 完成开发后必须运行 Playwright 测试
+- 完成开发后必须运行 Playwright UI 模式进行测试，且在IDE 内置浏览器中进行验证
 - 必须生成测试报告
 - 必须更新相关文档

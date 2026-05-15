@@ -29,13 +29,13 @@ const relationshipOptions = [
 
 async function loadRelationships() {
   if (familyStore.currentFamily) {
-    relationships.value = await relationshipAPI.getByFamily(familyStore.currentFamily.id)
+    relationships.value = await relationshipAPI.getByFamily(familyStore.currentFamily.id) as unknown as any[]
   }
 }
 
 async function loadMembers() {
   if (familyStore.currentFamily) {
-    members.value = await memberAPI.getByFamily(familyStore.currentFamily.id)
+    members.value = await memberAPI.getByFamily(familyStore.currentFamily.id) as unknown as any[]
   }
 }
 

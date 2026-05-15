@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user', () => {
   const isLoggedIn = computed(() => !!token.value && !!user.value)
 
   async function login(data: LoginRequest) {
-    const result = await userAPI.login(data)
+    const result: { token: string; user: UserDTO } = await userAPI.login(data) as any
     token.value = result.token
     user.value = result.user
     localStorage.setItem('token', result.token)
@@ -36,7 +36,7 @@ export const useUserStore = defineStore('user', () => {
   async function loadUser() {
     if (token.value && !user.value) {
       try {
-        user.value = await userAPI.getCurrentUser()
+        user.value = await userAPI.getCurrentUser() as unknown as UserDTO
       } catch (e) {
         console.error('Load user error:', e)
         logout()
@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function updateProfile(data: Partial<UserDTO>) {
-    user.value = await userAPI.updateProfile(data)
+    user.value = await userAPI.updateProfile(data) as unknown as UserDTO
     localStorage.setItem('user', JSON.stringify(user.value))
   }
 

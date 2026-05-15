@@ -23,7 +23,7 @@ const editingId = ref<number | null>(null)
 
 async function loadEvents() {
   if (familyStore.currentFamily) {
-    events.value = await eventAPI.getByFamily(familyStore.currentFamily.id)
+    events.value = await eventAPI.getByFamily(familyStore.currentFamily.id) as unknown as any[]
   }
 }
 
