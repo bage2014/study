@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useFamilyStore } from '@/stores/family'
 import type { FamilyRequest } from '@/api'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import Sidebar from '@/components/Sidebar.vue'
 
 const familyStore = useFamilyStore()
@@ -16,17 +17,39 @@ const form = ref<FamilyRequest>({
 })
 
 const editingId = ref<number | null>(null)
+const loading = ref(false)
 
 async function loadFamilies() {
-  await familyStore.loadFamilies()
-  families.value = familyStore.families
+  try {
+    loading.value = true
+    await familyStore.loadFamilies()
+    families.value = familyStore.families
+  } catch (error) {
+    ElMessage.error('加载家族列表失败')
+    console.error(error)
+  } finally {
+    loading.value = false
+  }
 }
 
 async function createFamily() {
-  await familyStore.createFamily(form.value)
-  showCreateModal.value = false
-  form.value = { name: '', description: '' }
-  await loadFamilies()
+  if (!form.value.name.trim()) {
+    ElMessage.warning('请输入家族名称')
+    return
+  }
+  try {
+    loading.value = true
+    await familyStore.createFamily(form.value)
+    ElMessage.success('家族创建成功')
+    showCreateModal.value = false
+    form.value = { name: '', description: '' }
+    await loadFamilies()
+  } catch (error) {
+    ElMessage.error('创建家族失败')
+    console.error(error)
+  } finally {
+    loading.value = false
+  }
 }
 
 async function openUpdateModal(family: any) {
@@ -39,18 +62,46 @@ async function openUpdateModal(family: any) {
 }
 
 async function updateFamily() {
-  if (editingId.value) {
+  if (!form.value.name.trim()) {
+    ElMessage.warning('请输入家族名称')
+    return
+  }
+  if (!editingId.value) return
+  try {
+    loading.value = true
     await familyStore.updateFamily(editingId.value, form.value)
+    ElMessage.success('家族更新成功')
     showUpdateModal.value = false
     editingId.value = null
     form.value = { name: '', description: '' }
     await loadFamilies()
+  } catch (error) {
+    ElMessage.error('更新家族失败')
+    console.error(error)
+  } finally {
+    loading.value = false
   }
 }
 
 async function deleteFamily(id: number) {
-  await familyStore.deleteFamily(id)
-  await loadFamilies()
+  try {
+    await ElMessageBox.confirm('确定要删除这个家族吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+    loading.value = true
+    await familyStore.deleteFamily(id)
+    ElMessage.success('家族删除成功')
+    await loadFamilies()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      ElMessage.error('删除家族失败')
+      console.error(error)
+    }
+  } finally {
+    loading.value = false
+  }
 }
 
 onMounted(async () => {
@@ -65,20 +116,20 @@ onMounted(async () => {
     <main class="main-content">
       <div class="page-header">
         <h1>家族管理</h1>
-        <el-button type="primary" @click="showCreateModal = true">
+        <el-button type="primary" :loading="loading" @click="showCreateModal = true">
           <el-icon>Plus</el-icon>
           创建家族
         </el-button>
       </div>
 
       <div class="card">
-        <el-table :data="families" border>
+        <el-table :data="families" border v-loading="loading">
           <el-table-column prop="name" label="家族名称" />
           <el-table-column prop="description" label="描述" />
           <el-table-column prop="memberCount" label="成员数量" />
           <el-table-column prop="creatorName" label="创建者" />
           <el-table-column prop="createdAt" label="创建时间" />
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="180">
             <template #default="scope">
               <el-button 
                 size="small" 
@@ -98,33 +149,43 @@ onMounted(async () => {
         </el-table>
       </div>
 
-      <el-dialog title="创建家族" :visible="showCreateModal" @close="showCreateModal = false">
+      <el-dialog title="创建家族" v-model="showCreateModal" width="500px">
         <el-form :model="form" label-width="80px">
           <el-form-item label="家族名称" required>
-            <el-input v-model="form.name" />
+            <el-input v-model="form.name" placeholder="请输入家族名称" />
           </el-form-item>
           <el-form-item label="描述">
-            <el-textarea v-model="form.description" />
+            <el-input 
+              v-model="form.description" 
+              type="textarea" 
+              :rows="4" 
+              placeholder="请输入家族描述" 
+            />
           </el-form-item>
         </el-form>
         <template #footer>
           <el-button @click="showCreateModal = false">取消</el-button>
-          <el-button type="primary" @click="createFamily">创建</el-button>
+          <el-button type="primary" :loading="loading" @click="createFamily">创建</el-button>
         </template>
       </el-dialog>
 
-      <el-dialog title="编辑家族" :visible="showUpdateModal" @close="showUpdateModal = false">
+      <el-dialog title="编辑家族" v-model="showUpdateModal" width="500px">
         <el-form :model="form" label-width="80px">
           <el-form-item label="家族名称" required>
-            <el-input v-model="form.name" />
+            <el-input v-model="form.name" placeholder="请输入家族名称" />
           </el-form-item>
           <el-form-item label="描述">
-            <el-textarea v-model="form.description" />
+            <el-input 
+              v-model="form.description" 
+              type="textarea" 
+              :rows="4" 
+              placeholder="请输入家族描述" 
+            />
           </el-form-item>
         </el-form>
         <template #footer>
           <el-button @click="showUpdateModal = false">取消</el-button>
-          <el-button type="primary" @click="updateFamily">保存</el-button>
+          <el-button type="primary" :loading="loading" @click="updateFamily">保存</el-button>
         </template>
       </el-dialog>
     </main>

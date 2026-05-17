@@ -1,37 +1,46 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useFamilyStore } from '@/stores/family'
+import {
+  HomeFilled,
+  UserFilled,
+  Link,
+  Connection,
+  Calendar,
+  PictureFilled,
+  LocationFilled,
+  MagicStick
+} from '@element-plus/icons-vue'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 const familyStore = useFamilyStore()
 
 const selectedFamilyId = ref<number | undefined>(undefined)
 
 watch(() => familyStore.currentFamily, (family) => {
-  selectedFamilyId.value = family?.id
-})
+  if (family) {
+    selectedFamilyId.value = family.id
+  }
+}, { immediate: true })
 
 const menuItems = [
-  { name: '家族管理', path: '/family', icon: 'el-icon-home' },
-  { name: '成员管理', path: '/members', icon: 'el-icon-user' },
-  { name: '关系管理', path: '/relationships', icon: 'el-icon-link' },
-  { name: '家族树', path: '/family-tree', icon: 'el-icon-tree' },
-  { name: '历史事件', path: '/events', icon: 'el-icon-calendar' },
-  { name: '多媒体库', path: '/media', icon: 'el-icon-picture' },
-  { name: '轨迹追踪', path: '/track', icon: 'el-icon-location' },
-  { name: 'AI功能', path: '/ai', icon: 'el-icon-magic' }
+  { name: '家族管理', path: '/family', icon: HomeFilled },
+  { name: '成员管理', path: '/members', icon: UserFilled },
+  { name: '关系管理', path: '/relationships', icon: Link },
+  { name: '家族树', path: '/family-tree', icon: Connection },
+  { name: '历史事件', path: '/events', icon: Calendar },
+  { name: '多媒体库', path: '/media', icon: PictureFilled },
+  { name: '轨迹追踪', path: '/track', icon: LocationFilled },
+  { name: 'AI功能', path: '/ai', icon: MagicStick }
 ]
 
 function handleLogout() {
   userStore.logout()
   router.push('/login')
-}
-
-function getCurrentPath() {
-  return router.currentRoute.value.path
 }
 
 function handleFamilyChange(val: number) {
@@ -40,6 +49,14 @@ function handleFamilyChange(val: number) {
     familyStore.setCurrentFamily(family)
   }
 }
+
+onMounted(async () => {
+  try {
+    await familyStore.loadFamilies()
+  } catch (error) {
+    console.error('加载家族列表失败', error)
+  }
+})
 </script>
 
 <template>
@@ -50,7 +67,7 @@ function handleFamilyChange(val: number) {
 
     <div class="user-info">
       <div class="avatar">
-        <el-icon class="avatar-icon" size="40">User</el-icon>
+        <el-icon class="avatar-icon" size="40"><UserFilled /></el-icon>
       </div>
       <div class="user-detail">
         <span class="username">{{ userStore.user?.username }}</span>
@@ -63,6 +80,7 @@ function handleFamilyChange(val: number) {
         v-model="selectedFamilyId" 
         placeholder="选择家族"
         class="family-select"
+        clearable
         @change="handleFamilyChange"
       >
         <el-option 
@@ -76,16 +94,18 @@ function handleFamilyChange(val: number) {
 
     <el-menu 
       class="menu" 
-      :default-active="getCurrentPath()"
+      :default-active="route.path"
+      :router="true"
       mode="vertical"
     >
       <el-menu-item 
         v-for="item in menuItems" 
         :key="item.path" 
         :index="item.path"
-        @click="router.push(item.path)"
       >
-        <el-icon :size="20">{{ item.icon }}</el-icon>
+        <el-icon :size="20">
+          <component :is="item.icon" />
+        </el-icon>
         <span>{{ item.name }}</span>
       </el-menu-item>
     </el-menu>

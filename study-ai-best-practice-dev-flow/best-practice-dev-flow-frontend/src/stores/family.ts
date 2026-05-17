@@ -5,42 +5,64 @@ import { familyAPI, type FamilyDTO, type FamilyRequest } from '@/api'
 export const useFamilyStore = defineStore('family', () => {
   const families = ref<FamilyDTO[]>([])
   const currentFamily = ref<FamilyDTO | null>(null)
+  const loading = ref(false)
 
   const familyOptions = computed(() => 
     families.value.map(f => ({ value: f.id, label: f.name }))
   )
 
   async function loadFamilies() {
-    families.value = await familyAPI.getByUser() as unknown as FamilyDTO[]
-    if (families.value.length > 0 && !currentFamily.value) {
-      currentFamily.value = families.value[0]
+    loading.value = true
+    try {
+      const data = await familyAPI.getByUser() as FamilyDTO[]
+      families.value = data
+      if (families.value.length > 0 && !currentFamily.value) {
+        currentFamily.value = families.value[0]
+      }
+    } finally {
+      loading.value = false
     }
   }
 
   async function createFamily(data: FamilyRequest) {
-    const family = await familyAPI.create(data) as unknown as FamilyDTO
-    families.value.push(family)
-    currentFamily.value = family
-    return family
+    loading.value = true
+    try {
+      const family = await familyAPI.create(data) as FamilyDTO
+      families.value.push(family)
+      currentFamily.value = family
+      return family
+    } finally {
+      loading.value = false
+    }
   }
 
   async function updateFamily(id: number, data: FamilyRequest) {
-    const family = await familyAPI.update(id, data) as unknown as FamilyDTO
-    const index = families.value.findIndex(f => f.id === id)
-    if (index !== -1) {
-      families.value[index] = family
-      if (currentFamily.value?.id === id) {
-        currentFamily.value = family
+    loading.value = true
+    try {
+      const family = await familyAPI.update(id, data) as FamilyDTO
+      const index = families.value.findIndex(f => f.id === id)
+      if (index !== -1) {
+        families.value[index] = family
+        if (currentFamily.value?.id === id) {
+          currentFamily.value = family
+        }
       }
+      return family
+    } finally {
+      loading.value = false
     }
-    return family
   }
 
   async function deleteFamily(id: number) {
-    await familyAPI.delete(id)
-    families.value = families.value.filter(f => f.id !== id)
-    if (currentFamily.value?.id === id) {
-      currentFamily.value = families.value.length > 0 ? families.value[0] : null
+    loading.value = true
+    try {
+      await familyAPI.delete(id)
+      families.value = families.value.filter(f => f.id !== id)
+      if (currentFamily.value?.id === id) {
+        currentFamily.value = families.value.length > 0 ? families.value[0] : null
+      }
+    } finally {
+      loading.value = false
     }
   }
 
@@ -48,14 +70,20 @@ export const useFamilyStore = defineStore('family', () => {
     currentFamily.value = family
   }
 
+  function clearCurrentFamily() {
+    currentFamily.value = null
+  }
+
   return {
     families,
     currentFamily,
+    loading,
     familyOptions,
     loadFamilies,
     createFamily,
     updateFamily,
     deleteFamily,
-    setCurrentFamily
+    setCurrentFamily,
+    clearCurrentFamily
   }
 })

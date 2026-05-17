@@ -48,7 +48,7 @@ public class FamilyController {
         return ResponseEntity.ok(RestResult.success(family));
     }
 
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<RestResult<List<FamilyDTO>>> getFamiliesByUser(@RequestAttribute("userId") Long userId) {
         List<FamilyDTO> families = familyService.getFamiliesByUser(userId);
         return ResponseEntity.ok(RestResult.success(families));
