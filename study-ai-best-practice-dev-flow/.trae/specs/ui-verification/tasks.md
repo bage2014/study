@@ -1,6 +1,6 @@
 # 家族管理系统 - UI功能验证执行计划
 
-## [ ] Task 1: 验证服务状态
+## [x] Task 1: 验证服务状态
 - **Priority**: P0
 - **Depends On**: None
 - **Description**: 
@@ -12,7 +12,7 @@
   - `human-judgement`: 确认前端服务显示"VITE ready"
 - **Notes**: 服务必须正常运行才能进行后续测试
 
-## [ ] Task 2: 验证登录功能
+## [x] Task 2: 验证登录功能
 - **Priority**: P0
 - **Depends On**: Task 1
 - **Description**: 
@@ -29,7 +29,7 @@
   - `human-judgement`: 登录后刷新页面保持登录状态
 - **Notes**: 使用默认测试用户 admin/admin123
 
-## [ ] Task 3: 验证注册功能
+## [x] Task 3: 验证注册功能
 - **Priority**: P0
 - **Depends On**: Task 2
 - **Description**: 
@@ -45,7 +45,7 @@
   - `human-judgement`: 邮箱已存在显示重复提示
 - **Notes**: 注册后可使用新用户登录验证
 
-## [ ] Task 4: 验证家族管理功能
+## [x] Task 4: 验证家族管理功能
 - **Priority**: P0
 - **Depends On**: Task 2
 - **Description**: 
