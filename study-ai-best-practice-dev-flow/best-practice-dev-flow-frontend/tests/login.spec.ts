@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('登录功能', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:5173/login')
+    await page.goto('http://localhost:5174/login')
     await page.waitForLoadState('networkidle')
     await page.context().clearCookies()
   })
@@ -46,7 +46,7 @@ test.describe('登录功能', () => {
     await page.waitForTimeout(2000)
     
     const url = page.url()
-    expect(url).toBe('http://localhost:5173/login')
+    expect(url).toBe('http://localhost:5174/login')
   })
 
   test('登录失败 - 空用户名', async ({ page }) => {
@@ -57,7 +57,7 @@ test.describe('登录功能', () => {
     await page.waitForTimeout(2000)
     
     const url = page.url()
-    expect(url).toBe('http://localhost:5173/login')
+    expect(url).toBe('http://localhost:5174/login')
   })
 
   test('登录失败 - 空密码', async ({ page }) => {
@@ -68,7 +68,7 @@ test.describe('登录功能', () => {
     await page.waitForTimeout(2000)
     
     const url = page.url()
-    expect(url).toBe('http://localhost:5173/login')
+    expect(url).toBe('http://localhost:5174/login')
   })
 
   test('注册失败 - 空邮箱', async ({ page }) => {
