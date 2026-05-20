@@ -49,7 +49,61 @@ export default defineConfig({
 });
 ```
 
-### 3. Playwright UI 模式配置
+### 3. 测试配置文件（config.ts）
+
+所有测试文件必须使用统一的配置文件，抽取根路径、选择器和超时时间：
+
+```typescript
+export const TEST_CONFIG = {
+  baseURL: 'http://localhost:5174',
+  
+  paths: {
+    login: '/login',
+    family: '/family',
+    members: '/members',
+    relationships: '/relationships',
+    familyTree: '/family-tree',
+    events: '/events',
+    media: '/media',
+    track: '/track',
+    ai: '/ai'
+  },
+  
+  selectors: {
+    usernameInput: 'input[placeholder="用户名"]',
+    passwordInput: 'input[placeholder="密码"]',
+    emailInput: 'input[placeholder="邮箱"]',
+    submitBtn: '.submit-btn',
+    tabBtn: '.tab-btn',
+    searchBar: '.search-bar',
+    elTable: '.el-table',
+    elDialog: '.el-dialog',
+    elButton: '.el-button',
+    elButtonDanger: '.el-button--danger'
+  },
+  
+  timeout: {
+    short: 500,
+    medium: 1000,
+    long: 2000,
+    extraLong: 10000
+  }
+}
+
+export const getFullUrl = (path: string): string => {
+  return `${TEST_CONFIG.baseURL}${path}`
+}
+```
+
+**配置使用规范**：
+- 所有测试文件必须导入 `config.ts`
+- 禁止在测试文件中硬编码 URL 和路径
+- 使用 `getFullUrl()` 函数构建完整 URL
+- 使用 `TEST_CONFIG.paths` 访问页面路径
+- 使用 `TEST_CONFIG.selectors` 访问常用选择器
+- 使用 `TEST_CONFIG.timeout` 访问超时时间
+
+### 4. Playwright UI 模式配置
 
 Playwright 支持 UI 模式进行交互式测试验证：
 
@@ -58,7 +112,7 @@ Playwright 支持 UI 模式进行交互式测试验证：
 npx playwright test --ui
 
 # 指定测试文件启动 UI 模式
-npx playwright test tests/login.spec.js --ui
+npx playwright test tests/login.spec.ts --ui
 
 # 指定浏览器启动 UI 模式
 npx playwright test --ui --project=chromium
@@ -71,7 +125,7 @@ npx playwright test --ui --project=chromium
 - 交互式查看测试结果
 - 支持单步执行测试用例
 
-### 3. package.json 脚本
+### 5. package.json 脚本
 
 ```json
 {
@@ -88,10 +142,11 @@ npx playwright test --ui --project=chromium
 ```
 frontend/
 ├── tests/                      # Playwright 测试目录
-│   ├── login.spec.js           # 登录功能测试
-│   ├── user-management.spec.js # 用户管理功能测试
-│   ├── track.spec.js           # 轨迹追踪功能测试
-│   └── [功能].spec.js          # 其他功能测试
+│   ├── config.ts               # 测试配置文件（必须）
+│   ├── login.spec.ts           # 登录功能测试
+│   ├── family.spec.ts          # 家族管理功能测试
+│   ├── members.spec.ts         # 成员管理功能测试
+│   └── [功能].spec.ts          # 其他功能测试
 ├── playwright.config.js        # Playwright 配置文件
 └── playwright-report/          # 测试报告输出目录（自动生成）
 ```
@@ -102,49 +157,63 @@ frontend/
 
 | 测试类型 | 命名规则 | 示例 |
 |----------|----------|------|
-| 登录模块 | `login.spec.js` | 测试登录、退出、登录态持久化 |
-| 用户管理 | `user-management.spec.js` | 测试用户增删改查 |
-| 轨迹模块 | `track.spec.js` | 测试轨迹展示、添加 |
+| 登录模块 | `login.spec.ts` | 测试登录、退出、登录态持久化 |
+| 家族管理 | `family.spec.ts` | 测试家族增删改查 |
+| 成员管理 | `members.spec.ts` | 测试成员增删改查 |
+| 关系管理 | `relationships.spec.ts` | 测试关系管理 |
+| 家族树 | `family-tree.spec.ts` | 测试家族树展示 |
+| 历史事件 | `events.spec.ts` | 测试历史事件 |
+| 多媒体库 | `media.spec.ts` | 测试多媒体库 |
+| 轨迹追踪 | `track-points.spec.ts` | 测试轨迹展示、添加 |
+| AI功能 | `ai.spec.ts` | 测试AI功能 |
 
 ### 2. 测试用例结构
 
-```javascript
-import { test, expect } from '@playwright/test';
+```typescript
+import { test, expect } from '@playwright/test'
+import { TEST_CONFIG, getFullUrl } from './config'
 
 test.describe('功能模块名称', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:5173');
-    await page.waitForLoadState('networkidle');
-  });
+    await page.goto(getFullUrl(TEST_CONFIG.paths.login))
+    await page.waitForLoadState('networkidle')
+    
+    await page.locator(TEST_CONFIG.selectors.usernameInput).fill('admin')
+    await page.locator(TEST_CONFIG.selectors.passwordInput).fill('admin123')
+    await page.locator(TEST_CONFIG.selectors.submitBtn).click()
+    
+    await page.waitForURL(`**${TEST_CONFIG.paths.family}`)
+    await page.waitForTimeout(TEST_CONFIG.timeout.medium)
+  })
 
   test('测试场景描述', async ({ page }) => {
-    // 步骤1：操作
-    // 步骤2：断言验证
-    // 步骤3：清理（如需要）
-  });
-});
+    // 使用 TEST_CONFIG.selectors 访问选择器
+    // 使用 TEST_CONFIG.timeout 访问超时时间
+    // 使用 getFullUrl() 构建URL
+  })
+})
 ```
 
 ### 3. 选择器规范
 
 | 选择器类型 | 推荐方式 | 示例 |
 |------------|----------|------|
-| 按钮 | `.btn-class` 或 `button:has-text('文本')` | `page.locator('.login-btn')` |
-| 输入框 | `input[placeholder='提示文字']` | `page.locator('input[placeholder="用户名"]')` |
-| 模态框 | `.modal-class` | `page.locator('.auth-modal')` |
-| 表格 | `table` 或 `.table-class` | `page.locator('table')` |
+| 按钮 | `.btn-class` 或 `button:has-text('文本')` | `page.locator(TEST_CONFIG.selectors.submitBtn)` |
+| 输入框 | `input[placeholder='提示文字']` | `page.locator(TEST_CONFIG.selectors.usernameInput)` |
+| 模态框 | `.modal-class` | `page.locator(TEST_CONFIG.selectors.elDialog)` |
+| 表格 | `table` 或 `.table-class` | `page.locator(TEST_CONFIG.selectors.elTable)` |
 
 ### 4. 常用断言
 
-```javascript
+```typescript
 // 元素可见性
 await expect(page.locator('.element')).toBeVisible();
 
 // 元素文本
 await expect(page.locator('.title')).toHaveText('用户管理');
 
-// 页面跳转
-await expect(page).toHaveURL('http://localhost:5173/users');
+// 页面跳转（使用配置路径）
+await expect(page).toHaveURL(`**${TEST_CONFIG.paths.family}`);
 
 // 元素计数
 await expect(page.locator('table tr')).toHaveCount(3);
@@ -160,17 +229,27 @@ await expect(page.locator('table tr')).toHaveCount(3);
 | 登录失败 | 输入错误密码 |
 | 登录态持久化 | 刷新页面保持登录状态 |
 | 退出登录 | 退出后返回未登录状态 |
+| 注册功能 | 新用户注册 |
 
-### 2. 用户管理模块
+### 2. 家族管理模块
 
 | 测试场景 | 描述 |
 |----------|------|
-| 用户列表展示 | 登录后查看用户列表 |
-| 添加用户 | 新增用户成功 |
-| 编辑用户 | 修改用户信息 |
-| 删除用户 | 删除用户确认 |
+| 家族列表展示 | 登录后查看家族列表 |
+| 添加家族 | 新增家族成功 |
+| 编辑家族 | 修改家族信息 |
+| 删除家族 | 删除家族确认 |
 
-### 3. 轨迹模块
+### 3. 成员管理模块
+
+| 测试场景 | 描述 |
+|----------|------|
+| 成员列表展示 | 登录后查看成员列表 |
+| 添加成员 | 新增成员成功 |
+| 编辑成员 | 修改成员信息 |
+| 删除成员 | 删除成员确认 |
+
+### 4. 轨迹模块
 
 | 测试场景 | 描述 |
 |----------|------|
@@ -193,7 +272,7 @@ npm run dev
 npm test
 
 # 运行指定测试文件
-npx playwright test tests/login.spec.js
+npx playwright test tests/login.spec.ts
 
 # 仅运行 Chromium 测试
 npx playwright test --project=chromium
@@ -276,7 +355,8 @@ docs/reports/
 
 | 类型 | 格式 | 示例 |
 |------|------|------|
-| 测试文件 | `{功能}.spec.js` | `login.spec.js` |
+| 测试文件 | `{功能}.spec.ts` | `login.spec.ts` |
+| 配置文件 | `config.ts` | 测试配置 |
 | 测试报告 | `TEST_{日期}.md` | `TEST_2026-05-12.md` |
 | 进度报告 | `DAILY_{日期}.md` | `DAILY_2026-05-12.md` |
 
@@ -286,3 +366,4 @@ docs/reports/
 - 测试失败：拒绝代码提交
 - 核心流程未覆盖：拒绝代码合并
 - 未生成测试报告：拒绝代码合并
+- 未使用统一配置文件：拒绝代码合并
