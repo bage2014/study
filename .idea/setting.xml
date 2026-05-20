@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="arthas.idea.plugin">
-    <option name="redisAddress" value="" />
-    <option name="redisAuth" value="" />
-    <option name="redisCacheKey" value="" />
-  </component>
-</project>
