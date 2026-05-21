@@ -11,6 +11,7 @@
     "test:report": "npx playwright show-report"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
     "axios": "^1.6.8",
     "element-plus": "^2.6.1",
     "pinia": "^2.1.7",

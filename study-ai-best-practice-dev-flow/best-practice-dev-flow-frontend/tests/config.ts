@@ -1,5 +1,5 @@
 export const TEST_CONFIG = {
-  baseURL: 'http://localhost:5174',
+  baseURL: 'http://localhost:5173',
   
   paths: {
     login: '/login',
