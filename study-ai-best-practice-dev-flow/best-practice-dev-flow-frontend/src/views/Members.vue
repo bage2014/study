@@ -4,6 +4,7 @@ import { useFamilyStore } from '@/stores/family'
 import { memberAPI } from '@/api'
 import type { MemberRequest } from '@/api'
 import Sidebar from '@/components/Sidebar.vue'
+import { Plus, Search, Edit, Delete } from '@element-plus/icons-vue'
 
 const familyStore = useFamilyStore()
 const members = ref<any[]>([])
@@ -115,7 +116,7 @@ onMounted(async () => {
       <div class="page-header">
         <h1>成员管理</h1>
         <el-button type="primary" @click="showCreateModal = true">
-          <el-icon>Plus</el-icon>
+          <Plus />
           添加成员
         </el-button>
       </div>
@@ -128,7 +129,7 @@ onMounted(async () => {
         >
           <template #append>
             <el-button @click="searchMembers">
-              <el-icon>Search</el-icon>
+              <Search />
             </el-button>
           </template>
         </el-input>
@@ -153,14 +154,14 @@ onMounted(async () => {
                 size="small" 
                 @click="openUpdateModal(scope.row)"
               >
-                <el-icon>Edit</el-icon>
+                <Edit />
               </el-button>
               <el-button 
                 size="small" 
                 type="danger" 
                 @click="deleteMember(scope.row.id)"
               >
-                <el-icon>Delete</el-icon>
+                <Delete />
               </el-button>
             </template>
           </el-table-column>
