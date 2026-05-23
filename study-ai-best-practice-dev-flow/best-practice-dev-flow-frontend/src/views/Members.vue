@@ -5,6 +5,7 @@ import { memberAPI } from '@/api'
 import type { MemberRequest } from '@/api'
 import Sidebar from '@/components/Sidebar.vue'
 import { Plus, Search, Edit, Delete } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 
 const familyStore = useFamilyStore()
 const members = ref<any[]>([])
@@ -34,24 +35,60 @@ const genderOptions = [
 
 async function loadMembers() {
   if (familyStore.currentFamily) {
-    members.value = await memberAPI.getByFamily(familyStore.currentFamily.id) as unknown as any[]
+    try {
+      const response = await memberAPI.getByFamily(familyStore.currentFamily.id)
+      members.value = response as unknown as any[]
+    } catch (error) {
+      console.error('加载成员列表失败', error)
+    }
   }
 }
 
 async function searchMembers() {
   if (searchKeyword.value.trim()) {
-    members.value = await memberAPI.search(searchKeyword.value) as unknown as any[]
+    try {
+      const response = await memberAPI.search(searchKeyword.value)
+      members.value = response as unknown as any[]
+    } catch (error) {
+      console.error('搜索成员失败', error)
+    }
   } else {
     await loadMembers()
   }
 }
 
-async function createMember() {
-  form.value.familyId = familyStore.currentFamily?.id || 0
-  await memberAPI.create(form.value)
-  showCreateModal.value = false
+function openCreateModal() {
+  if (!familyStore.currentFamily) {
+    ElMessage.warning('请先选择一个家族')
+    return
+  }
+  showCreateModal.value = true
   resetForm()
-  await loadMembers()
+}
+
+async function createMember() {
+  if (!familyStore.currentFamily) {
+    ElMessage.warning('请先选择一个家族')
+    return
+  }
+  
+  if (!form.value.name || !form.value.name.trim()) {
+    ElMessage.warning('请输入成员姓名')
+    return
+  }
+  
+  form.value.familyId = familyStore.currentFamily.id
+  
+  try {
+    await memberAPI.create(form.value)
+    showCreateModal.value = false
+    resetForm()
+    await loadMembers()
+    ElMessage.success('成员添加成功')
+  } catch (error: any) {
+    console.error('创建成员失败', error)
+    ElMessage.error(error.message || '创建成员失败')
+  }
 }
 
 function resetForm() {
@@ -64,8 +101,9 @@ function resetForm() {
     education: '',
     phone: '',
     email: '',
-    familyId: 0
+    familyId: familyStore.currentFamily?.id || 0
   }
+  editingId.value = null
 }
 
 async function openUpdateModal(member: any) {
@@ -85,18 +123,34 @@ async function openUpdateModal(member: any) {
 }
 
 async function updateMember() {
-  if (editingId.value) {
+  if (!editingId.value) return
+  
+  if (!form.value.name || !form.value.name.trim()) {
+    ElMessage.warning('请输入成员姓名')
+    return
+  }
+  
+  try {
     await memberAPI.update(editingId.value, form.value)
     showUpdateModal.value = false
-    editingId.value = null
     resetForm()
     await loadMembers()
+    ElMessage.success('成员信息更新成功')
+  } catch (error: any) {
+    console.error('更新成员失败', error)
+    ElMessage.error(error.message || '更新成员失败')
   }
 }
 
 async function deleteMember(id: number) {
-  await memberAPI.delete(id)
-  await loadMembers()
+  try {
+    await memberAPI.delete(id)
+    await loadMembers()
+    ElMessage.success('成员删除成功')
+  } catch (error: any) {
+    console.error('删除成员失败', error)
+    ElMessage.error(error.message || '删除成员失败')
+  }
 }
 
 watch(() => familyStore.currentFamily, async () => {
@@ -104,6 +158,7 @@ watch(() => familyStore.currentFamily, async () => {
 })
 
 onMounted(async () => {
+  await familyStore.loadFamilies()
   await loadMembers()
 })
 </script>
@@ -115,7 +170,7 @@ onMounted(async () => {
     <main class="main-content">
       <div class="page-header">
         <h1>成员管理</h1>
-        <el-button type="primary" @click="showCreateModal = true">
+        <el-button type="primary" @click="openCreateModal">
           <Plus />
           添加成员
         </el-button>
@@ -168,33 +223,33 @@ onMounted(async () => {
         </el-table>
       </div>
 
-      <el-dialog title="添加成员" :visible="showCreateModal" @close="showCreateModal = false">
+      <el-dialog title="添加成员" v-model="showCreateModal">
         <el-form :model="form" label-width="100px">
           <el-form-item label="姓名" required>
-            <el-input v-model="form.name" />
+            <el-input v-model="form.name" placeholder="请输入姓名" />
           </el-form-item>
           <el-form-item label="性别">
-            <el-select v-model="form.gender">
+            <el-select v-model="form.gender" placeholder="请选择性别">
               <el-option v-for="opt in genderOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="出生日期">
-            <el-date-picker v-model="form.birthDate" type="date" />
+            <el-date-picker v-model="form.birthDate" type="date" placeholder="请选择日期" />
           </el-form-item>
           <el-form-item label="去世日期">
-            <el-date-picker v-model="form.deathDate" type="date" />
+            <el-date-picker v-model="form.deathDate" type="date" placeholder="请选择日期" />
           </el-form-item>
           <el-form-item label="职业">
-            <el-input v-model="form.occupation" />
+            <el-input v-model="form.occupation" placeholder="请输入职业" />
           </el-form-item>
           <el-form-item label="学历">
-            <el-input v-model="form.education" />
+            <el-input v-model="form.education" placeholder="请输入学历" />
           </el-form-item>
           <el-form-item label="电话">
-            <el-input v-model="form.phone" />
+            <el-input v-model="form.phone" placeholder="请输入电话" />
           </el-form-item>
           <el-form-item label="邮箱">
-            <el-input v-model="form.email" type="email" />
+            <el-input v-model="form.email" type="email" placeholder="请输入邮箱" />
           </el-form-item>
         </el-form>
         <template #footer>
@@ -203,76 +258,36 @@ onMounted(async () => {
         </template>
       </el-dialog>
 
-      <el-dialog title="编辑成员" :visible="showUpdateModal" @close="showUpdateModal = false">
+      <el-dialog title="编辑成员" v-model="showUpdateModal">
         <el-form :model="form" label-width="100px">
           <el-form-item label="姓名" required>
-            <el-input v-model="form.name" />
+            <el-input v-model="form.name" placeholder="请输入姓名" />
           </el-form-item>
           <el-form-item label="性别">
-            <el-select v-model="form.gender">
+            <el-select v-model="form.gender" placeholder="请选择性别">
               <el-option v-for="opt in genderOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="出生日期">
-            <el-date-picker v-model="form.birthDate" type="date" />
+            <el-date-picker v-model="form.birthDate" type="date" placeholder="请选择日期" />
           </el-form-item>
           <el-form-item label="去世日期">
-            <el-date-picker v-model="form.deathDate" type="date" />
+            <el-date-picker v-model="form.deathDate" type="date" placeholder="请选择日期" />
           </el-form-item>
           <el-form-item label="职业">
-            <el-input v-model="form.occupation" />
+            <el-input v-model="form.occupation" placeholder="请输入职业" />
           </el-form-item>
           <el-form-item label="学历">
-            <el-input v-model="form.education" />
+            <el-input v-model="form.education" placeholder="请输入学历" />
           </el-form-item>
           <el-form-item label="电话">
-            <el-input v-model="form.phone" />
+            <el-input v-model="form.phone" placeholder="请输入电话" />
           </el-form-item>
           <el-form-item label="邮箱">
-            <el-input v-model="form.email" type="email" />
+            <el-input v-model="form.email" type="email" placeholder="请输入邮箱" />
           </el-form-item>
         </el-form>
         <template #footer>
           <el-button @click="showUpdateModal = false">取消</el-button>
           <el-button type="primary" @click="updateMember">保存</el-button>
         </template>
-      </el-dialog>
-    </main>
-  </div>
-</template>
-
-<style scoped>
-.page-layout {
-  display: flex;
-  min-height: 100vh;
-}
-
-.main-content {
-  flex: 1;
-  padding: 20px;
-  background: #f5f5f5;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.page-header h1 {
-  font-size: 24px;
-  margin: 0;
-}
-
-.search-bar {
-  margin-bottom: 20px;
-}
-
-.card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
-</style>
