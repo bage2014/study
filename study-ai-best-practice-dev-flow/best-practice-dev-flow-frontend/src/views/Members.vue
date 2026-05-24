@@ -142,14 +142,28 @@ async function updateMember() {
   }
 }
 
+import { ElMessageBox } from 'element-plus'
+
 async function deleteMember(id: number) {
   try {
+    await ElMessageBox.confirm(
+      '确定要删除该成员吗？',
+      '确认删除',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    )
+    
     await memberAPI.delete(id)
     await loadMembers()
     ElMessage.success('成员删除成功')
   } catch (error: any) {
-    console.error('删除成员失败', error)
-    ElMessage.error(error.message || '删除成员失败')
+    if (error !== 'cancel') {
+      console.error('删除成员失败', error)
+      ElMessage.error(error.message || '删除成员失败')
+    }
   }
 }
 
@@ -203,13 +217,14 @@ onMounted(async () => {
           <el-table-column prop="education" label="学历" />
           <el-table-column prop="phone" label="电话" />
           <el-table-column prop="email" label="邮箱" />
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="180">
             <template #default="scope">
               <el-button 
                 size="small" 
                 @click="openUpdateModal(scope.row)"
               >
                 <Edit />
+                编辑
               </el-button>
               <el-button 
                 size="small" 
@@ -217,6 +232,7 @@ onMounted(async () => {
                 @click="deleteMember(scope.row.id)"
               >
                 <Delete />
+                删除
               </el-button>
             </template>
           </el-table-column>

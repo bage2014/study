@@ -200,18 +200,47 @@ onMounted(async () => {
 }
 
 .menu :deep(.el-menu-item) {
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff !important;
   border-radius: 8px;
   margin-bottom: 4px;
+  opacity: 1 !important;
+  background-color: transparent !important;
+}
+
+.menu :deep(.el-menu-item) span {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.menu :deep(.el-menu-item) svg {
+  color: #ffffff !important;
+  opacity: 1 !important;
 }
 
 .menu :deep(.el-menu-item:hover) {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+.menu :deep(.el-menu-item:hover) span {
+  color: #ffffff !important;
+}
+
+.menu :deep(.el-menu-item:hover) svg {
+  color: #ffffff !important;
 }
 
 .menu :deep(.el-menu-item.is-active) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+.menu :deep(.el-menu-item.is-active) span {
+  color: #ffffff !important;
+}
+
+.menu :deep(.el-menu-item.is-active) svg {
+  color: #ffffff !important;
 }
 </style>

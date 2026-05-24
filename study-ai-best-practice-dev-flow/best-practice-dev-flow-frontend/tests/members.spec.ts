@@ -41,21 +41,46 @@ test.describe('成员管理功能', () => {
     const addButton = page.getByRole('button', { name: '添加成员' })
     await addButton.click()
     
-    await page.waitForTimeout(TEST_CONFIG.timeout.medium)
+    await page.waitForSelector('.el-dialog', { state: 'visible' })
     
-    const dialog = page.locator('.el-dialog')
-    await expect(dialog).toBeVisible()
+    const nameInput = page.locator('.el-dialog').locator('input.el-input__inner').first()
+    await nameInput.waitFor({ state: 'visible' })
+    await nameInput.fill('测试成员')
     
-    await page.locator('input.el-input__inner').first().fill('新测试成员')
+    await page.waitForTimeout(TEST_CONFIG.timeout.short)
     
     const saveButton = page.getByRole('button', { name: '保存', exact: true })
     await saveButton.click()
     
     await page.waitForTimeout(TEST_CONFIG.timeout.medium)
     
-    await expect(dialog).not.toBeVisible()
+    await expect(page.locator('.el-dialog')).not.toBeVisible()
     
-    await expect(page.locator(TEST_CONFIG.selectors.elTable)).toContainText('新测试成员')
+    await expect(page.locator(TEST_CONFIG.selectors.elTable)).toContainText('测试成员')
+  })
+
+  test('操作按钮显示正确', async ({ page }) => {
+    const editButton = page.getByRole('button', { name: '编辑' })
+    const deleteButton = page.getByRole('button', { name: '删除' })
+    
+    await expect(editButton.first()).toBeVisible()
+    await expect(deleteButton.first()).toBeVisible()
+  })
+
+  test('删除成员显示确认框', async ({ page }) => {
+    const deleteButton = page.getByRole('button', { name: '删除' }).first()
+    await deleteButton.click()
+    
+    await page.waitForTimeout(TEST_CONFIG.timeout.short)
+    
+    const confirmBox = page.locator('.el-message-box')
+    await expect(confirmBox).toBeVisible()
+    await expect(confirmBox).toContainText('确定要删除该成员吗？')
+    
+    const cancelButton = page.getByRole('button', { name: '取消' })
+    await cancelButton.click()
+    
+    await expect(confirmBox).not.toBeVisible()
   })
 
   test('搜索成员功能', async ({ page }) => {

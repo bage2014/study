@@ -4,6 +4,7 @@ import { useFamilyStore } from '@/stores/family'
 import type { FamilyRequest } from '@/api'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Sidebar from '@/components/Sidebar.vue'
+import { Plus, Edit, Delete } from '@element-plus/icons-vue'
 
 const familyStore = useFamilyStore()
 const families = ref<any[]>([])
@@ -117,7 +118,7 @@ onMounted(async () => {
       <div class="page-header">
         <h1>家族管理</h1>
         <el-button type="primary" :loading="loading" @click="showCreateModal = true">
-          <el-icon>Plus</el-icon>
+          <Plus />
           创建家族
         </el-button>
       </div>
@@ -135,14 +136,16 @@ onMounted(async () => {
                 size="small" 
                 @click="openUpdateModal(scope.row)"
               >
-                <el-icon>Edit</el-icon>
+                <Edit />
+                编辑
               </el-button>
               <el-button 
                 size="small" 
                 type="danger" 
                 @click="deleteFamily(scope.row.id)"
               >
-                <el-icon>Delete</el-icon>
+                <Delete />
+                删除
               </el-button>
             </template>
           </el-table-column>
