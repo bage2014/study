@@ -13,6 +13,15 @@ test.describe('成员管理功能', () => {
     await page.waitForURL(`**${TEST_CONFIG.paths.family}`)
     await page.waitForTimeout(TEST_CONFIG.timeout.medium)
     
+    const familyExists = await page.locator('.el-table__row').count()
+    if (familyExists === 0) {
+      await page.getByRole('button', { name: '创建家族' }).click()
+      await page.waitForTimeout(TEST_CONFIG.timeout.short)
+      await page.locator('input.el-input__inner').first().fill('测试家族')
+      await page.getByRole('button', { name: '创建', exact: true }).click()
+      await page.waitForTimeout(TEST_CONFIG.timeout.medium)
+    }
+    
     await page.getByText('成员管理').click({ force: true })
     await page.waitForURL(`**${TEST_CONFIG.paths.members}`)
     await page.waitForLoadState('networkidle')
@@ -37,7 +46,7 @@ test.describe('成员管理功能', () => {
     const dialog = page.locator('.el-dialog')
     await expect(dialog).toBeVisible()
     
-    await page.locator('input.el-input__inner').first().fill('测试成员')
+    await page.locator('input.el-input__inner').first().fill('新测试成员')
     
     const saveButton = page.getByRole('button', { name: '保存', exact: true })
     await saveButton.click()
@@ -45,6 +54,8 @@ test.describe('成员管理功能', () => {
     await page.waitForTimeout(TEST_CONFIG.timeout.medium)
     
     await expect(dialog).not.toBeVisible()
+    
+    await expect(page.locator(TEST_CONFIG.selectors.elTable)).toContainText('新测试成员')
   })
 
   test('搜索成员功能', async ({ page }) => {

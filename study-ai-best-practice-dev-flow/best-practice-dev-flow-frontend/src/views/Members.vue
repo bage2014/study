@@ -291,3 +291,43 @@ onMounted(async () => {
           <el-button @click="showUpdateModal = false">取消</el-button>
           <el-button type="primary" @click="updateMember">保存</el-button>
         </template>
+      </el-dialog>
+    </main>
+  </div>
+</template>
+
+<style scoped>
+.page-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background: #f5f5f5;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+</style>
