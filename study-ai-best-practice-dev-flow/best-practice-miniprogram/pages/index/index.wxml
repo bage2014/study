@@ -1,0 +1,64 @@
+<view class="container">
+  <view class="card">
+    <view class="header">欢迎使用家族族谱</view>
+    <view class="text-muted">记录家族历史，传承家族文化</view>
+  </view>
+
+  <view class="card">
+    <view class="sub-header">快捷入口</view>
+    <view class="quick-links">
+      <view class="quick-link" bindtap="goToFamily">
+        <view class="link-icon">🏠</view>
+        <view class="link-text">家族管理</view>
+      </view>
+      <view class="quick-link" bindtap="goToMembers">
+        <view class="link-icon">👥</view>
+        <view class="link-text">成员管理</view>
+      </view>
+      <view class="quick-link" bindtap="showAbout">
+        <view class="link-icon">ℹ️</view>
+        <view class="link-text">关于我们</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sub-header">功能介绍</view>
+    <view class="features">
+      <view class="feature-item">
+        <view class="feature-icon">📝</view>
+        <view class="feature-content">
+          <view class="feature-title">家族档案</view>
+          <view class="feature-desc">建立完整的家族成员档案</view>
+        </view>
+      </view>
+      <view class="feature-item">
+        <view class="feature-icon">🌳</view>
+        <view class="feature-content">
+          <view class="feature-title">家族树</view>
+          <view class="feature-desc">可视化展示家族关系</view>
+        </view>
+      </view>
+      <view class="feature-item">
+        <view class="feature-icon">📍</view>
+        <view class="feature-content">
+          <view class="feature-title">轨迹追踪</view>
+          <view class="feature-desc">记录家族迁徙轨迹</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="user-section">
+      <view class="user-avatar">👤</view>
+      <view class="user-info">
+        <view class="user-name">{{ userInfo?.username || '未登录' }}</view>
+        <view class="user-role">{{ userInfo?.role || '普通用户' }}</view>
+      </view>
+      <view class="user-action" bindtap="handleLogout" wx:if="{{ userInfo }}">
+        <text class="text-danger">退出</text>
+      </view>
+    </view>
+  </view>
+</view>

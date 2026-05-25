@@ -1,0 +1,93 @@
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  padding: 16rpx 24rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+}
+
+.add-icon {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-right: 8rpx;
+}
+
+.family-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.family-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+}
+
+.family-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-right: 20rpx;
+}
+
+.family-info {
+  flex: 1;
+}
+
+.family-name {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.family-desc {
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 8rpx;
+}
+
+.family-count {
+  font-size: 22rpx;
+  color: #667eea;
+  margin-top: 8rpx;
+}
+
+.family-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.action-btn {
+  padding: 12rpx 20rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+
+.action-btn.edit {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+
+.action-btn.delete {
+  background: #ffebee;
+  color: #f44336;
+}

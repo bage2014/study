@@ -1,0 +1,67 @@
+<view class="container">
+  <view class="card">
+    <view class="card-header">
+      <view class="header">家族列表</view>
+      <view class="add-btn" bindtap="showCreateModal">
+        <text class="add-icon">+</text>
+        <text>添加</text>
+      </view>
+    </view>
+    
+    <view wx:if="{{ families.length === 0 }}" class="empty-state">
+      <view class="icon">👨‍👩‍👧</view>
+      <view class="text">暂无家族信息</view>
+      <view class="btn-primary mt-20" bindtap="showCreateModal">创建家族</view>
+    </view>
+    
+    <view wx:else class="family-list">
+      <view 
+        wx:for="{{ families }}" 
+        wx:key="id" 
+        class="family-item"
+        bindtap="selectFamily"
+        data-id="{{ item.id }}"
+      >
+        <view class="family-avatar">{{ item.name.charAt(0) }}</view>
+        <view class="family-info">
+          <view class="family-name">{{ item.name }}</view>
+          <view class="family-desc">{{ item.description || '暂无描述' }}</view>
+          <view class="family-count">成员数：{{ item.memberCount || 0 }}</view>
+        </view>
+        <view class="family-actions">
+          <view class="action-btn edit" bindtap.stop="showEditModal" data-item="{{ item }}">编辑</view>
+          <view class="action-btn delete" bindtap.stop="handleDelete" data-id="{{ item.id }}" data-name="{{ item.name }}">删除</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="modal-mask" wx:if="{{ showModal }}" bindtap="closeModal">
+    <view class="modal-content" bindtap.stop>
+      <view class="modal-header">{{ isEdit ? '编辑家族' : '创建家族' }}</view>
+      <view class="modal-body">
+        <view class="form-item">
+          <label>家族名称</label>
+          <input 
+            type="text" 
+            placeholder="请输入家族名称" 
+            value="{{ formData.name }}"
+            bindinput="onNameInput"
+          />
+        </view>
+        <view class="form-item">
+          <label>家族描述</label>
+          <textarea 
+            placeholder="请输入家族描述" 
+            value="{{ formData.description }}"
+            bindinput="onDescInput"
+          />
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="closeModal">取消</button>
+        <button class="btn-confirm" bindtap="saveFamily">{{ isEdit ? '保存' : '创建' }}</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,104 @@
+<view class="container">
+  <view class="card">
+    <view class="card-header">
+      <view class="header">成员列表</view>
+      <view class="add-btn" bindtap="showCreateModal">
+        <text class="add-icon">+</text>
+        <text>添加</text>
+      </view>
+    </view>
+
+    <view class="family-select">
+      <text class="select-label">选择家族：</text>
+      <picker mode="selector" :range="familyOptions" :range-key="'name'" bindchange="onFamilyChange">
+        <view class="picker-content">
+          <text>{{ selectedFamily?.name || '请选择家族' }}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+    
+    <view wx:if="{{ members.length === 0 }}" class="empty-state">
+      <view class="icon">👤</view>
+      <view class="text">暂无成员信息</view>
+      <view class="btn-primary mt-20" bindtap="showCreateModal">添加成员</view>
+    </view>
+    
+    <view wx:else class="member-list">
+      <view 
+        wx:for="{{ members }}" 
+        wx:key="id" 
+        class="member-item"
+      >
+        <view class="member-avatar">{{ item.name.charAt(0) }}</view>
+        <view class="member-info">
+          <view class="member-name">{{ item.name }}</view>
+          <view class="member-detail">
+            <text>{{ item.gender === 'MALE' ? '男' : '女' }}</text>
+            <text class="divider">|</text>
+            <text>{{ item.birthDate || '未知生日' }}</text>
+          </view>
+        </view>
+        <view class="member-actions">
+          <view class="action-btn edit" bindtap="showEditModal" data-item="{{ item }}">编辑</view>
+          <view class="action-btn delete" bindtap="handleDelete" data-id="{{ item.id }}" data-name="{{ item.name }}">删除</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="modal-mask" wx:if="{{ showModal }}" bindtap="closeModal">
+    <view class="modal-content" bindtap.stop>
+      <view class="modal-header">{{ isEdit ? '编辑成员' : '添加成员' }}</view>
+      <view class="modal-body">
+        <view class="form-item">
+          <label>成员姓名</label>
+          <input 
+            type="text" 
+            placeholder="请输入成员姓名" 
+            value="{{ formData.name }}"
+            bindinput="onNameInput"
+          />
+        </view>
+        <view class="form-item">
+          <label>性别</label>
+          <view class="gender-select">
+            <view 
+              class="gender-option" 
+              :class="{ active: formData.gender === 'MALE' }"
+              bindtap="setGender"
+              data-gender="MALE"
+            >男</view>
+            <view 
+              class="gender-option" 
+              :class="{ active: formData.gender === 'FEMALE' }"
+              bindtap="setGender"
+              data-gender="FEMALE"
+            >女</view>
+          </view>
+        </view>
+        <view class="form-item">
+          <label>出生日期</label>
+          <picker mode="date" value="{{ formData.birthDate }}" bindchange="onDateChange">
+            <view class="picker-content">
+              <text>{{ formData.birthDate || '请选择日期' }}</text>
+              <text class="picker-arrow">▼</text>
+            </view>
+          </picker>
+        </view>
+        <view class="form-item">
+          <label>备注</label>
+          <textarea 
+            placeholder="请输入备注信息" 
+            value="{{ formData.remark }}"
+            bindinput="onRemarkInput"
+          />
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="closeModal">取消</button>
+        <button class="btn-confirm" bindtap="saveMember">{{ isEdit ? '保存' : '添加' }}</button>
+      </view>
+    </view>
+  </view>
+</view>

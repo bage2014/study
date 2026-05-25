@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useFamilyStore } from '@/stores/family'
@@ -11,7 +11,9 @@ import {
   Calendar,
   PictureFilled,
   LocationFilled,
-  MagicStick
+  MagicStick,
+  Menu,
+  Close
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -20,6 +22,14 @@ const userStore = useUserStore()
 const familyStore = useFamilyStore()
 
 const selectedFamilyId = ref<number | undefined>(undefined)
+const showMobileMenu = ref(false)
+
+const isMobile = computed(() => {
+  if (typeof window !== 'undefined') {
+    return window.innerWidth <= 768
+  }
+  return false
+})
 
 watch(() => familyStore.currentFamily, (family) => {
   if (family) {
@@ -50,6 +60,10 @@ function handleFamilyChange(val: number) {
   }
 }
 
+function closeMobileMenu() {
+  showMobileMenu.value = false
+}
+
 onMounted(async () => {
   try {
     await familyStore.loadFamilies()
@@ -60,56 +74,72 @@ onMounted(async () => {
 </script>
 
 <template>
-  <aside class="sidebar">
-    <div class="logo">
-      <h2>族谱系统</h2>
-    </div>
-
-    <div class="user-info">
-      <div class="avatar">
-        <el-icon class="avatar-icon" size="40"><UserFilled /></el-icon>
+  <aside class="sidebar" :class="{ 'sidebar-mobile': isMobile, 'sidebar-mobile-open': showMobileMenu }">
+    <div class="sidebar-overlay" v-if="showMobileMenu" @click="closeMobileMenu"></div>
+    
+    <div class="sidebar-content">
+      <div class="mobile-header">
+        <h2>族谱系统</h2>
+        <button class="close-btn" @click="closeMobileMenu">
+          <Close />
+        </button>
       </div>
-      <div class="user-detail">
-        <span class="username">{{ userStore.user?.username }}</span>
-        <button class="logout-btn" @click="handleLogout">退出</button>
+
+      <div class="logo" v-if="!isMobile">
+        <h2>族谱系统</h2>
       </div>
-    </div>
 
-    <div class="family-selector">
-      <el-select 
-        v-model="selectedFamilyId" 
-        placeholder="选择家族"
-        class="family-select"
-        clearable
-        @change="handleFamilyChange"
-      >
-        <el-option 
-          v-for="family in familyStore.families" 
-          :key="family.id" 
-          :label="family.name" 
-          :value="family.id" 
-        />
-      </el-select>
-    </div>
+      <div class="user-info">
+        <div class="avatar">
+          <el-icon class="avatar-icon" size="40"><UserFilled /></el-icon>
+        </div>
+        <div class="user-detail">
+          <span class="username">{{ userStore.user?.username }}</span>
+          <button class="logout-btn" @click="handleLogout">退出</button>
+        </div>
+      </div>
 
-    <el-menu 
-      class="menu" 
-      :default-active="route.path"
-      :router="true"
-      mode="vertical"
-    >
-      <el-menu-item 
-        v-for="item in menuItems" 
-        :key="item.path" 
-        :index="item.path"
+      <div class="family-selector">
+        <el-select 
+          v-model="selectedFamilyId" 
+          placeholder="选择家族"
+          class="family-select"
+          clearable
+          @change="handleFamilyChange"
+        >
+          <el-option 
+            v-for="family in familyStore.families" 
+            :key="family.id" 
+            :label="family.name" 
+            :value="family.id" 
+          />
+        </el-select>
+      </div>
+
+      <el-menu 
+        class="menu" 
+        :default-active="route.path"
+        :router="true"
+        mode="vertical"
       >
-        <el-icon :size="20">
-          <component :is="item.icon" />
-        </el-icon>
-        <span>{{ item.name }}</span>
-      </el-menu-item>
-    </el-menu>
+        <el-menu-item 
+          v-for="item in menuItems" 
+          :key="item.path" 
+          :index="item.path"
+          @click="closeMobileMenu"
+        >
+          <el-icon :size="20">
+            <component :is="item.icon" />
+          </el-icon>
+          <span>{{ item.name }}</span>
+        </el-menu-item>
+      </el-menu>
+    </div>
   </aside>
+
+  <button class="mobile-menu-toggle" @click="showMobileMenu = !showMobileMenu" v-if="isMobile">
+    <Menu />
+  </button>
 </template>
 
 <style scoped>
@@ -121,6 +151,44 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-header {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+}
+
+.mobile-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.sidebar-overlay {
+  display: none;
 }
 
 .logo {
@@ -242,5 +310,119 @@ onMounted(async () => {
 
 .menu :deep(.el-menu-item.is-active) svg {
   color: #ffffff !important;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 101;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 260px;
+  }
+  
+  .sidebar-mobile-open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+  
+  .sidebar-content {
+    position: relative;
+    z-index: 100;
+  }
+  
+  .mobile-header {
+    display: flex;
+  }
+  
+  .logo {
+    display: none;
+  }
+  
+  .user-info {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .avatar {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .username {
+    font-size: 16px;
+  }
+  
+  .logout-btn {
+    font-size: 14px;
+  }
+  
+  .family-selector {
+    margin-bottom: 16px;
+  }
+  
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .menu :deep(.el-menu-item) {
+    padding: 14px 16px !important;
+    font-size: 15px;
+  }
+  
+  .menu :deep(.el-menu-item) svg {
+    font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+    padding: 16px;
+  }
+  
+  .logo h2 {
+    font-size: 18px;
+  }
+  
+  .user-info {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .avatar {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .username {
+    font-size: 13px;
+  }
 }
 </style>
