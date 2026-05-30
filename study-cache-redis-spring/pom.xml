@@ -27,7 +27,7 @@
 		<hsqldb.base.version>2.3.4</hsqldb.base.version>
 		<aspectjrt.base.version>1.8.13</aspectjrt.base.version>
 		<aspectjweaver.base.version>1.8.10</aspectjweaver.base.version>
-    	<tomcat.version>8.5.23</tomcat.version>
+    	<tomcat.version>10.0.4</tomcat.version>
   </properties>
   <dependencies>
     <dependency>
