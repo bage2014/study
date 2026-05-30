@@ -1,11 +1,14 @@
 package com.bage.study.ai.best.practice.exception.analysis.controller;
 
-import com.bage.study.ai.best.practice.exception.analysis.model.ProblemAnalysisRequest;
-import com.bage.study.ai.best.practice.exception.analysis.model.ProblemAnalysisResponse;
+import com.bage.study.ai.best.practice.exception.analysis.dto.request.AnalysisRequest;
+import com.bage.study.ai.best.practice.exception.analysis.dto.response.AnalysisResponse;
 import com.bage.study.ai.best.practice.exception.analysis.service.AnalysisService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -19,52 +22,16 @@ public class AnalysisController {
     }
 
     @PostMapping("/analyze")
-    public ResponseEntity<ProblemAnalysisResponse> analyze(@RequestBody ProblemAnalysisRequest request) {
-        ProblemAnalysisResponse response = analysisService.analyze(request);
-        if (response.isSuccess()) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.internalServerError().body(response);
-        }
-    }
-
-    @PostMapping("/reanalyze/{analysisId}")
-    public ResponseEntity<ProblemAnalysisResponse> reanalyze(
-            @PathVariable String analysisId, 
-            @RequestBody Map<String, String> feedback) {
-        ProblemAnalysisResponse response = analysisService.reanalyze(
-            analysisId, feedback.getOrDefault("feedback", "")
-        );
-        if (response.isSuccess()) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.internalServerError().body(response);
-        }
-    }
-
-    @GetMapping("/analysis/{analysisId}")
-    public ResponseEntity<ProblemAnalysisResponse> getAnalysis(@PathVariable String analysisId) {
-        ProblemAnalysisResponse response = analysisService.getAnalysis(analysisId);
-        if (response != null) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/recent")
-    public ResponseEntity<Map<String, ProblemAnalysisResponse>> getRecentAnalyses() {
-        return ResponseEntity.ok(analysisService.getRecentAnalyses());
-    }
-
-    @DeleteMapping("/cache/clear")
-    public ResponseEntity<Void> clearCache() {
-        analysisService.clearCache();
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<AnalysisResponse> analyze(@Valid @RequestBody AnalysisRequest request) {
+        AnalysisResponse response = analysisService.analyze(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/health")
-    public ResponseEntity<Map<String, String>> health() {
-        return ResponseEntity.ok(Map.of("status", "UP"));
+    public ResponseEntity<Map<String, Object>> health() {
+        Map<String, Object> health = new HashMap<>();
+        health.put("status", "UP");
+        health.put("service", "exception-analysis");
+        return ResponseEntity.ok(health);
     }
 }

@@ -21,6 +21,7 @@ description: "异常分析核心功能。当用户需要分析线上故障、排
 - **多轮验证**：基于用户反馈重新分析
 - **AI 驱动**：使用大模型生成根因分析和修复建议
 - **结构化输出**：包含可能的根本原因和修复建议
+- **多源数据收集**：整合发布记录、监控数据、代码信息
 
 ## API 调用
 
@@ -29,22 +30,69 @@ description: "异常分析核心功能。当用户需要分析线上故障、排
 curl -X POST http://localhost:8080/api/analysis/analyze \
   -H "Content-Type: application/json" \
   -d '{
-    "problemDescription": "用户登录失败",
-    "errorMessage": "NullPointerException"
+    "appId": "app-001",
+    "alarmDescription": "用户登录失败率突然升高",
+    "alarmUrl": "https://monitor.example.com/alarm/123",
+    "alarmTime": "2024-01-15T10:30:00"
   }'
 
-# 重新分析
-curl -X POST http://localhost:8080/api/analysis/reanalyze/{analysisId} \
-  -H "Content-Type: application/json" \
-  -d '{"feedback": "需要更多日志信息"}'
+# 健康检查
+curl http://localhost:8080/api/analysis/health
 ```
 
 ## 分析流程
 
 1. **计划生成**：创建分析步骤计划
 2. **执行收集**：调用 MCP 工具收集信息
+   - 发布记录 MCP
+   - 请求量监控 MCP
+   - 应用监控 MCP（GC、线程等）
+   - 代码仓库 MCP
 3. **结果分析**：使用 AI 分析并生成结论
 4. **反馈优化**：根据用户反馈重新分析
+
+## 输入参数
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| appId | String | 是 | 应用ID |
+| alarmDescription | String | 是 | 告警描述 |
+| alarmUrl | String | 否 | 告警链接 |
+| alarmTime | DateTime | 否 | 告警时间 |
+
+## 输出格式
+
+```json
+{
+  "analysisId": "ANALYSIS-1234567890",
+  "appId": "app-001",
+  "alarmDescription": "用户登录失败率突然升高",
+  "analysisTime": "2024-01-15T10:35:00",
+  "rootCause": {
+    "type": "高错误率",
+    "description": "当前错误率超过阈值",
+    "confidence": "85%"
+  },
+  "evidences": [
+    {
+      "source": "发布记录",
+      "content": "最近发布版本: 1.2.3",
+      "relevance": "高"
+    }
+  ],
+  "suggestions": ["检查服务日志", "查看失败请求"]
+}
+```
+
+## 根因类型
+
+| 类型 | 说明 | 置信度 |
+|------|------|--------|
+| 高错误率 | 错误率超过10%阈值 | 85% |
+| CPU过载 | CPU使用率超过80% | 80% |
+| 内存不足 | 内存使用率超过85% | 75% |
+| 发布问题 | 告警时间与发布时间接近 | 70% |
+| 认证问题 | 涉及登录认证功能 | 65% |
 
 ## 配置
 
