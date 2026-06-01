@@ -5,14 +5,34 @@ import java.time.LocalDateTime;
 public class RequestMetrics {
 
     private String appId;
-    private LocalDateTime time;
-    private Long totalRequests;
-    private Long successRequests;
-    private Long failedRequests;
-    private Double avgResponseTime;
-    private Double maxResponseTime;
-    private Double minResponseTime;
-    private Integer errorRate;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private long totalRequests;
+    private long successRequests;
+    private long failedRequests;
+    private double avgResponseTime;
+    private double p95ResponseTime;
+    private double p99ResponseTime;
+    private double errorRate;
+
+    public RequestMetrics() {
+    }
+
+    public RequestMetrics(String appId, LocalDateTime startTime, LocalDateTime endTime,
+                         long totalRequests, long successRequests, long failedRequests,
+                         double avgResponseTime, double p95ResponseTime, double p99ResponseTime,
+                         double errorRate) {
+        this.appId = appId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.totalRequests = totalRequests;
+        this.successRequests = successRequests;
+        this.failedRequests = failedRequests;
+        this.avgResponseTime = avgResponseTime;
+        this.p95ResponseTime = p95ResponseTime;
+        this.p99ResponseTime = p99ResponseTime;
+        this.errorRate = errorRate;
+    }
 
     public String getAppId() {
         return appId;
@@ -22,67 +42,75 @@ public class RequestMetrics {
         this.appId = appId;
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    public Long getTotalRequests() {
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public long getTotalRequests() {
         return totalRequests;
     }
 
-    public void setTotalRequests(Long totalRequests) {
+    public void setTotalRequests(long totalRequests) {
         this.totalRequests = totalRequests;
     }
 
-    public Long getSuccessRequests() {
+    public long getSuccessRequests() {
         return successRequests;
     }
 
-    public void setSuccessRequests(Long successRequests) {
+    public void setSuccessRequests(long successRequests) {
         this.successRequests = successRequests;
     }
 
-    public Long getFailedRequests() {
+    public long getFailedRequests() {
         return failedRequests;
     }
 
-    public void setFailedRequests(Long failedRequests) {
+    public void setFailedRequests(long failedRequests) {
         this.failedRequests = failedRequests;
     }
 
-    public Double getAvgResponseTime() {
+    public double getAvgResponseTime() {
         return avgResponseTime;
     }
 
-    public void setAvgResponseTime(Double avgResponseTime) {
+    public void setAvgResponseTime(double avgResponseTime) {
         this.avgResponseTime = avgResponseTime;
     }
 
-    public Double getMaxResponseTime() {
-        return maxResponseTime;
+    public double getP95ResponseTime() {
+        return p95ResponseTime;
     }
 
-    public void setMaxResponseTime(Double maxResponseTime) {
-        this.maxResponseTime = maxResponseTime;
+    public void setP95ResponseTime(double p95ResponseTime) {
+        this.p95ResponseTime = p95ResponseTime;
     }
 
-    public Double getMinResponseTime() {
-        return minResponseTime;
+    public double getP99ResponseTime() {
+        return p99ResponseTime;
     }
 
-    public void setMinResponseTime(Double minResponseTime) {
-        this.minResponseTime = minResponseTime;
+    public void setP99ResponseTime(double p99ResponseTime) {
+        this.p99ResponseTime = p99ResponseTime;
     }
 
-    public Integer getErrorRate() {
+    public double getErrorRate() {
         return errorRate;
     }
 
-    public void setErrorRate(Integer errorRate) {
+    public void setErrorRate(double errorRate) {
         this.errorRate = errorRate;
     }
 }

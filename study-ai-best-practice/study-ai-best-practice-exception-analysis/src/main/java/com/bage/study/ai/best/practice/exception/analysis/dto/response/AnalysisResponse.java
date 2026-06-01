@@ -13,6 +13,9 @@ public class AnalysisResponse {
     private List<Evidence> evidences;
     private List<String> suggestions;
 
+    public AnalysisResponse() {
+    }
+
     public String getAnalysisId() {
         return analysisId;
     }
@@ -73,6 +76,15 @@ public class AnalysisResponse {
         private String type;
         private String description;
         private String confidence;
+
+        public RootCause() {
+        }
+
+        public RootCause(String type, String description, String confidence) {
+            this.type = type;
+            this.description = description;
+            this.confidence = confidence;
+        }
 
         public String getType() {
             return type;

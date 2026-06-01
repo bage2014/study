@@ -16,28 +16,36 @@ public class DeploymentMcpService {
     public List<DeploymentRecord> getDeploymentRecords(String appId, LocalDateTime startTime, LocalDateTime endTime) {
         List<DeploymentRecord> records = new ArrayList<>();
         
-        DeploymentRecord record1 = new DeploymentRecord();
-        record1.setDeploymentId("DEPLOY-" + System.currentTimeMillis());
-        record1.setAppId(appId);
-        record1.setVersion("1.2.3");
-        record1.setStatus("SUCCESS");
-        record1.setDeployTime(LocalDateTime.now().minusHours(2));
-        record1.setChanges("修复用户登录问题，优化数据库查询性能");
-        record1.setOperator("admin");
-        records.add(record1);
-
-        if (random.nextBoolean()) {
-            DeploymentRecord record2 = new DeploymentRecord();
-            record2.setDeploymentId("DEPLOY-" + (System.currentTimeMillis() - 1000));
-            record2.setAppId(appId);
-            record2.setVersion("1.2.2");
-            record2.setStatus("SUCCESS");
-            record2.setDeployTime(LocalDateTime.now().minusDays(1));
-            record2.setChanges("新增支付功能模块");
-            record2.setOperator("developer");
-            records.add(record2);
+        int count = random.nextInt(3) + 1;
+        for (int i = 0; i < count; i++) {
+            LocalDateTime deployTime = startTime != null ? 
+                startTime.plusMinutes(random.nextInt(120)) : 
+                LocalDateTime.now().minusHours(random.nextInt(24));
+            
+            DeploymentRecord record = new DeploymentRecord(
+                "DEPLOY-" + System.currentTimeMillis() + "-" + i,
+                appId,
+                "1." + (random.nextInt(10) + 1) + "." + (random.nextInt(100)),
+                i == 0 ? "SUCCESS" : random.nextBoolean() ? "SUCCESS" : "FAILED",
+                deployTime,
+                "user" + random.nextInt(100),
+                "部署版本更新"
+            );
+            records.add(record);
         }
-
+        
         return records;
+    }
+
+    public DeploymentRecord getLatestDeployment(String appId) {
+        return new DeploymentRecord(
+            "DEPLOY-" + System.currentTimeMillis(),
+            appId,
+            "1.2.3",
+            "SUCCESS",
+            LocalDateTime.now().minusHours(random.nextInt(3)),
+            "admin",
+            "紧急修复发布"
+        );
     }
 }

@@ -8,11 +8,28 @@ public class CodeInfo {
     private String repositoryUrl;
     private String branch;
     private String commitId;
-    private String file;
-    private String method;
-    private String codeSnippet;
-    private LocalDateTime lastModified;
+    private LocalDateTime commitTime;
+    private String commitMessage;
     private String author;
+    private String changedFiles;
+    private String recentChangesSummary;
+
+    public CodeInfo() {
+    }
+
+    public CodeInfo(String appId, String repositoryUrl, String branch, String commitId,
+                   LocalDateTime commitTime, String commitMessage, String author,
+                   String changedFiles, String recentChangesSummary) {
+        this.appId = appId;
+        this.repositoryUrl = repositoryUrl;
+        this.branch = branch;
+        this.commitId = commitId;
+        this.commitTime = commitTime;
+        this.commitMessage = commitMessage;
+        this.author = author;
+        this.changedFiles = changedFiles;
+        this.recentChangesSummary = recentChangesSummary;
+    }
 
     public String getAppId() {
         return appId;
@@ -46,36 +63,20 @@ public class CodeInfo {
         this.commitId = commitId;
     }
 
-    public String getFile() {
-        return file;
+    public LocalDateTime getCommitTime() {
+        return commitTime;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setCommitTime(LocalDateTime commitTime) {
+        this.commitTime = commitTime;
     }
 
-    public String getMethod() {
-        return method;
+    public String getCommitMessage() {
+        return commitMessage;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getCodeSnippet() {
-        return codeSnippet;
-    }
-
-    public void setCodeSnippet(String codeSnippet) {
-        this.codeSnippet = codeSnippet;
-    }
-
-    public LocalDateTime getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(LocalDateTime lastModified) {
-        this.lastModified = lastModified;
+    public void setCommitMessage(String commitMessage) {
+        this.commitMessage = commitMessage;
     }
 
     public String getAuthor() {
@@ -84,5 +85,21 @@ public class CodeInfo {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getChangedFiles() {
+        return changedFiles;
+    }
+
+    public void setChangedFiles(String changedFiles) {
+        this.changedFiles = changedFiles;
+    }
+
+    public String getRecentChangesSummary() {
+        return recentChangesSummary;
+    }
+
+    public void setRecentChangesSummary(String recentChangesSummary) {
+        this.recentChangesSummary = recentChangesSummary;
     }
 }

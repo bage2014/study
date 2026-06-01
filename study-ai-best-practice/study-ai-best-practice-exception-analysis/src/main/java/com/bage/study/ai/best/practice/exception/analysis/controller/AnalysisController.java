@@ -4,7 +4,6 @@ import com.bage.study.ai.best.practice.exception.analysis.dto.request.AnalysisRe
 import com.bage.study.ai.best.practice.exception.analysis.dto.response.AnalysisResponse;
 import com.bage.study.ai.best.practice.exception.analysis.service.AnalysisService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ public class AnalysisController {
     @PostMapping("/analyze")
     public ResponseEntity<AnalysisResponse> analyze(@Valid @RequestBody AnalysisRequest request) {
         AnalysisResponse response = analysisService.analyze(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/health")

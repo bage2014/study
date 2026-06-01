@@ -27,4 +27,34 @@ public class AnalysisRequest {
     }
 
     public String getAppId() {
-        return appId
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getAlarmDescription() {
+        return alarmDescription;
+    }
+
+    public void setAlarmDescription(String alarmDescription) {
+        this.alarmDescription = alarmDescription;
+    }
+
+    public String getAlarmUrl() {
+        return alarmUrl;
+    }
+
+    public void setAlarmUrl(String alarmUrl) {
+        this.alarmUrl = alarmUrl;
+    }
+
+    public LocalDateTime getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(LocalDateTime alarmTime) {
+        this.alarmTime = alarmTime;
+    }
+}

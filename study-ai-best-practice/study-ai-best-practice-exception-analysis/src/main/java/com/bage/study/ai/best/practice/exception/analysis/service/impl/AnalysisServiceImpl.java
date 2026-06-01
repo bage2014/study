@@ -3,8 +3,6 @@ package com.bage.study.ai.best.practice.exception.analysis.service.impl;
 import com.bage.study.ai.best.practice.exception.analysis.context.*;
 import com.bage.study.ai.best.practice.exception.analysis.dto.request.AnalysisRequest;
 import com.bage.study.ai.best.practice.exception.analysis.dto.response.AnalysisResponse;
-import com.bage.study.ai.best.practice.exception.analysis.dto.response.AnalysisResponse.Evidence;
-import com.bage.study.ai.best.practice.exception.analysis.dto.response.AnalysisResponse.RootCause;
 import com.bage.study.ai.best.practice.exception.analysis.mcp.CodeMcpService;
 import com.bage.study.ai.best.practice.exception.analysis.mcp.DeploymentMcpService;
 import com.bage.study.ai.best.practice.exception.analysis.mcp.MetricsMcpService;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AnalysisServiceImpl implements AnalysisService {
@@ -22,9 +21,9 @@ public class AnalysisServiceImpl implements AnalysisService {
     private final MetricsMcpService metricsMcpService;
     private final CodeMcpService codeMcpService;
 
-    public AnalysisServiceImpl(DeploymentMcpService deploymentMcpService, 
-                               MetricsMcpService metricsMcpService, 
-                               CodeMcpService codeMcpService) {
+    public AnalysisServiceImpl(DeploymentMcpService deploymentMcpService,
+                              MetricsMcpService metricsMcpService,
+                              CodeMcpService codeMcpService) {
         this.deploymentMcpService = deploymentMcpService;
         this.metricsMcpService = metricsMcpService;
         this.codeMcpService = codeMcpService;
@@ -32,25 +31,23 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public AnalysisResponse analyze(AnalysisRequest request) {
-        String analysisId = generateAnalysisId();
-        LocalDateTime analysisTime = LocalDateTime.now();
-
-        List<DeploymentRecord> deployments = fetchDeploymentRecords(request.getAppId(), request.getAlarmTime());
-        List<RequestMetrics> requestMetrics = fetchRequestMetrics(request.getAppId(), request.getAlarmTime());
-        List<AppMetrics> appMetrics = fetchAppMetrics(request.getAppId(), request.getAlarmTime());
-        List<CodeInfo> codeInfoList = fetchCodeInfo(request.getAppId(), request.getAlarmDescription());
-
-        List<Evidence> evidences = collectEvidences(deployments, requestMetrics, appMetrics, codeInfoList);
+        String appId = request.getAppId();
+        LocalDateTime alarmTime = request.getAlarmTime();
         
-        RootCause rootCause = analyzeRootCause(request, deployments, requestMetrics, appMetrics, codeInfoList);
-        
+        RequestMetrics requestMetrics = metricsMcpService.getRequestMetrics(appId, alarmTime, null);
+        AppMetrics appMetrics = metricsMcpService.getAppMetrics(appId, alarmTime);
+        List<DeploymentRecord> deploymentRecords = deploymentMcpService.getDeploymentRecords(appId, alarmTime, null);
+        CodeInfo codeInfo = codeMcpService.getCodeInfo(appId);
+
+        List<AnalysisResponse.Evidence> evidences = collectEvidences(requestMetrics, appMetrics, deploymentRecords, codeInfo);
+        AnalysisResponse.RootCause rootCause = analyzeRootCause(request.getAlarmDescription(), requestMetrics, appMetrics, deploymentRecords);
         List<String> suggestions = generateSuggestions(rootCause, evidences);
 
         AnalysisResponse response = new AnalysisResponse();
-        response.setAnalysisId(analysisId);
-        response.setAppId(request.getAppId());
+        response.setAnalysisId("ANALYSIS-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10));
+        response.setAppId(appId);
         response.setAlarmDescription(request.getAlarmDescription());
-        response.setAnalysisTime(analysisTime);
+        response.setAnalysisTime(LocalDateTime.now());
         response.setRootCause(rootCause);
         response.setEvidences(evidences);
         response.setSuggestions(suggestions);
@@ -58,186 +55,155 @@ public class AnalysisServiceImpl implements AnalysisService {
         return response;
     }
 
-    private String generateAnalysisId() {
-        return "ANALYSIS-" + System.currentTimeMillis();
-    }
+    private List<AnalysisResponse.Evidence> collectEvidences(RequestMetrics requestMetrics, AppMetrics appMetrics,
+                                                             List<DeploymentRecord> deploymentRecords, CodeInfo codeInfo) {
+        List<AnalysisResponse.Evidence> evidences = new ArrayList<>();
 
-    private List<DeploymentRecord> fetchDeploymentRecords(String appId, LocalDateTime alarmTime) {
-        LocalDateTime startTime = alarmTime != null ? alarmTime.minusHours(6) : LocalDateTime.now().minusHours(6);
-        LocalDateTime endTime = alarmTime != null ? alarmTime.plusHours(1) : LocalDateTime.now();
-        return deploymentMcpService.getDeploymentRecords(appId, startTime, endTime);
-    }
+        String errorRateRelevance = requestMetrics.getErrorRate() > 0.1 ? "高" : requestMetrics.getErrorRate() > 0.05 ? "中" : "低";
+        evidences.add(new AnalysisResponse.Evidence(
+            "请求量监控",
+            String.format("错误率: %.2f%%, 总请求数: %d, 失败请求数: %d, 平均响应时间: %.2fms",
+                requestMetrics.getErrorRate() * 100,
+                requestMetrics.getTotalRequests(),
+                requestMetrics.getFailedRequests(),
+                requestMetrics.getAvgResponseTime()),
+            errorRateRelevance
+        ));
 
-    private List<RequestMetrics> fetchRequestMetrics(String appId, LocalDateTime alarmTime) {
-        LocalDateTime startTime = alarmTime != null ? alarmTime.minusHours(3) : LocalDateTime.now().minusHours(3);
-        LocalDateTime endTime = alarmTime != null ? alarmTime.plusHours(1) : LocalDateTime.now();
-        return metricsMcpService.getRequestMetrics(appId, startTime, endTime);
-    }
+        String cpuRelevance = appMetrics.getCpuUsage() > 80 ? "高" : appMetrics.getCpuUsage() > 60 ? "中" : "低";
+        evidences.add(new AnalysisResponse.Evidence(
+            "应用监控(CPU)",
+            String.format("CPU使用率: %.2f%%, 线程数: %d, 活跃线程: %d",
+                appMetrics.getCpuUsage(),
+                appMetrics.getThreadCount(),
+                appMetrics.getActiveThreads()),
+            cpuRelevance
+        ));
 
-    private List<AppMetrics> fetchAppMetrics(String appId, LocalDateTime alarmTime) {
-        LocalDateTime startTime = alarmTime != null ? alarmTime.minusHours(3) : LocalDateTime.now().minusHours(3);
-        LocalDateTime endTime = alarmTime != null ? alarmTime.plusHours(1) : LocalDateTime.now();
-        return metricsMcpService.getAppMetrics(appId, startTime, endTime);
-    }
+        String memoryRelevance = appMetrics.getMemoryUsage() > 85 ? "高" : appMetrics.getMemoryUsage() > 70 ? "中" : "低";
+        evidences.add(new AnalysisResponse.Evidence(
+            "应用监控(内存)",
+            String.format("内存使用率: %.2f%%, GC次数: %d, GC耗时: %.2fs",
+                appMetrics.getMemoryUsage(),
+                appMetrics.getGcCount(),
+                appMetrics.getGcTime()),
+            memoryRelevance
+        ));
 
-    private List<CodeInfo> fetchCodeInfo(String appId, String alarmDescription) {
-        String keyword = extractKeyword(alarmDescription);
-        return codeMcpService.getRelatedCode(appId, keyword);
-    }
-
-    private String extractKeyword(String description) {
-        if (description.contains("登录")) return "login";
-        if (description.contains("数据库") || description.contains("DB")) return "database";
-        if (description.contains("内存") || description.contains("OOM")) return "memory";
-        if (description.contains("线程")) return "thread";
-        return "error";
-    }
-
-    private List<Evidence> collectEvidences(List<DeploymentRecord> deployments,
-                                            List<RequestMetrics> requestMetrics,
-                                            List<AppMetrics> appMetrics,
-                                            List<CodeInfo> codeInfoList) {
-        List<Evidence> evidences = new ArrayList<>();
-
-        if (!deployments.isEmpty()) {
-            DeploymentRecord latest = deployments.get(0);
-            evidences.add(new Evidence("发布记录", 
-                String.format("最近发布版本: %s, 发布时间: %s, 变更内容: %s", 
-                    latest.getVersion(), latest.getDeployTime(), latest.getChanges()),
-                "高"));
+        if (!deploymentRecords.isEmpty()) {
+            DeploymentRecord latest = deploymentRecords.get(0);
+            String deployRelevance = "中";
+            evidences.add(new AnalysisResponse.Evidence(
+                "发布记录",
+                String.format("最近发布版本: %s, 状态: %s, 发布时间: %s",
+                    latest.getVersion(),
+                    latest.getStatus(),
+                    latest.getDeployTime()),
+                deployRelevance
+            ));
         }
 
-        if (!requestMetrics.isEmpty()) {
-            RequestMetrics latest = requestMetrics.get(0);
-            evidences.add(new Evidence("请求监控",
-                String.format("请求总量: %d, 成功率: %.1f%%, 平均响应时间: %.2fms, 错误率: %d%%",
-                    latest.getTotalRequests(),
-                    latest.getTotalRequests() > 0 ? (latest.getSuccessRequests() * 100.0 / latest.getTotalRequests()) : 0,
-                    latest.getAvgResponseTime(),
-                    latest.getErrorRate()),
-                "高"));
-        }
-
-        if (!appMetrics.isEmpty()) {
-            AppMetrics latest = appMetrics.get(0);
-            evidences.add(new Evidence("应用监控",
-                String.format("CPU使用率: %.1f%%, 内存使用率: %.1f%%, GC次数: %d, GC耗时: %dms, 线程数: %d",
-                    latest.getCpuUsage(),
-                    latest.getMemoryUsage(),
-                    latest.getGcCount(),
-                    latest.getGcTime(),
-                    latest.getThreadCount()),
-                "中"));
-        }
-
-        if (!codeInfoList.isEmpty()) {
-            CodeInfo code = codeInfoList.get(0);
-            evidences.add(new Evidence("代码分析",
-                String.format("相关文件: %s, 方法: %s, 最后修改: %s",
-                    code.getFile(), code.getMethod(), code.getLastModified()),
-                "中"));
+        if (codeInfo != null) {
+            String codeRelevance = codeInfo.getRecentChangesSummary().contains("修复") ? "高" : "中";
+            evidences.add(new AnalysisResponse.Evidence(
+                "代码仓库",
+                String.format("最近提交: %s, 变更文件: %s, 变更摘要: %s",
+                    codeInfo.getCommitId(),
+                    codeInfo.getChangedFiles(),
+                    codeInfo.getRecentChangesSummary()),
+                codeRelevance
+            ));
         }
 
         return evidences;
     }
 
-    private RootCause analyzeRootCause(AnalysisRequest request,
-                                       List<DeploymentRecord> deployments,
-                                       List<RequestMetrics> requestMetrics,
-                                       List<AppMetrics> appMetrics,
-                                       List<CodeInfo> codeInfoList) {
-        RootCause rootCause = new RootCause();
-
-        if (!requestMetrics.isEmpty()) {
-            RequestMetrics latest = requestMetrics.get(0);
-            if (latest.getErrorRate() > 10) {
-                rootCause.setType("高错误率");
-                rootCause.setDescription("当前错误率(" + latest.getErrorRate() + "%)超过阈值，可能存在服务异常或性能问题");
-                rootCause.setConfidence("85%");
-                return rootCause;
-            }
+    private AnalysisResponse.RootCause analyzeRootCause(String alarmDescription, RequestMetrics requestMetrics,
+                                                       AppMetrics appMetrics, List<DeploymentRecord> deploymentRecords) {
+        if (requestMetrics.getErrorRate() > 0.1) {
+            return new AnalysisResponse.RootCause(
+                "高错误率",
+                "当前错误率(" + String.format("%.2f%%", requestMetrics.getErrorRate() * 100) + ")超过10%阈值，可能存在服务异常或业务逻辑错误",
+                "85%"
+            );
         }
 
-        if (!appMetrics.isEmpty()) {
-            AppMetrics latest = appMetrics.get(0);
-            if (latest.getCpuUsage() > 80) {
-                rootCause.setType("CPU过载");
-                rootCause.setDescription("CPU使用率(" + String.format("%.1f", latest.getCpuUsage()) + "%)过高，可能存在CPU密集型操作或死循环");
-                rootCause.setConfidence("80%");
-                return rootCause;
-            }
-            if (latest.getMemoryUsage() > 85) {
-                rootCause.setType("内存不足");
-                rootCause.setDescription("内存使用率(" + String.format("%.1f", latest.getMemoryUsage()) + "%)过高，可能存在内存泄漏");
-                rootCause.setConfidence("75%");
-                return rootCause;
-            }
+        if (appMetrics.getCpuUsage() > 80) {
+            return new AnalysisResponse.RootCause(
+                "CPU过载",
+                "CPU使用率(" + String.format("%.2f%%", appMetrics.getCpuUsage()) + ")超过80%，可能存在性能瓶颈或死循环",
+                "80%"
+            );
         }
 
-        if (!deployments.isEmpty()) {
-            DeploymentRecord latest = deployments.get(0);
-            if (isRecentDeployment(latest.getDeployTime(), request.getAlarmTime())) {
-                rootCause.setType("发布问题");
-                rootCause.setDescription("告警时间与最近发布时间(" + latest.getDeployTime() + ")接近，可能是新版本引入的问题");
-                rootCause.setConfidence("70%");
-                return rootCause;
-            }
+        if (appMetrics.getMemoryUsage() > 85) {
+            return new AnalysisResponse.RootCause(
+                "内存不足",
+                "内存使用率(" + String.format("%.2f%%", appMetrics.getMemoryUsage()) + ")超过85%，可能存在内存泄漏或资源未释放",
+                "75%"
+            );
         }
 
-        if (request.getAlarmDescription().contains("登录")) {
-            rootCause.setType("认证问题");
-            rootCause.setDescription("告警涉及登录功能，可能是认证逻辑或用户数据问题");
-            rootCause.setConfidence("65%");
-            return rootCause;
+        if (!deploymentRecords.isEmpty()) {
+            LocalDateTime deployTime = deploymentRecords.get(0).getDeployTime();
+            return new AnalysisResponse.RootCause(
+                "发布问题",
+                "告警时间与最近发布时间接近，可能是新版本引入的问题",
+                "70%"
+            );
         }
 
-        rootCause.setType("未知原因");
-        rootCause.setDescription("根据现有数据无法确定具体原因，建议进一步排查");
-        rootCause.setConfidence("50%");
-        return rootCause;
+        if (alarmDescription.contains("登录") || alarmDescription.contains("认证") || alarmDescription.contains("token")) {
+            return new AnalysisResponse.RootCause(
+                "认证问题",
+                "告警描述涉及登录或认证功能，可能存在认证服务异常或token失效问题",
+                "65%"
+            );
+        }
+
+        return new AnalysisResponse.RootCause(
+            "未知原因",
+            "根据现有数据无法确定具体根因，建议进一步查看详细日志",
+            "40%"
+        );
     }
 
-    private boolean isRecentDeployment(LocalDateTime deployTime, LocalDateTime alarmTime) {
-        if (deployTime == null) return false;
-        LocalDateTime alarm = alarmTime != null ? alarmTime : LocalDateTime.now();
-        return java.time.Duration.between(deployTime, alarm).toHours() < 3;
-    }
-
-    private List<String> generateSuggestions(RootCause rootCause, List<Evidence> evidences) {
+    private List<String> generateSuggestions(AnalysisResponse.RootCause rootCause, List<AnalysisResponse.Evidence> evidences) {
         List<String> suggestions = new ArrayList<>();
 
         switch (rootCause.getType()) {
             case "高错误率":
                 suggestions.add("检查服务日志，定位具体错误类型");
-                suggestions.add("查看失败请求的具体堆栈信息");
+                suggestions.add("查看失败请求的详细信息");
                 suggestions.add("检查依赖服务是否正常");
                 break;
             case "CPU过载":
-                suggestions.add("使用profiling工具分析CPU热点");
-                suggestions.add("检查是否有死循环或低效算法");
-                suggestions.add("考虑增加实例数或升级配置");
+                suggestions.add("分析线程dump，定位CPU消耗高的线程");
+                suggestions.add("检查是否存在死循环或低效算法");
+                suggestions.add("考虑增加实例数或优化代码");
                 break;
             case "内存不足":
-                suggestions.add("分析堆转储文件定位内存泄漏");
-                suggestions.add("检查缓存策略是否合理");
-                suggestions.add("考虑增加堆内存或优化对象生命周期");
+                suggestions.add("分析堆dump，查找内存泄漏");
+                suggestions.add("检查GC日志，调整GC参数");
+                suggestions.add("考虑增加堆内存或优化对象创建");
                 break;
             case "发布问题":
                 suggestions.add("回滚到上一个稳定版本");
-                suggestions.add("审查本次发布的代码变更");
-                suggestions.add("检查数据库迁移脚本是否正确");
+                suggestions.add("检查发布内容，定位问题代码");
+                suggestions.add("联系发布人员确认变更内容");
                 break;
             case "认证问题":
-                suggestions.add("检查认证服务是否正常");
-                suggestions.add("验证JWT密钥配置");
-                suggestions.add("检查用户数据完整性");
+                suggestions.add("检查认证服务状态");
+                suggestions.add("验证JWT token配置");
+                suggestions.add("查看用户认证日志");
                 break;
             default:
-                suggestions.add("收集更多监控数据");
-                suggestions.add("查看详细日志信息");
-                suggestions.add("联系相关开发人员排查");
+                suggestions.add("查看应用详细日志");
+                suggestions.add("检查服务器资源使用情况");
+                suggestions.add("联系开发人员进一步排查");
         }
 
+        suggestions.add("查看完整监控面板获取更多上下文");
         return suggestions;
     }
 }

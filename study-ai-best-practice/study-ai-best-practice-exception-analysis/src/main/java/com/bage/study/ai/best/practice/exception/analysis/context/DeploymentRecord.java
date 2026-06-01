@@ -9,8 +9,22 @@ public class DeploymentRecord {
     private String version;
     private String status;
     private LocalDateTime deployTime;
-    private String changes;
     private String operator;
+    private String description;
+
+    public DeploymentRecord() {
+    }
+
+    public DeploymentRecord(String deploymentId, String appId, String version, String status, 
+                           LocalDateTime deployTime, String operator, String description) {
+        this.deploymentId = deploymentId;
+        this.appId = appId;
+        this.version = version;
+        this.status = status;
+        this.deployTime = deployTime;
+        this.operator = operator;
+        this.description = description;
+    }
 
     public String getDeploymentId() {
         return deploymentId;
@@ -52,19 +66,19 @@ public class DeploymentRecord {
         this.deployTime = deployTime;
     }
 
-    public String getChanges() {
-        return changes;
-    }
-
-    public void setChanges(String changes) {
-        this.changes = changes;
-    }
-
     public String getOperator() {
         return operator;
     }
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
