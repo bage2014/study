@@ -88,8 +88,41 @@
 12.4 [视频教程](#124-视频教程)
 12.5 [社区与论坛](#125-社区与论坛)
 
-### 第十三部分：JVM参数解析
-15. [JVM参数解析](#15-jvm参数解析)
+### 第十三部分：JVM 参数详解与调优指南
+13.1 [常用 JVM 参数分类](#131-常用-jvm-参数分类)
+13.2 [调优流程与方法论](#132-调优流程与方法论)
+13.3 [常见调优场景](#133-常见调优场景)
+
+### 第十四部分：JIT 编译与优化
+14.1 [JIT 编译器简介](#141-jit-编译器简介)
+14.2 [JIT 编译过程](#142-jit-编译过程)
+14.3 [JIT 优化技术](#143-jit-优化技术)
+14.4 [逃逸分析](#144-逃逸分析)
+
+### 第十五部分：类加载机制深度解析
+15.1 [类加载流程详解](#151-类加载流程详解)
+15.2 [双亲委派模型](#152-双亲委派模型)
+15.3 [自定义类加载器](#153-自定义类加载器)
+15.4 [类加载器的命名空间](#154-类加载器的命名空间)
+
+### 第十六部分：JVM 常见面试题补充
+16.1 [内存管理面试题](#161-内存管理面试题)
+16.2 [垃圾回收面试题](#162-垃圾回收面试题)
+16.3 [类加载面试题](#163-类加载面试题)
+
+### 第十七部分：JVM 踩坑点与注意事项
+17.1 [内存相关踩坑点](#171-内存相关踩坑点)
+17.2 [GC 相关踩坑点](#172-gc-相关踩坑点)
+17.3 [类加载相关踩坑点](#173-类加载相关踩坑点)
+
+### 第十八部分：JVM 监控与诊断工具
+18.1 [JDK 自带工具](#181-jdk-自带工具)
+18.2 [第三方工具](#182-第三方工具)
+
+### 第十九部分：参考链接（补充）
+19.1 [官方文档](#191-官方文档)
+19.2 [技术博客](#192-技术博客)
+19.3 [工具与资源](#193-工具与资源)
 
 ## 1. 简介
 
@@ -2127,252 +2160,590 @@ ZGC 收集器的特点：
 - 避免在 ThreadLocal 中存储大对象
 - 合理设置线程池大小
 
-## 第十二部分：JVM 性能指标
+## 第十三部分：JVM 参数详解与调优指南
 
-### 12.1 内存相关指标
+### 13.1 常用 JVM 参数分类
 
-| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
-|---------|---------|------|---------|---------|----------|
-| **堆内存使用率** | Heap Memory Usage | 堆内存已使用/总堆内存 | 40%-70% | > 85% | GC 频繁，可能导致 OOM |
-| **老年代使用率** | Old Generation Usage | 老年代已使用/老年代总内存 | 40%-70% | > 80% | Full GC 频繁，应用响应缓慢 |
-| **永久代/元空间使用率** | PermGen/Metaspace Usage | 永久代/元空间已使用/总大小 | 40%-70% | > 85% | 可能导致 Full GC 或 OOM |
-| **直接内存使用率** | Direct Memory Usage | 直接内存已使用/总大小 | 40%-70% | > 85% | 可能导致 OOM，应用崩溃 |
-| **对象创建速率** | Object Allocation Rate | 每秒创建的对象数 | 取决于应用 | 过高 | 年轻代 GC 频繁，CPU 使用率高 |
-| **对象晋升速率** | Promotion Rate | 每秒从年轻代晋升到老年代的对象数 | 取决于应用 | 过高 | 老年代快速增长，Full GC 频繁 |
+#### 13.1.1 内存分配参数
 
-### 12.2 GC 相关指标
+| 参数 | 说明 | 默认值 | 建议值 |
+|------|------|--------|--------|
+| `-Xms` | 初始堆内存大小 | 物理内存的1/64 | 根据应用调整 |
+| `-Xmx` | 最大堆内存大小 | 物理内存的1/4 | 不超过物理内存的80% |
+| `-Xmn` | 新生代大小 | 堆内存的1/3 | 可调整为堆的1/4~1/3 |
+| `-XX:PermSize` | 永久代初始大小 | 21MB | 根据类数量调整 |
+| `-XX:MaxPermSize` | 永久代最大大小 | 64MB | 根据类数量调整 |
+| `-XX:MetaspaceSize` | 元空间初始大小 | 21MB | 根据类数量调整 |
+| `-XX:MaxMetaspaceSize` | 元空间最大大小 | 无限制 | 建议设置上限 |
+| `-XX:NewRatio` | 新生代与老年代比例 | 2 | 1~4 |
+| `-XX:SurvivorRatio` | Eden与Survivor比例 | 8 | 8~10 |
 
-| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
-|---------|---------|------|---------|---------|----------|
-| **Young GC 频率** | Young GC Frequency | 每分钟 Young GC 次数 | 0-5 次 | > 10 次/分钟 | 应用响应缓慢，CPU 使用率高 |
-| **Young GC 停顿时间** | Young GC Pause Time | 每次 Young GC 的停顿时间 | < 100ms | > 500ms | 应用短暂无响应 |
-| **Full GC 频率** | Full GC Frequency | 每小时 Full GC 次数 | 0-2 次 | > 5 次/小时 | 应用长时间无响应，性能严重下降 |
-| **Full GC 停顿时间** | Full GC Pause Time | 每次 Full GC 的停顿时间 | < 1s | > 3s | 应用长时间无响应 |
-| **GC 总时间占比** | GC Time Ratio | GC 总时间/应用运行总时间 | < 5% | > 15% | 应用整体性能下降 |
-| **GC 回收效率** | GC Efficiency | 每次 GC 回收的内存量/GC 前内存使用量 | > 50% | < 20% | GC 效果差，可能存在内存泄漏 |
-
-### 12.3 线程相关指标
-
-| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
-|---------|---------|------|---------|---------|----------|
-| **活跃线程数** | Active Threads | 当前活跃的线程数 | 取决于应用 | 过高 | CPU 使用率高，系统负载大 |
-| **线程阻塞时间** | Thread Blocked Time | 线程阻塞的时间占比 | < 10% | > 30% | 应用响应缓慢，可能存在锁竞争 |
-| **线程等待时间** | Thread Wait Time | 线程等待的时间占比 | < 20% | > 40% | 应用响应缓慢，可能存在资源争用 |
-| **线程 CPU 使用率** | Thread CPU Usage | 线程占用的 CPU 时间占比 | 取决于应用 | 过高 | 系统 CPU 使用率高，可能存在死循环 |
-| **线程上下文切换次数** | Thread Context Switches | 每秒线程上下文切换次数 | 取决于系统 | 过高 | CPU 使用率高，系统性能下降 |
-
-### 12.4 类加载相关指标
-
-| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
-|---------|---------|------|---------|---------|----------|
-| **类加载数量** | Loaded Classes | 已加载的类数量 | 取决于应用 | 过高 | 元空间使用量大，可能导致 OOM |
-| **类卸载数量** | Unloaded Classes | 已卸载的类数量 | 取决于应用 | 过低 | 可能存在类加载器泄漏 |
-| **类加载时间** | Class Loading Time | 类加载的总时间 | < 1s | > 5s | 应用启动缓慢 |
-
-### 12.5 操作系统相关指标
-
-| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
-|---------|---------|------|---------|---------|----------|
-| **CPU 使用率** | CPU Usage | CPU 使用率 | < 70% | > 90% | 应用响应缓慢，系统性能下降 |
-| **内存使用率** | Memory Usage | 系统内存使用率 | < 70% | > 85% | 系统性能下降，可能导致 OOM |
-| **磁盘 I/O 使用率** | Disk I/O Usage | 磁盘 I/O 使用率 | < 70% | > 85% | 应用响应缓慢，I/O 操作延迟高 |
-| **网络 I/O 使用率** | Network I/O Usage | 网络 I/O 使用率 | < 70% | > 85% | 应用响应缓慢，网络操作延迟高 |
-| **系统负载** | System Load | 系统负载值 | < CPU 核心数 | > CPU 核心数 × 1.5 | 系统性能下降，应用响应缓慢 |
-
-### 12.6 JVM 内部指标
-
-| 指标名称 | 英文名称 | 描述 | 正常范围 | 异常情况 | 异常表现 |
-|---------|---------|------|---------|---------|----------|
-| **编译时间** | Compilation Time | JIT 编译的总时间 | < 10s | > 30s | 应用启动缓慢 |
-| **编译失败次数** | Compilation Failures | JIT 编译失败的次数 | 0 | > 0 | 可能影响应用性能 |
-| **解释执行比例** | Interpreter Ratio | 解释执行的字节码比例 | < 10% | > 30% | 应用性能下降 |
-| **方法内联成功率** | Inline Success Rate | 方法内联成功的比例 | > 80% | < 50% | 应用性能下降 |
-| **代码缓存使用率** | Code Cache Usage | 代码缓存已使用/总大小 | < 70% | > 90% | JIT 编译可能失败，应用性能下降 |
-
-### 12.7 性能指标监控工具
-
-1. **JDK 自带工具**：
-   - **jstat**：监控 JVM 统计信息
-   - **jconsole**：图形化监控工具
-   - **jvisualvm**：功能强大的可视化监控工具
-   - **jmap**：生成堆转储文件
-   - **jstack**：生成线程转储文件
-
-2. **第三方工具**：
-   - **Arthas**：阿里开源的 Java 诊断工具
-   - **MAT**：内存分析工具
-   - **YourKit Java Profiler**：商业性能分析工具
-   - **New Relic**：APM 监控工具
-   - **Datadog**：云监控平台
-
-3. **监控建议**：
-   - 建立基线：记录正常情况下的指标值
-   - 设置告警：当指标超出正常范围时及时告警
-   - 定期分析：定期分析监控数据，发现潜在问题
-   - 持续优化：根据监控数据持续优化 JVM 参数和应用代码
-
-## 第十三部分：参考链接
-
-### 13.1 官方文档
-
-- [Oracle JVM 官方文档](https://docs.oracle.com/en/java/javase/17/docs/specs/jvm-specification/jvm-spec.html)
-- [OpenJDK 官方网站](https://openjdk.org/)
-- [JDK 17 文档](https://docs.oracle.com/en/java/javase/17/)
-
-### 13.2 技术博客
-
-- [深入理解 Java 虚拟机](https://book.douban.com/subject/24722612/)
-- [Java Performance](https://book.douban.com/subject/11613203/)
-- [JVM 调优实战](https://time.geekbang.org/column/intro/100028001)
-- [G1 垃圾收集器详解](https://www.oracle.com/technical-resources/articles/java/g1gc.html)
-
-### 13.3 工具与资源
-
-- [VisualVM](https://visualvm.github.io/)
-- [MAT (Memory Analyzer Tool)](https://www.eclipse.org/mat/)
-- [Arthas](https://arthas.aliyun.com/)
-- [JVM 调优指南](https://docs.oracle.com/en/java/javase/17/gctuning/)
-
-### 13.4 视频教程
-
-- [Java 虚拟机原理与实践](https://www.imooc.com/learn/933)
-- [JVM 调优实战](https://www.imooc.com/learn/1193)
-- [深入理解 Java 内存模型](https://www.imooc.com/learn/1236)
-
-### 13.5 社区与论坛
-
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/jvm)
-- [Java 技术论坛](https://bbs.csdn.net/forums/Java)
-- [Reddit r/java](https://www.reddit.com/r/java/)
-
-## 总结
-
-JVM 是 Java 平台的核心，它负责将 Java 字节码转换为特定平台上的机器码并执行。JVM 具有跨平台性、内存管理、安全性等优势，是 Java 程序能够"一次编写，多处运行"的关键。
-
-本文详细介绍了 JVM 的内存结构、类加载机制、字节码技术、垃圾回收、内存分配等核心概念，以及 GC 执行过程、JVM 调优策略等实践内容。同时，本文还提供了丰富的面试题解析和高级 JVM 问题分析，希望能够帮助读者深入理解 JVM 技术，为面试和实际开发提供参考。
-
-随着 JVM 技术的不断发展，新的垃圾收集器（如 ZGC、Shenandoah）和优化技术不断涌现，JVM 的性能和可靠性也在不断提高。作为 Java 开发者，我们应该持续关注 JVM 技术的发展，不断学习和实践，以提高我们的技术水平和应用性能。
-
-
-## 13. JVM参数解析
-
-### 13.1 参数分类
-
-JVM参数根据其格式和作用可以分为以下几类：
-
-| 类型 | 格式 | 示例 | 说明 |
-|------|------|------|------|
-| **标准参数** | `-`开头 | `-version` | 所有JVM实现都必须支持的参数 |
-| **非标准参数** | `-X`开头 | `-Xmx512m` | 特定JVM实现支持的参数，可能在不同版本间变化 |
-| **高级参数** | `-XX:`开头 | `-XX:+UseG1GC` | 用于调优和调试的参数，变化性较大 |
-| **属性参数** | `-D`开头 | `-Djava.home=/path` | 设置系统属性 |
-
-### 13.2 内存相关参数
-
-#### 13.2.1 堆内存参数
-
-| 参数 | 说明 | 默认值 | 示例 |
-|------|------|--------|------|
-| `-Xms` | 初始堆大小 | 物理内存的1/64 | `-Xms512m` |
-| `-Xmx` | 最大堆大小 | 物理内存的1/4 | `-Xmx1g` |
-| `-Xmn` | 新生代大小 | 堆大小的1/3 | `-Xmn384m` |
-| `-XX:SurvivorRatio` | Eden区与Survivor区的比例 | 8 | `-XX:SurvivorRatio=8` |
-| `-XX:NewRatio` | 老年代与新生代的比例 | 2 | `-XX:NewRatio=2` |
-| `-XX:MetaspaceSize` | 元空间初始大小 | 21MB | `-XX:MetaspaceSize=64m` |
-| `-XX:MaxMetaspaceSize` | 元空间最大大小 | 无限制 | `-XX:MaxMetaspaceSize=256m` |
-| `-XX:PretenureSizeThreshold` | 大对象阈值 | 0（不启用） | `-XX:PretenureSizeThreshold=3145728`（3MB） |
-
-#### 13.2.2 栈内存参数
-
-| 参数 | 说明 | 默认值 | 示例 |
-|------|------|--------|------|
-| `-Xss` | 线程栈大小 | 1MB（64位系统） | `-Xss256k` |
-
-### 13.3 GC相关参数
-
-#### 13.3.1 收集器选择
+#### 13.1.2 GC 收集器参数
 
 | 参数 | 说明 | 适用场景 |
 |------|------|----------|
-| `-XX:+UseSerialGC` | 使用Serial收集器 | 客户端应用 |
-| `-XX:+UseParallelGC` | 使用Parallel Scavenge收集器 | 计算密集型应用 |
+| `-XX:+UseSerialGC` | 使用串行收集器 | 客户端应用、小内存 |
+| `-XX:+UseParallelGC` | 使用并行收集器 | 计算密集型应用 |
+| `-XX:+UseParallelOldGC` | 使用并行老年代收集器 | 计算密集型应用 |
 | `-XX:+UseConcMarkSweepGC` | 使用CMS收集器 | 响应时间敏感应用 |
 | `-XX:+UseG1GC` | 使用G1收集器 | 大内存服务器应用 |
 | `-XX:+UseZGC` | 使用ZGC收集器 | 超大内存低延迟应用 |
 
-#### 15.3.2 GC行为调优
+#### 13.1.3 GC 调优参数
 
-| 参数 | 说明 | 示例 |
-|------|------|------|
-| `-XX:MaxGCPauseMillis` | 最大GC停顿时间目标 | `-XX:MaxGCPauseMillis=200` |
-| `-XX:GCTimeRatio` | 吞吐量目标（1/(N+1)） | `-XX:GCTimeRatio=99` |
-| `-XX:ParallelGCThreads` | 并行GC线程数 | `-XX:ParallelGCThreads=4` |
-| `-XX:ConcGCThreads` | CMS/ZGC并发线程数 | `-XX:ConcGCThreads=2` |
-| `-XX:InitiatingHeapOccupancyPercent` | G1启动标记周期的堆占用阈值 | `-XX:InitiatingHeapOccupancyPercent=45` |
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `-XX:MaxGCPauseMillis` | 最大GC停顿时间目标 | 200ms |
+| `-XX:GCTimeRatio` | GC时间与应用时间比例 | 99 |
+| `-XX:ParallelGCThreads` | 并行GC线程数 | CPU核心数 |
+| `-XX:ConcGCThreads` | 并发GC线程数 | CPU核心数/4 |
+| `-XX:InitiatingHeapOccupancyPercent` | 并发标记启动阈值 | 45% |
 
-#### 15.3.3 GC日志参数
+### 13.2 JVM 调优流程
 
-| 参数 | 说明 | 示例 |
-|------|------|------|
-| `-XX:+PrintGCDetails` | 打印详细GC日志 | `-XX:+PrintGCDetails` |
-| `-XX:+PrintGCDateStamps` | 打印GC发生的时间戳 | `-XX:+PrintGCDateStamps` |
-| `-XX:+PrintHeapAtGC` | 打印GC前后的堆信息 | `-XX:+PrintHeapAtGC` |
-| `-Xloggc:file` | 将GC日志写入文件 | `-Xloggc:gc.log` |
-
-### 15.4 性能调优参数
-
-| 参数 | 说明 | 示例 |
-|------|------|------|
-| `-XX:+TieredCompilation` | 启用分层编译 | `-XX:+TieredCompilation` |
-| `-XX:CompileThreshold` | JIT编译阈值 | `-XX:CompileThreshold=10000` |
-| `-XX:MetaspaceSize` | 元空间初始大小 | `-XX:MetaspaceSize=64m` |
-| `-XX:MaxMetaspaceSize` | 元空间最大大小 | `-XX:MaxMetaspaceSize=256m` |
-| `-XX:+UseLargePages` | 使用大页内存 | `-XX:+UseLargePages` |
-
-### 15.5 常用调优组合
-
-#### 15.5.1 服务器端应用调优
-
-```bash
-# 8GB堆内存，使用G1收集器，最大停顿时间200ms
-java -Xms8g -Xmx8g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=8 -XX:ConcGCThreads=2 -XX:InitiatingHeapOccupancyPercent=45 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -jar application.jar
+```
+1. 监控现状 → 2. 分析瓶颈 → 3. 制定策略 → 4. 实施调整 → 5. 验证效果 → 6. 持续优化
 ```
 
-#### 15.5.2 客户端应用调优
+**详细步骤**：
 
-```bash
-# 512MB堆内存，使用Serial收集器
-java -Xms512m -Xmx512m -XX:+UseSerialGC -jar application.jar
+1. **监控现状**
+   - 使用 `jstat`、`jconsole`、`VisualVM` 等工具监控
+   - 收集 GC 日志、内存使用、CPU 使用等数据
+
+2. **分析瓶颈**
+   - 分析 GC 日志，找出频繁 GC 或长停顿的原因
+   - 使用 MAT 等工具分析堆转储，定位内存泄漏
+
+3. **制定策略**
+   - 根据应用特点选择合适的收集器
+   - 调整堆大小、分代比例
+   - 设置合理的 GC 参数
+
+4. **实施调整**
+   - 修改 JVM 启动参数
+   - 进行灰度发布，逐步验证
+
+5. **验证效果**
+   - 监控调整后的 GC 行为
+   - 对比调整前后的性能指标
+
+6. **持续优化**
+   - 定期监控和分析
+   - 根据业务变化调整参数
+
+### 13.3 常见调优场景与方案
+
+#### 13.3.1 场景一：频繁 Minor GC
+
+**问题现象**：
+- Eden 区快速填满，频繁触发 Minor GC
+- 对象创建速率过高
+
+**优化方案**：
+- **增加新生代大小**：`-Xmn` 调大
+- **优化对象创建**：减少临时对象，使用对象池
+- **调整 Survivor 比例**：`-XX:SurvivorRatio` 调小
+- **检查是否有内存泄漏**：使用 MAT 分析
+
+#### 13.3.2 场景二：频繁 Full GC
+
+**问题现象**：
+- 老年代快速增长，频繁触发 Full GC
+- 应用响应缓慢
+
+**优化方案**：
+- **检查对象晋升原因**：是否有大对象直接进入老年代
+- **调整晋升阈值**：`-XX:MaxTenuringThreshold`
+- **优化对象生命周期**：减少长生命周期对象创建
+- **考虑使用 G1/ZGC**：减少 Full GC 频率
+
+#### 13.3.3 场景三：GC 停顿时间过长
+
+**问题现象**：
+- GC 停顿时间超过业务容忍阈值
+- 用户体验下降
+
+**优化方案**：
+- **切换收集器**：使用 G1/ZGC 替代 Parallel/CMS
+- **设置停顿时间目标**：`-XX:MaxGCPauseMillis`
+- **调整堆大小**：避免堆过大导致单次 GC 时间过长
+- **增加并行线程数**：`-XX:ParallelGCThreads`
+
+## 第十四部分：JIT 编译与优化
+
+### 14.1 JIT 编译概述
+
+**JIT（Just-In-Time）编译**是 JVM 将热点代码（频繁执行的代码）在运行时编译为本地机器码的过程。
+
+**JIT 编译的优势**：
+- 提高热点代码的执行效率
+- 支持运行时优化（如逃逸分析）
+- 平衡启动时间和执行效率
+
+### 14.2 JIT 编译层次
+
+| 层次 | 名称 | 编译级别 | 特点 |
+|------|------|---------|------|
+| Tier 0 | 解释执行 | 无 | 启动快，执行慢 |
+| Tier 1 | C1 简单编译 | 低优化 | 编译快，优化较少 |
+| Tier 2 | C1 完全编译 | 中优化 | 平衡编译时间和执行效率 |
+| Tier 3 | C1 优化编译 | 高优化 | 较多优化，编译时间较长 |
+| Tier 4 | C2 编译 | 最高优化 | 充分优化，编译时间长 |
+
+### 14.3 JIT 优化技术
+
+#### 14.3.1 逃逸分析
+
+**逃逸分析**是 JIT 编译器判断对象是否逃逸出其作用域的分析技术。
+
+**应用场景**：
+- **栈上分配**：如果对象没有逃逸，可以直接在栈上分配，避免 GC
+- **同步消除**：如果对象没有逃逸，可以消除不必要的同步
+- **标量替换**：将对象分解为基本类型，减少对象创建
+
+**示例**：
+```java
+// 对象逃逸，无法栈上分配
+public class EscapeExample {
+    private Object obj;
+    
+    public void setObj(Object o) {
+        this.obj = o;  // 对象逃逸到外部
+    }
+}
+
+// 对象不逃逸，可以栈上分配
+public class NoEscapeExample {
+    public void process() {
+        Object obj = new Object();  // 对象仅在方法内使用
+        // ...
+    }
+}
 ```
 
-#### 15.5.3 低延迟应用调优
+#### 14.3.2 方法内联
 
-```bash
-# 4GB堆内存，使用ZGC收集器
-java -Xms4g -Xmx4g -XX:+UseZGC -XX:ConcGCThreads=4 -jar application.jar
+**方法内联**是将被调用方法的代码直接插入到调用处，减少方法调用开销。
+
+**触发条件**：
+- 方法体较小
+- 调用频率高
+- 类型可确定
+
+**示例**：
+```java
+// 优化前
+public int add(int a, int b) {
+    return a + b;
+}
+
+public int calculate() {
+    return add(1, 2) + add(3, 4);
+}
+
+// 方法内联后
+public int calculate() {
+    return (1 + 2) + (3 + 4);
+}
 ```
 
-### 15.6 参数调优建议
+#### 14.3.3 循环优化
 
-1. **内存设置**：
-   - 初始堆大小与最大堆大小设置为相同值，避免运行时动态调整
-   - 根据应用特性和服务器内存大小合理设置堆大小
-   - 新生代大小通常设置为堆大小的1/3左右
+**循环优化**包括循环展开、循环向量化、循环不变量外提等技术。
 
-2. **收集器选择**：
-   - 客户端应用：Serial收集器
-   - 计算密集型应用：Parallel Scavenge收集器
-   - 响应时间敏感应用：CMS或G1收集器
-   - 大内存低延迟应用：ZGC收集器
+**示例**：
+```java
+// 优化前
+for (int i = 0; i < array.length; i++) {
+    sum += array[i];
+}
 
-3. **GC调优**：
-   - 通过GC日志分析应用的内存使用情况
-   - 根据GC日志调整相关参数
-   - 优先关注Major GC的频率和耗时
+// 循环展开后（假设数组长度为4的倍数）
+for (int i = 0; i < array.length; i += 4) {
+    sum += array[i] + array[i+1] + array[i+2] + array[i+3];
+}
+```
 
-4. **监控与分析**：
-   - 启用GC日志记录
-   - 使用JVM监控工具（如JConsole、VisualVM）实时监控
-   - 定期分析GC日志，优化参数设置
+### 14.4 JIT 编译相关参数
 
-通过合理的JVM参数调优，可以显著提高Java应用的性能和稳定性，减少内存溢出和GC停顿带来的问题。
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `-XX:+TieredCompilation` | 启用分层编译 | 启用 |
+| `-XX:CompileThreshold` | C1 编译阈值 | 10000 |
+| `-XX:Tier4CompileThreshold` | C2 编译阈值 | 15000 |
+| `-XX:+PrintCompilation` | 打印编译信息 | 禁用 |
+| `-XX:+UnlockDiagnosticVMOptions` | 解锁诊断选项 | 禁用 |
+
+## 第十五部分：类加载机制深度解析
+
+### 15.1 类加载流程
+
+```
+加载 → 验证 → 准备 → 解析 → 初始化 → 使用 → 卸载
+```
+
+#### 15.1.1 加载阶段
+
+- 通过类的全限定名获取二进制字节流
+- 将字节流转换为方法区的运行时数据结构
+- 在堆中生成代表该类的 Class 对象
+
+#### 15.1.2 验证阶段
+
+**验证目的**：确保 Class 文件的正确性和安全性
+
+**验证内容**：
+- **文件格式验证**：魔数、版本号等
+- **元数据验证**：类的继承关系、字段方法语义等
+- **字节码验证**：确保字节码指令合法
+- **符号引用验证**：确保符号引用能正确解析
+
+#### 15.1.3 准备阶段
+
+- 为类变量分配内存并设置初始值（零值）
+- 不包括实例变量（实例变量在对象创建时分配）
+
+#### 15.1.4 解析阶段
+
+- 将常量池中的符号引用转换为直接引用
+- 包括类、接口、字段、方法的解析
+
+#### 15.1.5 初始化阶段
+
+- 执行类构造器 `<clinit>()` 方法
+- 初始化类变量（静态变量赋值）
+- 执行静态代码块
+
+### 15.2 类加载器体系
+
+#### 15.2.1 类加载器类型
+
+| 类加载器 | 加载范围 | 说明 |
+|---------|---------|------|
+| Bootstrap ClassLoader | JRE/lib/rt.jar | 启动类加载器，C++实现 |
+| Extension ClassLoader | JRE/lib/ext/*.jar | 扩展类加载器 |
+| Application ClassLoader | classpath 下的类 | 应用类加载器 |
+| Custom ClassLoader | 自定义路径 | 用户自定义加载器 |
+
+#### 15.2.2 双亲委派模型
+
+```
+Custom ClassLoader
+    ↓ (委托)
+Application ClassLoader  
+    ↓ (委托)
+Extension ClassLoader
+    ↓ (委托)
+Bootstrap ClassLoader
+    ↓ (无法加载则逐级返回)
+Extension ClassLoader
+    ↓ (无法加载)
+Application ClassLoader
+    ↓ (无法加载)
+Custom ClassLoader
+```
+
+**双亲委派模型的优势**：
+- 避免类的重复加载
+- 保证核心类的安全（如 java.lang.String 不会被篡改）
+- 实现类的隔离
+
+#### 15.2.3 破坏双亲委派模型的场景
+
+1. **热部署**：需要重新加载类
+2. **模块化框架**：如 OSGi 需要自定义类加载器
+3. **SPI 机制**：ServiceLoader 需要反向委派
+
+### 15.3 类加载相关面试题
+
+#### 15.3.1 什么是类加载器的双亲委派模型？
+
+**答案**：
+- 当类加载器收到类加载请求时，首先委托给父类加载器
+- 父类加载器无法加载时，才由自己加载
+- 保证核心类的唯一性和安全性
+
+#### 15.3.2 如何实现自定义类加载器？
+
+**答案**：
+1. 继承 `ClassLoader` 类
+2. 重写 `findClass()` 方法
+3. 使用 `defineClass()` 将字节数组转换为 Class 对象
+
+```java
+public class CustomClassLoader extends ClassLoader {
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        byte[] bytes = loadClassBytes(name);
+        return defineClass(name, bytes, 0, bytes.length);
+    }
+    
+    private byte[] loadClassBytes(String name) {
+        // 从自定义路径加载字节码
+        // ...
+    }
+}
+```
+
+## 第十六部分：JVM 常见面试题补充
+
+### 16.1 内存管理面试题
+
+#### 16.1.1 为什么新生代使用复制算法，老年代使用标记-整理算法？
+
+**答案**：
+- **新生代特点**：对象生命周期短，存活率低，适合复制算法（效率高）
+- **老年代特点**：对象生命周期长，存活率高，复制算法开销大，适合标记-整理算法
+
+#### 16.1.2 什么是分配担保？
+
+**答案**：
+- 当 Minor GC 时，如果 Survivor 区空间不足，会将存活对象直接晋升到老年代
+- 如果老年代也没有足够空间，会触发 Full GC
+- 分配担保是一种内存分配策略，确保 Minor GC 能够顺利完成
+
+#### 16.1.3 大对象如何分配内存？
+
+**答案**：
+- 大对象（超过 `-XX:PretenureSizeThreshold`）直接进入老年代
+- 避免在新生代频繁复制大对象
+- G1 中使用 Humongous Region 存储大对象
+
+### 16.2 GC 收集器面试题
+
+#### 16.2.1 CMS 收集器的优缺点是什么？
+
+**答案**：
+**优点**：
+- 并发执行，停顿时间短
+- 适合响应时间敏感的应用
+
+**缺点**：
+- 内存碎片问题
+- CPU 消耗较高
+- 无法处理浮动垃圾
+
+#### 16.2.2 G1 和 CMS 的区别是什么？
+
+**答案**：
+| 特性 | CMS | G1 |
+|------|-----|----|
+| 内存布局 | 分代 | Region |
+| 回收策略 | 标记-清除 | 复制+标记-整理 |
+| 停顿时间 | 不可预测 | 可预测 |
+| 内存碎片 | 有 | 无 |
+| 适用场景 | 中大型堆 | 大型堆 |
+
+#### 16.2.3 ZGC 的着色指针是什么？
+
+**答案**：
+- 着色指针利用指针的空闲位存储对象的标记状态
+- 避免在对象头中存储标记位，节省内存
+- 支持并发标记和并发重定位
+
+### 16.3 性能调优面试题
+
+#### 16.3.1 如何判断 JVM 内存是否充足？
+
+**答案**：
+- 监控堆内存使用率（正常范围 40%-70%）
+- 观察 GC 频率（Minor GC < 1次/分钟，Full GC < 1次/小时）
+- 检查是否有 OOM 异常
+- 使用 jstat、jconsole 等工具监控
+
+#### 16.3.2 如何分析 GC 日志？
+
+**答案**：
+1. 关注 GC 类型（Minor GC、Full GC、Mixed GC）
+2. 分析内存变化（Eden、Survivor、Old 区）
+3. 检查 GC 耗时（是否超过业务容忍阈值）
+4. 观察 GC 频率（是否过于频繁）
+5. 使用 GCViewer、GCEasy 等工具可视化分析
+
+#### 16.3.3 什么是安全点（Safepoint）？
+
+**答案**：
+- 安全点是 JVM 执行 GC 时的停顿点
+- 在安全点，所有线程都处于暂停状态
+- JVM 在方法调用、循环回退、异常抛出等位置设置安全点
+
+## 第十七部分：JVM 踩坑点与注意事项
+
+### 17.1 内存相关踩坑点
+
+#### 17.1.1 堆内存设置过大
+
+**问题**：
+- 单次 GC 时间过长
+- 内存碎片化严重
+- 影响系统整体性能
+
+**建议**：
+- 根据应用实际需求设置堆大小
+- 大内存应用考虑使用 G1/ZGC
+- 监控 GC 停顿时间，及时调整
+
+#### 17.1.2 元空间溢出
+
+**问题**：
+- 类加载过多导致元空间不足
+- 常见于动态生成类的场景（如反射、动态代理）
+
+**建议**：
+- 设置合理的元空间上限：`-XX:MaxMetaspaceSize`
+- 检查是否有类泄漏（如重复加载类）
+- 优化反射和动态代理的使用
+
+#### 17.1.3 直接内存泄漏
+
+**问题**：
+- 使用 NIO 时未正确释放 DirectByteBuffer
+- 直接内存不受 GC 管理，容易泄漏
+
+**建议**：
+- 显式调用 `Unsafe.freeMemory()` 释放
+- 使用 try-with-resources 模式
+- 设置直接内存上限：`-XX:MaxDirectMemorySize`
+
+### 17.2 GC 相关踩坑点
+
+#### 17.2.1 显式调用 System.gc()
+
+**问题**：
+- 强制触发 Full GC，影响应用性能
+- 破坏 JVM 的自动 GC 策略
+
+**建议**：
+- 避免在代码中调用 `System.gc()`
+- 如果需要提示 GC，使用 `Runtime.getRuntime().gc()`（同样不推荐）
+- 依赖 JVM 的自动 GC 机制
+
+#### 17.2.2 新生代设置过小
+
+**问题**：
+- Minor GC 频繁，影响吞吐量
+- 对象快速晋升到老年代
+
+**建议**：
+- 合理设置新生代大小（通常为堆的 1/3~1/4）
+- 根据对象创建速率调整
+
+#### 17.2.3 选择不合适的收集器
+
+**问题**：
+- 小内存应用使用 G1/ZGC（开销大）
+- 大内存应用使用 Serial/Parallel（停顿时间长）
+
+**建议**：
+- 根据应用特点选择收集器：
+  - 客户端应用：Serial
+  - 计算密集型：Parallel
+  - 响应时间敏感：CMS/G1
+  - 超大内存低延迟：ZGC
+
+### 17.3 并发相关踩坑点
+
+#### 17.3.1 ThreadLocal 未清理
+
+**问题**：
+- ThreadLocal 变量在线程池中不会自动清理
+- 导致内存泄漏
+
+**建议**：
+- 使用完毕后调用 `remove()` 方法
+- 使用 try-finally 确保清理
+- 避免存储大对象
+
+#### 17.3.2 锁竞争严重
+
+**问题**：
+- 频繁的锁竞争导致线程阻塞
+- 影响并发性能
+
+**建议**：
+- 减少锁的粒度
+- 使用无锁数据结构（如 ConcurrentHashMap）
+- 考虑使用乐观锁
+
+## 第十八部分：JVM 监控与诊断工具
+
+### 18.1 JDK 自带工具
+
+| 工具 | 用途 | 使用示例 |
+|------|------|---------|
+| `jps` | 查看 Java 进程 | `jps -l` |
+| `jstat` | 监控 JVM 统计信息 | `jstat -gc 12345 1000 10` |
+| `jmap` | 生成堆转储 | `jmap -dump:format=b,file=heap.hprof 12345` |
+| `jstack` | 生成线程快照 | `jstack 12345 > threads.txt` |
+| `jcmd` | 多功能诊断工具 | `jcmd 12345 GC.run` |
+| `jconsole` | GUI 监控工具 | `jconsole` |
+| `jvisualvm` | 可视化分析工具 | `jvisualvm` |
+
+### 18.2 第三方工具
+
+| 工具 | 用途 | 特点 |
+|------|------|------|
+| **MAT** | 堆转储分析 | 强大的内存分析能力 |
+| **GCViewer** | GC 日志分析 | 可视化 GC 行为 |
+| **GCEasy** | 在线 GC 分析 | 自动生成分析报告 |
+| **Arthas** | 在线诊断工具 | 实时监控和诊断 |
+| **YourKit** | 性能分析工具 | 全面的性能分析 |
+| **JProfiler** | 性能分析工具 | 强大的 profiling 能力 |
+
+### 18.3 监控指标关注要点
+
+1. **内存指标**：
+   - 堆内存使用率
+   - 老年代增长速率
+   - 对象分配速率
+   - 晋升到老年代的对象数
+
+2. **GC 指标**：
+   - GC 频率（Minor GC、Full GC）
+   - GC 停顿时间
+   - GC 时间占比
+   - 内存碎片率
+
+3. **线程指标**：
+   - 线程数量
+   - 线程状态分布
+   - 锁等待时间
+   - 死锁检测
+
+4. **性能指标**：
+   - CPU 使用率
+   - 响应时间
+   - 吞吐量
+   - 错误率
+
+## 第十九部分：参考链接
+
+### 19.1 官方文档
+- [JVM 规范](https://docs.oracle.com/javase/specs/jvms/se17/html/)
+- [HotSpot 文档](https://wiki.openjdk.java.net/display/HotSpot/Main)
+- [JDK 工具文档](https://docs.oracle.com/en/java/javase/17/docs/specs/man/)
+
+### 19.2 技术博客
+- [深入理解 JVM 内存模型](https://www.infoq.cn/article/java-memory-model)
+- [G1 收集器原理与实践](https://www.ibm.com/docs/zh/sdk-java-technology/8.0.6.10?topic=collectors-garbage-first-g1)
+- [ZGC 收集器详解](https://openjdk.org/projects/zgc/)
+
+### 19.3 工具与资源
+- [MAT 下载](https://www.eclipse.org/mat/)
+- [Arthas 文档](https://arthas.aliyun.com/doc/)
+- [GCViewer 下载](https://github.com/chewiebug/GCViewer)
+
+### 19.4 视频教程
+- [JVM 深入剖析](https://www.bilibili.com/video/BV1PJ411n7xZ/)
+- [Java 性能调优实战](https://www.bilibili.com/video/BV1gJ411c7kL/)
+
+### 19.5 社区与论坛
+- [OpenJDK 社区](https://openjdk.org/)
+- [Stack Overflow JVM 标签](https://stackoverflow.com/questions/tagged/jvm)
+- [Reddit r/java](https://www.reddit.com/r/java/)
+
+---
+
+**文档版本**：v2.0  
+**更新日期**：2026年6月
