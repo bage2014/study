@@ -87,7 +87,7 @@ function reverseKGroup(head, k):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode reverseKGroup(ListNode head, int k) {
         // 检查剩余节点是否足够k个
         ListNode temp = head;
@@ -153,7 +153,7 @@ function lengthOfLongestSubstring(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int lengthOfLongestSubstring(String s) {
         int left = 0;
         int maxLen = 0;
@@ -354,7 +354,7 @@ function partition(nums, left, right):
 
 **Java代码实现（快速选择）**：
 ```java
-class Solution {
+class Solution22 {
     public int findKthLargest(int[] nums, int k) {
         return quickSelect(nums, 0, nums.length - 1, k);
     }
@@ -401,7 +401,7 @@ class Solution {
 
 **Java代码实现（最小堆）**：
 ```java
-class Solution {
+class Solution22 {
     public int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         
@@ -446,7 +446,7 @@ function reverseList(head):
 
 **Java代码实现（迭代）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode reverseList(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
@@ -465,7 +465,7 @@ class Solution {
 
 **Java代码实现（递归）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode reverseList(ListNode head) {
         // 递归终止条件
         if (head == null || head.next == null) {
@@ -519,7 +519,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-public class Solution {
+public class Solution22 {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) {
             return null;
@@ -555,7 +555,7 @@ public class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         // 递归终止条件
         if (root == null || root == p || root == q) {
@@ -592,7 +592,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int trap(int[] height) {
         int left = 0, right = height.length - 1;
         int leftMax = 0, rightMax = 0;
@@ -636,7 +636,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int search(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         
@@ -685,7 +685,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public void nextPermutation(int[] nums) {
         int n = nums.length;
         int i = n - 2;
@@ -739,7 +739,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         if (root == null) {
@@ -786,7 +786,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> spiralOrder(int[][] matrix) {
         List<Integer> result = new ArrayList<>();
         if (matrix == null || matrix.length == 0) {
@@ -846,7 +846,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public void reorderList(ListNode head) {
         if (head == null || head.next == null) {
             return;
@@ -906,7 +906,7 @@ class Solution {
 
 **Java代码实现（分治法）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
             return null;
@@ -947,7 +947,7 @@ class Solution {
 
 **Java代码实现（优先队列）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
             return null;
@@ -994,7 +994,7 @@ class Solution {
 
 **Java代码实现（迭代法）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         ListNode dummy = new ListNode(0);
         ListNode curr = dummy;
@@ -1018,7 +1018,7 @@ class Solution {
 
 **Java代码实现（递归法）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         if (list1 == null) {
             return list2;
@@ -1052,7 +1052,7 @@ class Solution {
 
 **Java代码实现（动态规划）**：
 ```java
-class Solution {
+class Solution22 {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
         int[] dp = new int[n];
@@ -1075,7 +1075,7 @@ class Solution {
 
 **Java代码实现（贪心 + 二分查找）**：
 ```java
-class Solution {
+class Solution22 {
     public int lengthOfLIS(int[] nums) {
         List<Integer> list = new ArrayList<>();
         
@@ -1120,7 +1120,7 @@ class Solution {
 
 **Java代码实现（二分查找）**：
 ```java
-class Solution {
+class Solution22 {
     public int mySqrt(int x) {
         if (x == 0) {
             return 0;
@@ -1147,7 +1147,7 @@ class Solution {
 
 **Java代码实现（牛顿迭代法）**：
 ```java
-class Solution {
+class Solution22 {
     public int mySqrt(int x) {
         if (x == 0) {
             return 0;
@@ -1178,7 +1178,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode reverseBetween(ListNode head, int left, int right) {
         if (head == null || left == right) {
             return head;
@@ -1241,7 +1241,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int maxSubArray(int[] nums) {
         int maxSum = nums[0];
         int currSum = nums[0];
@@ -1273,7 +1273,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int longestCommonSubsequence(String text1, String text2) {
         int m = text1.length();
         int n = text2.length();
@@ -1310,7 +1310,7 @@ class Solution {
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int minDistance(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();

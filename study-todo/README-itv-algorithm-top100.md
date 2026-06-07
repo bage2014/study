@@ -41,7 +41,7 @@ function twoSum(nums, target):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
         
@@ -102,7 +102,7 @@ function threeSum(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
@@ -181,7 +181,7 @@ function fourSum(nums, target):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
@@ -251,7 +251,7 @@ function maxArea(height):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int maxArea(int[] height) {
         int left = 0;
         int right = height.length - 1;
@@ -305,7 +305,7 @@ function nextPermutation(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public void nextPermutation(int[] nums) {
         int i = nums.length - 2;
         
@@ -380,7 +380,7 @@ function search(nums, target):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int search(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
@@ -473,7 +473,7 @@ function findRight(nums, target):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int[] searchRange(int[] nums, int target) {
         if (nums.length == 0) return new int[]{-1, -1};
         
@@ -565,7 +565,7 @@ function backtrack(candidates, target, start, path, result):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<>();
         backtrack(candidates, target, 0, new ArrayList<>(), result);
@@ -629,7 +629,7 @@ function backtrack(candidates, target, start, path, result):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(candidates);
@@ -695,7 +695,7 @@ function backtrack(nums, path, visited, result):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         boolean[] visited = new boolean[nums.length];
@@ -761,7 +761,7 @@ function backtrack(nums, path, visited, result):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
@@ -819,7 +819,7 @@ function backtrack(nums, start, path, result):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         backtrack(nums, 0, new ArrayList<>(), result);
@@ -871,7 +871,7 @@ function backtrack(nums, start, path, result):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
@@ -935,7 +935,7 @@ function trap(height):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int trap(int[] height) {
         if (height.length == 0) return 0;
         
@@ -996,7 +996,7 @@ function moveZeroes(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public void moveZeroes(int[] nums) {
         int j = 0;
         
@@ -1045,7 +1045,7 @@ function reverseList(head):
 
 **Java代码实现（迭代）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode reverseList(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
@@ -1096,7 +1096,7 @@ function mergeTwoLists(l1, l2):
 
 **Java代码实现（迭代）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         ListNode dummy = new ListNode(0);
         ListNode curr = dummy;
@@ -1156,7 +1156,7 @@ function mergeKLists(lists):
 
 **Java代码实现（优先队列）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode mergeKLists(ListNode[] lists) {
         PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
         
@@ -1216,7 +1216,7 @@ function hasCycle(head):
 
 **Java代码实现**：
 ```java
-public class Solution {
+public class Solution22 {
     public boolean hasCycle(ListNode head) {
         if (head == null || head.next == null) return false;
         
@@ -1273,7 +1273,7 @@ function detectCycle(head):
 
 **Java代码实现**：
 ```java
-public class Solution {
+public class Solution22 {
     public ListNode detectCycle(ListNode head) {
         if (head == null || head.next == null) return null;
         
@@ -1328,7 +1328,7 @@ function getIntersectionNode(headA, headB):
 
 **Java代码实现**：
 ```java
-public class Solution {
+public class Solution22 {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) return null;
         
@@ -1379,7 +1379,7 @@ function removeNthFromEnd(head, n):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -1429,7 +1429,7 @@ function deleteDuplicates(head):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode deleteDuplicates(ListNode head) {
         ListNode curr = head;
         
@@ -1477,7 +1477,7 @@ function deleteDuplicates(head):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode deleteDuplicates(ListNode head) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -1534,7 +1534,7 @@ function reverseBetween(head, left, right):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode reverseBetween(ListNode head, int left, int right) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -1592,7 +1592,7 @@ function swapPairs(head):
 
 **Java代码实现（迭代）**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode swapPairs(ListNode head) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -1655,7 +1655,7 @@ function reverseKGroup(head, k):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode reverseKGroup(ListNode head, int k) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -1721,7 +1721,7 @@ function partition(head, x):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode partition(ListNode head, int x) {
         ListNode lessDummy = new ListNode(0);
         ListNode greaterDummy = new ListNode(0);
@@ -1798,7 +1798,7 @@ function merge(l1, l2):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) return head;
         
@@ -2017,7 +2017,7 @@ function preorder(node, result):
 
 **Java代码实现（递归）**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         preorder(root, result);
@@ -2063,7 +2063,7 @@ function inorder(node, result):
 
 **Java代码实现（递归）**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         inorder(root, result);
@@ -2109,7 +2109,7 @@ function postorder(node, result):
 
 **Java代码实现（递归）**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         postorder(root, result);
@@ -2164,7 +2164,7 @@ function levelOrder(root):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> levelOrder(TreeNode root) {
         if (root == null) return new ArrayList<>();
         
@@ -2217,7 +2217,7 @@ function maxDepth(root):
 
 **Java代码实现（递归）**：
 ```java
-class Solution {
+class Solution22 {
     public int maxDepth(TreeNode root) {
         if (root == null) return 0;
         
@@ -2254,7 +2254,7 @@ function minDepth(root):
 
 **Java代码实现（递归）**：
 ```java
-class Solution {
+class Solution22 {
     public int minDepth(TreeNode root) {
         if (root == null) return 0;
         
@@ -2294,7 +2294,7 @@ function invertTree(root):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public TreeNode invertTree(TreeNode root) {
         if (root == null) return null;
         
@@ -2338,7 +2338,7 @@ function isMirror(left, right):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean isSymmetric(TreeNode root) {
         if (root == null) return true;
         return isMirror(root.left, root.right);
@@ -2380,7 +2380,7 @@ function hasPathSum(root, targetSum):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean hasPathSum(TreeNode root, int targetSum) {
         if (root == null) return false;
         
@@ -2428,7 +2428,7 @@ function pathSum(node, targetSum, path, result):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
         List<List<Integer>> result = new ArrayList<>();
         pathSum(root, targetSum, new ArrayList<>(), result);
@@ -2479,7 +2479,7 @@ function lowestCommonAncestor(root, p, q):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null || root == p || root == q) return root;
         
@@ -2531,7 +2531,7 @@ function rightSideView(root):
 
 **Java代码实现（BFS）**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> rightSideView(TreeNode root) {
         if (root == null) return new ArrayList<>();
         
@@ -2597,7 +2597,7 @@ function build(preorder, preStart, preEnd, inStart, inEnd, map):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < inorder.length; i++) {
@@ -2662,7 +2662,7 @@ function build(inorder, inStart, inEnd, postorder, postStart, postEnd, map):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public TreeNode buildTree(int[] inorder, int[] postorder) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < inorder.length; i++) {
@@ -2718,7 +2718,7 @@ function validate(node, min, max):
 
 **Java代码实现（递归）**：
 ```java
-class Solution {
+class Solution22 {
     public boolean isValidBST(TreeNode root) {
         return validate(root, null, null);
     }
@@ -2767,7 +2767,7 @@ function climbStairs(n):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int climbStairs(int n) {
         if (n <= 2) return n;
         
@@ -2815,7 +2815,7 @@ function fib(n):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int fib(int n) {
         if (n <= 1) return n;
         
@@ -2860,7 +2860,7 @@ function maxSubArray(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int maxSubArray(int[] nums) {
         int maxSum = nums[0];
         int currentSum = nums[0];
@@ -2907,7 +2907,7 @@ function lengthOfLIS(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int lengthOfLIS(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         
@@ -2958,7 +2958,7 @@ function coinChange(coins, amount):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
         Arrays.fill(dp, amount + 1);
@@ -3014,7 +3014,7 @@ function minDistance(word1, word2):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int minDistance(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();
@@ -3070,7 +3070,7 @@ function longestCommonSubsequence(text1, text2):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int longestCommonSubsequence(String text1, String text2) {
         int m = text1.length();
         int n = text2.length();
@@ -3122,7 +3122,7 @@ function uniquePaths(m, n):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int uniquePaths(int m, int n) {
         int[][] dp = new int[m][n];
         
@@ -3180,7 +3180,7 @@ function uniquePathsWithObstacles(obstacleGrid):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
         int m = obstacleGrid.length;
         int n = obstacleGrid[0].length;
@@ -3248,7 +3248,7 @@ function minPathSum(grid):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int minPathSum(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -3306,7 +3306,7 @@ function rob(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int rob(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         
@@ -3358,7 +3358,7 @@ function robRange(nums, start, end):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int rob(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         if (nums.length == 1) return nums[0];
@@ -3409,7 +3409,7 @@ function numSquares(n):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int numSquares(int n) {
         int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
@@ -3459,7 +3459,7 @@ function canPartition(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean canPartition(int[] nums) {
         int sum = 0;
         for (int num : nums) sum += num;
@@ -3515,7 +3515,7 @@ function lengthOfLongestSubstring(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int lengthOfLongestSubstring(String s) {
         Map<Character, Integer> map = new HashMap<>();
         int maxLen = 0;
@@ -3577,7 +3577,7 @@ function expandAroundCenter(s, left, right):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) return "";
         
@@ -3641,7 +3641,7 @@ function longestPalindromeSubseq(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int longestPalindromeSubseq(String s) {
         int n = s.length();
         int[][] dp = new int[n][n];
@@ -3715,7 +3715,7 @@ function minWindow(s, t):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public String minWindow(String s, String t) {
         if (s == null || t == null || s.length() < t.length()) return "";
         
@@ -3796,7 +3796,7 @@ function addStrings(num1, num2):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public String addStrings(String num1, String num2) {
         StringBuilder result = new StringBuilder();
         int i = num1.length() - 1;
@@ -3858,7 +3858,7 @@ function isPalindrome(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean isPalindrome(String s) {
         int left = 0;
         int right = s.length() - 1;
@@ -3911,7 +3911,7 @@ function isPalindrome(x):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean isPalindrome(int x) {
         if (x < 0 || (x % 10 == 0 && x != 0)) return false;
         
@@ -3967,7 +3967,7 @@ function decodeString(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public String decodeString(String s) {
         Stack<Integer> countStack = new Stack<>();
         Stack<String> stringStack = new Stack<>();
@@ -4031,7 +4031,7 @@ function isValid(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean isValid(String s) {
         Stack<Character> stack = new Stack<>();
         Map<Character, Character> map = new HashMap<>();
@@ -4088,7 +4088,7 @@ function longestValidParentheses(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int longestValidParentheses(String s) {
         int maxLen = 0;
         Stack<Integer> stack = new Stack<>();
@@ -4162,7 +4162,7 @@ function buildNext(needle):
 
 **Java代码实现（KMP）**：
 ```java
-class Solution {
+class Solution22 {
     public int strStr(String haystack, String needle) {
         if (needle.length() == 0) return 0;
         
@@ -4226,7 +4226,7 @@ function repeatedSubstringPattern(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean repeatedSubstringPattern(String s) {
         return (s + s).indexOf(s, 1) != s.length();
     }
@@ -4263,7 +4263,7 @@ function canConstruct(ransomNote, magazine):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean canConstruct(String ransomNote, String magazine) {
         int[] count = new int[26];
         
@@ -4314,7 +4314,7 @@ function groupAnagrams(strs):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
         
@@ -4372,7 +4372,7 @@ function findAnagrams(s, p):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> result = new ArrayList<>();
         if (s.length() < p.length()) return result;
@@ -4435,7 +4435,7 @@ function findTargetSumWays(nums, target):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int findTargetSumWays(int[] nums, int target) {
         int sum = 0;
         for (int num : nums) sum += num;
@@ -4487,7 +4487,7 @@ function twoSum(nums, target):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
         
@@ -4535,7 +4535,7 @@ function groupAnagrams(strs):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
         
@@ -4593,7 +4593,7 @@ function longestConsecutive(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int longestConsecutive(int[] nums) {
         if (nums.length == 0) return 0;
         
@@ -4656,7 +4656,7 @@ function maxArea(height):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int maxArea(int[] height) {
         int left = 0;
         int right = height.length - 1;
@@ -4725,7 +4725,7 @@ function threeSum(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         if (nums.length < 3) return result;
@@ -4803,7 +4803,7 @@ function trap(height):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int trap(int[] height) {
         if (height.length == 0) return 0;
         
@@ -4862,7 +4862,7 @@ function rotate(matrix):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public void rotate(int[][] matrix) {
         int n = matrix.length;
         
@@ -4952,7 +4952,7 @@ function setZeroes(matrix):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public void setZeroes(int[][] matrix) {
         int m = matrix.length;
         int n = matrix[0].length;
@@ -5062,7 +5062,7 @@ function spiralOrder(matrix):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> spiralOrder(int[][] matrix) {
         if (matrix.length == 0) return new ArrayList<>();
         
@@ -5139,7 +5139,7 @@ function merge(intervals):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int[][] merge(int[][] intervals) {
         if (intervals.length <= 1) return intervals;
         
@@ -5203,7 +5203,7 @@ function insert(intervals, newInterval):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int[][] insert(int[][] intervals, int[] newInterval) {
         List<int[]> result = new ArrayList<>();
         int i = 0;
@@ -5261,7 +5261,7 @@ function canJump(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public boolean canJump(int[] nums) {
         int maxReach = 0;
         
@@ -5308,7 +5308,7 @@ function jump(nums):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int jump(int[] nums) {
         if (nums.length <= 1) return 0;
         
@@ -5360,7 +5360,7 @@ function maxProfit(prices):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int maxProfit(int[] prices) {
         if (prices.length == 0) return 0;
         
@@ -5406,7 +5406,7 @@ function maxProfit(prices):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int maxProfit(int[] prices) {
         int profit = 0;
         
@@ -5459,7 +5459,7 @@ function candy(ratings):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int candy(int[] ratings) {
         int n = ratings.length;
         int[] candies = new int[n];
@@ -5518,7 +5518,7 @@ function reconstructQueue(people):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int[][] reconstructQueue(int[][] people) {
         Arrays.sort(people, (a, b) -> {
             if (a[0] != b[0]) return b[0] - a[0];
@@ -5574,7 +5574,7 @@ function leastInterval(tasks, n):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int leastInterval(char[] tasks, int n) {
         int[] count = new int[26];
         for (char task : tasks) {
@@ -5639,7 +5639,7 @@ function partitionLabels(s):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public List<Integer> partitionLabels(String s) {
         int[] last = new int[26];
         for (int i = 0; i < s.length(); i++) {
@@ -5708,7 +5708,7 @@ function removeKdigits(num, k):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public String removeKdigits(String num, int k) {
         if (k >= num.length()) return "0";
         
@@ -5838,7 +5838,7 @@ function topKFrequent(nums, k):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int[] topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
@@ -5902,7 +5902,7 @@ function maxSlidingWindow(nums, k):
 
 **Java代码实现**：
 ```java
-class Solution {
+class Solution22 {
     public int[] maxSlidingWindow(int[] nums, int k) {
         List<Integer> result = new ArrayList<>();
         Deque<Integer> deque = new ArrayDeque<>();
@@ -5975,7 +5975,7 @@ function partition(nums, left, right):
 
 **Java代码实现（快速选择）**：
 ```java
-class Solution {
+class Solution22 {
     public int findKthLargest(int[] nums, int k) {
         return quickSelect(nums, 0, nums.length - 1, nums.length - k);
     }
