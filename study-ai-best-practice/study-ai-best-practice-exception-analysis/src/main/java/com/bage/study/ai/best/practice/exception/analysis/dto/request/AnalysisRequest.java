@@ -16,6 +16,8 @@ public class AnalysisRequest {
 
     private LocalDateTime alarmTime;
 
+    private String scene;
+
     public AnalysisRequest() {
     }
 
@@ -56,5 +58,13 @@ public class AnalysisRequest {
 
     public void setAlarmTime(LocalDateTime alarmTime) {
         this.alarmTime = alarmTime;
+    }
+
+    public String getScene() {
+        return scene;
+    }
+
+    public void setScene(String scene) {
+        this.scene = scene;
     }
 }
