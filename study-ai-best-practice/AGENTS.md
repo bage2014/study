@@ -218,6 +218,38 @@
 
 ---
 
+### 11. personal-backend-coding-standard 技能
+
+**位置**: `.trae/skills/personal-backend-coding-standard/SKILL.md`
+
+**功能**: 后端编码规范技能，提供后端开发的编码标准和最佳实践指导
+
+**核心功能**:
+- 命名规范：提供变量、方法、类的命名标准
+- 代码结构：指导代码组织和文件结构
+- 错误处理：规范异常处理和错误返回
+- 数据库操作：提供数据库访问的最佳实践
+- API设计：指导 RESTful API 的设计规范
+- 安全规范：提供安全编码的最佳实践
+
+---
+
+### 12. personal-frontend-coding-standard 技能
+
+**位置**: `.trae/skills/personal-frontend-coding-standard/SKILL.md`
+
+**功能**: 前端编码规范技能，提供前端开发的编码标准和最佳实践指导
+
+**核心功能**:
+- 命名规范：提供变量、函数、组件的命名标准
+- 代码结构：指导代码组织和文件结构
+- 样式规范：规范 CSS/SCSS 的编写
+- 组件设计：指导 React/Vue 组件的设计
+- 状态管理：规范状态管理的使用
+- 性能优化：提供性能优化的最佳实践
+
+---
+
 ## MCP 服务架构
 
 ### MCP 服务列表
@@ -303,4 +335,97 @@
 
 ## 日志记录
 
-###
+### 核心步骤日志
+
+分析过程中记录以下关键日志：
+
+1. **分析开始**: 记录输入参数
+2. **数据收集**: 记录请求量、应用监控、发布记录、代码信息
+3. **模块识别**: 记录识别到的模块
+4. **拓扑分析**: 记录应用拓扑结构
+5. **MQ/JOB指标**: 记录积压和失败情况
+6. **证据收集**: 记录证据数量和相关性统计
+7. **根因分析**: 记录各假设验证过程和结果
+8. **分析完成**: 记录最终结论
+
+### 日志格式
+
+```
+[ANALYSIS-xxx] 【步骤1/6】开始收集上下文数据
+[ANALYSIS-xxx]  - 请求量监控数据: 总请求数=xxx, 错误率=xx.xx%, 平均响应时间=xx.xxms
+[ANALYSIS-xxx] 假设1: MQ积压 - hasMqBacklog=true, isAlarmModuleMqRelated=true
+[ANALYSIS-xxx] 假设1成立: MQ(xxx)积压与告警模块相关
+```
+
+---
+
+## 配置说明
+
+### 环境变量
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `DEEPSEEK_API_KEY` | DeepSeek API Key | - |
+| `OPENAI_API_KEY` | OpenAI API Key | - |
+| `SERVER_PORT` | 服务端口 | 8080 |
+
+### 配置文件
+
+- 主配置: `application.yml`
+- 本地配置: `application-local.yml`（需自行创建）
+
+---
+
+## 扩展指南
+
+### 添加新的根因类型
+
+1. 在 `AnalysisServiceImpl.analyzeRootCause()` 方法中添加新假设
+2. 在 `generateSuggestions()` 方法中添加对应建议
+3. 更新 `SKILL.md` 文档中的根因类型表
+
+### 添加新的 MCP 服务
+
+1. 创建新的 MCP 服务类，实现数据提供逻辑
+2. 在 `AnalysisServiceImpl` 中注入并调用
+3. 更新 `collectEvidences()` 方法收集新证据
+
+### 添加新的业务模块
+
+1. 在 `ALL_MODULES` 列表中添加模块名称
+2. 在 `generateDisturbanceError()` 方法中添加干扰项错误消息
+3. 在 `TopologyMcpService` 中添加模块依赖配置
+
+### 添加新的技能
+
+1. 在 `.trae/skills/` 目录下创建新目录
+2. 创建 `SKILL.md` 文件
+3. 在 `AGENTS.md` 和 `SKILLS.md` 中注册技能
+
+---
+
+## 技能目录结构
+
+```
+.trae/skills/
+├── exception-analysis/
+│   └── SKILL.md
+├── mcp-tool-creator/
+│   └── SKILL.md
+├── model-provider-creator/
+│   └── SKILL.md
+├── plan-executor/
+│   └── SKILL.md
+├── spring-ai-chat/
+│   └── SKILL.md
+├── common-requirement-clarification/
+│   └── SKILL.md
+├── common-coding/
+│   └── SKILL.md
+├── common-backend-unit-test/
+│   └── SKILL.md
+├── common-frontend-playwright-test/
+│   └── SKILL.md
+└── common-contract-generation/
+    └── SKILL.md
+```

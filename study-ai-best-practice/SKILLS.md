@@ -2,7 +2,7 @@
 
 ## 概述
 
-本项目包含多个技能模块，用于支持 AI 驱动的异常分析和聊天功能。所有技能统一存放在根模块的 `.trae/skills/` 目录下进行集中管理。
+本项目包含多个技能模块，用于支持 AI 驱动的异常分析、聊天功能和研发流程自动化。所有技能统一存放在根模块的 `.trae/skills/` 目录下进行集中管理。
 
 ---
 
@@ -15,6 +15,40 @@
 | `plan-executor` | exception-analysis | 分析计划执行器 | `.trae/skills/plan-executor/SKILL.md` |
 | `spring-ai-chat` | hello | AI聊天能力 | `.trae/skills/spring-ai-chat/SKILL.md` |
 | `model-provider-creator` | hello | AI模型提供者管理 | `.trae/skills/model-provider-creator/SKILL.md` |
+| `common-requirement-clarification` | common | 需求澄清能力 | `.trae/skills/common-requirement-clarification/SKILL.md` |
+| `common-coding` | common | 编码指导能力 | `.trae/skills/common-coding/SKILL.md` |
+| `common-backend-unit-test` | common | 后端单元测试能力 | `.trae/skills/common-backend-unit-test/SKILL.md` |
+| `common-frontend-playwright-test` | common | 前端Playwright测试能力 | `.trae/skills/common-frontend-playwright-test/SKILL.md` |
+| `common-contract-generation` | common | API契约生成能力 | `.trae/skills/common-contract-generation/SKILL.md` |
+
+---
+
+## 技能分类
+
+### 异常分析类
+
+| 技能名称 | 功能描述 |
+|----------|----------|
+| `exception-analysis` | 提供完整的异常分析能力，基于多源数据进行根因分析 |
+| `mcp-tool-creator` | 创建和管理 MCP 工具，扩展数据收集能力 |
+| `plan-executor` | 执行分析计划，协调多步骤有序执行 |
+
+### AI 聊天类
+
+| 技能名称 | 功能描述 |
+|----------|----------|
+| `spring-ai-chat` | 提供 AI 聊天交互能力，支持多种大语言模型 |
+| `model-provider-creator` | 管理和配置 AI 模型提供者 |
+
+### 研发流程类 (common-*)
+
+| 技能名称 | 功能描述 |
+|----------|----------|
+| `common-requirement-clarification` | 需求澄清技能，帮助团队明确和细化业务需求 |
+| `common-coding` | 编码技能，提供代码编写指导和最佳实践 |
+| `common-backend-unit-test` | 后端单元测试技能，提供测试指导和生成能力 |
+| `common-frontend-playwright-test` | 前端 Playwright 测试技能，提供 UI 自动化测试能力 |
+| `common-contract-generation` | 契约生成技能，提供 API 契约文档的生成和管理能力 |
 
 ---
 
@@ -114,24 +148,134 @@
 
 ---
 
+### 6. common-requirement-clarification
+
+**文件**: `.trae/skills/common-requirement-clarification/SKILL.md`
+
+**功能**: 需求澄清技能
+
+**核心功能**:
+- 需求分解：将模糊需求分解为具体、可测试的用户故事
+- 疑问收集：识别需求中的模糊点和待确认项
+- 验收标准定义：帮助定义清晰的验收标准
+- 依赖分析：识别需求之间的依赖关系
+- 风险评估：评估需求实现的技术风险和业务风险
+
+**使用场景**:
+- 需求文档模糊或不完整时
+- 需要确认需求的业务背景和目标
+- 需要细化需求的验收标准
+
+---
+
+### 7. common-coding
+
+**文件**: `.trae/skills/common-coding/SKILL.md`
+
+**功能**: 编码技能
+
+**核心功能**:
+- 代码生成：根据需求生成符合规范的代码
+- 代码审查：检查代码是否符合编码规范
+- 代码优化：提供代码优化建议
+- 文档生成：生成代码文档和注释
+- 设计模式推荐：根据场景推荐合适的设计模式
+
+**使用场景**:
+- 需要编写新代码时
+- 需要审查代码质量时
+- 需要优化现有代码时
+
+---
+
+### 8. common-backend-unit-test
+
+**文件**: `.trae/skills/common-backend-unit-test/SKILL.md`
+
+**功能**: 后端单元测试技能
+
+**核心功能**:
+- 测试生成：根据代码生成单元测试用例
+- 测试审查：检查测试代码质量和覆盖率
+- Mock生成：生成Mock对象和桩代码
+- 测试优化：提供测试优化建议
+- 报告生成：生成测试覆盖率报告
+
+**使用场景**:
+- 需要为后端代码编写单元测试时
+- 需要评估测试覆盖率时
+- 需要优化现有测试时
+
+---
+
+### 9. common-frontend-playwright-test
+
+**文件**: `.trae/skills/common-frontend-playwright-test/SKILL.md`
+
+**功能**: 前端 Playwright 测试技能
+
+**核心功能**:
+- 测试生成：根据页面结构生成测试用例
+- 定位器生成：生成元素定位器
+- 测试审查：检查测试代码质量
+- 测试优化：提供测试优化建议
+- 报告生成：生成测试报告和截图
+
+**使用场景**:
+- 需要编写前端 UI 自动化测试时
+- 需要测试用户交互流程时
+- 需要验证页面功能正确性时
+
+---
+
+### 10. common-contract-generation
+
+**文件**: `.trae/skills/common-contract-generation/SKILL.md`
+
+**功能**: 契约生成技能
+
+**核心功能**:
+- 契约设计：设计 RESTful API 接口契约
+- 文档生成：生成 OpenAPI/Swagger 文档
+- 契约验证：验证接口实现与契约的一致性
+- SDK生成：生成客户端 SDK 和类型定义
+- Mock生成：生成 Mock 数据和服务器
+
+**使用场景**:
+- 需要设计新的 API 接口时
+- 需要生成 OpenAPI/Swagger 文档时
+- 需要验证契约一致性时
+
+---
+
 ## 技能协作关系
 
 ```
 用户请求
     │
-    ▼
-┌──────────────────────────────────┐
-│      exception-analysis          │
-│  (异常分析主技能)                 │
-└───────────────┬──────────────────┘
-                │
-        ┌──────┼──────┐
-        ▼      ▼      ▼
-┌─────────┐ ┌───────┐ ┌──────────┐
-│ plan-   │ │  mcp- │ │ spring-  │
-│ executor│ │ tool- │ │ ai-chat  │
-│         │ │creator│ │          │
-└─────────┘ └───────┘ └──────────┘
+    ├── 异常分析请求
+    │       │
+    │       ▼
+    │   ┌──────────────────────────────┐
+    │   │     exception-analysis       │
+    │   │    (异常分析主技能)          │
+    │   └───────────┬──────────────────┘
+    │               │
+    │       ┌──────┼──────┐
+    │       ▼      ▼      ▼
+    │   ┌───────┐ ┌─────┐ ┌──────────┐
+    │   │plan-  │ │mcp- │ │spring-   │
+    │   │executor│ │tool-│ │ai-chat   │
+    │   │       │ │creator││          │
+    │   └───────┘ └─────┘ └──────────┘
+    │
+    └── 研发流程请求
+            │
+            ├─→ common-requirement-clarification
+            ├─→ common-coding
+            ├─→ common-backend-unit-test
+            ├─→ common-frontend-playwright-test
+            └─→ common-contract-generation
 ```
 
 ---
@@ -145,6 +289,7 @@
 | 3 | mcp-tool-creator | 需要获取上下文数据 |
 | 4 | spring-ai-chat | 需要AI生成回复 |
 | 5 | model-provider-creator | 需要配置模型 |
+| 6 | common-* | 研发流程相关请求 |
 
 ---
 
@@ -160,7 +305,17 @@
 │   └── SKILL.md
 ├── plan-executor/
 │   └── SKILL.md
-└── spring-ai-chat/
+├── spring-ai-chat/
+│   └── SKILL.md
+├── common-requirement-clarification/
+│   └── SKILL.md
+├── common-coding/
+│   └── SKILL.md
+├── common-backend-unit-test/
+│   └── SKILL.md
+├── common-frontend-playwright-test/
+│   └── SKILL.md
+└── common-contract-generation/
     └── SKILL.md
 ```
 
@@ -172,7 +327,7 @@
 
 1. **创建技能目录**: 在 `.trae/skills/` 下创建新目录
 2. **编写 SKILL.md**: 定义技能名称、描述、触发条件、输入输出
-3. **实现技能逻辑**: 创建对应的服务类和Controller
+3. **实现技能逻辑**: 创建对应的服务类和Controller（如需要）
 4. **注册技能**: 在 `AGENTS.md` 和 `SKILLS.md` 中添加技能说明
 
 ### SKILL.md 模板
