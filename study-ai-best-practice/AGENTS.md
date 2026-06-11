@@ -45,6 +45,19 @@
 - **参数配置**：支持温度、token 数量等参数
 - **流式响应**：支持实时输出模式
 
+### 3. 研发流程代理 (Development Process Agent)
+
+#### 职责
+- 支持研发流程各阶段的自动化
+- 提供规范化的研发实践指导
+- 生成相关文档和代码模板
+
+#### 核心能力
+- **需求澄清**：帮助明确和细化业务需求
+- **代码生成**：生成符合规范的代码
+- **测试自动化**：生成单元测试和 UI 测试
+- **契约管理**：生成 API 契约文档
+
 ---
 
 ## 技能列表
@@ -127,6 +140,81 @@
 - 环境变量配置
 - 配置文件配置
 - 动态配置管理
+
+---
+
+### 6. common-requirement-clarification 技能
+
+**位置**: `.trae/skills/common-requirement-clarification/SKILL.md`
+
+**功能**: 需求澄清技能，帮助团队明确和细化业务需求
+
+**核心功能**:
+- 需求分解：将模糊需求分解为具体、可测试的用户故事
+- 疑问收集：识别需求中的模糊点和待确认项
+- 验收标准定义：帮助定义清晰的验收标准
+- 依赖分析：识别需求之间的依赖关系
+- 风险评估：评估需求实现的技术风险和业务风险
+
+---
+
+### 7. common-coding 技能
+
+**位置**: `.trae/skills/common-coding/SKILL.md`
+
+**功能**: 编码技能，提供代码编写指导
+
+**核心功能**:
+- 代码生成：根据需求生成符合规范的代码
+- 代码审查：检查代码是否符合编码规范
+- 代码优化：提供代码优化建议
+- 文档生成：生成代码文档和注释
+- 设计模式推荐：根据场景推荐合适的设计模式
+
+---
+
+### 8. common-backend-unit-test 技能
+
+**位置**: `.trae/skills/common-backend-unit-test/SKILL.md`
+
+**功能**: 后端单元测试技能，提供后端服务的单元测试指导
+
+**核心功能**:
+- 测试生成：根据代码生成单元测试用例
+- 测试审查：检查测试代码质量和覆盖率
+- Mock生成：生成Mock对象和桩代码
+- 测试优化：提供测试优化建议
+- 报告生成：生成测试覆盖率报告
+
+---
+
+### 9. common-frontend-playwright-test 技能
+
+**位置**: `.trae/skills/common-frontend-playwright-test/SKILL.md`
+
+**功能**: 前端 Playwright 测试技能，提供 UI 自动化测试能力
+
+**核心功能**:
+- 测试生成：根据页面结构生成测试用例
+- 定位器生成：生成元素定位器
+- 测试审查：检查测试代码质量
+- 测试优化：提供测试优化建议
+- 报告生成：生成测试报告和截图
+
+---
+
+### 10. common-contract-generation 技能
+
+**位置**: `.trae/skills/common-contract-generation/SKILL.md`
+
+**功能**: 契约生成技能，提供 API 契约文档的生成和管理能力
+
+**核心功能**:
+- 契约设计：设计 RESTful API 接口契约
+- 文档生成：生成 OpenAPI/Swagger 文档
+- 契约验证：验证接口实现与契约的一致性
+- SDK生成：生成客户端 SDK 和类型定义
+- Mock生成：生成 Mock 数据和服务器
 
 ---
 
@@ -215,87 +303,4 @@
 
 ## 日志记录
 
-### 核心步骤日志
-
-分析过程中记录以下关键日志：
-
-1. **分析开始**: 记录输入参数
-2. **数据收集**: 记录请求量、应用监控、发布记录、代码信息
-3. **模块识别**: 记录识别到的模块
-4. **拓扑分析**: 记录应用拓扑结构
-5. **MQ/JOB指标**: 记录积压和失败情况
-6. **证据收集**: 记录证据数量和相关性统计
-7. **根因分析**: 记录各假设验证过程和结果
-8. **分析完成**: 记录最终结论
-
-### 日志格式
-
-```
-[ANALYSIS-xxx] 【步骤1/6】开始收集上下文数据
-[ANALYSIS-xxx]  - 请求量监控数据: 总请求数=xxx, 错误率=xx.xx%, 平均响应时间=xx.xxms
-[ANALYSIS-xxx] 假设1: MQ积压 - hasMqBacklog=true, isAlarmModuleMqRelated=true
-[ANALYSIS-xxx] 假设1成立: MQ(xxx)积压与告警模块相关
-```
-
----
-
-## 配置说明
-
-### 环境变量
-
-| 变量名 | 说明 | 默认值 |
-|--------|------|--------|
-| `DEEPSEEK_API_KEY` | DeepSeek API Key | - |
-| `OPENAI_API_KEY` | OpenAI API Key | - |
-| `SERVER_PORT` | 服务端口 | 8080 |
-
-### 配置文件
-
-- 主配置: `application.yml`
-- 本地配置: `application-local.yml`（需自行创建）
-
----
-
-## 扩展指南
-
-### 添加新的根因类型
-
-1. 在 `AnalysisServiceImpl.analyzeRootCause()` 方法中添加新假设
-2. 在 `generateSuggestions()` 方法中添加对应建议
-3. 更新 `SKILL.md` 文档中的根因类型表
-
-### 添加新的 MCP 服务
-
-1. 创建新的 MCP 服务类，实现数据提供逻辑
-2. 在 `AnalysisServiceImpl` 中注入并调用
-3. 更新 `collectEvidences()` 方法收集新证据
-
-### 添加新的业务模块
-
-1. 在 `ALL_MODULES` 列表中添加模块名称
-2. 在 `generateDisturbanceError()` 方法中添加干扰项错误消息
-3. 在 `TopologyMcpService` 中添加模块依赖配置
-
-### 添加新的技能
-
-1. 在 `.trae/skills/` 目录下创建新目录
-2. 创建 `SKILL.md` 文件
-3. 在 `AGENTS.md` 和 `SKILLS.md` 中注册技能
-
----
-
-## 技能目录结构
-
-```
-.trae/skills/
-├── exception-analysis/
-│   └── SKILL.md
-├── mcp-tool-creator/
-│   └── SKILL.md
-├── model-provider-creator/
-│   └── SKILL.md
-├── plan-executor/
-│   └── SKILL.md
-└── spring-ai-chat/
-    └── SKILL.md
-```
+###
