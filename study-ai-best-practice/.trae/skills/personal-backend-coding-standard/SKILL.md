@@ -58,6 +58,23 @@ description: "后端编码规范技能。提供后端开发的编码标准和最
 }
 ```
 
+## 项目技术栈
+
+| 技术 | 版本 | 说明 |
+|------|------|------|
+| JDK | 21 | 项目默认使用 JDK 21 |
+| Spring Boot | 3.x | 项目默认使用 Spring Boot 3.x |
+| 日志框架 | SLF4J + Logback | 使用 Lombok @Slf4j 注解 |
+
+## 项目模块结构
+
+```
+xx-parent/
+├── xx-gateway/     # 网关模块 - 处理请求路由和认证
+├── xx-biz/         # 业务模块 - 核心业务逻辑
+└── xx-infra/       # 基础设施模块 - 公共组件、工具类
+```
+
 ## 编码规范分类
 
 ### 1. 命名规范
@@ -68,13 +85,14 @@ description: "后端编码规范技能。提供后端开发的编码标准和最
 | 方法名 | camelCase | `createUser()`, `getOrderById()` |
 | 变量名 | camelCase | `userName`, `orderId` |
 | 常量名 | UPPER_SNAKE_CASE | `MAX_RETRY_COUNT`, `DEFAULT_TIMEOUT` |
-| 包名 | lowercase | `com.example.service`, `com.example.repository` |
-| 接口名 | PascalCase + 以 I 开头或以 Interface 结尾 | `UserRepository`, `IUserService` |
+| 包名 | lowercase | `com.bage.xx.service`, `com.bage.xx.repository` |
+| 接口名 | PascalCase + 以 Interface 结尾或直接命名 | `UserRepository`, `UserService` |
+| 模块名 | kebab-case | `xx-gateway`, `xx-biz`, `xx-infra` |
 
 ### 2. 代码结构
 
 ```
-src/main/java/com/example/
+src/main/java/com/bage/xx/
 ├── controller/          # REST API 控制层
 │   └── UserController.java
 ├── service/             # 业务逻辑层
@@ -95,6 +113,8 @@ src/main/java/com/example/
 ├── exception/           # 自定义异常
 │   ├── BusinessException.java
 │   └── GlobalExceptionHandler.java
+├── util/                # 工具类
+│   └── StringUtils.java
 └── Application.java     # 启动类
 ```
 
@@ -108,7 +128,33 @@ src/main/java/com/example/
 | 返回值 | 避免返回 null，使用 Optional |
 | 异常处理 | 使用 try-with-resources |
 
-### 4. 错误处理
+### 4. 日志规范
+
+**统一使用 Lombok @Slf4j 注解**
+
+```java
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class UserServiceImpl implements UserService {
+    
+    @Override
+    public UserResponse createUser(UserCreateRequest request) {
+        log.info("开始创建用户，邮箱: {}", request.getEmail());
+        try {
+            // 业务逻辑
+            log.debug("用户创建成功，ID: {}", userId);
+            return response;
+        } catch (Exception e) {
+            log.error("创建用户失败，邮箱: {}", request.getEmail(), e);
+            throw e;
+        }
+    }
+}
+```
+
+### 5. 错误处理
 
 ```java
 // 自定义异常
@@ -139,7 +185,7 @@ public class GlobalExceptionHandler {
 }
 ```
 
-### 5. 数据库操作
+### 6. 数据库操作
 
 | 原则 | 说明 |
 |------|------|
@@ -149,17 +195,65 @@ public class GlobalExceptionHandler {
 | 批量操作 | 使用批量插入/更新 |
 | SQL 注入 | 使用参数化查询 |
 
-### 6. API 设计
+### 7. API 设计
+
+**HTTP 方法限制**：Controller 只暴露 GET 和 POST 请求，不使用 PUT、PATCH、DELETE 等其他方法
 
 | 原则 | 说明 |
 |------|------|
 | RESTful | 遵循 REST 原则 |
 | 路径命名 | 使用小写连字符 |
-| HTTP 方法 | GET/POST/PUT/PATCH/DELETE |
+| HTTP 方法 | **仅使用 GET 和 POST** |
 | 状态码 | 使用标准 HTTP 状态码 |
 | 响应格式 | 统一响应结构 |
 
-### 7. 安全规范
+**Controller 示例**：
+
+```java
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    
+    @Autowired
+    private UserService userService;
+    
+    // 查询 - 使用 GET
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable String id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+    
+    // 列表查询 - 使用 GET
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> listUsers() {
+        return ResponseEntity.ok(userService.listUsers());
+    }
+    
+    // 创建 - 使用 POST
+    @PostMapping
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(userService.createUser(request));
+    }
+    
+    // 更新 - 使用 POST（不使用 PUT/PATCH）
+    @PostMapping("/{id}/update")
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable String id, 
+            @RequestBody UserUpdateRequest request) {
+        return ResponseEntity.ok(userService.updateUser(id, request));
+    }
+    
+    // 删除 - 使用 POST（不使用 DELETE）
+    @PostMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+```
+
+### 8. 安全规范
 
 | 原则 | 说明 |
 |------|------|
@@ -174,25 +268,24 @@ public class GlobalExceptionHandler {
 
 ### Java 后端开发最佳实践
 
-1. **使用 Lombok**：简化样板代码
+1. **使用 Lombok**：简化样板代码，使用 @Slf4j、@Data、@Builder 等注解
 2. **使用 DTO**：分离实体和传输对象
 3. **使用 Optional**：避免空指针异常
 4. **使用 Stream API**：简化集合操作
 5. **使用断言**：验证方法参数
 6. **编写单元测试**：保证代码质量
-7. **使用日志框架**：使用 SLF4J + Logback
+7. **使用日志框架**：使用 @Slf4j 注解（SLF4J + Logback）
 8. **配置外部化**：使用配置文件或环境变量
 
 ### Spring Boot 最佳实践
 
 ```java
-// Service 层示例
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     
     private final UserRepository userRepository;
     
-    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -200,19 +293,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse createUser(UserCreateRequest request) {
-        // 参数验证
+        log.info("创建用户请求: {}", request.getEmail());
+        
         validateRequest(request);
         
-        // 创建实体
         User user = User.builder()
             .email(request.getEmail())
             .name(request.getName())
             .build();
         
-        // 保存
         User savedUser = userRepository.save(user);
+        log.debug("用户创建成功，ID: {}", savedUser.getId());
         
-        // 返回 DTO
         return UserResponse.fromEntity(savedUser);
     }
     
@@ -236,6 +328,8 @@ public class UserServiceImpl implements UserService {
 | 性能优化 | 是否考虑性能问题 | ✅/❌ |
 | 安全性 | 是否存在安全隐患 | ✅/❌ |
 | 可测试性 | 代码是否易于测试 | ✅/❌ |
+| 日志使用 | 是否正确使用 @Slf4j 注解 | ✅/❌ |
+| HTTP 方法 | 是否仅使用 GET 和 POST | ✅/❌ |
 
 ## 核心组件
 
@@ -248,7 +342,37 @@ public class UserServiceImpl implements UserService {
 
 ## 配置要求
 
-无需额外配置，基于规则引擎进行代码分析。
+### 环境变量
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| JAVA_HOME | JDK 21 路径 | - |
+
+### Maven 依赖
+
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.2.0</version>
+</parent>
+
+<properties>
+    <java.version>21</java.version>
+</properties>
+
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+</dependencies>
+```
 
 ## 扩展指南
 

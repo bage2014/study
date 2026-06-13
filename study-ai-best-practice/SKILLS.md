@@ -20,6 +20,8 @@
 | `common-backend-unit-test` | common | 后端单元测试能力 | `.trae/skills/common-backend-unit-test/SKILL.md` |
 | `common-frontend-playwright-test` | common | 前端Playwright测试能力 | `.trae/skills/common-frontend-playwright-test/SKILL.md` |
 | `common-contract-generation` | common | API契约生成能力 | `.trae/skills/common-contract-generation/SKILL.md` |
+| `personal-backend-coding-standard` | personal | 后端编码规范指导 | `.trae/skills/personal-backend-coding-standard/SKILL.md` |
+| `personal-frontend-coding-standard` | personal | 前端编码规范指导 | `.trae/skills/personal-frontend-coding-standard/SKILL.md` |
 
 ---
 
@@ -49,6 +51,13 @@
 | `common-backend-unit-test` | 后端单元测试技能，提供测试指导和生成能力 |
 | `common-frontend-playwright-test` | 前端 Playwright 测试技能，提供 UI 自动化测试能力 |
 | `common-contract-generation` | 契约生成技能，提供 API 契约文档的生成和管理能力 |
+
+### 个人技能类 (personal-*)
+
+| 技能名称 | 功能描述 |
+|----------|----------|
+| `personal-backend-coding-standard` | 后端编码规范技能，提供后端开发的编码标准和最佳实践指导 |
+| `personal-frontend-coding-standard` | 前端编码规范技能，提供前端开发的编码标准和最佳实践指导 |
 
 ---
 
@@ -315,7 +324,11 @@
 │   └── SKILL.md
 ├── common-frontend-playwright-test/
 │   └── SKILL.md
-└── common-contract-generation/
+├── common-contract-generation/
+│   └── SKILL.md
+├── personal-backend-coding-standard/
+│   └── SKILL.md
+└── personal-frontend-coding-standard/
     └── SKILL.md
 ```
 

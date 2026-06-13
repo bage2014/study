@@ -426,6 +426,10 @@
 │   └── SKILL.md
 ├── common-frontend-playwright-test/
 │   └── SKILL.md
-└── common-contract-generation/
+├── common-contract-generation/
+│   └── SKILL.md
+├── personal-backend-coding-standard/
+│   └── SKILL.md
+└── personal-frontend-coding-standard/
     └── SKILL.md
 ```
