@@ -250,6 +250,21 @@
 
 ---
 
+### 13. common-project-standard 技能
+
+**位置**: `.trae/skills/common-project-standard/SKILL.md`
+
+**功能**: 项目规范技能，提供项目结构、文档管理、代码忽略等方面的标准和最佳实践
+
+**核心功能**:
+- 技能管理：规范技能的创建和管理流程
+- 文档管理：规范文档的编写和维护标准
+- Git忽略：规范 .gitignore 文件的配置
+- AI忽略：规范 AI 相关文件的忽略规则
+- 项目结构：规范项目目录结构
+
+---
+
 ## MCP 服务架构
 
 ### MCP 服务列表
@@ -427,6 +442,8 @@
 ├── common-frontend-playwright-test/
 │   └── SKILL.md
 ├── common-contract-generation/
+│   └── SKILL.md
+├── common-project-standard/
 │   └── SKILL.md
 ├── personal-backend-coding-standard/
 │   └── SKILL.md

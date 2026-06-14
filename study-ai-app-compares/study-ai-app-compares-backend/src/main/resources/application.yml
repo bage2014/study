@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: study-ai-app-compares-backend
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.bage.study.ai: DEBUG
+
+platform:
+  taobao:
+    enabled: false
+    app-key: ${TAOBAO_APP_KEY:}
+    app-secret: ${TAOBAO_APP_SECRET:}
+    base-url: https://eco.taobao.com/router/rest
+    api-version: 2.0
+  jd:
+    enabled: false
+    app-key: ${JD_APP_KEY:}
+    app-secret: ${JD_APP_SECRET:}
+    access-token: ${JD_ACCESS_TOKEN:}
+    base-url: https://api.jd.com/routerjson
+  meituan:
+    enabled: false
+    app-key: ${MEITUAN_APP_KEY:}
+    app-secret: ${MEITUAN_APP_SECRET:}
+    base-url: https://api.meituan.com

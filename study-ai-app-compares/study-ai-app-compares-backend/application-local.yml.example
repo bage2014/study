@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: study-ai-app-compares-backend
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.bage.study.ai: DEBUG

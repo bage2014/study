@@ -22,6 +22,7 @@
 | `common-contract-generation` | common | API契约生成能力 | `.trae/skills/common-contract-generation/SKILL.md` |
 | `personal-backend-coding-standard` | personal | 后端编码规范指导 | `.trae/skills/personal-backend-coding-standard/SKILL.md` |
 | `personal-frontend-coding-standard` | personal | 前端编码规范指导 | `.trae/skills/personal-frontend-coding-standard/SKILL.md` |
+| `common-project-standard` | common | 项目规范指导 | `.trae/skills/common-project-standard/SKILL.md` |
 
 ---
 
@@ -325,6 +326,8 @@
 ├── common-frontend-playwright-test/
 │   └── SKILL.md
 ├── common-contract-generation/
+│   └── SKILL.md
+├── common-project-standard/
 │   └── SKILL.md
 ├── personal-backend-coding-standard/
 │   └── SKILL.md
