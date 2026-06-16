@@ -93,6 +93,138 @@ description: "编码技能。提供代码编写指导，遵循编码规范和最
 4. **异常处理**：使用 try-with-resources，避免空 catch 块
 5. **设计原则**：遵循 SOLID 原则，单一职责
 
+### 外部调用规范
+
+#### 目录结构
+
+所有外部调用相关代码必须放在 `infra` 目录下：
+
+```
+src/main/java/com/example/
+├── application/          # 应用层（业务逻辑）
+├── domain/               # 领域层（业务实体）
+└── infra/               # 基础设施层（外部调用）
+    ├── client/          # Remote Client 透传层
+    ├── proxy/           # Remote Proxy 适配层
+    └── adapter/         # Remote Adapter 转换层
+```
+
+#### Remote Client 模式
+
+**职责**：透传外部接口，不做业务逻辑处理
+
+**命名约定**：`{ServiceName}RemoteClient`
+
+**示例**：
+
+```java
+// infra/client/UserRemoteClient.java
+@FeignClient(name = "user-service")
+public interface UserRemoteClient {
+    
+    @GetMapping("/api/users/{id}")
+    ResponseEntity<UserDTO> getUserById(@PathVariable Long id);
+    
+    @PostMapping("/api/users")
+    ResponseEntity<UserDTO> createUser(@RequestBody CreateUserRequest request);
+}
+```
+
+#### Remote Proxy 模式
+
+**职责**：对外部接口进行适配和调用，添加业务无关的通用处理
+
+**命名约定**：`{ServiceName}RemoteProxy`
+
+**示例**：
+
+```java
+// infra/proxy/UserRemoteProxy.java
+@Component
+public class UserRemoteProxy {
+    
+    private final UserRemoteClient userRemoteClient;
+    private final RestTemplate restTemplate;
+    
+    public User getUser(Long id) {
+        try {
+            ResponseEntity<UserDTO> response = userRemoteClient.getUserById(id);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return convertToDomain(response.getBody());
+            }
+            throw new RemoteServiceException("Failed to get user");
+        } catch (FeignException e) {
+            log.warn("Remote call failed, fallback to cache");
+            return getFromCache(id);
+        }
+    }
+    
+    // 通用重试、熔断、降级处理
+    @Retryable(maxAttempts = 3)
+    public User createUser(UserCreateCommand command) {
+        // ...
+    }
+}
+```
+
+#### Remote Adapter 模式
+
+**职责**：数据转换和协议适配，将外部数据转换为领域模型
+
+**命名约定**：`{ServiceName}RemoteAdapter`
+
+**示例**：
+
+```java
+// infra/adapter/UserRemoteAdapter.java
+@Component
+public class UserRemoteAdapter {
+    
+    private final UserRemoteProxy userRemoteProxy;
+    
+    public UserDomain loadUser(Long userId) {
+        User user = userRemoteProxy.getUser(userId);
+        
+        // 转换为领域模型
+        return UserDomain.builder()
+            .id(user.getId())
+            .username(user.getUsername())
+            .email(user.getEmail())
+            .build();
+    }
+    
+    public UserDomain createUser(UserCreateDomain domain) {
+        CreateUserRequest request = CreateUserRequest.builder()
+            .username(domain.getUsername())
+            .email(domain.getEmail())
+            .build();
+        
+        User user = userRemoteProxy.createUser(request);
+        return convertToDomain(user);
+    }
+}
+```
+
+#### 使用规范
+
+| 层次 | 职责 | 适用场景 |
+|------|------|----------|
+| Remote Client | 透传调用，无业务逻辑 | 简单的 REST/gRPC 调用 |
+| Remote Proxy | 通用处理（重试、熔断、降级） | 需要容错处理的调用 |
+| Remote Adapter | 数据转换、协议适配 | 需要领域模型转换 |
+
+#### 调用流程
+
+```
+Application Service → Remote Adapter → Remote Proxy → Remote Client → External Service
+```
+
+**说明**：
+1. **Application Service**：业务层，调用 Adapter
+2. **Remote Adapter**：数据转换，调用 Proxy
+3. **Remote Proxy**：通用处理（重试、熔断），调用 Client
+4. **Remote Client**：透传调用外部服务
+
 ### Python 编码规范
 
 1. **命名规范**：模块和函数使用 snake_case，类使用 PascalCase
