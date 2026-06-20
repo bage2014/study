@@ -1,6 +1,10 @@
 ---
 name: "common-requirement-clarification"
-description: "需求澄清技能。帮助团队明确和细化业务需求，确保需求的完整性和可测试性。"
+description: "需求澄清技能，帮助团队明确和细化业务需求"
+trigger: "需求不明确或需要细化时"
+disable-when: "需求已清晰定义且无需变更"
+category: "common"
+tags: ["requirements", "analysis", "clarification"]
 ---
 
 # 需求澄清技能
@@ -139,3 +143,5 @@ description: "需求澄清技能。帮助团队明确和细化业务需求，确
 ### 集成外部工具
 
 可集成需求管理工具（如 Jira、Azure DevOps）实现需求的自动化同步。
+## 触发条件
+

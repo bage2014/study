@@ -1,6 +1,11 @@
 ---
 name: "common-spring-boot-init"
-description: "Spring Boot 项目初始化技能"
+description: "快速创建 Spring Boot 项目结构，支持多种数据库和依赖配置"
+trigger: "用户请求创建新的 Spring Boot 项目时"
+disable-when: "项目已存在或非 Java 技术栈项目"
+category: "backend"
+tags: ["spring", "java", "backend", "project-init"]
+requires: ["common-db-design"]
 ---
 
 # Spring Boot 项目初始化技能
@@ -98,3 +103,5 @@ spring:
 ## 扩展指南
 
 支持添加自定义依赖模板和项目模板。
+## 触发条件
+

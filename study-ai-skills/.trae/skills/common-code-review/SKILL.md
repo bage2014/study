@@ -1,6 +1,10 @@
 ---
 name: "common-code-review"
-description: "代码审查技能 - 提供代码质量检查和改进建议"
+description: "代码审查技能，提供代码质量检查和改进建议"
+trigger: "提交代码前进行代码审查时"
+disable-when: "代码已通过审查或仅需格式检查"
+category: "common"
+tags: ["code-review", "quality", "best-practices"]
 ---
 
 # 代码审查技能
@@ -81,3 +85,5 @@ description: "代码审查技能 - 提供代码质量检查和改进建议"
 ## 扩展指南
 
 支持自定义审查规则和检查项。
+## 触发条件
+

@@ -1,6 +1,10 @@
 ---
 name: "personal-backend-coding-standard"
-description: "后端编码规范技能。提供后端开发的编码标准和最佳实践指导。"
+description: "后端编码规范技能，提供后端开发的编码标准和最佳实践指导"
+trigger: "编写后端代码时需要遵循编码规范"
+disable-when: "团队已有明确的编码规范"
+category: "personal"
+tags: ["coding", "standard", "backend", "java"]
 ---
 
 # 后端编码规范技能
@@ -387,3 +391,5 @@ public class UserServiceImpl implements UserService {
 1. 创建对应语言的规则定义
 2. 添加语言特定的最佳实践
 3. 更新技能文档
+## 触发条件
+

@@ -21,7 +21,7 @@ public class ErrorResponse {
         return ErrorResponse.builder()
                 .code(code)
                 .message(message)
-                .timestamp(DateUtil.formatDateTime(DateUtil.now()))
+                .timestamp(DateUtil.dateTime2String(DateUtil.now()))
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class ErrorResponse {
                 .code(code)
                 .message(message)
                 .data(data)
-                .timestamp(DateUtil.formatDateTime(DateUtil.now()))
+                .timestamp(DateUtil.dateTime2String(DateUtil.now()))
                 .build();
     }
 }

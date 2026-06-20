@@ -1,6 +1,10 @@
 ---
 name: "common-contract-generation"
-description: "契约生成技能。提供API契约文档的生成和管理能力。"
+description: "契约生成技能，提供API契约文档的生成和管理能力"
+trigger: "需要定义API接口契约时"
+disable-when: "项目已有完善的API契约或使用其他契约工具"
+category: "backend"
+tags: ["api", "contract", "swagger", "openapi"]
 ---
 
 # 契约生成技能
@@ -252,3 +256,5 @@ contract:
 1. 在验证器中添加新规则
 2. 定义规则的检查逻辑和错误消息
 3. 更新契约质量检查清单
+## 触发条件
+

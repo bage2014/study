@@ -1,6 +1,10 @@
 ---
 name: "personal-frontend-coding-standard"
-description: "前端编码规范技能。提供前端开发的编码标准和最佳实践指导。"
+description: "前端编码规范技能，提供前端开发的编码标准和最佳实践指导"
+trigger: "编写前端代码时需要遵循编码规范"
+disable-when: "团队已有明确的编码规范"
+category: "personal"
+tags: ["coding", "standard", "frontend", "javascript"]
 ---
 
 # 前端编码规范技能
@@ -244,3 +248,5 @@ type UserWithoutId = Omit<User, 'id'>;
 1. 创建对应框架的规则定义
 2. 添加框架特定的最佳实践
 3. 更新技能文档
+## 触发条件
+

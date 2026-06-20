@@ -17,34 +17,34 @@ import java.util.Arrays;
 @Component
 public class LogAspect {
 
-    @Around("@annotation(log)")
-    public Object logAround(ProceedingJoinPoint joinPoint, Log log) throws Throwable {
+    @Around("@annotation(logAnnotation)")
+    public Object logAround(ProceedingJoinPoint joinPoint, Log logAnnotation) throws Throwable {
         long startTime = System.currentTimeMillis();
         String methodName = joinPoint.getSignature().getName();
         String className = joinPoint.getTarget().getClass().getSimpleName();
-        String logValue = log.value().isEmpty() ? methodName : log.value();
+        String logValue = logAnnotation.value().isEmpty() ? methodName : logAnnotation.value();
 
-        if (log.logParams()) {
+        if (logAnnotation.logParams()) {
             Object[] args = joinPoint.getArgs();
             String params = Arrays.toString(args);
-            log.info("[{}] {}#{}, params: {}", DateUtil.formatDateTime(DateUtil.now()), className, methodName, params);
+            log.info("[{}] {}#{}, params: {}", DateUtil.dateTime2String(DateUtil.now()), className, methodName, params);
         }
 
         Object result = null;
         try {
             result = joinPoint.proceed();
-            if (log.logResult()) {
-                log.info("[{}] {}#{}, result: {}", DateUtil.formatDateTime(DateUtil.now()), className, methodName, result);
+            if (logAnnotation.logResult()) {
+                log.info("[{}] {}#{}, result: {}", DateUtil.dateTime2String(DateUtil.now()), className, methodName, result);
             }
             return result;
         } catch (Throwable e) {
-            if (log.logException()) {
-                log.error("[{}] {}#{}, exception: {}", DateUtil.formatDateTime(DateUtil.now()), className, methodName, e.getMessage(), e);
+            if (logAnnotation.logException()) {
+                log.error("[{}] {}#{}, exception: {}", DateUtil.dateTime2String(DateUtil.now()), className, methodName, e.getMessage(), e);
             }
             throw e;
         } finally {
             long duration = System.currentTimeMillis() - startTime;
-            log.info("[{}] {}#{}, duration: {}ms", DateUtil.formatDateTime(DateUtil.now()), className, methodName, duration);
+            log.info("[{}] {}#{}, duration: {}ms", DateUtil.dateTime2String(DateUtil.now()), className, methodName, duration);
         }
     }
 
@@ -56,19 +56,19 @@ public class LogAspect {
         Object[] args = joinPoint.getArgs();
         String params = Arrays.toString(args);
 
-        log.info("[{}] Controller enter: {}#{}, params: {}", DateUtil.formatDateTime(DateUtil.now()), className, methodName, params);
+        log.info("[{}] Controller enter: {}#{}, params: {}", DateUtil.dateTime2String(DateUtil.now()), className, methodName, params);
 
         Object result = null;
         try {
             result = joinPoint.proceed();
-            log.info("[{}] Controller exit: {}#{}, result: {}", DateUtil.formatDateTime(DateUtil.now()), className, methodName, result);
+            log.info("[{}] Controller exit: {}#{}, result: {}", DateUtil.dateTime2String(DateUtil.now()), className, methodName, result);
             return result;
         } catch (Throwable e) {
-            log.error("[{}] Controller error: {}#{}, exception: {}", DateUtil.formatDateTime(DateUtil.now()), className, methodName, e.getMessage(), e);
+            log.error("[{}] Controller error: {}#{}, exception: {}", DateUtil.dateTime2String(DateUtil.now()), className, methodName, e.getMessage(), e);
             throw e;
         } finally {
             long duration = System.currentTimeMillis() - startTime;
-            log.info("[{}] Controller {}#{}, duration: {}ms", DateUtil.formatDateTime(DateUtil.now()), className, methodName, duration);
+            log.info("[{}] Controller {}#{}, duration: {}ms", DateUtil.dateTime2String(DateUtil.now()), className, methodName, duration);
         }
     }
 }

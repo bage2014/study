@@ -1,6 +1,10 @@
 ---
 name: "common-backend-unit-test"
-description: "后端单元测试技能。提供后端服务的单元测试指导和生成能力。"
+description: "提供后端单元测试指导和生成能力，支持JUnit 5、Mockito等框架"
+trigger: "用户需要编写后端单元测试时"
+disable-when: "项目已完成测试覆盖或使用其他测试框架"
+category: "backend"
+tags: ["testing", "junit", "mockito", "unit-test"]
 ---
 
 # 后端单元测试技能
@@ -196,3 +200,5 @@ testing:
 1. 在规则引擎中添加新规则
 2. 定义规则的检查逻辑和修复建议
 3. 更新测试质量检查清单
+## 触发条件
+

@@ -1,6 +1,10 @@
 ---
 name: "common-coding"
-description: "编码技能。提供代码编写指导，遵循编码规范和最佳实践。"
+description: "编码技能，提供代码编写指导，遵循编码规范和最佳实践"
+trigger: "用户需要编写代码时"
+disable-when: "已有完整代码实现或仅需简单代码片段"
+category: "common"
+tags: ["coding", "best-practices", "standards"]
 ---
 
 # 编码技能
@@ -280,3 +284,5 @@ coding:
 1. 在规则引擎中添加新规则
 2. 定义规则的检查逻辑和修复建议
 3. 更新编码规范检查清单
+## 触发条件
+

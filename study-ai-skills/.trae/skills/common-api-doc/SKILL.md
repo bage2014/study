@@ -1,6 +1,10 @@
 ---
 name: "common-api-doc"
-description: "API文档生成技能 - 基于OpenAPI规范生成文档"
+description: "基于OpenAPI规范生成API文档，支持Swagger UI和ReDoc展示"
+trigger: "用户需要生成或更新API文档时"
+disable-when: "项目未使用RESTful API或已有完善文档"
+category: "backend"
+tags: ["api", "swagger", "openapi", "documentation"]
 ---
 
 # API文档生成技能
@@ -75,3 +79,5 @@ springdoc:
 ## 扩展指南
 
 支持自定义模板和文档样式。
+## 触发条件
+

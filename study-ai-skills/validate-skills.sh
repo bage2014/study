@@ -11,15 +11,29 @@ VALIDATION_LOG="/tmp/skill-validation.log"
 # 定义标准结构
 REQUIRED_SECTIONS=(
     "## 功能描述"
+    "## 触发条件"
     "## 何时使用"
     "## 核心功能"
     "## 输入参数"
     "## 输出格式"
 )
 
+RECOMMENDED_SECTIONS=(
+    "## 何时不使用"
+    "## 使用流程"
+    "## 调用示例"
+    "## 失败案例"
+    "## 最佳实践"
+    "## 配置要求"
+    "## 扩展指南"
+)
+
 REQUIRED_FRONTMATTER=(
     "name:"
     "description:"
+    "trigger:"
+    "disable-when:"
+    "category:"
 )
 
 # 颜色定义
@@ -49,7 +63,7 @@ validate_skill() {
     
     # 检查 Frontmatter
     echo "检查 Frontmatter..."
-    local frontmatter=$(head -5 "$skill_file")
+    local frontmatter=$(head -10 "$skill_file")
     
     for field in "${REQUIRED_FRONTMATTER[@]}"; do
         if ! echo "$frontmatter" | grep -q "$field"; then
@@ -74,6 +88,17 @@ validate_skill() {
         if ! grep -q "^$section" "$skill_file"; then
             warnings+=("缺少章节: $section")
             echo -e "${YELLOW}⚠ 缺少章节: $section${NC}"
+        else
+            echo -e "${GREEN}✓ 包含章节: $section${NC}"
+        fi
+    done
+    
+    # 检查推荐章节
+    echo ""
+    echo "检查推荐章节..."
+    for section in "${RECOMMENDED_SECTIONS[@]}"; do
+        if ! grep -q "^$section" "$skill_file"; then
+            echo -e "${BLUE}○ 建议添加章节: $section${NC}"
         else
             echo -e "${GREEN}✓ 包含章节: $section${NC}"
         fi
@@ -137,7 +162,11 @@ fix_skill() {
         cat > "$skill_file" << EOF
 ---
 name: "$skill_name"
-description: "$skill_name 技能描述"
+description: "$skill_name 技能描述，简要说明技能的核心价值和用途"
+trigger: "用户需要使用 $skill_name 相关功能时"
+disable-when: "不适合使用 $skill_name 的场景描述"
+category: "common"
+tags: ["$skill_name"]
 ---
 
 # $skill_name
@@ -146,10 +175,21 @@ description: "$skill_name 技能描述"
 
 该技能提供 $skill_name 相关功能。
 
+## 触发条件
+
+- **前置条件**：项目已初始化
+- **环境要求**：根据技能需求填写
+- **数据准备**：根据技能需求填写
+- **触发方式**：API 调用 / 命令行执行 / 事件触发
+
 ## 何时使用
 
 在以下情况调用此技能：
 - 需要使用 $skill_name 功能时
+
+## 何时不使用
+
+- 当场景不适合使用此技能时
 
 ## 核心功能
 
@@ -171,6 +211,13 @@ description: "$skill_name 技能描述"
 
 ## 使用流程
 
+## 调用示例
+
+## 失败案例
+
+| 错误场景 | 错误信息 | 解决方案 |
+|----------|----------|----------|
+
 ## 最佳实践
 
 ## 配置要求
@@ -189,7 +236,11 @@ EOF
         cat > "$skill_file" << EOF
 ---
 name: "$skill_name"
-description: "$skill_name 技能描述"
+description: "$skill_name 技能描述，简要说明技能的核心价值和用途"
+trigger: "用户需要使用 $skill_name 相关功能时"
+disable-when: "不适合使用 $skill_name 的场景描述"
+category: "common"
+tags: ["$skill_name"]
 ---
 
 $content

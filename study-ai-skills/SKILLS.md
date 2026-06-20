@@ -25,16 +25,6 @@
 | common-data-migration | 数据迁移技能 |
 | common-dockerize | Docker容器化技能 |
 
-## 功能技能
-
-| 技能名称 | 描述 |
-|----------|------|
-| spring-ai-chat | Spring AI 聊天集成 |
-| model-provider-creator | 模型提供商创建器 |
-| mcp-tool-creator | MCP工具创建器 |
-| plan-executor | 计划执行器 |
-| exception-analysis | 异常分析技能 |
-
 ## 开源技能包装
 
 | 技能名称 | 描述 | 底层实现 |
@@ -96,4 +86,4 @@ skills:
 | 代码质量 | common-code-review, common-coding | 代码审查与规范 |
 | 测试 | common-backend-unit-test, common-frontend-playwright-test | 单元测试与UI测试 |
 | 部署 | common-dockerize | Docker容器化 |
-| AI集成 | spring-ai-chat, os-chat-model | AI能力集成 |
+| 规范管理 | common-project-standard, common-requirement-clarification | 项目规范与需求澄清 |

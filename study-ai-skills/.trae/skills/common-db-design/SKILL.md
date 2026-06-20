@@ -1,6 +1,10 @@
 ---
 name: "common-db-design"
-description: "数据库设计技能 - 生成表结构和实体类"
+description: "数据库设计技能，生成表结构和实体类"
+trigger: "需要设计数据库表结构时"
+disable-when: "数据库已设计完成或使用NoSQL数据库"
+category: "database"
+tags: ["database", "design", "sql", "entity"]
 ---
 
 # 数据库设计技能
@@ -74,3 +78,5 @@ description: "数据库设计技能 - 生成表结构和实体类"
 ## 扩展指南
 
 支持自定义字段类型映射和命名规则。
+## 触发条件
+

@@ -1,6 +1,10 @@
 ---
 name: "common-vue-init"
-description: "Vue 项目初始化技能"
+description: "Vue项目初始化技能，快速创建Vue前端项目"
+trigger: "用户请求创建新的Vue项目时"
+disable-when: "项目已存在或非前端项目"
+category: "frontend"
+tags: ["vue", "frontend", "javascript", "project-init"]
 ---
 
 # Vue 项目初始化技能
@@ -93,3 +97,5 @@ export default defineConfig({
 ## 扩展指南
 
 支持添加自定义模板和插件。
+## 触发条件
+

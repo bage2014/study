@@ -1,6 +1,10 @@
 ---
 name: "common-data-migration"
-description: "数据迁移技能 - 支持Flyway和Liquibase"
+description: "数据迁移技能，支持Flyway和Liquibase数据库迁移"
+trigger: "需要进行数据库版本迁移时"
+disable-when: "数据库结构稳定或无需版本管理"
+category: "database"
+tags: ["database", "migration", "flyway", "liquibase"]
 ---
 
 # 数据迁移技能
@@ -74,3 +78,5 @@ spring:
 ## 扩展指南
 
 支持自定义迁移脚本模板。
+## 触发条件
+

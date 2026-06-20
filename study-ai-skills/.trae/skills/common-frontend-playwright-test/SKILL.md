@@ -1,6 +1,10 @@
 ---
 name: "common-frontend-playwright-test"
-description: "前端Playwright测试技能。提供前端UI自动化测试的指导和生成能力。"
+description: "前端Playwright测试技能，提供UI自动化测试指导和生成能力"
+trigger: "需要编写前端自动化测试时"
+disable-when: "已有完善的前端测试或使用其他测试框架"
+category: "frontend"
+tags: ["testing", "playwright", "frontend", "automation"]
 ---
 
 # 前端 Playwright 测试技能
@@ -224,3 +228,5 @@ playwright:
 1. 在定位器生成器中添加新策略
 2. 定义策略的优先级和匹配规则
 3. 更新定位器最佳实践文档
+## 触发条件
+

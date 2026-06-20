@@ -1,6 +1,10 @@
 ---
 name: "common-dockerize"
-description: "Docker容器化技能 - 生成Docker配置"
+description: "Docker容器化技能，生成Docker配置文件"
+trigger: "需要将项目容器化部署时"
+disable-when: "项目已容器化或使用其他部署方式"
+category: "devops"
+tags: ["docker", "container", "devops", "deployment"]
 ---
 
 # Docker容器化技能
@@ -110,3 +114,5 @@ volumes:
 ## 扩展指南
 
 支持自定义镜像模板和编排配置。
+## 触发条件
+

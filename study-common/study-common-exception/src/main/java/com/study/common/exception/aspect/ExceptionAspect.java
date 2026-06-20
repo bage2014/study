@@ -29,7 +29,7 @@ public class ExceptionAspect {
         } catch (IllegalArgumentException e) {
             log.warn("Illegal argument exception in {}#{}, message: {}", className, methodName, e.getMessage());
             return ResponseEntity.badRequest().body(ErrorResponse.of(ErrorCode.PARAM_ERROR.getCode(), e.getMessage()));
-        } catch (Exception e) {
+        } catch (Throwable e) {
             log.error("Unexpected exception in {}#{}, message: {}", className, methodName, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ErrorResponse.of(ErrorCode.SYSTEM_ERROR.getCode(), ErrorCode.SYSTEM_ERROR.getMessage()));

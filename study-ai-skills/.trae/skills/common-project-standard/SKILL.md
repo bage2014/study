@@ -1,6 +1,10 @@
 ---
 name: "common-project-standard"
-description: "项目规范技能。提供项目结构、文档管理、代码忽略等方面的标准和最佳实践，以及技能规范验证和开源技能包装机制。"
+description: "项目规范技能，提供项目结构、文档管理、代码忽略等方面的标准和最佳实践"
+trigger: "需要创建新项目或规范现有项目时"
+disable-when: "项目已有完善的规范体系"
+category: "common"
+tags: ["project", "standard", "best-practices"]
 ---
 
 # 项目规范技能
@@ -86,20 +90,121 @@ description: "项目规范技能。提供项目结构、文档管理、代码忽
 ```markdown
 ---
 name: "skill-name"
-description: "技能描述"
+description: "技能描述，简要说明技能的核心价值和用途"
+trigger: "触发条件，简洁描述技能何时被触发"
+disable-when: "禁用条件，描述不适合使用此技能的场景"
+category: "技能分类，如：backend/frontend/database/devops/ai"
+tags: ["标签1", "标签2"]
+requires: ["依赖技能1", "依赖技能2"]
 ---
 
 # 技能名称
 
 ## 功能描述
+## 触发条件
 ## 何时使用
+## 何时不使用
 ## 核心功能
 ## 输入参数
 ## 输出格式
 ## 使用流程
+## 调用示例
+## 失败案例
 ## 最佳实践
 ## 配置要求
 ## 扩展指南
+```
+
+### 1.3.0 Frontmatter 元数据规范
+
+Frontmatter 是技能的元数据定义区，用于描述技能的基本信息和属性：
+
+| 字段 | 类型 | 必要性 | 说明 |
+|------|------|--------|------|
+| **name** | String | 必填 | 技能名称，必须与目录名一致 |
+| **description** | String | 必填 | 技能的核心价值和用途描述（1-2句话） |
+| **trigger** | String | 必填 | 触发条件，简洁描述技能何时被触发 |
+| **disable-when** | String | 必填 | 禁用条件，描述不适合使用此技能的场景 |
+| **category** | String | 必填 | 技能分类（backend/frontend/database/devops/ai等） |
+| **tags** | Array | 推荐 | 技能标签，用于分类和搜索 |
+| **requires** | Array | 可选 | 依赖的其他技能名称 |
+
+**Frontmatter 示例**：
+```markdown
+---
+name: "common-spring-boot-init"
+description: "快速创建 Spring Boot 项目结构，支持多种数据库和依赖配置"
+trigger: "用户请求创建新的 Spring Boot 项目时"
+disable-when: "项目已存在或非 Java 技术栈项目"
+category: "backend"
+tags: ["spring", "java", "backend", "project-init"]
+requires: ["common-db-design"]
+---
+```
+
+### 1.3.1 文档章节说明
+
+| 章节 | 必要性 | 说明 |
+|------|--------|------|
+| **功能描述** | 必填 | 技能的核心能力和价值定位 |
+| **触发条件** | 必填 | 技能被触发执行的条件和前置要求 |
+| **何时使用** | 必填 | 适合使用此技能的场景 |
+| **何时不使用** | 推荐 | 不适合使用此技能的场景（禁用样例） |
+| **核心功能** | 必填 | 技能提供的具体功能列表 |
+| **输入参数** | 必填 | 输入参数定义（表格形式） |
+| **输出格式** | 必填 | 输出数据格式（JSON示例） |
+| **使用流程** | 推荐 | 使用该技能的步骤说明 |
+| **调用示例** | 推荐 | 实际使用的代码或命令示例 |
+| **失败案例** | 推荐 | 常见错误场景及解决方案 |
+| **最佳实践** | 推荐 | 使用该技能的最佳实践建议 |
+| **配置要求** | 可选 | 环境变量、配置文件等要求 |
+| **扩展指南** | 可选 | 如何扩展或定制该技能 |
+
+### 1.3.2 触发条件规范
+
+触发条件应明确以下内容：
+
+1. **前置条件**：使用技能前必须满足的条件
+2. **环境要求**：所需的软件、依赖、权限等
+3. **数据准备**：需要预先准备的数据或配置
+4. **触发方式**：技能被调用的方式（API、命令行、事件等）
+
+**示例格式**：
+```markdown
+## 触发条件
+
+- **前置条件**：项目已初始化，具备基础目录结构
+- **环境要求**：Java 21+, Maven 3.8+, Spring Boot 3.2+
+- **数据准备**：配置文件 `application.yml` 已存在
+- **触发方式**：API 调用 / 命令行执行 / 事件触发
+```
+
+### 1.3.3 何时不使用（禁用样例）
+
+明确列出不适合使用此技能的场景：
+
+**示例格式**：
+```markdown
+## 何时不使用
+
+- 当项目已使用其他 ORM 框架时，不建议使用此技能
+- 简单的 CRUD 操作无需使用此技能
+- 需要复杂事务管理的场景请使用其他方案
+```
+
+### 1.3.4 失败案例规范
+
+记录常见的失败场景及解决方案：
+
+**示例格式**：
+```markdown
+## 失败案例
+
+| 错误场景 | 错误信息 | 解决方案 |
+|----------|----------|----------|
+| 数据库连接失败 | `Connection refused` | 检查数据库服务是否启动 |
+| 权限不足 | `Permission denied` | 确认用户有足够的文件权限 |
+| 依赖缺失 | `ClassNotFoundException` | 检查 pom.xml 依赖配置 |
 ```
 
 ### 1.4 技能注册流程
@@ -425,9 +530,131 @@ config/secrets.json
 
 ---
 
-## 5. 项目结构规范
+## 5. Trae 忽略规范
 
-### 5.1 后端项目结构
+### 5.1 .traeignore 文件位置
+
+- 根目录：`.traeignore` - 全局 Trae 忽略规则
+
+### 5.2 .traeignore 作用
+
+`.traeignore` 文件用于指定 Trae AI 系统应忽略的文件和目录，这些文件不会被技能系统加载或处理。
+
+### 5.3 .traeignore 标准配置
+
+```gitignore
+# 技能缓存目录
+.cache/
+.skills-cache/
+
+# 技能临时文件
+*.tmp
+*.temp
+
+# 技能索引文件
+skills-index.json
+skills-mapping.json
+
+# 日志文件
+*.log
+logs/
+
+# 测试文件
+__tests__/
+*.test.js
+*.spec.js
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 技能开发文件
+dev/
+examples/
+samples/
+
+# 技能模板文件
+*.template
+*.stub
+
+# 技能打包文件
+*.zip
+*.tar.gz
+*.tgz
+
+# 依赖目录
+node_modules/
+vendor/
+
+# 构建产物
+dist/
+build/
+```
+
+### 5.4 .traeignore 与 .gitignore 的区别
+
+| 文件 | 作用 | 适用范围 |
+|------|------|----------|
+| `.gitignore` | 版本控制忽略 | Git 仓库 |
+| `.traeignore` | 技能系统忽略 | Trae AI 技能加载 |
+
+### 5.5 联合使用建议
+
+```
+项目根目录
+├── .gitignore          # Git 版本控制忽略
+├── .traeignore         # Trae 技能系统忽略
+└── .trae/
+    ├── skills/         # 技能目录（Git 追踪，Trae 加载）
+    └── cache/          # 缓存目录（Git 忽略，Trae 忽略）
+```
+
+### 5.6 示例配置
+
+**项目根目录 `.gitignore`**：
+```gitignore
+# Trae 缓存目录
+.trae/cache/
+.trae/.cache/
+
+# Trae 临时文件
+.trae/*.tmp
+```
+
+**项目根目录 `.traeignore`**：
+```gitignore
+# 忽略技能开发目录
+dev/
+examples/
+
+# 忽略测试文件
+__tests__/
+*.test.js
+
+# 忽略编辑器配置
+.vscode/
+.idea/
+```
+
+**技能目录 `.traeignore`**（可选）：
+```gitignore
+# 技能内部忽略规则
+node_modules/
+*.log
+```
+
+---
+
+## 6. 项目结构规范
+
+### 6.1 后端项目结构
 
 ```
 xx-parent/                     # Maven 父模块
@@ -451,7 +678,7 @@ xx-parent/                     # Maven 父模块
     └── skills/
 ```
 
-### 5.2 模块职责说明
+### 6.2 模块职责说明
 
 | 模块 | 职责 | 说明 |
 |------|------|------|
@@ -459,7 +686,7 @@ xx-parent/                     # Maven 父模块
 | `xx-biz` | 核心业务逻辑 | 实现业务功能，处理业务规则 |
 | `xx-infra` | 基础设施支持 | 公共组件、工具类、配置 |
 
-### 5.3 包结构规范
+### 6.3 包结构规范
 
 ```
 com/bage/xx/
@@ -478,9 +705,9 @@ com/bage/xx/
 
 ---
 
-## 6. 技能安装与配置
+## 7. 技能安装与配置
 
-### 6.1 安装方式
+### 7.1 安装方式
 
 #### 使用安装脚本（推荐）
 
@@ -504,7 +731,7 @@ mkdir -p /path/to/your/project/.trae/skills
 cp -r /path/to/study-ai-skills/.trae/skills/common-project-standard /path/to/your/project/.trae/skills/
 ```
 
-### 6.2 安装脚本使用说明
+### 7.2 安装脚本使用说明
 
 ```bash
 # 查看帮助
@@ -532,7 +759,7 @@ cp -r /path/to/study-ai-skills/.trae/skills/common-project-standard /path/to/you
 ./install-skills.sh --ide trae .
 ```
 
-### 6.3 配置文件
+### 7.3 配置文件
 
 创建 `.trae/config.yml` 配置文件：
 
@@ -599,9 +826,9 @@ echo 'export PATH="$HOME/.trae:$PATH"' >> ~/.zshrc
 
 ---
 
-## 7. 技能规范验证
+## 8. 技能规范验证
 
-### 7.1 验证脚本使用
+### 8.1 验证脚本使用
 
 ```bash
 # 验证所有技能
@@ -620,7 +847,7 @@ echo 'export PATH="$HOME/.trae:$PATH"' >> ~/.zshrc
 ./validate-skills.sh -f -s common-coding
 ```
 
-### 7.2 验证规则
+### 8.2 验证规则
 
 | 检查项 | 说明 | 级别 |
 |--------|------|------|
@@ -635,7 +862,7 @@ echo 'export PATH="$HOME/.trae:$PATH"' >> ~/.zshrc
 | 输入参数表格 | 输入参数章节应包含表格 | 警告 |
 | 输出格式示例 | 输出格式章节应包含示例 | 警告 |
 
-### 7.3 修复功能
+### 8.3 修复功能
 
 验证脚本的 `-f` 参数可以自动修复以下问题：
 
@@ -645,9 +872,9 @@ echo 'export PATH="$HOME/.trae:$PATH"' >> ~/.zshrc
 
 ---
 
-## 8. 开源技能包装机制
+## 9. 开源技能包装机制
 
-### 8.1 设计理念
+### 9.1 设计理念
 
 为了支持多种实现的切换，开源技能采用包装模式：
 
@@ -681,14 +908,14 @@ echo 'export PATH="$HOME/.trae:$PATH"' >> ~/.zshrc
 └───────────────┘ └───────────────┘ └───────────────┘
 ```
 
-### 8.2 技能命名约定
+### 9.2 技能命名约定
 
 | 前缀 | 说明 | 示例 |
 |------|------|------|
 | `os-` | 开源技能包装 | `os-ui-library`, `os-chat-model` |
 | `os-{name}-impl-` | 具体实现 | `os-ui-library-impl-native`, `os-ui-library-impl-componenta` |
 
-### 8.3 配置方式
+### 9.3 配置方式
 
 ```yaml
 # .trae/config.yml
@@ -733,7 +960,7 @@ skills:
             - CLAUDE_API_KEY
 ```
 
-### 8.4 开源技能包装示例
+### 9.4 开源技能包装示例
 
 #### 技能目录结构
 
@@ -811,7 +1038,7 @@ skills:
 | componentb | 基于 Component Library B | ⚠️ |
 ```
 
-### 8.5 切换实现流程
+### 9.5 切换实现流程
 
 ```bash
 # 查看当前配置
@@ -829,7 +1056,7 @@ npm install @componenta/core
 
 ---
 
-## 9. 代码审查检查清单
+## 10. 代码审查检查清单
 
 | 检查项 | 说明 | 状态 |
 |--------|------|------|
@@ -837,6 +1064,7 @@ npm install @componenta/core
 | 文档完整性 | 是否有必要的文档说明 | ✅/❌ |
 | Git忽略 | .gitignore 是否完整 | ✅/❌ |
 | AI忽略 | AI 相关文件是否正确忽略 | ✅/❌ |
+| Trae忽略 | .traeignore 是否完整 | ✅/❌ |
 | 项目结构 | 目录结构是否符合规范 | ✅/❌ |
 | 命名规范 | 文件和目录命名是否符合规范 | ✅/❌ |
 | 技能注册 | 是否在 SKILLS.md 中注册 | ✅/❌ |
@@ -845,9 +1073,9 @@ npm install @componenta/core
 
 ---
 
-## 10. 配置要求
+## 11. 配置要求
 
-### 10.1 环境变量
+### 11.1 环境变量
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
@@ -855,7 +1083,7 @@ npm install @componenta/core
 | PROJECT_TYPE | 项目类型 | backend |
 | TRAE_SKILLS_PATH | 技能目录路径 | .trae/skills |
 
-### 10.2 配置文件
+### 11.2 配置文件
 
 ```yaml
 project:
@@ -879,9 +1107,9 @@ skills:
 
 ---
 
-## 11. 扩展指南
+## 12. 扩展指南
 
-### 11.1 添加新技能
+### 12.1 添加新技能
 
 1. 在 `.trae/skills/` 目录下创建新目录
 2. 创建 `SKILL.md` 文件
@@ -889,14 +1117,14 @@ skills:
 4. 在 `SKILLS.md` 中添加技能清单
 5. 使用 `./validate-skills.sh` 验证格式
 
-### 11.2 添加开源技能包装
+### 12.2 添加开源技能包装
 
 1. 创建包装层技能（`os-{name}`）
 2. 创建各实现技能（`os-{name}-impl-{implementation}`）
 3. 在配置文件中定义可用实现
 4. 实现统一接口层
 
-### 11.3 切换开源实现
+### 12.3 切换开源实现
 
 1. 修改 `.trae/config.yml` 中的 active 配置
 2. 安装必要的依赖
