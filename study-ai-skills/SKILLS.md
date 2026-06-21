@@ -6,6 +6,7 @@
 |----------|------|
 | personal-backend-coding-standard | 后端编码规范技能 |
 | personal-frontend-coding-standard | 前端编码规范技能 |
+| personal-java-common | Java 通用工具技能，提供日期工具、日志工具等公共代码 |
 
 ## 通用技能
 
@@ -86,4 +87,5 @@ skills:
 | 代码质量 | common-code-review, common-coding | 代码审查与规范 |
 | 测试 | common-backend-unit-test, common-frontend-playwright-test | 单元测试与UI测试 |
 | 部署 | common-dockerize | Docker容器化 |
+| 工具类 | personal-java-common | Java通用工具类 |
 | 规范管理 | common-project-standard, common-requirement-clarification | 项目规范与需求澄清 |
