@@ -8,8 +8,8 @@ class Solution2 {
     public int solution(String methodName, int a, int b) throws Exception {
         Method method = Calculator.class.getClass().getDeclaredMethod(methodName,new Class[]{Integer.class,Integer.class});
             if(method.getName().equals(methodName)){
-                Object result = method.invoke,new Object[]{a,b});
-                return Integer.parseInt(String.valueOf(result));
+//                Object result = method.invoke,new Object[]{a,b});
+//                return Integer.parseInt(String.valueOf(result));
             }
         throw new NoSuchMethodException();
     }
