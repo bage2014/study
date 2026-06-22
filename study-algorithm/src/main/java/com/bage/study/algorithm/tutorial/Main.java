@@ -26,7 +26,6 @@ public class Main {
                 int value = Integer.parseInt(split[1]);
 
                 //  求和
-//            String keyOrigin= date.getYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
                 String key = new Date(date.getYear(), date.getMonth(), date.getDate(),
                         date.getHours(), date.getMinutes()).getTime() + "";
                 total.put(key, total.getOrDefault(key, 0) + value);
