@@ -4,12 +4,6 @@
 # Log files
 *.log
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
 # Package Files
 *.jar
 *.war
@@ -37,8 +31,6 @@ Thumbs.db
 # Maven
 target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
 # Gradle
 build/
@@ -66,11 +58,6 @@ spring-shell.log
 study-ai/myappendpoint/src/main/resources/local.properties
 study-ai-myapp-fimaly/.vscode
 study-ai-myapp-fimaly/backend/uploads
-study-ai-best-practice-dev-flow/best-practice-dev-flow-ui/test-results
-study-ai-best-practice-dev-flow/best-practice-dev-flow-frontend/node_modules
-study-ai-best-practice-dev-flow/best-practice-dev-flow-frontend/playwright-report
-study-ai-best-practice-dev-flow/best-practice-dev-flow-frontend/test-results
-study-ai-best-practice-dev-flow/best-practice-dev-flow-frontend/dist
 
 # Gray Flow modules
 study-gray-flow/target/

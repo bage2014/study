@@ -226,6 +226,8 @@
         <module>study-ai</module>
         <module>study-dpf</module>
         <module>study-calcite</module>
+        <module>study-gray-flow</module>
+        <module>study-gray-validator</module>
 
     </modules>
 </project>
