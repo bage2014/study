@@ -5,7 +5,7 @@
 
 set -e
 
-SKILLS_DIR=".trae/skills"
+SKILLS_DIR="skills"
 VALIDATION_LOG="/tmp/skill-validation.log"
 
 # 定义标准结构

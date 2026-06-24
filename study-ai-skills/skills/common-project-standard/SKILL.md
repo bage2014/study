@@ -69,7 +69,7 @@ tags: ["project", "standard", "best-practices"]
 ### 1.1 技能目录结构
 
 ```
-.trae/skills/
+skills/
 ├── skill-name/           # 技能名称（小写连字符）
 │   └── SKILL.md          # 技能定义文件（必填）
 ```
@@ -209,7 +209,7 @@ requires: ["common-db-design"]
 
 ### 1.4 技能注册流程
 
-1. 在 `.trae/skills/` 目录下创建技能目录
+1. 在 `skills/` 目录下创建技能目录
 2. 创建 `SKILL.md` 文件
 3. 在 `AGENTS.md` 中添加技能说明
 4. 在 `SKILLS.md` 中注册技能
@@ -310,7 +310,7 @@ docs/
 
 ## 技能目录
 
-所有技能位于 `.trae/skills/` 目录下。
+所有技能位于 `skills/` 目录下。
 
 ## 技能分类
 
@@ -728,7 +728,7 @@ cd study-ai-skills
 mkdir -p /path/to/your/project/.trae/skills
 
 # 复制技能（以 common-project-standard 为例）
-cp -r /path/to/study-ai-skills/.trae/skills/common-project-standard /path/to/your/project/.trae/skills/
+cp -r /path/to/study-ai-skills/skills/common-project-standard /path/to/your/project/skills/
 ```
 
 ### 7.2 安装脚本使用说明
@@ -965,7 +965,7 @@ skills:
 #### 技能目录结构
 
 ```
-.trae/skills/
+skills/
 ├── os-ui-library/                    # 包装技能（统一接口）
 │   └── SKILL.md
 ├── os-ui-library-impl-native/        # 自研实现
@@ -1111,7 +1111,7 @@ skills:
 
 ### 12.1 添加新技能
 
-1. 在 `.trae/skills/` 目录下创建新目录
+1. 在 `skills/` 目录下创建新目录
 2. 创建 `SKILL.md` 文件
 3. 在 `AGENTS.md` 中注册技能
 4. 在 `SKILLS.md` 中添加技能清单

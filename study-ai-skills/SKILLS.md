@@ -17,12 +17,16 @@
 | common-frontend-playwright-test | 前端Playwright测试技能 |
 | common-backend-unit-test | 后端单元测试技能 |
 | common-coding | 编码技能 |
-| common-requirement-clarification | 需求澄清技能 |
+| common-requirement-clarification | 需求澄清技能（含头脑风暴模块） |
+| common-spec-driven | Spec驱动的技能规范 |
+| common-grill-me | Grill Me 深度质询技能 |
 | common-code-review | 代码审查技能 |
 | common-spring-boot-init | Spring Boot 项目初始化技能 |
 | common-db-design | 数据库设计技能 |
 | common-api-doc | API文档生成技能 |
 | common-vue-init | Vue 项目初始化技能 |
+| common-ui-design-spec | UI设计规范技能 |
+| common-ui-mockup | UI原型图生成技能 |
 | common-data-migration | 数据迁移技能 |
 | common-dockerize | Docker容器化技能 |
 

@@ -35,7 +35,6 @@ fi
 # 创建全局目录
 echo -e "${YELLOW}创建全局配置目录...${NC}"
 mkdir -p "$TRAE_GLOBAL_DIR"
-mkdir -p "$TRAE_GLOBAL_DIR/skills"
 mkdir -p "$TRAE_GLOBAL_DIR/bin"
 
 # 创建技能配置文件
@@ -44,7 +43,7 @@ cat > "$SKILLS_CONFIG_FILE" << 'EOF'
 # 全局技能配置
 skills:
   # 技能仓库位置
-  repository: __SKILLS_REPO_DIR__/.trae/skills
+  repository: __SKILLS_REPO_DIR__/skills
   
   # 默认启用的技能
   default-enabled:
@@ -86,7 +85,7 @@ rm -f "$SKILLS_CONFIG_FILE.bak"
 
 # 创建技能路径文件
 echo -e "${YELLOW}创建技能路径文件...${NC}"
-echo "$SKILLS_REPO_DIR/.trae/skills" > "$SKILLS_PATH_FILE"
+echo "$SKILLS_REPO_DIR/skills" > "$SKILLS_PATH_FILE"
 
 # 创建全局命令链接
 echo -e "${YELLOW}创建全局命令...${NC}"
@@ -96,10 +95,10 @@ cat > "$TRAE_GLOBAL_DIR/bin/skills-install" << 'EOF'
 #!/bin/bash
 # AI Skills 安装命令
 
-SKILLS_REPO_DIR=$(cat "$HOME/.trae/skills-path")
-SCRIPT_DIR=$(dirname "$(dirname "$SKILLS_REPO_DIR")")
+SKILLS_DIR=$(cat "$HOME/.trae/skills-path")
+SKILLS_REPO_DIR=$(dirname "$SKILLS_DIR")
 
-"$SCRIPT_DIR/install-skills.sh" "$@"
+"$SKILLS_REPO_DIR/install-skills.sh" "$@"
 EOF
 chmod +x "$TRAE_GLOBAL_DIR/bin/skills-install"
 
@@ -108,10 +107,10 @@ cat > "$TRAE_GLOBAL_DIR/bin/skills-validate" << 'EOF'
 #!/bin/bash
 # AI Skills 验证命令
 
-SKILLS_REPO_DIR=$(cat "$HOME/.trae/skills-path")
-SCRIPT_DIR=$(dirname "$(dirname "$SKILLS_REPO_DIR")")
+SKILLS_DIR=$(cat "$HOME/.trae/skills-path")
+SKILLS_REPO_DIR=$(dirname "$SKILLS_DIR")
 
-"$SCRIPT_DIR/validate-skills.sh" "$@"
+"$SKILLS_REPO_DIR/validate-skills.sh" "$@"
 EOF
 chmod +x "$TRAE_GLOBAL_DIR/bin/skills-validate"
 
@@ -120,10 +119,10 @@ cat > "$TRAE_GLOBAL_DIR/bin/skills-list" << 'EOF'
 #!/bin/bash
 # AI Skills 列出技能命令
 
-SKILLS_REPO_DIR=$(cat "$HOME/.trae/skills-path")
-SCRIPT_DIR=$(dirname "$(dirname "$SKILLS_REPO_DIR")")
+SKILLS_DIR=$(cat "$HOME/.trae/skills-path")
+SKILLS_REPO_DIR=$(dirname "$SKILLS_DIR")
 
-"$SCRIPT_DIR/install-skills.sh" -l
+"$SKILLS_REPO_DIR/install-skills.sh" -l
 EOF
 chmod +x "$TRAE_GLOBAL_DIR/bin/skills-list"
 
@@ -133,10 +132,10 @@ cat > "$TRAE_GLOBAL_DIR/bin/skills-update" << 'EOF'
 # AI Skills 更新命令
 
 echo "正在更新技能仓库..."
-SKILLS_REPO_DIR=$(cat "$HOME/.trae/skills-path")
-SCRIPT_DIR=$(dirname "$SKILLS_REPO_DIR")
+SKILLS_DIR=$(cat "$HOME/.trae/skills-path")
+SKILLS_REPO_DIR=$(dirname "$SKILLS_DIR")
 
-cd "$SCRIPT_DIR"
+cd "$SKILLS_REPO_DIR"
 git pull origin main
 
 echo "技能仓库已更新!"
@@ -191,7 +190,7 @@ cat > "$TRAE_GLOBAL_DIR/env.sh" << 'EOF'
 #!/bin/bash
 # AI Skills 环境变量配置
 
-export TRAE_SKILLS_PATH="$HOME/.trae/skills"
+export TRAE_SKILLS_PATH="$HOME/skills"
 export TRAE_CONFIG_PATH="$HOME/.trae"
 export PATH="$HOME/.trae/bin:$PATH"
 EOF
@@ -200,7 +199,7 @@ chmod +x "$TRAE_GLOBAL_DIR/env.sh"
 # 创建技能软链接
 echo -e "${YELLOW}创建技能软链接...${NC}"
 rm -rf "$TRAE_GLOBAL_DIR/skills"
-ln -sf "$SKILLS_REPO_DIR/.trae/skills" "$TRAE_GLOBAL_DIR/skills"
+ln -sf "$SKILLS_REPO_DIR/skills" "$TRAE_GLOBAL_DIR/skills"
 
 # 安装完成信息
 echo ""
