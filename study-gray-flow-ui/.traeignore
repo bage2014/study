@@ -1,0 +1,25 @@
+# Node.js dependencies
+node_modules/
+
+# Log files
+npm-debug.log
+yarn-error.log
+*.log
+
+# Build output
+dist/
+build/
+.output/
+
+# Playwright
+playwright-report/
+test-results/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
