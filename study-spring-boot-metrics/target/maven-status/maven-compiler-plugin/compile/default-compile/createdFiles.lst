@@ -1,5 +1,0 @@
-com/bage/TestController.class
-com/bage/metrics/CounterController.class
-com/bage/PrometheusCustomMonitor.class
-com/bage/PrometheusApplication.class
-com/bage/metrics/TimerController.class

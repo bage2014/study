@@ -1,4 +1,0 @@
-my:
-  properties:
-   enabled: true
-   config: hello-world

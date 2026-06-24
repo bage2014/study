@@ -1,6 +1,0 @@
-R_DEF: Internal format may change without notice
-local
-drawable corner
-drawable toast_bg
-id text
-layout toast_custom

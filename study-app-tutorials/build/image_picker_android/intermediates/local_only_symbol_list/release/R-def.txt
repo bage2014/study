@@ -1,3 +1,0 @@
-R_DEF: Internal format may change without notice
-local
-xml flutter_image_picker_file_paths

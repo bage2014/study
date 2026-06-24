@@ -1,3 +1,0 @@
-D com/baseflow/permissionhandler/PermissionConstants$PermissionGroup
-D com/baseflow/permissionhandler/PermissionConstants$PermissionStatus
-D com/baseflow/permissionhandler/PermissionConstants$ServiceStatus

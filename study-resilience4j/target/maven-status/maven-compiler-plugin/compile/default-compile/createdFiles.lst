@@ -1,5 +1,0 @@
-com/bage/study/resilience4j/IntegrationAllTest.class
-com/bage/study/resilience4j/BackendService.class
-com/bage/study/resilience4j/BackendServiceImpl.class
-com/bage/study/resilience4j/LimitTest.class
-com/bage/study/resilience4j/CircuitbreakerTest.class

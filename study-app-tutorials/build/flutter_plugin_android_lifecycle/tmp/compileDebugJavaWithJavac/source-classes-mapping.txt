@@ -1,6 +1,0 @@
-io/flutter/plugins/flutter_plugin_android_lifecycle/FlutterAndroidLifecyclePlugin.java
- io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin
-io/flutter/embedding/engine/plugins/lifecycle/FlutterLifecycleAdapter.java
- io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
-io/flutter/plugins/flutter_plugin_android_lifecycle/BuildConfig.java
- io.flutter.plugins.flutter_plugin_android_lifecycle.BuildConfig
