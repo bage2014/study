@@ -4,7 +4,7 @@
 # Log files
 *.log
 
-# Package files
+# Package Files
 *.jar
 *.war
 *.nar
@@ -13,45 +13,32 @@
 *.tar.gz
 *.rar
 
-# Maven
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
 
-# IDE
+# IDE files
 .idea/
 *.iml
 *.ipr
 *.iws
-.project
-.classpath
-.settings/
 .vscode/
-*.swp
-*.swo
-*~
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
-# Eclipse
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
 
-# NetBeans
-nbproject/private/
+# Gradle
 build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+.gradle/
 
-# JVM crash logs
-hs_err_pid*
-replay_pid*
+# Spring Boot
+spring-shell.log
+
+# Database
+*.db
+

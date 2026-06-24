@@ -1,25 +1,44 @@
-# Node.js dependencies
-node_modules/
+# Compiled class files
+*.class
 
 # Log files
-npm-debug.log
-yarn-error.log
 *.log
 
-# Build output
-dist/
-build/
-.output/
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
-# Playwright
-playwright-report/
-test-results/
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
 
 # IDE files
 .idea/
-.vscode/
 *.iml
+*.ipr
+*.iws
+.vscode/
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+build/
+.gradle/
+
+# Spring Boot
+spring-shell.log
+
+# Database
+*.db
+

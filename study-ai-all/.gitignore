@@ -1,36 +1,44 @@
-# Node.js dependencies
-node_modules/
+# Compiled class files
+*.class
 
-# npm logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# Log files
+*.log
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
-# Editor directories and files
-.vscode/
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# IDE files
 .idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+*.iml
+*.ipr
+*.iws
+.vscode/
 
-# OS generated files
+# OS files
 .DS_Store
 Thumbs.db
 
-# Build outputs
-dist/
-build/
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
 
-# Test coverage
-coverage/
-.nyc_output/
+# Gradle
+build/
+.gradle/
+
+# Spring Boot
+spring-shell.log
+
+# Database
+*.db
+

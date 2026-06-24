@@ -1,78 +1,44 @@
-# Trae AI 忽略配置文件
-# 此文件定义 Trae AI 应该忽略的文件和目录
-# 格式类似于 .gitignore，支持 glob 模式
+# Compiled class files
+*.class
 
-# ==================== 版本控制 ====================
-.git/
-.github/
+# Log files
+*.log
 
-# ==================== 构建输出 ====================
-# 后端编译输出
-best-practice-dev-flow-backend/target/
+# Package Files
 *.jar
 *.war
+*.nar
 *.ear
+*.zip
+*.tar.gz
+*.rar
 
-# 前端构建输出
-best-practice-dev-flow-frontend/dist/
-best-practice-dev-flow-frontend/.dist/
-best-practice-dev-flow-frontend/build/
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
 
-# ==================== 依赖目录 ====================
-node_modules/
-best-practice-dev-flow-frontend/node_modules/
-
-# ==================== 日志文件 ====================
-*.log
-logs/
-*.log.*
-
-# ==================== 环境配置 ====================
-.env
-.env.local
-.env.development
-.env.production
-.env.test
-application-local.yml
-application-local.properties
-
-# ==================== 临时文件 ====================
-*.tmp
-*.temp
-.cache/
-.temp/
-
-# ==================== 编辑器配置 ====================
-.vscode/
+# IDE files
 .idea/
-*.swp
-*.swo
-*~
+*.iml
+*.ipr
+*.iws
+.vscode/
 
-# ==================== 系统文件 ====================
+# OS files
 .DS_Store
 Thumbs.db
 
-# ==================== 测试输出 ====================
-coverage/
-.nyc_output/
-playwright-report/
-test-results/
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
 
-# ==================== Maven 相关 ====================
-.mvn/
-mvnw
-mvnw.cmd
+# Gradle
+build/
+.gradle/
 
-# ==================== npm 相关 ====================
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+# Spring Boot
+spring-shell.log
 
-# ==================== 数据库文件 ====================
+# Database
 *.db
-*.sqlite
-h2-data/
 
-# ==================== Docker ====================
-docker-compose.override.yml

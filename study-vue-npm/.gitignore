@@ -1,19 +1,10 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Java template
-# Compiled class file
+# Compiled class files
 *.class
-my-app/node_modules
 
-# Log file
+# Log files
 *.log
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.nar
@@ -22,26 +13,32 @@ my-app/node_modules
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Virtual machine crash logs
 hs_err_pid*
-### Maven template
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
+replay_pid*
 
-# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
-!/.mvn/wrapper/maven-wrapper.jar
-### Example user template template
-### Example user template
-
-# IntelliJ project files
-.idea
+# IDE files
+.idea/
 *.iml
-out
-gen
+*.ipr
+*.iws
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+build/
+.gradle/
+
+# Spring Boot
+spring-shell.log
+
+# Database
+*.db
+
