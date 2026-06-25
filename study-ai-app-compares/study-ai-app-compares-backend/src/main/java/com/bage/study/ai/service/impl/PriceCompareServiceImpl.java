@@ -9,12 +9,14 @@ import com.bage.study.ai.service.PriceCompareService;
 import com.bage.study.ai.service.TaobaoApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -25,10 +27,22 @@ public class PriceCompareServiceImpl implements PriceCompareService {
     private final TaobaoApiService taobaoApiService;
     private final JdApiService jdApiService;
     private final MeituanApiService meituanApiService;
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    private static final String CACHE_PREFIX = "price:compare:";
+    private static final long CACHE_EXPIRE_MINUTES = 30;
 
     @Override
     public CompareResultResponse comparePrices(String productName, String addressId) {
         log.info("开始比较价格，商品: {}, 地址ID: {}", productName, addressId);
+
+        String cacheKey = buildCacheKey(productName, addressId);
+        
+        CompareResultResponse cachedResult = getFromCache(cacheKey);
+        if (cachedResult != null) {
+            log.info("缓存命中，直接返回结果");
+            return cachedResult;
+        }
 
         String address = "未选择地址";
         if (addressId != null && !addressId.isEmpty()) {
@@ -46,12 +60,42 @@ public class PriceCompareServiceImpl implements PriceCompareService {
                 .min(Comparator.comparingDouble(ProductPriceResponse::getTotalPrice))
                 .orElse(null);
 
-        return CompareResultResponse.builder()
+        CompareResultResponse result = CompareResultResponse.builder()
                 .productName(productName)
                 .address(address)
                 .prices(prices)
                 .bestRecommendation(bestRecommendation)
                 .build();
+
+        saveToCache(cacheKey, result);
+
+        return result;
+    }
+
+    private String buildCacheKey(String productName, String addressId) {
+        return CACHE_PREFIX + productName.toLowerCase().trim() + ":" + (addressId != null ? addressId : "default");
+    }
+
+    @SuppressWarnings("unchecked")
+    private CompareResultResponse getFromCache(String key) {
+        try {
+            Object cached = redisTemplate.opsForValue().get(key);
+            if (cached instanceof CompareResultResponse) {
+                return (CompareResultResponse) cached;
+            }
+        } catch (Exception e) {
+            log.warn("从Redis缓存读取失败: {}", e.getMessage());
+        }
+        return null;
+    }
+
+    private void saveToCache(String key, CompareResultResponse result) {
+        try {
+            redisTemplate.opsForValue().set(key, result, CACHE_EXPIRE_MINUTES, TimeUnit.MINUTES);
+            log.info("结果已存入Redis缓存，有效期{}分钟", CACHE_EXPIRE_MINUTES);
+        } catch (Exception e) {
+            log.warn("写入Redis缓存失败: {}", e.getMessage());
+        }
     }
 
     private List<ProductPriceResponse> fetchPricesFromPlatforms(String productName) {

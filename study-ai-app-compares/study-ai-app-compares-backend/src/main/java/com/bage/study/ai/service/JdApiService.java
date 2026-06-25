@@ -1,6 +1,6 @@
 package com.bage.study.ai.service;
 
-import com.bage.study.ai.config.PlatformApiConfig.JdConfig;
+import com.bage.study.ai.config.PlatformApiConfig;
 import com.bage.study.ai.dto.response.ProductPriceResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +15,18 @@ import java.util.*;
 @RequiredArgsConstructor
 public class JdApiService {
 
-    private final JdConfig jdConfig;
+    private final PlatformApiConfig platformApiConfig;
     private final Random random = new Random();
 
+    private PlatformApiConfig.JdConfig getConfig() {
+        return platformApiConfig.getJd();
+    }
+
     public List<ProductPriceResponse> search(String keyword) {
-        if (!jdConfig.isEnabled() || 
-            jdConfig.getAppKey() == null || 
-            jdConfig.getAppSecret() == null) {
+        PlatformApiConfig.JdConfig config = getConfig();
+        if (!config.isEnabled() || 
+            config.getAppKey() == null || 
+            config.getAppSecret() == null) {
             log.warn("京东API未配置，使用模拟数据");
             return getMockData(keyword);
         }
@@ -35,8 +40,9 @@ public class JdApiService {
     }
 
     private List<ProductPriceResponse> callJdApi(String keyword) throws Exception {
+        PlatformApiConfig.JdConfig config = getConfig();
         Map<String, String> params = new TreeMap<>();
-        params.put("app_key", jdConfig.getAppKey());
+        params.put("app_key", config.getAppKey());
         params.put("method", "jd.item.search");
         params.put("timestamp", new Date().toString());
         params.put("format", "json");
@@ -44,11 +50,11 @@ public class JdApiService {
         params.put("keyword", keyword);
         params.put("sign_method", "md5");
         
-        if (jdConfig.getAccessToken() != null) {
-            params.put("access_token", jdConfig.getAccessToken());
+        if (config.getAccessToken() != null) {
+            params.put("access_token", config.getAccessToken());
         }
         
-        String sign = generateSign(params, jdConfig.getAppSecret());
+        String sign = generateSign(params, config.getAppSecret());
         params.put("sign", sign);
 
         log.info("调用京东API: {}", params);

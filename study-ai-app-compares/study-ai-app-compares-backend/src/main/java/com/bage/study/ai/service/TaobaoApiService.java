@@ -1,6 +1,6 @@
 package com.bage.study.ai.service;
 
-import com.bage.study.ai.config.PlatformApiConfig.TaobaoConfig;
+import com.bage.study.ai.config.PlatformApiConfig;
 import com.bage.study.ai.dto.response.ProductPriceResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +15,18 @@ import java.util.*;
 @RequiredArgsConstructor
 public class TaobaoApiService {
 
-    private final TaobaoConfig taobaoConfig;
+    private final PlatformApiConfig platformApiConfig;
     private final Random random = new Random();
 
+    private PlatformApiConfig.TaobaoConfig getConfig() {
+        return platformApiConfig.getTaobao();
+    }
+
     public List<ProductPriceResponse> search(String keyword) {
-        if (!taobaoConfig.isEnabled() || 
-            taobaoConfig.getAppKey() == null || 
-            taobaoConfig.getAppSecret() == null) {
+        PlatformApiConfig.TaobaoConfig config = getConfig();
+        if (!config.isEnabled() || 
+            config.getAppKey() == null || 
+            config.getAppSecret() == null) {
             log.warn("淘宝API未配置，使用模拟数据");
             return getMockData(keyword);
         }
@@ -35,16 +40,17 @@ public class TaobaoApiService {
     }
 
     private List<ProductPriceResponse> callTaobaoApi(String keyword) throws Exception {
+        PlatformApiConfig.TaobaoConfig config = getConfig();
         Map<String, String> params = new TreeMap<>();
-        params.put("app_key", taobaoConfig.getAppKey());
+        params.put("app_key", config.getAppKey());
         params.put("method", "taobao.items.search");
         params.put("timestamp", new Date().toString());
         params.put("format", "json");
-        params.put("v", taobaoConfig.getApiVersion());
+        params.put("v", config.getApiVersion());
         params.put("q", keyword);
         params.put("sign_method", "md5");
         
-        String sign = generateSign(params, taobaoConfig.getAppSecret());
+        String sign = generateSign(params, config.getAppSecret());
         params.put("sign", sign);
 
         log.info("调用淘宝API: {}", params);
@@ -78,7 +84,7 @@ public class TaobaoApiService {
         results.add(ProductPriceResponse.builder()
                 .platform("淘宝闪购")
                 .platformLogo("https://neeko-copilot.bytedance.net/api/text_to_image?prompt=taobao%20logo%20icon%20simple%20orange&image_size=square")
-                .productName(keywordFromResponse(response) + " - 淘宝闪购")
+                .productName("商品 - 淘宝闪购")
                 .productImage("https://neeko-copilot.bytedance.net/api/text_to_image?prompt=coconut%20latte%20coffee%20iced&image_size=square")
                 .price(25.9 + random.nextDouble() * 5)
                 .deliveryFee(3 + random.nextDouble() * 4)

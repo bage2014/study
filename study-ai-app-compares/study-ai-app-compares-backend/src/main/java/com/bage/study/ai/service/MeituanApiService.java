@@ -1,6 +1,6 @@
 package com.bage.study.ai.service;
 
-import com.bage.study.ai.config.PlatformApiConfig.MeituanConfig;
+import com.bage.study.ai.config.PlatformApiConfig;
 import com.bage.study.ai.dto.response.ProductPriceResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +15,18 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MeituanApiService {
 
-    private final MeituanConfig meituanConfig;
+    private final PlatformApiConfig platformApiConfig;
     private final Random random = new Random();
 
+    private PlatformApiConfig.MeituanConfig getConfig() {
+        return platformApiConfig.getMeituan();
+    }
+
     public List<ProductPriceResponse> search(String keyword) {
-        if (!meituanConfig.isEnabled() || 
-            meituanConfig.getAppKey() == null || 
-            meituanConfig.getAppSecret() == null) {
+        PlatformApiConfig.MeituanConfig config = getConfig();
+        if (!config.isEnabled() || 
+            config.getAppKey() == null || 
+            config.getAppSecret() == null) {
             log.warn("美团API未配置，使用模拟数据");
             return getMockData(keyword);
         }
@@ -35,12 +40,13 @@ public class MeituanApiService {
     }
 
     private List<ProductPriceResponse> callMeituanApi(String keyword) throws Exception {
+        PlatformApiConfig.MeituanConfig config = getConfig();
         Map<String, String> params = new TreeMap<>();
-        params.put("appkey", meituanConfig.getAppKey());
+        params.put("appkey", config.getAppKey());
         params.put("timestamp", String.valueOf(System.currentTimeMillis()));
         params.put("keyword", keyword);
         
-        String sign = generateSign(params, meituanConfig.getAppSecret());
+        String sign = generateSign(params, config.getAppSecret());
         params.put("sign", sign);
 
         log.info("调用美团API: {}", params);
