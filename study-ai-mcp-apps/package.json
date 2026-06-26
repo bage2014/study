@@ -1,0 +1,35 @@
+{
+  "name": "mcp-app-todo",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP Apps Todo List - Interactive UI for MCP",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run host\"",
+    "server": "tsx src/server/index.ts",
+    "host": "vite serve --host 0.0.0.0 --port 5173",
+    "build": "tsc && vite build",
+    "start": "node dist/server/index.js"
+  },
+  "dependencies": {
+    "@mcp-ui/client": "^5.6.2",
+    "@mcp-ui/server": "^5.6.2",
+    "@modelcontextprotocol/sdk": "^1.22.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.4",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^8.2.2",
+    "tsx": "^4.22.4",
+    "typescript": "^5.5.4",
+    "vite": "^5.2.0",
+    "vite-node": "^1.5.0"
+  }
+}
