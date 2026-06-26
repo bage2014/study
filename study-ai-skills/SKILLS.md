@@ -7,6 +7,10 @@
 | personal-backend-coding-standard | 后端编码规范技能 |
 | personal-frontend-coding-standard | 前端编码规范技能 |
 | personal-java-common | Java 通用工具技能，提供日期工具、日志工具等公共代码 |
+| personal-project-runner | 项目启动管理技能，支持Java和Vue项目的启动、重启、关闭 |
+| personal-doc-manager | 个人文档管理技能，管理变更记录、方案设计Spec文档、测试报告等 |
+| personal-solution-research | 方案调研技能，进行多方案比对分析，至少3个方案，建议5个方案比对 |
+| personal-brief-style | 简洁风格技能，禁止废话，采用caveman式简短直接的表达方式 |
 
 ## 通用技能
 
