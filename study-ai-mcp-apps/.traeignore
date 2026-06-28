@@ -1,0 +1,57 @@
+# 技能缓存目录
+.cache/
+.skills-cache/
+
+# 技能临时文件
+*.tmp
+*.temp
+
+# 技能索引文件
+skills-index.json
+skills-mapping.json
+
+# 日志文件
+*.log
+logs/
+
+# 测试文件
+__tests__/
+*.test.js
+*.test.ts
+*.test.tsx
+*.spec.js
+*.spec.ts
+*.spec.tsx
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 技能开发文件
+dev/
+examples/
+samples/
+
+# 技能模板文件
+*.template
+*.stub
+
+# 技能打包文件
+*.zip
+*.tar.gz
+*.tgz
+
+# 依赖目录
+node_modules/
+vendor/
+
+# 构建产物
+dist/
+build/

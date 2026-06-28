@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  title: MCP Apps Todo List API
+  description: 基于 SEP-1865 MCP Apps 规范的待办事项管理 API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: 本地开发服务器
+
+paths:
+  /mcp:
+    post:
+      summary: MCP JSON-RPC 请求
+      description: 发送 MCP JSON-RPC 请求，调用待办事项管理工具
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jsonrpc:
+                  type: string
+                  enum: ["2.0"]
+                id:
+                  type: integer
+                  description: 请求 ID
+                method:
+                  type: string
+                  enum: ["tools/call"]
+                params:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: 工具名称
+                    arguments:
+                      type: object
+                      description: 工具参数
+              required:
+                - jsonrpc
+                - id
+                - method
+                - params
+      responses:
+        '200':
+          description: 成功响应
+          content:
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  jsonrpc:
+                    type: string
+                  id:
+                    type: integer
+                  result:
+                    type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum: ["text", "resource"]
+                            text:
+                              type: string
+                            resource:
+                              type: object
+                              properties:
+                                uri:
+                                  type: string
+                                mimeType:
+                                  type: string
+                                text:
+                                  type: string
+    get:
+      summary: MCP SSE 连接
+      description: 建立 MCP Streamable HTTP Transport 连接
+      responses:
+        '200':
+          description: SSE 连接成功
+
+components:
+  schemas:
+    TodoItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 待办事项 ID
+        text:
+          type: string
+          description: 待办事项内容
+        completed:
+          type: boolean
+          description: 是否完成
+        createdAt:
+          type: string
+          format: date-time
+          description: 创建时间
+      required:
+        - id
+        - text
+        - completed
+
+  examples:
+    ListTodosRequest:
+      value:
+        jsonrpc: "2.0"
+        id: 123
+        method: "tools/call"
+        params:
+          name: "listTodos"
+          arguments: {}
+    AddTodoRequest:
+      value:
+        jsonrpc: "2.0"
+        id: 123
+        method: "tools/call"
+        params:
+          name: "addTodo"
+          arguments:
+            text: "Buy milk"
+    ToggleTodoRequest:
+      value:
+        jsonrpc: "2.0"
+        id: 123
+        method: "tools/call"
+        params:
+          name: "toggleTodo"
+          arguments:
+            id: 1
+    DeleteTodoRequest:
+      value:
+        jsonrpc: "2.0"
+        id: 123
+        method: "tools/call"
+        params:
+          name: "deleteTodo"
+          arguments:
+            id: 1
+    GetUIRequest:
+      value:
+        jsonrpc: "2.0"
+        id: 123
+        method: "tools/call"
+        params:
+          name: "getUI"
+          arguments: {}

@@ -1,9 +1,4 @@
-export interface TodoItem {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Date;
-}
+import { TodoItem } from '../shared/types';
 
 class TodoStore {
   private todos: TodoItem[] = [];
