@@ -67,13 +67,38 @@ const todoListHtml = `
       }).join('');
     }
 
+    function mcpCallTool(toolName, params) {
+      return new Promise(function(resolve, reject) {
+        var messageId = 'msg-' + Date.now() + '-' + Math.random();
+        var handler = function(event) {
+          if (event.data.messageId === messageId) {
+            window.removeEventListener('message', handler);
+            if (event.data.error) {
+              reject(new Error(event.data.error));
+            } else {
+              resolve(event.data.response);
+            }
+          }
+        };
+        window.addEventListener('message', handler);
+        window.parent.postMessage({
+          messageId: messageId,
+          type: 'tool',
+          payload: {
+            toolName: toolName,
+            params: params
+          }
+        }, '*');
+      });
+    }
+
     async function addTodo() {
       const input = document.getElementById('newTodo');
       const text = input.value.trim();
       if (!text) return;
       
       try {
-        await window.mcp.callTool('addTodo', { text });
+        await mcpCallTool('addTodo', { text });
         input.value = '';
         await loadTodos();
       } catch (error) {
@@ -83,7 +108,7 @@ const todoListHtml = `
 
     async function toggleTodo(id) {
       try {
-        await window.mcp.callTool('toggleTodo', { id });
+        await mcpCallTool('toggleTodo', { id });
         await loadTodos();
       } catch (error) {
         console.error('Failed to toggle todo:', error);
@@ -92,7 +117,7 @@ const todoListHtml = `
 
     async function deleteTodo(id) {
       try {
-        await window.mcp.callTool('deleteTodo', { id });
+        await mcpCallTool('deleteTodo', { id });
         await loadTodos();
       } catch (error) {
         console.error('Failed to delete todo:', error);
@@ -101,8 +126,14 @@ const todoListHtml = `
 
     async function loadTodos() {
       try {
-        const result = await window.mcp.callTool('listTodos', {});
-        const todos = JSON.parse(result.content[0].text);
+        const result = await mcpCallTool('listTodos', {});
+        let todos = [];
+        if (result && result.content) {
+          const textContent = result.content.find(function(c) { return c.type === 'text'; });
+          if (textContent && textContent.text) {
+            todos = JSON.parse(textContent.text);
+          }
+        }
         renderTodos(todos);
       } catch (error) {
         console.error('Failed to load todos:', error);
@@ -248,16 +279,12 @@ const createServer = () => {
 
 app.post('/mcp', async (req, res) => {
   const server = createServer();
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: undefined,
+  });
   try {
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-    });
     await server.connect(transport);
     await transport.handleRequest(req, res, req.body);
-    res.on('close', () => {
-      transport.close();
-      server.close();
-    });
   } catch (error) {
     console.error('Error handling MCP request:', error);
     if (!res.headersSent) {
@@ -275,16 +302,12 @@ app.post('/mcp', async (req, res) => {
 
 app.get('/mcp', async (req, res) => {
   const server = createServer();
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: undefined,
+  });
   try {
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-    });
     await server.connect(transport);
     await transport.handleRequest(req, res);
-    res.on('close', () => {
-      transport.close();
-      server.close();
-    });
   } catch (error) {
     console.error('Error handling MCP GET request:', error);
     if (!res.headersSent) {

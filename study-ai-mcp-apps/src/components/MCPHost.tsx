@@ -30,31 +30,22 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   const transportRef = useRef<StreamableHTTPClientTransport | null>(null);
 
   useEffect(() => {
-    let client: Client;
-    let transport: StreamableHTTPClientTransport;
-
     const connect = async () => {
+      if (clientRef.current) return;
+      
+      setLoading(true);
+      setError(null);
+      
       try {
-        setLoading(true);
-        setError(null);
-        
-        console.log('Step 1: Creating transport with URL:', serverUrl);
-        transport = new StreamableHTTPClientTransport(new URL(serverUrl), {
+        const transport = new StreamableHTTPClientTransport(new URL(serverUrl), {
           sessionId: undefined,
         });
         
-        console.log('Step 2: Creating client');
-        client = new Client({ name: 'mcp-app-host', version: '1.0.0' });
+        const client = new Client({ name: 'mcp-app-host', version: '1.0.0' });
 
-        console.log('Step 3: Connecting client to transport');
         await client.connect(transport);
-        console.log('Step 4: Client connected, transport:', client.transport);
-        console.log('Step 5: Server capabilities:', client.getServerCapabilities());
-
-        console.log('Step 6: Calling listTools');
-        const toolList = await client.listTools();
-        console.log('Step 7: Tool list received:', toolList);
         
+        const toolList = await client.listTools();
         setTools(toolList.tools.map(t => ({
           name: t.name,
           title: t.title || t.name,
@@ -68,7 +59,6 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
         onConnect(true);
       } catch (err) {
         console.error('Connection error:', err);
-        console.error('Error stack:', (err as Error).stack);
         setError((err as Error).message);
       } finally {
         setLoading(false);
@@ -78,19 +68,85 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
     connect();
 
     return () => {
-      transport?.close();
-      client?.close();
+      transportRef.current?.close();
+      clientRef.current?.close();
+      clientRef.current = null;
+      transportRef.current = null;
     };
   }, [serverUrl, onConnect]);
 
-  const handleToolCall = useCallback(async (toolName: string, params: Record<string, unknown>) => {
-    if (!clientRef.current) return;
+  useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      console.log('Received message:', event.data);
+      
+      if (event.data && event.data.type === 'tool') {
+        const { messageId, payload } = event.data;
+        
+        try {
+          const response = await handleToolCall(payload.toolName, payload.params);
+          
+          if (event.source) {
+            event.source.postMessage({
+              messageId: messageId,
+              response: response,
+            }, event.origin);
+          }
+        } catch (err) {
+          if (event.source) {
+            event.source.postMessage({
+              messageId: messageId,
+              error: (err as Error).message,
+            }, event.origin);
+          }
+        }
+      }
+    };
 
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
+  const handleToolCall = async (toolName: string, params: Record<string, unknown>) => {
     try {
       setLoading(true);
       setError(null);
 
-      const result = await clientRef.current.callTool({ name: toolName, arguments: params });
+      const response = await fetch(serverUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json, text/event-stream',
+        },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: Date.now(),
+          method: 'tools/call',
+          params: {
+            name: toolName,
+            arguments: params,
+          },
+        }),
+      });
+
+      const text = await response.text();
+      console.log('Server response:', text);
+      
+      const dataMatch = text.match(/data:\s*(.+)/);
+      if (!dataMatch) {
+        throw new Error('Invalid response format');
+      }
+
+      const data = JSON.parse(dataMatch[1]);
+      console.log('Parsed data:', data);
+      
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
+
+      const result = data.result;
       
       setResults(prev => [...prev, `${toolName}: ${JSON.stringify(result.content)}`]);
 
@@ -100,6 +156,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
       
       if (resourceContent && 'resource' in resourceContent) {
         const resource = resourceContent.resource;
+        console.log('Setting UI resource:', { uri: resource.uri, mimeType: resource.mimeType });
         setUiResource({
           uri: resource.uri,
           mimeType: resource.mimeType,
@@ -113,15 +170,17 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
         }
       }
 
+      return result;
     } catch (err) {
       console.error('Tool call error:', err);
       setError((err as Error).message);
+      throw err;
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
-  const handleUIAction = useCallback(async (action: {
+  const handleUIAction = async (action: {
     type: string;
     payload: {
       toolName: string;
@@ -133,7 +192,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
     if (action.type === 'tool') {
       await handleToolCall(action.payload.toolName, action.payload.params);
     }
-  }, [handleToolCall]);
+  };
 
   const handleSelectTool = (toolName: string) => {
     setSelectedTool(toolName);
@@ -148,10 +207,6 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
     if (selectedTool) {
       handleToolCall(selectedTool, toolParams);
     }
-  };
-
-  const handleListTodos = () => {
-    handleToolCall('listTodos', {});
   };
 
   const handleGetUI = () => {
