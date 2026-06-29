@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp';
-import { createMcpExpressApp } from '@modelcontextprotocol/sdk/server/express';
 import { createUIResource } from '@mcp-ui/server';
 import {
   listTodosTool,
@@ -13,10 +12,11 @@ import {
 } from './tools/todoTools';
 import { todoListHtml } from './ui/todoListHtml';
 
-const app = createMcpExpressApp({ host: '0.0.0.0' });
+const app = express();
 const port = 3000;
 
 app.use(cors());
+app.use(express.json());
 
 const createServer = () => {
   const server = new McpServer({

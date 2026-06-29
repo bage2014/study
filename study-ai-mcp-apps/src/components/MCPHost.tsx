@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp';
 import { Client } from '@modelcontextprotocol/sdk/client';
 import { UIResourceRenderer } from '@mcp-ui/client';
-import type { UIResource } from '@mcp-ui/client';
+import type { UIResource } from '@mcp-ui/server';
 
 interface MCPHostProps {
   serverUrl: string;
@@ -75,39 +75,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
     };
   }, [serverUrl, onConnect]);
 
-  useEffect(() => {
-    const handleMessage = async (event: MessageEvent) => {
-      console.log('Received message:', event.data);
-      
-      if (event.data && event.data.type === 'tool') {
-        const { messageId, payload } = event.data;
-        
-        try {
-          const response = await handleToolCall(payload.toolName, payload.params);
-          
-          if (event.source) {
-            event.source.postMessage({
-              messageId: messageId,
-              response: response,
-            }, event.origin);
-          }
-        } catch (err) {
-          if (event.source) {
-            event.source.postMessage({
-              messageId: messageId,
-              error: (err as Error).message,
-            }, event.origin);
-          }
-        }
-      }
-    };
 
-    window.addEventListener('message', handleMessage);
-
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, []);
 
   const handleToolCall = async (toolName: string, params: Record<string, unknown>) => {
     try {
@@ -155,13 +123,10 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
       );
       
       if (resourceContent && 'resource' in resourceContent) {
-        const resource = resourceContent.resource;
-        console.log('Setting UI resource:', { uri: resource.uri, mimeType: resource.mimeType });
+        console.log('Setting UI resource:', { uri: resourceContent.resource.uri, mimeType: resourceContent.resource.mimeType });
         setUiResource({
-          uri: resource.uri,
-          mimeType: resource.mimeType,
-          text: resource.text,
-          blob: resource.blob,
+          type: 'resource' as const,
+          resource: resourceContent.resource,
         });
       } else {
         const textContent = result.content.find((c: { type?: string }) => c.type === 'text');
@@ -186,11 +151,33 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
       toolName: string;
       params: Record<string, unknown>;
     };
+    messageId?: string;
+    source?: Window;
+    origin?: string;
   }) => {
     console.log('UI Action:', action);
     
     if (action.type === 'tool') {
-      await handleToolCall(action.payload.toolName, action.payload.params);
+      try {
+        const response = await handleToolCall(action.payload.toolName, action.payload.params);
+        
+        if (action.source && action.messageId) {
+          action.source.postMessage({
+            messageId: action.messageId,
+            response: response,
+          }, action.origin || '*');
+        }
+        
+        return response;
+      } catch (err) {
+        if (action.source && action.messageId) {
+          action.source.postMessage({
+            messageId: action.messageId,
+            error: (err as Error).message,
+          }, action.origin || '*');
+        }
+        throw err;
+      }
     }
   };
 
@@ -269,7 +256,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
               <h5 style={styles.paramsTitle}>Parameters:</h5>
               {(() => {
                 const tool = tools.find(t => t.name === selectedTool);
-                const properties = tool?.inputSchema?.['properties'] as Record<string, { type: string; description: string }> || {};
+                const properties = (tool?.inputSchema as Record<string, any>)?.['properties'] as Record<string, { type: string; description: string }> || {};
                 
                 return Object.entries(properties).map(([key, value]) => (
                   <div key={key} style={styles.paramRow}>
@@ -312,8 +299,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
             <h3 style={styles.sectionTitle}>UI Preview</h3>
             <div style={styles.uiPreview}>
               <UIResourceRenderer
-                resource={uiResource}
-                onUIAction={handleUIAction}
+                resource={uiResource.resource}
                 htmlProps={{
                   autoResizeIframe: true,
                 }}

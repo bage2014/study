@@ -53,29 +53,37 @@ export const todoListHtml = `
       }).join('');
     }
 
-    function mcpCallTool(toolName, params) {
-      return new Promise(function(resolve, reject) {
-        var messageId = 'msg-' + Date.now() + '-' + Math.random();
-        var handler = function(event) {
-          if (event.data.messageId === messageId) {
-            window.removeEventListener('message', handler);
-            if (event.data.error) {
-              reject(new Error(event.data.error));
-            } else {
-              resolve(event.data.response);
-            }
-          }
-        };
-        window.addEventListener('message', handler);
-        window.parent.postMessage({
-          messageId: messageId,
-          type: 'tool',
-          payload: {
-            toolName: toolName,
-            params: params
-          }
-        }, '*');
+    async function mcpCallTool(toolName, params) {
+      var response = await fetch('http://localhost:3000/mcp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json, text/event-stream',
+        },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: Date.now(),
+          method: 'tools/call',
+          params: {
+            name: toolName,
+            arguments: params,
+          },
+        }),
       });
+      
+      var text = await response.text();
+      var dataMatch = text.match(/data:\s*(.+)/);
+      if (!dataMatch) {
+        throw new Error('Invalid response format');
+      }
+      
+      var data = JSON.parse(dataMatch[1]);
+      
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
+      
+      return data.result;
     }
 
     async function addTodo() {
@@ -110,7 +118,11 @@ export const todoListHtml = `
       }
     }
 
+    var isLoading = false;
+    
     async function loadTodos() {
+      if (isLoading) return;
+      isLoading = true;
       try {
         const result = await mcpCallTool('listTodos', {});
         let todos = [];
@@ -123,6 +135,8 @@ export const todoListHtml = `
         renderTodos(todos);
       } catch (error) {
         console.error('Failed to load todos:', error);
+      } finally {
+        isLoading = false;
       }
     }
 
