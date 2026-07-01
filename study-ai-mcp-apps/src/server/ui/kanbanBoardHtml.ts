@@ -138,6 +138,7 @@ export const kanbanBoardHtml = `
     ];
     var cards = [];
     var draggedCardId = null;
+    var isLoading = false;
 
     function mcpCallTool(toolName, params) {
       return new Promise(function(resolve, reject) {
@@ -235,6 +236,8 @@ export const kanbanBoardHtml = `
     }
 
     async function loadBoard() {
+      if (isLoading) return;
+      isLoading = true;
       try {
         var result = await mcpCallTool('getBoard', {});
         if (result && result.content) {
@@ -247,6 +250,8 @@ export const kanbanBoardHtml = `
         }
       } catch (error) {
         console.error('Failed to load board:', error);
+      } finally {
+        isLoading = false;
       }
     }
 

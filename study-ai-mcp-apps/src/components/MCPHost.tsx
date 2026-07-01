@@ -77,44 +77,46 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
 
 
 
+  const callToolDirectly = async (toolName: string, params: Record<string, unknown>) => {
+    const response = await fetch(serverUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json, text/event-stream',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: Date.now(),
+        method: 'tools/call',
+        params: {
+          name: toolName,
+          arguments: params,
+        },
+      }),
+    });
+
+    const text = await response.text();
+    
+    const dataMatch = text.match(/data:\s*(.+)/);
+    if (!dataMatch) {
+      throw new Error('Invalid response format');
+    }
+
+    const data = JSON.parse(dataMatch[1]);
+    
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+
+    return data.result;
+  };
+
   const handleToolCall = async (toolName: string, params: Record<string, unknown>) => {
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(serverUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json, text/event-stream',
-        },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: Date.now(),
-          method: 'tools/call',
-          params: {
-            name: toolName,
-            arguments: params,
-          },
-        }),
-      });
-
-      const text = await response.text();
-      console.log('Server response:', text);
-      
-      const dataMatch = text.match(/data:\s*(.+)/);
-      if (!dataMatch) {
-        throw new Error('Invalid response format');
-      }
-
-      const data = JSON.parse(dataMatch[1]);
-      console.log('Parsed data:', data);
-      
-      if (data.error) {
-        throw new Error(data.error.message);
-      }
-
-      const result = data.result;
+      const result = await callToolDirectly(toolName, params);
       
       setResults(prev => [...prev, `${toolName}: ${JSON.stringify(result.content)}`]);
 
@@ -123,7 +125,6 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
       );
       
       if (resourceContent && 'resource' in resourceContent) {
-        console.log('Setting UI resource:', { uri: resourceContent.resource.uri, mimeType: resourceContent.resource.mimeType });
         setUiResource({
           type: 'resource' as const,
           resource: resourceContent.resource,
@@ -151,7 +152,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
         const { messageId, payload } = event.data;
         
         try {
-          const response = await handleToolCall(payload.toolName, payload.params);
+          const response = await callToolDirectly(payload.toolName, payload.params);
           
           if (event.source) {
             event.source.postMessage({
@@ -188,7 +189,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
     
     if (action.type === 'tool') {
       try {
-        const response = await handleToolCall(action.payload.toolName, action.payload.params);
+        const response = await callToolDirectly(action.payload.toolName, action.payload.params);
         return response;
       } catch (err) {
         throw err;
@@ -325,7 +326,6 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
             <div style={styles.uiPreview}>
               <UIResourceRenderer
                 resource={uiResource.resource}
-                onUIAction={handleUIAction}
                 htmlProps={{
                   autoResizeIframe: true,
                 }}
