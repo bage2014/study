@@ -97,12 +97,13 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
 
     const text = await response.text();
     
+    let data;
     const dataMatch = text.match(/data:\s*(.+)/);
-    if (!dataMatch) {
-      throw new Error('Invalid response format');
+    if (dataMatch) {
+      data = JSON.parse(dataMatch[1]);
+    } else {
+      data = JSON.parse(text);
     }
-
-    const data = JSON.parse(dataMatch[1]);
     
     if (data.error) {
       throw new Error(data.error.message);
@@ -149,30 +150,33 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.data && event.data.type === 'tool') {
+        console.log('MCPHost: Received tool message:', event.data);
         const { messageId, payload } = event.data;
         
         try {
           const response = await callToolDirectly(payload.toolName, payload.params);
+          console.log('MCPHost: Tool call response:', response);
           
           if (event.source) {
             event.source.postMessage({
               messageId: messageId,
               response: response,
-            }, event.origin);
+            }, '*');
           }
         } catch (err) {
+          console.error('MCPHost: Tool call error:', err);
           if (event.source) {
             event.source.postMessage({
               messageId: messageId,
               error: (err as Error).message,
-            }, event.origin);
+            }, '*');
           }
         }
       }
     };
-
+    
     window.addEventListener('message', handleMessage);
-
+    
     return () => {
       window.removeEventListener('message', handleMessage);
     };
