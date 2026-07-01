@@ -8,8 +8,8 @@ function App() {
   return (
     <div style={styles.container}>
       <header style={styles.header}>
-        <h1 style={styles.title}>MCP Apps Host</h1>
-        <p style={styles.subtitle}>Interactive UI Preview for MCP Server</p>
+        <h1 style={styles.title}>MCP Apps - Kanban Board</h1>
+        <p style={styles.subtitle}>Interactive Project Management Board</p>
       </header>
 
       <div style={styles.content}>

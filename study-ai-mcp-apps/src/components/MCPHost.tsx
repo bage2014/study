@@ -145,37 +145,52 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
     }
   };
 
+  useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.data && event.data.type === 'tool') {
+        const { messageId, payload } = event.data;
+        
+        try {
+          const response = await handleToolCall(payload.toolName, payload.params);
+          
+          if (event.source) {
+            event.source.postMessage({
+              messageId: messageId,
+              response: response,
+            }, event.origin);
+          }
+        } catch (err) {
+          if (event.source) {
+            event.source.postMessage({
+              messageId: messageId,
+              error: (err as Error).message,
+            }, event.origin);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
   const handleUIAction = async (action: {
     type: string;
     payload: {
       toolName: string;
       params: Record<string, unknown>;
     };
-    messageId?: string;
-    source?: Window;
-    origin?: string;
   }) => {
     console.log('UI Action:', action);
     
     if (action.type === 'tool') {
       try {
         const response = await handleToolCall(action.payload.toolName, action.payload.params);
-        
-        if (action.source && action.messageId) {
-          action.source.postMessage({
-            messageId: action.messageId,
-            response: response,
-          }, action.origin || '*');
-        }
-        
         return response;
       } catch (err) {
-        if (action.source && action.messageId) {
-          action.source.postMessage({
-            messageId: action.messageId,
-            error: (err as Error).message,
-          }, action.origin || '*');
-        }
         throw err;
       }
     }
@@ -198,6 +213,10 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
 
   const handleGetUI = () => {
     handleToolCall('getUI', {});
+  };
+
+  const handleGetKanbanUI = () => {
+    handleToolCall('getKanbanUI', {});
   };
 
   if (loading) {
@@ -230,6 +249,12 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
             onClick={handleGetUI}
           >
             📋 Open Todo UI
+          </button>
+          <button
+            style={styles.toolButton}
+            onClick={handleGetKanbanUI}
+          >
+            📊 Open Kanban Board
           </button>
           {tools.map(tool => (
             <button
@@ -300,6 +325,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
             <div style={styles.uiPreview}>
               <UIResourceRenderer
                 resource={uiResource.resource}
+                onUIAction={handleUIAction}
                 htmlProps={{
                   autoResizeIframe: true,
                 }}
