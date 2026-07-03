@@ -16,6 +16,8 @@ interface ToolInfo {
   inputSchema: object;
 }
 
+type CurrentView = 'welcome' | 'todo' | 'kanban';
+
 function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   const [connected, setConnected] = useState(false);
   const [tools, setTools] = useState<ToolInfo[]>([]);
@@ -25,6 +27,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   const [results, setResults] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentView, setCurrentView] = useState<CurrentView>('welcome');
   
   const clientRef = useRef<Client | null>(null);
   const transportRef = useRef<StreamableHTTPClientTransport | null>(null);
@@ -214,11 +217,18 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   };
 
   const handleGetUI = () => {
+    setCurrentView('todo');
     handleToolCall('getUI', {});
   };
 
   const handleGetKanbanUI = () => {
+    setCurrentView('kanban');
     handleToolCall('getKanbanUI', {});
+  };
+
+  const handleBackToWelcome = () => {
+    setCurrentView('welcome');
+    setUiResource(null);
   };
 
   if (loading) {
@@ -243,6 +253,40 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
 
   return (
     <div style={styles.hostContainer}>
+      {currentView !== 'welcome' && (
+        <div style={styles.menuBar}>
+          <div style={styles.menuLeft}>
+            <button style={styles.menuBackButton} onClick={handleBackToWelcome}>
+              ← Back
+            </button>
+          </div>
+          <div style={styles.menuCenter}>
+            <button
+              style={{
+                ...styles.menuItem,
+                backgroundColor: currentView === 'kanban' ? '#667eea' : 'transparent',
+                color: currentView === 'kanban' ? '#fff' : 'rgba(255,255,255,0.8)',
+              }}
+              onClick={handleGetKanbanUI}
+            >
+              📊 Kanban Board
+            </button>
+            <button
+              style={{
+                ...styles.menuItem,
+                backgroundColor: currentView === 'todo' ? '#667eea' : 'transparent',
+                color: currentView === 'todo' ? '#fff' : 'rgba(255,255,255,0.8)',
+              }}
+              onClick={handleGetUI}
+            >
+              📋 Todo List
+            </button>
+          </div>
+          <div style={styles.menuRight}>
+            <span style={styles.menuTitle}>MCP Apps</span>
+          </div>
+        </div>
+      )}
       {uiResource ? (
         <div style={styles.uiSection}>
           <UIResourceRenderer
@@ -254,8 +298,8 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
         </div>
       ) : (
         <div style={styles.welcomeContainer}>
-          <h1 style={styles.welcomeTitle}>MCP Apps - Kanban Board</h1>
-          <p style={styles.welcomeSubtitle}>Interactive Project Management Board</p>
+          <h1 style={styles.welcomeTitle}>MCP Apps</h1>
+          <p style={styles.welcomeSubtitle}>Interactive Project Management</p>
           <div style={styles.welcomeButtons}>
             <button style={styles.welcomeButton} onClick={handleGetKanbanUI}>
               📊 Open Kanban Board
@@ -273,11 +317,62 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
 const styles: { [key: string]: React.CSSProperties } = {
   hostContainer: {
     display: 'flex',
+    flexDirection: 'column',
     width: '100vw',
     height: '100vh',
     margin: '0',
     padding: '0',
     overflow: 'hidden',
+    background: '#1a1a2e',
+  },
+  menuBar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: '50px',
+    background: 'rgba(0, 0, 0, 0.3)',
+    backdropFilter: 'blur(10px)',
+    padding: '0 20px',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  menuLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  menuBackButton: {
+    padding: '8px 16px',
+    background: 'rgba(255, 255, 255, 0.1)',
+    border: 'none',
+    borderRadius: '6px',
+    color: '#fff',
+    fontSize: '14px',
+    cursor: 'pointer',
+    transition: 'background 0.2s',
+  },
+  menuCenter: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  menuItem: {
+    padding: '8px 20px',
+    background: 'transparent',
+    border: 'none',
+    borderRadius: '6px',
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: '14px',
+    fontWeight: '500',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+  },
+  menuRight: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  menuTitle: {
+    color: 'rgba(255, 255, 255, 0.6)',
+    fontSize: '13px',
   },
   uiSection: {
     flex: 1,
