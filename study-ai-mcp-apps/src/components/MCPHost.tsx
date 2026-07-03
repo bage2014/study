@@ -150,12 +150,10 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       if (event.data && event.data.type === 'tool') {
-        console.log('MCPHost: Received tool message:', event.data);
         const { messageId, payload } = event.data;
         
         try {
           const response = await callToolDirectly(payload.toolName, payload.params);
-          console.log('MCPHost: Tool call response:', response);
           
           if (event.source) {
             event.source.postMessage({
@@ -164,7 +162,6 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
             }, '*');
           }
         } catch (err) {
-          console.error('MCPHost: Tool call error:', err);
           if (event.source) {
             event.source.postMessage({
               messageId: messageId,
@@ -246,98 +243,29 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
 
   return (
     <div style={styles.hostContainer}>
-      <div style={styles.sidebar}>
-        <h3 style={styles.sidebarTitle}>Tools</h3>
-        <div style={styles.toolList}>
-          <button
-            style={styles.toolButton}
-            onClick={handleGetUI}
-          >
-            📋 Open Todo UI
-          </button>
-          <button
-            style={styles.toolButton}
-            onClick={handleGetKanbanUI}
-          >
-            📊 Open Kanban Board
-          </button>
-          {tools.map(tool => (
-            <button
-              key={tool.name}
-              style={{
-                ...styles.toolButton,
-                backgroundColor: selectedTool === tool.name ? '#667eea' : 'transparent',
-              }}
-              onClick={() => handleSelectTool(tool.name)}
-            >
-              {tool.title}
-            </button>
-          ))}
+      {uiResource ? (
+        <div style={styles.uiSection}>
+          <UIResourceRenderer
+            resource={uiResource.resource}
+            htmlProps={{
+              autoResizeIframe: true,
+            }}
+          />
         </div>
-
-        {selectedTool && (
-          <div style={styles.toolDetails}>
-            <h4 style={styles.toolDetailsTitle}>{selectedTool}</h4>
-            <p style={styles.toolDescription}>
-              {tools.find(t => t.name === selectedTool)?.description}
-            </p>
-            
-            <div style={styles.paramsSection}>
-              <h5 style={styles.paramsTitle}>Parameters:</h5>
-              {(() => {
-                const tool = tools.find(t => t.name === selectedTool);
-                const properties = (tool?.inputSchema as Record<string, any>)?.['properties'] as Record<string, { type: string; description: string }> || {};
-                
-                return Object.entries(properties).map(([key, value]) => (
-                  <div key={key} style={styles.paramRow}>
-                    <label style={styles.paramLabel}>{key}</label>
-                    <input
-                      type="text"
-                      placeholder={value.description}
-                      style={styles.paramInput}
-                      onChange={(e) => handleParamChange(key, e.target.value)}
-                    />
-                  </div>
-                ));
-              })()}
-            </div>
-            
-            <button style={styles.executeButton} onClick={handleExecute}>
-              Execute
+      ) : (
+        <div style={styles.welcomeContainer}>
+          <h1 style={styles.welcomeTitle}>MCP Apps - Kanban Board</h1>
+          <p style={styles.welcomeSubtitle}>Interactive Project Management Board</p>
+          <div style={styles.welcomeButtons}>
+            <button style={styles.welcomeButton} onClick={handleGetKanbanUI}>
+              📊 Open Kanban Board
+            </button>
+            <button style={styles.welcomeButton} onClick={handleGetUI}>
+              📋 Open Todo UI
             </button>
           </div>
-        )}
-      </div>
-
-      <div style={styles.mainContent}>
-        <div style={styles.resultsSection}>
-          <h3 style={styles.sectionTitle}>Results</h3>
-          <div style={styles.resultsList}>
-            {results.map((result, index) => (
-              <div key={index} style={styles.resultItem}>
-                {result}
-              </div>
-            ))}
-            {results.length === 0 && (
-              <p style={styles.emptyResults}>Click "Open Todo UI" to view the interactive Todo List</p>
-            )}
-          </div>
         </div>
-
-        {uiResource && (
-          <div style={styles.uiSection}>
-            <h3 style={styles.sectionTitle}>UI Preview</h3>
-            <div style={styles.uiPreview}>
-              <UIResourceRenderer
-                resource={uiResource.resource}
-                htmlProps={{
-                  autoResizeIframe: true,
-                }}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }
@@ -345,150 +273,53 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
 const styles: { [key: string]: React.CSSProperties } = {
   hostContainer: {
     display: 'flex',
-    gap: '20px',
-    height: 'calc(100vh - 180px)',
-  },
-  sidebar: {
-    width: '300px',
-    background: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: '12px',
-    padding: '20px',
-    backdropFilter: 'blur(10px)',
-    overflowY: 'auto',
-  },
-  sidebarTitle: {
-    color: '#fff',
-    fontSize: '18px',
-    fontWeight: '600',
-    margin: '0 0 16px 0',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
-    paddingBottom: '12px',
-  },
-  toolList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    marginBottom: '20px',
-  },
-  toolButton: {
-    padding: '12px',
-    background: 'transparent',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    borderRadius: '8px',
-    color: '#fff',
-    fontSize: '14px',
-    cursor: 'pointer',
-    textAlign: 'left',
-    transition: 'all 0.2s',
-  },
-  toolDetails: {
-    background: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: '8px',
-    padding: '16px',
-  },
-  toolDetailsTitle: {
-    color: '#fff',
-    fontSize: '16px',
-    fontWeight: '600',
-    margin: '0 0 8px 0',
-  },
-  toolDescription: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: '13px',
-    margin: '0 0 12px 0',
-  },
-  paramsSection: {
-    marginBottom: '16px',
-  },
-  paramsTitle: {
-    color: '#fff',
-    fontSize: '14px',
-    fontWeight: '500',
-    margin: '0 0 8px 0',
-  },
-  paramRow: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '4px',
-    marginBottom: '8px',
-  },
-  paramLabel: {
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: '12px',
-  },
-  paramInput: {
-    padding: '8px',
-    borderRadius: '6px',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    background: 'rgba(255, 255, 255, 0.1)',
-    color: '#fff',
-    fontSize: '13px',
-    outline: 'none',
-  },
-  executeButton: {
-    width: '100%',
-    padding: '10px',
-    background: '#667eea',
-    border: 'none',
-    borderRadius: '8px',
-    color: '#fff',
-    fontSize: '14px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'background 0.2s',
-  },
-  mainContent: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  resultsSection: {
-    flex: 1,
-    background: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: '12px',
-    padding: '20px',
-    backdropFilter: 'blur(10px)',
-    overflowY: 'auto',
+    width: '100vw',
+    height: '100vh',
+    margin: '0',
+    padding: '0',
+    overflow: 'hidden',
   },
   uiSection: {
-    flex: 2,
-    background: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: '12px',
-    padding: '20px',
-    backdropFilter: 'blur(10px)',
-    overflowY: 'auto',
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    margin: '0',
+    padding: '0',
+    overflow: 'hidden',
   },
-  sectionTitle: {
+  welcomeContainer: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    color: '#fff',
+  },
+  welcomeTitle: {
+    fontSize: '36px',
+    fontWeight: '700',
+    margin: '0 0 12px 0',
+  },
+  welcomeSubtitle: {
+    fontSize: '18px',
+    color: 'rgba(255, 255, 255, 0.8)',
+    margin: '0 0 40px 0',
+  },
+  welcomeButtons: {
+    display: 'flex',
+    gap: '16px',
+  },
+  welcomeButton: {
+    padding: '16px 32px',
+    background: 'rgba(255, 255, 255, 0.2)',
+    border: '2px solid rgba(255, 255, 255, 0.4)',
+    borderRadius: '12px',
     color: '#fff',
     fontSize: '16px',
     fontWeight: '600',
-    margin: '0 0 16px 0',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
-    paddingBottom: '8px',
-  },
-  resultsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-  },
-  resultItem: {
-    background: 'rgba(255, 255, 255, 0.05)',
-    padding: '12px',
-    borderRadius: '8px',
-    color: '#fff',
-    fontSize: '13px',
-    fontFamily: 'monospace',
-  },
-  emptyResults: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: '14px',
-    textAlign: 'center',
-    padding: '40px',
-  },
-  uiPreview: {
-    width: '100%',
-    minHeight: '400px',
+    cursor: 'pointer',
+    transition: 'all 0.3s',
   },
   loadingContainer: {
     display: 'flex',
