@@ -1,6 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp';
-import { Client } from '@modelcontextprotocol/sdk/client';
+import { useState, useEffect } from 'react';
 import { UIResourceRenderer } from '@mcp-ui/client';
 import type { UIResource } from '@mcp-ui/server';
 
@@ -9,121 +7,73 @@ interface MCPHostProps {
   onConnect: (connected: boolean) => void;
 }
 
-interface ToolInfo {
-  name: string;
-  title: string;
-  description: string;
-  inputSchema: object;
-}
-
-type CurrentView = 'welcome' | 'todo' | 'kanban';
+type CurrentView = 'welcome' | 'todo' | 'kanban' | 'family-login' | 'family-home' | 'family-manage' | 'family-tree' | 'member-manage' | 'relationship' | 'history';
 
 function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
-  const [connected, setConnected] = useState(false);
-  const [tools, setTools] = useState<ToolInfo[]>([]);
-  const [selectedTool, setSelectedTool] = useState<string | null>(null);
-  const [toolParams, setToolParams] = useState<Record<string, unknown>>({});
   const [uiResource, setUiResource] = useState<UIResource | null>(null);
-  const [results, setResults] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentView, setCurrentView] = useState<CurrentView>('welcome');
-  
-  const clientRef = useRef<Client | null>(null);
-  const transportRef = useRef<StreamableHTTPClientTransport | null>(null);
+  const [currentView, setCurrentView] = useState<CurrentView>('family-login');
 
   useEffect(() => {
-    const connect = async () => {
-      if (clientRef.current) return;
-      
-      setLoading(true);
-      setError(null);
-      
+    setLoading(true);
+    setError(null);
+    
+    const testConnection = async () => {
       try {
-        const transport = new StreamableHTTPClientTransport(new URL(serverUrl), {
-          sessionId: undefined,
+        const apiUrl = serverUrl.replace('/mcp', '/api/call');
+        await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            toolName: 'listTodos',
+            params: {},
+          }),
         });
         
-        const client = new Client({ name: 'mcp-app-host', version: '1.0.0' });
-
-        await client.connect(transport);
-        
-        const toolList = await client.listTools();
-        setTools(toolList.tools.map(t => ({
-          name: t.name,
-          title: t.title || t.name,
-          description: t.description || '',
-          inputSchema: t.inputSchema || {},
-        })));
-
-        clientRef.current = client;
-        transportRef.current = transport;
-        setConnected(true);
+        setLoading(false);
         onConnect(true);
       } catch (err) {
         console.error('Connection error:', err);
-        setError((err as Error).message);
-      } finally {
         setLoading(false);
+        setError((err as Error).message);
       }
     };
-
-    connect();
-
-    return () => {
-      transportRef.current?.close();
-      clientRef.current?.close();
-      clientRef.current = null;
-      transportRef.current = null;
-    };
+    
+    testConnection();
   }, [serverUrl, onConnect]);
 
-
-
   const callToolDirectly = async (toolName: string, params: Record<string, unknown>) => {
-    const response = await fetch(serverUrl, {
+    const apiUrl = serverUrl.replace('/mcp', '/api/call');
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json, text/event-stream',
       },
       body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: Date.now(),
-        method: 'tools/call',
-        params: {
-          name: toolName,
-          arguments: params,
-        },
+        toolName,
+        params,
       }),
     });
 
-    const text = await response.text();
-    
-    let data;
-    const dataMatch = text.match(/data:\s*(.+)/);
-    if (dataMatch) {
-      data = JSON.parse(dataMatch[1]);
-    } else {
-      data = JSON.parse(text);
-    }
+    const data = await response.json();
     
     if (data.error) {
-      throw new Error(data.error.message);
+      throw new Error(data.error);
     }
 
-    return data.result;
+    return data;
   };
 
-  const handleToolCall = async (toolName: string, params: Record<string, unknown>) => {
+  const handleToolCall = async (toolName: string, params: Record<string, unknown> = {}) => {
     try {
       setLoading(true);
       setError(null);
 
       const result = await callToolDirectly(toolName, params);
       
-      setResults(prev => [...prev, `${toolName}: ${JSON.stringify(result.content)}`]);
-
       const resourceContent = result.content.find(
         (c: { type?: string }) => c.type === 'resource'
       );
@@ -133,11 +83,6 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
           type: 'resource' as const,
           resource: resourceContent.resource,
         });
-      } else {
-        const textContent = result.content.find((c: { type?: string }) => c.type === 'text');
-        if (textContent?.text) {
-          setResults(prev => [...prev, `Result: ${textContent.text}`]);
-        }
       }
 
       return result;
@@ -172,6 +117,42 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
             }, '*');
           }
         }
+      } else if (event.data && event.data.type === 'navigate') {
+        const { page, familyId } = event.data;
+        
+        switch (page) {
+          case 'login':
+            setCurrentView('family-login');
+            handleToolCall('getLoginUI', {});
+            break;
+          case 'home':
+            setCurrentView('family-home');
+            handleToolCall('getHomeUI', {});
+            break;
+          case 'familyManage':
+            setCurrentView('family-manage');
+            handleToolCall('getFamilyManageUI', { familyId });
+            break;
+          case 'familyTree':
+            setCurrentView('family-tree');
+            handleToolCall('getFamilyTreeUI', { familyId });
+            break;
+          case 'memberManage':
+            setCurrentView('member-manage');
+            handleToolCall('getMemberManageUI', { familyId });
+            break;
+          case 'relationship':
+            setCurrentView('relationship');
+            handleToolCall('getRelationshipUI', { familyId });
+            break;
+          case 'history':
+            setCurrentView('history');
+            handleToolCall('getHistoryUI', { familyId });
+            break;
+          default:
+            setCurrentView('family-login');
+            handleToolCall('getLoginUI', {});
+        }
       }
     };
     
@@ -182,39 +163,11 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
     };
   }, []);
 
-  const handleUIAction = async (action: {
-    type: string;
-    payload: {
-      toolName: string;
-      params: Record<string, unknown>;
-    };
-  }) => {
-    console.log('UI Action:', action);
-    
-    if (action.type === 'tool') {
-      try {
-        const response = await callToolDirectly(action.payload.toolName, action.payload.params);
-        return response;
-      } catch (err) {
-        throw err;
-      }
+  useEffect(() => {
+    if (currentView === 'family-login') {
+      handleToolCall('getLoginUI', {});
     }
-  };
-
-  const handleSelectTool = (toolName: string) => {
-    setSelectedTool(toolName);
-    setToolParams({});
-  };
-
-  const handleParamChange = (key: string, value: unknown) => {
-    setToolParams(prev => ({ ...prev, [key]: value }));
-  };
-
-  const handleExecute = () => {
-    if (selectedTool) {
-      handleToolCall(selectedTool, toolParams);
-    }
-  };
+  }, []);
 
   const handleGetUI = () => {
     setCurrentView('todo');
@@ -224,6 +177,11 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   const handleGetKanbanUI = () => {
     setCurrentView('kanban');
     handleToolCall('getKanbanUI', {});
+  };
+
+  const handleGetLoginUI = () => {
+    setCurrentView('family-login');
+    handleToolCall('getLoginUI', {});
   };
 
   const handleBackToWelcome = () => {
@@ -251,39 +209,117 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
     );
   }
 
+  const isFamilyView = currentView.startsWith('family-') || 
+                       ['member-manage', 'relationship', 'history'].includes(currentView);
+
   return (
     <div style={styles.hostContainer}>
-      {currentView !== 'welcome' && (
+      {currentView !== 'welcome' && currentView !== 'family-login' && (
         <div style={styles.menuBar}>
           <div style={styles.menuLeft}>
-            <button style={styles.menuBackButton} onClick={handleBackToWelcome}>
-              ← Back
-            </button>
+            {isFamilyView ? (
+              <button style={styles.menuBackButton} onClick={handleGetLoginUI}>
+                ← 返回首页
+              </button>
+            ) : (
+              <button style={styles.menuBackButton} onClick={handleBackToWelcome}>
+                ← Back
+              </button>
+            )}
           </div>
           <div style={styles.menuCenter}>
-            <button
-              style={{
-                ...styles.menuItem,
-                backgroundColor: currentView === 'kanban' ? '#667eea' : 'transparent',
-                color: currentView === 'kanban' ? '#fff' : 'rgba(255,255,255,0.8)',
-              }}
-              onClick={handleGetKanbanUI}
-            >
-              📊 Kanban Board
-            </button>
-            <button
-              style={{
-                ...styles.menuItem,
-                backgroundColor: currentView === 'todo' ? '#667eea' : 'transparent',
-                color: currentView === 'todo' ? '#fff' : 'rgba(255,255,255,0.8)',
-              }}
-              onClick={handleGetUI}
-            >
-              📋 Todo List
-            </button>
+            {isFamilyView ? (
+              <>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'family-home' ? '#10B981' : 'transparent',
+                    color: currentView === 'family-home' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('family-home'); handleToolCall('getHomeUI', {}); }}
+                >
+                  🏠 首页
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'family-tree' ? '#10B981' : 'transparent',
+                    color: currentView === 'family-tree' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('family-tree'); handleToolCall('getFamilyTreeUI', {}); }}
+                >
+                  🌳 家族树
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'family-manage' ? '#10B981' : 'transparent',
+                    color: currentView === 'family-manage' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('family-manage'); handleToolCall('getFamilyManageUI', {}); }}
+                >
+                  📋 家族管理
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'member-manage' ? '#10B981' : 'transparent',
+                    color: currentView === 'member-manage' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('member-manage'); handleToolCall('getMemberManageUI', {}); }}
+                >
+                  👥 成员管理
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'relationship' ? '#10B981' : 'transparent',
+                    color: currentView === 'relationship' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('relationship'); handleToolCall('getRelationshipUI', {}); }}
+                >
+                  🔗 关系管理
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'history' ? '#10B981' : 'transparent',
+                    color: currentView === 'history' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('history'); handleToolCall('getHistoryUI', {}); }}
+                >
+                  📅 历史记录
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'kanban' ? '#667eea' : 'transparent',
+                    color: currentView === 'kanban' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={handleGetKanbanUI}
+                >
+                  📊 Kanban Board
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'todo' ? '#667eea' : 'transparent',
+                    color: currentView === 'todo' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={handleGetUI}
+                >
+                  📋 Todo List
+                </button>
+              </>
+            )}
           </div>
           <div style={styles.menuRight}>
-            <span style={styles.menuTitle}>MCP Apps</span>
+            <span style={styles.menuTitle}>
+              {isFamilyView ? '家庭族谱' : 'MCP Apps'}
+            </span>
           </div>
         </div>
       )}
@@ -299,8 +335,11 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
       ) : (
         <div style={styles.welcomeContainer}>
           <h1 style={styles.welcomeTitle}>MCP Apps</h1>
-          <p style={styles.welcomeSubtitle}>Interactive Project Management</p>
+          <p style={styles.welcomeSubtitle}>Interactive Applications</p>
           <div style={styles.welcomeButtons}>
+            <button style={styles.welcomeButton} onClick={handleGetLoginUI}>
+              👨‍👩‍👧‍👦 家庭族谱
+            </button>
             <button style={styles.welcomeButton} onClick={handleGetKanbanUI}>
               📊 Open Kanban Board
             </button>
@@ -404,6 +443,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   welcomeButtons: {
     display: 'flex',
     gap: '16px',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   welcomeButton: {
     padding: '16px 32px',

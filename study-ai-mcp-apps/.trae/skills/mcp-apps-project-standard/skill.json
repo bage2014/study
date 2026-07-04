@@ -1,0 +1,76 @@
+{
+  "name": "mcp-apps-project-standard",
+  "version": "1.0.0",
+  "description": "MCP Apps项目规范 - 后端驱动UI渲染架构，所有页面由后端生成HTML通过MCP协议返回渲染",
+  "author": "MCP Apps Team",
+  "tags": ["mcp", "project-standard", "architecture", "ui-rendering"],
+  "requirements": {
+    "node": ">=18.0.0",
+    "typescript": ">=5.0.0"
+  },
+  "configuration": {
+    "projectName": {
+      "type": "string",
+      "description": "项目名称",
+      "default": "mcp-app"
+    },
+    "serverPort": {
+      "type": "number",
+      "description": "MCP Server端口",
+      "default": 3000
+    },
+    "hostPort": {
+      "type": "number",
+      "description": "前端Host端口",
+      "default": 5173
+    }
+  },
+  "corePrinciples": [
+    "后端驱动UI渲染 - 所有页面HTML由后端生成",
+    "前端仅负责渲染 - React作为Host承载iframe",
+    "MCP协议通信 - 通过postMessage实现iframe与Host通信",
+    "防抖机制 - 防止重复请求导致界面闪烁",
+    "innerHTML渲染 - 使用innerHTML一次性渲染，优化性能"
+  ],
+  "directoryStructure": {
+    "src/components": "前端组件（仅Host）",
+    "src/server/tools": "MCP工具定义",
+    "src/server/ui": "UI页面生成器（HTML模板）",
+    "src/server/stores": "数据存储层",
+    "src/shared": "共享类型定义"
+  },
+  "namingConventions": {
+    "uiTools": "get{PageName}UI",
+    "queryTools": "list{Entity}, get{Entity}",
+    "createTools": "create{Entity}",
+    "updateTools": "update{Entity}",
+    "deleteTools": "delete{Entity}"
+  },
+  "styleGuide": {
+    "primaryColor": "#10B981",
+    "secondaryColor": "#3B82F6",
+    "successColor": "#10B981",
+    "warningColor": "#F59E0B",
+    "errorColor": "#EF4444",
+    "buttonPrimary": "bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow",
+    "buttonSecondary": "bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md",
+    "buttonDanger": "bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md",
+    "card": "bg-white p-6 rounded-lg shadow"
+  },
+  "dataFlow": "用户操作 → iframe → postMessage → MCP Host → MCP Tool Call → 后端处理 → 返回结果 → 更新数据/生成新UI → 返回UI Resource → 重新渲染iframe",
+  "developmentWorkflow": [
+    "创建数据存储（Store）",
+    "创建MCP工具（Tools）",
+    "创建UI页面（HTML）",
+    "注册工具到Server",
+    "更新前端菜单",
+    "测试验证"
+  ],
+  "qualityAssurance": [
+    "使用严格模式TypeScript",
+    "使用Zod进行参数验证",
+    "完善的错误处理",
+    "防抖机制防止闪烁",
+    "输入验证防止XSS"
+  ]
+}

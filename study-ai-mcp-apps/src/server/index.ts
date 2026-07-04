@@ -19,9 +19,11 @@ import {
   deleteCardTool,
   getKanbanUITool,
 } from './tools/kanbanTools';
+import { familyTools } from './tools/familyTools';
 import { todoListHtml } from './ui/todoListHtml';
 import { kanbanBoardHtml } from './ui/kanbanBoardHtml';
 import { kanbanStore } from './kanbanStore';
+import { relationshipStore } from './relationshipStore';
 
 kanbanStore.createCard({
   title: '设计系统架构',
@@ -79,118 +81,159 @@ kanbanStore.createCard({
   tags: ['前端'],
 });
 
+relationshipStore.createRelationship('member-1', 'member-2', 'husband');
+relationshipStore.createRelationship('member-1', 'member-3', 'son');
+relationshipStore.createRelationship('member-1', 'member-6', 'daughter');
+relationshipStore.createRelationship('member-2', 'member-3', 'mother');
+relationshipStore.createRelationship('member-2', 'member-6', 'mother');
+relationshipStore.createRelationship('member-3', 'member-4', 'husband');
+relationshipStore.createRelationship('member-3', 'member-5', 'son');
+relationshipStore.createRelationship('member-6', 'member-7', 'wife');
+relationshipStore.createRelationship('member-6', 'member-8', 'daughter');
+
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
 
-const createServer = () => {
-  const server = new McpServer({
-    name: 'mcp-app-kanban',
-    version: '1.0.0',
-  });
+const server = new McpServer({
+  name: 'family-tree-mcp-app',
+  version: '1.0.0',
+});
 
+server.registerTool(
+  listTodosTool.name,
+  listTodosTool.options,
+  listTodosTool.handler,
+);
+
+server.registerTool(
+  addTodoTool.name,
+  addTodoTool.options,
+  addTodoTool.handler,
+);
+
+server.registerTool(
+  toggleTodoTool.name,
+  toggleTodoTool.options,
+  toggleTodoTool.handler,
+);
+
+server.registerTool(
+  deleteTodoTool.name,
+  deleteTodoTool.options,
+  deleteTodoTool.handler,
+);
+
+server.registerTool(
+  getUITool.name,
+  getUITool.options,
+  async () => {
+    const uiResource = await createUIResource({
+      uri: 'ui://todo/list',
+      content: { type: 'rawHtml', htmlString: todoListHtml },
+      encoding: 'text',
+    });
+    return {
+      content: [uiResource],
+    };
+  },
+);
+
+server.registerTool(
+  getBoardTool.name,
+  getBoardTool.options,
+  getBoardTool.handler,
+);
+
+server.registerTool(
+  listCardsTool.name,
+  listCardsTool.options,
+  listCardsTool.handler,
+);
+
+server.registerTool(
+  createCardTool.name,
+  createCardTool.options,
+  createCardTool.handler,
+);
+
+server.registerTool(
+  moveCardTool.name,
+  moveCardTool.options,
+  moveCardTool.handler,
+);
+
+server.registerTool(
+  updateCardTool.name,
+  updateCardTool.options,
+  updateCardTool.handler,
+);
+
+server.registerTool(
+  deleteCardTool.name,
+  deleteCardTool.options,
+  deleteCardTool.handler,
+);
+
+server.registerTool(
+  getKanbanUITool.name,
+  getKanbanUITool.options,
+  async () => {
+    const uiResource = await createUIResource({
+      uri: 'ui://kanban/board',
+      content: { type: 'rawHtml', htmlString: kanbanBoardHtml },
+      encoding: 'text',
+    });
+    return {
+      content: [uiResource],
+    };
+  },
+);
+
+familyTools.forEach((tool) => {
   server.registerTool(
-    listTodosTool.name,
-    listTodosTool.options,
-    listTodosTool.handler,
+    tool.name,
+    tool.options,
+    tool.handler,
   );
+});
 
-  server.registerTool(
-    addTodoTool.name,
-    addTodoTool.options,
-    addTodoTool.handler,
-  );
+app.post('/api/call', async (req, res) => {
+  try {
+    const { toolName, params } = req.body;
+    
+    const tools: Record<string, { handler: (args: Record<string, unknown>) => Promise<unknown> }> = {};
+    
+    [
+      listTodosTool, addTodoTool, toggleTodoTool, deleteTodoTool, getUITool,
+      getBoardTool, listCardsTool, createCardTool, moveCardTool, updateCardTool, deleteCardTool, getKanbanUITool,
+      ...familyTools
+    ].forEach(tool => {
+      tools[tool.name] = tool;
+    });
 
-  server.registerTool(
-    toggleTodoTool.name,
-    toggleTodoTool.options,
-    toggleTodoTool.handler,
-  );
+    if (!tools[toolName]) {
+      return res.status(404).json({ error: 'Tool not found' });
+    }
 
-  server.registerTool(
-    deleteTodoTool.name,
-    deleteTodoTool.options,
-    deleteTodoTool.handler,
-  );
+    const result = await tools[toolName].handler(params);
+    res.json(result);
+  } catch (error) {
+    console.error('Error handling API call:', error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
 
-  server.registerTool(
-    getUITool.name,
-    getUITool.options,
-    async () => {
-      const uiResource = await createUIResource({
-        uri: 'ui://todo/list',
-        content: { type: 'rawHtml', htmlString: todoListHtml },
-        encoding: 'text',
-      });
-      return {
-        content: [uiResource],
-      };
-    },
-  );
+const transport = new StreamableHTTPServerTransport({
+  sessionIdGenerator: () => 'default-session',
+});
 
-  server.registerTool(
-    getBoardTool.name,
-    getBoardTool.options,
-    getBoardTool.handler,
-  );
-
-  server.registerTool(
-    listCardsTool.name,
-    listCardsTool.options,
-    listCardsTool.handler,
-  );
-
-  server.registerTool(
-    createCardTool.name,
-    createCardTool.options,
-    createCardTool.handler,
-  );
-
-  server.registerTool(
-    moveCardTool.name,
-    moveCardTool.options,
-    moveCardTool.handler,
-  );
-
-  server.registerTool(
-    updateCardTool.name,
-    updateCardTool.options,
-    updateCardTool.handler,
-  );
-
-  server.registerTool(
-    deleteCardTool.name,
-    deleteCardTool.options,
-    deleteCardTool.handler,
-  );
-
-  server.registerTool(
-    getKanbanUITool.name,
-    getKanbanUITool.options,
-    async () => {
-      const uiResource = await createUIResource({
-        uri: 'ui://kanban/board',
-        content: { type: 'rawHtml', htmlString: kanbanBoardHtml },
-        encoding: 'text',
-      });
-      return {
-        content: [uiResource],
-      };
-    },
-  );
-
-  return server;
-};
+server.connect(transport).catch(() => {});
 
 app.post('/mcp', async (req, res) => {
-  const server = createServer();
-  const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: undefined,
-  });
   try {
-    await server.connect(transport);
     await transport.handleRequest(req, res, req.body);
   } catch (error) {
     console.error('Error handling MCP request:', error);
@@ -208,12 +251,7 @@ app.post('/mcp', async (req, res) => {
 });
 
 app.get('/mcp', async (req, res) => {
-  const server = createServer();
-  const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: undefined,
-  });
   try {
-    await server.connect(transport);
     await transport.handleRequest(req, res);
   } catch (error) {
     console.error('Error handling MCP GET request:', error);
