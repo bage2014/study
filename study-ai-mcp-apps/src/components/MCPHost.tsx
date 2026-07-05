@@ -7,7 +7,7 @@ interface MCPHostProps {
   onConnect: (connected: boolean) => void;
 }
 
-type CurrentView = 'welcome' | 'todo' | 'kanban' | 'family-login' | 'family-home' | 'family-manage' | 'family-tree' | 'member-manage' | 'relationship' | 'history';
+type CurrentView = 'welcome' | 'todo' | 'kanban' | 'family-login' | 'family-home' | 'family-manage' | 'family-tree' | 'member-manage' | 'relationship' | 'history' | 'profile' | 'album' | 'feed' | 'memorial' | 'stats';
 
 function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   const [uiResource, setUiResource] = useState<UIResource | null>(null);
@@ -118,7 +118,34 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
           }
         }
       } else if (event.data && event.data.type === 'navigate') {
-        const { page, familyId } = event.data;
+        const { page, familyId, uri } = event.data;
+        
+        if (uri) {
+          const urlParams = new URLSearchParams(uri.split('?')[1] || '');
+          const paramFamilyId = urlParams.get('familyId');
+          const albumId = urlParams.get('albumId');
+          
+          if (uri.startsWith('ui://family/home')) {
+            setCurrentView('family-home');
+            handleToolCall('getHomeUI', {});
+          } else if (uri.startsWith('ui://family/album')) {
+            setCurrentView('album');
+            handleToolCall('getAlbumUI', { familyId: paramFamilyId, albumId });
+          } else if (uri.startsWith('ui://family/feed')) {
+            setCurrentView('feed');
+            handleToolCall('getFeedUI', { familyId: paramFamilyId });
+          } else if (uri.startsWith('ui://family/memorial')) {
+            setCurrentView('memorial');
+            handleToolCall('getMemorialUI', { familyId: paramFamilyId });
+          } else if (uri.startsWith('ui://family/stats')) {
+            setCurrentView('stats');
+            handleToolCall('getStatsUI', { familyId: paramFamilyId });
+          } else if (uri.startsWith('ui://family/profile')) {
+            setCurrentView('profile');
+            handleToolCall('getProfileUI', {});
+          }
+          return;
+        }
         
         switch (page) {
           case 'login':
@@ -148,6 +175,26 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
           case 'history':
             setCurrentView('history');
             handleToolCall('getHistoryUI', { familyId });
+            break;
+          case 'profile':
+            setCurrentView('profile');
+            handleToolCall('getProfileUI', {});
+            break;
+          case 'album':
+            setCurrentView('album');
+            handleToolCall('getAlbumUI', { familyId });
+            break;
+          case 'feed':
+            setCurrentView('feed');
+            handleToolCall('getFeedUI', { familyId });
+            break;
+          case 'memorial':
+            setCurrentView('memorial');
+            handleToolCall('getMemorialUI', { familyId });
+            break;
+          case 'stats':
+            setCurrentView('stats');
+            handleToolCall('getStatsUI', { familyId });
             break;
           default:
             setCurrentView('family-login');
@@ -210,7 +257,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   }
 
   const isFamilyView = currentView.startsWith('family-') || 
-                       ['member-manage', 'relationship', 'history'].includes(currentView);
+                       ['member-manage', 'relationship', 'history', 'profile', 'album', 'feed', 'memorial', 'stats'].includes(currentView);
 
   return (
     <div style={styles.hostContainer}>
@@ -289,6 +336,56 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
                   onClick={() => { setCurrentView('history'); handleToolCall('getHistoryUI', {}); }}
                 >
                   📅 历史记录
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'album' ? '#10B981' : 'transparent',
+                    color: currentView === 'album' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('album'); handleToolCall('getAlbumUI', {}); }}
+                >
+                  🖼️ 相册
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'feed' ? '#10B981' : 'transparent',
+                    color: currentView === 'feed' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('feed'); handleToolCall('getFeedUI', {}); }}
+                >
+                  📱 动态
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'memorial' ? '#10B981' : 'transparent',
+                    color: currentView === 'memorial' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('memorial'); handleToolCall('getMemorialUI', {}); }}
+                >
+                  🏛️ 纪念堂
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'stats' ? '#10B981' : 'transparent',
+                    color: currentView === 'stats' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('stats'); handleToolCall('getStatsUI', {}); }}
+                >
+                  📊 统计
+                </button>
+                <button
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: currentView === 'profile' ? '#10B981' : 'transparent',
+                    color: currentView === 'profile' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  }}
+                  onClick={() => { setCurrentView('profile'); handleToolCall('getProfileUI', {}); }}
+                >
+                  👤 个人中心
                 </button>
               </>
             ) : (
@@ -393,14 +490,15 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
+    flexWrap: 'wrap',
   },
   menuItem: {
-    padding: '8px 20px',
+    padding: '8px 16px',
     background: 'transparent',
     border: 'none',
     borderRadius: '6px',
     color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: '14px',
+    fontSize: '13px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s',

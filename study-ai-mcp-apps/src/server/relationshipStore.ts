@@ -293,6 +293,83 @@ class RelationshipStore {
     };
     return labels[type];
   }
+
+  getReverseRelationship(type: RelationshipType): RelationshipType {
+    const reverses: Record<RelationshipType, RelationshipType> = {
+      father: 'son',
+      mother: 'son',
+      husband: 'wife',
+      wife: 'husband',
+      son: 'father',
+      daughter: 'father',
+      brother: 'brother',
+      sister: 'sister',
+      grandfather: 'grandson',
+      grandmother: 'grandson',
+      grandson: 'grandfather',
+      granddaughter: 'grandfather',
+      uncle: 'nephew',
+      aunt: 'nephew',
+      nephew: 'uncle',
+      niece: 'uncle',
+      cousin: 'cousin',
+    };
+    return reverses[type];
+  }
+
+  calculateRelation(memberId1: string, memberId2: string, gender1: 'male' | 'female', gender2: 'male' | 'female'): { label: string; type: RelationshipType } | null {
+    const rel = this.relationships.find(
+      r => (r.memberId1 === memberId1 && r.memberId2 === memberId2) ||
+           (r.memberId1 === memberId2 && r.memberId2 === memberId1)
+    );
+
+    if (!rel) {
+      return { label: '未知关系', type: 'cousin' };
+    }
+
+    const isDirect = rel.memberId1 === memberId1;
+    let type = isDirect ? rel.relationshipType : this.getReverseRelationship(rel.relationshipType);
+
+    const adjustLabel = (baseType: RelationshipType, gender: 'male' | 'female'): { label: string; type: RelationshipType } => {
+      const adjustments: Record<string, { male: string; female: string; maleType: RelationshipType; femaleType: RelationshipType }> = {
+        son: { male: '儿子', female: '女儿', maleType: 'son', femaleType: 'daughter' },
+        daughter: { male: '儿子', female: '女儿', maleType: 'son', femaleType: 'daughter' },
+        brother: { male: '兄弟', female: '姐妹', maleType: 'brother', femaleType: 'sister' },
+        sister: { male: '兄弟', female: '姐妹', maleType: 'brother', femaleType: 'sister' },
+        grandson: { male: '孙子', female: '孙女', maleType: 'grandson', femaleType: 'granddaughter' },
+        granddaughter: { male: '孙子', female: '孙女', maleType: 'grandson', femaleType: 'granddaughter' },
+        nephew: { male: '侄子', female: '侄女', maleType: 'nephew', femaleType: 'niece' },
+        niece: { male: '侄子', female: '侄女', maleType: 'nephew', femaleType: 'niece' },
+        uncle: { male: '叔叔', female: '姑姑', maleType: 'uncle', femaleType: 'aunt' },
+        aunt: { male: '叔叔', female: '姑姑', maleType: 'uncle', femaleType: 'aunt' },
+        father: { male: '父亲', female: '母亲', maleType: 'father', femaleType: 'mother' },
+        mother: { male: '父亲', female: '母亲', maleType: 'father', femaleType: 'mother' },
+      };
+
+      if (adjustments[baseType]) {
+        return {
+          label: adjustments[baseType][gender],
+          type: adjustments[baseType][gender === 'male' ? 'maleType' : 'femaleType'],
+        };
+      }
+
+      return { label: this.getRelationshipLabel(baseType), type: baseType };
+    };
+
+    if (type === 'son' || type === 'daughter' || type === 'brother' || type === 'sister') {
+      return adjustLabel(type, gender2);
+    }
+
+    if (type === 'grandson' || type === 'granddaughter' || type === 'nephew' || type === 'niece') {
+      return adjustLabel(type, gender2);
+    }
+
+    if (type === 'uncle' || type === 'aunt' || type === 'father' || type === 'mother') {
+      return adjustLabel(type, gender2);
+    }
+
+    return { label: this.getRelationshipLabel(type), type };
+  }
 }
 
 export const relationshipStore = new RelationshipStore();

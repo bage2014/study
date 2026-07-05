@@ -106,6 +106,24 @@ class FamilyStore {
     return user;
   }
 
+  updateUser(userId: string, data: Partial<User>): User | undefined {
+    const index = this.users.findIndex(u => u.id === userId);
+    if (index === -1) return undefined;
+    this.users[index] = {
+      ...this.users[index],
+      ...data,
+    };
+    return this.users[index];
+  }
+
+  updatePassword(userId: string, oldPassword: string, newPassword: string): boolean {
+    const index = this.users.findIndex(u => u.id === userId);
+    if (index === -1) return false;
+    if (this.users[index].password !== oldPassword) return false;
+    this.users[index].password = newPassword;
+    return true;
+  }
+
   getAllFamilies(): Family[] {
     return this.families;
   }
