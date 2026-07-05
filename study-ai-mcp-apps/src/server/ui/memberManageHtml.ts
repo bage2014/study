@@ -22,7 +22,7 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen" data-family-id="${selectedFamilyId || ''}">
   <header class="bg-white shadow-sm sticky top-0 z-10">
     <div class="max-w-6xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
@@ -177,7 +177,7 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
   </div>
 
   <script>
-    var currentFamilyId = '${selectedFamilyId || ''}';
+    var currentFamilyId = document.body.getAttribute('data-family-id') || '';
 
     function mcpCallTool(toolName, params) {
       return new Promise(function(resolve, reject) {
@@ -196,7 +196,7 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
         window.parent.postMessage({
           messageId: messageId,
           type: 'tool',
-          payload: { toolName, params }
+          payload: { toolName: toolName, params: params }
         }, '*');
       });
     }
@@ -331,8 +331,8 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
       try {
         var result = await mcpCallTool('createMember', {
           familyId: currentFamilyId,
-          name,
-          gender,
+          name: name,
+          gender: gender,
           birthDate: birthDate || undefined,
           deathDate: deathDate || undefined,
           phone: phone || undefined,
@@ -353,7 +353,7 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
 
     async function openEditModal(memberId) {
       try {
-        var result = await mcpCallTool('getMemberById', { memberId });
+        var result = await mcpCallTool('getMemberById', { memberId: memberId });
         var member = result.member;
 
         if (member) {
@@ -389,9 +389,9 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
 
       try {
         var result = await mcpCallTool('updateMember', {
-          memberId,
-          name,
-          gender,
+          memberId: memberId,
+          name: name,
+          gender: gender,
           birthDate: birthDate || undefined,
           deathDate: deathDate || undefined,
           phone: phone || undefined,
@@ -419,7 +419,7 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
       var memberId = document.getElementById('deleteMemberId').value;
 
       try {
-        var result = await mcpCallTool('deleteMember', { memberId });
+        var result = await mcpCallTool('deleteMember', { memberId: memberId });
 
         if (result.success) {
           closeModal('confirmModal');

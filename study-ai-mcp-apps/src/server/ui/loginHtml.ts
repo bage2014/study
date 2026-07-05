@@ -84,7 +84,7 @@ export function generateLoginHtml(): string {
         window.parent.postMessage({
           messageId: messageId,
           type: 'tool',
-          payload: { toolName, params }
+          payload: { toolName: toolName, params: params }
         }, '*');
       });
     }
@@ -129,7 +129,7 @@ export function generateLoginHtml(): string {
         }
 
         try {
-          var result = await mcpCallTool('register', { email, password, nickname });
+          var result = await mcpCallTool('register', { email: email, password: password, nickname: nickname });
           if (result.success) {
             errorMessage.textContent = result.message;
             errorMessage.className = 'mt-4 text-center text-green-500 text-sm';
@@ -152,7 +152,7 @@ export function generateLoginHtml(): string {
         }
       } else {
         try {
-          var result = await mcpCallTool('login', { email, password });
+          var result = await mcpCallTool('login', { email: email, password: password });
           if (result.success) {
             window.parent.postMessage({ type: 'navigate', page: 'home' }, '*');
           } else {

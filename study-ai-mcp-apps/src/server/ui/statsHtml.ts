@@ -66,7 +66,7 @@ export function generateStatsHtml(user: User | null, familyId?: string): string 
             window.parent.postMessage({
               messageId: messageId,
               type: 'tool',
-              payload: { toolName, params }
+              payload: { toolName: toolName, params: params }
             }, '*');
           });
         }

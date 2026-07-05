@@ -81,15 +81,7 @@ kanbanStore.createCard({
   tags: ['前端'],
 });
 
-relationshipStore.createRelationship('member-1', 'member-2', 'husband');
-relationshipStore.createRelationship('member-1', 'member-3', 'son');
-relationshipStore.createRelationship('member-1', 'member-6', 'daughter');
-relationshipStore.createRelationship('member-2', 'member-3', 'mother');
-relationshipStore.createRelationship('member-2', 'member-6', 'mother');
-relationshipStore.createRelationship('member-3', 'member-4', 'husband');
-relationshipStore.createRelationship('member-3', 'member-5', 'son');
-relationshipStore.createRelationship('member-6', 'member-7', 'wife');
-relationshipStore.createRelationship('member-6', 'member-8', 'daughter');
+
 
 const app = express();
 const port = 3000;

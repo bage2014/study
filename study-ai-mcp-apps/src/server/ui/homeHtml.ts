@@ -189,7 +189,7 @@ export function generateHomeHtml(user: User | null): string {
         window.parent.postMessage({
           messageId: messageId,
           type: 'tool',
-          payload: { toolName, params }
+          payload: { toolName: toolName, params: params }
         }, '*');
       });
     }

@@ -146,7 +146,7 @@ export function generateHistoryHtml(user: User | null, selectedFamilyId: string 
         window.parent.postMessage({
           messageId: messageId,
           type: 'tool',
-          payload: { toolName, params }
+          payload: { toolName: toolName, params: params }
         }, '*');
       });
     }

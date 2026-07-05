@@ -36,7 +36,7 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen" data-family-id="${selectedFamilyId || ''}" data-labels='${JSON.stringify(relationshipLabels)}'>
   <header class="bg-white shadow-sm sticky top-0 z-10">
     <div class="max-w-6xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
@@ -195,8 +195,8 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
   </div>
 
   <script>
-    var currentFamilyId = '${selectedFamilyId || ''}';
-    var relationshipLabels = ${JSON.stringify(relationshipLabels)};
+    var currentFamilyId = document.body.getAttribute('data-family-id') || '';
+    var relationshipLabels = JSON.parse(document.body.getAttribute('data-labels') || '{}');
     var memberMap = {};
 
     function mcpCallTool(toolName, params) {
@@ -216,7 +216,7 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
         window.parent.postMessage({
           messageId: messageId,
           type: 'tool',
-          payload: { toolName, params }
+          payload: { toolName: toolName, params: params }
         }, '*');
       });
     }
@@ -355,7 +355,7 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
       }
 
       try {
-        var result = await mcpCallTool('createRelationship', { memberId1, memberId2, relationshipType });
+        var result = await mcpCallTool('createRelationship', { memberId1: memberId1, memberId2: memberId2, relationshipType: relationshipType });
 
         if (result.success) {
           closeModal('createModal');
@@ -377,7 +377,7 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
       var relationshipId = document.getElementById('deleteRelationshipId').value;
 
       try {
-        var result = await mcpCallTool('deleteRelationship', { relationshipId });
+        var result = await mcpCallTool('deleteRelationship', { relationshipId: relationshipId });
 
         if (result.success) {
           closeModal('confirmModal');

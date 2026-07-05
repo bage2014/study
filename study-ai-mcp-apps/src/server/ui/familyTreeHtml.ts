@@ -11,118 +11,23 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
   <title>家庭族谱 - 家族树</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-    .tree-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      overflow-x: auto;
-    }
-    .tree-row {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    .tree-node {
-      width: 120px;
-      text-align: center;
-      position: relative;
-    }
-    .node-card {
-      background: white;
-      border: 2px solid #10B981;
-      border-radius: 12px;
-      padding: 12px 8px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .node-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 12px rgba(0,0,0,0.15);
-      border-color: #059669;
-    }
-    .node-card.male {
-      border-color: #3B82F6;
-    }
-    .node-card.female {
-      border-color: #EC4899;
-    }
-    .node-card.deceased {
-      opacity: 0.6;
-      background: #f3f4f6;
-    }
-    .node-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin: 0 auto 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 16px;
-    }
-    .node-avatar.male {
-      background: #DBEAFE;
-      color: #1D4ED8;
-    }
-    .node-avatar.female {
-      background: #FCE7F3;
-      color: #BE185D;
-    }
-    .node-name {
-      font-weight: 600;
-      color: #1F2937;
-      font-size: 13px;
-    }
-    .node-info {
-      font-size: 10px;
-      color: #6B7280;
-      margin-top: 4px;
-    }
-    .spouse-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .spouse-line {
-      width: 20px;
-      height: 2px;
-      background: #9CA3AF;
-    }
-    .generation-label {
-      text-align: center;
-      font-weight: 600;
-      color: #374151;
-      margin-bottom: 16px;
-      font-size: 14px;
-    }
-    .relation-line {
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      width: 2px;
-      height: 20px;
-      background: #9CA3AF;
-      transform: translateX(-50%);
-    }
-    .relation-label {
-      position: absolute;
-      top: -35px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      background: #E5E7EB;
-      padding: 2px 6px;
-      border-radius: 4px;
-      white-space: nowrap;
-      color: #374151;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .tree-container { display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: auto; }
+    .tree-row { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
+    .tree-node { width: 120px; text-align: center; position: relative; }
+    .node-card { background: white; border: 2px solid #10B981; border-radius: 12px; padding: 12px 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease; }
+    .node-card:hover { transform: translateY(-2px); box-shadow: 0 8px 12px rgba(0,0,0,0.15); border-color: #059669; }
+    .node-card.male { border-color: #3B82F6; }
+    .node-card.female { border-color: #EC4899; }
+    .node-card.deceased { opacity: 0.6; background: #f3f4f6; }
+    .node-avatar { width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
+    .node-avatar.male { background: #DBEAFE; color: #1D4ED8; }
+    .node-avatar.female { background: #FCE7F3; color: #BE185D; }
+    .node-name { font-weight: 600; color: #1F2937; font-size: 13px; }
+    .node-info { font-size: 10px; color: #6B7280; margin-top: 4px; }
+    .spouse-row { display: flex; gap: 8px; align-items: center; }
+    .spouse-line { width: 20px; height: 2px; background: #9CA3AF; }
+    .generation-label { text-align: center; font-weight: 600; color: #374151; margin-bottom: 16px; font-size: 14px; }
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -180,7 +85,7 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
         window.parent.postMessage({
           messageId: messageId,
           type: 'tool',
-          payload: { toolName, params }
+          payload: { toolName: toolName, params: params }
         }, '*');
       });
     }
@@ -225,10 +130,10 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
 
     async function renderFamilyTree(familyId) {
       try {
-        var membersResult = await mcpCallTool('listMembers', { familyId });
+        var membersResult = await mcpCallTool('listMembers', { familyId: familyId });
         var members = membersResult.members;
         
-        var relationshipsResult = await mcpCallTool('listRelationships', { familyId });
+        var relationshipsResult = await mcpCallTool('listRelationships', { familyId: familyId });
         var relationships = relationshipsResult.relationships;
 
         if (members.length === 0) {
@@ -246,12 +151,12 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
           memberGroups.forEach(function(group) {
             if (group.length === 2) {
               treeHtml += '<div class="spouse-row">';
-              treeHtml += createNodeHtml(group[0], relationships);
+              treeHtml += createNodeHtml(group[0]);
               treeHtml += '<div class="spouse-line"></div>';
-              treeHtml += createNodeHtml(group[1], relationships);
+              treeHtml += createNodeHtml(group[1]);
               treeHtml += '</div>';
             } else {
-              treeHtml += createNodeHtml(group[0], relationships);
+              treeHtml += createNodeHtml(group[0]);
             }
           });
           
@@ -268,6 +173,7 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
     function buildGenerationMap(members, relationships) {
       var generationMap = new Map();
       var memberMap = new Map();
+      var assignedMembers = new Set();
       
       members.forEach(function(m) {
         memberMap.set(m.id, m);
@@ -280,21 +186,21 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
       });
 
       function assignGeneration(memberId, generation) {
+        if (assignedMembers.has(memberId)) return;
+        assignedMembers.add(memberId);
+
         var existingGen = generationMap.get(generation) || [];
         
-        var existingGroup = existingGen.find(function(g) {
-          return g.some(function(m) { return m.id === memberId; });
-        });
-
-        if (!existingGroup) {
-          var spouseId = findSpouse(memberId, relationships);
-          if (spouseId && memberMap.has(spouseId)) {
-            existingGen.push([memberMap.get(memberId), memberMap.get(spouseId)]);
-          } else {
-            existingGen.push([memberMap.get(memberId)]);
-          }
-          generationMap.set(generation, existingGen);
+        var spouseId = findSpouse(memberId, relationships);
+        var group = [memberMap.get(memberId)];
+        
+        if (spouseId && memberMap.has(spouseId)) {
+          assignedMembers.add(spouseId);
+          group.push(memberMap.get(spouseId));
         }
+        
+        existingGen.push(group);
+        generationMap.set(generation, existingGen);
 
         var children = findChildren(memberId, relationships, memberMap);
         children.forEach(function(child) {
@@ -314,15 +220,12 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
     }
 
     function findSpouse(memberId, relationships) {
-      var spouseRel = relationships.find(function(r) {
-        return (r.memberId1 === memberId || r.memberId2 === memberId) &&
+      var rel = relationships.find(function(r) {
+        return (r.memberId1 === memberId || r.memberId2 === memberId) && 
                (r.relationshipType === 'husband' || r.relationshipType === 'wife');
       });
-      
-      if (spouseRel) {
-        return spouseRel.memberId1 === memberId ? spouseRel.memberId2 : spouseRel.memberId1;
-      }
-      return null;
+      if (!rel) return null;
+      return rel.memberId1 === memberId ? rel.memberId2 : rel.memberId1;
     }
 
     function findChildren(memberId, relationships, memberMap) {
@@ -337,34 +240,44 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
       return children;
     }
 
-    function createNodeHtml(member, relationships) {
+    function createNodeHtml(member) {
       if (!member) return '';
       
       var genderClass = member.gender === 'male' ? 'male' : 'female';
       var deceasedClass = member.deathDate ? 'deceased' : '';
-      var avatarColor = member.gender === 'male' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600';
       
       var birthYear = member.birthDate ? member.birthDate.split('-')[0] : '';
       var deathYear = member.deathDate ? member.deathDate.split('-')[0] : '';
       var yearStr = birthYear && deathYear ? birthYear + '-' + deathYear : birthYear || '';
 
-      return '<div class="tree-node">' +
-        '<div class="node-card ' + genderClass + ' ' + deceasedClass + '" onclick="showMemberDetail(\'' + member.id + '\')">' +
-        '<div class="node-avatar ' + genderClass + '">' + member.name.charAt(0) + '</div>' +
-        '<div class="node-name">' + member.name + '</div>' +
-        '<div class="node-info">' + yearStr + '</div>' +
-        '</div>' +
-        '</div>';
+      return '<div class="tree-node"><div class="node-card ' + genderClass + ' ' + deceasedClass + '" data-member-id="' + member.id + '"><div class="node-avatar ' + genderClass + '">' + member.name.charAt(0) + '</div><div class="node-name">' + member.name + '</div><div class="node-info">' + yearStr + '</div></div></div>';
     }
 
     function showMemberDetail(memberId) {
-      mcpCallTool('getMemberById', { memberId }).then(function(result) {
+      mcpCallTool('getMemberById', { memberId: memberId }).then(function(result) {
         var member = result.member;
         if (member) {
-          alert('成员详情:\n姓名: ' + member.name + '\n性别: ' + (member.gender === 'male' ? '男' : '女') + '\n出生日期: ' + (member.birthDate || '未知') + '\n去世日期: ' + (member.deathDate || '健在') + '\n手机号: ' + (member.phone || '未填写') + '\n邮箱: ' + (member.email || '未填写') + '\n备注: ' + (member.details || '未填写'));
+          var genderText = member.gender === 'male' ? '男' : '女';
+          var birthText = member.birthDate || '未知';
+          var deathText = member.deathDate || '健在';
+          var phoneText = member.phone || '未填写';
+          var emailText = member.email || '未填写';
+          var detailText = member.details || '未填写';
+          var msg = '成员详情: ' + member.name + ', ' + genderText + ', ' + birthText + ', ' + deathText + ', ' + phoneText + ', ' + emailText + ', ' + detailText;
+          alert(msg);
         }
       });
     }
+
+    document.addEventListener('click', function(e) {
+      var card = e.target.closest('.node-card');
+      if (card) {
+        var memberId = card.getAttribute('data-member-id');
+        if (memberId) {
+          showMemberDetail(memberId);
+        }
+      }
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
       loadFamilies();

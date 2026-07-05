@@ -17,6 +17,7 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
+  <div id="appData" style="display:none" data-family-id="${selectedFamilyId || ''}" data-user-name="${userName}"></div>
   <header class="bg-white shadow-sm sticky top-0 z-10">
     <div class="max-w-6xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
@@ -25,7 +26,7 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
           <h1 class="text-xl font-bold text-gray-800">家族管理</h1>
         </div>
         <div class="flex items-center gap-4">
-          <span class="text-gray-600">${userName}</span>
+          <span class="text-gray-600" id="userNameDisplay"></span>
         </div>
       </div>
     </div>
@@ -112,7 +113,13 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
   </div>
 
   <script>
-    var currentFamilyId = '${selectedFamilyId || ''}';
+    var appData = document.getElementById('appData');
+    var currentFamilyId = appData ? appData.getAttribute('data-family-id') || '' : '';
+    var userName = appData ? appData.getAttribute('data-user-name') || '用户' : '用户';
+    
+    if (document.getElementById('userNameDisplay')) {
+      document.getElementById('userNameDisplay').textContent = userName;
+    }
 
     function mcpCallTool(toolName, params) {
       return new Promise(function(resolve, reject) {
@@ -131,7 +138,7 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
         window.parent.postMessage({
           messageId: messageId,
           type: 'tool',
-          payload: { toolName, params }
+          payload: { toolName: toolName, params: params }
         }, '*');
       });
     }
@@ -185,13 +192,13 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
 
     async function loadFamilyDetails(familyId) {
       try {
-        var familyResult = await mcpCallTool('getFamilyById', { familyId });
+        var familyResult = await mcpCallTool('getFamilyById', { familyId: familyId });
         var family = familyResult.family;
 
-        var membersResult = await mcpCallTool('listMembers', { familyId });
+        var membersResult = await mcpCallTool('listMembers', { familyId: familyId });
         var members = membersResult.members;
 
-        var relationshipsResult = await mcpCallTool('listRelationships', { familyId });
+        var relationshipsResult = await mcpCallTool('listRelationships', { familyId: familyId });
         var relationships = relationshipsResult.relationships;
 
         if (!family) {
@@ -269,7 +276,7 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
       }
 
       try {
-        var result = await mcpCallTool('createFamily', { name, description });
+        var result = await mcpCallTool('createFamily', { name: name, description: description });
         if (result.success) {
           closeModal('createModal');
           currentFamilyId = result.family.id;
@@ -284,7 +291,7 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
 
     async function openEditModal(familyId) {
       try {
-        var result = await mcpCallTool('getFamilyById', { familyId });
+        var result = await mcpCallTool('getFamilyById', { familyId: familyId });
         if (result.family) {
           document.getElementById('editFamilyId').value = result.family.id;
           document.getElementById('editFamilyName').value = result.family.name;
@@ -307,7 +314,7 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
       }
 
       try {
-        var result = await mcpCallTool('updateFamily', { familyId, name, description });
+        var result = await mcpCallTool('updateFamily', { familyId: familyId, name: name, description: description });
         if (result.success) {
           closeModal('editModal');
           await loadFamilies();
@@ -328,7 +335,7 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
       var familyId = document.getElementById('deleteFamilyId').value;
 
       try {
-        var result = await mcpCallTool('deleteFamily', { familyId });
+        var result = await mcpCallTool('deleteFamily', { familyId: familyId });
         if (result.success) {
           closeModal('confirmModal');
           currentFamilyId = '';
