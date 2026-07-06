@@ -32,7 +32,7 @@ export function generateLoginHtml(): string {
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">邮箱</label>
-            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" placeholder="请输入邮箱">
+            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" placeholder="请输入邮箱" value="admin@family.com">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">密码</label>

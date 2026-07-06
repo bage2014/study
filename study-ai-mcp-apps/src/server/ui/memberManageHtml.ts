@@ -22,7 +22,8 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen" data-family-id="${selectedFamilyId || ''}">
+<body class="bg-gray-50 min-h-screen">
+  <div id="appData" style="display:none" data-family-id="${selectedFamilyId || ''}" data-user-name="${userName}"></div>
   <header class="bg-white shadow-sm sticky top-0 z-10">
     <div class="max-w-6xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
@@ -31,7 +32,7 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
           <h1 class="text-xl font-bold text-gray-800">成员管理</h1>
         </div>
         <div class="flex items-center gap-4">
-          <span class="text-gray-600">${userName}</span>
+          <span class="text-gray-600" id="userNameDisplay"></span>
         </div>
       </div>
     </div>
@@ -177,7 +178,13 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
   </div>
 
   <script>
-    var currentFamilyId = document.body.getAttribute('data-family-id') || '';
+    var appData = document.getElementById('appData');
+    var currentFamilyId = appData ? appData.getAttribute('data-family-id') || '' : '';
+    var userName = appData ? appData.getAttribute('data-user-name') || '用户' : '用户';
+    
+    if (document.getElementById('userNameDisplay')) {
+      document.getElementById('userNameDisplay').textContent = userName;
+    }
 
     function mcpCallTool(toolName, params) {
       return new Promise(function(resolve, reject) {
@@ -289,8 +296,8 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
             '</div>' +
             '</div>' +
             '<div class="flex gap-2 flex-shrink-0">' +
-            '<button onclick="openEditModal(\'' + member.id + '\')" class="text-blue-500 hover:text-blue-600 p-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>' +
-            '<button onclick="openDeleteModal(\'' + member.id + '\')" class="text-red-500 hover:text-red-600 p-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
+            '<button onclick="openEditModal(&#39;' + member.id + '&#39;)" class="text-blue-500 hover:text-blue-600 p-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>' +
+            '<button onclick="openDeleteModal(&#39;' + member.id + '&#39;)" class="text-red-500 hover:text-red-600 p-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
             '</div>' +
             '</div>' +
             (member.details ? '<div class="mt-3 pt-3 border-t border-gray-100"><p class="text-sm text-gray-600 line-clamp-2">' + member.details + '</p></div>' : '') +

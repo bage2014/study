@@ -14,6 +14,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState<CurrentView>('family-login');
+  const [currentFamilyId, setCurrentFamilyId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     setLoading(true);
@@ -118,9 +119,13 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
           }
         }
       } else if (event.data && event.data.type === 'navigate') {
-        const { page, familyId, uri } = event.data;
-        
-        if (uri) {
+          const { page, familyId, uri } = event.data;
+          
+          if (familyId) {
+            setCurrentFamilyId(familyId);
+          }
+          
+          if (uri) {
           const urlParams = new URLSearchParams(uri.split('?')[1] || '');
           const paramFamilyId = urlParams.get('familyId');
           const albumId = urlParams.get('albumId');
@@ -293,7 +298,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
                     backgroundColor: currentView === 'family-tree' ? '#10B981' : 'transparent',
                     color: currentView === 'family-tree' ? '#fff' : 'rgba(255,255,255,0.8)',
                   }}
-                  onClick={() => { setCurrentView('family-tree'); handleToolCall('getFamilyTreeUI', {}); }}
+                  onClick={() => { setCurrentView('family-tree'); handleToolCall('getFamilyTreeUI', { familyId: currentFamilyId }); }}
                 >
                   🌳 家族树
                 </button>
@@ -303,7 +308,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
                     backgroundColor: currentView === 'family-manage' ? '#10B981' : 'transparent',
                     color: currentView === 'family-manage' ? '#fff' : 'rgba(255,255,255,0.8)',
                   }}
-                  onClick={() => { setCurrentView('family-manage'); handleToolCall('getFamilyManageUI', {}); }}
+                  onClick={() => { setCurrentView('family-manage'); handleToolCall('getFamilyManageUI', { familyId: currentFamilyId }); }}
                 >
                   📋 家族管理
                 </button>
@@ -313,7 +318,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
                     backgroundColor: currentView === 'member-manage' ? '#10B981' : 'transparent',
                     color: currentView === 'member-manage' ? '#fff' : 'rgba(255,255,255,0.8)',
                   }}
-                  onClick={() => { setCurrentView('member-manage'); handleToolCall('getMemberManageUI', {}); }}
+                  onClick={() => { setCurrentView('member-manage'); handleToolCall('getMemberManageUI', { familyId: currentFamilyId }); }}
                 >
                   👥 成员管理
                 </button>
@@ -323,7 +328,7 @@ function MCPHost({ serverUrl, onConnect }: MCPHostProps) {
                     backgroundColor: currentView === 'relationship' ? '#10B981' : 'transparent',
                     color: currentView === 'relationship' ? '#fff' : 'rgba(255,255,255,0.8)',
                   }}
-                  onClick={() => { setCurrentView('relationship'); handleToolCall('getRelationshipUI', {}); }}
+                  onClick={() => { setCurrentView('relationship'); handleToolCall('getRelationshipUI', { familyId: currentFamilyId }); }}
                 >
                   🔗 关系管理
                 </button>

@@ -36,7 +36,8 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen" data-family-id="${selectedFamilyId || ''}" data-labels='${JSON.stringify(relationshipLabels)}'>
+<body class="bg-gray-50 min-h-screen">
+  <div id="appData" style="display:none" data-family-id="${selectedFamilyId || ''}" data-user-name="${userName}"></div>
   <header class="bg-white shadow-sm sticky top-0 z-10">
     <div class="max-w-6xl mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
@@ -45,7 +46,7 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
           <h1 class="text-xl font-bold text-gray-800">关系管理</h1>
         </div>
         <div class="flex items-center gap-4">
-          <span class="text-gray-600">${userName}</span>
+          <span class="text-gray-600" id="userNameDisplay"></span>
         </div>
       </div>
     </div>
@@ -195,9 +196,33 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
   </div>
 
   <script>
-    var currentFamilyId = document.body.getAttribute('data-family-id') || '';
-    var relationshipLabels = JSON.parse(document.body.getAttribute('data-labels') || '{}');
+    var appData = document.getElementById('appData');
+    var currentFamilyId = appData ? appData.getAttribute('data-family-id') || '' : '';
+    var userName = appData ? appData.getAttribute('data-user-name') || '用户' : '用户';
+    var relationshipLabels = {
+      father: '父亲',
+      mother: '母亲',
+      husband: '丈夫',
+      wife: '妻子',
+      son: '儿子',
+      daughter: '女儿',
+      brother: '兄弟',
+      sister: '姐妹',
+      grandfather: '祖父',
+      grandmother: '祖母',
+      grandson: '孙子',
+      granddaughter: '孙女',
+      uncle: '叔叔',
+      aunt: '姑姑',
+      nephew: '侄子',
+      niece: '侄女',
+      cousin: '堂/表兄弟姐妹'
+    };
     var memberMap = {};
+    
+    if (document.getElementById('userNameDisplay')) {
+      document.getElementById('userNameDisplay').textContent = userName;
+    }
 
     function mcpCallTool(toolName, params) {
       return new Promise(function(resolve, reject) {
@@ -302,7 +327,7 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
             '<div class="font-medium text-gray-800">' + (member2 ? member2.name : '未知成员') + '</div>' +
             '</div>' +
             '</div>' +
-            '<button onclick="openDeleteModal(\'' + rel.id + '\')" class="text-red-500 hover:text-red-600 p-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
+            '<button onclick="openDeleteModal(&#39;' + rel.id + '&#39;)" class="text-red-500 hover:text-red-600 p-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
             '</div>';
         });
 

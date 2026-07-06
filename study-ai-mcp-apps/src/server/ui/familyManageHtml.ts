@@ -168,7 +168,7 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
         } else {
           families.forEach(function(family) {
             var isSelected = family.id === currentFamilyId;
-            listHtml += '<div onclick="selectFamily(\'' + family.id + '\')" class="p-3 rounded-lg cursor-pointer border transition-all ' + (isSelected ? 'bg-green-50 border-green-500' : 'bg-gray-50 border-transparent hover:border-gray-200') + '">' +
+            listHtml += '<div onclick="selectFamily(&#39;' + family.id + '&#39;)" class="p-3 rounded-lg cursor-pointer border transition-all ' + (isSelected ? 'bg-green-50 border-green-500' : 'bg-gray-50 border-transparent hover:border-gray-200') + '">' +
               '<div class="font-medium text-gray-800">' + family.name + '</div>' +
               '<div class="text-xs text-gray-500">' + family.createdAt + '</div>' +
               '</div>';
@@ -213,8 +213,8 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
           '<p class="text-gray-500 mt-1">' + family.description + '</p>' +
           '</div>' +
           '<div class="flex gap-2">' +
-          '<button onclick="openEditModal(\'' + family.id + '\')" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium">编辑</button>' +
-          '<button onclick="openDeleteModal(\'' + family.id + '\')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm font-medium">删除</button>' +
+          '<button onclick="openEditModal(&#39;' + family.id + '&#39;)" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium">编辑</button>' +
+          '<button onclick="openDeleteModal(&#39;' + family.id + '&#39;)" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm font-medium">删除</button>' +
           '</div>' +
           '</div>' +
           '<div class="grid grid-cols-3 gap-4 mb-8">' +
