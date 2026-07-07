@@ -1571,7 +1571,7 @@ export const getStatisticsTool = {
   name: 'getStatistics',
   options: {
     inputSchema: z.object({
-      familyId: z.string().describe('家族ID'),
+      familyId: z.string().optional().describe('家族ID，为空时返回所有家族汇总'),
     }),
     outputSchema: z.object({
       statistics: z.object({
@@ -1598,33 +1598,78 @@ export const getStatisticsTool = {
     const families = familyStore.getAllFamilies();
     const members = memberStore.getAllMembers();
     
-    const family = families.find(f => f.id === familyId);
-    if (!family) {
-      return { statistics: {
-        totalMembers: 0,
-        maleCount: 0,
-        femaleCount: 0,
-        averageAge: 0,
-        generationCount: 0,
-        aliveCount: 0,
-        deceasedCount: 0,
-        ageDistribution: {},
-        genderRatio: { male: 0, female: 0, ratio: 0 },
-      } };
+    let filteredMembers = members;
+    let generationCount = 4;
+
+    if (familyId) {
+      const family = families.find(f => f.id === familyId);
+      if (!family) {
+        return { statistics: {
+          totalMembers: 0,
+          maleCount: 0,
+          femaleCount: 0,
+          averageAge: 0,
+          generationCount: 0,
+          aliveCount: 0,
+          deceasedCount: 0,
+          ageDistribution: {},
+          genderRatio: { male: 0, female: 0, ratio: 0 },
+        } };
+      }
+      filteredMembers = members.filter(m => m.familyId === familyId);
+    } else {
+      const maxGeneration = Math.max(...families.map(f => statisticsStore.getFamilyStatistics(f.id, f.name, members).generationCount));
+      generationCount = maxGeneration;
     }
 
-    const stats = statisticsStore.getFamilyStatistics(familyId, family.name, members);
-    const ageDistribution = statisticsStore.getAgeDistribution(familyId, members);
-    const genderRatio = statisticsStore.getGenderRatio(familyId, members);
+    const totalMembers = filteredMembers.length;
+    const maleCount = filteredMembers.filter(m => m.gender === 'male').length;
+    const femaleCount = filteredMembers.filter(m => m.gender === 'female').length;
+    
+    const membersWithAge = filteredMembers.filter(m => m.birthDate).map(m => ({
+      ...m,
+      age: m.birthDate ? statisticsStore.calculateAge(m.birthDate, m.deathDate) : 0,
+    }));
+    
+    const averageAge = membersWithAge.length > 0 
+      ? Math.round(membersWithAge.reduce((sum, m) => sum + m.age, 0) / membersWithAge.length)
+      : 0;
+    
+    const aliveCount = filteredMembers.filter(m => !m.deathDate).length;
+    const deceasedCount = filteredMembers.filter(m => m.deathDate).length;
+
+    const ageDistribution: Record<string, number> = {
+      '0-18': 0,
+      '19-30': 0,
+      '31-50': 0,
+      '51-70': 0,
+      '71+': 0,
+    };
+
+    filteredMembers.filter(m => m.birthDate).forEach(m => {
+      const age = m.birthDate ? statisticsStore.calculateAge(m.birthDate, m.deathDate) : 0;
+      if (age <= 18) ageDistribution['0-18']++;
+      else if (age <= 30) ageDistribution['19-30']++;
+      else if (age <= 50) ageDistribution['31-50']++;
+      else if (age <= 70) ageDistribution['51-70']++;
+      else ageDistribution['71+']++;
+    });
+
+    const total = maleCount + femaleCount;
+    const genderRatio = { 
+      male: maleCount, 
+      female: femaleCount, 
+      ratio: total > 0 ? Math.round((maleCount / total) * 100) : 0 
+    };
 
     return { statistics: {
-      totalMembers: stats.totalMembers,
-      maleCount: stats.maleCount,
-      femaleCount: stats.femaleCount,
-      averageAge: stats.averageAge,
-      generationCount: stats.generationCount,
-      aliveCount: stats.aliveCount,
-      deceasedCount: stats.deceasedCount,
+      totalMembers,
+      maleCount,
+      femaleCount,
+      averageAge,
+      generationCount,
+      aliveCount,
+      deceasedCount,
       ageDistribution,
       genderRatio,
     } };
