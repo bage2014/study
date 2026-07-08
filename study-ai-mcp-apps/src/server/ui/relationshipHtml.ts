@@ -67,12 +67,12 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div id="relationshipList" class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">关系列表</h3>
-        <div id="relationshipItems" class="space-y-3">
-          <div class="text-center py-8 text-gray-500">
-            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div id="relationshipList" class="bg-white rounded-xl shadow-sm p-4">
+        <h3 class="text-base font-semibold text-gray-800 mb-3">关系列表</h3>
+        <div id="relationshipItems" class="space-y-2">
+          <div class="text-center py-6 text-gray-500">
+            <svg class="w-10 h-10 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
             </svg>
             <p>请选择一个家族查看关系列表</p>
@@ -80,55 +80,55 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
         </div>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">关系类型说明</h3>
-        <div class="space-y-2">
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">father</span>
+      <div class="bg-white rounded-xl shadow-sm p-4">
+        <h3 class="text-base font-semibold text-gray-800 mb-3">关系类型说明</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">father</span>
             <span class="font-medium text-green-700">父亲</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">mother</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">mother</span>
             <span class="font-medium text-green-700">母亲</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">husband</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">husband</span>
             <span class="font-medium text-green-700">丈夫</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">wife</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">wife</span>
             <span class="font-medium text-green-700">妻子</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">son</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">son</span>
             <span class="font-medium text-green-700">儿子</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">daughter</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">daughter</span>
             <span class="font-medium text-green-700">女儿</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">brother</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">brother</span>
             <span class="font-medium text-green-700">兄弟</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">sister</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">sister</span>
             <span class="font-medium text-green-700">姐妹</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">grandfather</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">grandfather</span>
             <span class="font-medium text-green-700">祖父</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">grandmother</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">grandmother</span>
             <span class="font-medium text-green-700">祖母</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">grandson</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">grandson</span>
             <span class="font-medium text-green-700">孙子</span>
           </div>
-          <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">granddaughter</span>
+          <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg text-xs">
+            <span class="text-gray-600">granddaughter</span>
             <span class="font-medium text-green-700">孙女</span>
           </div>
         </div>
@@ -312,22 +312,24 @@ export function generateRelationshipHtml(user: User | null, selectedFamilyId: st
           var member2 = memberMap[rel.memberId2];
           var label = relationshipLabels[rel.relationshipType] || rel.relationshipType;
 
-          html += '<div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">' +
-            '<div class="flex items-center gap-4">' +
-            '<div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">' + (member1 ? member1.name.charAt(0) : '?') + '</div>' +
-            '<div>' +
-            '<div class="font-medium text-gray-800">' + (member1 ? member1.name : '未知成员') + '</div>' +
-            '</div>' +
-            '<div class="flex flex-col items-center px-4">' +
-            '<div class="text-green-600 font-semibold">' + label + '</div>' +
-            '<svg class="w-4 h-4 text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>' +
-            '</div>' +
-            '<div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">' + (member2 ? member2.name.charAt(0) : '?') + '</div>' +
-            '<div>' +
-            '<div class="font-medium text-gray-800">' + (member2 ? member2.name : '未知成员') + '</div>' +
+          html += '<div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl gap-2">' +
+            '<div class="flex items-center gap-2 flex-1 min-w-0">' +
+            '<div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold flex-shrink-0">' + (member1 ? member1.name.charAt(0) : '?') + '</div>' +
+            '<div class="min-w-0">' +
+            '<div class="font-medium text-gray-800 text-sm truncate">' + (member1 ? member1.name : '未知成员') + '</div>' +
             '</div>' +
             '</div>' +
-            '<button onclick="openDeleteModal(&#39;' + rel.id + '&#39;)" class="text-red-500 hover:text-red-600 p-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
+            '<div class="flex flex-col items-center px-2 flex-shrink-0">' +
+            '<div class="text-green-600 font-semibold text-xs">' + label + '</div>' +
+            '<svg class="w-3 h-3 text-gray-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>' +
+            '</div>' +
+            '<div class="flex items-center gap-2 flex-1 min-w-0">' +
+            '<div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold flex-shrink-0">' + (member2 ? member2.name.charAt(0) : '?') + '</div>' +
+            '<div class="min-w-0">' +
+            '<div class="font-medium text-gray-800 text-sm truncate">' + (member2 ? member2.name : '未知成员') + '</div>' +
+            '</div>' +
+            '</div>' +
+            '<button onclick="openDeleteModal(&#39;' + rel.id + '&#39;)" class="text-red-500 hover:text-red-600 p-1.5 flex-shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
             '</div>';
         });
 

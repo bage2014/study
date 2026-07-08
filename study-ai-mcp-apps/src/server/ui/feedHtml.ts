@@ -11,52 +11,60 @@ export function generateFeedHtml(user: User | null, familyId?: string): string {
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1 { color: #333; margin-bottom: 20px; font-size: 24px; }
-        .btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .container { max-width: 800px; margin: 0 auto; padding: 12px; }
+        h1 { color: #333; margin-bottom: 12px; font-size: 18px; }
+        .btn { background: #4CAF50; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; }
         .btn:hover { background: #45a049; }
         .btn-secondary { background: #f0f0f0; color: #333; }
         .btn-secondary:hover { background: #e0e0e0; }
-        .feed-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .feed-header { display: flex; align-items: center; margin-bottom: 16px; }
-        .feed-avatar { width: 48px; height: 48px; border-radius: 50%; background: #4CAF50; color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 12px; }
-        .feed-user-info { flex: 1; }
-        .feed-user-name { font-weight: bold; color: #333; }
-        .feed-time { color: #999; font-size: 12px; }
-        .feed-type { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px; }
+        .feed-card { background: white; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .feed-header { display: flex; align-items: center; margin-bottom: 12px; }
+        .feed-avatar { width: 40px; height: 40px; border-radius: 50%; background: #4CAF50; color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 10px; }
+        .feed-user-info { flex: 1; min-width: 0; }
+        .feed-user-name { font-weight: bold; color: #333; font-size: 14px; }
+        .feed-time { color: #999; font-size: 11px; }
+        .feed-type { display: inline-block; padding: 3px 6px; border-radius: 4px; font-size: 11px; margin-left: 6px; }
         .type-announcement { background: #ffebee; color: #c62828; }
         .type-event { background: #e3f2fd; color: #1565c0; }
         .type-photo { background: #e8f5e9; color: #2e7d32; }
         .type-text { background: #f5f5f5; color: #666; }
-        .feed-content { color: #333; line-height: 1.6; margin-bottom: 16px; }
-        .feed-photo { max-width: 100%; border-radius: 8px; margin-bottom: 16px; }
-        .feed-actions { display: flex; gap: 20px; padding-top: 12px; border-top: 1px solid #eee; }
-        .action-btn { display: flex; align-items: center; gap: 6px; cursor: pointer; color: #666; font-size: 14px; }
+        .feed-content { color: #333; line-height: 1.5; margin-bottom: 12px; font-size: 14px; }
+        .feed-photo { max-width: 100%; border-radius: 8px; margin-bottom: 12px; }
+        .feed-actions { display: flex; gap: 16px; padding-top: 10px; border-top: 1px solid #eee; }
+        .action-btn { display: flex; align-items: center; gap: 5px; cursor: pointer; color: #666; font-size: 13px; }
         .action-btn:hover { color: #4CAF50; }
         .action-btn.liked { color: #f44336; }
         .action-btn.liked svg { fill: #f44336; }
-        .comments-section { margin-top: 16px; padding-top: 12px; border-top: 1px dashed #eee; }
-        .comment { display: flex; margin-bottom: 12px; }
-        .comment-avatar { width: 36px; height: 36px; border-radius: 50%; background: #ccc; color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 8px; }
-        .comment-content { flex: 1; background: #f9f9f9; padding: 8px 12px; border-radius: 8px; }
-        .comment-user { font-weight: bold; font-size: 13px; margin-bottom: 4px; }
-        .comment-text { font-size: 14px; color: #333; }
-        .comment-time { font-size: 11px; color: #999; margin-top: 4px; }
-        .comment-input { display: flex; gap: 8px; margin-top: 12px; }
-        .comment-input input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; font-size: 14px; }
-        .comment-input button { padding: 10px 20px; border-radius: 20px; }
-        .create-form { background: white; padding: 24px; border-radius: 12px; margin-bottom: 20px; }
-        .field { margin-bottom: 16px; }
-        .field label { display: block; margin-bottom: 8px; color: #666; }
-        .field textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; resize: vertical; }
-        .field select, .field input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
-        .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .message { margin-top: 16px; padding: 12px; border-radius: 8px; }
+        .comments-section { margin-top: 12px; padding-top: 10px; border-top: 1px dashed #eee; }
+        .comment { display: flex; margin-bottom: 10px; }
+        .comment-avatar { width: 32px; height: 32px; border-radius: 50%; background: #ccc; color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-right: 8px; flex-shrink-0; }
+        .comment-content { flex: 1; background: #f9f9f9; padding: 6px 10px; border-radius: 8px; }
+        .comment-user { font-weight: bold; font-size: 12px; margin-bottom: 3px; }
+        .comment-text { font-size: 13px; color: #333; }
+        .comment-time { font-size: 10px; color: #999; margin-top: 3px; }
+        .comment-input { display: flex; gap: 6px; margin-top: 10px; }
+        .comment-input input { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; }
+        .comment-input button { padding: 8px 14px; border-radius: 20px; font-size: 13px; }
+        .create-form { background: white; padding: 14px; border-radius: 12px; margin-bottom: 12px; }
+        .field { margin-bottom: 12px; }
+        .field label { display: block; margin-bottom: 6px; color: #666; font-size: 13px; }
+        .field textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; resize: vertical; }
+        .field select, .field input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; }
+        .toolbar { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+        .filter-select { padding: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; }
+        .message { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 13px; }
         .message.success { background: #d4edda; color: #155724; }
         .message.error { background: #f8d7da; color: #721c24; }
-        .empty-state { text-align: center; padding: 60px 20px; color: #999; }
-        .empty-state svg { width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-state { text-align: center; padding: 40px 16px; color: #999; }
+        .empty-state p { font-size: 14px; }
+        @media (min-width: 640px) {
+          .container { padding: 20px; }
+          h1 { font-size: 24px; margin-bottom: 20px; }
+          .feed-card { padding: 20px; margin-bottom: 16px; }
+          .feed-avatar { width: 48px; height: 48px; font-size: 20px; }
+          .feed-user-name { font-size: 16px; }
+          .feed-content { font-size: 15px; }
+        }
       </style>
     </head>
     <body>

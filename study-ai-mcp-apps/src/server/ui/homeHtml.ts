@@ -53,104 +53,104 @@ export function generateHomeHtml(user: User | null): string {
       <p class="text-gray-500 mt-1">管理您的家族信息，传承家族文化</p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      <div class="stat-card rounded-xl p-6 text-white">
-        <div class="text-3xl font-bold" id="familyCount">0</div>
-        <div class="text-green-100 text-sm mt-1">家族数量</div>
+    <div class="grid grid-cols-2 gap-3 mb-8">
+      <div class="stat-card rounded-xl p-5 text-white">
+        <div class="text-2xl sm:text-3xl font-bold" id="familyCount">0</div>
+        <div class="text-green-100 text-xs sm:text-sm mt-1">家族数量</div>
       </div>
-      <div class="bg-white rounded-xl p-6 shadow-sm">
-        <div class="text-3xl font-bold text-blue-600" id="memberCount">0</div>
-        <div class="text-gray-500 text-sm mt-1">成员数量</div>
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-2xl sm:text-3xl font-bold text-blue-600" id="memberCount">0</div>
+        <div class="text-gray-500 text-xs sm:text-sm mt-1">成员数量</div>
       </div>
-      <div class="bg-white rounded-xl p-6 shadow-sm">
-        <div class="text-3xl font-bold text-purple-600" id="maleCount">0</div>
-        <div class="text-gray-500 text-sm mt-1">男性成员</div>
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-2xl sm:text-3xl font-bold text-purple-600" id="maleCount">0</div>
+        <div class="text-gray-500 text-xs sm:text-sm mt-1">男性成员</div>
       </div>
-      <div class="bg-white rounded-xl p-6 shadow-sm">
-        <div class="text-3xl font-bold text-pink-600" id="femaleCount">0</div>
-        <div class="text-gray-500 text-sm mt-1">女性成员</div>
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-2xl sm:text-3xl font-bold text-pink-600" id="femaleCount">0</div>
+        <div class="text-gray-500 text-xs sm:text-sm mt-1">女性成员</div>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div onclick="navigateTo('familyTree')" class="bg-white rounded-xl p-6 shadow-md card-hover cursor-pointer border border-gray-100">
-        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div onclick="navigateTo('familyTree')" class="bg-white rounded-xl p-5 shadow-md card-hover cursor-pointer border border-gray-100">
+        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">家族树</h3>
-        <p class="text-gray-500 text-sm">可视化展示家族成员关系</p>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">家族树</h3>
+        <p class="text-gray-500 text-xs">可视化展示家族成员关系</p>
       </div>
 
-      <div onclick="navigateTo('familyManage')" class="bg-white rounded-xl p-6 shadow-md card-hover cursor-pointer border border-gray-100">
-        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div onclick="navigateTo('familyManage')" class="bg-white rounded-xl p-5 shadow-md card-hover cursor-pointer border border-gray-100">
+        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">家族管理</h3>
-        <p class="text-gray-500 text-sm">创建和管理家族信息</p>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">家族管理</h3>
+        <p class="text-gray-500 text-xs">创建和管理家族信息</p>
       </div>
 
-      <div onclick="navigateTo('memberManage')" class="bg-white rounded-xl p-6 shadow-md card-hover cursor-pointer border border-gray-100">
-        <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div onclick="navigateTo('memberManage')" class="bg-white rounded-xl p-5 shadow-md card-hover cursor-pointer border border-gray-100">
+        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">成员管理</h3>
-        <p class="text-gray-500 text-sm">添加和管理家族成员</p>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">成员管理</h3>
+        <p class="text-gray-500 text-xs">添加和管理家族成员</p>
       </div>
 
-      <div onclick="navigateTo('relationship')" class="bg-white rounded-xl p-6 shadow-md card-hover cursor-pointer border border-gray-100">
-        <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-7 h-7 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div onclick="navigateTo('relationship')" class="bg-white rounded-xl p-5 shadow-md card-hover cursor-pointer border border-gray-100">
+        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">关系管理</h3>
-        <p class="text-gray-500 text-sm">管理成员之间的关系</p>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">关系管理</h3>
+        <p class="text-gray-500 text-xs">管理成员之间的关系</p>
       </div>
 
-      <div onclick="navigateTo('history')" class="bg-white rounded-xl p-6 shadow-md card-hover cursor-pointer border border-gray-100">
-        <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-7 h-7 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div onclick="navigateTo('history')" class="bg-white rounded-xl p-5 shadow-md card-hover cursor-pointer border border-gray-100">
+        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">历史记录</h3>
-        <p class="text-gray-500 text-sm">记录家族重要事件</p>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">历史记录</h3>
+        <p class="text-gray-500 text-xs">记录家族重要事件</p>
       </div>
 
-      <div onclick="navigateTo('album')" class="bg-white rounded-xl p-6 shadow-md card-hover cursor-pointer border border-gray-100">
-        <div class="w-14 h-14 bg-cyan-100 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-7 h-7 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div onclick="navigateTo('album')" class="bg-white rounded-xl p-5 shadow-md card-hover cursor-pointer border border-gray-100">
+        <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">家族相册</h3>
-        <p class="text-gray-500 text-sm">分享和管理家族照片</p>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">家族相册</h3>
+        <p class="text-gray-500 text-xs">分享和管理家族照片</p>
       </div>
 
-      <div onclick="navigateTo('feed')" class="bg-white rounded-xl p-6 shadow-md card-hover cursor-pointer border border-gray-100">
-        <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div onclick="navigateTo('feed')" class="bg-white rounded-xl p-5 shadow-md card-hover cursor-pointer border border-gray-100">
+        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">家族动态</h3>
-        <p class="text-gray-500 text-sm">查看家族最新动态</p>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">家族动态</h3>
+        <p class="text-gray-500 text-xs">查看家族最新动态</p>
       </div>
 
-      <div onclick="navigateTo('memorial')" class="bg-white rounded-xl p-6 shadow-md card-hover cursor-pointer border border-gray-100">
-        <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-7 h-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div onclick="navigateTo('memorial')" class="bg-white rounded-xl p-5 shadow-md card-hover cursor-pointer border border-gray-100">
+        <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">纪念堂</h3>
-        <p class="text-gray-500 text-sm">缅怀已故亲人</p>
+        <h3 class="text-base font-semibold text-gray-800 mb-1">纪念堂</h3>
+        <p class="text-gray-500 text-xs">缅怀已故亲人</p>
       </div>
     </div>
 

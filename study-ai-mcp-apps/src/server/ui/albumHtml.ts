@@ -11,24 +11,24 @@ export function generateAlbumHtml(user: User | null, familyId?: string, albumId?
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        h1 { color: #333; margin-bottom: 20px; font-size: 24px; }
-        .btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+        h1 { color: #333; margin-bottom: 16px; font-size: 20px; }
+        .btn { background: #4CAF50; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; }
         .btn:hover { background: #45a049; }
         .btn-secondary { background: #f0f0f0; color: #333; }
         .btn-secondary:hover { background: #e0e0e0; }
         .btn-danger { background: #f44336; }
         .btn-danger:hover { background: #d32f2f; }
-        .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
         .album-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; }
         .album-card:hover { transform: translateY(-4px); transition: transform 0.2s; }
-        .album-cover { height: 200px; background: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .album-cover { height: 120px; background: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .album-cover img { width: 100%; height: 100%; object-fit: cover; }
-        .album-info { padding: 16px; }
-        .album-name { font-size: 16px; font-weight: bold; color: #333; }
-        .album-desc { color: #666; font-size: 14px; margin-top: 8px; }
-        .album-count { color: #999; font-size: 12px; margin-top: 8px; }
-        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
+        .album-info { padding: 12px; }
+        .album-name { font-size: 14px; font-weight: bold; color: #333; }
+        .album-desc { color: #666; font-size: 12px; margin-top: 6px; }
+        .album-count { color: #999; font-size: 11px; margin-top: 6px; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 16px; }
         .photo-item { aspect-ratio: 1; background: #eee; border-radius: 8px; overflow: hidden; cursor: pointer; }
         .photo-item img { width: 100%; height: 100%; object-fit: cover; }
         .photo-item:hover { opacity: 0.9; }
@@ -36,19 +36,31 @@ export function generateAlbumHtml(user: User | null, familyId?: string, albumId?
         .modal.show { display: flex; }
         .modal-content { max-width: 90%; max-height: 90%; }
         .modal-content img { max-width: 100%; max-height: 80vh; border-radius: 8px; }
-        .modal-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; }
-        .modal-info { color: white; text-align: center; margin-top: 16px; }
-        .back-link { display: inline-flex; align-items: center; color: #4CAF50; cursor: pointer; margin-bottom: 16px; }
+        .modal-close { position: absolute; top: 16px; right: 16px; color: white; font-size: 28px; cursor: pointer; }
+        .modal-info { color: white; text-align: center; margin-top: 12px; font-size: 14px; }
+        .back-link { display: inline-flex; align-items: center; color: #4CAF50; cursor: pointer; margin-bottom: 12px; font-size: 14px; }
         .back-link:hover { text-decoration: underline; }
-        .create-form { background: white; padding: 24px; border-radius: 12px; margin-bottom: 20px; }
-        .field { margin-bottom: 16px; }
-        .field label { display: block; margin-bottom: 8px; color: #666; }
-        .field input, .field textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
-        .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .message { margin-top: 16px; padding: 12px; border-radius: 8px; }
+        .create-form { background: white; padding: 16px; border-radius: 12px; margin-bottom: 16px; }
+        .field { margin-bottom: 12px; }
+        .field label { display: block; margin-bottom: 6px; color: #666; font-size: 13px; }
+        .field input, .field textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; }
+        .toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+        .filter-select { padding: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; }
+        .message { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 13px; }
         .message.success { background: #d4edda; color: #155724; }
         .message.error { background: #f8d7da; color: #721c24; }
+        @media (min-width: 640px) {
+          .container { padding: 20px; }
+          h1 { font-size: 24px; margin-bottom: 20px; }
+          .album-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+          .album-cover { height: 150px; }
+          .photo-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        }
+        @media (min-width: 1024px) {
+          .album-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+          .album-cover { height: 200px; }
+          .photo-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+        }
       </style>
     </head>
     <body>

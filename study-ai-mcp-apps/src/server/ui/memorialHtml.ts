@@ -11,34 +11,49 @@ export function generateMemorialHtml(user: User | null, familyId?: string): stri
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        h1 { color: #333; margin-bottom: 20px; font-size: 24px; }
-        .btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 12px; }
+        h1 { color: #333; margin-bottom: 12px; font-size: 18px; }
+        .btn { background: #4CAF50; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; }
         .btn:hover { background: #45a049; }
         .btn-secondary { background: #f0f0f0; color: #333; }
         .btn-secondary:hover { background: #e0e0e0; }
-        .memorial-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .memorial-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
         .memorial-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .memorial-portrait { height: 200px; background: #333; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .memorial-portrait { height: 120px; background: #333; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
         .memorial-portrait img { width: 100%; height: 100%; object-fit: cover; }
         .memorial-portrait::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); }
-        .memorial-info { padding: 20px; }
-        .memorial-name { font-size: 20px; font-weight: bold; color: #333; text-align: center; margin-bottom: 8px; }
-        .memorial-dates { color: #666; font-size: 14px; text-align: center; margin-bottom: 12px; }
-        .memorial-epitaph { font-style: italic; color: #888; font-size: 13px; text-align: center; padding: 12px; background: #f9f9f9; border-radius: 8px; }
-        .memorial-details { margin-top: 16px; }
-        .memorial-obituary { color: #555; font-size: 14px; line-height: 1.6; }
-        .create-form { background: white; padding: 24px; border-radius: 12px; margin-bottom: 20px; }
-        .field { margin-bottom: 16px; }
-        .field label { display: block; margin-bottom: 8px; color: #666; }
-        .field input, .field textarea, .field select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
-        .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .message { margin-top: 16px; padding: 12px; border-radius: 8px; }
+        .memorial-info { padding: 14px; }
+        .memorial-name { font-size: 16px; font-weight: bold; color: #333; text-align: center; margin-bottom: 6px; }
+        .memorial-dates { color: #666; font-size: 12px; text-align: center; margin-bottom: 8px; }
+        .memorial-epitaph { font-style: italic; color: #888; font-size: 12px; text-align: center; padding: 10px; background: #f9f9f9; border-radius: 8px; }
+        .memorial-details { margin-top: 12px; }
+        .memorial-obituary { color: #555; font-size: 13px; line-height: 1.5; }
+        .create-form { background: white; padding: 14px; border-radius: 12px; margin-bottom: 12px; }
+        .field { margin-bottom: 12px; }
+        .field label { display: block; margin-bottom: 6px; color: #666; font-size: 13px; }
+        .field input, .field textarea, .field select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; }
+        .toolbar { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+        .filter-select { padding: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; }
+        .message { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 13px; }
         .message.success { background: #d4edda; color: #155724; }
         .message.error { background: #f8d7da; color: #721c24; }
-        .empty-state { text-align: center; padding: 60px 20px; color: #999; }
-        .ribbon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; margin-bottom: 16px; display: inline-block; }
+        .empty-state { text-align: center; padding: 40px 16px; color: #999; }
+        .empty-state p { font-size: 14px; }
+        .ribbon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3px 10px; border-radius: 4px; font-size: 11px; margin-bottom: 12px; display: inline-block; }
+        @media (min-width: 640px) {
+          .container { padding: 20px; }
+          h1 { font-size: 24px; margin-bottom: 20px; }
+          .memorial-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+          .memorial-portrait { height: 150px; }
+          .memorial-info { padding: 16px; }
+          .memorial-name { font-size: 18px; }
+        }
+        @media (min-width: 1024px) {
+          .memorial-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+          .memorial-portrait { height: 200px; }
+          .memorial-info { padding: 20px; }
+          .memorial-name { font-size: 20px; }
+        }
       </style>
     </head>
     <body>

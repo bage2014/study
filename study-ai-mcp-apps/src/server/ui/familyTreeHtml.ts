@@ -12,22 +12,35 @@ export function generateFamilyTreeHtml(user: User | null, selectedFamilyId: stri
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    .tree-container { display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: auto; }
-    .tree-row { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
-    .tree-node { width: 120px; text-align: center; position: relative; }
-    .node-card { background: white; border: 2px solid #10B981; border-radius: 12px; padding: 12px 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease; }
+    .tree-container { display: flex; flex-direction: column; align-items: center; padding: 16px; overflow-x: auto; }
+    .tree-row { display: flex; justify-content: center; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+    .tree-node { width: 100px; min-width: 100px; text-align: center; position: relative; flex-shrink: 0; }
+    @media (min-width: 640px) {
+      .tree-node { width: 120px; min-width: 120px; }
+      .tree-row { gap: 20px; }
+    }
+    .node-card { background: white; border: 2px solid #10B981; border-radius: 12px; padding: 10px 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease; }
     .node-card:hover { transform: translateY(-2px); box-shadow: 0 8px 12px rgba(0,0,0,0.15); border-color: #059669; }
     .node-card.male { border-color: #3B82F6; }
     .node-card.female { border-color: #EC4899; }
     .node-card.deceased { opacity: 0.6; background: #f3f4f6; }
-    .node-avatar { width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
+    .node-avatar { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; }
+    @media (min-width: 640px) {
+      .node-avatar { width: 40px; height: 40px; font-size: 16px; }
+    }
     .node-avatar.male { background: #DBEAFE; color: #1D4ED8; }
     .node-avatar.female { background: #FCE7F3; color: #BE185D; }
-    .node-name { font-weight: 600; color: #1F2937; font-size: 13px; }
-    .node-info { font-size: 10px; color: #6B7280; margin-top: 4px; }
-    .spouse-row { display: flex; gap: 8px; align-items: center; }
-    .spouse-line { width: 20px; height: 2px; background: #9CA3AF; }
-    .generation-label { text-align: center; font-weight: 600; color: #374151; margin-bottom: 16px; font-size: 14px; }
+    .node-name { font-weight: 600; color: #1F2937; font-size: 12px; }
+    @media (min-width: 640px) {
+      .node-name { font-size: 13px; }
+    }
+    .node-info { font-size: 9px; color: #6B7280; margin-top: 3px; }
+    @media (min-width: 640px) {
+      .node-info { font-size: 10px; }
+    }
+    .spouse-row { display: flex; gap: 6px; align-items: center; }
+    .spouse-line { width: 16px; height: 2px; background: #9CA3AF; }
+    .generation-label { text-align: center; font-weight: 600; color: #374151; margin-bottom: 12px; font-size: 13px; }
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen">

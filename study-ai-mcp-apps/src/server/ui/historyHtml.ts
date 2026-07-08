@@ -16,7 +16,7 @@ export function generateHistoryHtml(user: User | null, selectedFamilyId: string 
     }
     .timeline-line {
       position: absolute;
-      left: 24px;
+      left: 18px;
       top: 0;
       bottom: 0;
       width: 2px;
@@ -24,18 +24,18 @@ export function generateHistoryHtml(user: User | null, selectedFamilyId: string 
     }
     .timeline-item {
       position: relative;
-      padding-left: 60px;
-      padding-bottom: 30px;
+      padding-left: 48px;
+      padding-bottom: 24px;
     }
     .timeline-item:last-child {
       padding-bottom: 0;
     }
     .timeline-dot {
       position: absolute;
-      left: 16px;
+      left: 10px;
       top: 4px;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       border: 3px solid white;
     }
@@ -47,6 +47,20 @@ export function generateHistoryHtml(user: User | null, selectedFamilyId: string 
     }
     .timeline-dot.log {
       background: #6B7280;
+    }
+    @media (min-width: 640px) {
+      .timeline-line {
+        left: 24px;
+      }
+      .timeline-item {
+        padding-left: 60px;
+        padding-bottom: 30px;
+      }
+      .timeline-dot {
+        left: 16px;
+        width: 18px;
+        height: 18px;
+      }
     }
   </style>
 </head>
@@ -229,20 +243,20 @@ export function generateHistoryHtml(user: User | null, selectedFamilyId: string 
 
           html += '<div class="timeline-item">' +
             '<div class="timeline-dot ' + dotClass + '"></div>' +
-            '<div class="bg-gray-50 rounded-xl p-4">' +
-            '<div class="flex items-center gap-2 mb-2">' +
-            '<span class="' + badgeClass + ' text-xs px-2 py-1 rounded-full font-medium">' + badgeText + '</span>' +
-            '<span class="text-gray-500 text-sm">' + event.date + '</span>' +
+            '<div class="bg-gray-50 rounded-xl p-3">' +
+            '<div class="flex flex-wrap items-center gap-2 mb-1.5">' +
+            '<span class="' + badgeClass + ' text-xs px-2 py-0.5 rounded-full font-medium">' + badgeText + '</span>' +
+            '<span class="text-gray-500 text-xs sm:text-sm">' + event.date + '</span>' +
             '</div>' +
-            '<h4 class="font-semibold text-gray-800 mb-1">' + event.title + '</h4>' +
-            '<p class="text-gray-600 text-sm">' + event.description + '</p>';
+            '<h4 class="font-semibold text-gray-800 text-sm mb-1">' + event.title + '</h4>' +
+            '<p class="text-gray-600 text-sm leading-relaxed">' + event.description + '</p>';
 
           if (event.relatedMemberName) {
-            html += '<div class="mt-2 text-xs text-gray-500">相关成员：' + event.relatedMemberName + '</div>';
+            html += '<div class="mt-1.5 text-xs text-gray-500">相关成员：' + event.relatedMemberName + '</div>';
           }
 
           if (event.operator) {
-            html += '<div class="mt-2 text-xs text-gray-500">操作人：' + event.operator + '</div>';
+            html += '<div class="mt-1 text-xs text-gray-500">操作人：' + event.operator + '</div>';
           }
 
           html += '</div></div>';

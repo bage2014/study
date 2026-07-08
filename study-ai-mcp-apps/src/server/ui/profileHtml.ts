@@ -12,21 +12,27 @@ export function generateProfileHtml(user: User | null): string {
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
-          .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-          .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 20px; }
-          h1 { color: #333; margin-bottom: 24px; font-size: 24px; }
-          .field { margin-bottom: 16px; }
-          .field label { display: block; margin-bottom: 8px; color: #666; font-size: 14px; }
-          .field input, .field textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+          .container { max-width: 800px; margin: 0 auto; padding: 12px; }
+          .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 16px; margin-bottom: 12px; }
+          h1 { color: #333; margin-bottom: 16px; font-size: 18px; }
+          .field { margin-bottom: 12px; }
+          .field label { display: block; margin-bottom: 6px; color: #666; font-size: 13px; }
+          .field input, .field textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
           .field input:focus, .field textarea:focus { outline: none; border-color: #4CAF50; }
-          .btn { background: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer; }
+          .btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
           .btn:hover { background: #45a049; }
           .btn-secondary { background: #f0f0f0; color: #333; }
           .btn-secondary:hover { background: #e0e0e0; }
-          .error { color: red; margin-top: 8px; }
-          .success { color: green; margin-top: 8px; }
-          .section-title { font-size: 18px; font-weight: bold; margin-bottom: 16px; color: #333; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+          .error { color: red; margin-top: 6px; font-size: 13px; }
+          .success { color: green; margin-top: 6px; font-size: 13px; }
+          .section-title { font-size: 16px; font-weight: bold; margin-bottom: 12px; color: #333; border-bottom: 2px solid #eee; padding-bottom: 6px; }
           .hidden { display: none; }
+          @media (min-width: 640px) {
+            .container { padding: 20px; }
+            .card { padding: 24px; margin-bottom: 20px; }
+            h1 { font-size: 24px; margin-bottom: 24px; }
+            .section-title { font-size: 18px; }
+          }
         </style>
       </head>
       <body>
@@ -132,21 +138,27 @@ export function generateProfileHtml(user: User | null): string {
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 20px; }
-        h1 { color: #333; margin-bottom: 24px; font-size: 24px; }
-        .field { margin-bottom: 16px; }
-        .field label { display: block; margin-bottom: 8px; color: #666; font-size: 14px; }
-        .field input, .field textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 12px; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 16px; margin-bottom: 12px; }
+        h1 { color: #333; margin-bottom: 16px; font-size: 18px; }
+        .field { margin-bottom: 12px; }
+        .field label { display: block; margin-bottom: 6px; color: #666; font-size: 13px; }
+        .field input, .field textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
         .field input:focus, .field textarea:focus { outline: none; border-color: #4CAF50; }
-        .btn { background: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        .btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
         .btn:hover { background: #45a049; }
         .btn-secondary { background: #f0f0f0; color: #333; }
         .btn-secondary:hover { background: #e0e0e0; }
-        .error { color: red; margin-top: 8px; }
-        .success { color: green; margin-top: 8px; }
-        .section-title { font-size: 18px; font-weight: bold; margin-bottom: 16px; color: #333; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+        .error { color: red; margin-top: 6px; font-size: 13px; }
+        .success { color: green; margin-top: 6px; font-size: 13px; }
+        .section-title { font-size: 16px; font-weight: bold; margin-bottom: 12px; color: #333; border-bottom: 2px solid #eee; padding-bottom: 6px; }
         .hidden { display: none; }
+        @media (min-width: 640px) {
+          .container { padding: 20px; }
+          .card { padding: 24px; margin-bottom: 20px; }
+          h1 { font-size: 24px; margin-bottom: 24px; }
+          .section-title { font-size: 18px; }
+        }
       </style>
     </head>
     <body>

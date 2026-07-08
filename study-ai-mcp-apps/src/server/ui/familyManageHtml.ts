@@ -33,20 +33,20 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
   </header>
 
   <main class="max-w-6xl mx-auto px-4 py-8">
-    <div class="flex gap-8">
-      <div class="w-64 flex-shrink-0">
+    <div class="flex flex-col lg:flex-row gap-6">
+      <div class="w-full lg:w-64 flex-shrink-0">
         <div class="bg-white rounded-xl shadow-sm p-4 sticky top-24">
           <h3 class="font-semibold text-gray-800 mb-4">家族列表</h3>
           <div id="familyList" class="space-y-2">
             <div class="text-gray-500 text-sm text-center py-4">加载中...</div>
           </div>
-          <button onclick="openCreateModal()" class="w-full mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium transition-all">
+          <button onclick="openCreateModal()" class="w-full mt-4 bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium transition-all">
             + 新建家族
           </button>
         </div>
       </div>
 
-      <div class="flex-1">
+      <div class="flex-1 min-w-0">
         <div id="familyContent" class="bg-white rounded-xl shadow-sm p-6">
           <div class="text-center py-12 text-gray-500">
             <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,17 +207,17 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
         }
 
         var contentHtml = '<div>' +
-          '<div class="flex items-center justify-between mb-6">' +
+          '<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">' +
           '<div>' +
-          '<h2 class="text-2xl font-bold text-gray-800">' + family.name + '</h2>' +
+          '<h2 class="text-xl sm:text-2xl font-bold text-gray-800">' + family.name + '</h2>' +
           '<p class="text-gray-500 mt-1">' + family.description + '</p>' +
           '</div>' +
           '<div class="flex gap-2">' +
-          '<button onclick="openEditModal(&#39;' + family.id + '&#39;)" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium">编辑</button>' +
-          '<button onclick="openDeleteModal(&#39;' + family.id + '&#39;)" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm font-medium">删除</button>' +
+          '<button onclick="openEditModal(&#39;' + family.id + '&#39;)" class="bg-blue-500 hover:bg-blue-600 text-white py-2.5 px-4 rounded-lg text-sm font-medium">编辑</button>' +
+          '<button onclick="openDeleteModal(&#39;' + family.id + '&#39;)" class="bg-red-500 hover:bg-red-600 text-white py-2.5 px-4 rounded-lg text-sm font-medium">删除</button>' +
           '</div>' +
           '</div>' +
-          '<div class="grid grid-cols-3 gap-4 mb-8">' +
+          '<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">' +
           '<div class="bg-green-50 rounded-xl p-4">' +
           '<div class="text-2xl font-bold text-green-600">' + members.length + '</div>' +
           '<div class="text-gray-500 text-sm">家族成员</div>' +
@@ -231,10 +231,10 @@ export function generateFamilyManageHtml(user: User | null, selectedFamilyId: st
           '<div class="text-gray-500 text-sm">创建时间</div>' +
           '</div>' +
           '</div>' +
-          '<div class="flex gap-4 mb-6">' +
-          '<button onclick="navigateToFamilyTree()" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium">查看家族树</button>' +
-          '<button onclick="navigateToMemberManage()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-medium">管理成员</button>' +
-          '<button onclick="navigateToRelationship()" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-medium">管理关系</button>' +
+          '<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">' +
+          '<button onclick="navigateToFamilyTree()" class="bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium">查看家族树</button>' +
+          '<button onclick="navigateToMemberManage()" class="bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium">管理成员</button>' +
+          '<button onclick="navigateToRelationship()" class="bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-medium">管理关系</button>' +
           '</div>';
 
         if (members.length > 0) {
