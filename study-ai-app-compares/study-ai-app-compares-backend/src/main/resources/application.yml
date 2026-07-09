@@ -61,3 +61,9 @@ platform:
     app-key: ${MEITUAN_APP_KEY:}
     app-secret: ${MEITUAN_APP_SECRET:}
     base-url: https://api.meituan.com
+
+rpa:
+  enabled: ${RPA_ENABLED:true}
+  headless: ${RPA_HEADLESS:true}
+  timeout: ${RPA_TIMEOUT:30000}
+  page-load-timeout: ${RPA_PAGE_LOAD_TIMEOUT:60000}

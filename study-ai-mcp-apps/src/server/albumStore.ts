@@ -1,3 +1,5 @@
+import { persistenceService } from './persistenceService';
+
 export interface Photo {
   id: string;
   familyId: string;
@@ -26,7 +28,14 @@ class AlbumStore {
   private photos: Photo[] = [];
 
   constructor() {
-    this.albums.push({
+    const savedAlbums = persistenceService.getAlbums();
+    const savedPhotos = persistenceService.getPhotos();
+    
+    if (savedAlbums.length > 0) {
+      this.albums = savedAlbums;
+      this.photos = savedPhotos;
+    } else {
+      this.albums.push({
       id: 'album-1',
       familyId: 'family-1',
       name: '家族聚会',
@@ -159,6 +168,10 @@ class AlbumStore {
       uploadedAt: '2024-02-01',
       relatedMemberId: null,
     });
+
+      persistenceService.setAlbums(this.albums);
+      persistenceService.setPhotos(this.photos);
+    }
   }
 
   getAllAlbums(): Album[] {
@@ -184,6 +197,7 @@ class AlbumStore {
       createdBy,
     };
     this.albums.push(album);
+    persistenceService.setAlbums(this.albums);
     return album;
   }
 
@@ -195,6 +209,7 @@ class AlbumStore {
       name,
       description,
     };
+    persistenceService.setAlbums(this.albums);
     return this.albums[index];
   }
 
@@ -203,6 +218,8 @@ class AlbumStore {
     if (index === -1) return false;
     this.photos = this.photos.filter(p => p.albumId !== albumId);
     this.albums.splice(index, 1);
+    persistenceService.setAlbums(this.albums);
+    persistenceService.setPhotos(this.photos);
     return true;
   }
 
@@ -244,6 +261,8 @@ class AlbumStore {
       album.coverPhotoId = photo.id;
     }
 
+    persistenceService.setAlbums(this.albums);
+    persistenceService.setPhotos(this.photos);
     return photo;
   }
 
@@ -254,6 +273,7 @@ class AlbumStore {
       ...this.photos[index],
       ...data,
     };
+    persistenceService.setPhotos(this.photos);
     return this.photos[index];
   }
 
@@ -269,6 +289,8 @@ class AlbumStore {
     }
 
     this.photos.splice(index, 1);
+    persistenceService.setAlbums(this.albums);
+    persistenceService.setPhotos(this.photos);
     return true;
   }
 }

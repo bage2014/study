@@ -24,6 +24,7 @@ import { todoListHtml } from './ui/todoListHtml';
 import { kanbanBoardHtml } from './ui/kanbanBoardHtml';
 import { kanbanStore } from './kanbanStore';
 import { relationshipStore } from './relationshipStore';
+import { persistenceService } from './persistenceService';
 
 kanbanStore.createCard({
   title: '设计系统架构',
@@ -260,6 +261,9 @@ app.get('/mcp', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log('MCP Server listening at http://localhost:' + port + '/mcp');
-});
+(async () => {
+  await persistenceService.init();
+  app.listen(port, () => {
+    console.log('MCP Server listening at http://localhost:' + port + '/mcp');
+  });
+})();

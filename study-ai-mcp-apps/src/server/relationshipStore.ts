@@ -1,3 +1,5 @@
+import { persistenceService } from './persistenceService';
+
 export type RelationshipType = 'father' | 'mother' | 'husband' | 'wife' | 'son' | 'daughter' | 'brother' | 'sister' | 'grandfather' | 'grandmother' | 'grandson' | 'granddaughter' | 'uncle' | 'aunt' | 'nephew' | 'niece' | 'cousin';
 
 export interface Relationship {
@@ -8,11 +10,29 @@ export interface Relationship {
   createdAt: string;
 }
 
+interface ValidationResult {
+  valid: boolean;
+  message: string;
+}
+
+const spouseTypes: RelationshipType[] = ['husband', 'wife'];
+const parentTypes: RelationshipType[] = ['father', 'mother'];
+const childTypes: RelationshipType[] = ['son', 'daughter'];
+const maleSpouseTypes: RelationshipType[] = ['husband'];
+const femaleSpouseTypes: RelationshipType[] = ['wife'];
+const maleParentTypes: RelationshipType[] = ['father'];
+const femaleParentTypes: RelationshipType[] = ['mother'];
+
 class RelationshipStore {
   private relationships: Relationship[] = [];
 
   constructor() {
-    this.relationships.push({
+    const savedRelationships = persistenceService.getRelationships();
+    
+    if (savedRelationships.length > 0) {
+      this.relationships = savedRelationships;
+    } else {
+      this.relationships.push({
       id: 'rel-1',
       memberId1: 'member-1',
       memberId2: 'member-2',
@@ -227,6 +247,9 @@ class RelationshipStore {
       relationshipType: 'daughter',
       createdAt: '2024-01-03',
     });
+
+      persistenceService.setRelationships(this.relationships);
+    }
   }
 
   getAllRelationships(): Relationship[] {
@@ -248,6 +271,83 @@ class RelationshipStore {
     return this.relationships.find(r => r.id === id);
   }
 
+  validateRelationship(
+    memberId1: string,
+    memberId2: string,
+    relationshipType: RelationshipType,
+    gender1: 'male' | 'female' | undefined,
+    gender2: 'male' | 'female' | undefined
+  ): ValidationResult {
+    if (memberId1 === memberId2) {
+      return { valid: false, message: '不能创建自己与自己的关系' };
+    }
+
+    const existingRel = this.relationships.find(
+      r => (r.memberId1 === memberId1 && r.memberId2 === memberId2) ||
+           (r.memberId1 === memberId2 && r.memberId2 === memberId1)
+    );
+    if (existingRel) {
+      return { valid: false, message: '这两个成员之间已存在关系' };
+    }
+
+    if (spouseTypes.includes(relationshipType)) {
+      if (!gender1 || !gender2) {
+        return { valid: false, message: '创建配偶关系需要双方性别信息' };
+      }
+      if (gender1 === gender2) {
+        return { valid: false, message: '配偶关系必须是不同性别' };
+      }
+      if (gender1 === 'male' && !maleSpouseTypes.includes(relationshipType)) {
+        return { valid: false, message: '男性不能创建妻子关系' };
+      }
+      if (gender1 === 'female' && !femaleSpouseTypes.includes(relationshipType)) {
+        return { valid: false, message: '女性不能创建丈夫关系' };
+      }
+    }
+
+    if (parentTypes.includes(relationshipType)) {
+      if (!gender1) {
+        return { valid: false, message: '创建父母关系需要性别信息' };
+      }
+      if (gender1 === 'male' && !maleParentTypes.includes(relationshipType)) {
+        return { valid: false, message: '男性不能创建母亲关系' };
+      }
+      if (gender1 === 'female' && !femaleParentTypes.includes(relationshipType)) {
+        return { valid: false, message: '女性不能创建父亲关系' };
+      }
+
+      const existingChildRel = this.relationships.find(
+        r => r.memberId1 === memberId2 && r.memberId2 === memberId1 &&
+             childTypes.includes(r.relationshipType)
+      );
+      if (existingChildRel) {
+        return { valid: false, message: '不能同时创建父子/母子和子父/子母关系' };
+      }
+    }
+
+    if (childTypes.includes(relationshipType)) {
+      if (!gender2) {
+        return { valid: false, message: '创建子女关系需要对方性别信息' };
+      }
+      if (gender2 === 'male' && relationshipType === 'daughter') {
+        return { valid: false, message: '男性不能是女儿' };
+      }
+      if (gender2 === 'female' && relationshipType === 'son') {
+        return { valid: false, message: '女性不能是儿子' };
+      }
+
+      const existingParentRel = this.relationships.find(
+        r => r.memberId1 === memberId2 && r.memberId2 === memberId1 &&
+             parentTypes.includes(r.relationshipType)
+      );
+      if (existingParentRel) {
+        return { valid: false, message: '不能同时创建子父/子母和父子/母子关系' };
+      }
+    }
+
+    return { valid: true, message: '' };
+  }
+
   createRelationship(memberId1: string, memberId2: string, relationshipType: RelationshipType): Relationship {
     const relationship: Relationship = {
       id: 'rel-' + Date.now(),
@@ -257,6 +357,7 @@ class RelationshipStore {
       createdAt: new Date().toISOString().split('T')[0],
     };
     this.relationships.push(relationship);
+    persistenceService.setRelationships(this.relationships);
     return relationship;
   }
 
@@ -264,11 +365,13 @@ class RelationshipStore {
     const index = this.relationships.findIndex(r => r.id === relationshipId);
     if (index === -1) return false;
     this.relationships.splice(index, 1);
+    persistenceService.setRelationships(this.relationships);
     return true;
   }
 
   deleteRelationshipsByMember(memberId: string): void {
     this.relationships = this.relationships.filter(r => r.memberId1 !== memberId && r.memberId2 !== memberId);
+    persistenceService.setRelationships(this.relationships);
   }
 
   getRelationshipLabel(type: RelationshipType): string {

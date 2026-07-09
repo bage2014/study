@@ -27,6 +27,7 @@ public class PriceCompareServiceImpl implements PriceCompareService {
     private final TaobaoApiService taobaoApiService;
     private final JdApiService jdApiService;
     private final MeituanApiService meituanApiService;
+    private final RpaAggregateServiceImpl rpaAggregateService;
     private final RedisTemplate<String, Object> redisTemplate;
 
     private static final String CACHE_PREFIX = "price:compare:";
@@ -101,6 +102,32 @@ public class PriceCompareServiceImpl implements PriceCompareService {
     private List<ProductPriceResponse> fetchPricesFromPlatforms(String productName) {
         List<ProductPriceResponse> prices = new ArrayList<>();
 
+        CompletableFuture<List<ProductPriceResponse>> apiFuture = CompletableFuture.supplyAsync(() -> fetchFromApi(productName));
+        CompletableFuture<List<ProductPriceResponse>> rpaFuture = CompletableFuture.supplyAsync(() -> fetchFromRpa(productName));
+
+        CompletableFuture.allOf(apiFuture, rpaFuture).join();
+
+        try {
+            prices.addAll(apiFuture.get());
+        } catch (Exception e) {
+            log.error("获取API数据失败: {}", e.getMessage());
+        }
+
+        try {
+            List<ProductPriceResponse> rpaResults = rpaFuture.get();
+            if (!rpaResults.isEmpty()) {
+                prices = mergeResults(prices, rpaResults);
+            }
+        } catch (Exception e) {
+            log.error("获取RPA数据失败: {}", e.getMessage());
+        }
+
+        return prices;
+    }
+
+    private List<ProductPriceResponse> fetchFromApi(String productName) {
+        List<ProductPriceResponse> prices = new ArrayList<>();
+
         CompletableFuture<List<ProductPriceResponse>> taobaoFuture = 
             CompletableFuture.supplyAsync(() -> taobaoApiService.search(productName));
         CompletableFuture<List<ProductPriceResponse>> jdFuture = 
@@ -113,19 +140,45 @@ public class PriceCompareServiceImpl implements PriceCompareService {
         try {
             prices.addAll(taobaoFuture.get());
         } catch (Exception e) {
-            log.error("获取淘宝数据失败: {}", e.getMessage());
+            log.error("获取淘宝API数据失败: {}", e.getMessage());
         }
         try {
             prices.addAll(jdFuture.get());
         } catch (Exception e) {
-            log.error("获取京东数据失败: {}", e.getMessage());
+            log.error("获取京东API数据失败: {}", e.getMessage());
         }
         try {
             prices.addAll(meituanFuture.get());
         } catch (Exception e) {
-            log.error("获取美团数据失败: {}", e.getMessage());
+            log.error("获取美团API数据失败: {}", e.getMessage());
         }
 
         return prices;
+    }
+
+    private List<ProductPriceResponse> fetchFromRpa(String productName) {
+        if (!rpaAggregateService.isAnyRpaAvailable()) {
+            log.info("RPA服务不可用，跳过RPA搜索");
+            return new ArrayList<>();
+        }
+        log.info("使用RPA服务搜索商品: {}", productName);
+        return rpaAggregateService.search(productName);
+    }
+
+    private List<ProductPriceResponse> mergeResults(List<ProductPriceResponse> apiResults, List<ProductPriceResponse> rpaResults) {
+        List<ProductPriceResponse> merged = new ArrayList<>(apiResults);
+        
+        for (ProductPriceResponse rpaItem : rpaResults) {
+            boolean exists = merged.stream()
+                    .anyMatch(item -> item.getPlatform().equals(rpaItem.getPlatform()) 
+                            && item.getProductName().contains(rpaItem.getProductName()));
+            if (!exists) {
+                merged.add(rpaItem);
+            }
+        }
+        
+        log.info("合并结果完成，API结果: {} 条, RPA结果: {} 条, 合并后: {} 条", 
+                apiResults.size(), rpaResults.size(), merged.size());
+        return merged;
     }
 }

@@ -1,3 +1,5 @@
+import { persistenceService } from './persistenceService';
+
 export type PermissionLevel = 'admin' | 'editor' | 'viewer';
 
 export interface FamilyMember {
@@ -26,7 +28,14 @@ class PermissionStore {
   private invitations: Invitation[] = [];
 
   constructor() {
-    this.familyMembers.push({
+    const savedPermissions = persistenceService.getPermissions();
+    const savedInvitations = persistenceService.getInvitations();
+    
+    if (savedPermissions.length > 0) {
+      this.familyMembers = savedPermissions;
+      this.invitations = savedInvitations;
+    } else {
+      this.familyMembers.push({
       id: 'fm-1',
       familyId: 'family-1',
       userId: 'user-1',
@@ -76,6 +85,10 @@ class PermissionStore {
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       status: 'pending',
     });
+
+      persistenceService.setPermissions(this.familyMembers);
+      persistenceService.setInvitations(this.invitations);
+    }
   }
 
   getFamilyMembers(familyId: string): FamilyMember[] {
@@ -97,6 +110,7 @@ class PermissionStore {
       invitedBy,
     };
     this.familyMembers.push(familyMember);
+    persistenceService.setPermissions(this.familyMembers);
     return familyMember;
   }
 
@@ -104,6 +118,7 @@ class PermissionStore {
     const index = this.familyMembers.findIndex(fm => fm.familyId === familyId && fm.userId === userId);
     if (index === -1) return undefined;
     this.familyMembers[index].permission = permission;
+    persistenceService.setPermissions(this.familyMembers);
     return this.familyMembers[index];
   }
 
@@ -111,6 +126,7 @@ class PermissionStore {
     const index = this.familyMembers.findIndex(fm => fm.familyId === familyId && fm.userId === userId);
     if (index === -1) return false;
     this.familyMembers.splice(index, 1);
+    persistenceService.setPermissions(this.familyMembers);
     return true;
   }
 
@@ -139,6 +155,7 @@ class PermissionStore {
       status: 'pending',
     };
     this.invitations.push(invitation);
+    persistenceService.setInvitations(this.invitations);
     return invitation;
   }
 
@@ -152,10 +169,10 @@ class PermissionStore {
 
     if (new Date(invitation.expiresAt) < new Date()) {
       invitation.status = 'expired';
-      return invitation;
+    } else {
+      invitation.status = 'accepted';
     }
-
-    invitation.status = 'accepted';
+    persistenceService.setInvitations(this.invitations);
     return invitation;
   }
 
@@ -167,6 +184,7 @@ class PermissionStore {
     const index = this.invitations.findIndex(i => i.id === invitationId);
     if (index === -1) return false;
     this.invitations.splice(index, 1);
+    persistenceService.setInvitations(this.invitations);
     return true;
   }
 

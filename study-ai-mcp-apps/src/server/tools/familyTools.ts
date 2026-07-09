@@ -21,17 +21,37 @@ import { generateAlbumHtml } from '../ui/albumHtml';
 import { generateFeedHtml } from '../ui/feedHtml';
 import { generateMemorialHtml } from '../ui/memorialHtml';
 import { generateStatsHtml } from '../ui/statsHtml';
+import { generateMemberDetailHtml } from '../ui/memberDetailHtml';
+import { getSearchHtml } from '../ui/searchHtml';
 
-const userSessions = new Map<string, User>();
+interface SessionData {
+  user: User;
+  expiresAt: number;
+}
+
+const userSessions = new Map<string, SessionData>();
 
 let currentSessionId = 'default-session';
+
+const SESSION_EXPIRY_MS = 24 * 60 * 60 * 1000;
 
 export function setSessionId(sessionId: string) {
   currentSessionId = sessionId;
 }
 
 export function getCurrentUser(): User | null {
-  return userSessions.get(currentSessionId) || null;
+  const session = userSessions.get(currentSessionId);
+  if (!session) {
+    return null;
+  }
+  
+  if (Date.now() > session.expiresAt) {
+    userSessions.delete(currentSessionId);
+    return null;
+  }
+  
+  session.expiresAt = Date.now() + SESSION_EXPIRY_MS;
+  return session.user;
 }
 
 export const loginTool = {
@@ -57,11 +77,19 @@ export const loginTool = {
     const { email, password } = args;
     const user = familyStore.findUserByEmail(email);
     
-    if (!user || user.password !== password) {
+    if (!user) {
       return { success: false, message: '邮箱或密码错误' };
     }
     
-    userSessions.set(currentSessionId, user);
+    const isPasswordValid = await familyStore.verifyPassword(user, password);
+    if (!isPasswordValid) {
+      return { success: false, message: '邮箱或密码错误' };
+    }
+    
+    userSessions.set(currentSessionId, {
+      user,
+      expiresAt: Date.now() + SESSION_EXPIRY_MS,
+    });
     return { 
       success: true, 
       message: '登录成功',
@@ -92,7 +120,7 @@ export const registerTool = {
       return { success: false, message: '该邮箱已被注册' };
     }
     
-    familyStore.createUser(email, password, nickname);
+    await familyStore.createUser(email, password, nickname);
     return { success: true, message: '注册成功，请登录' };
   },
 };
@@ -127,6 +155,24 @@ export const getHomeUITool = {
     const html = generateHomeHtml(user);
     const uiResource = await createUIResource({
       uri: 'ui://family/home',
+      content: { type: 'rawHtml', htmlString: html },
+      encoding: 'text',
+    });
+    return { content: [uiResource] };
+  },
+};
+
+export const getSearchUITool = {
+  name: 'getSearchUI',
+  options: {
+    inputSchema: z.object({}),
+    title: '获取全局搜索UI',
+    description: '获取全局搜索页面',
+  },
+  handler: async () => {
+    const html = getSearchHtml();
+    const uiResource = await createUIResource({
+      uri: 'ui://family/search',
       content: { type: 'rawHtml', htmlString: html },
       encoding: 'text',
     });
@@ -193,6 +239,28 @@ export const getMemberManageUITool = {
     const html = generateMemberManageHtml(user, familyId);
     const uiResource = await createUIResource({
       uri: 'ui://family/members',
+      content: { type: 'rawHtml', htmlString: html },
+      encoding: 'text',
+    });
+    return { content: [uiResource] };
+  },
+};
+
+export const getMemberDetailUITool = {
+  name: 'getMemberDetailUI',
+  options: {
+    inputSchema: z.object({
+      memberId: z.string().describe('成员ID'),
+    }),
+    title: '获取成员详情UI',
+    description: '获取成员详情页面',
+  },
+  handler: async (args) => {
+    const { memberId } = args;
+    const user = getCurrentUser();
+    const html = generateMemberDetailHtml(user, memberId);
+    const uiResource = await createUIResource({
+      uri: 'ui://family/member-detail',
       content: { type: 'rawHtml', htmlString: html },
       encoding: 'text',
     });
@@ -649,6 +717,25 @@ export const createRelationshipTool = {
       return { success: false, message: '请先登录' };
     }
     
+    const member1 = memberStore.getMemberById(memberId1);
+    const member2 = memberStore.getMemberById(memberId2);
+    
+    if (!member1 || !member2) {
+      return { success: false, message: '成员不存在' };
+    }
+    
+    const validation = relationshipStore.validateRelationship(
+      memberId1,
+      memberId2,
+      relationshipType as RelationshipType,
+      member1.gender,
+      member2.gender
+    );
+    
+    if (!validation.valid) {
+      return { success: false, message: validation.message };
+    }
+    
     relationshipStore.createRelationship(memberId1, memberId2, relationshipType as RelationshipType);
     return { success: true, message: '关系创建成功' };
   },
@@ -964,7 +1051,7 @@ export const changePasswordTool = {
       return { success: false, message: '请先登录' };
     }
 
-    const success = familyStore.updatePassword(user.id, oldPassword, newPassword);
+    const success = await familyStore.updatePassword(user.id, oldPassword, newPassword);
     if (!success) {
       return { success: false, message: '旧密码错误' };
     }
@@ -1676,6 +1763,444 @@ export const getStatisticsTool = {
   },
 };
 
+export const exportDataTool = {
+  name: 'exportData',
+  options: {
+    inputSchema: z.object({
+      type: z.enum(['all', 'members', 'families', 'relationships', 'events', 'albums', 'feeds', 'memorials']).describe('导出类型'),
+      familyId: z.string().optional().describe('家族ID，为空时导出所有家族'),
+    }),
+    outputSchema: z.object({
+      success: z.boolean(),
+      message: z.string(),
+      data: z.record(z.any()).optional(),
+      filename: z.string().optional(),
+    }),
+    title: '数据导出',
+    description: '导出家族数据为JSON格式',
+  },
+  handler: async (args) => {
+    const { type, familyId } = args;
+    
+    const exportData: Record<string, any> = {};
+    
+    switch (type) {
+      case 'members': {
+        const members = familyId 
+          ? memberStore.getMembersByFamilyId(familyId)
+          : memberStore.getAllMembers();
+        exportData.members = members;
+        break;
+      }
+      case 'families': {
+        const families = familyId 
+          ? [familyStore.getFamilyById(familyId)].filter(Boolean)
+          : familyStore.getAllFamilies();
+        exportData.families = families;
+        break;
+      }
+      case 'relationships': {
+        const allMembers = memberStore.getAllMembers();
+        const relationships = familyId
+          ? relationshipStore.getRelationshipsByFamily(familyId, allMembers)
+          : relationshipStore.getAllRelationships();
+        exportData.relationships = relationships;
+        break;
+      }
+      case 'events': {
+        const events = familyId
+          ? historyStore.getEventsByFamily(familyId)
+          : historyStore.getAllEvents();
+        exportData.events = events;
+        break;
+      }
+      case 'albums': {
+        const albums = familyId
+          ? albumStore.getAlbumsByFamilyId(familyId)
+          : albumStore.getAllAlbums();
+        exportData.albums = albums;
+        const albumIds = albums.map(a => a.id);
+        const photos = albumStore.getAllPhotos().filter(p => albumIds.includes(p.albumId));
+        exportData.photos = photos;
+        break;
+      }
+      case 'feeds': {
+        const feeds = familyId
+          ? feedStore.getFeedsByFamily(familyId)
+          : feedStore.getAllFeeds();
+        exportData.feeds = feeds;
+        break;
+      }
+      case 'memorials': {
+        const memorials = familyId
+          ? memorialStore.getMemorialsByFamily(familyId)
+          : memorialStore.getAllMemorials();
+        exportData.memorials = memorials;
+        break;
+      }
+      case 'all': {
+        exportData.families = familyId
+          ? [familyStore.getFamilyById(familyId)].filter(Boolean)
+          : familyStore.getAllFamilies();
+        exportData.members = familyId
+          ? memberStore.getMembersByFamilyId(familyId)
+          : memberStore.getAllMembers();
+        const allMembers = memberStore.getAllMembers();
+        exportData.relationships = familyId
+          ? relationshipStore.getRelationshipsByFamily(familyId, allMembers)
+          : relationshipStore.getAllRelationships();
+        exportData.events = familyId
+          ? historyStore.getEventsByFamily(familyId)
+          : historyStore.getAllEvents();
+        exportData.albums = familyId
+          ? albumStore.getAlbumsByFamilyId(familyId)
+          : albumStore.getAllAlbums();
+        const albumIds = (exportData.albums as any[]).map(a => a.id);
+        exportData.photos = albumStore.getAllPhotos().filter(p => albumIds.includes(p.albumId));
+        exportData.feeds = familyId
+          ? feedStore.getFeedsByFamily(familyId)
+          : feedStore.getAllFeeds();
+        exportData.memorials = familyId
+          ? memorialStore.getMemorialsByFamily(familyId)
+          : memorialStore.getAllMemorials();
+        exportData.users = familyStore.getAllUsers();
+        exportData.permissions = familyId
+          ? permissionStore.getPermissionsByFamily(familyId)
+          : permissionStore.getAllPermissions();
+        break;
+      }
+    }
+    
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = `family-data-${type}-${timestamp}.json`;
+    
+    return {
+      success: true,
+      message: '数据导出成功',
+      data: exportData,
+      filename,
+    };
+  },
+};
+
+export const globalSearchTool = {
+  name: 'globalSearch',
+  options: {
+    inputSchema: z.object({
+      query: z.string().describe('搜索关键词'),
+      familyId: z.string().optional().describe('家族ID，为空时搜索所有家族'),
+      type: z.enum(['all', 'member', 'family', 'album', 'feed', 'memorial']).optional().describe('搜索类型'),
+    }),
+    outputSchema: z.object({
+      members: z.array(z.object({
+        id: z.string(),
+        name: z.string(),
+        avatar: z.string().nullable(),
+        role: z.string(),
+        familyName: z.string(),
+      })),
+      families: z.array(z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string(),
+        memberCount: z.number(),
+      })),
+      albums: z.array(z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string(),
+        photoCount: z.number(),
+        familyName: z.string(),
+      })),
+      feeds: z.array(z.object({
+        id: z.string(),
+        content: z.string(),
+        createdAt: z.string(),
+        authorName: z.string(),
+        familyName: z.string(),
+      })),
+      memorials: z.array(z.object({
+        id: z.string(),
+        name: z.string(),
+        title: z.string(),
+        familyName: z.string(),
+      })),
+      totalResults: z.number(),
+    }),
+    title: '全局搜索',
+    description: '搜索家族、成员、相册、动态和纪念堂',
+  },
+  handler: async (args) => {
+    const { query, familyId, type = 'all' } = args;
+    const lowerQuery = query.toLowerCase();
+    
+    const results = {
+      members: [],
+      families: [],
+      albums: [],
+      feeds: [],
+      memorials: [],
+      totalResults: 0,
+    };
+    
+    if (type === 'all' || type === 'member') {
+      const members = memberStore.getAllMembers();
+      let filteredMembers = members;
+      if (familyId) {
+        filteredMembers = members.filter(m => m.familyId === familyId);
+      }
+      
+      const matchedMembers = filteredMembers
+        .filter(m => 
+          m.name.toLowerCase().includes(lowerQuery) ||
+          m.nickname?.toLowerCase().includes(lowerQuery) ||
+          m.role?.toLowerCase().includes(lowerQuery)
+        )
+        .map(m => {
+          const family = familyStore.getFamilyById(m.familyId);
+          return {
+            id: m.id,
+            name: m.name,
+            avatar: m.avatar,
+            role: m.role,
+            familyName: family?.name || '',
+          };
+        });
+      
+      results.members = matchedMembers;
+    }
+    
+    if (type === 'all' || type === 'family') {
+      const families = familyStore.getAllFamilies();
+      let filteredFamilies = families;
+      if (familyId) {
+        filteredFamilies = families.filter(f => f.id === familyId);
+      }
+      
+      const matchedFamilies = filteredFamilies
+        .filter(f => 
+          f.name.toLowerCase().includes(lowerQuery) ||
+          f.description?.toLowerCase().includes(lowerQuery)
+        )
+        .map(f => {
+          const members = memberStore.getMembersByFamilyId(f.id);
+          return {
+            id: f.id,
+            name: f.name,
+            description: f.description,
+            memberCount: members.length,
+          };
+        });
+      
+      results.families = matchedFamilies;
+    }
+    
+    if (type === 'all' || type === 'album') {
+      const albums = albumStore.getAllAlbums();
+      let filteredAlbums = albums;
+      if (familyId) {
+        filteredAlbums = albums.filter(a => a.familyId === familyId);
+      }
+      
+      const matchedAlbums = filteredAlbums
+        .filter(a => 
+          a.name.toLowerCase().includes(lowerQuery) ||
+          a.description?.toLowerCase().includes(lowerQuery)
+        )
+        .map(a => {
+          const family = familyStore.getFamilyById(a.familyId);
+          const photos = albumStore.getPhotosByAlbumId(a.id);
+          return {
+            id: a.id,
+            name: a.name,
+            description: a.description,
+            photoCount: photos.length,
+            familyName: family?.name || '',
+          };
+        });
+      
+      results.albums = matchedAlbums;
+    }
+    
+    if (type === 'all' || type === 'feed') {
+      const feeds = feedStore.getAllFeeds();
+      let filteredFeeds = feeds;
+      if (familyId) {
+        filteredFeeds = feeds.filter(f => f.familyId === familyId);
+      }
+      
+      const matchedFeeds = filteredFeeds
+        .filter(f => 
+          f.content.toLowerCase().includes(lowerQuery)
+        )
+        .map(f => {
+          const family = familyStore.getFamilyById(f.familyId);
+          const author = memberStore.getMemberById(f.authorId);
+          return {
+            id: f.id,
+            content: f.content,
+            createdAt: f.createdAt,
+            authorName: author?.name || '',
+            familyName: family?.name || '',
+          };
+        });
+      
+      results.feeds = matchedFeeds;
+    }
+    
+    if (type === 'all' || type === 'memorial') {
+      const memorials = memorialStore.getAllMemorials();
+      let filteredMemorials = memorials;
+      if (familyId) {
+        filteredMemorials = memorials.filter(m => m.familyId === familyId);
+      }
+      
+      const matchedMemorials = filteredMemorials
+        .filter(m => 
+          m.name.toLowerCase().includes(lowerQuery) ||
+          m.title?.toLowerCase().includes(lowerQuery) ||
+          m.description?.toLowerCase().includes(lowerQuery)
+        )
+        .map(m => {
+          const family = familyStore.getFamilyById(m.familyId);
+          return {
+            id: m.id,
+            name: m.name,
+            title: m.title,
+            familyName: family?.name || '',
+          };
+        });
+      
+      results.memorials = matchedMemorials;
+    }
+    
+    results.totalResults = 
+      results.members.length + 
+      results.families.length + 
+      results.albums.length + 
+      results.feeds.length + 
+      results.memorials.length;
+    
+    return results;
+  },
+};
+
+export const getUpcomingRemindersTool = {
+  name: 'getUpcomingReminders',
+  options: {
+    inputSchema: z.object({
+      familyId: z.string().optional().describe('家族ID，为空时返回所有家族'),
+      days: z.number().optional().describe('查询天数，默认7天'),
+    }),
+    outputSchema: z.object({
+      birthdays: z.array(z.object({
+        memberId: z.string(),
+        name: z.string(),
+        birthDate: z.string(),
+        daysUntil: z.number(),
+        age: z.number(),
+      })),
+      anniversaries: z.array(z.object({
+        title: z.string(),
+        date: z.string(),
+        daysUntil: z.number(),
+        relatedMemberId: z.string().nullable(),
+        relatedMemberName: z.string().nullable(),
+      })),
+      totalBirthdaysThisMonth: z.number(),
+      totalAnniversariesThisMonth: z.number(),
+    }),
+    title: '获取即将到来的提醒',
+    description: '获取即将到来的生日和纪念日提醒',
+  },
+  handler: async (args) => {
+    const { familyId, days = 7 } = args;
+    const members = memberStore.getAllMembers();
+    const events = historyStore.getAllEvents();
+    
+    let filteredMembers = members;
+    let filteredEvents = events;
+    
+    if (familyId) {
+      filteredMembers = members.filter(m => m.familyId === familyId);
+      filteredEvents = events.filter(e => e.familyId === familyId);
+    }
+    
+    const today = new Date();
+    const todayMonth = today.getMonth();
+    const todayDay = today.getDate();
+    
+    const birthdays = filteredMembers
+      .filter(m => m.birthDate && !m.deathDate)
+      .map(m => {
+        const birthDate = new Date(m.birthDate!);
+        let nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+        
+        if (nextBirthday < today) {
+          nextBirthday = new Date(today.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate());
+        }
+        
+        const diffTime = nextBirthday.getTime() - today.getTime();
+        const daysUntil = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        const age = today.getFullYear() - birthDate.getFullYear();
+        
+        return {
+          memberId: m.id,
+          name: m.name,
+          birthDate: m.birthDate!,
+          daysUntil,
+          age,
+        };
+      })
+      .filter(b => b.daysUntil <= days)
+      .sort((a, b) => a.daysUntil - b.daysUntil);
+    
+    const anniversaries = filteredEvents
+      .filter(e => e.type === 'milestone' || e.type === 'event')
+      .map(e => {
+        const eventDate = new Date(e.date);
+        let nextAnniversary = new Date(today.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+        
+        if (nextAnniversary < today) {
+          nextAnniversary = new Date(today.getFullYear() + 1, eventDate.getMonth(), eventDate.getDate());
+        }
+        
+        const diffTime = nextAnniversary.getTime() - today.getTime();
+        const daysUntil = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        const relatedMember = e.relatedMemberId ? memberStore.getMemberById(e.relatedMemberId) : null;
+        
+        return {
+          title: e.title,
+          date: e.date,
+          daysUntil,
+          relatedMemberId: e.relatedMemberId,
+          relatedMemberName: relatedMember?.name || null,
+        };
+      })
+      .filter(a => a.daysUntil <= days)
+      .sort((a, b) => a.daysUntil - b.daysUntil);
+    
+    const totalBirthdaysThisMonth = filteredMembers.filter(m => {
+      if (!m.birthDate || m.deathDate) return false;
+      return new Date(m.birthDate).getMonth() === todayMonth;
+    }).length;
+    
+    const totalAnniversariesThisMonth = filteredEvents.filter(e => {
+      if (e.type !== 'milestone' && e.type !== 'event') return false;
+      return new Date(e.date).getMonth() === todayMonth;
+    }).length;
+    
+    return {
+      birthdays,
+      anniversaries,
+      totalBirthdaysThisMonth,
+      totalAnniversariesThisMonth,
+    };
+  },
+};
+
 export const getRelationLabelTool = {
   name: 'getRelationLabel',
   options: {
@@ -1708,9 +2233,12 @@ export const familyTools = [
   registerTool,
   getLoginUITool,
   getHomeUITool,
+  getSearchUITool,
   getFamilyManageUITool,
+  exportDataTool,
   getFamilyTreeUITool,
   getMemberManageUITool,
+  getMemberDetailUITool,
   getRelationshipUITool,
   getHistoryUITool,
   getProfileUITool,
@@ -1729,6 +2257,7 @@ export const familyTools = [
   updateMemberTool,
   deleteMemberTool,
   searchMembersTool,
+  globalSearchTool,
   listRelationshipsTool,
   createRelationshipTool,
   deleteRelationshipTool,
@@ -1757,4 +2286,5 @@ export const familyTools = [
   listMemorialsTool,
   createMemorialTool,
   getStatisticsTool,
+  getUpcomingRemindersTool,
 ];

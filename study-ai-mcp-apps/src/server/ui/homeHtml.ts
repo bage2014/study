@@ -53,6 +53,20 @@ export function generateHomeHtml(user: User | null): string {
       <p class="text-gray-500 mt-1">管理您的家族信息，传承家族文化</p>
     </div>
 
+    <div class="mb-8" id="remindersContainer">
+      <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200">
+        <div class="flex items-center gap-2 mb-4">
+          <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-800">即将到来的提醒</h3>
+        </div>
+        <div id="remindersList" class="space-y-3">
+          <div class="text-gray-500 text-sm text-center py-4">加载中...</div>
+        </div>
+      </div>
+    </div>
+
     <div class="grid grid-cols-2 gap-3 mb-8">
       <div class="stat-card rounded-xl p-5 text-white">
         <div class="text-2xl sm:text-3xl font-bold" id="familyCount">0</div>
@@ -216,8 +230,69 @@ export function generateHomeHtml(user: User | null): string {
       }
     }
 
+    async function loadReminders() {
+      try {
+        var result = await mcpCallTool('getUpcomingReminders', { days: 14 });
+        var list = document.getElementById('remindersList');
+        
+        var allReminders = [];
+        
+        result.birthdays.forEach(function(b) {
+          allReminders.push({
+            type: 'birthday',
+            title: b.name + ' 的生日',
+            date: b.birthDate,
+            daysUntil: b.daysUntil,
+            age: b.age,
+          });
+        });
+        
+        result.anniversaries.forEach(function(a) {
+          allReminders.push({
+            type: 'anniversary',
+            title: a.title,
+            date: a.date,
+            daysUntil: a.daysUntil,
+          });
+        });
+        
+        allReminders.sort(function(a, b) {
+          return a.daysUntil - b.daysUntil;
+        });
+        
+        if (allReminders.length === 0) {
+          list.innerHTML = '<div class="text-gray-500 text-sm text-center py-4">近期暂无生日或纪念日提醒</div>';
+          return;
+        }
+        
+        var html = '';
+        allReminders.forEach(function(r) {
+          var daysText = r.daysUntil === 0 ? '今天' : r.daysUntil === 1 ? '明天' : r.daysUntil + '天后';
+          var icon = r.type === 'birthday' 
+            ? '<svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+            : '<svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+          var ageText = r.age ? '<span class="text-xs text-gray-500 ml-2">(' + r.age + '岁)</span>' : '';
+          var bgClass = r.daysUntil <= 3 ? 'bg-amber-100' : 'bg-white';
+          
+          html += '<div class="flex items-center justify-between p-3 rounded-lg ' + bgClass + ' border border-gray-100">' +
+            '<div class="flex items-center gap-2">' +
+              icon +
+              '<span class="text-sm text-gray-700">' + r.title + ageText + '</span>' +
+            '</div>' +
+            '<span class="text-xs font-medium text-gray-500">' + daysText + '</span>' +
+          '</div>';
+        });
+        
+        list.innerHTML = html;
+      } catch (error) {
+        console.error('Failed to load reminders:', error);
+        document.getElementById('remindersList').innerHTML = '<div class="text-gray-500 text-sm text-center py-4">加载提醒失败</div>';
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       loadStats();
+      loadReminders();
     });
   </script>
 </body>

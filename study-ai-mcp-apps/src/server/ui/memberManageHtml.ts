@@ -279,7 +279,7 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
           var genderColor = member.gender === 'male' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600';
           var deceasedBadge = member.deathDate ? '<span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded">已故</span>' : '';
           
-          html += '<div class="bg-white rounded-xl p-4 shadow-sm member-card">' +
+          html += '<div class="bg-white rounded-xl p-4 shadow-sm member-card cursor-pointer" onclick="viewMemberDetail(&#39;' + member.id + '&#39;)">' +
             '<div class="flex items-center gap-4">' +
             '<div class="w-12 h-12 ' + genderColor + ' rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0">' + member.name.charAt(0) + '</div>' +
             '<div class="flex-1 min-w-0">' +
@@ -296,8 +296,8 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
             '</div>' +
             '</div>' +
             '<div class="flex gap-2 flex-shrink-0">' +
-            '<button onclick="openEditModal(&#39;' + member.id + '&#39;)" class="text-blue-500 hover:text-blue-600 p-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>' +
-            '<button onclick="openDeleteModal(&#39;' + member.id + '&#39;)" class="text-red-500 hover:text-red-600 p-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
+            '<button onclick="event.stopPropagation(); openEditModal(&#39;' + member.id + '&#39;)" class="text-blue-500 hover:text-blue-600 p-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>' +
+            '<button onclick="event.stopPropagation(); openDeleteModal(&#39;' + member.id + '&#39;)" class="text-red-500 hover:text-red-600 p-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
             '</div>' +
             '</div>' +
             (member.details ? '<div class="mt-3 pt-3 border-t border-gray-100"><p class="text-sm text-gray-600 line-clamp-2">' + member.details + '</p></div>' : '') +
@@ -308,6 +308,13 @@ export function generateMemberManageHtml(user: User | null, selectedFamilyId: st
       } catch (error) {
         console.error('Failed to load members:', error);
       }
+    }
+
+    function viewMemberDetail(memberId) {
+      window.parent.postMessage({ type: 'navigate', uri: 'ui://family/member-detail' }, '*');
+      setTimeout(function() {
+        mcpCallTool('getMemberDetailUI', { memberId: memberId });
+      }, 100);
     }
 
     function openCreateModal() {

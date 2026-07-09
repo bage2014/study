@@ -1,3 +1,5 @@
+import { persistenceService } from './persistenceService';
+
 export interface HistoryEvent {
   id: string;
   familyId: string;
@@ -13,7 +15,12 @@ class HistoryStore {
   private events: HistoryEvent[] = [];
 
   constructor() {
-    this.events.push({
+    const savedEvents = persistenceService.getEvents();
+    
+    if (savedEvents.length > 0) {
+      this.events = savedEvents;
+    } else {
+      this.events.push({
       id: 'evt-1',
       familyId: 'family-1',
       type: 'event',
@@ -375,6 +382,9 @@ class HistoryStore {
       relatedMemberId: null,
       operator: '李家人',
     });
+
+      persistenceService.setEvents(this.events);
+    }
   }
 
   getAllEvents(): HistoryEvent[] {
@@ -403,6 +413,7 @@ class HistoryStore {
       ...data,
     };
     this.events.push(event);
+    persistenceService.setEvents(this.events);
     return event;
   }
 
@@ -410,6 +421,7 @@ class HistoryStore {
     const index = this.events.findIndex(e => e.id === eventId);
     if (index === -1) return false;
     this.events.splice(index, 1);
+    persistenceService.setEvents(this.events);
     return true;
   }
 }

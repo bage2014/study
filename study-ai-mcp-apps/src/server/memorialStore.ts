@@ -1,3 +1,5 @@
+import { persistenceService } from './persistenceService';
+
 export interface Memorial {
   id: string;
   familyId: string;
@@ -17,7 +19,12 @@ class MemorialStore {
   private memorials: Memorial[] = [];
 
   constructor() {
-    this.memorials.push({
+    const savedMemorials = persistenceService.getMemorials();
+    
+    if (savedMemorials.length > 0) {
+      this.memorials = savedMemorials;
+    } else {
+      this.memorials.push({
       id: 'memorial-1',
       familyId: 'family-1',
       memberId: 'member-1',
@@ -46,6 +53,9 @@ class MemorialStore {
       createdAt: '2024-01-02',
       createdBy: 'user-2',
     });
+
+      persistenceService.setMemorials(this.memorials);
+    }
   }
 
   getAllMemorials(): Memorial[] {
@@ -86,6 +96,7 @@ class MemorialStore {
       createdAt: new Date().toISOString().split('T')[0],
     };
     this.memorials.push(memorial);
+    persistenceService.setMemorials(this.memorials);
     return memorial;
   }
 
@@ -96,6 +107,7 @@ class MemorialStore {
       ...this.memorials[index],
       ...data,
     };
+    persistenceService.setMemorials(this.memorials);
     return this.memorials[index];
   }
 
@@ -103,6 +115,7 @@ class MemorialStore {
     const index = this.memorials.findIndex(m => m.id === memorialId);
     if (index === -1) return false;
     this.memorials.splice(index, 1);
+    persistenceService.setMemorials(this.memorials);
     return true;
   }
 }

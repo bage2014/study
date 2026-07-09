@@ -4,7 +4,57 @@
 
 ---
 
-## 一、API权限申请（核心任务）
+## 一、RPA环境配置（优先完成）
+
+### 1.1 安装Playwright浏览器依赖
+
+**状态**: ⏳ 待配置
+
+**操作步骤**:
+
+| 步骤 | 操作 | 备注 |
+|------|------|------|
+| 1 | 进入后端目录 | `cd study-ai-app-compares-backend` |
+| 2 | 运行Playwright安装命令 | `mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"` |
+| 3 | 验证安装 | 检查是否下载成功chromium浏览器 |
+
+**配置说明**:
+```yaml
+# application.yml
+rpa:
+  enabled: true           # 启用RPA服务
+  headless: true          # 无头模式（生产环境推荐）
+  timeout: 30000         # 请求超时时间（毫秒）
+  page-load-timeout: 60000 # 页面加载超时时间（毫秒）
+```
+
+**环境变量**:
+| 变量名 | 默认值 | 说明 |
+|--------|--------|------|
+| RPA_ENABLED | true | 是否启用RPA |
+| RPA_HEADLESS | true | 是否无头模式 |
+| RPA_TIMEOUT | 30000 | 超时时间 |
+
+### 1.2 RPA反爬策略配置
+
+**状态**: ⏳ 待配置
+
+**注意事项**:
+- ⚠️ RPA技术模拟浏览器访问，可能触发平台反爬机制
+- ⚠️ 建议在测试环境先验证，避免生产环境被封禁
+- ⚠️ 遵守各平台robots协议和使用条款
+
+**优化建议**:
+| 策略 | 说明 |
+|------|------|
+| 请求间隔 | 设置随机请求间隔（2-5秒） |
+| User-Agent轮换 | 使用真实浏览器User-Agent |
+| IP代理 | 考虑使用代理IP池（如遇封禁） |
+| Cookie管理 | 保存会话Cookie，模拟真实用户 |
+
+---
+
+## 二、API权限申请（备用方案）
 
 ### 1.1 淘宝/天猫API权限申请
 

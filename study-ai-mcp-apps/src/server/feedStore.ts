@@ -1,3 +1,5 @@
+import { persistenceService } from './persistenceService';
+
 export interface Feed {
   id: string;
   familyId: string;
@@ -26,7 +28,12 @@ class FeedStore {
   private feeds: Feed[] = [];
 
   constructor() {
-    this.feeds.push({
+    const savedFeeds = persistenceService.getFeeds();
+    
+    if (savedFeeds.length > 0) {
+      this.feeds = savedFeeds;
+    } else {
+      this.feeds.push({
       id: 'feed-1',
       familyId: 'family-1',
       userId: 'user-1',
@@ -137,6 +144,9 @@ class FeedStore {
       likedBy: ['user-1'],
       comments: [],
     });
+
+      persistenceService.setFeeds(this.feeds);
+    }
   }
 
   getAllFeeds(): Feed[] {
@@ -175,6 +185,7 @@ class FeedStore {
       comments: [],
     };
     this.feeds.push(feed);
+    persistenceService.setFeeds(this.feeds);
     return feed;
   }
 
@@ -182,6 +193,7 @@ class FeedStore {
     const index = this.feeds.findIndex(f => f.id === feedId);
     if (index === -1) return false;
     this.feeds.splice(index, 1);
+    persistenceService.setFeeds(this.feeds);
     return true;
   }
 
@@ -198,6 +210,7 @@ class FeedStore {
       feed.likes--;
     }
 
+    persistenceService.setFeeds(this.feeds);
     return feed;
   }
 
@@ -216,6 +229,7 @@ class FeedStore {
     };
     feed.comments.push(comment);
 
+    persistenceService.setFeeds(this.feeds);
     return feed;
   }
 
@@ -227,6 +241,7 @@ class FeedStore {
     if (index === -1) return undefined;
 
     feed.comments.splice(index, 1);
+    persistenceService.setFeeds(this.feeds);
     return feed;
   }
 }
