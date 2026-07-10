@@ -9,6 +9,7 @@ import { feedStore } from '../feedStore';
 import { permissionStore, PermissionLevel } from '../permissionStore';
 import { memorialStore } from '../memorialStore';
 import { statisticsStore } from '../statisticsStore';
+import { notificationStore } from '../notificationStore';
 import { generateFamilyManageHtml } from '../ui/familyManageHtml';
 import { generateFamilyTreeHtml } from '../ui/familyTreeHtml';
 import { generateMemberManageHtml } from '../ui/memberManageHtml';
@@ -1883,6 +1884,82 @@ export const exportDataTool = {
   },
 };
 
+export const getNotificationsTool = {
+  name: 'getNotifications',
+  options: {
+    inputSchema: z.object({}),
+    outputSchema: z.object({
+      notifications: z.array(z.object({
+        id: z.string(),
+        type: z.enum(['invite', 'like', 'comment', 'event', 'reminder']),
+        title: z.string(),
+        message: z.string(),
+        isRead: z.boolean(),
+        createdAt: z.string(),
+      })),
+      unreadCount: z.number(),
+    }),
+    title: '获取通知',
+    description: '获取当前用户的通知列表',
+  },
+  handler: async () => {
+    const user = getCurrentUser();
+    if (!user) {
+      return { notifications: [], unreadCount: 0 };
+    }
+    
+    const notifications = notificationStore.getNotificationsByUser(user.id);
+    const unreadCount = notificationStore.getUnreadCount(user.id);
+    
+    return { notifications, unreadCount };
+  },
+};
+
+export const markNotificationAsReadTool = {
+  name: 'markNotificationAsRead',
+  options: {
+    inputSchema: z.object({
+      notificationId: z.string().describe('通知ID'),
+    }),
+    outputSchema: z.object({
+      success: z.boolean(),
+      message: z.string(),
+    }),
+    title: '标记通知为已读',
+    description: '标记指定通知为已读',
+  },
+  handler: async (args) => {
+    const { notificationId } = args;
+    const success = notificationStore.markAsRead(notificationId);
+    return {
+      success,
+      message: success ? '标记成功' : '标记失败',
+    };
+  },
+};
+
+export const markAllNotificationsAsReadTool = {
+  name: 'markAllNotificationsAsRead',
+  options: {
+    inputSchema: z.object({}),
+    outputSchema: z.object({
+      success: z.boolean(),
+      message: z.string(),
+    }),
+    title: '全部标记已读',
+    description: '将所有通知标记为已读',
+  },
+  handler: async () => {
+    const user = getCurrentUser();
+    if (!user) {
+      return { success: false, message: '请先登录' };
+    }
+    
+    notificationStore.markAllAsRead(user.id);
+    return { success: true, message: '全部标记为已读' };
+  },
+};
+
 export const globalSearchTool = {
   name: 'globalSearch',
   options: {
@@ -2236,6 +2313,9 @@ export const familyTools = [
   getSearchUITool,
   getFamilyManageUITool,
   exportDataTool,
+  getNotificationsTool,
+  markNotificationAsReadTool,
+  markAllNotificationsAsReadTool,
   getFamilyTreeUITool,
   getMemberManageUITool,
   getMemberDetailUITool,

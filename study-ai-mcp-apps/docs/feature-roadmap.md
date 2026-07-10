@@ -102,12 +102,15 @@
 
 #### 8. 通知系统
 - **优先级**：🟢 低
-- **状态**：待开发
-- **功能描述**：实时通知重要事件
+- **状态**：✅ 已完成
+- **功能描述**：通知重要事件
 - **包含内容**：
   - 邀请加入家族通知
   - 动态点赞/评论通知
   - 重要事件提醒
+  - 支持标记已读、全部标记已读
+  - 通知数据持久化存储
+- **实现文件**：`src/server/notificationStore.ts` + `src/server/tools/familyTools.ts` (getNotificationsTool, markNotificationAsReadTool, markAllNotificationsAsReadTool) + `src/server/persistenceService.ts`
 
 ## 实现进度
 
@@ -120,10 +123,10 @@
 - [x] 全局搜索
 
 ### 第三阶段
-- [ ] 关系校验
-- [ ] 数据导出
-- [ ] 安全加固
-- [ ] 通知系统
+- [x] 关系校验
+- [x] 数据导出
+- [x] 安全加固
+- [x] 通知系统
 
 ## 功能流程图
 

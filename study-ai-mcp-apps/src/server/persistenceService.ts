@@ -15,6 +15,7 @@ interface PersistedData {
   memorials: any[];
   permissions: any[];
   invitations: any[];
+  notifications: any[];
 }
 
 export class PersistenceService {
@@ -30,6 +31,7 @@ export class PersistenceService {
     memorials: [],
     permissions: [],
     invitations: [],
+    notifications: [],
   };
 
   private initialized = false;
@@ -185,6 +187,14 @@ export class PersistenceService {
 
   getInvitations(): any[] {
     return this.data.invitations;
+  }
+
+  setNotifications(notifications: any[]) {
+    this.data.notifications = notifications;
+  }
+
+  getNotifications(): any[] {
+    return this.data.notifications;
   }
 }
 
