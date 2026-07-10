@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ai-pipeline-api
+  datasource:
+    url: jdbc:h2:mem:pipeline_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+
+temporal:
+  service:
+    address: localhost:7233
+
+ai:
+  requirement-model-provider: ollama
+  codegen-model-provider: ollama
+  requirement-model: llama3.2
+  codegen-model: llama3.2
+  ollama:
+    base-url: http://localhost:11434
+
+logging:
+  level:
+    com.bage.ai.pipeline: INFO
+    io.temporal: WARN

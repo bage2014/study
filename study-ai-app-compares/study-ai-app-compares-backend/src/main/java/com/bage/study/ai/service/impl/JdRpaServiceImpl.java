@@ -3,9 +3,12 @@ package com.bage.study.ai.service.impl;
 import com.bage.study.ai.config.RpaConfig;
 import com.bage.study.ai.dto.response.ProductPriceResponse;
 import com.bage.study.ai.service.RpaService;
+import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.options.WaitUntilState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -41,19 +44,41 @@ public class JdRpaServiceImpl implements RpaService {
 
         List<ProductPriceResponse> results = new ArrayList<>();
         Page page = null;
+        BrowserContext newContext = null;
         try {
-            page = context.newPage();
-            page.setDefaultTimeout(rpaConfig.getTimeout());
+            Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
+                    .setHeadless(headless)
+                    .setArgs(java.util.Arrays.asList(
+                            "--disable-blink-features=AutomationControlled",
+                            "--no-sandbox",
+                            "--disable-dev-shm-usage",
+                            "--disable-gpu"
+                    )));
+
+            newContext = browser.newContext(new Browser.NewContextOptions()
+                    .setViewportSize(1920, 1080)
+                    .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"));
+            newContext.addInitScript("() => { Object.defineProperty(navigator, 'webdriver', { get: () => undefined }); }");
+
+            page = newContext.newPage();
 
             String url = SEARCH_URL + java.net.URLEncoder.encode(keyword, "UTF-8");
             log.info("京东RPA开始搜索: {}", keyword);
 
-            page.navigate(url);
+            page.navigate(url, new Page.NavigateOptions()
+                    .setWaitUntil(WaitUntilState.NETWORKIDLE)
+                    .setTimeout(rpaConfig.getPageLoadTimeout()));
 
-            page.waitForSelector(".gl-item", new Page.WaitForSelectorOptions()
-                    .setTimeout(rpaConfig.getTimeout()));
+            Thread.sleep(3000 + random.nextInt(2000));
 
-            Thread.sleep(2000 + random.nextInt(2000));
+            try {
+                page.waitForSelector(".gl-item", new Page.WaitForSelectorOptions()
+                        .setTimeout(rpaConfig.getTimeout()));
+            } catch (Exception e) {
+                log.warn("等待选择器超时: {}", e.getMessage());
+            }
+
+            Thread.sleep(1500 + random.nextInt(1000));
 
             String content = page.content();
             results = parseSearchResults(content, keyword);
@@ -71,10 +96,19 @@ public class JdRpaServiceImpl implements RpaService {
                     log.error("关闭页面失败: {}", e.getMessage());
                 }
             }
+            if (newContext != null) {
+                try {
+                    newContext.close();
+                } catch (Exception e) {
+                    log.error("关闭context失败: {}", e.getMessage());
+                }
+            }
         }
 
         return results;
     }
+
+    private boolean headless = true;
 
     private List<ProductPriceResponse> parseSearchResults(String content, String keyword) {
         List<ProductPriceResponse> results = new ArrayList<>();
