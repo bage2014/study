@@ -269,6 +269,11 @@ docs/
 |----------|------|
 | personal-backend-coding-standard | 后端编码规范技能 |
 | personal-frontend-coding-standard | 前端编码规范技能 |
+| personal-java-common | Java 通用工具技能 |
+| personal-project-runner | 项目启动管理技能 |
+| personal-doc-manager | 个人文档管理技能 |
+| personal-solution-research | 方案调研技能 |
+| personal-brief-style | 简洁风格技能 |
 
 ## 通用技能
 
@@ -280,16 +285,16 @@ docs/
 | common-backend-unit-test | 后端单元测试技能 |
 | common-coding | 编码技能 |
 | common-requirement-clarification | 需求澄清技能 |
-
-## 功能技能
-
-| 技能名称 | 描述 |
-|----------|------|
-| spring-ai-chat | Spring AI 聊天集成 |
-| model-provider-creator | 模型提供商创建器 |
-| mcp-tool-creator | MCP工具创建器 |
-| plan-executor | 计划执行器 |
-| exception-analysis | 异常分析技能 |
+| common-api-doc | API文档生成技能 |
+| common-data-migration | 数据迁移技能 |
+| common-db-design | 数据库设计技能 |
+| common-dockerize | Docker容器化技能 |
+| common-grill-me | Grill Me 深度质询技能 |
+| common-spec-driven | Spec驱动规范技能 |
+| common-spring-boot-init | Spring Boot项目初始化技能 |
+| common-ui-design-spec | UI设计规范技能 |
+| common-ui-mockup | UI原型图生成技能 |
+| common-vue-init | Vue项目初始化技能 |
 
 ## 开源技能包装
 
@@ -317,6 +322,11 @@ docs/
 ### 个人定制技能
 - personal-backend-coding-standard - 后端编码规范
 - personal-frontend-coding-standard - 前端编码规范
+- personal-java-common - Java 通用工具
+- personal-project-runner - 项目启动管理
+- personal-doc-manager - 个人文档管理
+- personal-solution-research - 方案调研
+- personal-brief-style - 简洁风格
 
 ### 通用技能
 - common-project-standard - 项目规范
@@ -325,17 +335,16 @@ docs/
 - common-backend-unit-test - 后端测试
 - common-coding - 编码规范
 - common-requirement-clarification - 需求澄清
-
-### 功能技能
-- spring-ai-chat - AI 聊天功能
-- model-provider-creator - 模型提供商
-- mcp-tool-creator - MCP工具创建
-- plan-executor - 计划执行器
-- exception-analysis - 异常分析
-
-### 开源技能包装
-- os-ui-library - UI组件库（可切换实现）
-- os-chat-model - 聊天模型（可切换实现）
+- common-api-doc - API文档生成
+- common-data-migration - 数据迁移
+- common-db-design - 数据库设计
+- common-dockerize - Docker容器化
+- common-grill-me - Grill Me 深度质询
+- common-spec-driven - Spec驱动规范
+- common-spring-boot-init - Spring Boot初始化
+- common-ui-design-spec - UI设计规范
+- common-ui-mockup - UI原型图生成
+- common-vue-init - Vue项目初始化
 
 ## 技能使用方式
 
@@ -652,9 +661,354 @@ node_modules/
 
 ---
 
-## 6. 项目结构规范
+## 6. AI 编码标准
 
-### 6.1 后端项目结构
+### 6.1 AGENTS.md 文档规范
+
+AGENTS.md 是项目级 AI 编码助手的行为规范文档，定义 AI 在本项目中应该遵循的编码规范、禁止操作、上下文规则等。
+
+#### 6.1.1 AGENTS.md 结构
+
+```markdown
+# AI 编码助手规范（AGENTS.md）
+
+## 1. 项目上下文
+
+### 1.1 项目概述
+{项目名称、技术栈、主要功能}
+
+### 1.2 架构说明
+{整体架构、模块划分、关键技术点}
+
+### 1.3 代码风格
+{编码规范、命名约定、格式要求}
+
+## 2. 编码规则
+
+### 2.1 必须遵循
+- {规则1}
+- {规则2}
+
+### 2.2 禁止操作
+- {禁止1}
+- {禁止2}
+
+### 2.3 最佳实践
+- {实践1}
+- {实践2}
+
+## 3. 技能使用指引
+
+### 3.1 推荐技能
+- {技能名称} - {使用场景}
+
+### 3.2 技能组合
+- {场景} → {技能1} → {技能2}
+
+## 4. 工具配置
+
+### 4.1 Linter/Formatter
+{ESLint、Prettier、Checkstyle等配置}
+
+### 4.2 测试框架
+{测试框架选择、测试覆盖率要求}
+
+## 5. 安全规范
+
+### 5.1 敏感信息
+{API Key、密码等敏感信息处理规则}
+
+### 5.2 代码审查
+{PR审查要求、安全检查清单}
+```
+
+#### 6.1.2 AGENTS.md 示例
+
+```markdown
+# AI 编码助手规范（AGENTS.md）
+
+## 1. 项目上下文
+
+### 1.1 项目概述
+- 项目名称：xx-service
+- 技术栈：Java 21, Spring Boot 3.2, MyBatis Plus
+- 主要功能：订单管理、支付处理
+
+### 1.2 架构说明
+- 分层架构：Controller → Service → Repository
+- 外部调用：统一通过 infra/client 层
+- 配置管理：Spring Boot 配置 + 环境变量
+
+### 1.3 代码风格
+- 命名：驼峰命名法
+- 格式：Google Java Style
+- 注释：Javadoc 风格
+
+## 2. 编码规则
+
+### 2.1 必须遵循
+- 所有外部调用必须放在 infra/client 层
+- 使用 @Metric 注解进行埋点
+- 统一使用 ThreadPoolUtils 获取线程池
+- 参数校验使用 @Valid + ValidateUtils
+
+### 2.2 禁止操作
+- 禁止在 Controller 中写业务逻辑
+- 禁止硬编码配置值
+- 禁止使用 System.out.println
+- 禁止直接操作数据库连接
+
+### 2.3 最佳实践
+- 优先使用枚举定义常量
+- 使用 DTO 进行数据传输
+- 异常统一处理，使用 BusinessException
+- 日志使用 LogUtils，分级记录
+
+## 3. 技能使用指引
+
+### 3.1 推荐技能
+- common-coding - 编码规范指导
+- common-db-design - 数据库设计
+- personal-java-common - Java 通用工具
+
+### 3.2 技能组合
+- 新建功能 → common-requirement-clarification → common-spec-driven → common-spring-boot-init
+
+## 4. 工具配置
+
+### 4.1 Linter/Formatter
+- Checkstyle：google_checks.xml
+- Spotless：Google Java Format
+
+### 4.2 测试框架
+- JUnit 5 + Mockito
+- 测试覆盖率要求：≥80%
+
+## 5. 安全规范
+
+### 5.1 敏感信息
+- API Key 存储在环境变量
+- 配置文件中使用 ${ENV_VAR} 引用
+- 禁止提交 .env 文件
+
+### 5.2 代码审查
+- PR 必须通过 CI 检查
+- 必须有至少1个 reviewer
+- 安全扫描必须通过
+```
+
+#### 6.1.3 AGENTS.md 与 .cursorrules 对比
+
+| 文件 | 用途 | 格式 |
+|------|------|------|
+| `AGENTS.md` | 项目级 AI 规范文档 | Markdown，详细说明 |
+| `.cursorrules` | Cursor IDE 规则文件 | 简单规则列表 |
+| `.windsurfrules` | WindSurf IDE 规则文件 | YAML 格式 |
+
+### 6.2 多 AI 工具忽略文件规范
+
+为支持多种 AI 编码助手，项目应提供统一的忽略文件体系。
+
+#### 6.2.1 忽略文件矩阵
+
+| 文件 | 适用工具 | 作用 |
+|------|----------|------|
+| `.gitignore` | Git | 版本控制忽略 |
+| `.traeignore` | Trae | Trae 技能系统忽略 |
+| `.cursorignore` | Cursor | Cursor AI 忽略 |
+| `.codeiumignore` | Codeium | Codeium AI 忽略 |
+| `.aiderignore` | Aider | Aider AI 忽略 |
+| `.copilotignore` | GitHub Copilot | Copilot AI 忽略 |
+
+#### 6.2.2 .cursorignore 标准配置
+
+```gitignore
+# 构建产物
+target/
+build/
+dist/
+
+# IDE 文件
+.idea/
+.vscode/
+
+# 日志文件
+*.log
+logs/
+
+# 配置文件
+.env
+application-local.yml
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 依赖目录
+node_modules/
+
+# AI 模型文件
+*.pt
+*.pth
+*.onnx
+
+# 数据集
+data/
+dataset/
+
+# 缓存目录
+.cache/
+__pycache__/
+```
+
+#### 6.2.3 .codeiumignore 标准配置
+
+```gitignore
+# Codeium 忽略规则
+# 大文件（超过 1MB）
+*.jar
+*.war
+*.zip
+*.tar.gz
+
+# 二进制文件
+*.class
+*.dll
+*.so
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 构建产物
+target/
+build/
+dist/
+
+# 依赖目录
+node_modules/
+
+# 缓存目录
+.cache/
+```
+
+#### 6.2.4 .aiderignore 标准配置
+
+```gitignore
+# Aider 忽略规则
+# 大型二进制文件
+*.jar
+*.war
+*.exe
+
+# 构建目录
+target/
+build/
+dist/
+
+# 依赖目录
+node_modules/
+
+# 日志文件
+*.log
+
+# 配置文件
+.env
+application-local.yml
+
+# IDE 文件
+.idea/
+.vscode/
+
+# 系统文件
+.DS_Store
+```
+
+#### 6.2.5 .copilotignore 标准配置
+
+```gitignore
+# GitHub Copilot 忽略规则
+# 敏感文件
+.env
+*.key
+*.secret
+
+# 构建产物
+target/
+build/
+dist/
+
+# 依赖目录
+node_modules/
+
+# 日志文件
+*.log
+
+# 测试报告
+reports/
+coverage/
+
+# 临时文件
+*.tmp
+*.temp
+```
+
+#### 6.2.6 统一忽略规则建议
+
+为简化维护，建议在项目根目录创建统一的忽略规则文件：
+
+```
+项目根目录/
+├── .gitignore              # Git 版本控制（最全）
+├── .traeignore             # Trae 技能系统
+├── .cursorignore           # Cursor AI
+├── .codeiumignore          # Codeium AI
+├── .aiderignore            # Aider AI
+└── .copilotignore          # Copilot AI
+```
+
+**统一规则策略**：
+1. `.gitignore` 作为主忽略文件，包含所有规则
+2. 其他 AI 忽略文件引用 `.gitignore` 或仅包含特定规则
+
+### 6.3 AI 辅助开发工作流标准
+
+#### 6.3.1 代码生成流程
+
+```
+需求澄清 → 方案设计 → 代码生成 → 规范验证 → 测试编写 → 代码审查
+  ↓           ↓           ↓           ↓           ↓           ↓
+grill-me   solution-    coding      code-      unit-test  code-review
+           research                 review
+```
+
+#### 6.3.2 AI 使用规则
+
+| 阶段 | AI 角色 | 使用技能 |
+|------|---------|----------|
+| 需求分析 | 质询者 | common-grill-me, common-requirement-clarification |
+| 方案设计 | 分析师 | personal-solution-research, common-spec-driven |
+| 代码实现 | 辅助者 | common-coding, personal-java-common |
+| 规范验证 | 检查者 | common-code-review |
+| 测试编写 | 测试者 | common-backend-unit-test |
+| 文档编写 | 文档者 | personal-doc-manager, common-api-doc |
+
+#### 6.3.3 AI 输出规范
+
+1. **代码质量**：生成的代码必须符合项目编码规范
+2. **可维护性**：代码结构清晰，注释完整
+3. **安全性**：不包含敏感信息，遵循安全规范
+4. **测试覆盖**：关键功能必须有单元测试
+5. **文档配套**：代码必须有相应的文档说明
+
+---
+
+## 7. 项目结构规范
+
+### 7.1 后端项目结构
 
 ```
 xx-parent/                     # Maven 父模块
@@ -678,7 +1032,7 @@ xx-parent/                     # Maven 父模块
     └── skills/
 ```
 
-### 6.2 模块职责说明
+### 7.2 模块职责说明
 
 | 模块 | 职责 | 说明 |
 |------|------|------|
@@ -686,7 +1040,7 @@ xx-parent/                     # Maven 父模块
 | `xx-biz` | 核心业务逻辑 | 实现业务功能，处理业务规则 |
 | `xx-infra` | 基础设施支持 | 公共组件、工具类、配置 |
 
-### 6.3 包结构规范
+### 7.3 包结构规范
 
 ```
 com/bage/xx/
@@ -777,20 +1131,30 @@ skills:
   enabled:
     - personal-backend-coding-standard
     - personal-frontend-coding-standard
+    - personal-java-common
+    - personal-project-runner
+    - personal-doc-manager
+    - personal-solution-research
+    - personal-brief-style
     - common-project-standard
     - common-coding
     - common-contract-generation
     - common-backend-unit-test
     - common-frontend-playwright-test
     - common-requirement-clarification
-    - spring-ai-chat
-    - model-provider-creator
-    - mcp-tool-creator
-    - plan-executor
-    - exception-analysis
+    - common-api-doc
+    - common-data-migration
+    - common-db-design
+    - common-dockerize
+    - common-grill-me
+    - common-spec-driven
+    - common-spring-boot-init
+    - common-ui-design-spec
+    - common-ui-mockup
+    - common-vue-init
 ```
 
-### 6.4 全局配置（推荐）
+### 7.4 全局配置（推荐）
 
 在用户主目录创建配置文件，使所有项目默认使用这些技能：
 
@@ -1065,6 +1429,12 @@ npm install @componenta/core
 | Git忽略 | .gitignore 是否完整 | ✅/❌ |
 | AI忽略 | AI 相关文件是否正确忽略 | ✅/❌ |
 | Trae忽略 | .traeignore 是否完整 | ✅/❌ |
+| AGENTS.md | 是否存在 AGENTS.md 文档 | ✅/❌ |
+| AGENTS内容 | AGENTS.md 是否包含项目上下文和编码规则 | ✅/❌ |
+| Cursor忽略 | .cursorignore 是否完整 | ✅/❌ |
+| Codeium忽略 | .codeiumignore 是否完整 | ✅/❌ |
+| Aider忽略 | .aiderignore 是否完整 | ✅/❌ |
+| Copilot忽略 | .copilotignore 是否完整 | ✅/❌ |
 | 项目结构 | 目录结构是否符合规范 | ✅/❌ |
 | 命名规范 | 文件和目录命名是否符合规范 | ✅/❌ |
 | 技能注册 | 是否在 SKILLS.md 中注册 | ✅/❌ |
