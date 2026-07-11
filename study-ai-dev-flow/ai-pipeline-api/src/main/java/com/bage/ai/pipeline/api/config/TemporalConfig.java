@@ -42,7 +42,8 @@ public class TemporalConfig {
                          DeployActivityImpl deployActivity,
                          PrCreationActivityImpl prCreationActivity,
                          ApprovalWaitActivityImpl approvalWaitActivity,
-                         UiTestActivityImpl uiTestActivity) {
+                         UiTestActivityImpl uiTestActivity,
+                         WriteAndCommitActivityImpl writeAndCommitActivity) {
         Worker worker = workerFactory.newWorker("pipeline-task-queue");
         worker.registerWorkflowImplementationTypes(PipelineWorkflowImpl.class);
         worker.registerActivitiesImplementations(
@@ -57,7 +58,8 @@ public class TemporalConfig {
                 deployActivity,
                 prCreationActivity,
                 approvalWaitActivity,
-                uiTestActivity
+                uiTestActivity,
+                writeAndCommitActivity
         );
         workerFactory.start();
         log.info("Temporal worker started on task queue: pipeline-task-queue");

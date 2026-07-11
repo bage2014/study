@@ -24,24 +24,19 @@ import java.util.List;
 public class TaskSplitAgentService {
 
     private final TaskSplitAiService aiService;
-    private final FileReadTool fileReadTool;
     private final ObjectMapper objectMapper;
 
     public TaskSplitAgentService(
             @Qualifier("codeGenModel") ChatLanguageModel model,
-            FileReadTool fileReadTool,
             ObjectMapper objectMapper) {
-        this.fileReadTool = fileReadTool;
         this.objectMapper = objectMapper;
         this.aiService = AiServices.builder(TaskSplitAiService.class)
                 .chatLanguageModel(model)
-                .tools(fileReadTool)
                 .build();
     }
 
     public List<AtomicTask> split(String projectLocalPath, FeaturePoint featurePoint,
                                    ProjectType projectType, BuildTool buildTool) {
-        fileReadTool.setActivePath(projectLocalPath);
         String techStack = describeTechStack(projectType, buildTool);
         String result = aiService.split(
                 featurePoint.getId(),

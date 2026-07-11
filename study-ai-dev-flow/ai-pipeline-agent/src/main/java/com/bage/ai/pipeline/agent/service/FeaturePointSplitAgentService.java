@@ -23,24 +23,19 @@ import java.util.List;
 public class FeaturePointSplitAgentService {
 
     private final FeaturePointSplitAiService aiService;
-    private final FileReadTool fileReadTool;
     private final ObjectMapper objectMapper;
 
     public FeaturePointSplitAgentService(
             @Qualifier("requirementModel") ChatLanguageModel model,
-            FileReadTool fileReadTool,
             ObjectMapper objectMapper) {
-        this.fileReadTool = fileReadTool;
         this.objectMapper = objectMapper;
         this.aiService = AiServices.builder(FeaturePointSplitAiService.class)
                 .chatLanguageModel(model)
-                .tools(fileReadTool)
                 .build();
     }
 
     public List<FeaturePoint> split(String projectLocalPath, String parsedRequirementJson,
                                     ProjectType projectType, BuildTool buildTool) {
-        fileReadTool.setActivePath(projectLocalPath);
         String techStack = describeTechStack(projectType, buildTool);
         String result = aiService.split(parsedRequirementJson, techStack);
         return parseFeaturePoints(result);

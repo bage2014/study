@@ -44,6 +44,7 @@ public class ModelGatewayConfig {
 
     private ChatLanguageModel buildModel(String provider, String modelName, int maxTokens) {
         return switch (provider.toLowerCase()) {
+            case "mock" -> new MockChatLanguageModel();
             case "openai" -> OpenAiChatModel.builder()
                     .apiKey(openAiApiKey)
                     .modelName(modelName)

@@ -7,6 +7,7 @@ import com.bage.ai.pipeline.api.repository.PipelineRunRepository;
 import com.bage.ai.pipeline.core.dto.workflow.PipelineStartInput;
 import com.bage.ai.pipeline.core.dto.workflow.PipelineRunResult;
 import com.bage.ai.pipeline.core.enums.PipelineStatus;
+import com.bage.ai.pipeline.core.enums.StageName;
 import com.bage.ai.pipeline.core.workflow.PipelineWorkflow;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.temporal.client.WorkflowClient;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -41,6 +43,21 @@ public class PipelineService {
         String pipelineId = UUID.randomUUID().toString();
 
         try {
+            if (input.getAutoApproveMap() == null) {
+                input.setAutoApproveMap(Map.of(
+                        StageName.REQUIREMENT_ANALYSIS, true,
+                        StageName.FEATURE_POINT_SPLIT, true,
+                        StageName.TASK_SPLIT, true,
+                        StageName.CODE_GEN, true,
+                        StageName.TEST_GEN, true,
+                        StageName.CODE_REVIEW, true,
+                        StageName.PR_CREATION, true,
+                        StageName.TEST_EXEC, true,
+                        StageName.BUILD, true,
+                        StageName.DEPLOY, true
+                ));
+            }
+
             String inputJson = objectMapper.writeValueAsString(input);
             pipelineRunRepository.save(PipelineRunEntity.builder()
                     .pipelineId(pipelineId)

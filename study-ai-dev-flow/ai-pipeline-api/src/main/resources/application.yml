@@ -27,12 +27,8 @@ temporal:
     address: localhost:7233
 
 ai:
-  requirement-model-provider: ollama
-  codegen-model-provider: ollama
-  requirement-model: llama3.2
-  codegen-model: llama3.2
-  ollama:
-    base-url: http://localhost:11434
+  requirement-model-provider: mock
+  codegen-model-provider: mock
 
 logging:
   level:
