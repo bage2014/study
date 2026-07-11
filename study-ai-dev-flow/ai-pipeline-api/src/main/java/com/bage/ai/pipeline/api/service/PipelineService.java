@@ -43,6 +43,7 @@ public class PipelineService {
         String pipelineId = UUID.randomUUID().toString();
 
         try {
+            input.setRunId(pipelineId);
             if (input.getAutoApproveMap() == null) {
                 input.setAutoApproveMap(Map.of(
                         StageName.REQUIREMENT_ANALYSIS, true,

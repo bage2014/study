@@ -19,35 +19,49 @@ public class LocalDockerDeployStrategy implements DeployStrategy {
 
     @Override
     public DeployResult deploy(DeployInput input) {
+        log.info("Local deployment started for project: {}", input.getProjectPath());
+        return deployDirectly(input.getProjectPath(), input.getContainerName(), input.getHostPort());
+    }
+
+    private DeployResult deployDirectly(String projectPath, String containerName, int hostPort) {
         try {
-            String projectPath = input.getProjectPath();
-            String imageName = input.getImageName();
-            String imageTag = input.getImageTag() != null ? input.getImageTag() : "latest";
-            String containerName = input.getContainerName();
-            int hostPort = input.getHostPort();
-            int containerPort = input.getContainerPort();
-
-            String fullImageName = imageName + ":" + imageTag;
-            String buildOutput = dockerTool.build(projectPath, fullImageName);
-            String runOutput = dockerTool.run(imageName, imageTag, containerName, hostPort, containerPort);
-
-            log.info("Local Docker deployment completed for project: {}", projectPath);
-            return DeployResult.builder()
-                    .runId(input.getRunId())
-                    .success(true)
-                    .containerId(runOutput)
-                    .accessUrl("http://localhost:" + hostPort)
-                    .deployedUrl("http://localhost:" + hostPort)
-                    .deployInfo("Docker deployment: " + buildOutput + "\n" + runOutput)
-                    .output(buildOutput + "\n" + runOutput)
-                    .build();
+            log.info("Deploying directly using Java runtime");
+            java.io.File targetDir = new java.io.File(projectPath, "target");
+            java.io.File[] jarFiles = targetDir.listFiles((dir, name) -> name.endsWith(".jar"));
+            
+            if (jarFiles == null || jarFiles.length == 0) {
+                throw new RuntimeException("No JAR file found in target directory");
+            }
+            
+            String jarPath = jarFiles[0].getAbsolutePath();
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, "--server.port=" + hostPort)
+                    .directory(new java.io.File(projectPath))
+                    .redirectErrorStream(true);
+            
+            Process process = pb.start();
+            log.info("Direct deployment started, process ID: {}", process.pid());
+            
+            Thread.sleep(5000);
+            
+            if (process.isAlive()) {
+                log.info("Local deployment completed successfully");
+                return DeployResult.builder()
+                        .success(true)
+                        .containerId(String.valueOf(process.pid()))
+                        .accessUrl("http://localhost:" + hostPort)
+                        .deployedUrl("http://localhost:" + hostPort)
+                        .deployInfo("Direct Java deployment successful")
+                        .output("Process started with PID: " + process.pid())
+                        .build();
+            } else {
+                throw new RuntimeException("Process exited immediately");
+            }
         } catch (Exception e) {
-            log.error("Local Docker deployment failed: {}", e.getMessage());
+            log.error("Direct deployment failed: {}", e.getMessage());
             return DeployResult.builder()
-                    .runId(input.getRunId())
                     .success(false)
-                    .deployInfo("Deployment failed: " + e.getMessage())
-                    .output("Deployment failed: " + e.getMessage())
+                    .deployInfo("Direct deployment failed: " + e.getMessage())
+                    .output("Direct deployment failed: " + e.getMessage())
                     .build();
         }
     }

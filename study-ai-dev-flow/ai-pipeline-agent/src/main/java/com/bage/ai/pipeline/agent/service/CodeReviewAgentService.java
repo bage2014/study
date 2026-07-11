@@ -20,12 +20,14 @@ import java.util.Map;
 public class CodeReviewAgentService {
 
     private final CodeReviewAiService aiService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    public CodeReviewAgentService(@Qualifier("codeGenModel") ChatLanguageModel model) {
+    public CodeReviewAgentService(@Qualifier("codeGenModel") ChatLanguageModel model,
+                                   ObjectMapper objectMapper) {
         this.aiService = AiServices.builder(CodeReviewAiService.class)
                 .chatLanguageModel(model)
                 .build();
+        this.objectMapper = objectMapper;
     }
 
     public ReviewResult review(Map<String, String> generatedFiles) {

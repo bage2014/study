@@ -45,6 +45,8 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
             Workflow.newActivityStub(DeployActivity.class, defaultOptions);
     private final UiTestActivity uiTestActivity =
             Workflow.newActivityStub(UiTestActivity.class, defaultOptions);
+    private final PipelineStatusUpdateActivity statusUpdateActivity =
+            Workflow.newActivityStub(PipelineStatusUpdateActivity.class, defaultOptions);
 
     private PipelineStatus status = PipelineStatus.PENDING;
     private StageName currentStage;
@@ -269,6 +271,7 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
         String containerName = "ai-app-" + input.getRunId().substring(0, 8);
         var deployResult = deployActivity.deploy(DeployInput.builder()
                 .runId(input.getRunId())
+                .projectPath(input.getProjectLocalPath())
                 .imageName(buildResult.getImageName())
                 .imageTag(buildResult.getImageTag())
                 .containerName(containerName)
@@ -282,12 +285,21 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
         String fpCount = fpResult.getFeaturePoints().size() + " feature point(s)";
         String prInfo = (writeResult.getPrUrl() != null && !writeResult.getPrUrl().isBlank())
                 ? "  PR: " + writeResult.getPrUrl() : "";
-        return PipelineRunResult.completed(
+        PipelineRunResult finalResult = PipelineRunResult.completed(
                 "Pipeline completed. Access: " + deployResult.getAccessUrl()
                 + "  Branch: ai-run-" + input.getRunId().substring(0, 8)
                 + "  Decomposed: " + fpCount
                 + prInfo
                 + (fixAttempt > 0 ? "  (auto-fixed in " + fixAttempt + " attempt(s))" : ""));
+
+        statusUpdateActivity.updateStatus(PipelineStatusUpdateInput.builder()
+                .runId(input.getRunId())
+                .status(PipelineStatus.COMPLETED)
+                .stage(StageName.DEPLOY.name())
+                .build());
+        statusUpdateActivity.updateResult(input.getRunId(), finalResult);
+
+        return finalResult;
     }
 
     @Override
