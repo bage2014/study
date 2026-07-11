@@ -1,7 +1,7 @@
 # AI 研发流水线平台 — 设计文档
 
-- **版本**：v1.0
-- **变更时间**：2026-07-10
+- **版本**：v2.0
+- **变更时间**：2026-07-11
 
 ---
 
@@ -21,19 +21,20 @@
 
 ### 2.1 阶段列表
 
-| 阶段 | StageName | Activity 实现 | 人工门禁 |
-|------|-----------|-------------|---------|
-| 需求解析 | REQUIREMENT_ANALYSIS | RequirementAnalysisActivityImpl | 可配 |
-| 功能点拆解 | FEATURE_POINT_SPLIT | FeaturePointSplitActivityImpl | 无门禁 |
-| 原子任务拆解 | TASK_SPLIT | TaskSplitActivityImpl | 无门禁（循环内执行）|
-| 代码生成 | CODE_GEN | CodeGenerationActivityImpl | 可配 |
-| 测试生成 | TEST_GEN | TestGenActivityImpl | 可配 |
-| 代码审查 | CODE_REVIEW | CodeReviewActivityImpl | CRITICAL 问题自动触发 |
-| 文件写入 & Git 提交 | PR_CREATION | WriteAndCommitActivityImpl | 可配 |
-| 测试执行 | TEST_EXEC | TestExecutionActivityImpl | 可配，失败后自修复循环 |
-| UI 测试 | UI_TEST | UiTestActivityImpl | 可配，仅全栈项目 |
-| 构建 | BUILD | BuildActivityImpl | 可配 |
-| 部署 | DEPLOY | DeployActivityImpl | 无门禁（终态）|
+| 阶段 | StageName | Activity 实现 | 人工门禁 | 序号 |
+|------|-----------|-------------|---------|------|
+| 需求解析 | REQUIREMENT_ANALYSIS | RequirementAnalysisActivityImpl | 可配 | 1 |
+| 功能点拆解 | FEATURE_POINT_SPLIT | FeaturePointSplitActivityImpl | 无门禁 | 2 |
+| 原子任务拆解 | TASK_SPLIT | TaskSplitActivityImpl | 无门禁（循环内执行）| 3 |
+| 代码生成 | CODE_GEN | CodeGenerationActivityImpl | 可配 | 4 |
+| 测试生成 | TEST_GEN | TestGenActivityImpl | 可配 | 5 |
+| 代码审查 | CODE_REVIEW | CodeReviewActivityImpl | CRITICAL 问题自动触发 | 6 |
+| 文件写入 & Git 提交 | PR_CREATION | WriteAndCommitActivityImpl | 可配 | 7 |
+| 测试执行 | TEST_EXEC | TestExecutionActivityImpl | 可配，失败后自修复循环 | 8 |
+| 构建 | BUILD | BuildActivityImpl | 可配 | 9 |
+| 部署 | DEPLOY | DeployActivityImpl | 无门禁（终态）| 10 |
+
+> **说明**：UI_TEST、CODE_SEARCH、CI_TRIGGER 阶段暂未启用，保留在枚举中以备扩展。
 
 ### 2.2 三层分解工作流设计
 
@@ -209,6 +210,22 @@ public class AgentToolRegistry {
 | approved | Boolean | 是否通过 |
 | reviewer | String | 审核人 |
 | comment | String | 审核意见 |
+
+### PipelineStageEntity
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | Long | 主键 |
+| pipelineId | String | 流水线 ID |
+| stageName | String | 阶段名称（StageName 枚举值）|
+| status | String | 阶段状态（RUNNING/COMPLETED/FAILED）|
+| startTime | LocalDateTime | 开始时间 |
+| endTime | LocalDateTime | 结束时间 |
+| durationMs | Long | 耗时（毫秒）|
+| resultJson | String | 结果 JSON |
+| errorMessage | String | 错误信息 |
+| orderNum | Integer | 阶段序号 |
+| createdAt | LocalDateTime | 创建时间 |
 
 ---
 

@@ -2,15 +2,21 @@ package com.bage.ai.pipeline.api.controller;
 
 import com.bage.ai.pipeline.api.entity.ApprovalEntity;
 import com.bage.ai.pipeline.api.entity.PipelineRunEntity;
+import com.bage.ai.pipeline.api.entity.PipelineStageEntity;
 import com.bage.ai.pipeline.api.service.PipelineService;
-import com.bage.ai.pipeline.core.dto.workflow.PipelineStartInput;
-import com.bage.ai.pipeline.core.enums.PipelineStatus;
+import com.bage.ai.pipeline.api.dto.workflow.PipelineStartInput;
+import com.bage.ai.pipeline.api.enums.PipelineStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @RestController
@@ -18,6 +24,7 @@ import java.util.Map;
 public class PipelineController {
 
     private final PipelineService pipelineService;
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     public PipelineController(PipelineService pipelineService) {
         this.pipelineService = pipelineService;
@@ -75,5 +82,50 @@ public class PipelineController {
     public ResponseEntity<Void> cancelPipeline(@PathVariable String pipelineId) {
         pipelineService.cancelPipeline(pipelineId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{pipelineId}/stages")
+    public ResponseEntity<List<PipelineStageEntity>> getStages(@PathVariable String pipelineId) {
+        return ResponseEntity.ok(pipelineService.getStages(pipelineId));
+    }
+
+    @GetMapping("/{pipelineId}/files")
+    public ResponseEntity<List<Map<String, Object>>> getGeneratedFiles(@PathVariable String pipelineId) {
+        return ResponseEntity.ok(pipelineService.getGeneratedFiles(pipelineId));
+    }
+
+    @GetMapping("/{pipelineId}/files/{fileName}")
+    public ResponseEntity<String> getFileContent(@PathVariable String pipelineId, @PathVariable String fileName) {
+        String content = pipelineService.getFileContent(pipelineId, fileName);
+        return content.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(content);
+    }
+
+    @GetMapping(value = "/{pipelineId}/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter streamPipelineStatus(@PathVariable String pipelineId) {
+        SseEmitter emitter = new SseEmitter(300000L);
+        executorService.execute(() -> {
+            try {
+                PipelineRunEntity lastEntity = null;
+                while (true) {
+                    PipelineRunEntity entity = pipelineService.getPipelineStatus(pipelineId);
+                    if (entity != null && !entity.equals(lastEntity)) {
+                        emitter.send(SseEmitter.event()
+                                .name("status")
+                                .data(entity));
+                        lastEntity = entity;
+                        if (entity.getStatus() == PipelineStatus.COMPLETED ||
+                            entity.getStatus() == PipelineStatus.FAILED ||
+                            entity.getStatus() == PipelineStatus.CANCELLED) {
+                            break;
+                        }
+                    }
+                    Thread.sleep(2000);
+                }
+                emitter.complete();
+            } catch (IOException | InterruptedException e) {
+                emitter.completeWithError(e);
+            }
+        });
+        return emitter;
     }
 }

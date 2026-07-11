@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.core.activity;
 
-import com.bage.ai.pipeline.core.dto.activity.CodeGenInput;
-import com.bage.ai.pipeline.core.dto.activity.CodeGenResult;
+import com.bage.ai.pipeline.api.dto.activity.CodeGenInput;
+import com.bage.ai.pipeline.api.dto.activity.CodeGenResult;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 

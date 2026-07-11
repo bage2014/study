@@ -1,6 +1,6 @@
 package com.bage.ai.pipeline.agent.service;
 
-import com.bage.ai.pipeline.core.enums.ProjectType;
+import com.bage.ai.pipeline.api.enums.ProjectType;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

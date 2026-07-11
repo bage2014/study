@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.api.strategy;
 
-import com.bage.ai.pipeline.core.dto.activity.BuildInput;
-import com.bage.ai.pipeline.core.dto.activity.BuildResult;
+import com.bage.ai.pipeline.api.dto.activity.BuildInput;
+import com.bage.ai.pipeline.api.dto.activity.BuildResult;
 
 public interface BuildStrategy {
 

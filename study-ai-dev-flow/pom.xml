@@ -11,9 +11,10 @@
     <name>AI Pipeline Platform</name>
 
     <modules>
+        <module>ai-pipeline-api</module>
         <module>ai-pipeline-core</module>
         <module>ai-pipeline-agent</module>
-        <module>ai-pipeline-api</module>
+        <module>ai-pipeline-gateway</module>
         <module>demo-backend</module>
     </modules>
 
@@ -81,12 +82,22 @@
 
             <dependency>
                 <groupId>com.bage.ai</groupId>
+                <artifactId>ai-pipeline-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bage.ai</groupId>
                 <artifactId>ai-pipeline-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.bage.ai</groupId>
                 <artifactId>ai-pipeline-agent</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bage.ai</groupId>
+                <artifactId>ai-pipeline-gateway</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

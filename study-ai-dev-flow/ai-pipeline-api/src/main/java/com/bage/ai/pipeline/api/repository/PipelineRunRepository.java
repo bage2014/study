@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.api.repository;
 
 import com.bage.ai.pipeline.api.entity.PipelineRunEntity;
-import com.bage.ai.pipeline.core.enums.PipelineStatus;
+import com.bage.ai.pipeline.api.enums.PipelineStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

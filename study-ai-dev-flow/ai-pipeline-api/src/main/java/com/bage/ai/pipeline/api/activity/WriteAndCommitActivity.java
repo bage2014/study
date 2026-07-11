@@ -1,0 +1,13 @@
+package com.bage.ai.pipeline.api.activity;
+
+import com.bage.ai.pipeline.api.dto.activity.WriteAndCommitInput;
+import com.bage.ai.pipeline.api.dto.activity.WriteAndCommitResult;
+import io.temporal.activity.ActivityInterface;
+import io.temporal.activity.ActivityMethod;
+
+@ActivityInterface
+public interface WriteAndCommitActivity {
+
+    @ActivityMethod(name = "WriteAndCommit")
+    WriteAndCommitResult writeAndCommit(WriteAndCommitInput input);
+}

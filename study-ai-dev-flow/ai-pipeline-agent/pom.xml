@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.bage.ai</groupId>
-            <artifactId>ai-pipeline-core</artifactId>
+            <artifactId>ai-pipeline-api</artifactId>
         </dependency>
 
         <dependency>

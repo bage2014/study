@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.api.strategy;
 
-import com.bage.ai.pipeline.core.dto.activity.PrCreationInput;
-import com.bage.ai.pipeline.core.dto.activity.PrCreationResult;
+import com.bage.ai.pipeline.api.dto.activity.PrCreationInput;
+import com.bage.ai.pipeline.api.dto.activity.PrCreationResult;
 
 public interface PrCreationStrategy {
 

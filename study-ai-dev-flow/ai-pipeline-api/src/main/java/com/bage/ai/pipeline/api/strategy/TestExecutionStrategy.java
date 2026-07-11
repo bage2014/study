@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.api.strategy;
 
-import com.bage.ai.pipeline.core.dto.activity.TestExecInput;
-import com.bage.ai.pipeline.core.dto.activity.TestExecResult;
+import com.bage.ai.pipeline.api.dto.activity.TestExecInput;
+import com.bage.ai.pipeline.api.dto.activity.TestExecResult;
 
 public interface TestExecutionStrategy {
 

@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.core.activity;
 
-import com.bage.ai.pipeline.core.dto.activity.ApprovalWaitInput;
-import com.bage.ai.pipeline.core.dto.activity.ApprovalWaitResult;
+import com.bage.ai.pipeline.api.dto.activity.ApprovalWaitInput;
+import com.bage.ai.pipeline.api.dto.activity.ApprovalWaitResult;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 

@@ -1,8 +1,8 @@
 package com.bage.ai.pipeline.agent.service;
 
-import com.bage.ai.pipeline.core.dto.activity.AtomicTask;
-import com.bage.ai.pipeline.core.enums.BuildTool;
-import com.bage.ai.pipeline.core.enums.ProjectType;
+import com.bage.ai.pipeline.api.dto.activity.AtomicTask;
+import com.bage.ai.pipeline.api.enums.BuildTool;
+import com.bage.ai.pipeline.api.enums.ProjectType;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

@@ -15,6 +15,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.bage.ai</groupId>
+            <artifactId>ai-pipeline-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bage.ai</groupId>
+            <artifactId>ai-pipeline-agent</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-sdk</artifactId>
         </dependency>
