@@ -446,20 +446,25 @@ const loadRecentActivities = async () => {
     const pipeRes = await pipelineApi.getAllPipelines()
     const pipelines = pipeRes.data.slice(0, 5)
     
-    recentActivities.value = pipelines.map(p => ({
-      id: p.pipelineId,
-      pipelineId: p.pipelineId,
-      icon: p.status === 'COMPLETED' ? '✓' : p.status === 'RUNNING' ? '●' : '✗',
-      iconBgClass: p.status === 'COMPLETED' ? 'bg-green-100' : p.status === 'RUNNING' ? 'bg-yellow-100' : 'bg-red-100',
-      message: `流水线 ${p.pipelineId.substring(0, 8)} ${p.status === 'COMPLETED' ? '执行完成' : p.status === 'RUNNING' ? '执行中' : '执行失败'}`,
-      time: formatTime(p.createdAt),
-      status: p.status === 'COMPLETED' ? 'success' : p.status === 'RUNNING' ? 'running' : 'failed',
-      statusText: p.status === 'COMPLETED' ? '成功' : p.status === 'RUNNING' ? '进行中' : '失败'
-    }))
+    recentActivities.value = pipelines.map(p => {
+      const title = p.requirementTitle || `流水线 ${p.pipelineId.substring(0, 8)}`
+      const statusText = p.status === 'COMPLETED' ? '执行完成' : p.status === 'RUNNING' ? '执行中' : '执行失败'
+      return {
+        id: p.pipelineId,
+        pipelineId: p.pipelineId,
+        icon: p.status === 'COMPLETED' ? '✓' : p.status === 'RUNNING' ? '●' : '✗',
+        iconBgClass: p.status === 'COMPLETED' ? 'bg-green-100' : p.status === 'RUNNING' ? 'bg-yellow-100' : 'bg-red-100',
+        message: `${title} ${statusText}`,
+        requirementTitle: p.requirementTitle,
+        time: formatTime(p.createdAt),
+        status: p.status === 'COMPLETED' ? 'success' : p.status === 'RUNNING' ? 'running' : 'failed',
+        statusText: p.status === 'COMPLETED' ? '成功' : p.status === 'RUNNING' ? '进行中' : '失败'
+      }
+    })
   } catch (error) {
     console.error('Failed to load activities:', error)
     recentActivities.value = [
-      { id: 1, pipelineId: 'test-pipeline-1', icon: '✓', iconBgClass: 'bg-green-100', message: 'demo-backend 流水线执行完成', time: '2小时前', status: 'success', statusText: '成功' },
+      { id: 1, pipelineId: 'test-pipeline-1', icon: '✓', iconBgClass: 'bg-green-100', message: 'demo-backend 用户CRUD功能 执行完成', time: '2小时前', status: 'success', statusText: '成功' },
       { id: 2, pipelineId: 'test-pipeline-2', icon: '●', iconBgClass: 'bg-yellow-100', message: 'demo-backend 用户管理功能开发中', time: '5小时前', status: 'running', statusText: '进行中' },
       { id: 3, pipelineId: 'test-pipeline-3', icon: '+', iconBgClass: 'bg-blue-100', message: '新建需求：数据统计报表', time: '1天前', status: 'info', statusText: '新建' },
     ]

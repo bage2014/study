@@ -728,15 +728,24 @@ const loadPipelineData = async () => {
     const stageRes = await pipelineApi.getStages(pipelineId)
     stages.value = stageRes.data
     
-    const reqRes = await requirementApi.getRequirementByPipelineId(pipelineId)
-    if (reqRes && reqRes.data) {
-      requirement.value = reqRes.data
-    } else {
+    if (pipeline.value.requirementTitle) {
       requirement.value = {
         project: 'demo-backend',
-        title: '健康检查功能',
-        description: '添加健康检查端点，返回服务状态信息',
+        title: pipeline.value.requirementTitle,
+        description: pipeline.value.requirementDescription || '',
         createdAt: pipeline.value.createdAt
+      }
+    } else {
+      const reqRes = await requirementApi.getRequirementByPipelineId(pipelineId)
+      if (reqRes && reqRes.data) {
+        requirement.value = reqRes.data
+      } else {
+        requirement.value = {
+          project: 'demo-backend',
+          title: '健康检查功能',
+          description: '添加健康检查端点，返回服务状态信息',
+          createdAt: pipeline.value.createdAt
+        }
       }
     }
 

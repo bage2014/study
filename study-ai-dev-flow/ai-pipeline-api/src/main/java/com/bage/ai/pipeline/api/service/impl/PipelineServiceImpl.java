@@ -94,9 +94,14 @@ public class PipelineServiceImpl implements PipelineService {
             }
 
             String inputJson = objectMapper.writeValueAsString(input);
-            pipelineRunRepository.save(PipelineRunEntity.builder()
+            String requirementTitle = input.getRequirementMd() != null ? 
+                    (input.getRequirementMd().length() > 200 ? input.getRequirementMd().substring(0, 200) : input.getRequirementMd()) : null;
+                
+                pipelineRunRepository.save(PipelineRunEntity.builder()
                     .pipelineId(pipelineId)
                     .projectId(input.getProjectId())
+                    .requirementTitle(requirementTitle)
+                    .requirementDescription(input.getRequirementMd())
                     .status(PipelineStatus.RUNNING)
                     .currentStage("INIT")
                     .inputJson(inputJson)

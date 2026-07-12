@@ -27,6 +27,12 @@ public class PipelineRunEntity {
     @Column(name = "project_id")
     private Long projectId;
 
+    @Column(name = "requirement_title", length = 200)
+    private String requirementTitle;
+
+    @Column(name = "requirement_description", columnDefinition = "TEXT")
+    private String requirementDescription;
+
     @Column(name = "status", nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private PipelineStatus status;
