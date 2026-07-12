@@ -467,7 +467,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { pipelineApi, requirementApi } from '../api'
+import { pipelineApi, requirementApi, projectApi } from '../api'
 import Loading from '../components/Loading.vue'
 
 const router = useRouter()
