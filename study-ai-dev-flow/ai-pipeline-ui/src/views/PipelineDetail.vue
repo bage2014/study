@@ -139,7 +139,26 @@
             <div v-if="stage.id === 'requirement-analysis'">
               <div class="mb-4">
                 <h5 class="text-sm font-medium text-gray-700 mb-2">需求分析结果</h5>
-                <pre class="bg-white p-4 rounded-lg text-xs text-gray-600 overflow-x-auto max-h-40 overflow-y-auto">{{ stage.resultJson || getDefaultAnalysis() }}</pre>
+                <div v-if="stage.analysisResult" class="space-y-3">
+                  <div class="bg-blue-50 p-3 rounded-lg">
+                    <p class="text-xs font-medium text-blue-700">摘要</p>
+                    <p class="text-xs text-gray-600 mt-1">{{ stage.analysisResult.summary }}</p>
+                  </div>
+                  <div v-if="stage.analysisResult.features && stage.analysisResult.features.length > 0">
+                    <p class="text-xs font-medium text-gray-700">功能点</p>
+                    <div v-for="(feature, idx) in stage.analysisResult.features" :key="idx" class="bg-purple-50 p-3 rounded-lg mt-2">
+                      <p class="text-xs font-medium text-purple-700">{{ feature.name }}</p>
+                      <p class="text-xs text-gray-600 mt-1">{{ feature.description }}</p>
+                    </div>
+                  </div>
+                  <div v-if="stage.analysisResult.affected_files_hints && stage.analysisResult.affected_files_hints.length > 0">
+                    <p class="text-xs font-medium text-gray-700">影响文件</p>
+                    <div class="flex flex-wrap gap-1 mt-2">
+                      <span v-for="(file, idx) in stage.analysisResult.affected_files_hints" :key="idx" class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">{{ file }}</span>
+                    </div>
+                  </div>
+                </div>
+                <pre v-else class="bg-white p-4 rounded-lg text-xs text-gray-600 overflow-x-auto max-h-40 overflow-y-auto">{{ stage.resultJson || getDefaultAnalysis() }}</pre>
               </div>
             </div>
 
@@ -148,7 +167,7 @@
                 <h5 class="text-sm font-medium text-gray-700 mb-2">功能点拆分</h5>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div v-for="(point, idx) in stage.featurePoints || []" :key="idx" class="bg-purple-50 p-3 rounded-lg">
-                    <p class="text-sm font-medium text-purple-700">功能点 {{ idx + 1 }}: {{ point.name }}</p>
+                    <p class="text-sm font-medium text-purple-700">功能点 {{ idx + 1 }}: {{ point.title || point.name }}</p>
                     <p class="text-xs text-gray-600 mt-1">{{ point.description }}</p>
                   </div>
                   <div v-if="!stage.featurePoints || stage.featurePoints.length === 0" class="bg-gray-100 p-4 rounded-lg">
@@ -173,38 +192,12 @@
               </div>
             </div>
 
-            <div v-if="stage.id === 'design'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">技术选型</h5>
-                <div class="flex flex-wrap gap-2">
-                  <span class="bg-gray-100 px-3 py-1.5 rounded-full text-xs">Spring Boot 3.2.x</span>
-                  <span class="bg-gray-100 px-3 py-1.5 rounded-full text-xs">Java 21</span>
-                  <span class="bg-gray-100 px-3 py-1.5 rounded-full text-xs">H2 内存数据库</span>
-                  <span class="bg-gray-100 px-3 py-1.5 rounded-full text-xs">Maven</span>
-                </div>
-              </div>
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">架构设计</h5>
-                <pre class="bg-white p-4 rounded-lg text-xs text-gray-600 overflow-x-auto">{{ stage.architecture || getDesignArchitecture() }}</pre>
-              </div>
-              <div>
-                <h5 class="text-sm font-medium text-gray-700 mb-2">API 设计</h5>
-                <div class="space-y-2">
-                  <div v-for="api in stage.apis || getDesignApis()" :key="api.path" class="bg-blue-50 p-3 rounded-lg">
-                    <span class="text-xs font-bold text-blue-600 mr-2">{{ api.method }}</span>
-                    <span class="text-xs text-blue-700">{{ api.path }}</span>
-                    <p class="text-xs text-gray-500 mt-1">{{ api.description }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div v-if="stage.id === 'coding'">
+            <div v-if="stage.id === 'code-gen'">
               <div class="mb-4">
                 <h5 class="text-sm font-medium text-gray-700 mb-2">生成的文件</h5>
-                <div class="flex flex-wrap gap-2">
+                <div v-if="generatedFiles && generatedFiles.length > 0" class="flex flex-wrap gap-2">
                   <button 
-                    v-for="file in stage.files || getCodeFiles()" 
+                    v-for="file in generatedFiles" 
                     :key="file.name"
                     @click="selectCodeFile(file)"
                     :class="[
@@ -214,6 +207,9 @@
                   >
                     {{ file.name }}
                   </button>
+                </div>
+                <div v-else class="bg-gray-100 p-4 rounded-lg">
+                  <p class="text-sm text-gray-500">暂无生成文件</p>
                 </div>
               </div>
               <div v-if="selectedCodeFile" class="bg-white p-4 rounded-lg border border-gray-200">
@@ -230,7 +226,12 @@
             <div v-if="stage.id === 'test-gen'">
               <div class="mb-4">
                 <h5 class="text-sm font-medium text-gray-700 mb-2">测试生成结果</h5>
-                <div class="bg-green-50 p-4 rounded-lg">
+                <div v-if="stage.generatedFiles" class="space-y-2">
+                  <div v-for="(content, fileName) in stage.generatedFiles" :key="fileName" class="bg-green-50 p-3 rounded-lg">
+                    <p class="text-xs font-medium text-green-700">{{ fileName }}</p>
+                  </div>
+                </div>
+                <div v-else class="bg-green-50 p-4 rounded-lg">
                   <p class="text-sm text-green-700">✓ AI 已生成单元测试用例</p>
                 </div>
               </div>
@@ -239,14 +240,22 @@
             <div v-if="stage.id === 'code-review'">
               <div class="mb-4">
                 <h5 class="text-sm font-medium text-gray-700 mb-2">代码审查结果</h5>
-                <div class="bg-blue-50 p-4 rounded-lg">
+                <div v-if="stage.issues && stage.issues.length > 0">
+                  <div v-for="(issue, idx) in stage.issues" :key="idx" :class="[
+                    'p-3 rounded-lg text-sm',
+                    issue.startsWith('CRITICAL') ? 'bg-red-50 text-red-700' : 'bg-yellow-50 text-yellow-700'
+                  ]">
+                    {{ issue }}
+                  </div>
+                </div>
+                <div v-else class="bg-blue-50 p-4 rounded-lg">
                   <p class="text-sm text-blue-700">✓ 代码审查通过</p>
                   <p class="text-xs text-blue-600 mt-2">代码质量评分：95/100</p>
                 </div>
               </div>
             </div>
 
-            <div v-if="stage.id === 'preview'">
+            <div v-if="stage.id === 'pr-creation'">
               <div class="mb-4">
                 <h5 class="text-sm font-medium text-gray-700 mb-2">变更统计</h5>
                 <div class="flex gap-4">
@@ -503,7 +512,12 @@ const pipelineStages = computed(() => {
 
       if (s.resultJson) {
         try {
-          const json = JSON.parse(s.resultJson)
+          let json = JSON.parse(s.resultJson)
+          if (json.analysisResult && typeof json.analysisResult === 'string') {
+            try {
+              json.analysisResult = JSON.parse(json.analysisResult)
+            } catch (e) {}
+          }
           Object.assign(result, json)
         } catch (e) {}
       }
@@ -512,7 +526,7 @@ const pipelineStages = computed(() => {
     }).sort((a, b) => (a.orderNum || 0) - (b.orderNum || 0))
   }
   
-  return getDefaultStages()
+  return []
 })
 
 const currentStageInfo = computed(() => {
@@ -526,18 +540,35 @@ const progressWidth = computed(() => {
   return `${(completed / total) * 100}%`
 })
 
+const generatedFiles = computed(() => {
+  const codeGenStage = pipelineStages.value.find(s => s.id === 'code-gen')
+  if (codeGenStage && codeGenStage.generatedFiles) {
+    return Object.entries(codeGenStage.generatedFiles).map(([name, content]) => ({
+      name,
+      content
+    }))
+  }
+  const testGenStage = pipelineStages.value.find(s => s.id === 'test-gen')
+  if (testGenStage && testGenStage.generatedFiles) {
+    return Object.entries(testGenStage.generatedFiles).map(([name, content]) => ({
+      name,
+      content
+    }))
+  }
+  return []
+})
+
 const getDefaultStages = () => [
   { id: 'requirement-analysis', name: '需求分析', icon: '🎯', status: 'COMPLETED', statusText: '已完成', time: '23:21', hasContent: true, orderNum: 1 },
   { id: 'feature-point-split', name: '功能点拆分', icon: '📋', status: 'COMPLETED', statusText: '已完成', time: '23:21', hasContent: true, orderNum: 2 },
   { id: 'task-split', name: '任务拆分', icon: '📝', status: 'COMPLETED', statusText: '已完成', time: '23:21', hasContent: true, orderNum: 3 },
-  { id: 'design', name: '方案设计', icon: '📐', status: 'COMPLETED', statusText: '已完成', time: '23:21', hasContent: true, orderNum: 4, architecture: getDesignArchitecture(), apis: getDesignApis() },
-  { id: 'coding', name: '编码实现', icon: '💻', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 5, files: getCodeFiles() },
-  { id: 'test-gen', name: '测试生成', icon: '🧪', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 6 },
-  { id: 'code-review', name: '代码审查', icon: '🔍', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 7 },
-  { id: 'preview', name: '变更预览', icon: '👁️', status: 'COMPLETED', statusText: '已完成', time: '23:23', hasContent: true, orderNum: 8, stats: { added: 2, modified: 1, deleted: 0 }, risk: '低', riskItems: ['✅ 无破坏性变更', '✅ 向后兼容'] },
-  { id: 'test-exec', name: '测试验证', icon: '✅', status: 'COMPLETED', statusText: '已完成', time: '23:25', hasContent: true, orderNum: 9, testStats: { total: 5, passed: 5, failed: 0, coverage: '85%' }, tests: getDefaultTests() },
-  { id: 'build', name: '编译构建', icon: '🔧', status: 'COMPLETED', statusText: '已完成', time: '23:24', hasContent: true, orderNum: 10, buildStatus: 'SUCCESS', duration: '12.5s', log: '[INFO] BUILD SUCCESS' },
-  { id: 'deploy', name: '发布部署', icon: '🚀', status: 'COMPLETED', statusText: '已完成', time: '23:26', hasContent: true, orderNum: 11, deployStatus: 'SUCCESS', environment: '开发环境', version: '1.0.0', endpoints: getDefaultEndpoints() }
+  { id: 'code-gen', name: '编码实现', icon: '💻', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 4 },
+  { id: 'test-gen', name: '测试生成', icon: '🧪', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 5 },
+  { id: 'code-review', name: '代码审查', icon: '🔍', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 6 },
+  { id: 'pr-creation', name: '变更预览', icon: '👁️', status: 'COMPLETED', statusText: '已完成', time: '23:23', hasContent: true, orderNum: 7, stats: { added: 2, modified: 1, deleted: 0 }, risk: '低', riskItems: ['✅ 无破坏性变更', '✅ 向后兼容'] },
+  { id: 'test-exec', name: '测试验证', icon: '✅', status: 'COMPLETED', statusText: '已完成', time: '23:25', hasContent: true, orderNum: 8, testStats: { total: 5, passed: 5, failed: 0, coverage: '85%' }, tests: getDefaultTests() },
+  { id: 'build', name: '编译构建', icon: '🔧', status: 'COMPLETED', statusText: '已完成', time: '23:24', hasContent: true, orderNum: 9, buildStatus: 'SUCCESS', duration: '12.5s', log: '[INFO] BUILD SUCCESS' },
+  { id: 'deploy', name: '发布部署', icon: '🚀', status: 'COMPLETED', statusText: '已完成', time: '23:26', hasContent: true, orderNum: 10, deployStatus: 'SUCCESS', environment: '开发环境', version: '1.0.0', endpoints: getDefaultEndpoints() }
 ]
 
 const getStageName = (stageName) => {
@@ -728,9 +759,19 @@ const loadPipelineData = async () => {
     const stageRes = await pipelineApi.getStages(pipelineId)
     stages.value = stageRes.data
     
+    let projectName = '未知项目'
+    if (pipeline.value.projectId) {
+      try {
+        const projRes = await projectApi.getProject(pipeline.value.projectId)
+        projectName = projRes.data.projectName || '未知项目'
+      } catch (e) {
+        console.error('Failed to load project:', e)
+      }
+    }
+    
     if (pipeline.value.requirementTitle) {
       requirement.value = {
-        project: 'demo-backend',
+        project: projectName,
         title: pipeline.value.requirementTitle,
         description: pipeline.value.requirementDescription || '',
         createdAt: pipeline.value.createdAt
@@ -738,10 +779,13 @@ const loadPipelineData = async () => {
     } else {
       const reqRes = await requirementApi.getRequirementByPipelineId(pipelineId)
       if (reqRes && reqRes.data) {
-        requirement.value = reqRes.data
+        requirement.value = {
+          ...reqRes.data,
+          project: projectName
+        }
       } else {
         requirement.value = {
-          project: 'demo-backend',
+          project: projectName,
           title: '健康检查功能',
           description: '添加健康检查端点，返回服务状态信息',
           createdAt: pipeline.value.createdAt

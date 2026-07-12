@@ -236,19 +236,27 @@ const submitRequirement = async () => {
   isSubmitting.value = true
   
   try {
-    const reqRes = await requirementApi.createRequirement({
+    console.log('Creating requirement:', form.value.title)
+    await requirementApi.createRequirement({
       projectId: selectedProject.value.id,
       title: form.value.title,
       description: form.value.requirement
     })
+    console.log('Requirement created successfully')
     
+    console.log('Starting pipeline...')
     const pipeRes = await pipelineApi.startPipeline({
       requirementMd: '# ' + form.value.title + '\n\n' + form.value.requirement,
       projectId: selectedProject.value.id,
       projectLocalPath: selectedProject.value.localPath || '/tmp/demo-backend'
     })
+    console.log('Pipeline started:', pipeRes.data)
     
     const pipelineId = pipeRes.data.pipelineId || pipeRes.data.id
+    if (!pipelineId) {
+      throw new Error('流水线ID未返回')
+    }
+    
     form.value.title = ''
     form.value.requirement = ''
     isSubmitting.value = false
@@ -257,7 +265,7 @@ const submitRequirement = async () => {
   } catch (error) {
     isSubmitting.value = false
     console.error('Failed to submit requirement:', error)
-    showToast?.error('提交失败，请重试')
+    showToast?.error(error.message || '提交失败，请重试')
   }
 }
 
