@@ -58,6 +58,11 @@ public class PipelineController {
         }
     }
 
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<List<PipelineRunEntity>> getPipelinesByProject(@PathVariable Long projectId) {
+        return ResponseEntity.ok(pipelineService.getPipelinesByProject(projectId));
+    }
+
     @PostMapping("/{pipelineId}/approval/{stage}")
     public ResponseEntity<ApprovalEntity> approve(
             @PathVariable String pipelineId,

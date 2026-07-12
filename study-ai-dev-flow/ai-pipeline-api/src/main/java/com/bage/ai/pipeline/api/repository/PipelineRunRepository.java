@@ -15,4 +15,8 @@ public interface PipelineRunRepository extends JpaRepository<PipelineRunEntity, 
     List<PipelineRunEntity> findByStatus(PipelineStatus status);
 
     List<PipelineRunEntity> findAllByOrderByCreatedAtDesc();
+
+    List<PipelineRunEntity> findByProjectId(Long projectId);
+
+    List<PipelineRunEntity> findByProjectIdOrderByCreatedAtDesc(Long projectId);
 }

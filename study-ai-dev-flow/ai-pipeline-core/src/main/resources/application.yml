@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ai-pipeline-core
+  datasource:
+    url: jdbc:h2:mem:pipeline_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+temporal:
+  service:
+    address: localhost:7233
+
+ai:
+  requirement-model-provider: mock
+  codegen-model-provider: mock
+
+logging:
+  level:
+    com.bage.ai.pipeline: INFO
+    io.temporal: WARN

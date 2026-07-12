@@ -19,6 +19,8 @@ public interface PipelineService {
 
     List<PipelineRunEntity> getPipelinesByStatus(PipelineStatus status);
 
+    List<PipelineRunEntity> getPipelinesByProject(Long projectId);
+
     void updatePipelineStatus(String pipelineId, PipelineStatus status, String stage);
 
     void updatePipelineResult(String pipelineId, PipelineRunResult result);

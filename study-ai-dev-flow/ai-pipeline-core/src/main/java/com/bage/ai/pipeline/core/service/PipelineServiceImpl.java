@@ -1,4 +1,4 @@
-package com.bage.ai.pipeline.api.service;
+package com.bage.ai.pipeline.core.service;
 
 import com.bage.ai.pipeline.api.dto.workflow.PipelineRunResult;
 import com.bage.ai.pipeline.api.dto.workflow.PipelineStartInput;
@@ -10,6 +10,7 @@ import com.bage.ai.pipeline.api.enums.StageName;
 import com.bage.ai.pipeline.api.repository.ApprovalRepository;
 import com.bage.ai.pipeline.api.repository.PipelineRunRepository;
 import com.bage.ai.pipeline.api.repository.PipelineStageRepository;
+import com.bage.ai.pipeline.api.service.PipelineService;
 import com.bage.ai.pipeline.api.workflow.PipelineWorkflow;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.temporal.client.WorkflowClient;
@@ -73,6 +74,7 @@ public class PipelineServiceImpl implements PipelineService {
             String inputJson = objectMapper.writeValueAsString(input);
             pipelineRunRepository.save(PipelineRunEntity.builder()
                     .pipelineId(pipelineId)
+                    .projectId(input.getProjectId())
                     .status(PipelineStatus.RUNNING)
                     .currentStage("INIT")
                     .inputJson(inputJson)
@@ -109,6 +111,11 @@ public class PipelineServiceImpl implements PipelineService {
     @Override
     public List<PipelineRunEntity> getPipelinesByStatus(PipelineStatus status) {
         return pipelineRunRepository.findByStatus(status);
+    }
+
+    @Override
+    public List<PipelineRunEntity> getPipelinesByProject(Long projectId) {
+        return pipelineRunRepository.findByProjectIdOrderByCreatedAtDesc(projectId);
     }
 
     @Override

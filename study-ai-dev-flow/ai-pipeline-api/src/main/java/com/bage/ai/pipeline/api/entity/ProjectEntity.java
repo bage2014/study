@@ -1,6 +1,5 @@
 package com.bage.ai.pipeline.api.entity;
 
-import com.bage.ai.pipeline.api.enums.PipelineStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,34 +13,36 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "pipeline_run")
-public class PipelineRunEntity {
+@Table(name = "project")
+public class ProjectEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "pipeline_id", nullable = false, unique = true)
-    private String pipelineId;
+    @Column(name = "project_name", nullable = false, length = 100)
+    private String projectName;
 
-    @Column(name = "project_id")
-    private Long projectId;
+    @Column(name = "description", length = 500)
+    private String description;
 
-    @Column(name = "status", nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
-    private PipelineStatus status;
+    @Column(name = "local_path", length = 500)
+    private String localPath;
 
-    @Column(name = "current_stage", length = 50)
-    private String currentStage;
+    @Column(name = "project_type", length = 50)
+    private String projectType;
 
-    @Column(name = "input_json", columnDefinition = "TEXT")
-    private String inputJson;
+    @Column(name = "status", length = 20)
+    @Builder.Default
+    private String status = "active";
 
-    @Column(name = "result_json", columnDefinition = "TEXT")
-    private String resultJson;
+    @Column(name = "pipeline_count")
+    @Builder.Default
+    private Integer pipelineCount = 0;
 
-    @Column(name = "error_message", columnDefinition = "TEXT")
-    private String errorMessage;
+    @Column(name = "success_rate")
+    @Builder.Default
+    private Double successRate = 0.0;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
