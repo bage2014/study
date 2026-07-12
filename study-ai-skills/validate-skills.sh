@@ -110,7 +110,7 @@ validate_skill() {
     if grep -q "## 输入参数" "$skill_file"; then
         # 检查是否有表格
         local params_section=$(sed -n '/## 输入参数/,/^## /p' "$skill_file")
-        if ! echo "$params_section" | grep -q "| 参数 |"; then
+        if ! echo "$params_section" | grep -q "| 参数"; then
             warnings+=("输入参数章节缺少表格")
             echo -e "${YELLOW}⚠ 输入参数章节缺少表格${NC}"
         else
