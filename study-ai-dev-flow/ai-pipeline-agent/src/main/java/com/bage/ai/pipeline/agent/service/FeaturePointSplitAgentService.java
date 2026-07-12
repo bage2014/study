@@ -68,7 +68,7 @@ public class FeaturePointSplitAgentService {
 
     private String describeTechStack(ProjectType projectType, BuildTool buildTool) {
         String typeLabel = switch (projectType != null ? projectType : ProjectType.JAVA_SPRING) {
-            case JAVA_SPRING -> "Java Spring Boot";
+            case JAVA_SPRING, SPRING_BOOT -> "Java Spring Boot";
             case PYTHON_FASTAPI -> "Python FastAPI";
             case NODE_EXPRESS -> "Node.js Express";
             case VUE -> "Vue 3";

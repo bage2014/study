@@ -32,6 +32,20 @@ public class ProjectEntity {
     @Column(name = "project_type", length = 50)
     private String projectType;
 
+    @Column(name = "project_source", length = 20)
+    @Builder.Default
+    private String projectSource = "LOCAL";
+
+    @Column(name = "repo_url", length = 500)
+    private String repoUrl;
+
+    @Column(name = "github_token", length = 200)
+    private String githubToken;
+
+    @Column(name = "branch", length = 100)
+    @Builder.Default
+    private String branch = "main";
+
     @Column(name = "status", length = 20)
     @Builder.Default
     private String status = "active";

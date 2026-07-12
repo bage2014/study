@@ -5,19 +5,25 @@ import com.bage.ai.pipeline.core.dto.workflow.PipelineStartInput;
 import com.bage.ai.pipeline.api.entity.ApprovalEntity;
 import com.bage.ai.pipeline.api.entity.PipelineRunEntity;
 import com.bage.ai.pipeline.api.entity.PipelineStageEntity;
+import com.bage.ai.pipeline.api.entity.ProjectEntity;
 import com.bage.ai.pipeline.core.enums.PipelineStatus;
 import com.bage.ai.pipeline.core.enums.StageName;
 import com.bage.ai.pipeline.api.repository.ApprovalRepository;
 import com.bage.ai.pipeline.api.repository.PipelineRunRepository;
 import com.bage.ai.pipeline.api.repository.PipelineStageRepository;
+import com.bage.ai.pipeline.api.repository.ProjectRepository;
 import com.bage.ai.pipeline.api.service.PipelineService;
 import com.bage.ai.pipeline.core.workflow.PipelineWorkflow;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jgit.api.CloneCommand;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,17 +41,20 @@ public class PipelineServiceImpl implements PipelineService {
     private final PipelineRunRepository pipelineRunRepository;
     private final ApprovalRepository approvalRepository;
     private final PipelineStageRepository pipelineStageRepository;
+    private final ProjectRepository projectRepository;
     private final ObjectMapper objectMapper;
 
     public PipelineServiceImpl(WorkflowClient workflowClient,
                                PipelineRunRepository pipelineRunRepository,
                                ApprovalRepository approvalRepository,
                                PipelineStageRepository pipelineStageRepository,
+                               ProjectRepository projectRepository,
                                ObjectMapper objectMapper) {
         this.workflowClient = workflowClient;
         this.pipelineRunRepository = pipelineRunRepository;
         this.approvalRepository = approvalRepository;
         this.pipelineStageRepository = pipelineStageRepository;
+        this.projectRepository = projectRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -55,6 +64,20 @@ public class PipelineServiceImpl implements PipelineService {
 
         try {
             input.setRunId(pipelineId);
+            
+            if (input.getProjectId() != null) {
+                projectRepository.findById(input.getProjectId())
+                        .ifPresent(project -> {
+                            if ("GITHUB".equals(project.getProjectSource())) {
+                                String clonePath = ensureProjectCloned(project);
+                                input.setProjectLocalPath(clonePath);
+                            } else {
+                                input.setProjectLocalPath(project.getLocalPath());
+                            }
+                            input.setProjectType(com.bage.ai.pipeline.core.enums.ProjectType.valueOf(project.getProjectType()));
+                        });
+            }
+
             if (input.getAutoApproveMap() == null) {
                 input.setAutoApproveMap(Map.of(
                         StageName.REQUIREMENT_ANALYSIS, true,
@@ -95,6 +118,58 @@ public class PipelineServiceImpl implements PipelineService {
             log.error("Failed to start pipeline: {}", e.getMessage());
             throw new RuntimeException("Failed to start pipeline", e);
         }
+    }
+
+    private String ensureProjectCloned(ProjectEntity project) {
+        String targetPath = project.getLocalPath();
+        if (targetPath == null || targetPath.isEmpty()) {
+            targetPath = "/tmp/" + project.getProjectName();
+        }
+
+        File targetDir = new File(targetPath);
+        if (targetDir.exists()) {
+            deleteDirectory(targetDir);
+        }
+
+        try {
+            CloneCommand cloneCommand = Git.cloneRepository()
+                    .setURI(project.getRepoUrl())
+                    .setDirectory(targetDir);
+
+            if (project.getBranch() != null && !project.getBranch().isEmpty()) {
+                cloneCommand.setBranch(project.getBranch());
+            }
+
+            if (project.getGithubToken() != null && !project.getGithubToken().isEmpty()) {
+                cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(project.getGithubToken(), ""));
+            }
+
+            try (Git git = cloneCommand.call()) {
+                log.info("Successfully cloned repository: {} to {}", project.getRepoUrl(), targetPath);
+            }
+
+            project.setLocalPath(targetPath);
+            projectRepository.save(project);
+
+            return targetPath;
+        } catch (Exception e) {
+            log.error("Failed to clone repository: {}", e.getMessage());
+            throw new RuntimeException("Failed to clone GitHub repository", e);
+        }
+    }
+
+    private void deleteDirectory(File dir) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        dir.delete();
     }
 
     @Override

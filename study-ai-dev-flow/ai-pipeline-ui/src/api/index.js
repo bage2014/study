@@ -30,7 +30,7 @@ export const pipelineApi = {
 }
 
 export const projectApi = {
-  getAllProjects: () => api.get('/project'),
+  getAllProjects: (params) => api.get('/project', { params }),
   getProject: (id) => api.get(`/project/${id}`),
   getProjectDetail: (id) => api.get(`/project/${id}/detail`),
   createProject: (data) => api.post('/project', data),

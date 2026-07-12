@@ -8,13 +8,25 @@
           <h3 class="text-xl font-bold text-gray-800">我的项目</h3>
           <p class="text-sm text-gray-500 mt-1">管理您的开发项目和代码仓库</p>
         </div>
-        <button 
-          @click="showCreateProject = true" 
-          class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg flex items-center space-x-2"
-        >
-          <span>+</span>
-          <span>新建项目</span>
-        </button>
+        <div class="flex items-center space-x-3">
+          <div class="relative">
+            <input 
+              v-model="searchKeyword"
+              type="text"
+              placeholder="搜索项目..."
+              class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-64"
+              @keyup.enter="handleSearch"
+            />
+            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+          </div>
+          <button 
+            @click="showCreateProject = true" 
+            class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg flex items-center space-x-2"
+          >
+            <span>+</span>
+            <span>新建项目</span>
+          </button>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -43,7 +55,15 @@
             </h4>
             <p class="text-sm text-gray-500 mb-4 line-clamp-2">{{ project.description }}</p>
             <div class="flex items-center justify-between text-xs text-gray-400">
-              <span>{{ project.projectType }}</span>
+              <div class="flex items-center space-x-2">
+                <span>{{ project.projectType }}</span>
+                <span :class="[
+                  'px-2 py-0.5 rounded-full',
+                  project.projectSource === 'GITHUB' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'
+                ]">
+                  {{ project.projectSource === 'GITHUB' ? 'GitHub' : '本地' }}
+                </span>
+              </div>
               <span>{{ formatTime(project.updatedAt) }}</span>
             </div>
           </div>
@@ -65,13 +85,13 @@
         </div>
       </div>
 
-      <div v-if="projects.length > pageSize" class="flex items-center justify-center space-x-4 pt-4">
+      <div v-if="totalElements > pageSize" class="flex items-center justify-center space-x-4 pt-4">
         <button 
-          @click="currentPage = Math.max(1, currentPage - 1)"
-          :disabled="currentPage === 1"
+          @click="currentPage = Math.max(0, currentPage - 1)"
+          :disabled="currentPage === 0"
           :class="[
             'px-4 py-2 rounded-lg transition-colors',
-            currentPage === 1 
+            currentPage === 0 
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
               : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
           ]"
@@ -79,14 +99,14 @@
           ←
         </button>
         <span class="text-sm text-gray-600">
-          第 {{ currentPage }} / {{ totalPages }} 页
+          第 {{ currentPage + 1 }} / {{ totalPages }} 页
         </span>
         <button 
-          @click="currentPage = Math.min(totalPages, currentPage + 1)"
-          :disabled="currentPage === totalPages"
+          @click="currentPage = Math.min(totalPages - 1, currentPage + 1)"
+          :disabled="currentPage === totalPages - 1"
           :class="[
             'px-4 py-2 rounded-lg transition-colors',
-            currentPage === totalPages 
+            currentPage === totalPages - 1 
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
               : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
           ]"
@@ -177,7 +197,7 @@
     </template>
 
     <div v-if="showCreateProject" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 mx-4">
         <h4 class="text-lg font-semibold text-gray-800 mb-4">新建项目</h4>
         <div class="space-y-4">
           <div>
@@ -190,6 +210,16 @@
             />
           </div>
           <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">项目来源</label>
+            <select 
+              v-model="newProject.projectSource" 
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="LOCAL">本地项目</option>
+              <option value="GITHUB">GitHub 仓库</option>
+            </select>
+          </div>
+          <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">项目类型</label>
             <select 
               v-model="newProject.projectType" 
@@ -200,6 +230,46 @@
               <option value="REACT">React</option>
               <option value="NODE">Node.js</option>
             </select>
+          </div>
+          <div v-if="newProject.projectSource === 'LOCAL'">
+            <label class="block text-sm font-medium text-gray-700 mb-1">本地路径</label>
+            <input 
+              v-model="newProject.localPath" 
+              type="text" 
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              placeholder="例如: /Users/username/projects/my-project"
+            />
+            <p class="text-xs text-gray-500 mt-1">留空则自动创建到 /tmp/project-name</p>
+          </div>
+          <div v-if="newProject.projectSource === 'GITHUB'">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">GitHub 仓库地址</label>
+              <input 
+                v-model="newProject.repoUrl" 
+                type="text" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                placeholder="例如: https://github.com/username/repo.git"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">GitHub Token (可选)</label>
+              <input 
+                v-model="newProject.githubToken" 
+                type="password" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                placeholder="用于访问私有仓库"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">分支名称</label>
+              <input 
+                v-model="newProject.branch" 
+                type="text" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                placeholder="main"
+                value="main"
+              />
+            </div>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">描述</label>
@@ -242,8 +312,11 @@ const showToast = inject('showToast')
 
 const loading = ref(true)
 const projects = ref([])
-const currentPage = ref(1)
+const currentPage = ref(0)
 const pageSize = ref(6)
+const totalElements = ref(0)
+const totalPages = ref(0)
+const searchKeyword = ref('')
 
 const stats = ref({
   total: 0,
@@ -257,15 +330,16 @@ const showCreateProject = ref(false)
 const newProject = ref({
   projectName: '',
   projectType: 'SPRING_BOOT',
-  description: ''
+  projectSource: 'LOCAL',
+  description: '',
+  localPath: '',
+  repoUrl: '',
+  githubToken: '',
+  branch: 'main'
 })
 
-const totalPages = computed(() => Math.ceil(projects.value.length / pageSize.value))
-
 const paginatedProjects = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
-  return projects.value.slice(start, end)
+  return projects.value
 })
 
 const statusText = (status) => {
@@ -312,8 +386,15 @@ const getProjectIconBg = (type) => {
 
 const loadProjects = async () => {
   try {
-    const res = await projectApi.getAllProjects()
-    projects.value = res.data.map(p => ({
+    const params = new URLSearchParams()
+    params.set('page', currentPage.value)
+    params.set('size', pageSize.value)
+    if (searchKeyword.value) {
+      params.set('keyword', searchKeyword.value)
+    }
+    const res = await projectApi.getAllProjects(params)
+    
+    projects.value = res.data.content.map(p => ({
       id: p.id,
       name: p.projectName,
       description: p.description,
@@ -321,13 +402,17 @@ const loadProjects = async () => {
       iconBgClass: getProjectIconBg(p.projectType),
       status: p.status,
       projectType: p.projectType,
+      projectSource: p.projectSource,
       localPath: p.localPath,
       updatedAt: p.updatedAt
     }))
+    totalElements.value = res.data.totalElements
+    totalPages.value = res.data.totalPages
+    
     projectStore.setProjects(projects.value)
     
     stats.value = {
-      total: projects.value.length,
+      total: totalElements.value,
       active: projects.value.filter(p => p.status === 'active').length,
       pipelineCount: projects.value.reduce((sum, p) => sum + (p.pipelineCount || 0), 0),
       successRate: projects.value.length > 0 
@@ -343,10 +428,17 @@ const loadProjects = async () => {
       { id: 4, name: 'data-service', description: '数据服务模块', icon: '📊', iconBgClass: 'bg-purple-100', status: 'stopped', projectType: 'SPRING_BOOT', localPath: '/tmp/data-service', updatedAt: Date.now() },
       { id: 5, name: 'ai-pipeline-ui', description: 'AI 流水线前端界面', icon: '🎨', iconBgClass: 'bg-pink-100', status: 'active', projectType: 'VUE', localPath: '/tmp/ai-pipeline-ui', updatedAt: Date.now() },
     ]
+    totalElements.value = projects.value.length
+    totalPages.value = 1
     stats.value = { total: 5, active: 3, pipelineCount: 12, successRate: '92%' }
   } finally {
     loading.value = false
   }
+}
+
+const handleSearch = () => {
+  currentPage.value = 0
+  loadProjects()
 }
 
 const loadRecentActivities = async () => {
@@ -380,10 +472,24 @@ const createProject = async () => {
     return
   }
   
+  if (newProject.value.projectSource === 'GITHUB' && !newProject.value.repoUrl) {
+    showToast?.warning('请输入GitHub仓库地址')
+    return
+  }
+  
   try {
     await projectApi.createProject(newProject.value)
     showCreateProject.value = false
-    newProject.value = { projectName: '', projectType: 'SPRING_BOOT', description: '' }
+    newProject.value = { 
+      projectName: '', 
+      projectType: 'SPRING_BOOT', 
+      projectSource: 'LOCAL',
+      description: '',
+      localPath: '',
+      repoUrl: '',
+      githubToken: '',
+      branch: 'main'
+    }
     await loadProjects()
     showToast?.success('项目创建成功')
   } catch (error) {

@@ -247,8 +247,10 @@ const viewPipeline = (id) => {
 
 const loadProjects = async () => {
   try {
-    const res = await projectApi.getAllProjects()
-    projects.value = res.data.map(p => ({
+    const res = await projectApi.getAllProjects({ page: 0, size: 10 })
+    const projectList = res.data.content || res.data
+    
+    projects.value = projectList.map(p => ({
       id: p.id,
       name: p.projectName,
       description: p.description,

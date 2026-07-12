@@ -21,12 +21,23 @@ public class ProjectGatewayController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Map<String, Object>>> getAllProjects() {
+    public ResponseEntity<Map<String, Object>> getAllProjects(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword) {
         try {
-            List<Map<String, Object>> result = webClient.get()
-                    .uri("/api/project")
+            Map<String, Object> result = webClient.get()
+                    .uri(uriBuilder -> {
+                        var builder = uriBuilder.path("/api/project")
+                                .queryParam("page", page)
+                                .queryParam("size", size);
+                        if (keyword != null && !keyword.trim().isEmpty()) {
+                            builder.queryParam("keyword", keyword);
+                        }
+                        return builder.build();
+                    })
                     .retrieve()
-                    .bodyToMono(List.class)
+                    .bodyToMono(Map.class)
                     .block();
             return ResponseEntity.ok(result);
         } catch (Exception e) {
