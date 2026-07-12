@@ -8,8 +8,6 @@ services:
       POSTGRES_DB: temporal
     ports:
       - "5432:5432"
-    networks:
-      - temporal-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U temporal"]
       interval: 5s
@@ -18,24 +16,16 @@ services:
 
   temporal:
     container_name: temporal
-    image: temporalio/auto-setup:1.24.0
+    image: temporalio/auto-setup:latest
     depends_on:
       postgresql:
         condition: service_healthy
     environment:
-      - DB=postgres
+      - DB=postgres12
       - DB_PORT=5432
       - POSTGRES_USER=temporal
       - POSTGRES_PWD=temporal
-      - POSTGRES_SEEDS=postgresql
+      - POSTGRES_SEEDS=temporal-postgresql
     ports:
       - "7233:7233"
-      - "7234:7234"
-      - "7235:7235"
-      - "7239:7239"
-    networks:
-      - temporal-network
-
-networks:
-  temporal-network:
-    driver: bridge
+      - "8233:8233"

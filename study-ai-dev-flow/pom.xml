@@ -25,7 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.3.4</spring-boot.version>
         <langchain4j.version>0.35.0</langchain4j.version>
-        <temporal.version>1.24.1</temporal.version>
+        <temporal.version>1.30.0</temporal.version>
         <lombok.version>1.18.34</lombok.version>
         <jgit.version>6.9.0.202403050737-r</jgit.version>
         <flyway.version>10.10.0</flyway.version>

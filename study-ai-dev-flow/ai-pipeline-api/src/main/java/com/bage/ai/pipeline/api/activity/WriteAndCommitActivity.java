@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.api.activity;
 
-import com.bage.ai.pipeline.api.dto.activity.WriteAndCommitInput;
-import com.bage.ai.pipeline.api.dto.activity.WriteAndCommitResult;
+import com.bage.ai.pipeline.core.dto.activity.WriteAndCommitInput;
+import com.bage.ai.pipeline.core.dto.activity.WriteAndCommitResult;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 

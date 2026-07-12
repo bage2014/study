@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.api.activity;
 
-import com.bage.ai.pipeline.api.dto.activity.FeaturePointSplitInput;
-import com.bage.ai.pipeline.api.dto.activity.FeaturePointSplitResult;
+import com.bage.ai.pipeline.core.dto.activity.FeaturePointSplitInput;
+import com.bage.ai.pipeline.core.dto.activity.FeaturePointSplitResult;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 

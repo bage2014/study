@@ -14,18 +14,16 @@
     <name>AI Pipeline Core - Workflow and Activity Interfaces</name>
 
     <dependencies>
-        <dependency>
-            <groupId>com.bage.ai</groupId>
-            <artifactId>ai-pipeline-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.bage.ai</groupId>
-            <artifactId>ai-pipeline-agent</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-sdk</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -37,19 +35,5 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    
 </project>

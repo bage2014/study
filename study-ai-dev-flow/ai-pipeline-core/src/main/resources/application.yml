@@ -26,8 +26,17 @@ temporal:
     address: localhost:7233
 
 ai:
-  requirement-model-provider: mock
-  codegen-model-provider: mock
+  requirement-model-provider: ${AI_REQUIREMENT_MODEL_PROVIDER:deepseek}
+  codegen-model-provider: ${AI_CODEGEN_MODEL_PROVIDER:deepseek}
+  requirement-model: ${AI_REQUIREMENT_MODEL:deepseek-chat}
+  codegen-model: ${AI_CODEGEN_MODEL:deepseek-chat}
+  deepseek:
+    api-key: ${AI_DEEPSEEK_API_KEY:}
+    base-url: ${AI_DEEPSEEK_BASE_URL:https://api.deepseek.com/v1}
+  openai:
+    api-key: ${AI_OPENAI_API_KEY:}
+  anthropic:
+    api-key: ${AI_ANTHROPIC_API_KEY:}
 
 logging:
   level:

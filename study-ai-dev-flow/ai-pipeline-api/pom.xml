@@ -15,6 +15,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.bage.ai</groupId>
+            <artifactId>ai-pipeline-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bage.ai</groupId>
+            <artifactId>ai-pipeline-agent</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -82,6 +91,20 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>exec</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

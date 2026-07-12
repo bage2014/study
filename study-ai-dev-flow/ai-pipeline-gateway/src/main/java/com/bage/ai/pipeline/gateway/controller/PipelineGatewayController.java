@@ -1,6 +1,6 @@
 package com.bage.ai.pipeline.gateway.controller;
 
-import com.bage.ai.pipeline.api.dto.workflow.PipelineStartInput;
+import com.bage.ai.pipeline.core.dto.workflow.PipelineStartInput;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

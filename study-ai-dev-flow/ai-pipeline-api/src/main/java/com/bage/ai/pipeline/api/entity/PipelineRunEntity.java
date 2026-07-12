@@ -1,6 +1,6 @@
 package com.bage.ai.pipeline.api.entity;
 
-import com.bage.ai.pipeline.api.enums.PipelineStatus;
+import com.bage.ai.pipeline.core.enums.PipelineStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

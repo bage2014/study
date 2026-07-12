@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "pipeline_stage")
+@Table(name = "pipeline_stage", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"pipeline_id", "stage_name"})
+})
 public class PipelineStageEntity {
 
     @Id

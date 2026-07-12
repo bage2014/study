@@ -3,15 +3,15 @@ package com.bage.ai.pipeline.api.service;
 import com.bage.ai.pipeline.api.entity.ApprovalEntity;
 import com.bage.ai.pipeline.api.entity.PipelineRunEntity;
 import com.bage.ai.pipeline.api.entity.PipelineStageEntity;
-import com.bage.ai.pipeline.api.dto.workflow.PipelineRunResult;
-import com.bage.ai.pipeline.api.enums.PipelineStatus;
+import com.bage.ai.pipeline.core.dto.workflow.PipelineRunResult;
+import com.bage.ai.pipeline.core.enums.PipelineStatus;
 
 import java.util.List;
 import java.util.Map;
 
 public interface PipelineService {
 
-    String startPipeline(com.bage.ai.pipeline.api.dto.workflow.PipelineStartInput input);
+    String startPipeline(com.bage.ai.pipeline.core.dto.workflow.PipelineStartInput input);
 
     PipelineRunEntity getPipelineStatus(String pipelineId);
 

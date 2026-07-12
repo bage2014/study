@@ -1,11 +1,11 @@
 package com.bage.ai.pipeline.api.workflow;
 
-import com.bage.ai.pipeline.api.dto.workflow.ApprovalSignal;
-import com.bage.ai.pipeline.api.dto.workflow.PipelineRunResult;
-import com.bage.ai.pipeline.api.dto.workflow.PipelineStartInput;
-import com.bage.ai.pipeline.api.dto.workflow.RejectionSignal;
-import com.bage.ai.pipeline.api.enums.PipelineStatus;
-import com.bage.ai.pipeline.api.enums.StageName;
+import com.bage.ai.pipeline.core.dto.workflow.ApprovalSignal;
+import com.bage.ai.pipeline.core.dto.workflow.PipelineRunResult;
+import com.bage.ai.pipeline.core.dto.workflow.PipelineStartInput;
+import com.bage.ai.pipeline.core.dto.workflow.RejectionSignal;
+import com.bage.ai.pipeline.core.enums.PipelineStatus;
+import com.bage.ai.pipeline.core.enums.StageName;
 import io.temporal.workflow.QueryMethod;
 import io.temporal.workflow.SignalMethod;
 import io.temporal.workflow.WorkflowInterface;

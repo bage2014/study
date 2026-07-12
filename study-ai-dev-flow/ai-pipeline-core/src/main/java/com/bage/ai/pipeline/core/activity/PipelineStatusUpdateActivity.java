@@ -1,7 +1,7 @@
 package com.bage.ai.pipeline.core.activity;
 
-import com.bage.ai.pipeline.api.dto.activity.PipelineStatusUpdateInput;
-import com.bage.ai.pipeline.api.dto.workflow.PipelineRunResult;
+import com.bage.ai.pipeline.core.dto.activity.PipelineStatusUpdateInput;
+import com.bage.ai.pipeline.core.dto.workflow.PipelineRunResult;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
 

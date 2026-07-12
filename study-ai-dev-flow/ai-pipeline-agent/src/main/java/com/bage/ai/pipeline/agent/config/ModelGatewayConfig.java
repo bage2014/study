@@ -17,19 +17,25 @@ public class ModelGatewayConfig {
     @Value("${ai.openai.api-key:}")
     private String openAiApiKey;
 
+    @Value("${ai.deepseek.api-key:}")
+    private String deepseekApiKey;
+
+    @Value("${ai.deepseek.base-url:https://api.deepseek.com/v1}")
+    private String deepseekBaseUrl;
+
     @Value("${ai.ollama.base-url:http://localhost:11434}")
     private String ollamaBaseUrl;
 
-    @Value("${ai.requirement-model-provider:claude}")
+    @Value("${ai.requirement-model-provider:deepseek}")
     private String requirementProvider;
 
-    @Value("${ai.codegen-model-provider:claude}")
+    @Value("${ai.codegen-model-provider:deepseek}")
     private String codeGenProvider;
 
-    @Value("${ai.requirement-model:claude-sonnet-4-6}")
+    @Value("${ai.requirement-model:deepseek-chat}")
     private String requirementModelName;
 
-    @Value("${ai.codegen-model:claude-sonnet-4-6}")
+    @Value("${ai.codegen-model:deepseek-chat}")
     private String codeGenModelName;
 
     @Bean("requirementModel")
@@ -45,19 +51,38 @@ public class ModelGatewayConfig {
     private ChatLanguageModel buildModel(String provider, String modelName, int maxTokens) {
         return switch (provider.toLowerCase()) {
             case "mock" -> new MockChatLanguageModel();
-            case "openai" -> OpenAiChatModel.builder()
-                    .apiKey(openAiApiKey)
-                    .modelName(modelName)
-                    .build();
+            case "openai" -> buildOpenAiModel(openAiApiKey, null, modelName, maxTokens);
+            case "deepseek" -> buildOpenAiModel(deepseekApiKey, deepseekBaseUrl, modelName, maxTokens);
             case "ollama" -> OllamaChatModel.builder()
                     .baseUrl(ollamaBaseUrl)
                     .modelName(modelName)
                     .build();
-            default -> AnthropicChatModel.builder()
-                    .apiKey(anthropicApiKey)
-                    .modelName(modelName)
-                    .maxTokens(maxTokens)
-                    .build();
+            default -> buildAnthropicModel(anthropicApiKey, modelName, maxTokens);
         };
+    }
+
+    private ChatLanguageModel buildOpenAiModel(String apiKey, String baseUrl, String modelName, int maxTokens) {
+        if (apiKey == null || apiKey.isEmpty()) {
+            return new MockChatLanguageModel();
+        }
+        OpenAiChatModel.OpenAiChatModelBuilder builder = OpenAiChatModel.builder()
+                .apiKey(apiKey)
+                .modelName(modelName)
+                .maxTokens(maxTokens);
+        if (baseUrl != null && !baseUrl.isEmpty()) {
+            builder.baseUrl(baseUrl);
+        }
+        return builder.build();
+    }
+
+    private ChatLanguageModel buildAnthropicModel(String apiKey, String modelName, int maxTokens) {
+        if (apiKey == null || apiKey.isEmpty()) {
+            return new MockChatLanguageModel();
+        }
+        return AnthropicChatModel.builder()
+                .apiKey(apiKey)
+                .modelName(modelName)
+                .maxTokens(maxTokens)
+                .build();
     }
 }
