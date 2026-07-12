@@ -56,7 +56,20 @@
           </div>
 
           <div class="lg:col-span-2">
-            <label class="block text-sm font-medium text-gray-700 mb-3">业务需求描述</label>
+            <label class="block text-sm font-medium text-gray-700 mb-3">需求标题</label>
+            <input 
+              v-model="form.title"
+              :disabled="!selectedProject"
+              :class="[
+                'w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-indigo-500',
+                selectedProject 
+                  ? 'border-indigo-200 bg-white text-gray-700' 
+                  : 'border-gray-200 bg-gray-50 text-gray-400'
+              ]"
+              :placeholder="selectedProject ? '请输入需求标题，例如：用户注册功能' : '请先选择一个项目'"
+            />
+            
+            <label class="block text-sm font-medium text-gray-700 mb-3 mt-4">业务需求描述</label>
             <div class="bg-gray-50 rounded-lg p-4 border-2 transition-colors" :class="selectedProject ? 'border-indigo-200' : 'border-gray-200'">
               <textarea 
                 v-model="form.requirement"
@@ -83,10 +96,10 @@
             <div class="mt-4 flex justify-end">
               <button 
                 @click="submitRequirement"
-                :disabled="!selectedProject || !form.requirement || isSubmitting"
+                :disabled="!selectedProject || !form.title || !form.requirement || isSubmitting"
                 :class="[
                   'px-6 py-3 rounded-lg font-medium transition-all flex items-center space-x-2',
-                  selectedProject && form.requirement && !isSubmitting
+                  selectedProject && form.title && form.requirement && !isSubmitting
                     ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md hover:shadow-lg'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 ]"
@@ -188,6 +201,7 @@ const loading = ref(true)
 const projects = ref([])
 const selectedProject = ref(projectStore.currentProject || null)
 const form = ref({
+  title: '',
   requirement: ''
 })
 const isSubmitting = ref(false)
@@ -209,6 +223,11 @@ const submitRequirement = async () => {
     return
   }
   
+  if (!form.value.title) {
+    showToast?.warning('请填写需求标题')
+    return
+  }
+  
   if (!form.value.requirement) {
     showToast?.warning('请填写需求描述')
     return
@@ -219,17 +238,18 @@ const submitRequirement = async () => {
   try {
     const reqRes = await requirementApi.createRequirement({
       projectId: selectedProject.value.id,
-      title: form.value.requirement.substring(0, 100),
+      title: form.value.title,
       description: form.value.requirement
     })
     
     const pipeRes = await pipelineApi.startPipeline({
-      requirementMd: form.value.requirement,
+      requirementMd: '# ' + form.value.title + '\n\n' + form.value.requirement,
       projectId: selectedProject.value.id,
       projectLocalPath: selectedProject.value.localPath || '/tmp/demo-backend'
     })
     
     const pipelineId = pipeRes.data.pipelineId || pipeRes.data.id
+    form.value.title = ''
     form.value.requirement = ''
     isSubmitting.value = false
     showToast?.success('流水线已启动', `ID: ${pipelineId.substring(0, 8)}`)

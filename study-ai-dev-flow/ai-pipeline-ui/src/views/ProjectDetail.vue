@@ -133,10 +133,12 @@
               </span>
               <button 
                 @click.stop="startPipeline(req)"
-                class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center space-x-1"
+                :disabled="startingPipelineId === req.id"
+                class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center space-x-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>🚀</span>
-                <span>启动</span>
+                <span v-if="startingPipelineId === req.id">⏳</span>
+                <span v-else>🚀</span>
+                <span>{{ startingPipelineId === req.id ? '启动中...' : '启动' }}</span>
               </button>
             </div>
           </div>
@@ -247,6 +249,7 @@ const newRequirement = ref({
   title: '',
   description: ''
 })
+const startingPipelineId = ref(null)
 
 const statusText = (status) => {
   switch (status) {
@@ -341,8 +344,33 @@ const viewRequirement = (req) => {
   router.push(`/pipelines/${req.pipelineId || 'demo'}`)
 }
 
-const startPipeline = (req) => {
-  router.push('/')
+const startPipeline = async (req) => {
+  try {
+    startingPipelineId.value = req.id
+    
+    const projectId = route.params.id
+    const projectInfo = await projectApi.getProject(projectId)
+    
+    const res = await pipelineApi.startPipeline({
+      requirementMd: '# ' + req.title + '\n\n' + (req.description || ''),
+      projectId: projectId,
+      projectLocalPath: projectInfo.data.localPath
+    })
+    
+    const pipelineId = res.data.pipelineId
+    
+    await requirementApi.updateRequirement(req.id, {
+      pipelineId: pipelineId,
+      status: 'in_progress'
+    })
+    
+    router.push(`/pipelines/${pipelineId}`)
+  } catch (error) {
+    console.error('Failed to start pipeline:', error)
+    showToast?.error('启动失败，请重试')
+  } finally {
+    startingPipelineId.value = null
+  }
 }
 
 watch(currentFilter, () => {
