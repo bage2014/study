@@ -74,7 +74,15 @@ public class PipelineServiceImpl implements PipelineService {
                             } else {
                                 input.setProjectLocalPath(project.getLocalPath());
                             }
-                            input.setProjectType(com.bage.ai.pipeline.core.enums.ProjectType.valueOf(project.getProjectType()));
+                            if (project.getProjectType() != null) {
+                                try {
+                                    input.setProjectType(com.bage.ai.pipeline.core.enums.ProjectType.valueOf(project.getProjectType()));
+                                } catch (Exception e) {
+                                    input.setProjectType(com.bage.ai.pipeline.core.enums.ProjectType.SPRING_BOOT);
+                                }
+                            } else {
+                                input.setProjectType(com.bage.ai.pipeline.core.enums.ProjectType.SPRING_BOOT);
+                            }
                         });
             }
 

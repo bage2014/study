@@ -180,14 +180,19 @@
             <div v-if="stage.id === 'task-split'">
               <div class="mb-4">
                 <h5 class="text-sm font-medium text-gray-700 mb-2">任务拆分</h5>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  <div v-for="(task, idx) in stage.tasks || []" :key="idx" class="bg-gray-100 p-2 rounded-lg text-xs">
-                    <p class="font-medium text-gray-700">{{ task.type || '未知' }}</p>
-                    <p class="text-gray-500">{{ task.description }}</p>
+                <div v-if="stage.allTasks && stage.allTasks.length > 0" class="space-y-3">
+                  <div v-for="(fpGroup, fpIdx) in stage.allTasks" :key="fpIdx" class="border border-gray-200 rounded-lg p-3">
+                    <p class="text-xs font-medium text-purple-700 mb-2">功能点: {{ fpGroup.featurePoint }}</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      <div v-for="(task, taskIdx) in fpGroup.tasks || []" :key="taskIdx" class="bg-gray-100 p-2 rounded-lg text-xs">
+                        <p class="font-medium text-gray-700">{{ task.type || '未知' }}</p>
+                        <p class="text-gray-500">{{ task.description }}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div v-if="!stage.tasks || stage.tasks.length === 0" class="bg-gray-100 p-3 rounded-lg">
-                    <p class="text-sm text-gray-500">AI 已将功能点拆分为原子任务</p>
-                  </div>
+                </div>
+                <div v-else class="bg-gray-100 p-3 rounded-lg">
+                  <p class="text-sm text-gray-500">AI 已将功能点拆分为原子任务</p>
                 </div>
               </div>
             </div>
@@ -226,10 +231,18 @@
             <div v-if="stage.id === 'test-gen'">
               <div class="mb-4">
                 <h5 class="text-sm font-medium text-gray-700 mb-2">测试生成结果</h5>
-                <div v-if="stage.generatedFiles" class="space-y-2">
-                  <div v-for="(content, fileName) in stage.generatedFiles" :key="fileName" class="bg-green-50 p-3 rounded-lg">
-                    <p class="text-xs font-medium text-green-700">{{ fileName }}</p>
-                  </div>
+                <div v-if="testGeneratedFiles && testGeneratedFiles.length > 0" class="flex flex-wrap gap-2">
+                  <button 
+                    v-for="file in testGeneratedFiles" 
+                    :key="file.name"
+                    @click="selectCodeFile(file)"
+                    :class="[
+                      'px-3 py-1.5 rounded-lg text-xs transition-colors',
+                      selectedCodeFile?.name === file.name ? 'bg-green-600 text-white' : 'bg-green-50 text-green-700 hover:bg-green-100'
+                    ]"
+                  >
+                    {{ file.name }}
+                  </button>
                 </div>
                 <div v-else class="bg-green-50 p-4 rounded-lg">
                   <p class="text-sm text-green-700">✓ AI 已生成单元测试用例</p>
@@ -548,6 +561,10 @@ const generatedFiles = computed(() => {
       content
     }))
   }
+  return []
+})
+
+const testGeneratedFiles = computed(() => {
   const testGenStage = pipelineStages.value.find(s => s.id === 'test-gen')
   if (testGenStage && testGenStage.generatedFiles) {
     return Object.entries(testGenStage.generatedFiles).map(([name, content]) => ({

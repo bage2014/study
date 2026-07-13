@@ -107,9 +107,11 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
         Map<String, String> allGeneratedFiles = new LinkedHashMap<>();
         CodeGenResult codeResult;
 
+        currentStage = StageName.TASK_SPLIT;
+        statusUpdateActivity.recordStageStart(input.getRunId(), StageName.TASK_SPLIT.name(), 3);
+        List<Object> allTasks = new java.util.ArrayList<>();
+
         for (FeaturePoint fp : fpResult.getFeaturePoints()) {
-            currentStage = StageName.TASK_SPLIT;
-            statusUpdateActivity.recordStageStart(input.getRunId(), StageName.TASK_SPLIT.name(), 3);
             var taskResult = taskSplitActivity.split(TaskSplitInput.builder()
                     .runId(input.getRunId())
                     .projectLocalPath(input.getProjectLocalPath())
@@ -117,21 +119,16 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                     .projectType(input.getProjectType())
                     .buildTool(input.getBuildTool())
                     .build());
-            try {
-                var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                String taskResultJson = mapper.writeValueAsString(Map.of(
+
+            if (!taskResult.getTasks().isEmpty()) {
+                allTasks.add(Map.of(
                         "featurePoint", fp.getTitle(),
                         "tasks", taskResult.getTasks()
                 ));
-                statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.TASK_SPLIT.name(), taskResultJson, null);
-            } catch (Exception e) {
-                statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.TASK_SPLIT.name(), "", null);
             }
 
             for (AtomicTask task : taskResult.getTasks()) {
-                currentStage = StageName.CODE_GEN;
-                statusUpdateActivity.recordStageStart(input.getRunId(), StageName.CODE_GEN.name(), 4);
-                CodeGenInput codeGenInput = CodeGenInput.builder()
+                var taskCodeResult = codeGenActivity.generate(CodeGenInput.builder()
                         .runId(input.getRunId())
                         .projectLocalPath(input.getProjectLocalPath())
                         .parsedRequirementJson(reqResult.getParsedRequirementJson())
@@ -139,22 +136,34 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                         .buildTool(input.getBuildTool())
                         .frontendLocalPath(isFrontendTask(task) ? input.getFrontendLocalPath() : null)
                         .currentTask(task)
-                        .build();
-
-                var taskCodeResult = codeGenActivity.generate(codeGenInput);
-                try {
-                    var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                    String codeResultJson = mapper.writeValueAsString(Map.of(
-                            "task", task.getDescription(),
-                            "files", taskCodeResult.getGeneratedFiles(),
-                            "message", taskCodeResult.getMessage()
-                    ));
-                    statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.CODE_GEN.name(), codeResultJson, null);
-                } catch (Exception e) {
-                    statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.CODE_GEN.name(), "", null);
-                }
+                        .build());
                 allGeneratedFiles.putAll(taskCodeResult.getGeneratedFiles());
             }
+        }
+
+        try {
+            var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            String taskResultJson = mapper.writeValueAsString(Map.of(
+                    "featurePoints", fpResult.getFeaturePoints(),
+                    "allTasks", allTasks
+            ));
+            statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.TASK_SPLIT.name(), taskResultJson, null);
+        } catch (Exception e) {
+            statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.TASK_SPLIT.name(), "", null);
+        }
+
+        currentStage = StageName.CODE_GEN;
+        statusUpdateActivity.recordStageStart(input.getRunId(), StageName.CODE_GEN.name(), 4);
+        try {
+            var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            String codeResultJson = mapper.writeValueAsString(Map.of(
+                    "generatedFiles", allGeneratedFiles,
+                    "totalFiles", allGeneratedFiles.size(),
+                    "message", "Code generation completed"
+            ));
+            statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.CODE_GEN.name(), codeResultJson, null);
+        } catch (Exception e) {
+            statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.CODE_GEN.name(), "", null);
         }
 
         codeResult = CodeGenResult.builder()
