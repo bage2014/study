@@ -73,6 +73,9 @@ public class MockChatLanguageModel implements ChatLanguageModel {
         if (userContent.contains("订单") || userContent.contains("order")) {
             return "order";
         }
+        if (userContent.contains("产品") || userContent.contains("Product") || userContent.contains("CRUD")) {
+            return "product-management";
+        }
         return "generic";
     }
 

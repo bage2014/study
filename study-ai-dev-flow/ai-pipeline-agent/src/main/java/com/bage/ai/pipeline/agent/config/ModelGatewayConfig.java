@@ -63,7 +63,7 @@ public class ModelGatewayConfig {
 
     private ChatLanguageModel buildOpenAiModel(String apiKey, String baseUrl, String modelName, int maxTokens) {
         if (apiKey == null || apiKey.isEmpty()) {
-            return new MockChatLanguageModel();
+            throw new IllegalStateException("AI API key is not configured. Please set DEEPSEEK_API_KEY environment variable or configure ai.deepseek.api-key in application.yml.");
         }
         OpenAiChatModel.OpenAiChatModelBuilder builder = OpenAiChatModel.builder()
                 .apiKey(apiKey)
@@ -77,7 +77,7 @@ public class ModelGatewayConfig {
 
     private ChatLanguageModel buildAnthropicModel(String apiKey, String modelName, int maxTokens) {
         if (apiKey == null || apiKey.isEmpty()) {
-            return new MockChatLanguageModel();
+            throw new IllegalStateException("AI API key is not configured. Please set ANTHROPIC_API_KEY environment variable or configure ai.anthropic.api-key in application.yml.");
         }
         return AnthropicChatModel.builder()
                 .apiKey(apiKey)

@@ -27,8 +27,11 @@ temporal:
     address: localhost:7233
 
 ai:
-  requirement-model-provider: mock
-  codegen-model-provider: mock
+  requirement-model-provider: deepseek
+  codegen-model-provider: deepseek
+  deepseek:
+    api-key: ${DEEPSEEK_API_KEY:}
+    base-url: https://api.deepseek.com/v1
 
 logging:
   level:

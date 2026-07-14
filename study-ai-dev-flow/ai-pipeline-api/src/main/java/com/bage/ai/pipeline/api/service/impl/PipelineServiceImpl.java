@@ -305,6 +305,12 @@ public class PipelineServiceImpl implements PipelineService {
                                 .orderNum(orderNum)
                                 .build())
                 );
+        
+        PipelineRunEntity runEntity = pipelineRunRepository.findByPipelineId(pipelineId);
+        if (runEntity != null) {
+            runEntity.setCurrentStage(stageName);
+            pipelineRunRepository.save(runEntity);
+        }
     }
 
     @Override
