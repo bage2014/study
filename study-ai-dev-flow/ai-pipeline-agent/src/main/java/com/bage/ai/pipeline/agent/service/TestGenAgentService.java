@@ -1,55 +1,106 @@
 package com.bage.ai.pipeline.agent.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.bage.ai.pipeline.core.enums.ProjectType;
+import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class TestGenAgentService {
 
-    public Map<String, String> generateTests(String projectPath, ProjectType projectType,
-                                              List<String> generatedFilePaths) {
-        Map<String, String> testFiles = new HashMap<>();
+    private final TestGenAiService aiService;
+    private final ObjectMapper objectMapper;
 
-        for (String filePath : generatedFilePaths) {
-            if (filePath.endsWith("Controller.java")) {
-                String testPath = filePath.replace("src/main/java", "src/test/java")
-                        .replace(".java", "Test.java");
-                testFiles.put(testPath, generateMockControllerTest());
-            }
-        }
-
-        return testFiles;
+    public TestGenAgentService(@Qualifier("codeGenModel") ChatLanguageModel model,
+                               ObjectMapper objectMapper) {
+        this.aiService = AiServices.builder(TestGenAiService.class)
+                .chatLanguageModel(model)
+                .build();
+        this.objectMapper = objectMapper;
     }
 
-    private String generateMockControllerTest() {
-        return """
-                package com.bage.demo.controller;
-                
-                import org.junit.jupiter.api.Test;
-                import org.springframework.beans.factory.annotation.Autowired;
-                import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-                import org.springframework.test.web.servlet.MockMvc;
-                import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-                import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-                import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-                
-                @WebMvcTest(HealthController.class)
-                public class HealthControllerTest {
-                
-                    @Autowired
-                    private MockMvc mockMvc;
-                
-                    @Test
-                    void health_shouldReturnUpStatus() throws Exception {
-                        mockMvc.perform(get("/api/health"))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.status").value("UP"));
-                    }
+    public Map<String, String> generateTests(String projectPath, ProjectType projectType,
+                                              List<String> generatedFilePaths) {
+        String techStack = describeTechStack(projectType);
+        String filesToTest = String.join("\n", generatedFilePaths);
+        
+        String result = aiService.generateTests(techStack, filesToTest);
+        return parseGeneratedTests(result);
+    }
+
+    private Map<String, String> parseGeneratedTests(String json) {
+        try {
+            String trimmed = json.trim();
+            if (trimmed.startsWith("```")) {
+                trimmed = trimmed.replaceAll("(?s)^```[a-z]*\\n?", "").replaceAll("```\\s*$", "").trim();
+            }
+            int start = trimmed.indexOf('{');
+            int end = trimmed.lastIndexOf('}');
+            if (start >= 0 && end > start) {
+                trimmed = trimmed.substring(start, end + 1);
+            }
+            return objectMapper.readValue(trimmed, new TypeReference<Map<String, String>>() {});
+        } catch (Exception e) {
+            log.error("Failed to parse generated tests JSON: {}", e.getMessage());
+            return Collections.emptyMap();
+        }
+    }
+
+    private String describeTechStack(ProjectType projectType) {
+        return switch (projectType != null ? projectType : ProjectType.SPRING_BOOT) {
+            case SPRING_BOOT -> "Java 21 + Spring Boot 3.3 + JUnit 5 + MockMvc";
+            case PYTHON_FASTAPI -> "Python 3.11 + FastAPI + pytest";
+            case NODE_EXPRESS -> "Node.js + Express + Jest";
+            case VUE -> "Vue 3 + Vite + Vitest";
+            case REACT -> "React 18 + Vite + Jest";
+            case FULLSTACK -> "Java Spring Boot backend + Vue 3 frontend";
+            default -> "Java Spring Boot + JUnit 5";
+        };
+    }
+
+    interface TestGenAiService {
+
+        @SystemMessage("""
+                You are a senior {{techStack}} QA engineer.
+
+                Your task: generate comprehensive unit tests for the given Java source files.
+
+                Rules:
+                - Generate ONLY valid JUnit 5 tests
+                - Include test cases for normal and edge cases
+                - Use Spring Boot test annotations (WebMvcTest, MockBean, etc.)
+                - Follow testing best practices
+                - Make sure tests are runnable
+
+                Output ONLY a valid JSON object with test file paths as keys and test code as values:
+                {
+                  "src/test/java/com/example/controller/ProductControllerTest.java": "package com.example.controller; ...",
+                  "src/test/java/com/example/service/ProductServiceTest.java": "package com.example.service; ..."
                 }
-                """;
+
+                No explanation, no markdown fences.
+                """)
+        @UserMessage("""
+                Tech stack: {{techStack}}
+                Source files to test:
+                {{files}}
+
+                Generate comprehensive unit tests for the above source files.
+                """)
+        String generateTests(
+                @V("techStack") String techStack,
+                @V("files") String files);
     }
 }

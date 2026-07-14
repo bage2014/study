@@ -50,14 +50,13 @@ public class ModelGatewayConfig {
 
     private ChatLanguageModel buildModel(String provider, String modelName, int maxTokens) {
         return switch (provider.toLowerCase()) {
-            case "mock" -> new MockChatLanguageModel();
             case "openai" -> buildOpenAiModel(openAiApiKey, null, modelName, maxTokens);
             case "deepseek" -> buildOpenAiModel(deepseekApiKey, deepseekBaseUrl, modelName, maxTokens);
             case "ollama" -> OllamaChatModel.builder()
                     .baseUrl(ollamaBaseUrl)
                     .modelName(modelName)
                     .build();
-            default -> buildAnthropicModel(anthropicApiKey, modelName, maxTokens);
+            default -> throw new IllegalStateException("Unknown AI provider: " + provider + ". Supported providers: openai, deepseek, ollama");
         };
     }
 
