@@ -27,8 +27,8 @@ temporal:
     address: localhost:7233
 
 ai:
-  requirement-model-provider: ${AI_PROVIDER:ollama}
-  codegen-model-provider: ${AI_PROVIDER:ollama}
+  requirement-model-provider: ${AI_PROVIDER:none}
+  codegen-model-provider: ${AI_PROVIDER:none}
   deepseek:
     api-key: ${DEEPSEEK_API_KEY:}
     base-url: https://api.deepseek.com/v1

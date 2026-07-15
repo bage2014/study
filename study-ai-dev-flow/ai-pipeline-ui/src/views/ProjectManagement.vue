@@ -499,7 +499,8 @@ const createProject = async () => {
     showToast?.success('项目创建成功')
   } catch (error) {
     console.error('Failed to create project:', error)
-    showToast?.error('创建失败，请重试')
+    const errorMsg = error.response?.data?.error || error.message || '创建失败，请重试'
+    showToast?.error(errorMsg)
   }
 }
 

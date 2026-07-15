@@ -1,22 +1,15 @@
-package com.bage.demo.controller;
+package com.bage.demo.service;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import java.time.LocalDateTime;
-import java.util.Map;
+import com.bage.demo.entity.User;
 
-@RestController
-@RequestMapping("/api/health")
-public class HealthController {
+import java.util.List;
+import java.util.Optional;
 
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> health() {
-        return ResponseEntity.ok(Map.of(
-            "status", "UP",
-            "timestamp", LocalDateTime.now().toString(),
-            "service", "demo-backend"
-        ));
-    }
+public interface UserService {
+    List<User> getAllUsers();
+    Optional<User> getUserById(Long id);
+    Optional<User> getUserByEmail(String email);
+    User createUser(User user);
+    User updateUser(Long id, User user);
+    void deleteUser(Long id);
 }

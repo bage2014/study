@@ -1,22 +1,13 @@
-package com.bage.demo.controller;
+package com.bage.demo.repository;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import java.time.LocalDateTime;
-import java.util.Map;
+import com.bage.demo.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@RestController
-@RequestMapping("/api/health")
-public class HealthController {
+import java.util.Optional;
 
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> health() {
-        return ResponseEntity.ok(Map.of(
-            "status", "UP",
-            "timestamp", LocalDateTime.now().toString(),
-            "service", "demo-backend"
-        ));
-    }
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
 }
