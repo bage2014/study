@@ -1,86 +1,60 @@
 package com.example.controller;
 
-import com.example.model.Order;
+import com.example.dto.OrderCreateRequest;
+import com.example.dto.OrderListResponse;
+import com.example.dto.OrderResponse;
+import com.example.dto.OrderStatusUpdateRequest;
+import com.example.dto.PageRequest;
 import com.example.service.OrderService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/orders")
-@Tag(name = "Order Controller", description = "Endpoints for managing orders")
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
 
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
+    @PostMapping
+    public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderCreateRequest request) {
+        OrderResponse response = orderService.createOrder(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    @Operation(summary = "Get all orders", description = "Retrieve a list of all orders.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successful retrieval of orders"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.findAll();
+    public ResponseEntity<Page<OrderListResponse>> listOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        PageRequest pageRequest = new PageRequest(page, size, status, startDate, endDate);
+        Page<OrderListResponse> orders = orderService.listOrders(pageRequest);
         return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get order by ID", description = "Retrieve an order by its unique identifier.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Order found"),
-        @ApiResponse(responseCode = "404", description = "Order not found"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Order order = orderService.findById(id);
-        return ResponseEntity.ok(order);
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable Long id) {
+        OrderResponse response = orderService.getOrder(id);
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping
-    @Operation(summary = "Create a new order", description = "Create a new order with the provided details.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Order created successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid input"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    public ResponseEntity<Order> createOrder(@Valid @RequestBody Order order) {
-        Order createdOrder = orderService.create(order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
-    }
-
-    @PutMapping("/{id}")
-    @Operation(summary = "Update an existing order", description = "Update the details of an existing order by ID.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Order updated successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid input"),
-        @ApiResponse(responseCode = "404", description = "Order not found"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @Valid @RequestBody Order order) {
-        Order updatedOrder = orderService.update(id, order);
-        return ResponseEntity.ok(updatedOrder);
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<OrderResponse> updateOrderStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody OrderStatusUpdateRequest request) {
+        OrderResponse response = orderService.updateOrderStatus(id, request);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete an order", description = "Delete an order by its unique identifier.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Order deleted successfully"),
-        @ApiResponse(responseCode = "404", description = "Order not found"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-        orderService.delete(id);
+        orderService.deleteOrder(id);
         return ResponseEntity.noContent().build();
     }
 }

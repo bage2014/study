@@ -1,16 +1,29 @@
 spring:
   application:
-    name: api-docs
+    name: order-management
+  datasource:
+    url: jdbc:h2:mem:orderdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
 
 springdoc:
   api-docs:
-    enabled: true
     path: /api-docs
   swagger-ui:
-    enabled: true
     path: /swagger-ui.html
-  show-actuator: false
-  packages-to-scan: com.example.controller
 
 server:
   port: 8080
