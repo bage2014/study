@@ -2,6 +2,7 @@ package com.bage.ai.pipeline.agent.config;
 
 import dev.langchain4j.model.anthropic.AnthropicChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.DisabledChatLanguageModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +27,10 @@ public class ModelGatewayConfig {
     @Value("${ai.ollama.base-url:http://localhost:11434}")
     private String ollamaBaseUrl;
 
-    @Value("${ai.requirement-model-provider:deepseek}")
+    @Value("${ai.requirement-model-provider:none}")
     private String requirementProvider;
 
-    @Value("${ai.codegen-model-provider:deepseek}")
+    @Value("${ai.codegen-model-provider:none}")
     private String codeGenProvider;
 
     @Value("${ai.requirement-model:deepseek-chat}")
@@ -56,7 +57,8 @@ public class ModelGatewayConfig {
                     .baseUrl(ollamaBaseUrl)
                     .modelName(modelName)
                     .build();
-            default -> throw new IllegalStateException("Unknown AI provider: " + provider + ". Supported providers: openai, deepseek, ollama");
+            case "none" -> new DisabledChatLanguageModel();
+            default -> throw new IllegalStateException("Unknown AI provider: " + provider + ". Supported providers: openai, deepseek, ollama, none");
         };
     }
 
