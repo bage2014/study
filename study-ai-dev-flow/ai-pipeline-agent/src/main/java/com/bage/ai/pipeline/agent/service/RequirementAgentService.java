@@ -5,9 +5,11 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class RequirementAgentService {
 
@@ -20,7 +22,11 @@ public class RequirementAgentService {
     }
 
     public String analyze(String prdMarkdown) {
-        return aiService.analyze(prdMarkdown);
+        log.info("Starting AI requirement analysis for PRD: {}", 
+                prdMarkdown.length() > 50 ? prdMarkdown.substring(0, 50) + "..." : prdMarkdown);
+        String result = aiService.analyze(prdMarkdown);
+        log.info("AI requirement analysis completed, result length: {}", result.length());
+        return result;
     }
 
     interface RequirementAiService {

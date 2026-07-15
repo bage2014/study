@@ -1,22 +1,16 @@
 package com.bage.ai.pipeline.agent.config;
 
-import dev.langchain4j.model.anthropic.AnthropicChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.DisabledChatLanguageModel;
-import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Slf4j
 @Configuration
 public class ModelGatewayConfig {
-
-    @Value("${ai.anthropic.api-key:}")
-    private String anthropicApiKey;
-
-    @Value("${ai.openai.api-key:}")
-    private String openAiApiKey;
 
     @Value("${ai.deepseek.api-key:}")
     private String deepseekApiKey;
@@ -24,13 +18,10 @@ public class ModelGatewayConfig {
     @Value("${ai.deepseek.base-url:https://api.deepseek.com/v1}")
     private String deepseekBaseUrl;
 
-    @Value("${ai.ollama.base-url:http://localhost:11434}")
-    private String ollamaBaseUrl;
-
-    @Value("${ai.requirement-model-provider:none}")
+    @Value("${ai.requirement-model-provider:deepseek}")
     private String requirementProvider;
 
-    @Value("${ai.codegen-model-provider:none}")
+    @Value("${ai.codegen-model-provider:deepseek}")
     private String codeGenProvider;
 
     @Value("${ai.requirement-model:deepseek-chat}")
@@ -41,49 +32,43 @@ public class ModelGatewayConfig {
 
     @Bean("requirementModel")
     public ChatLanguageModel requirementModel() {
-        return buildModel(requirementProvider, requirementModelName, 4096);
+        log.info("Building requirement model with provider: {}, model: {}", requirementProvider, requirementModelName);
+        ChatLanguageModel model = buildModel(requirementProvider, requirementModelName, 4096);
+        log.info("Requirement model built successfully: {}", model.getClass().getSimpleName());
+        return model;
     }
 
     @Bean("codeGenModel")
     public ChatLanguageModel codeGenModel() {
-        return buildModel(codeGenProvider, codeGenModelName, 8192);
+        log.info("Building codegen model with provider: {}, model: {}", codeGenProvider, codeGenModelName);
+        ChatLanguageModel model = buildModel(codeGenProvider, codeGenModelName, 8192);
+        log.info("Codegen model built successfully: {}", model.getClass().getSimpleName());
+        return model;
     }
 
     private ChatLanguageModel buildModel(String provider, String modelName, int maxTokens) {
         return switch (provider.toLowerCase()) {
-            case "openai" -> buildOpenAiModel(openAiApiKey, null, modelName, maxTokens);
-            case "deepseek" -> buildOpenAiModel(deepseekApiKey, deepseekBaseUrl, modelName, maxTokens);
-            case "ollama" -> OllamaChatModel.builder()
-                    .baseUrl(ollamaBaseUrl)
-                    .modelName(modelName)
-                    .build();
-            case "none" -> new DisabledChatLanguageModel();
-            default -> throw new IllegalStateException("Unknown AI provider: " + provider + ". Supported providers: openai, deepseek, ollama, none");
+            case "openai", "deepseek" -> buildDeepSeekModel(modelName, maxTokens);
+            case "none" -> {
+                log.warn("AI provider is set to 'none', using DisabledChatLanguageModel");
+                yield new DisabledChatLanguageModel();
+            }
+            default -> throw new IllegalStateException("Unknown AI provider: " + provider + ". Supported providers: openai, deepseek, none");
         };
     }
 
-    private ChatLanguageModel buildOpenAiModel(String apiKey, String baseUrl, String modelName, int maxTokens) {
-        if (apiKey == null || apiKey.isEmpty()) {
-            throw new IllegalStateException("AI API key is not configured. Please set DEEPSEEK_API_KEY environment variable or configure ai.deepseek.api-key in application.yml.");
+    private ChatLanguageModel buildDeepSeekModel(String modelName, int maxTokens) {
+        if (deepseekApiKey == null || deepseekApiKey.isEmpty()) {
+            throw new IllegalStateException("DeepSeek API key is not configured. " +
+                    "Please set AI_DEEPSEEK_API_KEY in .env file or environment variable.");
         }
+        log.info("Creating DeepSeek model: {} with baseUrl: {}, maxTokens: {}", 
+                modelName, deepseekBaseUrl, maxTokens);
         OpenAiChatModel.OpenAiChatModelBuilder builder = OpenAiChatModel.builder()
-                .apiKey(apiKey)
-                .modelName(modelName)
-                .maxTokens(maxTokens);
-        if (baseUrl != null && !baseUrl.isEmpty()) {
-            builder.baseUrl(baseUrl);
-        }
-        return builder.build();
-    }
-
-    private ChatLanguageModel buildAnthropicModel(String apiKey, String modelName, int maxTokens) {
-        if (apiKey == null || apiKey.isEmpty()) {
-            throw new IllegalStateException("AI API key is not configured. Please set ANTHROPIC_API_KEY environment variable or configure ai.anthropic.api-key in application.yml.");
-        }
-        return AnthropicChatModel.builder()
-                .apiKey(apiKey)
+                .apiKey(deepseekApiKey)
                 .modelName(modelName)
                 .maxTokens(maxTokens)
-                .build();
+                .baseUrl(deepseekBaseUrl);
+        return builder.build();
     }
 }
