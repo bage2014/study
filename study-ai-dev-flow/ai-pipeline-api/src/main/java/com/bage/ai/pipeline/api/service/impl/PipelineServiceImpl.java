@@ -14,6 +14,7 @@ import com.bage.ai.pipeline.api.repository.PipelineStageRepository;
 import com.bage.ai.pipeline.api.repository.ProjectRepository;
 import com.bage.ai.pipeline.api.service.PipelineService;
 import com.bage.ai.pipeline.core.workflow.PipelineWorkflow;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
@@ -317,13 +318,61 @@ public class PipelineServiceImpl implements PipelineService {
     public void recordStageEnd(String pipelineId, String stageName, String resultJson, String errorMessage) {
         pipelineStageRepository.findByPipelineIdAndStageName(pipelineId, stageName)
                 .ifPresent(stage -> {
-                    stage.setStatus(errorMessage != null ? "FAILED" : "COMPLETED");
+                    if (errorMessage != null) {
+                        stage.setStatus("FAILED");
+                        stage.setErrorMessage(errorMessage);
+                    } else {
+                        stage.setStatus("COMPLETED");
+                        if (resultJson != null && !resultJson.isBlank()) {
+                            stage.setResultJson(mergeResultJson(stage.getResultJson(), resultJson));
+                        }
+                    }
                     stage.setEndTime(LocalDateTime.now());
                     stage.setDurationMs(java.time.Duration.between(stage.getStartTime(), LocalDateTime.now()).toMillis());
-                    stage.setResultJson(resultJson);
-                    stage.setErrorMessage(errorMessage);
                     pipelineStageRepository.save(stage);
                 });
+    }
+
+    private String mergeResultJson(String existingJson, String newJson) {
+        if (existingJson == null || existingJson.isBlank()) {
+            return newJson;
+        }
+        if (newJson == null || newJson.isBlank()) {
+            return existingJson;
+        }
+        try {
+            Map<String, Object> existing = objectMapper.readValue(existingJson, new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> newData = objectMapper.readValue(newJson, new TypeReference<Map<String, Object>>() {});
+            
+            for (Map.Entry<String, Object> entry : newData.entrySet()) {
+                String key = entry.getKey();
+                Object existingValue = existing.get(key);
+                Object newValue = entry.getValue();
+                
+                if ("files".equals(key) && existingValue instanceof Map && newValue instanceof Map) {
+                    Map<String, Object> mergedFiles = new HashMap<>((Map<String, Object>) existingValue);
+                    mergedFiles.putAll((Map<String, Object>) newValue);
+                    existing.put(key, mergedFiles);
+                } else if ("tasks".equals(key) && existingValue instanceof List && newValue instanceof List) {
+                    List<Object> merged = new ArrayList<>((List<Object>) existingValue);
+                    merged.addAll((List<Object>) newValue);
+                    existing.put(key, merged);
+                } else if ("featurePoint".equals(key) && newValue instanceof String) {
+                    List<Map<String, Object>> allTasks = (List<Map<String, Object>>) existing.getOrDefault("allTasks", new ArrayList<>());
+                    Map<String, Object> fpGroup = new HashMap<>();
+                    fpGroup.put("featurePoint", newValue);
+                    fpGroup.put("tasks", newData.getOrDefault("tasks", new ArrayList<>()));
+                    allTasks.add(fpGroup);
+                    existing.put("allTasks", allTasks);
+                } else {
+                    existing.put(key, newValue);
+                }
+            }
+            return objectMapper.writeValueAsString(existing);
+        } catch (Exception e) {
+            log.warn("Failed to merge result JSON, using new JSON: {}", e.getMessage());
+            return newJson;
+        }
     }
 
     @Override

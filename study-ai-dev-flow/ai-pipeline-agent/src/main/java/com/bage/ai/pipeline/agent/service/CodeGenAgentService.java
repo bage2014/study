@@ -113,6 +113,7 @@ public class CodeGenAgentService {
                 - Include proper imports, error handling, and documentation
                 - Make sure the code compiles and runs
                 - Follow Spring Boot best practices
+                - IMPORTANT: Detect and use the existing package structure from the project. Look for existing Java files to determine the base package name.
 
                 Output ONLY a valid JSON object with file paths as keys and code content as values:
                 {

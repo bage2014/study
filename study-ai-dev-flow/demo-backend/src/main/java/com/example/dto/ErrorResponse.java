@@ -1,21 +1,44 @@
 package com.example.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Schema(description = "错误响应")
 public class ErrorResponse {
 
-    @Schema(description = "错误码", example = "NOT_FOUND")
-    private String code;
-
-    @Schema(description = "错误消息", example = "订单不存在")
+    private int status;
     private String message;
+    private LocalDateTime timestamp;
+
+    public ErrorResponse() {
+        this.timestamp = LocalDateTime.now();
+    }
+
+    public ErrorResponse(int status, String message) {
+        this.status = status;
+        this.message = message;
+        this.timestamp = LocalDateTime.now();
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 }

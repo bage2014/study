@@ -23,10 +23,24 @@ public class MavenTool implements AgentTool {
     @Value("${agent.project-base-path:}")
     private String projectBasePath;
 
+    @Value("${agent.maven-path:/Users/bage/bage/software/apache-maven-3.8.5/bin/mvn}")
+    private String mavenPath;
+
     private volatile String activePath;
 
     public void setActivePath(String path) {
         this.activePath = path;
+    }
+
+    private String getMavenCommand() {
+        if (isWindows()) {
+            return "mvn.cmd";
+        }
+        java.io.File mavenFile = new java.io.File(mavenPath);
+        if (mavenFile.exists()) {
+            return mavenFile.getAbsolutePath();
+        }
+        return "mvn";
     }
 
     @Tool("Run maven command in the project directory")
@@ -34,7 +48,7 @@ public class MavenTool implements AgentTool {
         Path base = Paths.get(projectPath).toAbsolutePath().normalize();
         try {
             List<String> cmd = new ArrayList<>();
-            cmd.add(isWindows() ? "mvn.cmd" : "mvn");
+            cmd.add(getMavenCommand());
             cmd.addAll(List.of(args));
 
             ProcessBuilder pb = new ProcessBuilder(cmd)
@@ -62,7 +76,7 @@ public class MavenTool implements AgentTool {
         Path base = Paths.get(projectPath).toAbsolutePath().normalize();
         try {
             List<String> cmd = new ArrayList<>();
-            cmd.add(isWindows() ? "mvn.cmd" : "mvn");
+            cmd.add(getMavenCommand());
             cmd.addAll(List.of(args));
 
             ProcessBuilder pb = new ProcessBuilder(cmd)

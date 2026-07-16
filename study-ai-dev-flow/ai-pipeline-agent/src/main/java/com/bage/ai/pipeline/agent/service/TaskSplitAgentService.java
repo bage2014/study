@@ -103,6 +103,7 @@ public class TaskSplitAgentService {
                 - title must be ≤ 60 chars, action-oriented
 
                 IMPORTANT: Use the listDirectory tool first to inspect the project structure and determine accurate target file paths.
+                IMPORTANT: Detect and use the existing package structure from the project. Look for existing Java files to determine the base package name.
 
                 Output ONLY a valid JSON array — no markdown fences, no explanation:
                 [

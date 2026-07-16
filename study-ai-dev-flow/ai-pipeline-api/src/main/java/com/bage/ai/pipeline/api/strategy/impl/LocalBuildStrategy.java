@@ -27,25 +27,31 @@ public class LocalBuildStrategy implements BuildStrategy {
             String projectPath = input.getProjectLocalPath();
             BuildTool buildTool = input.getBuildTool();
 
-            String buildOutput;
+            MavenTool.MavenResult mavenResult;
             if (buildTool == null || buildTool == BuildTool.MAVEN) {
-                buildOutput = mavenTool.build(projectPath);
+                mavenResult = mavenTool.runSafe(projectPath, "clean", "package", "-DskipTests");
             } else if (buildTool == BuildTool.GRADLE) {
-                buildOutput = mavenTool.executeCommand(projectPath, "./gradlew build");
+                mavenResult = mavenTool.runSafe(projectPath, "./gradlew", "build");
             } else {
-                buildOutput = npmTool.run(projectPath, "run", "build");
+                String npmOutput = npmTool.run(projectPath, "run", "build");
+                boolean npmSuccess = npmOutput != null && !npmOutput.contains("ERROR");
+                log.info("Local npm build completed for project: {}, success: {}", projectPath, npmSuccess);
+                return BuildResult.builder()
+                        .runId(input.getRunId())
+                        .success(npmSuccess)
+                        .buildOutput(npmOutput)
+                        .imageName(input.getImageName())
+                        .imageTag("latest")
+                        .build();
             }
 
-            boolean success = !buildOutput.contains("BUILD FAILURE") &&
-                    !buildOutput.contains("BUILD FAILED") &&
-                    !buildOutput.contains("Error") &&
-                    !buildOutput.contains("error");
-
-            log.info("Local build completed for project: {}, success: {}", projectPath, success);
+            boolean success = mavenResult.exitCode() == 0;
+            log.info("Local build completed for project: {}, exitCode: {}, success: {}", 
+                    projectPath, mavenResult.exitCode(), success);
             return BuildResult.builder()
                     .runId(input.getRunId())
                     .success(success)
-                    .buildOutput(buildOutput)
+                    .buildOutput(mavenResult.output())
                     .imageName(input.getImageName())
                     .imageTag("latest")
                     .build();
