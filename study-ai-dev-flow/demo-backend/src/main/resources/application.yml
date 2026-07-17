@@ -1,19 +1,22 @@
 server:
-  port: 8080
+  port: 8082
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/yourdb
-    username: youruser
-    password: yourpassword
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:demo_db
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
 http:

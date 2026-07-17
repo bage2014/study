@@ -256,9 +256,10 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
         statusUpdateActivity.recordStageStart(input.getRunId(), StageName.TEST_EXEC.name(), 8);
         int fixAttempt = 0;
         String testFailureContext = null;
+        TestExecResult testExecResult = null;
         while (true) {
             try {
-                testExecActivity.execute(TestExecInput.builder()
+                testExecResult = testExecActivity.execute(TestExecInput.builder()
                         .runId(input.getRunId())
                         .projectLocalPath(input.getProjectLocalPath())
                         .projectPath(input.getProjectLocalPath())
@@ -308,15 +309,30 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
         }
         try {
             var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            
+            int totalTests = testExecResult != null && testExecResult.getTotalTests() != null 
+                    ? testExecResult.getTotalTests() : 0;
+            int passedTests = testExecResult != null && testExecResult.getPassedTests() != null 
+                    ? testExecResult.getPassedTests() : 0;
+            int failedTests = testExecResult != null && testExecResult.getFailedTests() != null 
+                    ? testExecResult.getFailedTests() : 0;
+            
+            java.util.List<java.util.Map<String, Object>> testList = new java.util.ArrayList<>();
+            if (testExecResult != null && testExecResult.getTestDetails() != null) {
+                for (java.util.Map<String, String> detail : testExecResult.getTestDetails()) {
+                    java.util.Map<String, Object> testItem = new java.util.HashMap<>();
+                    testItem.put("name", detail.get("name"));
+                    testItem.put("status", detail.get("status"));
+                    testItem.put("total", Integer.parseInt(detail.getOrDefault("total", "0")));
+                    testItem.put("passed", Integer.parseInt(detail.getOrDefault("passed", "0")));
+                    testItem.put("failed", Integer.parseInt(detail.getOrDefault("failed", "0")));
+                    testList.add(testItem);
+                }
+            }
+            
             String testExecJson = mapper.writeValueAsString(Map.of(
-                    "testStats", Map.of("total", 5, "passed", 5, "failed", 0, "coverage", "85%"),
-                    "tests", List.of(
-                            Map.of("name", "HealthControllerTest", "status", "PASSED"),
-                            Map.of("name", "HealthServiceTest", "status", "PASSED"),
-                            Map.of("name", "HealthResponseTest", "status", "PASSED"),
-                            Map.of("name", "HealthRepositoryTest", "status", "PASSED"),
-                            Map.of("name", "IntegrationTest", "status", "PASSED")
-                    ),
+                    "testStats", Map.of("total", totalTests, "passed", passedTests, "failed", failedTests),
+                    "tests", testList,
                     "fixAttempts", fixAttempt
             ));
             statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.TEST_EXEC.name(), testExecJson, null);
@@ -361,12 +377,16 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                 .build());
         try {
             var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            boolean buildSuccess = buildResult != null && Boolean.TRUE.equals(buildResult.getSuccess());
+            String buildOutput = buildResult != null && buildResult.getBuildOutput() != null 
+                    ? buildResult.getBuildOutput() : buildResult != null && buildResult.getOutput() != null 
+                    ? buildResult.getOutput() : "";
+            
             String buildJson = mapper.writeValueAsString(Map.of(
-                    "buildStatus", "SUCCESS",
+                    "buildStatus", buildSuccess ? "SUCCESS" : "FAILED",
                     "imageName", buildResult != null ? buildResult.getImageName() : imageName,
                     "imageTag", buildResult != null ? buildResult.getImageTag() : "latest",
-                    "duration", "12.5s",
-                    "log", "[INFO] BUILD SUCCESS\n[INFO] Total time: 12.534 s"
+                    "log", buildOutput.length() > 2000 ? buildOutput.substring(0, 2000) : buildOutput
             ));
             statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.BUILD.name(), buildJson, null);
         } catch (Exception e) {

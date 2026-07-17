@@ -22,13 +22,16 @@ public class TestGenAgentService {
 
     private final TestGenAiService aiService;
     private final ObjectMapper objectMapper;
+    private final ProjectConventionService conventionService;
 
     public TestGenAgentService(@Qualifier("codeGenModel") ChatLanguageModel model,
-                               ObjectMapper objectMapper) {
+                               ObjectMapper objectMapper,
+                               ProjectConventionService conventionService) {
         this.aiService = AiServices.builder(TestGenAiService.class)
                 .chatLanguageModel(model)
                 .build();
         this.objectMapper = objectMapper;
+        this.conventionService = conventionService;
     }
 
     public Map<String, String> generateTests(String projectPath, ProjectType projectType,
@@ -36,7 +39,16 @@ public class TestGenAgentService {
         String techStack = describeTechStack(projectType);
         String filesToTest = String.join("\n", generatedFilePaths);
         
-        String result = aiService.generateTests(techStack, filesToTest);
+        String conventions = "";
+        try {
+            ProjectConventionService.ProjectConvention convention = conventionService.detectConventions(projectPath);
+            conventions = conventionService.buildPromptConvention(convention);
+            log.info("Detected project conventions for test generation: {}", projectPath);
+        } catch (Exception e) {
+            log.warn("Failed to detect project conventions: {}", e.getMessage());
+        }
+        
+        String result = aiService.generateTests(techStack, filesToTest, conventions);
         return parseGeneratedTests(result);
     }
 
@@ -46,14 +58,19 @@ public class TestGenAgentService {
             if (trimmed.startsWith("```")) {
                 trimmed = trimmed.replaceAll("(?s)^```[a-z]*\\n?", "").replaceAll("```\\s*$", "").trim();
             }
+            
             int start = trimmed.indexOf('{');
             int end = trimmed.lastIndexOf('}');
             if (start >= 0 && end > start) {
                 trimmed = trimmed.substring(start, end + 1);
             }
+            
+            trimmed = trimmed.replace("\\n", "\n").replace("\\r", "\r");
+            
             return objectMapper.readValue(trimmed, new TypeReference<Map<String, String>>() {});
         } catch (Exception e) {
             log.error("Failed to parse generated tests JSON: {}", e.getMessage());
+            log.warn("Raw AI response (first 500 chars): {}", json.length() > 500 ? json.substring(0, 500) : json);
             return Collections.emptyMap();
         }
     }
@@ -83,24 +100,27 @@ public class TestGenAgentService {
                 - Use Spring Boot test annotations (WebMvcTest, MockBean, etc.)
                 - Follow testing best practices
                 - Make sure tests are runnable
+                - STRICTLY follow the project conventions provided below
 
-                Output ONLY a valid JSON object with test file paths as keys and test code as values:
-                {
-                  "src/test/java/com/example/controller/ProductControllerTest.java": "package com.example.controller; ...",
-                  "src/test/java/com/example/service/ProductServiceTest.java": "package com.example.service; ..."
-                }
+                Output ONLY a valid JSON object with test file paths as keys and test code as values.
+                Use the EXACT package names specified in the project conventions, NOT com.example.
 
-                No explanation, no markdown fences.
+                IMPORTANT: The JSON must be valid. Escape all quotes within string values with backslash.
+                The code content should be a single escaped string.
+
+                No explanation, no markdown fences, just the JSON.
                 """)
         @UserMessage("""
                 Tech stack: {{techStack}}
                 Source files to test:
                 {{files}}
+                {{conventions}}
 
                 Generate comprehensive unit tests for the above source files.
                 """)
         String generateTests(
                 @V("techStack") String techStack,
-                @V("files") String files);
+                @V("files") String files,
+                @V("conventions") String conventions);
     }
 }

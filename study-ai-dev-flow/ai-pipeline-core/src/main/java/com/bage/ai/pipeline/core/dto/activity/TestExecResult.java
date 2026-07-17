@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,4 +18,8 @@ public class TestExecResult {
     private Boolean success;
     private String output;
     private String testOutput;
+    private Integer totalTests;
+    private Integer passedTests;
+    private Integer failedTests;
+    private List<Map<String, String>> testDetails;
 }

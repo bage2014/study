@@ -128,11 +128,8 @@ public class CodeGenAgentService {
                 - Follow Spring Boot best practices
                 - STRICTLY follow the project conventions provided below
 
-                Output ONLY a valid JSON object with file paths as keys and code content as values:
-                {
-                  "src/main/java/com/example/controller/ProductController.java": "package com.example.controller; ...",
-                  "src/main/java/com/example/service/ProductService.java": "package com.example.service; ..."
-                }
+                Output ONLY a valid JSON object with file paths as keys and code content as values.
+                Use the EXACT package names specified in the project conventions, NOT com.example.
 
                 No explanation, no markdown fences.
                 """)

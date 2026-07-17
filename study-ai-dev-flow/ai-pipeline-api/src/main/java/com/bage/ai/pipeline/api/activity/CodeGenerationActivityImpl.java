@@ -25,8 +25,10 @@ public class CodeGenerationActivityImpl implements CodeGenerationActivity {
     public CodeGenResult generate(CodeGenInput input) {
         log.info("Starting code generation for pipeline: {}", input.getPipelineId());
 
+        String projectPath = input.getProjectPath() != null ? input.getProjectPath() : input.getProjectLocalPath();
+        
         Map<String, String> generatedFiles = codeGenAgentService.generateCode(
-                input.getProjectPath(),
+                projectPath,
                 input.getParsedRequirementJson(),
                 input.getProjectType(),
                 input.getBuildTool(),
@@ -45,8 +47,10 @@ public class CodeGenerationActivityImpl implements CodeGenerationActivity {
     public CodeGenResult fixCode(CodeGenInput input) {
         log.info("Starting code fix for pipeline: {}", input.getPipelineId());
 
+        String projectPath = input.getProjectPath() != null ? input.getProjectPath() : input.getProjectLocalPath();
+        
         Map<String, String> fixedFiles = codeGenAgentService.generateCode(
-                input.getProjectPath(),
+                projectPath,
                 input.getParsedRequirementJson(),
                 input.getProjectType(),
                 input.getBuildTool(),

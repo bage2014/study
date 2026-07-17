@@ -1,7 +1,7 @@
-package com.example;
+package com.bage.demo;
 
-import com.example.entity.User;
-import com.example.repository.UserRepository;
+import com.bage.demo.entity.User;
+import com.bage.demo.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,36 +16,28 @@ class ApplicationTests {
 
     @Test
     void contextLoads() {
-        // Basic test to ensure application context loads
     }
 
     @Test
     void testSaveAndFindUser() {
-        // Create a user
-        User user = User.builder()
-                .username("testuser")
-                .email("test@example.com")
-                .firstName("Test")
-                .lastName("User")
-                .build();
+        User user = new User();
+        user.setName("testuser");
+        user.setEmail("test@example.com");
+        user.setPassword("password");
 
-        // Save user
         User savedUser = userRepository.save(user);
         assertThat(savedUser.getId()).isNotNull();
-        assertThat(savedUser.getUsername()).isEqualTo("testuser");
+        assertThat(savedUser.getName()).isEqualTo("testuser");
 
-        // Find user by username
-        User foundUser = userRepository.findByUsername("testuser").orElse(null);
+        User foundUser = userRepository.findByEmail("test@example.com").orElse(null);
         assertThat(foundUser).isNotNull();
         assertThat(foundUser.getEmail()).isEqualTo("test@example.com");
 
-        // Clean up
         userRepository.delete(savedUser);
     }
 
     @Test
     void testDatabaseConnection() {
-        // Verify that the database is accessible
         long count = userRepository.count();
         assertThat(count).isGreaterThanOrEqualTo(0);
     }

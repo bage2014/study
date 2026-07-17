@@ -29,8 +29,10 @@ public class TestGenActivityImpl implements TestGenActivity {
                 ? input.getGeneratedFilePaths()
                 : input.getGeneratedFiles().keySet().stream().toList();
 
+        String projectPath = input.getProjectPath() != null ? input.getProjectPath() : input.getProjectLocalPath();
+        
         Map<String, String> testFiles = testGenAgentService.generateTests(
-                input.getProjectPath(),
+                projectPath,
                 input.getProjectType(),
                 filePaths
         );
