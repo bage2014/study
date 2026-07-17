@@ -23,13 +23,16 @@ public class CodeGenAgentService {
 
     private final CodeGenAiService aiService;
     private final ObjectMapper objectMapper;
+    private final ProjectConventionService conventionService;
 
     public CodeGenAgentService(@Qualifier("codeGenModel") ChatLanguageModel model,
-                               ObjectMapper objectMapper) {
+                               ObjectMapper objectMapper,
+                               ProjectConventionService conventionService) {
         this.aiService = AiServices.builder(CodeGenAiService.class)
                 .chatLanguageModel(model)
                 .build();
         this.objectMapper = objectMapper;
+        this.conventionService = conventionService;
     }
 
     public Map<String, String> generateCode(String projectPath, String parsedRequirementJson,
@@ -51,11 +54,21 @@ public class CodeGenAgentService {
         String taskInfo = currentTask != null ? 
                 "Task: " + currentTask.getTitle() + "\nTarget files: " + String.join(", ", currentTask.getTargetFiles()) : "Full implementation";
         
+        String conventions = "";
+        try {
+            ProjectConventionService.ProjectConvention convention = conventionService.detectConventions(projectPath);
+            conventions = conventionService.buildPromptConvention(convention);
+            log.info("Detected project conventions for: {}", projectPath);
+        } catch (Exception e) {
+            log.warn("Failed to detect project conventions: {}", e.getMessage());
+        }
+        
         String result = aiService.generateCode(
                 techStack,
                 parsedRequirementJson,
                 taskInfo,
-                testFailureContext != null ? testFailureContext : "No test failures"
+                testFailureContext != null ? testFailureContext : "No test failures",
+                conventions
         );
         
         return parseGeneratedFiles(result);
@@ -113,7 +126,7 @@ public class CodeGenAgentService {
                 - Include proper imports, error handling, and documentation
                 - Make sure the code compiles and runs
                 - Follow Spring Boot best practices
-                - IMPORTANT: Detect and use the existing package structure from the project. Look for existing Java files to determine the base package name.
+                - STRICTLY follow the project conventions provided below
 
                 Output ONLY a valid JSON object with file paths as keys and code content as values:
                 {
@@ -128,6 +141,7 @@ public class CodeGenAgentService {
                 Requirements: {{requirements}}
                 Current task: {{taskInfo}}
                 Test failure context: {{testFailureContext}}
+                {{conventions}}
 
                 Generate complete code for the given requirements.
                 """)
@@ -135,6 +149,7 @@ public class CodeGenAgentService {
                 @V("techStack") String techStack,
                 @V("requirements") String requirements,
                 @V("taskInfo") String taskInfo,
-                @V("testFailureContext") String testFailureContext);
+                @V("testFailureContext") String testFailureContext,
+                @V("conventions") String conventions);
     }
 }

@@ -25,11 +25,14 @@ public class TaskSplitAgentService {
 
     private final TaskSplitAiService aiService;
     private final ObjectMapper objectMapper;
+    private final ProjectConventionService conventionService;
 
     public TaskSplitAgentService(
             @Qualifier("codeGenModel") ChatLanguageModel model,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            ProjectConventionService conventionService) {
         this.objectMapper = objectMapper;
+        this.conventionService = conventionService;
         this.aiService = AiServices.builder(TaskSplitAiService.class)
                 .chatLanguageModel(model)
                 .build();
@@ -38,13 +41,23 @@ public class TaskSplitAgentService {
     public List<AtomicTask> split(String projectLocalPath, FeaturePoint featurePoint,
                                    ProjectType projectType, BuildTool buildTool) {
         String techStack = describeTechStack(projectType, buildTool);
+        
+        String conventions = "";
+        try {
+            ProjectConventionService.ProjectConvention convention = conventionService.detectConventions(projectLocalPath);
+            conventions = conventionService.buildPromptConvention(convention);
+        } catch (Exception e) {
+            log.warn("Failed to detect project conventions: {}", e.getMessage());
+        }
+        
         String result = aiService.split(
                 featurePoint.getId(),
                 featurePoint.getTitle(),
                 featurePoint.getDescription(),
                 String.join("\n- ", featurePoint.getAcceptanceCriteria()),
                 featurePoint.getScope(),
-                techStack);
+                techStack,
+                conventions);
         return parseTasks(result, featurePoint.getId());
     }
 
@@ -103,7 +116,7 @@ public class TaskSplitAgentService {
                 - title must be ≤ 60 chars, action-oriented
 
                 IMPORTANT: Use the listDirectory tool first to inspect the project structure and determine accurate target file paths.
-                IMPORTANT: Detect and use the existing package structure from the project. Look for existing Java files to determine the base package name.
+                IMPORTANT: STRICTLY follow the project conventions provided below.
 
                 Output ONLY a valid JSON array — no markdown fences, no explanation:
                 [
@@ -123,6 +136,7 @@ public class TaskSplitAgentService {
                 Description: {{description}}
                 Acceptance criteria:
                 - {{criteria}}
+                {{conventions}}
 
                 Split into 1-3 atomic tasks with exact file paths.
                 """)
@@ -132,6 +146,7 @@ public class TaskSplitAgentService {
                 @V("description") String description,
                 @V("criteria") String criteria,
                 @V("scope") String scope,
-                @V("techStack") String techStack);
+                @V("techStack") String techStack,
+                @V("conventions") String conventions);
     }
 }

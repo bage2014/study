@@ -1,0 +1,14 @@
+basePackage: com.bage.demo
+controllerPackage: com.bage.demo.controller
+servicePackage: com.bage.demo.service
+entityPackage: com.bage.demo.entity
+repositoryPackage: com.bage.demo.repository
+dtoPackage: com.bage.demo.dto
+apiPrefix: /api
+codeStyle: standard
+skillPaths:
+  - ~/.trae/skills
+  - ~/.trae-cn/skills
+enabledSkills:
+  - personal-backend-coding-standard
+  - common-coding
