@@ -3,7 +3,6 @@ package com.bage.demo.service;
 import com.bage.demo.dto.MessageRequest;
 import com.bage.demo.dto.MessageResponse;
 import com.bage.demo.entity.Message;
-import com.bage.demo.exception.DuplicateResourceException;
 import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -24,58 +23,53 @@ public class MessageService {
 
     @Transactional
     public MessageResponse createMessage(MessageRequest request) {
-        log.debug("Creating message with content: {}", request.getContent());
-
+        log.info("Creating message with content: {}", request.getContent());
         Message message = Message.builder()
                 .content(request.getContent())
-                .timestamp(request.getTimestamp())
+                .timestamp(request.getTimestamp() != null ? request.getTimestamp() : LocalDateTime.now())
                 .build();
-
         Message savedMessage = messageRepository.save(message);
         log.info("Message created with id: {}", savedMessage.getId());
-
-        return mapToResponse(savedMessage);
+        return toResponse(savedMessage);
     }
 
     public MessageResponse getMessageById(Long id) {
-        log.debug("Fetching message by id: {}", id);
+        log.info("Fetching message with id: {}", id);
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Message", "id", id));
-        return mapToResponse(message);
+                .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
+        return toResponse(message);
     }
 
     public Page<MessageResponse> getAllMessages(Pageable pageable) {
-        log.debug("Fetching all messages with pageable: {}", pageable);
-        return messageRepository.findAll(pageable)
-                .map(this::mapToResponse);
+        log.info("Fetching all messages with pagination");
+        return messageRepository.findAll(pageable).map(this::toResponse);
     }
 
     @Transactional
     public MessageResponse updateMessage(Long id, MessageRequest request) {
-        log.debug("Updating message with id: {}", id);
+        log.info("Updating message with id: {}", id);
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Message", "id", id));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
         message.setContent(request.getContent());
-        message.setTimestamp(request.getTimestamp());
-
+        if (request.getTimestamp() != null) {
+            message.setTimestamp(request.getTimestamp());
+        }
         Message updatedMessage = messageRepository.save(message);
         log.info("Message updated with id: {}", updatedMessage.getId());
-
-        return mapToResponse(updatedMessage);
+        return toResponse(updatedMessage);
     }
 
     @Transactional
     public void deleteMessage(Long id) {
-        log.debug("Deleting message with id: {}", id);
+        log.info("Deleting message with id: {}", id);
         if (!messageRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Message", "id", id);
+            throw new ResourceNotFoundException("Message not found with id: " + id);
         }
         messageRepository.deleteById(id);
         log.info("Message deleted with id: {}", id);
     }
 
-    private MessageResponse mapToResponse(Message message) {
+    private MessageResponse toResponse(Message message) {
         return MessageResponse.builder()
                 .id(message.getId())
                 .content(message.getContent())
