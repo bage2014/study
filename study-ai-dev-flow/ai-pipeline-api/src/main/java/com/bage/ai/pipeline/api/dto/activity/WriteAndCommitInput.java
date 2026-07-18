@@ -16,6 +16,7 @@ public class WriteAndCommitInput {
     private String runId;
     private String projectLocalPath;
     private Map<String, String> generatedFiles;
+    private Map<String, String> testFiles;
     private String commitMessage;
     private String frontendLocalPath;
 }

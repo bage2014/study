@@ -37,6 +37,25 @@ public class WriteAndCommitActivityImpl implements WriteAndCommitActivity {
             }
         }
 
+        if (input.getTestFiles() != null && !input.getTestFiles().isEmpty()) {
+            for (Map.Entry<String, String> entry : input.getTestFiles().entrySet()) {
+                String filePath = entry.getKey();
+                String content = entry.getValue();
+
+                try {
+                    Path fullPath = Paths.get(input.getProjectLocalPath(), filePath);
+                    Files.createDirectories(fullPath.getParent());
+                    Files.writeString(fullPath, content);
+                    log.info("Wrote test file: {}", fullPath);
+                } catch (IOException e) {
+                    log.error("Failed to write test file: {}", filePath, e);
+                    return WriteAndCommitResult.builder()
+                            .runId(input.getRunId())
+                            .build();
+                }
+            }
+        }
+
         log.info("Write and commit completed for pipeline: {}", input.getRunId());
         return WriteAndCommitResult.builder()
                 .runId(input.getRunId())

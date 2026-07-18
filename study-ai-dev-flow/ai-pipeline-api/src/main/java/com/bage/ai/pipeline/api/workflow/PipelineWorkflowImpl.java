@@ -238,6 +238,7 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                 .runId(input.getRunId())
                 .projectLocalPath(input.getProjectLocalPath())
                 .generatedFiles(codeResult.getGeneratedFiles())
+                .testFiles(testGenResult != null ? testGenResult.getTestFiles() : Map.of())
                 .commitMessage(baseCommitMessage)
                 .frontendLocalPath(input.getFrontendLocalPath())
                 .build());

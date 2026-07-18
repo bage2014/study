@@ -65,14 +65,67 @@ public class TestGenAgentService {
                 trimmed = trimmed.substring(start, end + 1);
             }
             
-            trimmed = trimmed.replace("\\n", "\n").replace("\\r", "\r");
-            
             return objectMapper.readValue(trimmed, new TypeReference<Map<String, String>>() {});
         } catch (Exception e) {
             log.error("Failed to parse generated tests JSON: {}", e.getMessage());
             log.warn("Raw AI response (first 500 chars): {}", json.length() > 500 ? json.substring(0, 500) : json);
-            return Collections.emptyMap();
+            
+            try {
+                String trimmed = json.trim();
+                if (trimmed.startsWith("```")) {
+                    trimmed = trimmed.replaceAll("(?s)^```[a-z]*\\n?", "").replaceAll("```\\s*$", "").trim();
+                }
+                
+                int start = trimmed.indexOf('{');
+                int end = trimmed.lastIndexOf('}');
+                if (start >= 0 && end > start) {
+                    trimmed = trimmed.substring(start, end + 1);
+                }
+                
+                com.fasterxml.jackson.databind.ObjectMapper lenientMapper = objectMapper.copy();
+                lenientMapper.enable(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS);
+                return lenientMapper.readValue(trimmed, new TypeReference<Map<String, String>>() {});
+            } catch (Exception e2) {
+                log.error("Failed to parse with lenient mapper: {}", e2.getMessage());
+                
+                try {
+                    return parseAsPythonDict(json);
+                } catch (Exception e3) {
+                    log.error("Failed to parse as Python dict: {}", e3.getMessage());
+                    return Collections.emptyMap();
+                }
+            }
         }
+    }
+    
+    private Map<String, String> parseAsPythonDict(String json) {
+        Map<String, String> result = new java.util.HashMap<>();
+        try {
+            String trimmed = json.trim();
+            if (trimmed.startsWith("```")) {
+                trimmed = trimmed.replaceAll("(?s)^```[a-z]*\\n?", "").replaceAll("```\\s*$", "").trim();
+            }
+            
+            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
+                    "\"([^\"]+\\.java)\":\\s*\"([^\"]+)\"",
+                    java.util.regex.Pattern.DOTALL
+            );
+            java.util.regex.Matcher matcher = pattern.matcher(trimmed);
+            
+            while (matcher.find()) {
+                String filePath = matcher.group(1);
+                String content = matcher.group(2);
+                content = content.replace("\\n", "\n").replace("\\r", "\r").replace("\\\"", "\"");
+                result.put(filePath, content);
+            }
+            
+            if (!result.isEmpty()) {
+                log.info("Parsed {} test files using regex fallback", result.size());
+            }
+        } catch (Exception e) {
+            log.error("Regex parsing failed: {}", e.getMessage());
+        }
+        return result;
     }
 
     private String describeTechStack(ProjectType projectType) {

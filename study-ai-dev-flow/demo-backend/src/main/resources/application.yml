@@ -1,12 +1,12 @@
 server:
-  port: 8082
+  port: 8080
 
 spring:
   datasource:
-    url: jdbc:h2:mem:demo_db
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
     username: sa
     password:
-    driver-class-name: org.h2.Driver
   h2:
     console:
       enabled: true
@@ -18,10 +18,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
 
-http:
-  logging:
-    exclude-paths:
-      - /actuator
-      - /health
-      - /favicon.ico
+logging:
+  level:
+    com.bage.demo: DEBUG
+    org.springframework: INFO
