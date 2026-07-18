@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>消息管理</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 40px; }
+        .card { border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .card-header { background-color: #007bff; color: white; border-radius: 10px 10px 0 0 !important; }
+        .table th { background-color: #e9ecef; }
+        .pagination { margin-top: 20px; }
+        .search-bar { margin-bottom: 20px; }
+        .action-btns .btn { margin-right: 5px; }
+        .modal-header { background-color: #007bff; color: white; }
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-envelope"></i> 消息管理</h4>
+                <button class="btn btn-light btn-sm" onclick="openCreateModal()"><i class="fas fa-plus"></i> 新建消息</button>
+            </div>
+            <div class="card-body">
+                <!-- 搜索栏 -->
+                <div class="row search-bar">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="searchKeyword" placeholder="搜索消息内容...">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" onclick="searchMessages()"><i class="fas fa-search"></i> 搜索</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-secondary w-100" onclick="resetSearch()"><i class="fas fa-undo"></i> 重置</button>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-danger" onclick="deleteSelected()" id="deleteSelectedBtn" disabled>
+                            <i class="fas fa-trash-alt"></i> 批量删除
+                        </button>
+                    </div>
+                </div>
+                <!-- 消息表格 -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="messageTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th>
+                                <th>ID</th>
+                                <th>消息内容</th>
+                                <th>创建时间</th>
+                                <th>更新时间</th>
+                                <th style="width: 180px;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messageTableBody">
+                            <!-- 动态渲染 -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 分页 -->
+                <nav>
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- 动态渲染 -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建/编辑模态框 -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle"><i class="fas fa-edit"></i> 新建消息</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="messageId">
+                    <div class="mb-3">
+                        <label for="messageContent" class="form-label">消息内容 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="messageContent" rows="4" placeholder="请输入消息内容"></textarea>
+                        <div class="invalid-feedback" id="contentError">消息内容不能为空</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMessage()"><i class="fas fa-save"></i> 保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除确认模态框 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> 确认删除</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="deleteMessage">确定要删除选中的消息吗？此操作不可恢复。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDelete()"><i class="fas fa-trash-alt"></i> 删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 消息容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Bootstrap 5 JS + Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ======================== 全局变量 ========================
+        let currentPage = 0;
+        let pageSize = 10;
+        let totalPages = 0;
+        let totalElements = 0;
+        let deleteIds = []; // 待删除的ID列表
+        let isEditMode = false;
+
+        // ======================== 初始化 ========================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMessages();
+        });
+
+        // ======================== 数据加载 ========================
+        function loadMessages() {
+            const keyword = document.getElementById('searchKeyword').value.trim();
+            let url = `/api/messages?page=${currentPage}&size=${pageSize}`;
+            if (keyword) {
+                url += `&keyword=${encodeURIComponent(keyword)}`;
+            }
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error('加载消息失败');
+                    return response.json();
+                })
+                .then(data => {
+                    // 假设返回 { content: [...], totalPages: N, totalElements: N, number: page }
+                    const pageData = data.content || [];
+                    totalPages = data.totalPages || 0;
+                    totalElements = data.totalElements || 0;
+                    renderTable(pageData);
+                    renderPagination();
+                })
+                .catch(error => {
+                    showToast('danger', '加载消息列表失败: ' + error.message);
+                });
+        }
+
+        // ======================== 渲染表格 ========================
+        function renderTable(messages) {
+            const tbody = document.getElementById('messageTableBody');
+            if (!messages || messages.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">暂无消息记录</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            messages.forEach(msg => {
+                html += `
+                    <tr>
+                        <td><input type="checkbox" class="message-checkbox" value="${msg.id}" onchange="updateDeleteButton()"></td>
+                        <td>${msg.id}</td>
+                        <td>${escapeHtml(msg.content || '')}</td>
+                        <td>${formatDate(msg.createdAt)}</td>
+                        <td>${formatDate(msg.updatedAt)}</td>
+                        <td class="action-btns">
+                            <button class="btn btn-sm btn-warning" onclick="openEditModal(${msg.id})"><i class="fas fa-edit"></i> 编辑</button>
+                            <button class="btn btn-sm btn-danger" onclick="openDeleteModal([${msg.id}])"><i class="fas fa-trash-alt"></i> 删除</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        // ======================== 渲染分页 ========================
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            // 上一页
+            html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}"><a class="page-link" href="#" onclick="goToPage(${currentPage - 1})">上一页</a></li>`;
+            
+            // 页码
+            for (let i = 0; i < totalPages; i++) {
+                if (i === currentPage) {
+                    html += `<li class="page-item active"><span class="page-link">${i + 1}</span></li>`;
+                } else {
+                    html += `<li class="page-item"><a class="page-link" href="#" onclick="goToPage(${i})">${i + 1}</a></li>`;
+                }
+            }
+
+            // 下一页
+            html += `<li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}"><a class="page-link" href="#" onclick="goToPage(${currentPage + 1})">下一页</a></li>`;
+            
+            pagination.innerHTML = html;
+        }
+
+        function goToPage(page) {
+            if (page < 0 || page >= totalPages) return;
+            currentPage = page;
+            loadMessages();
+        }
+
+        // ======================== 搜索 ========================
+        function searchMessages() {
+            currentPage = 0;
+            loadMessages();
+        }
+
+        function resetSearch() {
+            document.getElementById('searchKeyword').value = '';
+            currentPage = 0;
+            loadMessages();
+        }
+
+        // ======================== 创建/编辑 ========================
+        function openCreateModal() {
+            isEditMode = false;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus"></i> 新建消息';
+            document.getElementById('messageId').value = '';
+            document.getElementById('messageContent').value = '';
+            document.getElementById('messageContent').classList.remove('is-invalid');
+            document.getElementById('contentError').style.display = 'none';
+            const modal = new bootstrap.Modal(document.getElementById('messageModal'));
+            modal.show();
+        }
+
+        function openEditModal(id) {
+            isEditMode = true;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> 编辑消息';
+            document.getElementById('messageId').value = id;
+            document.getElementById('messageContent').value = '';
+            document.getElementById('messageContent').classList.remove('is-invalid');
+            document.getElementById('contentError').style.display = 'none';
+
+            // 加载消息详情
+            fetch(`/api/messages/${id}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('获取消息详情失败');
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('messageContent').value = data.content || '';
+                })
+                .catch(error => {
+                    showToast('danger', '加载消息详情失败: ' + error.message);
+                });
+
+            const modal = new bootstrap.Modal(document.getElementById('messageModal'));
+            modal.show();
+        }
+
+        function saveMessage() {
+            const content = document.getElementById('messageContent').value.trim();
+            if (!content) {
+                document.getElementById('messageContent').classList.add('is-invalid');
+                document.getElementById('contentError').style.display = 'block';
+                return;
+            }
+            document.getElementById('messageContent').classList.remove('is-invalid');
+            document.getElementById('contentError').style.display = 'none';
+
+            const id = document.getElementById('messageId').value;
+            let url = '/api/messages';
+            let method = 'POST';
+            let body = { content: content };
+
+            if (isEditMode && id) {
+                url = `/api/messages/${id}`;
+                method = 'PUT';
+            }
+
+            fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (method === 'POST') throw new Error('创建消息失败');
+                    else throw new Error('更新消息失败');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 关闭模态框
+                const modal = bootstrap.Modal.getInstance(document.getElementById('messageModal'));
+                if (modal) modal.hide();
+                
+                showToast('success', isEditMode ? '消息更新成功' : '消息创建成功');
+                loadMessages();
+            })
+            .catch(error => {
+                showToast('danger', '操作失败: ' + error.message);
+            });
+        }
+
+        // ======================== 删除 ========================
+        function openDeleteModal(ids) {
+            deleteIds = ids;
+            if (ids.length === 1) {
+                document.getElementById('deleteMessage').innerText = '确定要删除该消息吗？此操作不可恢复。';
+            } else {
+                document.getElementById('deleteMessage').innerText = `确定要删除选中的 ${ids.length} 条消息吗？此操作不可恢复。`;
+            }
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        }
+
+        function confirmDelete() {
+            if (!deleteIds || deleteIds.length === 0) return;
+
+            const promises = deleteIds.map(id => {
+                return fetch(`/api/messages/${id}`, { method: 'DELETE' });
+            });
+
+            Promise.all(promises)
+                .then(responses => {
+                    const allOk = responses.every(r => r.ok);
+                    if (!allOk) throw new Error('部分删除失败');
+                    
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                    if (modal) modal.hide();
+                    
+                    showToast('success', `成功删除 ${deleteIds.length} 条消息`);
+                    deleteIds = [];
+                    document.getElementById('selectAll').checked = false;
+                    updateDeleteButton();
+                    loadMessages();
+                })
+                .catch(error => {
+                    showToast('danger', '删除失败: ' + error.message);
+                });
+        }
+
+        function deleteSelected() {
+            const checkboxes = document.querySelectorAll('.message-checkbox:checked');
+            const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
+            if (ids.length === 0) return;
+            openDeleteModal(ids);
+        }
+
+        // ======================== 辅助函数 ========================
+        function toggleSelectAll() {
+            const checked = document.getElementById('selectAll').checked;
+            document.querySelectorAll('.message-checkbox').forEach(cb => cb.checked = checked);
+            updateDeleteButton();
+        }
+
+        function updateDeleteButton() {
+            const checkedCount = document.querySelectorAll('.message-checkbox:checked').length;
+            const btn = document.getElementById('deleteSelectedBtn');
+            btn.disabled = checkedCount === 0;
+            btn.innerHTML = `<i class="fas fa-trash-alt"></i> 批量删除${checkedCount > 0 ? ` (${checkedCount})` : ''}`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        }
+
+        function showToast(type, message) {
+            const container = document.getElementById('toastContainer');
+            const toastId = 'toast-' + Date.now();
+            const bgClass = type === 'success' ? 'bg-success' : (type === 'danger' ? 'bg-danger' : 'bg-info');
+            const icon = type === 'success' ? 'fa-check-circle' : (type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle');
+            
+            const toastHtml = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fas ${icon}"></i> ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', toastHtml);
+            const toastEl = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+            toastEl.addEventListener('hidden.bs.toast', function() {
+                toastEl.remove();
+            });
+        }
+    </script>
+</body>
+</html>

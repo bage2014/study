@@ -225,19 +225,34 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
         currentStage = StageName.PR_CREATION;
         statusUpdateActivity.recordStageStart(input.getRunId(), StageName.PR_CREATION.name(), 7);
         String baseCommitMessage = "feat: AI-generated code and tests for run " + input.getRunId();
+        
+        int codeFileCount = codeResult.getGeneratedFiles() != null ? codeResult.getGeneratedFiles().size() : 0;
+        int testFileCount = testGenResult != null && testGenResult.getTestFiles() != null ? testGenResult.getTestFiles().size() : 0;
+        
         WriteAndCommitResult writeResult = writeActivity.writeAndCommit(WriteAndCommitInput.builder()
                 .runId(input.getRunId())
                 .projectLocalPath(input.getProjectLocalPath())
                 .generatedFiles(codeResult.getGeneratedFiles())
+                .testFiles(testGenResult != null ? testGenResult.getTestFiles() : null)
                 .commitMessage(baseCommitMessage)
                 .frontendLocalPath(input.getFrontendLocalPath())
                 .build());
         try {
             var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            
+            java.util.List<String> allFilePaths = new java.util.ArrayList<>();
+            if (codeResult.getGeneratedFiles() != null) {
+                allFilePaths.addAll(codeResult.getGeneratedFiles().keySet());
+            }
+            if (testGenResult != null && testGenResult.getTestFiles() != null) {
+                allFilePaths.addAll(testGenResult.getTestFiles().keySet());
+            }
+            
             String writeJson = mapper.writeValueAsString(Map.of(
                     "prUrl", writeResult.getPrUrl(),
                     "commitHash", writeResult.getCommitId(),
-                    "stats", Map.of("added", codeResult.getGeneratedFiles().size(), "modified", 0, "deleted", 0),
+                    "stats", Map.of("added", codeFileCount + testFileCount, "modified", 0, "deleted", 0),
+                    "files", allFilePaths,
                     "risk", "低",
                     "riskItems", List.of("✅ 无破坏性变更", "✅ 向后兼容")
             ));
@@ -300,6 +315,7 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                         .runId(input.getRunId())
                         .projectLocalPath(input.getProjectLocalPath())
                         .generatedFiles(codeResult.getGeneratedFiles())
+                        .testFiles(testGenResult != null ? testGenResult.getTestFiles() : null)
                         .commitMessage(fixMsg)
                         .frontendLocalPath(input.getFrontendLocalPath())
                         .build());

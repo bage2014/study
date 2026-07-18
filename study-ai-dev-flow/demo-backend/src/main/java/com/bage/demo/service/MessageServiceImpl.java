@@ -1,23 +1,22 @@
 package com.bage.demo.service;
 
-import com.bage.demo.dto.MessageQueryDTO;
+import com.bage.demo.dto.MessageDTO;
 import com.bage.demo.entity.Message;
 import com.bage.demo.repository.MessageRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+/**
+ * 消息服务实现类
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,95 +24,111 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
 
+    /**
+     * 新增消息
+     *
+     * @param messageDTO 消息DTO
+     * @return 新增成功的消息实体
+     */
     @Override
     @Transactional
-    public Message createMessage(Message message) {
-        log.info("Creating new message: {}", message);
-        message.setId(null);
-        message.setCreatedAt(LocalDateTime.now());
-        Message saved = messageRepository.save(message);
-        log.info("Message created successfully with id: {}", saved.getId());
-        return saved;
+    public Message createMessage(MessageDTO messageDTO) {
+        log.info("创建消息: senderId={}, receiverId={}", messageDTO.getSenderId(), messageDTO.getReceiverId());
+        Message message = Message.builder()
+                .senderId(messageDTO.getSenderId())
+                .receiverId(messageDTO.getReceiverId())
+                .content(messageDTO.getContent())
+                .type(messageDTO.getType())
+                .status(0) // 默认未读
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        Message savedMessage = messageRepository.save(message);
+        log.info("消息创建成功, id={}", savedMessage.getId());
+        return savedMessage;
     }
 
-    @Override
-    public Optional<Message> getMessageById(Long id) {
-        log.debug("Fetching message by id: {}", id);
-        return messageRepository.findById(id);
-    }
-
-    @Override
-    public Page<Message> listMessages(MessageQueryDTO queryDTO) {
-        log.debug("Listing messages with query: {}", queryDTO);
-        Pageable pageable = PageRequest.of(
-                queryDTO.getPage() != null ? queryDTO.getPage() : 0,
-                queryDTO.getSize() != null ? queryDTO.getSize() : 10
-        );
-        Specification<Message> spec = (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (queryDTO.getSender() != null && !queryDTO.getSender().isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("sender"), queryDTO.getSender()));
-            }
-            if (queryDTO.getReceiver() != null && !queryDTO.getReceiver().isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("receiver"), queryDTO.getReceiver()));
-            }
-            if (queryDTO.getMessageType() != null && !queryDTO.getMessageType().isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("messageType"), queryDTO.getMessageType()));
-            }
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        };
-        return messageRepository.findAll(spec, pageable);
-    }
-
-    @Override
-    @Transactional
-    public Message updateMessage(Long id, Message message) {
-        log.info("Updating message with id: {}", id);
-        Message existing = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message not found with id: " + id));
-        existing.setContent(message.getContent());
-        existing.setSender(message.getSender());
-        existing.setReceiver(message.getReceiver());
-        existing.setMessageType(message.getMessageType());
-        existing.setStatus(message.getStatus());
-        Message updated = messageRepository.save(existing);
-        log.info("Message updated successfully: {}", updated);
-        return updated;
-    }
-
-    @Override
-    @Transactional
-    public Message updateMessageStatus(Long id, String status) {
-        log.info("Updating message status for id: {} to {}", id, status);
-        Message existing = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message not found with id: " + id));
-        existing.setStatus(status);
-        Message updated = messageRepository.save(existing);
-        log.info("Message status updated successfully: {}", updated);
-        return updated;
-    }
-
+    /**
+     * 根据ID删除消息
+     *
+     * @param id 消息ID
+     */
     @Override
     @Transactional
     public void deleteMessage(Long id) {
-        log.info("Deleting message with id: {}", id);
+        log.info("删除消息, id={}", id);
         if (!messageRepository.existsById(id)) {
-            throw new RuntimeException("Message not found with id: " + id);
+            log.warn("消息不存在, id={}", id);
+            throw new EntityNotFoundException("消息不存在，id: " + id);
         }
         messageRepository.deleteById(id);
-        log.info("Message deleted successfully with id: {}", id);
+        log.info("消息删除成功, id={}", id);
     }
 
+    /**
+     * 更新消息
+     *
+     * @param id         消息ID
+     * @param messageDTO 消息DTO
+     * @return 更新后的消息实体
+     */
     @Override
     @Transactional
-    public int deleteMessages(List<Long> ids) {
-        log.info("Batch deleting messages with ids: {}", ids);
-        List<Message> messages = messageRepository.findAllById(ids);
-        if (messages.isEmpty()) {
-            throw new RuntimeException("No messages found for ids: " + ids);
+    public Message updateMessage(Long id, MessageDTO messageDTO) {
+        log.info("更新消息, id={}", id);
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("消息不存在, id={}", id);
+                    return new EntityNotFoundException("消息不存在，id: " + id);
+                });
+        // 更新字段
+        if (messageDTO.getContent() != null) {
+            message.setContent(messageDTO.getContent());
         }
-        messageRepository.deleteAll(messages);
-        log.info("Batch deleted {} messages", messages.size());
-        return messages.size();
+        if (messageDTO.getType() != null) {
+            message.setType(messageDTO.getType());
+        }
+        if (messageDTO.getStatus() != null) {
+            message.setStatus(messageDTO.getStatus());
+        }
+        message.setUpdatedAt(LocalDateTime.now());
+        Message updatedMessage = messageRepository.save(message);
+        log.info("消息更新成功, id={}", updatedMessage.getId());
+        return updatedMessage;
+    }
+
+    /**
+     * 根据ID查询消息
+     *
+     * @param id 消息ID
+     * @return 消息实体Optional
+     */
+    @Override
+    public Optional<Message> getMessageById(Long id) {
+        log.debug("查询消息, id={}", id);
+        return messageRepository.findById(id);
+    }
+
+    /**
+     * 分页查询消息列表
+     *
+     * @param senderId   发送者ID（可选）
+     * @param receiverId 接收者ID（可选）
+     * @param pageable   分页和排序参数
+     * @return 消息分页结果
+     */
+    @Override
+    public Page<Message> listMessages(Long senderId, Long receiverId, Pageable pageable) {
+        log.info("分页查询消息, senderId={}, receiverId={}, page={}, size={}",
+                senderId, receiverId, pageable.getPageNumber(), pageable.getPageSize());
+        if (senderId != null && receiverId != null) {
+            return messageRepository.findBySenderIdAndReceiverId(senderId, receiverId, pageable);
+        } else if (senderId != null) {
+            return messageRepository.findBySenderId(senderId, pageable);
+        } else if (receiverId != null) {
+            return messageRepository.findByReceiverId(receiverId, pageable);
+        } else {
+            return messageRepository.findAll(pageable);
+        }
     }
 }

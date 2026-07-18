@@ -72,7 +72,10 @@ public class TaskSplitAgentService {
             if (start >= 0 && end > start) {
                 trimmed = trimmed.substring(start, end + 1);
             }
-            List<AtomicTask> tasks = objectMapper.readValue(trimmed, new TypeReference<>() {});
+            ObjectMapper lenientMapper = objectMapper.copy();
+            lenientMapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS, true);
+            lenientMapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
+            List<AtomicTask> tasks = lenientMapper.readValue(trimmed, new TypeReference<>() {});
             tasks.forEach(t -> { if (t.getFeaturePointId() == null) t.setFeaturePointId(featurePointId); });
             return tasks;
         } catch (Exception e) {

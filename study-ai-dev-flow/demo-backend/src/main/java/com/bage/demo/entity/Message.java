@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "message")
+@Table(name = "messages")
 public class Message {
 
     @Id
@@ -24,32 +24,5 @@ public class Message {
     private String content;
 
     @Column(nullable = false)
-    private String sender;
-
-    @Column(nullable = false)
-    private String receiver;
-
-    @Column(name = "message_type", nullable = false)
-    private String messageType;
-
-    @Column(name = "status", nullable = false)
-    @Builder.Default
-    private String status = "UNREAD";
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    private LocalDateTime timestamp;
 }

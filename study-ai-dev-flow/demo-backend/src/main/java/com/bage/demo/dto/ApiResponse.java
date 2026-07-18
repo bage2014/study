@@ -5,51 +5,58 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 通用API响应类
+ */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ApiResponse<T> {
 
+    /**
+     * 状态码
+     */
     private int code;
+
+    /**
+     * 消息
+     */
     private String message;
+
+    /**
+     * 数据
+     */
     private T data;
 
+    /**
+     * 成功响应
+     */
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
                 .code(200)
-                .message("成功")
+                .message("操作成功")
                 .data(data)
                 .build();
     }
 
-    public static <T> ApiResponse<T> success(String message, T data) {
+    /**
+     * 成功响应（无数据）
+     */
+    public static <T> ApiResponse<T> success() {
         return ApiResponse.<T>builder()
                 .code(200)
-                .message(message)
-                .data(data)
+                .message("操作成功")
                 .build();
     }
 
+    /**
+     * 失败响应
+     */
     public static <T> ApiResponse<T> error(int code, String message) {
         return ApiResponse.<T>builder()
                 .code(code)
                 .message(message)
-                .build();
-    }
-
-    public static <T> ApiResponse<T> error(String message) {
-        return ApiResponse.<T>builder()
-                .code(500)
-                .message(message)
-                .build();
-    }
-
-    public static <T> ApiResponse<T> error(int code, String message, T data) {
-        return ApiResponse.<T>builder()
-                .code(code)
-                .message(message)
-                .data(data)
                 .build();
     }
 }

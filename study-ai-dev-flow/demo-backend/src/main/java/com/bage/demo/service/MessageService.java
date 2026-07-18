@@ -1,74 +1,85 @@
 package com.bage.demo.service;
 
+import com.bage.demo.dto.MessageRequest;
+import com.bage.demo.dto.MessageResponse;
 import com.bage.demo.entity.Message;
+import com.bage.demo.exception.DuplicateResourceException;
+import com.bage.demo.exception.ResourceNotFoundException;
+import com.bage.demo.repository.MessageRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
-/**
- * 消息管理服务接口
- */
-public interface MessageService {
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class MessageService {
 
-    /**
-     * 创建消息
-     *
-     * @param message 消息实体
-     * @return 创建后的消息
-     */
-    Message createMessage(Message message);
+    private final MessageRepository messageRepository;
 
-    /**
-     * 根据ID查询消息
-     *
-     * @param id 消息ID
-     * @return 消息Optional
-     */
-    Optional<Message> getMessageById(Long id);
+    @Transactional
+    public MessageResponse createMessage(MessageRequest request) {
+        log.debug("Creating message with content: {}", request.getContent());
 
-    /**
-     * 分页查询消息列表，支持按发送者、接收者、消息类型筛选
-     *
-     * @param sender      发送者（可选）
-     * @param receiver    接收者（可选）
-     * @param messageType 消息类型（可选）
-     * @param pageable    分页参数
-     * @return 分页消息列表
-     */
-    Page<Message> listMessages(String sender, String receiver, String messageType, Pageable pageable);
+        Message message = Message.builder()
+                .content(request.getContent())
+                .timestamp(request.getTimestamp())
+                .build();
 
-    /**
-     * 更新消息内容
-     *
-     * @param id      消息ID
-     * @param content 新内容
-     * @return 更新后的消息
-     */
-    Message updateMessageContent(Long id, String content);
+        Message savedMessage = messageRepository.save(message);
+        log.info("Message created with id: {}", savedMessage.getId());
 
-    /**
-     * 更新消息状态
-     *
-     * @param id     消息ID
-     * @param status 新状态
-     * @return 更新后的消息
-     */
-    Message updateMessageStatus(Long id, String status);
+        return mapToResponse(savedMessage);
+    }
 
-    /**
-     * 根据ID删除消息
-     *
-     * @param id 消息ID
-     */
-    void deleteMessage(Long id);
+    public MessageResponse getMessageById(Long id) {
+        log.debug("Fetching message by id: {}", id);
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Message", "id", id));
+        return mapToResponse(message);
+    }
 
-    /**
-     * 批量删除消息
-     *
-     * @param ids 消息ID列表
-     * @return 删除的消息数量
-     */
-    int deleteMessages(List<Long> ids);
+    public Page<MessageResponse> getAllMessages(Pageable pageable) {
+        log.debug("Fetching all messages with pageable: {}", pageable);
+        return messageRepository.findAll(pageable)
+                .map(this::mapToResponse);
+    }
+
+    @Transactional
+    public MessageResponse updateMessage(Long id, MessageRequest request) {
+        log.debug("Updating message with id: {}", id);
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Message", "id", id));
+
+        message.setContent(request.getContent());
+        message.setTimestamp(request.getTimestamp());
+
+        Message updatedMessage = messageRepository.save(message);
+        log.info("Message updated with id: {}", updatedMessage.getId());
+
+        return mapToResponse(updatedMessage);
+    }
+
+    @Transactional
+    public void deleteMessage(Long id) {
+        log.debug("Deleting message with id: {}", id);
+        if (!messageRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Message", "id", id);
+        }
+        messageRepository.deleteById(id);
+        log.info("Message deleted with id: {}", id);
+    }
+
+    private MessageResponse mapToResponse(Message message) {
+        return MessageResponse.builder()
+                .id(message.getId())
+                .content(message.getContent())
+                .timestamp(message.getTimestamp())
+                .build();
+    }
 }

@@ -1,12 +1,18 @@
 package com.bage.demo.service.impl;
 
+import com.bage.demo.dto.MessageDTO;
+import com.bage.demo.dto.MessageQueryDTO;
+import com.bage.demo.dto.PageResult;
 import com.bage.demo.entity.Message;
+import com.bage.demo.exception.BusinessException;
 import com.bage.demo.repository.MessageRepository;
 import com.bage.demo.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +22,9 @@ import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
- * 消息管理服务实现
+ * 消息管理服务实现类
  */
 @Slf4j
 @Service
@@ -29,83 +34,103 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
 
     @Override
-    @Transactional
-    public Message createMessage(Message message) {
-        log.info("创建消息: {}", message);
-        message.setId(null); // 确保是新增
-        message.setCreateTime(LocalDateTime.now());
-        return messageRepository.save(message);
+    @Transactional(rollbackFor = Exception.class)
+    public Message createMessage(MessageDTO messageDTO) {
+        log.info("新增消息: {}", messageDTO);
+        Message message = Message.builder()
+                .senderId(messageDTO.getSenderId())
+                .receiverId(messageDTO.getReceiverId())
+                .content(messageDTO.getContent())
+                .type(messageDTO.getType())
+                .status(0) // 默认未读
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .build();
+        Message saved = messageRepository.save(message);
+        log.info("消息新增成功, ID: {}", saved.getId());
+        return saved;
     }
 
     @Override
-    public Optional<Message> getMessageById(Long id) {
-        log.debug("根据ID查询消息: {}", id);
-        return messageRepository.findById(id);
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteMessage(Long id) {
+        log.info("删除消息, ID: {}", id);
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("消息不存在, ID: " + id));
+        messageRepository.delete(message);
+        log.info("消息删除成功, ID: {}", id);
     }
 
     @Override
-    public Page<Message> listMessages(String sender, String receiver, String messageType, Pageable pageable) {
-        log.debug("分页查询消息列表, sender={}, receiver={}, messageType={}, pageable={}",
-                sender, receiver, messageType, pageable);
+    @Transactional(rollbackFor = Exception.class)
+    public Message updateMessage(Long id, MessageDTO messageDTO) {
+        log.info("更新消息, ID: {}, 数据: {}", id, messageDTO);
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("消息不存在, ID: " + id));
+        message.setSenderId(messageDTO.getSenderId());
+        message.setReceiverId(messageDTO.getReceiverId());
+        message.setContent(messageDTO.getContent());
+        message.setType(messageDTO.getType());
+        message.setStatus(messageDTO.getStatus());
+        message.setUpdateTime(LocalDateTime.now());
+        Message updated = messageRepository.save(message);
+        log.info("消息更新成功, ID: {}", updated.getId());
+        return updated;
+    }
 
-        Specification<Message> spec = (root, query, criteriaBuilder) -> {
+    @Override
+    public Message getMessageById(Long id) {
+        log.info("查询消息, ID: {}", id);
+        return messageRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("消息不存在, ID: " + id));
+    }
+
+    @Override
+    public PageResult<Message> listMessages(MessageQueryDTO queryDTO) {
+        log.info("分页查询消息, 条件: {}", queryDTO);
+        // 构建排序
+        Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
+        if (StringUtils.hasText(queryDTO.getSortField())) {
+            Sort.Direction direction = "asc".equalsIgnoreCase(queryDTO.getSortDirection())
+                    ? Sort.Direction.ASC : Sort.Direction.DESC;
+            sort = Sort.by(direction, queryDTO.getSortField());
+        }
+        // 构建分页
+        Pageable pageable = PageRequest.of(queryDTO.getPage() - 1, queryDTO.getSize(), sort);
+        // 构建查询条件
+        Specification<Message> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-
-            if (StringUtils.hasText(sender)) {
-                predicates.add(criteriaBuilder.equal(root.get("sender"), sender));
+            if (queryDTO.getId() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("id"), queryDTO.getId()));
             }
-            if (StringUtils.hasText(receiver)) {
-                predicates.add(criteriaBuilder.equal(root.get("receiver"), receiver));
+            if (StringUtils.hasText(queryDTO.getSenderId())) {
+                predicates.add(criteriaBuilder.like(root.get("senderId"), "%" + queryDTO.getSenderId() + "%"));
             }
-            if (StringUtils.hasText(messageType)) {
-                predicates.add(criteriaBuilder.equal(root.get("messageType"), messageType));
+            if (StringUtils.hasText(queryDTO.getReceiverId())) {
+                predicates.add(criteriaBuilder.like(root.get("receiverId"), "%" + queryDTO.getReceiverId() + "%"));
             }
-
+            if (queryDTO.getType() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("type"), queryDTO.getType()));
+            }
+            if (queryDTO.getStatus() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), queryDTO.getStatus()));
+            }
+            if (queryDTO.getStartTime() != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime"), queryDTO.getStartTime()));
+            }
+            if (queryDTO.getEndTime() != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime"), queryDTO.getEndTime()));
+            }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
-
-        return messageRepository.findAll(spec, pageable);
-    }
-
-    @Override
-    @Transactional
-    public Message updateMessageContent(Long id, String content) {
-        log.info("更新消息内容, id={}", id);
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("消息不存在，id: " + id));
-        message.setContent(content);
-        return messageRepository.save(message);
-    }
-
-    @Override
-    @Transactional
-    public Message updateMessageStatus(Long id, String status) {
-        log.info("更新消息状态, id={}, status={}", id, status);
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("消息不存在，id: " + id));
-        message.setStatus(status);
-        return messageRepository.save(message);
-    }
-
-    @Override
-    @Transactional
-    public void deleteMessage(Long id) {
-        log.info("删除消息, id={}", id);
-        if (!messageRepository.existsById(id)) {
-            throw new RuntimeException("消息不存在，id: " + id);
-        }
-        messageRepository.deleteById(id);
-    }
-
-    @Override
-    @Transactional
-    public int deleteMessages(List<Long> ids) {
-        log.info("批量删除消息, ids={}", ids);
-        List<Message> messages = messageRepository.findAllById(ids);
-        if (messages.isEmpty()) {
-            return 0;
-        }
-        messageRepository.deleteAll(messages);
-        return messages.size();
+        // 执行查询
+        Page<Message> page = messageRepository.findAll(specification, pageable);
+        // 返回分页结果
+        return PageResult.<Message>builder()
+                .records(page.getContent())
+                .total(page.getTotalElements())
+                .page(queryDTO.getPage())
+                .size(queryDTO.getSize())
+                .build();
     }
 }
