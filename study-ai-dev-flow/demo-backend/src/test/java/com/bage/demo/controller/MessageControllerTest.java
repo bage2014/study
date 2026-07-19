@@ -2,19 +2,16 @@ package com.bage.demo.controller;
 
 import com.bage.demo.dto.CreateMessageRequest;
 import com.bage.demo.dto.MessageResponse;
-import com.bage.demo.dto.PageResponse;
 import com.bage.demo.dto.UpdateMessageRequest;
-import com.bage.demo.entity.Message;
 import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.bean.MockBean;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,6 +20,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -147,10 +145,11 @@ class MessageControllerTest {
 
     @Test
     void deleteMessage_WhenNotExists_ShouldReturn404() throws Exception {
-        willDoNothing().given(messageService).deleteMessage(999L);
+        willThrow(new ResourceNotFoundException("Message not found with id: 999"))
+                .given(messageService).deleteMessage(999L);
 
         mockMvc.perform(delete("/api/messages/999"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNotFound());
     }
 
     @Test

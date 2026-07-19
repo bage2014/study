@@ -1,16 +1,15 @@
 package com.bage.demo.service;
 
-import com.bage.demo.dto.MessageCreateRequest;
-import com.bage.demo.dto.MessageDTO;
-import com.bage.demo.dto.MessagePageResponse;
+import com.bage.demo.dto.CreateMessageRequest;
 import com.bage.demo.dto.MessageResponse;
-import com.bage.demo.dto.MessageUpdateRequest;
+import com.bage.demo.dto.UpdateMessageRequest;
 import com.bage.demo.entity.Message;
 import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +24,17 @@ public class MessageService {
     private final MessageRepository messageRepository;
 
     @Transactional
-    public MessageResponse createMessage(MessageCreateRequest request) {
+    public MessageResponse createMessage(CreateMessageRequest request) {
         log.info("Creating message from sender: {} to receiver: {}", request.getSender(), request.getReceiver());
+        
+        if (request.getContent() == null || request.getContent().trim().isEmpty()) {
+            throw new IllegalArgumentException("Content cannot be empty");
+        }
+        
         Message message = Message.builder()
                 .content(request.getContent())
-                .sender(request.getSender())
-                .receiver(request.getReceiver())
+                .sender(request.getSender() != null ? request.getSender() : "unknown")
+                .receiver(request.getReceiver() != null ? request.getReceiver() : "unknown")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
@@ -38,32 +42,16 @@ public class MessageService {
         return convertToResponse(message);
     }
 
-    public MessagePageResponse listMessages(String sender, String receiver, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
-        log.info("Fetching messages with filters - sender: {}, receiver: {}, startDate: {}, endDate: {}", sender, receiver, startDate, endDate);
-        Page<Message> messages;
-        if (sender != null && receiver != null && startDate != null && endDate != null) {
-            messages = messageRepository.findBySenderAndReceiverAndCreatedAtBetween(sender, receiver, startDate, endDate, pageable);
-        } else if (sender != null && receiver != null) {
-            messages = messageRepository.findBySenderAndReceiver(sender, receiver, pageable);
-        } else if (sender != null) {
-            messages = messageRepository.findBySender(sender, pageable);
-        } else if (receiver != null) {
-            messages = messageRepository.findByReceiver(receiver, pageable);
-        } else if (startDate != null && endDate != null) {
-            messages = messageRepository.findByCreatedAtBetween(startDate, endDate, pageable);
-        } else {
-            messages = messageRepository.findAll(pageable);
+    public Page<MessageResponse> getAllMessages(int page, int size) {
+        if (page < 0) {
+            throw new IllegalArgumentException("Page index must not be less than zero");
+        }
+        if (size < 1) {
+            throw new IllegalArgumentException("Page size must not be less than one");
         }
         
-        return MessagePageResponse.builder()
-                .content(messages.getContent().stream().map(this::convertToResponse).toList())
-                .page(messages.getNumber())
-                .size(messages.getSize())
-                .totalElements(messages.getTotalElements())
-                .totalPages(messages.getTotalPages())
-                .first(messages.isFirst())
-                .last(messages.isLast())
-                .build();
+        Pageable pageable = PageRequest.of(page, size);
+        return messageRepository.findAll(pageable).map(this::convertToResponse);
     }
 
     public MessageResponse getMessageById(Long id) {
@@ -74,10 +62,11 @@ public class MessageService {
     }
 
     @Transactional
-    public MessageResponse updateMessage(Long id, MessageUpdateRequest request) {
+    public MessageResponse updateMessage(Long id, UpdateMessageRequest request) {
         log.info("Updating message with id: {}", id);
         Message existingMessage = messageRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
+        
         if (request.getContent() != null) {
             existingMessage.setContent(request.getContent());
         }
@@ -95,25 +84,13 @@ public class MessageService {
     @Transactional
     public void deleteMessage(Long id) {
         log.info("Deleting message with id: {}", id);
-        if (!messageRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Message not found with id: " + id);
-        }
-        messageRepository.deleteById(id);
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
+        messageRepository.delete(message);
     }
 
     private MessageResponse convertToResponse(Message message) {
         return MessageResponse.builder()
-                .id(message.getId())
-                .content(message.getContent())
-                .sender(message.getSender())
-                .receiver(message.getReceiver())
-                .createdAt(message.getCreatedAt())
-                .updatedAt(message.getUpdatedAt())
-                .build();
-    }
-
-    private MessageDTO convertToDTO(Message message) {
-        return MessageDTO.builder()
                 .id(message.getId())
                 .content(message.getContent())
                 .sender(message.getSender())

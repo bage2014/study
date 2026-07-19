@@ -1,12 +1,13 @@
 package com.bage.demo.controller;
 
-import com.bage.demo.dto.MessageCreateRequest;
-import com.bage.demo.dto.MessageUpdateRequest;
-import com.bage.demo.dto.MessageResponse;
+import com.bage.demo.dto.CreateMessageRequest;
 import com.bage.demo.dto.MessagePageResponse;
+import com.bage.demo.dto.MessageResponse;
+import com.bage.demo.dto.UpdateMessageRequest;
 import com.bage.demo.service.MessageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,12 +25,23 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<MessageResponse> createMessage(@Valid @RequestBody MessageCreateRequest request) {
+    public ResponseEntity<MessageResponse> createMessage(@Valid @RequestBody CreateMessageRequest request) {
         MessageResponse response = messageService.createMessage(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
+    public ResponseEntity<Page<MessageResponse>> getAllMessages(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        if (page < 0 || size < 1) {
+            return ResponseEntity.badRequest().build();
+        }
+        Page<MessageResponse> response = messageService.getAllMessages(page, size);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/list")
     public ResponseEntity<MessagePageResponse> listMessages(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
@@ -41,8 +53,17 @@ public class MessageController {
             @RequestParam(defaultValue = "desc") String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         PageRequest pageRequest = PageRequest.of(page, size, sort);
-        MessagePageResponse response = messageService.listMessages(sender, receiver, startDate, endDate, pageRequest);
-        return ResponseEntity.ok(response);
+        Page<MessageResponse> messagePage = messageService.getAllMessages(page, size);
+        
+        return ResponseEntity.ok(MessagePageResponse.builder()
+                .content(messagePage.getContent())
+                .page(messagePage.getNumber())
+                .size(messagePage.getSize())
+                .totalElements(messagePage.getTotalElements())
+                .totalPages(messagePage.getTotalPages())
+                .first(messagePage.isFirst())
+                .last(messagePage.isLast())
+                .build());
     }
 
     @GetMapping("/{id}")
@@ -52,7 +73,7 @@ public class MessageController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MessageResponse> updateMessage(@PathVariable Long id, @Valid @RequestBody MessageUpdateRequest request) {
+    public ResponseEntity<MessageResponse> updateMessage(@PathVariable Long id, @Valid @RequestBody UpdateMessageRequest request) {
         MessageResponse response = messageService.updateMessage(id, request);
         return ResponseEntity.ok(response);
     }
