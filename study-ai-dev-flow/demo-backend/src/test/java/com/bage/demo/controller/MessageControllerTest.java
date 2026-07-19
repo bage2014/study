@@ -1,27 +1,28 @@
 package com.bage.demo.controller;
 
-import com.bage.demo.dto.MessageRequest;
+import com.bage.demo.dto.CreateMessageRequest;
 import com.bage.demo.dto.MessageResponse;
+import com.bage.demo.dto.PageResponse;
+import com.bage.demo.dto.UpdateMessageRequest;
+import com.bage.demo.entity.Message;
 import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.bean.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -31,149 +32,151 @@ class MessageControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private MessageService messageService;
 
-    private ObjectMapper objectMapper;
-    private MessageResponse testResponse;
-    private MessageRequest testRequest;
-
-    @BeforeEach
-    void setUp() {
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
-        testResponse = MessageResponse.builder()
-                .id(1L)
-                .content("Test content")
-                .timestamp(LocalDateTime.now())
-                .build();
-
-        testRequest = MessageRequest.builder()
-                .content("Test content")
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
     @Test
-    @DisplayName("POST /api/messages - 成功创建消息")
-    void createMessage_ShouldReturnCreatedMessage() throws Exception {
-        when(messageService.createMessage(any(MessageRequest.class))).thenReturn(testResponse);
+    void createMessage_ShouldReturnCreated() throws Exception {
+        CreateMessageRequest request = new CreateMessageRequest();
+        request.setContent("Hello");
+
+        MessageResponse response = new MessageResponse();
+        response.setId(1L);
+        response.setContent("Hello");
+
+        given(messageService.createMessage(any(CreateMessageRequest.class))).willReturn(response);
 
         mockMvc.perform(post("/api/messages")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testRequest)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.data.id").value(testResponse.getId()))
-                .andExpect(jsonPath("$.data.content").value(testResponse.getContent()));
-
-        verify(messageService, times(1)).createMessage(any(MessageRequest.class));
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.content").value("Hello"));
     }
 
     @Test
-    @DisplayName("POST /api/messages - 内容为空时返回错误")
-    void createMessage_ShouldReturnErrorWhenContentBlank() throws Exception {
-        MessageRequest invalidRequest = MessageRequest.builder()
-                .content("")
-                .build();
+    void getAllMessages_ShouldReturnPage() throws Exception {
+        MessageResponse msg1 = new MessageResponse();
+        msg1.setId(1L);
+        msg1.setContent("Hello");
 
-        mockMvc.perform(post("/api/messages")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidRequest)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value(400));
+        MessageResponse msg2 = new MessageResponse();
+        msg2.setId(2L);
+        msg2.setContent("World");
 
-        verify(messageService, never()).createMessage(any(MessageRequest.class));
-    }
-
-    @Test
-    @DisplayName("GET /api/messages/{id} - 成功获取消息")
-    void getMessageById_ShouldReturnMessage() throws Exception {
-        when(messageService.getMessageById(1L)).thenReturn(testResponse);
-
-        mockMvc.perform(get("/api/messages/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.data.id").value(testResponse.getId()))
-                .andExpect(jsonPath("$.data.content").value(testResponse.getContent()));
-
-        verify(messageService, times(1)).getMessageById(1L);
-    }
-
-    @Test
-    @DisplayName("GET /api/messages/{id} - 消息不存在时返回404")
-    void getMessageById_ShouldReturnNotFound() throws Exception {
-        when(messageService.getMessageById(999L)).thenThrow(new ResourceNotFoundException("Message not found"));
-
-        mockMvc.perform(get("/api/messages/{id}", 999L))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value(404));
-
-        verify(messageService, times(1)).getMessageById(999L);
-    }
-
-    @Test
-    @DisplayName("GET /api/messages - 成功获取消息列表")
-    void getAllMessages_ShouldReturnMessageList() throws Exception {
-        Page<MessageResponse> messagePage = new PageImpl<>(Arrays.asList(testResponse));
-        when(messageService.getAllMessages(any())).thenReturn(messagePage);
+        Page<MessageResponse> page = new PageImpl<>(List.of(msg1, msg2));
+        given(messageService.getAllMessages(anyInt(), anyInt())).willReturn(page);
 
         mockMvc.perform(get("/api/messages")
                         .param("page", "0")
-                        .param("size", "10"))
+                        .param("size", "10")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.data.content[0].id").value(testResponse.getId()));
-
-        verify(messageService, times(1)).getAllMessages(any());
+                .andExpect(jsonPath("$.content.length()").value(2))
+                .andExpect(jsonPath("$.content[0].id").value(1L))
+                .andExpect(jsonPath("$.content[1].id").value(2L));
     }
 
     @Test
-    @DisplayName("PUT /api/messages/{id} - 成功更新消息")
-    void updateMessage_ShouldReturnUpdatedMessage() throws Exception {
-        MessageResponse updatedResponse = MessageResponse.builder()
-                .id(1L)
-                .content("Updated content")
-                .timestamp(LocalDateTime.now())
-                .build();
-        MessageRequest updateRequest = MessageRequest.builder()
-                .content("Updated content")
-                .build();
+    void getMessageById_WhenExists_ShouldReturnMessage() throws Exception {
+        MessageResponse response = new MessageResponse();
+        response.setId(1L);
+        response.setContent("Hello");
 
-        when(messageService.updateMessage(eq(1L), any(MessageRequest.class))).thenReturn(updatedResponse);
+        given(messageService.getMessageById(1L)).willReturn(response);
 
-        mockMvc.perform(put("/api/messages/{id}", 1L)
+        mockMvc.perform(get("/api/messages/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.content").value("Hello"));
+    }
+
+    @Test
+    void getMessageById_WhenNotExists_ShouldReturn404() throws Exception {
+        given(messageService.getMessageById(999L)).willThrow(new ResourceNotFoundException("Message not found with id: 999"));
+
+        mockMvc.perform(get("/api/messages/999")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateMessage_WhenExists_ShouldReturnUpdated() throws Exception {
+        UpdateMessageRequest request = new UpdateMessageRequest();
+        request.setContent("Updated");
+
+        MessageResponse response = new MessageResponse();
+        response.setId(1L);
+        response.setContent("Updated");
+
+        given(messageService.updateMessage(eq(1L), any(UpdateMessageRequest.class))).willReturn(response);
+
+        mockMvc.perform(put("/api/messages/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateRequest)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.data.content").value("Updated content"));
-
-        verify(messageService, times(1)).updateMessage(eq(1L), any(MessageRequest.class));
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.content").value("Updated"));
     }
 
     @Test
-    @DisplayName("DELETE /api/messages/{id} - 成功删除消息")
-    void deleteMessage_ShouldReturnSuccess() throws Exception {
-        doNothing().when(messageService).deleteMessage(1L);
+    void updateMessage_WhenNotExists_ShouldReturn404() throws Exception {
+        UpdateMessageRequest request = new UpdateMessageRequest();
+        request.setContent("Updated");
 
-        mockMvc.perform(delete("/api/messages/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(200));
+        given(messageService.updateMessage(eq(999L), any(UpdateMessageRequest.class)))
+                .willThrow(new ResourceNotFoundException("Message not found with id: 999"));
 
-        verify(messageService, times(1)).deleteMessage(1L);
+        mockMvc.perform(put("/api/messages/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    @DisplayName("DELETE /api/messages/{id} - 消息不存在时返回404")
-    void deleteMessage_ShouldReturnNotFound() throws Exception {
-        doThrow(new ResourceNotFoundException("Message not found")).when(messageService).deleteMessage(999L);
+    void deleteMessage_WhenExists_ShouldReturnNoContent() throws Exception {
+        willDoNothing().given(messageService).deleteMessage(1L);
 
-        mockMvc.perform(delete("/api/messages/{id}", 999L))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value(404));
+        mockMvc.perform(delete("/api/messages/1"))
+                .andExpect(status().isNoContent());
+    }
 
-        verify(messageService, times(1)).deleteMessage(999L);
+    @Test
+    void deleteMessage_WhenNotExists_ShouldReturn404() throws Exception {
+        willDoNothing().given(messageService).deleteMessage(999L);
+
+        mockMvc.perform(delete("/api/messages/999"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void createMessage_WithInvalidContent_ShouldReturnBadRequest() throws Exception {
+        CreateMessageRequest request = new CreateMessageRequest();
+        request.setContent("");
+
+        mockMvc.perform(post("/api/messages")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getMessages_WithNegativePage_ShouldReturnBadRequest() throws Exception {
+        mockMvc.perform(get("/api/messages")
+                        .param("page", "-1")
+                        .param("size", "10"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getMessages_WithZeroSize_ShouldReturnBadRequest() throws Exception {
+        mockMvc.perform(get("/api/messages")
+                        .param("page", "0")
+                        .param("size", "0"))
+                .andExpect(status().isBadRequest());
     }
 }

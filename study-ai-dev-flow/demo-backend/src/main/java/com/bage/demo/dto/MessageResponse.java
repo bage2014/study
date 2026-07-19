@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO for returning message data in API responses.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,5 +18,8 @@ public class MessageResponse {
 
     private Long id;
     private String content;
-    private LocalDateTime timestamp;
+    private String sender;
+    private String receiver;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

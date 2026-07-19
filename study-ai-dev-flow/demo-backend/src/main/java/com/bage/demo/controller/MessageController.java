@@ -1,19 +1,21 @@
 package com.bage.demo.controller;
 
-import com.bage.demo.dto.ApiResponse;
-import com.bage.demo.dto.MessageRequest;
+import com.bage.demo.dto.MessageCreateRequest;
+import com.bage.demo.dto.MessageUpdateRequest;
 import com.bage.demo.dto.MessageResponse;
+import com.bage.demo.dto.MessagePageResponse;
 import com.bage.demo.service.MessageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/messages")
 @RequiredArgsConstructor
@@ -22,42 +24,42 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<MessageResponse>> createMessage(@Valid @RequestBody MessageRequest request) {
-        log.info("Received create message request");
+    public ResponseEntity<MessageResponse> createMessage(@Valid @RequestBody MessageCreateRequest request) {
         MessageResponse response = messageService.createMessage(request);
-        return ResponseEntity.ok(ApiResponse.success(response));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<MessageResponse>> getMessageById(@PathVariable Long id) {
-        log.info("Received get message request for id: {}", id);
-        MessageResponse response = messageService.getMessageById(id);
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<MessageResponse>>> getAllMessages(
+    public ResponseEntity<MessagePageResponse> listMessages(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        log.info("Received get all messages request - page: {}, size: {}", page, size);
-        Pageable pageable = PageRequest.of(page, size);
-        Page<MessageResponse> response = messageService.getAllMessages(pageable);
-        return ResponseEntity.ok(ApiResponse.success(response));
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String sender,
+            @RequestParam(required = false) String receiver,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        MessagePageResponse response = messageService.listMessages(sender, receiver, startDate, endDate, pageRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MessageResponse> getMessage(@PathVariable Long id) {
+        MessageResponse response = messageService.getMessageById(id);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<MessageResponse>> updateMessage(
-            @PathVariable Long id,
-            @Valid @RequestBody MessageRequest request) {
-        log.info("Received update message request for id: {}", id);
+    public ResponseEntity<MessageResponse> updateMessage(@PathVariable Long id, @Valid @RequestBody MessageUpdateRequest request) {
         MessageResponse response = messageService.updateMessage(id, request);
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteMessage(@PathVariable Long id) {
-        log.info("Received delete message request for id: {}", id);
+    public ResponseEntity<Void> deleteMessage(@PathVariable Long id) {
         messageService.deleteMessage(id);
-        return ResponseEntity.ok(ApiResponse.success());
+        return ResponseEntity.noContent().build();
     }
 }

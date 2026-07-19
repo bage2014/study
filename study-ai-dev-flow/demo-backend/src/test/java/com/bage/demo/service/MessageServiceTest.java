@@ -1,12 +1,11 @@
 package com.bage.demo.service;
 
-import com.bage.demo.dto.MessageRequest;
+import com.bage.demo.dto.CreateMessageRequest;
 import com.bage.demo.dto.MessageResponse;
+import com.bage.demo.dto.UpdateMessageRequest;
 import com.bage.demo.entity.Message;
 import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.repository.MessageRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,15 +14,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MessageServiceTest {
@@ -34,144 +35,158 @@ class MessageServiceTest {
     @InjectMocks
     private MessageService messageService;
 
-    private Message testMessage;
-    private MessageRequest testRequest;
-
-    @BeforeEach
-    void setUp() {
-        testMessage = Message.builder()
-                .id(1L)
-                .content("Test content")
-                .timestamp(LocalDateTime.now())
-                .build();
-
-        testRequest = MessageRequest.builder()
-                .content("Test content")
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
     @Test
-    @DisplayName("createMessage - 成功创建消息")
     void createMessage_ShouldReturnMessageResponse() {
-        when(messageRepository.save(any(Message.class))).thenReturn(testMessage);
+        CreateMessageRequest request = new CreateMessageRequest();
+        request.setContent("Hello");
 
-        MessageResponse response = messageService.createMessage(testRequest);
+        Message savedMessage = new Message();
+        savedMessage.setId(1L);
+        savedMessage.setContent("Hello");
 
-        assertNotNull(response);
-        assertEquals(testMessage.getId(), response.getId());
-        assertEquals(testMessage.getContent(), response.getContent());
-        verify(messageRepository, times(1)).save(any(Message.class));
+        given(messageRepository.save(any(Message.class))).willReturn(savedMessage);
+
+        MessageResponse response = messageService.createMessage(request);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getId()).isEqualTo(1L);
+        assertThat(response.getContent()).isEqualTo("Hello");
     }
 
     @Test
-    @DisplayName("getMessageById - 成功获取消息")
-    void getMessageById_ShouldReturnMessageResponse() {
-        when(messageRepository.findById(1L)).thenReturn(Optional.of(testMessage));
+    void getAllMessages_ShouldReturnPage() {
+        Message msg1 = new Message();
+        msg1.setId(1L);
+        msg1.setContent("Hello");
+
+        Message msg2 = new Message();
+        msg2.setId(2L);
+        msg2.setContent("World");
+
+        Page<Message> page = new PageImpl<>(List.of(msg1, msg2));
+        given(messageRepository.findAll(any(PageRequest.class))).willReturn(page);
+
+        Page<MessageResponse> result = messageService.getAllMessages(0, 10);
+
+        assertThat(result.getContent()).hasSize(2);
+        assertThat(result.getContent().get(0).getId()).isEqualTo(1L);
+        assertThat(result.getContent().get(1).getContent()).isEqualTo("World");
+    }
+
+    @Test
+    void getMessageById_WhenExists_ShouldReturnMessageResponse() {
+        Message message = new Message();
+        message.setId(1L);
+        message.setContent("Hello");
+
+        given(messageRepository.findById(1L)).willReturn(Optional.of(message));
 
         MessageResponse response = messageService.getMessageById(1L);
 
-        assertNotNull(response);
-        assertEquals(testMessage.getId(), response.getId());
-        assertEquals(testMessage.getContent(), response.getContent());
-        verify(messageRepository, times(1)).findById(1L);
+        assertThat(response).isNotNull();
+        assertThat(response.getId()).isEqualTo(1L);
+        assertThat(response.getContent()).isEqualTo("Hello");
     }
 
     @Test
-    @DisplayName("getMessageById - 消息不存在时抛出异常")
-    void getMessageById_ShouldThrowExceptionWhenNotFound() {
-        when(messageRepository.findById(999L)).thenReturn(Optional.empty());
+    void getMessageById_WhenNotExists_ShouldThrowResourceNotFoundException() {
+        given(messageRepository.findById(999L)).willReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> messageService.getMessageById(999L));
-        verify(messageRepository, times(1)).findById(999L);
+        assertThatThrownBy(() -> messageService.getMessageById(999L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Message not found with id: 999");
     }
 
     @Test
-    @DisplayName("getAllMessages - 成功获取消息列表")
-    void getAllMessages_ShouldReturnPageOfMessageResponses() {
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<Message> messagePage = new PageImpl<>(Arrays.asList(testMessage));
-        when(messageRepository.findAll(pageable)).thenReturn(messagePage);
+    void updateMessage_WhenExists_ShouldReturnUpdatedMessageResponse() {
+        Message existingMessage = new Message();
+        existingMessage.setId(1L);
+        existingMessage.setContent("Old");
 
-        Page<MessageResponse> response = messageService.getAllMessages(pageable);
+        UpdateMessageRequest request = new UpdateMessageRequest();
+        request.setContent("Updated");
 
-        assertNotNull(response);
-        assertEquals(1, response.getTotalElements());
-        verify(messageRepository, times(1)).findAll(pageable);
+        Message updatedMessage = new Message();
+        updatedMessage.setId(1L);
+        updatedMessage.setContent("Updated");
+
+        given(messageRepository.findById(1L)).willReturn(Optional.of(existingMessage));
+        given(messageRepository.save(any(Message.class))).willReturn(updatedMessage);
+
+        MessageResponse response = messageService.updateMessage(1L, request);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getId()).isEqualTo(1L);
+        assertThat(response.getContent()).isEqualTo("Updated");
     }
 
     @Test
-    @DisplayName("updateMessage - 成功更新消息")
-    void updateMessage_ShouldReturnUpdatedMessage() {
-        Message updatedMessage = Message.builder()
-                .id(1L)
-                .content("Updated content")
-                .timestamp(LocalDateTime.now())
-                .build();
-        MessageRequest updateRequest = MessageRequest.builder()
-                .content("Updated content")
-                .build();
+    void updateMessage_WhenNotExists_ShouldThrowResourceNotFoundException() {
+        UpdateMessageRequest request = new UpdateMessageRequest();
+        request.setContent("Updated");
 
-        when(messageRepository.findById(1L)).thenReturn(Optional.of(testMessage));
-        when(messageRepository.save(any(Message.class))).thenReturn(updatedMessage);
+        given(messageRepository.findById(999L)).willReturn(Optional.empty());
 
-        MessageResponse response = messageService.updateMessage(1L, updateRequest);
-
-        assertNotNull(response);
-        assertEquals(updatedMessage.getContent(), response.getContent());
-        verify(messageRepository, times(1)).findById(1L);
-        verify(messageRepository, times(1)).save(any(Message.class));
+        assertThatThrownBy(() -> messageService.updateMessage(999L, request))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Message not found with id: 999");
     }
 
     @Test
-    @DisplayName("updateMessage - 消息不存在时抛出异常")
-    void updateMessage_ShouldThrowExceptionWhenNotFound() {
-        when(messageRepository.findById(999L)).thenReturn(Optional.empty());
+    void deleteMessage_WhenExists_ShouldDelete() {
+        Message message = new Message();
+        message.setId(1L);
+        message.setContent("Hello");
 
-        assertThrows(ResourceNotFoundException.class, () -> messageService.updateMessage(999L, testRequest));
-        verify(messageRepository, times(1)).findById(999L);
-        verify(messageRepository, never()).save(any(Message.class));
+        given(messageRepository.findById(1L)).willReturn(Optional.of(message));
+        willDoNothing().given(messageRepository).delete(message);
+
+        messageService.deleteMessage(1L);
+
+        verify(messageRepository).findById(1L);
+        verify(messageRepository).delete(message);
     }
 
     @Test
-    @DisplayName("deleteMessage - 成功删除消息")
-    void deleteMessage_ShouldDeleteMessageSuccessfully() {
-        when(messageRepository.existsById(1L)).thenReturn(true);
-        doNothing().when(messageRepository).deleteById(1L);
+    void deleteMessage_WhenNotExists_ShouldThrowResourceNotFoundException() {
+        given(messageRepository.findById(999L)).willReturn(Optional.empty());
 
-        assertDoesNotThrow(() -> messageService.deleteMessage(1L));
-        verify(messageRepository, times(1)).existsById(1L);
-        verify(messageRepository, times(1)).deleteById(1L);
+        assertThatThrownBy(() -> messageService.deleteMessage(999L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Message not found with id: 999");
     }
 
     @Test
-    @DisplayName("deleteMessage - 消息不存在时抛出异常")
-    void deleteMessage_ShouldThrowExceptionWhenNotFound() {
-        when(messageRepository.existsById(999L)).thenReturn(false);
+    void createMessage_WithNullContent_ShouldThrowException() {
+        CreateMessageRequest request = new CreateMessageRequest();
+        request.setContent(null);
 
-        assertThrows(ResourceNotFoundException.class, () -> messageService.deleteMessage(999L));
-        verify(messageRepository, times(1)).existsById(999L);
-        verify(messageRepository, never()).deleteById(999L);
+        assertThatThrownBy(() -> messageService.createMessage(request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Content cannot be empty");
     }
 
     @Test
-    @DisplayName("createMessage - 自动设置时间戳")
-    void createMessage_ShouldSetTimestampWhenNotProvided() {
-        MessageRequest requestWithoutTimestamp = MessageRequest.builder()
-                .content("Test content")
-                .build();
-        Message savedMessage = Message.builder()
-                .id(2L)
-                .content("Test content")
-                .timestamp(LocalDateTime.now())
-                .build();
+    void createMessage_WithEmptyContent_ShouldThrowException() {
+        CreateMessageRequest request = new CreateMessageRequest();
+        request.setContent("");
 
-        when(messageRepository.save(any(Message.class))).thenReturn(savedMessage);
+        assertThatThrownBy(() -> messageService.createMessage(request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Content cannot be empty");
+    }
 
-        MessageResponse response = messageService.createMessage(requestWithoutTimestamp);
+    @Test
+    void getAllMessages_WithNegativePage_ShouldThrowException() {
+        assertThatThrownBy(() -> messageService.getAllMessages(-1, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Page index must not be less than zero");
+    }
 
-        assertNotNull(response);
-        assertNotNull(response.getTimestamp());
-        verify(messageRepository, times(1)).save(any(Message.class));
+    @Test
+    void getAllMessages_WithZeroSize_ShouldThrowException() {
+        assertThatThrownBy(() -> messageService.getAllMessages(0, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Page size must not be less than one");
     }
 }
