@@ -1,7 +1,12 @@
 package com.bage.demo.service;
 
+import com.bage.demo.dto.MessageCreateRequest;
 import com.bage.demo.dto.MessageDTO;
+import com.bage.demo.dto.MessagePageResponse;
+import com.bage.demo.dto.MessageResponse;
+import com.bage.demo.dto.MessageUpdateRequest;
 import com.bage.demo.entity.Message;
+import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,19 +25,20 @@ public class MessageService {
     private final MessageRepository messageRepository;
 
     @Transactional
-    public MessageDTO createMessage(MessageDTO messageDTO) {
-        log.info("Creating message from sender: {} to receiver: {}", messageDTO.getSender(), messageDTO.getReceiver());
-        Message message = new Message();
-        message.setContent(messageDTO.getContent());
-        message.setSender(messageDTO.getSender());
-        message.setReceiver(messageDTO.getReceiver());
-        message.setCreatedAt(LocalDateTime.now());
-        message.setUpdatedAt(LocalDateTime.now());
+    public MessageResponse createMessage(MessageCreateRequest request) {
+        log.info("Creating message from sender: {} to receiver: {}", request.getSender(), request.getReceiver());
+        Message message = Message.builder()
+                .content(request.getContent())
+                .sender(request.getSender())
+                .receiver(request.getReceiver())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
         message = messageRepository.save(message);
-        return convertToDTO(message);
+        return convertToResponse(message);
     }
 
-    public Page<MessageDTO> getMessages(String sender, String receiver, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+    public MessagePageResponse listMessages(String sender, String receiver, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
         log.info("Fetching messages with filters - sender: {}, receiver: {}, startDate: {}, endDate: {}", sender, receiver, startDate, endDate);
         Page<Message> messages;
         if (sender != null && receiver != null && startDate != null && endDate != null) {
@@ -49,42 +54,62 @@ public class MessageService {
         } else {
             messages = messageRepository.findAll(pageable);
         }
-        return messages.map(this::convertToDTO);
+        
+        return MessagePageResponse.builder()
+                .content(messages.getContent().stream().map(this::convertToResponse).toList())
+                .page(messages.getNumber())
+                .size(messages.getSize())
+                .totalElements(messages.getTotalElements())
+                .totalPages(messages.getTotalPages())
+                .first(messages.isFirst())
+                .last(messages.isLast())
+                .build();
     }
 
-    public MessageDTO getMessageById(Long id) {
+    public MessageResponse getMessageById(Long id) {
         log.info("Fetching message by id: {}", id);
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message not found with id: " + id));
-        return convertToDTO(message);
+                .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
+        return convertToResponse(message);
     }
 
     @Transactional
-    public MessageDTO updateMessage(Long id, MessageDTO messageDTO) {
+    public MessageResponse updateMessage(Long id, MessageUpdateRequest request) {
         log.info("Updating message with id: {}", id);
         Message existingMessage = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message not found with id: " + id));
-        if (messageDTO.getContent() != null) {
-            existingMessage.setContent(messageDTO.getContent());
+                .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
+        if (request.getContent() != null) {
+            existingMessage.setContent(request.getContent());
         }
-        if (messageDTO.getSender() != null) {
-            existingMessage.setSender(messageDTO.getSender());
+        if (request.getSender() != null) {
+            existingMessage.setSender(request.getSender());
         }
-        if (messageDTO.getReceiver() != null) {
-            existingMessage.setReceiver(messageDTO.getReceiver());
+        if (request.getReceiver() != null) {
+            existingMessage.setReceiver(request.getReceiver());
         }
         existingMessage.setUpdatedAt(LocalDateTime.now());
         existingMessage = messageRepository.save(existingMessage);
-        return convertToDTO(existingMessage);
+        return convertToResponse(existingMessage);
     }
 
     @Transactional
     public void deleteMessage(Long id) {
         log.info("Deleting message with id: {}", id);
         if (!messageRepository.existsById(id)) {
-            throw new RuntimeException("Message not found with id: " + id);
+            throw new ResourceNotFoundException("Message not found with id: " + id);
         }
         messageRepository.deleteById(id);
+    }
+
+    private MessageResponse convertToResponse(Message message) {
+        return MessageResponse.builder()
+                .id(message.getId())
+                .content(message.getContent())
+                .sender(message.getSender())
+                .receiver(message.getReceiver())
+                .createdAt(message.getCreatedAt())
+                .updatedAt(message.getUpdatedAt())
+                .build();
     }
 
     private MessageDTO convertToDTO(Message message) {

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,6 +16,10 @@ public class ApiResponse<T> {
     private int code;
     private String message;
     private T data;
+    private LocalDateTime timestamp;
+    private int status;
+    private String error;
+    private String path;
 
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
