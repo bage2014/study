@@ -23,9 +23,11 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
     private final MavenTool mavenTool;
     private final NpmTool npmTool;
 
-    private static final Pattern TEST_CLASS_PATTERN = Pattern.compile("Running\\s+(\\S+)");
-    private static final Pattern TEST_RESULT_PATTERN = Pattern.compile("Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+),\\s*Skipped:\\s*(\\d+)");
-    private static final Pattern TOTAL_RESULT_PATTERN = Pattern.compile("Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)");
+    private static final Pattern TEST_CLASS_LINE_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+),\\s*Skipped:\\s*(\\d+).*--\\s+in\\s+(\\S+)");
+    private static final Pattern TEST_CLASS_ONLY_PATTERN = Pattern.compile("--\\s+in\\s+(\\S+)");
+    private static final Pattern TOTAL_RESULT_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
+    private static final Pattern RUNNING_CLASS_PATTERN = Pattern.compile("\\[INFO\\]\\s*Running\\s+(\\S+)");
+    private static final Pattern INDIVIDUAL_TEST_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
 
     public LocalTestExecutionStrategy(MavenTool mavenTool, NpmTool npmTool) {
         this.mavenTool = mavenTool;
@@ -85,13 +87,39 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
         String currentTestClass = null;
 
         for (String line : lines) {
-            Matcher classMatcher = TEST_CLASS_PATTERN.matcher(line);
-            if (classMatcher.find()) {
-                currentTestClass = classMatcher.group(1);
+            Matcher classLineMatcher = TEST_CLASS_LINE_PATTERN.matcher(line);
+            if (classLineMatcher.find()) {
+                int testsRun = Integer.parseInt(classLineMatcher.group(1));
+                int failures = Integer.parseInt(classLineMatcher.group(2));
+                int errors = Integer.parseInt(classLineMatcher.group(3));
+                int skipped = Integer.parseInt(classLineMatcher.group(4));
+                String className = classLineMatcher.group(5);
+
+                totalTests += testsRun;
+                totalFailures += failures + errors;
+
+                String simpleClassName = className.contains(".")
+                        ? className.substring(className.lastIndexOf(".") + 1)
+                        : className;
+
+                Map<String, String> testDetail = new HashMap<>();
+                testDetail.put("name", simpleClassName);
+                testDetail.put("status", (failures + errors == 0) ? "PASSED" : "FAILED");
+                testDetail.put("total", String.valueOf(testsRun));
+                testDetail.put("passed", String.valueOf(testsRun - failures - errors));
+                testDetail.put("failed", String.valueOf(failures + errors));
+                testDetails.add(testDetail);
+
                 continue;
             }
 
-            Matcher resultMatcher = TEST_RESULT_PATTERN.matcher(line);
+            Matcher runningMatcher = RUNNING_CLASS_PATTERN.matcher(line);
+            if (runningMatcher.find()) {
+                currentTestClass = runningMatcher.group(1);
+                continue;
+            }
+
+            Matcher resultMatcher = INDIVIDUAL_TEST_PATTERN.matcher(line);
             if (resultMatcher.find() && currentTestClass != null) {
                 int testsRun = Integer.parseInt(resultMatcher.group(1));
                 int failures = Integer.parseInt(resultMatcher.group(2));

@@ -315,11 +315,11 @@
                 <h5 class="text-sm font-medium text-gray-700 mb-2">测试结果</h5>
                 <div class="grid grid-cols-4 gap-4">
                   <div class="bg-gray-50 p-4 rounded-lg text-center">
-                    <p class="text-2xl font-bold text-gray-800">{{ stage.testStats?.total || 5 }}</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ stage.testStats?.total || 0 }}</p>
                     <p class="text-xs text-gray-500">总数</p>
                   </div>
                   <div class="bg-green-50 p-4 rounded-lg text-center">
-                    <p class="text-2xl font-bold text-green-600">{{ stage.testStats?.passed || 5 }}</p>
+                    <p class="text-2xl font-bold text-green-600">{{ stage.testStats?.passed || 0 }}</p>
                     <p class="text-xs text-green-600">通过</p>
                   </div>
                   <div class="bg-red-50 p-4 rounded-lg text-center">
@@ -335,14 +335,12 @@
               <div>
                 <h5 class="text-sm font-medium text-gray-700 mb-2">测试用例</h5>
                 <div class="space-y-2">
-                  <div 
-                    v-for="test in stage.tests || getDefaultTests()" 
+                  <div v-for="test in stage.tests || []" 
                     :key="test.name"
                     :class="[
                       'p-3 rounded-lg flex items-center justify-between',
                       test.status === 'PASSED' ? 'bg-green-50' : 'bg-red-50'
-                    ]"
-                  >
+                    ]">
                     <span class="text-sm text-gray-700">{{ test.name }}</span>
                     <span :class="[
                       'text-xs font-medium',
