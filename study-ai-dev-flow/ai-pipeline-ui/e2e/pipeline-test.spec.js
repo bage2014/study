@@ -4,12 +4,14 @@ test('create pipeline and verify test count display', async ({ page }) => {
   await page.goto('/')
   await page.waitForTimeout(3000)
 
-  const projectOption = page.locator('div:has-text("demo-backend")').first()
-  await projectOption.click()
-  await page.waitForTimeout(1000)
-
-  await page.fill('textbox:has-text("请输入需求标题")', '测试消息功能')
-  await page.fill('textbox:has-text("请详细描述您的业务需求")', '添加消息CRUD功能，包括创建、查询、更新、删除消息')
+  const titleInput = page.locator('input[placeholder*="请输入需求标题"]')
+  await titleInput.click()
+  await titleInput.fill('测试消息功能')
+  
+  const descriptionInput = page.locator('textarea[placeholder*="请详细描述您的业务需求"]')
+  await descriptionInput.click()
+  await descriptionInput.fill('添加消息CRUD功能，包括创建、查询、更新、删除消息')
+  
   await page.waitForTimeout(500)
 
   await page.click('button:has-text("提交需求，启动AI流水线")')
