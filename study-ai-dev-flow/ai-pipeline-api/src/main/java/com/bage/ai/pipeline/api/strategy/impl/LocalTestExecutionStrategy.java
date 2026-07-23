@@ -28,6 +28,7 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
     private static final Pattern TOTAL_RESULT_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
     private static final Pattern RUNNING_CLASS_PATTERN = Pattern.compile("\\[INFO\\]\\s*Running\\s+(\\S+)");
     private static final Pattern INDIVIDUAL_TEST_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
+    private static final Pattern SIMPLE_TEST_PATTERN = Pattern.compile("Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
 
     public LocalTestExecutionStrategy(MavenTool mavenTool, NpmTool npmTool) {
         this.mavenTool = mavenTool;
@@ -149,7 +150,20 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
             if (totalMatcher.find()) {
                 totalTests = Integer.parseInt(totalMatcher.group(1));
                 totalFailures = Integer.parseInt(totalMatcher.group(2)) + Integer.parseInt(totalMatcher.group(3));
+                log.info("Parsed total tests from summary: total={}, failures={}", totalTests, totalFailures);
+            } else {
+                Matcher simpleMatcher = SIMPLE_TEST_PATTERN.matcher(output);
+                if (simpleMatcher.find()) {
+                    totalTests = Integer.parseInt(simpleMatcher.group(1));
+                    totalFailures = Integer.parseInt(simpleMatcher.group(2)) + Integer.parseInt(simpleMatcher.group(3));
+                    log.info("Parsed total tests from simple pattern: total={}, failures={}", totalTests, totalFailures);
+                }
             }
+        }
+
+        if (totalTests == 0) {
+            log.warn("Failed to parse test results from output. Output snippet: {}", 
+                    output.length() > 500 ? output.substring(0, 500) : output);
         }
 
         builder.totalTests(totalTests)
