@@ -8,8 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DTO for updating an existing message.
- * Only the content field is editable; other fields (sender, timestamp) are immutable after creation.
+ * 更新消息请求 DTO
  */
 @Data
 @NoArgsConstructor
@@ -17,7 +16,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateMessageRequest {
 
-    @NotBlank(message = "Message content must not be blank")
-    @Size(min = 1, max = 5000, message = "Message content must be between 1 and 5000 characters")
+    @NotBlank(message = "消息标题不能为空")
+    @Size(max = 200, message = "消息标题长度不能超过200个字符")
+    private String title;
+
+    @NotBlank(message = "消息内容不能为空")
+    @Size(max = 5000, message = "消息内容长度不能超过5000个字符")
     private String content;
+
+    @Size(max = 100, message = "发送者长度不能超过100个字符")
+    private String sender;
+
+    @Size(max = 100, message = "接收者长度不能超过100个字符")
+    private String receiver;
 }

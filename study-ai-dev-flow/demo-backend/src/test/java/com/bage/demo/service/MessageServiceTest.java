@@ -1,12 +1,10 @@
 package com.bage.demo.service;
 
-import com.bage.demo.dto.MessageRequest;
+import com.bage.demo.dto.MessageCreateRequest;
 import com.bage.demo.dto.MessageResponse;
 import com.bage.demo.dto.MessageUpdateRequest;
-import com.bage.demo.dto.PageResponse;
 import com.bage.demo.entity.Message;
 import com.bage.demo.exception.ResourceNotFoundException;
-import com.bage.demo.exception.UnauthorizedException;
 import com.bage.demo.repository.MessageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -40,30 +38,34 @@ class MessageServiceTest {
     private MessageService messageService;
 
     private Message message;
-    private MessageRequest messageRequest;
-    private MessageUpdateRequest messageUpdateRequest;
+    private MessageCreateRequest createRequest;
+    private MessageUpdateRequest updateRequest;
 
     @BeforeEach
     void setUp() {
         LocalDateTime now = LocalDateTime.now();
         message = Message.builder()
                 .id(1L)
+                .title("Test Title")
                 .content("Test Content")
                 .sender("testUser")
-                .timestamp(now)
-                .deleted(false)
+                .receiver("receiver")
+                .createdAt(now)
                 .updatedAt(now)
                 .build();
 
-        messageRequest = MessageRequest.builder()
+        createRequest = MessageCreateRequest.builder()
+                .title("New Title")
                 .content("New Content")
                 .sender("testUser")
-                .timestamp(now)
+                .receiver("receiver")
                 .build();
 
-        messageUpdateRequest = MessageUpdateRequest.builder()
+        updateRequest = MessageUpdateRequest.builder()
+                .title("Updated Title")
                 .content("Updated Content")
                 .sender("testUser")
+                .receiver("receiver")
                 .build();
     }
 
@@ -71,7 +73,7 @@ class MessageServiceTest {
     void createMessage_ShouldReturnMessageResponse() {
         given(messageRepository.save(any(Message.class))).willReturn(message);
 
-        MessageResponse response = messageService.createMessage(messageRequest);
+        MessageResponse response = messageService.createMessage(createRequest);
 
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(1L);
@@ -81,7 +83,7 @@ class MessageServiceTest {
 
     @Test
     void getMessageById_WhenExists_ShouldReturnMessageResponse() {
-        given(messageRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.of(message));
+        given(messageRepository.findById(1L)).willReturn(Optional.of(message));
 
         MessageResponse response = messageService.getMessageById(1L);
 
@@ -92,19 +94,18 @@ class MessageServiceTest {
 
     @Test
     void getMessageById_WhenNotExists_ShouldThrowResourceNotFoundException() {
-        given(messageRepository.findByIdAndDeletedFalse(999L)).willReturn(Optional.empty());
+        given(messageRepository.findById(999L)).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> messageService.getMessageById(999L))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
-    void getAllMessages_ShouldReturnPageResponse() {
+    void listMessages_ShouldReturnPage() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Message> messagePage = new PageImpl<>(Collections.singletonList(message), pageable, 1);
-        given(messageRepository.findByDeletedFalse(any(Pageable.class))).willReturn(messagePage);
+        given(messageRepository.findAll()).willReturn(Collections.singletonList(message));
 
-        PageResponse<MessageResponse> response = messageService.getAllMessages(0, 10, null, null, null);
+        Page<MessageResponse> response = messageService.listMessages(null, null, null, null, pageable);
 
         assertThat(response).isNotNull();
         assertThat(response.getContent()).hasSize(1);
@@ -112,67 +113,49 @@ class MessageServiceTest {
     }
 
     @Test
-    void getAllMessages_WithSenderFilter_ShouldReturnFilteredPageResponse() {
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<Message> messagePage = new PageImpl<>(Collections.singletonList(message), pageable, 1);
-        given(messageRepository.findBySenderAndDeletedFalse(eq("testUser"), any(Pageable.class))).willReturn(messagePage);
-
-        PageResponse<MessageResponse> response = messageService.getAllMessages(0, 10, "testUser", null, null);
-
-        assertThat(response).isNotNull();
-        assertThat(response.getContent()).hasSize(1);
-    }
-
-    @Test
     void updateMessage_WhenExists_ShouldReturnUpdatedMessageResponse() {
-        given(messageRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.of(message));
-        given(messageRepository.save(any(Message.class))).willReturn(message);
+        Message updatedMessage = Message.builder()
+                .id(1L)
+                .title("Updated Title")
+                .content("Updated Content")
+                .sender("testUser")
+                .receiver("receiver")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
-        MessageResponse response = messageService.updateMessage(1L, messageUpdateRequest, "testUser");
+        given(messageRepository.findById(1L)).willReturn(Optional.of(message));
+        given(messageRepository.save(any(Message.class))).willReturn(updatedMessage);
+
+        MessageResponse response = messageService.updateMessage(1L, updateRequest);
 
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(1L);
+        assertThat(response.getTitle()).isEqualTo("Updated Title");
     }
 
     @Test
     void updateMessage_WhenNotExists_ShouldThrowResourceNotFoundException() {
-        given(messageRepository.findByIdAndDeletedFalse(999L)).willReturn(Optional.empty());
+        given(messageRepository.findById(999L)).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> messageService.updateMessage(999L, messageUpdateRequest, "testUser"))
+        assertThatThrownBy(() -> messageService.updateMessage(999L, updateRequest))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
-    void updateMessage_WhenUnauthorized_ShouldThrowUnauthorizedException() {
-        given(messageRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.of(message));
+    void deleteMessage_WhenExists_ShouldDelete() {
+        given(messageRepository.existsById(1L)).willReturn(true);
 
-        assertThatThrownBy(() -> messageService.updateMessage(1L, messageUpdateRequest, "otherUser"))
-                .isInstanceOf(UnauthorizedException.class);
-    }
+        messageService.deleteMessage(1L);
 
-    @Test
-    void deleteMessage_WhenExists_ShouldSoftDelete() {
-        given(messageRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.of(message));
-        given(messageRepository.save(any(Message.class))).willReturn(message);
-
-        messageService.deleteMessage(1L, "testUser");
-
-        verify(messageRepository).save(any(Message.class));
+        verify(messageRepository).deleteById(1L);
     }
 
     @Test
     void deleteMessage_WhenNotExists_ShouldThrowResourceNotFoundException() {
-        given(messageRepository.findByIdAndDeletedFalse(999L)).willReturn(Optional.empty());
+        given(messageRepository.existsById(999L)).willReturn(false);
 
-        assertThatThrownBy(() -> messageService.deleteMessage(999L, "testUser"))
+        assertThatThrownBy(() -> messageService.deleteMessage(999L))
                 .isInstanceOf(ResourceNotFoundException.class);
-    }
-
-    @Test
-    void deleteMessage_WhenUnauthorized_ShouldThrowUnauthorizedException() {
-        given(messageRepository.findByIdAndDeletedFalse(1L)).willReturn(Optional.of(message));
-
-        assertThatThrownBy(() -> messageService.deleteMessage(1L, "otherUser"))
-                .isInstanceOf(UnauthorizedException.class);
     }
 }

@@ -1,6 +1,5 @@
 package com.bage.demo.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +12,15 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MessageUpdateDTO {
 
-    @NotBlank(message = "Content must not be blank")
-    @Size(max = 5000, message = "Content must not exceed 5000 characters")
+    @Size(max = 255, message = "标题长度不能超过255个字符")
+    private String title;
+
+    @Size(max = 10000, message = "内容长度不能超过10000个字符")
     private String content;
+
+    @Size(max = 100, message = "发送者长度不能超过100个字符")
+    private String sender;
+
+    @Size(max = 100, message = "接收者长度不能超过100个字符")
+    private String receiver;
 }

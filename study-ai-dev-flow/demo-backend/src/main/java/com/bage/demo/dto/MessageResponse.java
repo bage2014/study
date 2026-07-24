@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 public class MessageResponse {
 
     private Long id;
+    private String title;
     private String content;
     private String sender;
-    private LocalDateTime timestamp;
+    private String receiver;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
