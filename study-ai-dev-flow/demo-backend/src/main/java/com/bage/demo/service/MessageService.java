@@ -1,10 +1,12 @@
 package com.bage.demo.service;
 
-import com.bage.demo.dto.CreateMessageRequest;
+import com.bage.demo.dto.MessageRequest;
 import com.bage.demo.dto.MessageResponse;
-import com.bage.demo.dto.UpdateMessageRequest;
+import com.bage.demo.dto.MessageUpdateRequest;
+import com.bage.demo.dto.PageResponse;
 import com.bage.demo.entity.Message;
 import com.bage.demo.exception.ResourceNotFoundException;
+import com.bage.demo.exception.UnauthorizedException;
 import com.bage.demo.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,80 +27,206 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
+    /**
+     * Create a new message.
+     *
+     * @param request the message creation request
+     * @return the created message response
+     */
     @Transactional
-    public MessageResponse createMessage(CreateMessageRequest request) {
-        log.info("Creating message from sender: {} to receiver: {}", request.getSender(), request.getReceiver());
-        
-        if (request.getContent() == null || request.getContent().trim().isEmpty()) {
-            throw new IllegalArgumentException("Content cannot be empty");
-        }
-        
+    public MessageResponse createMessage(MessageRequest request) {
+        log.debug("Creating message from sender: {}", request.getSender());
+
         Message message = Message.builder()
                 .content(request.getContent())
-                .sender(request.getSender() != null ? request.getSender() : "unknown")
-                .receiver(request.getReceiver() != null ? request.getReceiver() : "unknown")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .sender(request.getSender())
+                .timestamp(request.getTimestamp())
+                .deleted(false)
                 .build();
-        message = messageRepository.save(message);
-        return convertToResponse(message);
+
+        Message savedMessage = messageRepository.save(message);
+        log.info("Message created with id: {}", savedMessage.getId());
+
+        return mapToResponse(savedMessage);
     }
 
-    public Page<MessageResponse> getAllMessages(int page, int size) {
-        if (page < 0) {
-            throw new IllegalArgumentException("Page index must not be less than zero");
-        }
-        if (size < 1) {
-            throw new IllegalArgumentException("Page size must not be less than one");
-        }
-        
-        Pageable pageable = PageRequest.of(page, size);
-        return messageRepository.findAll(pageable).map(this::convertToResponse);
-    }
-
+    /**
+     * Get a message by its ID.
+     *
+     * @param id the message ID
+     * @return the message response
+     * @throws ResourceNotFoundException if the message is not found or is deleted
+     */
+    @Transactional(readOnly = true)
     public MessageResponse getMessageById(Long id) {
-        log.info("Fetching message by id: {}", id);
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
-        return convertToResponse(message);
+        log.debug("Fetching message by id: {}", id);
+
+        Message message = messageRepository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Message", "id", id));
+
+        return mapToResponse(message);
     }
 
+    /**
+     * Get all non-deleted messages with optional filtering and pagination.
+     *
+     * @param page   the page number (0-based)
+     * @param size   the page size
+     * @param sender optional sender filter
+     * @param start  optional start date for range filter
+     * @param end    optional end date for range filter
+     * @return a paginated response of messages
+     */
+    @Transactional(readOnly = true)
+    public PageResponse<MessageResponse> getAllMessages(int page, int size, String sender,
+                                                         LocalDateTime start, LocalDateTime end) {
+        log.debug("Fetching messages - page: {}, size: {}, sender: {}, start: {}, end: {}",
+                page, size, sender, start, end);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Message> messagePage;
+
+        if (sender != null && start != null && end != null) {
+            // Filter by sender and date range
+            List<Message> messages = messageRepository.findBySenderAndTimestampBetweenAndDeletedFalse(sender, start, end);
+            return buildPageResponseFromList(messages, page, size);
+        } else if (start != null && end != null) {
+            // Filter by date range only
+            List<Message> messages = messageRepository.findByTimestampBetweenAndDeletedFalse(start, end);
+            return buildPageResponseFromList(messages, page, size);
+        } else if (sender != null) {
+            // Filter by sender only
+            messagePage = messageRepository.findBySenderAndDeletedFalse(sender, pageable);
+        } else {
+            // No filters
+            messagePage = messageRepository.findByDeletedFalse(pageable);
+        }
+
+        return mapToPageResponse(messagePage);
+    }
+
+    /**
+     * Update an existing message.
+     *
+     * @param id      the message ID
+     * @param request the update request with fields to modify
+     * @param username the username of the requester for authorization
+     * @return the updated message response
+     * @throws ResourceNotFoundException if the message is not found
+     * @throws UnauthorizedException if the requester is not the sender
+     */
     @Transactional
-    public MessageResponse updateMessage(Long id, UpdateMessageRequest request) {
-        log.info("Updating message with id: {}", id);
-        Message existingMessage = messageRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
-        
+    public MessageResponse updateMessage(Long id, MessageUpdateRequest request, String username) {
+        log.debug("Updating message id: {} by user: {}", id, username);
+
+        Message message = messageRepository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Message", "id", id));
+
+        // Authorization: only the sender can update the message
+        if (!message.getSender().equals(username)) {
+            log.warn("Unauthorized update attempt by user: {} on message id: {}", username, id);
+            throw new UnauthorizedException("You are not authorized to update this message");
+        }
+
         if (request.getContent() != null) {
-            existingMessage.setContent(request.getContent());
+            message.setContent(request.getContent());
         }
         if (request.getSender() != null) {
-            existingMessage.setSender(request.getSender());
+            message.setSender(request.getSender());
         }
-        if (request.getReceiver() != null) {
-            existingMessage.setReceiver(request.getReceiver());
-        }
-        existingMessage.setUpdatedAt(LocalDateTime.now());
-        existingMessage = messageRepository.save(existingMessage);
-        return convertToResponse(existingMessage);
+        message.setUpdatedAt(LocalDateTime.now());
+
+        Message updatedMessage = messageRepository.save(message);
+        log.info("Message updated with id: {}", updatedMessage.getId());
+
+        return mapToResponse(updatedMessage);
     }
 
+    /**
+     * Soft delete a message by its ID.
+     *
+     * @param id      the message ID
+     * @param username the username of the requester for authorization
+     * @throws ResourceNotFoundException if the message is not found
+     * @throws UnauthorizedException if the requester is not the sender
+     */
     @Transactional
-    public void deleteMessage(Long id) {
-        log.info("Deleting message with id: {}", id);
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Message not found with id: " + id));
-        messageRepository.delete(message);
+    public void deleteMessage(Long id, String username) {
+        log.debug("Soft deleting message id: {} by user: {}", id, username);
+
+        Message message = messageRepository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Message", "id", id));
+
+        // Authorization: only the sender can delete the message
+        if (!message.getSender().equals(username)) {
+            log.warn("Unauthorized delete attempt by user: {} on message id: {}", username, id);
+            throw new UnauthorizedException("You are not authorized to delete this message");
+        }
+
+        message.setDeleted(true);
+        message.setUpdatedAt(LocalDateTime.now());
+        messageRepository.save(message);
+        log.info("Message soft deleted with id: {}", id);
     }
 
-    private MessageResponse convertToResponse(Message message) {
+    /**
+     * Map a Message entity to a MessageResponse DTO.
+     */
+    private MessageResponse mapToResponse(Message message) {
         return MessageResponse.builder()
                 .id(message.getId())
                 .content(message.getContent())
                 .sender(message.getSender())
-                .receiver(message.getReceiver())
-                .createdAt(message.getCreatedAt())
+                .timestamp(message.getTimestamp())
                 .updatedAt(message.getUpdatedAt())
+                .build();
+    }
+
+    /**
+     * Map a Page of Message entities to a PageResponse of MessageResponse DTOs.
+     */
+    private PageResponse<MessageResponse> mapToPageResponse(Page<Message> messagePage) {
+        List<MessageResponse> content = messagePage.getContent().stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+
+        return PageResponse.<MessageResponse>builder()
+                .content(content)
+                .page(messagePage.getNumber())
+                .size(messagePage.getSize())
+                .totalElements(messagePage.getTotalElements())
+                .totalPages(messagePage.getTotalPages())
+                .last(messagePage.isLast())
+                .build();
+    }
+
+    /**
+     * Build a PageResponse from a list (used when filtering by date range).
+     */
+    private PageResponse<MessageResponse> buildPageResponseFromList(List<Message> messages, int page, int size) {
+        int startIndex = page * size;
+        int endIndex = Math.min(startIndex + size, messages.size());
+
+        List<Message> pageContent;
+        if (startIndex >= messages.size()) {
+            pageContent = List.of();
+        } else {
+            pageContent = messages.subList(startIndex, endIndex);
+        }
+
+        List<MessageResponse> content = pageContent.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+
+        int totalPages = (int) Math.ceil((double) messages.size() / size);
+
+        return PageResponse.<MessageResponse>builder()
+                .content(content)
+                .page(page)
+                .size(size)
+                .totalElements(messages.size())
+                .totalPages(totalPages)
+                .last(endIndex >= messages.size())
                 .build();
     }
 }

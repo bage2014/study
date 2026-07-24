@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MessageResponse {
+public class MessageQueryRequest {
 
-    private Long id;
-    private String content;
-    private String sender;
-    private LocalDateTime timestamp;
-    private LocalDateTime updatedAt;
+    private String keyword;
+
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
 }

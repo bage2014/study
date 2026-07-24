@@ -12,12 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MessageUpdateRequest {
 
-    @Size(max = 5000, message = "内容长度不能超过5000个字符")
+    @Size(max = 5000, message = "Content must be at most 5000 characters")
     private String content;
 
-    @Size(max = 100, message = "发送者长度不能超过100个字符")
     private String sender;
-
-    @Size(max = 100, message = "接收者长度不能超过100个字符")
-    private String receiver;
 }

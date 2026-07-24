@@ -289,8 +289,8 @@ const loadProjects = async () => {
     
     if (projects.value.length === 0) {
       projects.value = [
-        { id: 1, name: 'demo-backend', description: 'Spring Boot 后端服务', icon: '☕', iconBgClass: 'bg-orange-100', localPath: '/tmp/demo-backend' },
-        { id: 2, name: 'demo-frontend', description: 'Vue 3 前端应用', icon: '💚', iconBgClass: 'bg-green-100', localPath: '/tmp/demo-frontend' },
+        { id: 1, name: 'demo-backend', description: 'Spring Boot 后端服务', icon: '☕', iconBgClass: 'bg-orange-100', localPath: '/Users/bage/bage/github/study/study-ai-dev-flow/demo-backend' },
+        { id: 2, name: 'demo-frontend', description: 'Vue 3 前端应用', icon: '💚', iconBgClass: 'bg-green-100', localPath: '/Users/bage/bage/github/study/study-ai-dev-flow/demo-frontend' },
       ]
     }
     
@@ -299,14 +299,14 @@ const loadProjects = async () => {
       projectStore.setCurrentProject(projects.value[0])
     }
   } catch (error) {
-    console.error('Failed to load projects:', error)
-    projects.value = [
-      { id: 1, name: 'demo-backend', description: 'Spring Boot 后端服务', icon: '☕', iconBgClass: 'bg-orange-100', localPath: '/tmp/demo-backend' },
-      { id: 2, name: 'demo-frontend', description: 'Vue 3 前端应用', icon: '💚', iconBgClass: 'bg-green-100', localPath: '/tmp/demo-frontend' },
-      { id: 3, name: 'api-gateway', description: 'API 网关服务', icon: '🚪', iconBgClass: 'bg-blue-100', localPath: '/tmp/api-gateway' },
-      { id: 4, name: 'data-service', description: '数据服务模块', icon: '📊', iconBgClass: 'bg-purple-100', localPath: '/tmp/data-service' },
-      { id: 5, name: 'ai-pipeline-ui', description: 'AI 流水线前端界面', icon: '🎨', iconBgClass: 'bg-pink-100', localPath: '/tmp/ai-pipeline-ui' },
-    ]
+      console.error('Failed to load projects:', error)
+      projects.value = [
+        { id: 1, name: 'demo-backend', description: 'Spring Boot 后端服务', icon: '☕', iconBgClass: 'bg-orange-100', localPath: '/Users/bage/bage/github/study/study-ai-dev-flow/demo-backend' },
+        { id: 2, name: 'demo-frontend', description: 'Vue 3 前端应用', icon: '💚', iconBgClass: 'bg-green-100', localPath: '/Users/bage/bage/github/study/study-ai-dev-flow/demo-frontend' },
+        { id: 3, name: 'api-gateway', description: 'API 网关服务', icon: '🚪', iconBgClass: 'bg-blue-100', localPath: '/tmp/api-gateway' },
+        { id: 4, name: 'data-service', description: '数据服务模块', icon: '📊', iconBgClass: 'bg-purple-100', localPath: '/tmp/data-service' },
+        { id: 5, name: 'ai-pipeline-ui', description: 'AI 流水线前端界面', icon: '🎨', iconBgClass: 'bg-pink-100', localPath: '/tmp/ai-pipeline-ui' },
+      ]
     
     if (!selectedProject.value) {
       selectedProject.value = projects.value[0]

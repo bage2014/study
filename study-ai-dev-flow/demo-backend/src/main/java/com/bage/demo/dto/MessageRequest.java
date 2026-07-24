@@ -1,6 +1,7 @@
 package com.bage.demo.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +16,13 @@ import java.time.LocalDateTime;
 @Builder
 public class MessageRequest {
 
-    @NotBlank(message = "内容不能为空")
-    @Size(max = 5000, message = "内容长度不能超过5000个字符")
+    @NotBlank(message = "Content is required")
+    @Size(max = 5000, message = "Content must be at most 5000 characters")
     private String content;
 
+    @NotBlank(message = "Sender is required")
+    private String sender;
+
+    @NotNull(message = "Timestamp is required")
     private LocalDateTime timestamp;
 }

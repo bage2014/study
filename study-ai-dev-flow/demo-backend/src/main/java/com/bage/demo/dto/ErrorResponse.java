@@ -11,11 +11,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MessageResponse {
-
-    private Long id;
-    private String content;
-    private String sender;
+public class ErrorResponse {
+    private int status;
+    private String message;
     private LocalDateTime timestamp;
-    private LocalDateTime updatedAt;
+    private String path;
 }

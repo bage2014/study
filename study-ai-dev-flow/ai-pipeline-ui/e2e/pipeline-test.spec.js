@@ -1,10 +1,15 @@
 import { test, expect } from '@playwright/test'
 
-test('create pipeline and verify test count display', async ({ page }) => {
-  test.setTimeout(300000)
+test('create pipeline with demo-backend and verify test count', async ({ page }) => {
+  test.setTimeout(600000)
 
   await page.goto('/')
   await page.waitForTimeout(3000)
+
+  const demoBackendCard = page.locator('div:has-text("demo-backend")').first()
+  await demoBackendCard.click()
+  await page.waitForTimeout(1000)
+  console.log('Selected demo-backend project')
 
   const titleInput = page.locator('input[placeholder*="请输入需求标题"]')
   await titleInput.click()
@@ -17,7 +22,8 @@ test('create pipeline and verify test count display', async ({ page }) => {
   await page.waitForTimeout(500)
 
   await page.click('button:has-text("提交需求，启动AI流水线")')
-  await page.waitForTimeout(10000)
+  console.log('Submitted requirement, starting pipeline...')
+  await page.waitForTimeout(15000)
 
   const currentUrl = await page.url()
   console.log('Current URL:', currentUrl)
@@ -37,50 +43,46 @@ test('create pipeline and verify test count display', async ({ page }) => {
     }
   }
 
-  const pipelineId = await page.url()
-  console.log('Pipeline Detail URL:', pipelineId)
+  console.log('Pipeline Detail URL:', await page.url())
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 60; i++) {
     await page.waitForTimeout(10000)
     
-    const testExecHeaders = page.locator('h4:has-text("测试验证")')
-    if (await testExecHeaders.count() > 0) {
-      const testExecHeader = testExecHeaders.first()
-      await testExecHeader.scrollIntoViewIfNeeded()
+    const testExecSections = page.locator('div:has(h4:has-text("测试验证"))')
+    const testExecCount = await testExecSections.count()
+    
+    if (testExecCount > 0) {
+      const testExecSection = testExecSections.first()
+      await testExecSection.scrollIntoViewIfNeeded()
       await page.waitForTimeout(1000)
 
-      const testResultSections = page.locator('h5:has-text("测试结果")')
-      if (await testResultSections.count() > 0) {
-        const testResultSection = testResultSections.first()
-        await testResultSection.scrollIntoViewIfNeeded()
-        await page.waitForTimeout(1000)
+      const testStatsDiv = testExecSection.locator('div.grid-cols-4')
+      if (await testStatsDiv.count() > 0) {
+        const totalElement = testStatsDiv.locator('p.text-2xl.font-bold.text-gray-800').first()
+        const passedElement = testStatsDiv.locator('p.text-2xl.font-bold.text-green-600').first()
+        const failedElement = testStatsDiv.locator('p.text-2xl.font-bold.text-red-600').first()
+        const coverageElement = testStatsDiv.locator('p.text-2xl.font-bold.text-blue-600').first()
 
-        const counts = await page.locator('p:text("总数"), p:text("通过"), p:text("失败")').all()
-        for (const count of counts) {
-          const text = await count.textContent()
-          const valueElement = count.locator('xpath=preceding-sibling::p').first()
-          const value = await valueElement.textContent()
-          console.log(`${text}: ${value}`)
-        }
-      }
+        const totalTests = await totalElement.textContent()
+        const passedTests = await passedElement.textContent()
+        const failedTests = await failedElement.textContent()
+        const coverage = await coverageElement.textContent()
 
-      const totalElements = await page.locator('p:text("总数")').all()
-      if (totalElements.length > 0) {
-        const totalElement = totalElements[0]
-        const valueElement = await totalElement.locator('xpath=preceding-sibling::p').first()
-        const totalTests = await valueElement.textContent()
-        console.log('测试总数:', totalTests || '0')
+        console.log(`测试统计 - 总数: ${totalTests}, 通过: ${passedTests}, 失败: ${failedTests}, 覆盖率: ${coverage}`)
 
         if (totalTests && parseInt(totalTests) > 0) {
           console.log('🎉 测试数量显示正常！')
           await page.screenshot({ path: 'test-result-screenshot.png', fullPage: true })
           return
+        } else {
+          console.log(`⚠️ 测试总数仍显示为: ${totalTests}`)
         }
       }
     }
 
     const statusText = await page.locator('.text-yellow-600, .text-green-600, .text-red-600').first().textContent()
-    console.log(`轮询 ${i+1}/30 - 当前状态: ${statusText || '未知'}`)
+    const currentStage = await page.locator('span:has-text("当前阶段:")').first().textContent()
+    console.log(`轮询 ${i+1}/60 - 当前状态: ${statusText || '未知'} - 当前阶段: ${currentStage || '未知'}`)
   }
 
   console.log('⚠️ 流水线未在预期时间内完成，或测试数量仍显示为0')

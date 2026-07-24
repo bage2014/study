@@ -11,12 +11,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PageResponse<T> {
+public class MessageListResponse {
 
-    private List<T> content;
+    private List<MessageResponse> messages;
+
     private int page;
+
     private int size;
+
     private long totalElements;
+
     private int totalPages;
+
     private boolean last;
 }

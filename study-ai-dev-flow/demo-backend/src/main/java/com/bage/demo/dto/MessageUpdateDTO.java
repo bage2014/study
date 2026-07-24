@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MessageCreateRequest {
+public class MessageUpdateDTO {
 
-    @NotBlank(message = "消息内容不能为空")
-    @Size(max = 500, message = "消息内容长度不能超过500个字符")
+    @NotBlank(message = "Content must not be blank")
+    @Size(max = 5000, message = "Content must not exceed 5000 characters")
     private String content;
 }

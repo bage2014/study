@@ -1,5 +1,6 @@
 package com.bage.demo.dto;
 
+import com.bage.demo.entity.Message;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,16 @@ public class MessageDTO {
     private Long id;
     private String content;
     private String sender;
-    private String receiver;
-    private LocalDateTime createdAt;
+    private LocalDateTime timestamp;
     private LocalDateTime updatedAt;
+
+    public static MessageDTO fromEntity(Message message) {
+        return MessageDTO.builder()
+                .id(message.getId())
+                .content(message.getContent())
+                .sender(message.getSender())
+                .timestamp(message.getTimestamp())
+                .updatedAt(message.getUpdatedAt())
+                .build();
+    }
 }
