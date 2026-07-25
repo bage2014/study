@@ -3,72 +3,18 @@ package com.bage.demo.service;
 import com.bage.demo.dto.MessageCreateRequest;
 import com.bage.demo.dto.MessageResponse;
 import com.bage.demo.dto.MessageUpdateRequest;
-import com.bage.demo.entity.Message;
-import com.bage.demo.repository.MessageRepository;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
-public class MessageService {
+public interface MessageService {
 
-    private final MessageRepository messageRepository;
+    MessageResponse createMessage(MessageCreateRequest request);
 
-    @Transactional
-    public MessageResponse createMessage(MessageCreateRequest request) {
-        Message message = Message.builder()
-                .content(request.getContent())
-                .sender(request.getSender())
-                .receiver(request.getReceiver())
-                .read(false)
-                .build();
-        message = messageRepository.save(message);
-        return MessageResponse.fromEntity(message);
-    }
+    MessageResponse getMessageById(Long id);
 
-    public MessageResponse getMessageById(Long id) {
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("消息不存在，ID: " + id));
-        return MessageResponse.fromEntity(message);
-    }
+    Page<MessageResponse> getMessages(String sender, String receiver, Pageable pageable);
 
-    public Page<MessageResponse> getMessages(String sender, String receiver, Pageable pageable) {
-        Page<Message> messages;
-        if (sender != null && receiver != null) {
-            messages = messageRepository.findBySenderAndReceiver(sender, receiver, pageable);
-        } else if (sender != null) {
-            messages = messageRepository.findBySender(sender, pageable);
-        } else if (receiver != null) {
-            messages = messageRepository.findByReceiver(receiver, pageable);
-        } else {
-            messages = messageRepository.findAll(pageable);
-        }
-        return messages.map(MessageResponse::fromEntity);
-    }
+    MessageResponse updateMessage(Long id, MessageUpdateRequest request);
 
-    @Transactional
-    public MessageResponse updateMessage(Long id, MessageUpdateRequest request) {
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("消息不存在，ID: " + id));
-        if (request.getContent() != null) {
-            message.setContent(request.getContent());
-        }
-        if (request.getRead() != null) {
-            message.setRead(request.getRead());
-        }
-        message = messageRepository.save(message);
-        return MessageResponse.fromEntity(message);
-    }
-
-    @Transactional
-    public void deleteMessage(Long id) {
-        if (!messageRepository.existsById(id)) {
-            throw new EntityNotFoundException("消息不存在，ID: " + id);
-        }
-        messageRepository.deleteById(id);
-    }
+    void deleteMessage(Long id);
 }
