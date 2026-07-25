@@ -1,10 +1,9 @@
-package com.bage.demo.service;
+package com.bage.demo.service.impl;
 
 import com.bage.demo.dto.MessageCreateRequest;
 import com.bage.demo.dto.MessageResponse;
 import com.bage.demo.dto.MessageUpdateRequest;
 import com.bage.demo.entity.Message;
-import com.bage.demo.exception.InvalidInputException;
 import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.repository.MessageRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,38 +12,31 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MessageServiceTest {
+class MessageServiceImplTest {
 
     @Mock
     private MessageRepository messageRepository;
 
     @InjectMocks
-    private MessageService messageService;
+    private MessageServiceImpl messageService;
 
     private Message message;
     private MessageCreateRequest createRequest;
     private MessageUpdateRequest updateRequest;
-    private MessageResponse messageResponse;
 
     @BeforeEach
     void setUp() {
-        message = Message.builder()
-                .id(1L)
-                .title(\
+        message = new Message();
+        message.setId(1L);
+        message.setContent(\

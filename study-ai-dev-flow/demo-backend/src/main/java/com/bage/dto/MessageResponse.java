@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -21,7 +22,7 @@ public class MessageResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static MessageResponse fromEntity(Message message) {
+    public static MessageResponse from(Message message) {
         return MessageResponse.builder()
                 .id(message.getId())
                 .content(message.getContent())

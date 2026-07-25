@@ -1,13 +1,9 @@
-package com.bage.demo.controller;
+package com.bage.demo.exception;
 
+import com.bage.demo.controller.MessageController;
 import com.bage.demo.dto.MessageCreateRequest;
-import com.bage.demo.dto.MessageResponse;
-import com.bage.demo.dto.MessageUpdateRequest;
-import com.bage.demo.entity.Message;
-import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,17 +11,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(MessageController.class)
-class MessageControllerTest {
+class GlobalExceptionHandlerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,13 +28,6 @@ class MessageControllerTest {
     @MockBean
     private MessageService messageService;
 
-    private Message message;
-    private MessageResponse messageResponse;
-    private MessageCreateRequest createRequest;
-    private MessageUpdateRequest updateRequest;
-
-    @BeforeEach
-    void setUp() {
-        message = new Message();
-        message.setId(1L);
-        message.setContent(\
+    @Test
+    void shouldHandleResourceNotFoundException() throws Exception {
+        when(messageService.getMessageById(99L)).thenThrow(new ResourceNotFoundException(\

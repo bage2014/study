@@ -10,14 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MessageCreateRequest {
+public class MessageUpdateRequest {
 
-    @NotBlank(message = "消息内容不能为空")
     private String content;
 
-    @NotBlank(message = "发送者不能为空")
-    private String sender;
-
-    @NotBlank(message = "接收者不能为空")
-    private String receiver;
+    private Boolean read;
 }

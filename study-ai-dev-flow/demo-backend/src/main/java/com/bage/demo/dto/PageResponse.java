@@ -19,4 +19,5 @@ public class PageResponse<T> {
     private long totalElements;
     private int totalPages;
     private boolean last;
+    private boolean first;
 }

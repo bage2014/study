@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MessageUpdateRequest {
-
+public class MessageDTO {
     private String content;
-
-    private Boolean read;
+    private String author;
 }

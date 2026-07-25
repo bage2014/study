@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateMessageRequest {
+public class MessageCreateRequest {
 
     @NotBlank(message = "消息内容不能为空")
     private String content;
 
-    @NotNull(message = "发送者ID不能为空")
-    private Long senderId;
+    @NotBlank(message = "发送者不能为空")
+    private String sender;
 
-    @NotNull(message = "接收者ID不能为空")
-    private Long receiverId;
+    @NotBlank(message = "接收者不能为空")
+    private String receiver;
 }

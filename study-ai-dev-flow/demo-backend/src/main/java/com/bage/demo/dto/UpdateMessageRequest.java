@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 更新消息请求 DTO
+ * 用于接收更新消息的请求参数
  */
 @Data
 @NoArgsConstructor
@@ -16,17 +17,15 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateMessageRequest {
 
-    @NotBlank(message = "消息标题不能为空")
-    @Size(max = 200, message = "消息标题长度不能超过200个字符")
-    private String title;
-
+    /**
+     * 消息内容
+     */
     @NotBlank(message = "消息内容不能为空")
-    @Size(max = 5000, message = "消息内容长度不能超过5000个字符")
+    @Size(max = 2000, message = "消息内容长度不能超过2000个字符")
     private String content;
 
-    @Size(max = 100, message = "发送者长度不能超过100个字符")
-    private String sender;
-
-    @Size(max = 100, message = "接收者长度不能超过100个字符")
-    private String receiver;
+    /**
+     * 消息状态：0-未读，1-已读
+     */
+    private Integer status;
 }

@@ -1,4 +1,4 @@
-package com.bage.demo.dto;
+package com.bage.demo.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ErrorResponse {
+
     private int status;
+    private String error;
     private String message;
-    private LocalDateTime timestamp;
+    private String path;
+
+    @Builder.Default
+    private LocalDateTime timestamp = LocalDateTime.now();
 }
