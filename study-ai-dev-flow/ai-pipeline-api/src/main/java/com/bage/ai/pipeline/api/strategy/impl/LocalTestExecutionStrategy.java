@@ -23,11 +23,9 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
     private final MavenTool mavenTool;
     private final NpmTool npmTool;
 
-    private static final Pattern TEST_CLASS_LINE_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+),\\s*Skipped:\\s*(\\d+).*--\\s+in\\s+(\\S+)");
-    private static final Pattern TEST_CLASS_ONLY_PATTERN = Pattern.compile("--\\s+in\\s+(\\S+)");
+    private static final Pattern TEST_CLASS_LINE_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?.*--\\s+in\\s+(\\S+)");
     private static final Pattern TOTAL_RESULT_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
     private static final Pattern RUNNING_CLASS_PATTERN = Pattern.compile("\\[INFO\\]\\s*Running\\s+(\\S+)");
-    private static final Pattern INDIVIDUAL_TEST_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
     private static final Pattern SIMPLE_TEST_PATTERN = Pattern.compile("Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
 
     public LocalTestExecutionStrategy(MavenTool mavenTool, NpmTool npmTool) {
