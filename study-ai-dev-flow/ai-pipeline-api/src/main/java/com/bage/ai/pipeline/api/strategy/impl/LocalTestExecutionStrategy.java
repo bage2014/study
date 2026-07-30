@@ -83,7 +83,6 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
         int totalFailures = 0;
 
         String[] lines = output.split("\n");
-        String currentTestClass = null;
 
         for (String line : lines) {
             Matcher classLineMatcher = TEST_CLASS_LINE_PATTERN.matcher(line);
@@ -91,7 +90,8 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
                 int testsRun = Integer.parseInt(classLineMatcher.group(1));
                 int failures = Integer.parseInt(classLineMatcher.group(2));
                 int errors = Integer.parseInt(classLineMatcher.group(3));
-                int skipped = Integer.parseInt(classLineMatcher.group(4));
+                String skippedStr = classLineMatcher.group(4);
+                int skipped = (skippedStr != null) ? Integer.parseInt(skippedStr) : 0;
                 String className = classLineMatcher.group(5);
 
                 totalTests += testsRun;
@@ -109,41 +109,13 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
                 testDetail.put("failed", String.valueOf(failures + errors));
                 testDetails.add(testDetail);
 
-                continue;
-            }
-
-            Matcher runningMatcher = RUNNING_CLASS_PATTERN.matcher(line);
-            if (runningMatcher.find()) {
-                currentTestClass = runningMatcher.group(1);
-                continue;
-            }
-
-            Matcher resultMatcher = INDIVIDUAL_TEST_PATTERN.matcher(line);
-            if (resultMatcher.find() && currentTestClass != null) {
-                int testsRun = Integer.parseInt(resultMatcher.group(1));
-                int failures = Integer.parseInt(resultMatcher.group(2));
-                int errors = Integer.parseInt(resultMatcher.group(3));
-
-                totalTests += testsRun;
-                totalFailures += failures + errors;
-
-                String simpleClassName = currentTestClass.contains(".")
-                        ? currentTestClass.substring(currentTestClass.lastIndexOf(".") + 1)
-                        : currentTestClass;
-
-                Map<String, String> testDetail = new HashMap<>();
-                testDetail.put("name", simpleClassName);
-                testDetail.put("status", (failures + errors == 0) ? "PASSED" : "FAILED");
-                testDetail.put("total", String.valueOf(testsRun));
-                testDetail.put("passed", String.valueOf(testsRun - failures - errors));
-                testDetail.put("failed", String.valueOf(failures + errors));
-                testDetails.add(testDetail);
-
-                currentTestClass = null;
+                log.debug("Parsed test class: {}, tests={}, failures={}, errors={}, skipped={}",
+                        simpleClassName, testsRun, failures, errors, skipped);
             }
         }
 
         if (testDetails.isEmpty()) {
+            log.info("No test class details found, trying to parse from summary...");
             Matcher totalMatcher = TOTAL_RESULT_PATTERN.matcher(output);
             if (totalMatcher.find()) {
                 totalTests = Integer.parseInt(totalMatcher.group(1));
@@ -162,6 +134,9 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
         if (totalTests == 0) {
             log.warn("Failed to parse test results from output. Output snippet: {}", 
                     output.length() > 500 ? output.substring(0, 500) : output);
+        } else {
+            log.info("Test results parsed: totalTests={}, totalFailures={}, details={}",
+                    totalTests, totalFailures, testDetails.size());
         }
 
         builder.totalTests(totalTests)

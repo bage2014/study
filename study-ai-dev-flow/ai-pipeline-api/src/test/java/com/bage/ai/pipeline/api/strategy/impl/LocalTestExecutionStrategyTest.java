@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LocalTestExecutionStrategyTest {
 
-    private static final Pattern TEST_CLASS_LINE_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+),\\s*Skipped:\\s*(\\d+).*--\\s+in\\s+(\\S+)");
+    private static final Pattern TEST_CLASS_LINE_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?.*--\\s+in\\s+(\\S+)");
     private static final Pattern TOTAL_RESULT_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
     private static final Pattern RUNNING_CLASS_PATTERN = Pattern.compile("\\[INFO\\]\\s*Running\\s+(\\S+)");
 
@@ -67,7 +67,6 @@ class LocalTestExecutionStrategyTest {
         int totalFailures = 0;
 
         String[] lines = realMavenOutput.split("\n");
-        String currentTestClass = null;
 
         for (String line : lines) {
             Matcher classLineMatcher = TEST_CLASS_LINE_PATTERN.matcher(line);
@@ -75,7 +74,8 @@ class LocalTestExecutionStrategyTest {
                 int testsRun = Integer.parseInt(classLineMatcher.group(1));
                 int failures = Integer.parseInt(classLineMatcher.group(2));
                 int errors = Integer.parseInt(classLineMatcher.group(3));
-                int skipped = Integer.parseInt(classLineMatcher.group(4));
+                String skippedStr = classLineMatcher.group(4);
+                int skipped = (skippedStr != null) ? Integer.parseInt(skippedStr) : 0;
                 String className = classLineMatcher.group(5);
 
                 totalTests += testsRun;
@@ -92,14 +92,6 @@ class LocalTestExecutionStrategyTest {
                 testDetail.put("passed", String.valueOf(testsRun - failures - errors));
                 testDetail.put("failed", String.valueOf(failures + errors));
                 testDetails.add(testDetail);
-
-                continue;
-            }
-
-            Matcher runningMatcher = RUNNING_CLASS_PATTERN.matcher(line);
-            if (runningMatcher.find()) {
-                currentTestClass = runningMatcher.group(1);
-                continue;
             }
         }
 
@@ -114,5 +106,95 @@ class LocalTestExecutionStrategyTest {
         assertEquals("MessageServiceTest", testDetails.get(1).get("name"));
         assertEquals("12", testDetails.get(1).get("total"));
         assertEquals("12", testDetails.get(1).get("passed"));
+    }
+
+    @Test
+    void testParseTestResultsWithoutSkippedField() {
+        // Test output format without Skipped field
+        String mavenOutputWithoutSkipped = """
+            [INFO] Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1.234 s -- in com.example.MyTest
+            [INFO] Tests run: 3, Failures: 1, Errors: 0, Time elapsed: 0.567 s -- in com.example.OtherTest
+            [INFO] Tests run: 8, Failures: 1, Errors: 0
+            [INFO] BUILD SUCCESS
+            """;
+
+        List<Map<String, String>> testDetails = new ArrayList<>();
+        int totalTests = 0;
+        int totalFailures = 0;
+
+        String[] lines = mavenOutputWithoutSkipped.split("\n");
+
+        for (String line : lines) {
+            Matcher classLineMatcher = TEST_CLASS_LINE_PATTERN.matcher(line);
+            if (classLineMatcher.find()) {
+                int testsRun = Integer.parseInt(classLineMatcher.group(1));
+                int failures = Integer.parseInt(classLineMatcher.group(2));
+                int errors = Integer.parseInt(classLineMatcher.group(3));
+                String skippedStr = classLineMatcher.group(4);
+                int skipped = (skippedStr != null) ? Integer.parseInt(skippedStr) : 0;
+                String className = classLineMatcher.group(5);
+
+                totalTests += testsRun;
+                totalFailures += failures + errors;
+
+                String simpleClassName = className.contains(".")
+                        ? className.substring(className.lastIndexOf(".") + 1)
+                        : className;
+
+                Map<String, String> testDetail = new HashMap<>();
+                testDetail.put("name", simpleClassName);
+                testDetail.put("status", (failures + errors == 0) ? "PASSED" : "FAILED");
+                testDetail.put("total", String.valueOf(testsRun));
+                testDetail.put("passed", String.valueOf(testsRun - failures - errors));
+                testDetail.put("failed", String.valueOf(failures + errors));
+                testDetails.add(testDetail);
+            }
+        }
+
+        assertEquals(8, totalTests, "Total tests should be 8");
+        assertEquals(1, totalFailures, "Total failures should be 1");
+        assertEquals(2, testDetails.size(), "Should have 2 test class details");
+        
+        assertEquals("MyTest", testDetails.get(0).get("name"));
+        assertEquals("5", testDetails.get(0).get("total"));
+        assertEquals("5", testDetails.get(0).get("passed"));
+        
+        assertEquals("OtherTest", testDetails.get(1).get("name"));
+        assertEquals("3", testDetails.get(1).get("total"));
+        assertEquals("2", testDetails.get(1).get("passed"));
+        assertEquals("1", testDetails.get(1).get("failed"));
+    }
+
+    @Test
+    void testFallbackToSummaryPattern() {
+        // Output without test class details (no -- in suffix)
+        String summaryOnlyOutput = """
+            [INFO] Tests run: 15, Failures: 2, Errors: 0, Skipped: 1
+            [INFO] BUILD FAILURE
+            """;
+
+        int totalTests = 0;
+        int totalFailures = 0;
+
+        // First try TEST_CLASS_LINE_PATTERN (should not match because no -- in)
+        boolean hasClassDetails = false;
+        for (String line : summaryOnlyOutput.split("\n")) {
+            if (TEST_CLASS_LINE_PATTERN.matcher(line).find()) {
+                hasClassDetails = true;
+                break;
+            }
+        }
+
+        assertFalse(hasClassDetails, "Should not have class details without -- in suffix");
+
+        // Fallback to TOTAL_RESULT_PATTERN
+        Matcher totalMatcher = TOTAL_RESULT_PATTERN.matcher(summaryOnlyOutput);
+        if (totalMatcher.find()) {
+            totalTests = Integer.parseInt(totalMatcher.group(1));
+            totalFailures = Integer.parseInt(totalMatcher.group(2)) + Integer.parseInt(totalMatcher.group(3));
+        }
+
+        assertEquals(15, totalTests, "Should parse total from summary");
+        assertEquals(2, totalFailures, "Should parse failures from summary");
     }
 }
