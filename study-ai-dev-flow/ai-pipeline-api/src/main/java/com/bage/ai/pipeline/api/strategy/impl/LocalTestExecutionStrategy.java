@@ -40,17 +40,29 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
             BuildTool buildTool = input.getBuildTool();
 
             String testOutput;
+            boolean success;
             if (buildTool == null || buildTool == BuildTool.MAVEN) {
-                testOutput = mavenTool.run(projectPath, "test");
+                MavenTool.MavenResult mavenResult = mavenTool.runSafe(projectPath, "test");
+                testOutput = mavenResult.output();
+                success = mavenResult.exitCode() == 0;
+                log.info("Maven test exit code: {}, output length: {}", mavenResult.exitCode(), testOutput.length());
             } else if (buildTool == BuildTool.GRADLE) {
                 testOutput = mavenTool.executeCommand(projectPath, "./gradlew test");
+                success = !testOutput.contains("BUILD FAILED") && !testOutput.startsWith("ERROR: ");
+                if (testOutput.startsWith("ERROR: ")) {
+                    testOutput = testOutput.substring(7);
+                }
             } else {
                 testOutput = npmTool.run(projectPath, "test");
+                success = !testOutput.contains("BUILD FAILURE") &&
+                        !testOutput.contains("FAILED") &&
+                        !testOutput.contains("TestFailed");
             }
 
-            boolean success = !testOutput.contains("BUILD FAILURE") &&
-                    !testOutput.contains("FAILED") &&
-                    !testOutput.contains("TestFailed");
+            // Strip "ERROR: " prefix if present (from MavenTool.run() legacy behavior)
+            if (testOutput.startsWith("ERROR: ")) {
+                testOutput = testOutput.substring(7);
+            }
 
             TestExecResult.TestExecResultBuilder builder = TestExecResult.builder()
                     .runId(input.getRunId())
@@ -64,7 +76,7 @@ public class LocalTestExecutionStrategy implements TestExecutionStrategy {
                     projectPath, success, result.getTotalTests(), result.getPassedTests(), result.getFailedTests());
             return result;
         } catch (Exception e) {
-            log.error("Local test execution failed: {}", e.getMessage());
+            log.error("Local test execution failed: {}", e.getMessage(), e);
             return TestExecResult.builder()
                     .runId(input.getRunId())
                     .success(false)

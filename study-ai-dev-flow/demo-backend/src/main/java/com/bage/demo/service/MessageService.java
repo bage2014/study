@@ -10,9 +10,9 @@ public interface MessageService {
 
     MessageResponse createMessage(MessageCreateRequest request);
 
-    MessageResponse getMessageById(Long id);
+    MessageResponse getMessage(Long id);
 
-    Page<MessageResponse> getMessages(String sender, String receiver, Pageable pageable);
+    Page<MessageResponse> getAllMessages(Pageable pageable);
 
     MessageResponse updateMessage(Long id, MessageUpdateRequest request);
 

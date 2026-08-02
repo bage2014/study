@@ -327,7 +327,7 @@
                     <p class="text-xs text-red-600">失败</p>
                   </div>
                   <div class="bg-blue-50 p-4 rounded-lg text-center">
-                    <p class="text-2xl font-bold text-blue-600">{{ stage.testStats?.coverage || '85%' }}</p>
+                    <p class="text-2xl font-bold text-blue-600">{{ stage.testStats?.coverage || '0%' }}</p>
                     <p class="text-xs text-blue-600">覆盖率</p>
                   </div>
                 </div>
@@ -573,17 +573,9 @@ const testGeneratedFiles = computed(() => {
   return []
 })
 
-const getDefaultStages = () => [
-  { id: 'requirement-analysis', name: '需求分析', icon: '🎯', status: 'COMPLETED', statusText: '已完成', time: '23:21', hasContent: true, orderNum: 1 },
-  { id: 'feature-point-split', name: '功能点拆分', icon: '📋', status: 'COMPLETED', statusText: '已完成', time: '23:21', hasContent: true, orderNum: 2 },
-  { id: 'task-split', name: '任务拆分', icon: '📝', status: 'COMPLETED', statusText: '已完成', time: '23:21', hasContent: true, orderNum: 3 },
-  { id: 'code-gen', name: '编码实现', icon: '💻', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 4 },
-  { id: 'test-gen', name: '测试生成', icon: '🧪', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 5 },
-  { id: 'code-review', name: '代码审查', icon: '🔍', status: 'COMPLETED', statusText: '已完成', time: '23:22', hasContent: true, orderNum: 6 },
-  { id: 'pr-creation', name: '变更预览', icon: '👁️', status: 'COMPLETED', statusText: '已完成', time: '23:23', hasContent: true, orderNum: 7, stats: { added: 2, modified: 1, deleted: 0 }, risk: '低', riskItems: ['✅ 无破坏性变更', '✅ 向后兼容'] },
-  { id: 'test-exec', name: '测试验证', icon: '✅', status: 'COMPLETED', statusText: '已完成', time: '23:25', hasContent: true, orderNum: 8, testStats: { total: 5, passed: 5, failed: 0, coverage: '85%' }, tests: getDefaultTests() },
-  { id: 'build', name: '编译构建', icon: '🔧', status: 'COMPLETED', statusText: '已完成', time: '23:24', hasContent: true, orderNum: 9, buildStatus: 'SUCCESS', duration: '12.5s', log: '[INFO] BUILD SUCCESS' },
-  { id: 'deploy', name: '发布部署', icon: '🚀', status: 'COMPLETED', statusText: '已完成', time: '23:26', hasContent: true, orderNum: 10, deployStatus: 'SUCCESS', environment: '开发环境', version: '1.0.0', endpoints: getDefaultEndpoints() }
+const getDefaultEndpoints = () => [
+  { method: 'GET', url: 'http://localhost:8081/api/users', status: 'UP' },
+  { method: 'GET', url: 'http://localhost:8081/api/health', status: 'UP' }
 ]
 
 const getStageName = (stageName) => {
@@ -707,19 +699,6 @@ const getCodeFiles = () => [
   { name: 'UserService.java', content: 'package com.bage.demo.service;\n\nimport com.bage.demo.entity.User;\nimport java.util.List;\n\npublic interface UserService {\n    List<User> getAllUsers();\n    User getUserById(Long id);\n    User createUser(User user);\n    User updateUser(Long id, User user);\n    void deleteUser(Long id);\n}' },
   { name: 'UserRepository.java', content: 'package com.bage.demo.repository;\n\nimport com.bage.demo.entity.User;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface UserRepository extends JpaRepository<User, Long> {\n}' },
   { name: 'User.java', content: 'package com.bage.demo.entity;\n\nimport jakarta.persistence.*;\n\n@Entity\n@Table(name = \"users\")\npublic class User {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    private String username;\n    private String email;\n    // getters and setters\n}' }
-]
-
-const getDefaultTests = () => [
-  { name: 'UserControllerTest - getAllUsers', status: 'PASSED' },
-  { name: 'UserControllerTest - createUser', status: 'PASSED' },
-  { name: 'UserControllerTest - getUserById', status: 'PASSED' },
-  { name: 'UserServiceTest - updateUser', status: 'PASSED' },
-  { name: 'UserServiceTest - deleteUser', status: 'PASSED' }
-]
-
-const getDefaultEndpoints = () => [
-  { method: 'GET', url: 'http://localhost:8081/api/users', status: 'UP' },
-  { method: 'GET', url: 'http://localhost:8081/api/health', status: 'UP' }
 ]
 
 const getDefaultAnalysis = () => {

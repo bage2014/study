@@ -32,25 +32,17 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageResponse getMessageById(Long id) {
+    @Transactional(readOnly = true)
+    public MessageResponse getMessage(Long id) {
         Message message = messageRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("消息不存在，ID: " + id));
         return toResponse(message);
     }
 
     @Override
-    public Page<MessageResponse> getMessages(String sender, String receiver, Pageable pageable) {
-        Page<Message> messages;
-        if (sender != null && receiver != null) {
-            messages = messageRepository.findBySenderAndReceiver(sender, receiver, pageable);
-        } else if (sender != null) {
-            messages = messageRepository.findBySender(sender, pageable);
-        } else if (receiver != null) {
-            messages = messageRepository.findByReceiver(receiver, pageable);
-        } else {
-            messages = messageRepository.findAll(pageable);
-        }
-        return messages.map(this::toResponse);
+    @Transactional(readOnly = true)
+    public Page<MessageResponse> getAllMessages(Pageable pageable) {
+        return messageRepository.findAll(pageable).map(this::toResponse);
     }
 
     @Override

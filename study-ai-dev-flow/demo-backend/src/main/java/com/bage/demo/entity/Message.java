@@ -1,41 +1,43 @@
 package com.bage.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "messages")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "messages")
 public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 5000)
+    @NotBlank(message = "消息内容不能为空")
+    @Column(nullable = false, length = 500)
     private String content;
 
-    @Column(nullable = false)
+    @Column(length = 100)
     private String sender;
 
-    @Column(nullable = false)
+    @Column(length = 100)
     private String receiver;
 
-    @Column(nullable = false)
-    @Builder.Default
-    private Boolean read = false;
+    @Column(name = "is_read")
+    private Boolean read;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @PrePersist
