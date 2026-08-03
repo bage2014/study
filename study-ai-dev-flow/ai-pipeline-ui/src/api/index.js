@@ -36,7 +36,11 @@ export const projectApi = {
   createProject: (data) => api.post('/project', data),
   updateProject: (id, data) => api.put(`/project/${id}`, data),
   deleteProject: (id) => api.delete(`/project/${id}`),
-  getProjectStats: () => api.get('/project/stats')
+  getProjectStats: () => api.get('/project/stats'),
+  startProject: (id) => api.post(`/project/${id}/start`),
+  stopProject: (id) => api.post(`/project/${id}/stop`),
+  restartProject: (id) => api.post(`/project/${id}/restart`),
+  getProjectStatus: (id) => api.get(`/project/${id}/status`)
 }
 
 export const requirementApi = {

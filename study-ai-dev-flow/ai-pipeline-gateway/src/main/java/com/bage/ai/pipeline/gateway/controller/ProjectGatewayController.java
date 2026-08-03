@@ -149,4 +149,76 @@ public class ProjectGatewayController {
             return ResponseEntity.status(503).build();
         }
     }
+
+    @PostMapping("/{id}/start")
+    public ResponseEntity<Map<String, Object>> startProject(@PathVariable Long id) {
+        try {
+            Map<String, Object> result = webClient.post()
+                    .uri("/api/project/{id}/start", id)
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            if (result == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("Failed to start project: {}", e.getMessage());
+            return ResponseEntity.status(503).build();
+        }
+    }
+
+    @PostMapping("/{id}/stop")
+    public ResponseEntity<Map<String, Object>> stopProject(@PathVariable Long id) {
+        try {
+            Map<String, Object> result = webClient.post()
+                    .uri("/api/project/{id}/stop", id)
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            if (result == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("Failed to stop project: {}", e.getMessage());
+            return ResponseEntity.status(503).build();
+        }
+    }
+
+    @PostMapping("/{id}/restart")
+    public ResponseEntity<Map<String, Object>> restartProject(@PathVariable Long id) {
+        try {
+            Map<String, Object> result = webClient.post()
+                    .uri("/api/project/{id}/restart", id)
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            if (result == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("Failed to restart project: {}", e.getMessage());
+            return ResponseEntity.status(503).build();
+        }
+    }
+
+    @GetMapping("/{id}/status")
+    public ResponseEntity<Map<String, Object>> getProjectStatus(@PathVariable Long id) {
+        try {
+            Map<String, Object> result = webClient.get()
+                    .uri("/api/project/{id}/status", id)
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            if (result == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("Failed to get project status: {}", e.getMessage());
+            return ResponseEntity.status(503).build();
+        }
+    }
 }

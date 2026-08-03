@@ -6,6 +6,7 @@ import com.bage.ai.pipeline.api.entity.PipelineRunEntity;
 import com.bage.ai.pipeline.api.repository.ProjectRepository;
 import com.bage.ai.pipeline.api.repository.RequirementRepository;
 import com.bage.ai.pipeline.api.repository.PipelineRunRepository;
+import com.bage.ai.pipeline.api.service.ProjectProcessService;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -36,13 +37,16 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final RequirementRepository requirementRepository;
     private final PipelineRunRepository pipelineRunRepository;
+    private final ProjectProcessService projectProcessService;
 
     public ProjectController(ProjectRepository projectRepository,
                              RequirementRepository requirementRepository,
-                             PipelineRunRepository pipelineRunRepository) {
+                             PipelineRunRepository pipelineRunRepository,
+                             ProjectProcessService projectProcessService) {
         this.projectRepository = projectRepository;
         this.requirementRepository = requirementRepository;
         this.pipelineRunRepository = pipelineRunRepository;
+        this.projectProcessService = projectProcessService;
     }
 
     @GetMapping
@@ -244,11 +248,41 @@ public class ProjectController {
     public ResponseEntity<Map<String, Object>> getProjectStats() {
         long total = projectRepository.count();
         long active = projectRepository.findByStatus("active").size();
-        
+
         return ResponseEntity.ok(Map.of(
                 "total", total,
                 "active", active,
                 "inactive", total - active
         ));
+    }
+
+    @PostMapping("/{id}/start")
+    public ResponseEntity<Map<String, Object>> startProject(@PathVariable Long id) {
+        return projectRepository.findById(id)
+                .map(project -> ResponseEntity.ok(projectProcessService.startProject(
+                        id, project.getLocalPath(), project.getProjectType())))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/stop")
+    public ResponseEntity<Map<String, Object>> stopProject(@PathVariable Long id) {
+        return projectRepository.existsById(id)
+                ? ResponseEntity.ok(projectProcessService.stopProject(id))
+                : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{id}/restart")
+    public ResponseEntity<Map<String, Object>> restartProject(@PathVariable Long id) {
+        return projectRepository.findById(id)
+                .map(project -> ResponseEntity.ok(projectProcessService.restartProject(
+                        id, project.getLocalPath(), project.getProjectType())))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/status")
+    public ResponseEntity<Map<String, Object>> getProjectStatus(@PathVariable Long id) {
+        return projectRepository.existsById(id)
+                ? ResponseEntity.ok(projectProcessService.getProjectStatus(id))
+                : ResponseEntity.notFound().build();
     }
 }

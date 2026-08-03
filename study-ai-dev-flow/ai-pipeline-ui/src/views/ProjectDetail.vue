@@ -172,6 +172,71 @@
         </div>
       </div>
 
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-semibold text-gray-800">项目运行控制</h3>
+          <span :class="[
+            'px-3 py-1 rounded-full text-xs font-medium',
+            projectStatus.running ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+          ]">
+            {{ projectStatus.running ? '运行中' : '已停止' }}
+          </span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span class="text-gray-500">进程PID</span>
+            <span class="text-gray-700 font-medium">{{ projectStatus.pid || '-' }}</span>
+          </div>
+          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span class="text-gray-500">监听端口</span>
+            <span class="text-gray-700 font-medium">{{ projectStatus.port || '-' }}</span>
+          </div>
+          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span class="text-gray-500">运行状态</span>
+            <span class="font-medium" :class="projectStatus.running ? 'text-green-600' : 'text-gray-600'">
+              {{ projectStatus.status }}
+            </span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button
+            @click="handleStartProject"
+            :disabled="projectActionLoading !== '' || projectStatus.running"
+            class="bg-green-600 text-white px-4 py-2.5 rounded-lg hover:bg-green-700 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            <span v-if="projectActionLoading === 'start'">⏳</span>
+            <span v-else>▶</span>
+            <span>{{ projectActionLoading === 'start' ? '启动中...' : '启动' }}</span>
+          </button>
+          <button
+            @click="handleStopProject"
+            :disabled="projectActionLoading !== '' || !projectStatus.running"
+            class="bg-red-600 text-white px-4 py-2.5 rounded-lg hover:bg-red-700 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            <span v-if="projectActionLoading === 'stop'">⏳</span>
+            <span v-else>■</span>
+            <span>{{ projectActionLoading === 'stop' ? '停止中...' : '停止' }}</span>
+          </button>
+          <button
+            @click="handleRestartProject"
+            :disabled="projectActionLoading !== ''"
+            class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            <span v-if="projectActionLoading === 'restart'">⏳</span>
+            <span v-else>↻</span>
+            <span>{{ projectActionLoading === 'restart' ? '重启中...' : '重启' }}</span>
+          </button>
+          <button
+            @click="loadProjectStatus"
+            :disabled="projectActionLoading !== ''"
+            class="bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            <span>⟳</span>
+            <span>刷新状态</span>
+          </button>
+        </div>
+      </div>
+
       <div v-if="showCreateRequirement" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
           <h4 class="text-lg font-semibold text-gray-800 mb-4">新建需求</h4>
@@ -216,7 +281,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, inject } from 'vue'
+import { ref, onMounted, onUnmounted, watch, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { projectApi, requirementApi, pipelineApi } from '../api'
 import Loading from '../components/Loading.vue'
@@ -250,6 +315,10 @@ const newRequirement = ref({
   description: ''
 })
 const startingPipelineId = ref(null)
+
+const projectStatus = ref({ status: 'UNKNOWN', running: false, pid: null, port: null })
+const projectActionLoading = ref('')
+const pollingTimer = ref(null)
 
 const statusText = (status) => {
   switch (status) {
@@ -377,7 +446,84 @@ watch(currentFilter, () => {
   loadRequirements()
 })
 
+const loadProjectStatus = async () => {
+  try {
+    const res = await projectApi.getProjectStatus(route.params.id)
+    projectStatus.value = res.data
+    if (projectStatus.value.running && !pollingTimer.value) {
+      pollingTimer.value = setInterval(loadProjectStatus, 5000)
+    } else if (!projectStatus.value.running && pollingTimer.value) {
+      clearInterval(pollingTimer.value)
+      pollingTimer.value = null
+    }
+  } catch (e) {
+    projectStatus.value = { status: 'UNKNOWN', running: false }
+  }
+}
+
+const handleStartProject = async () => {
+  projectActionLoading.value = 'start'
+  try {
+    const res = await projectApi.startProject(route.params.id)
+    if (res.data.success) {
+      showToast?.success('项目启动中，端口: ' + res.data.port)
+      await loadProjectStatus()
+    } else {
+      showToast?.warning(res.data.message || '启动失败')
+    }
+  } catch (e) {
+    console.error('Failed to start project:', e)
+    showToast?.error('启动失败，请重试')
+  } finally {
+    projectActionLoading.value = ''
+  }
+}
+
+const handleStopProject = async () => {
+  projectActionLoading.value = 'stop'
+  try {
+    const res = await projectApi.stopProject(route.params.id)
+    if (res.data.success) {
+      showToast?.success('项目已停止')
+      await loadProjectStatus()
+    } else {
+      showToast?.warning(res.data.message || '停止失败')
+    }
+  } catch (e) {
+    console.error('Failed to stop project:', e)
+    showToast?.error('停止失败，请重试')
+  } finally {
+    projectActionLoading.value = ''
+  }
+}
+
+const handleRestartProject = async () => {
+  projectActionLoading.value = 'restart'
+  try {
+    const res = await projectApi.restartProject(route.params.id)
+    if (res.data.success) {
+      showToast?.success('项目重启中，端口: ' + res.data.port)
+      await loadProjectStatus()
+    } else {
+      showToast?.warning(res.data.message || '重启失败')
+    }
+  } catch (e) {
+    console.error('Failed to restart project:', e)
+    showToast?.error('重启失败，请重试')
+  } finally {
+    projectActionLoading.value = ''
+  }
+}
+
 onMounted(() => {
   loadProjectDetail()
+  loadProjectStatus()
+})
+
+onUnmounted(() => {
+  if (pollingTimer.value) {
+    clearInterval(pollingTimer.value)
+    pollingTimer.value = null
+  }
 })
 </script>
