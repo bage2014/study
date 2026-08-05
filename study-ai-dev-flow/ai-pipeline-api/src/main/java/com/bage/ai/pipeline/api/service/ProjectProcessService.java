@@ -176,7 +176,9 @@ public class ProjectProcessService {
         String mvnPath = findExecutable("mvn");
 
         if (mvnPath != null) {
-            pb.command(mvnPath, "spring-boot:run", "-Dspring-boot.run.arguments=--server.port=" + port);
+            pb.command(mvnPath, "spring-boot:run",
+                    "-Dmaven.test.skip=true",
+                    "-Dspring-boot.run.arguments=--server.port=" + port);
         } else if (javaHome != null) {
             File jar = findBuiltJar(projectPath);
             if (jar != null) {
@@ -188,7 +190,9 @@ public class ProjectProcessService {
                         "--server.port=" + port);
             }
         } else {
-            pb.command("mvn", "spring-boot:run", "-Dspring-boot.run.arguments=--server.port=" + port);
+            pb.command("mvn", "spring-boot:run",
+                    "-Dmaven.test.skip=true",
+                    "-Dspring-boot.run.arguments=--server.port=" + port);
         }
 
         return pb;
