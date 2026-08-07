@@ -153,6 +153,10 @@
 - **推荐**：技术博客与知识付费、短视频代运营服务
 - **理由**：内容创作型，可发挥专业优势
 
+### 长期主义（数字资产沉淀）
+- **推荐**：GitHub应用实践与生态变现
+- **理由**：零成本启动、复利型资产、Java生态优势、适合长期坚持，3-5年形成技术IP与被动收入
+
 ---
 
 ## 目录结构
@@ -165,6 +169,7 @@ study-idea/
 ├── side-hustle-001-tech-blog/         # 技术博客与知识付费
 ├── side-hustle-002-tech-consulting/   # 企业技术咨询服务
 ├── side-hustle-003-automation-scripts/# 自动化脚本开发服务
+├── side-hustle-005-open-source/       # 开源项目维护与赞助
 ├── side-hustle-006-ai-content-assistant/ # AI内容创作助手
 ├── side-hustle-010-ai-image-generator/ # AI图像生成平台
 ├── side-hustle-015-short-video-agency/ # 短视频代运营服务
@@ -175,6 +180,7 @@ study-idea/
 ├── side-hustle-021-dev-tools/         # 开发者工具
 ├── side-hustle-022-ai-workflow/       # AI工作流自动化平台
 ├── side-hustle-023-saas-micro/        # SaaS微产品
+├── side-hustle-024-github-practices/ # GitHub应用实践与生态变现
 └── SUMMARY.md                         # 汇总文档
 ```
 
