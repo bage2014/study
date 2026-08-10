@@ -154,8 +154,9 @@
 - **理由**：内容创作型，可发挥专业优势
 
 ### 长期主义（数字资产沉淀）
-- **推荐**：GitHub应用实践与生态变现
+- **推荐**：GitHub应用实践与生态变现、GitHub Marketplace商业应用、GitHub Java教育产品
 - **理由**：零成本启动、复利型资产、Java生态优势、适合长期坚持，3-5年形成技术IP与被动收入
+- **三大方向互补**：开源引流(024) + 商业变现(025) + 教育内容(026)，形成GitHub生态闭环
 
 ---
 
@@ -180,7 +181,9 @@ study-idea/
 ├── side-hustle-021-dev-tools/         # 开发者工具
 ├── side-hustle-022-ai-workflow/       # AI工作流自动化平台
 ├── side-hustle-023-saas-micro/        # SaaS微产品
-├── side-hustle-024-github-practices/ # GitHub应用实践与生态变现
+├── side-hustle-024-github-practices/ # GitHub应用实践与生态变现（开源矩阵）
+├── side-hustle-025-github-marketplace/ # GitHub Marketplace商业应用与Action
+├── side-hustle-026-github-education/  # 基于GitHub的Java教育学习产品
 └── SUMMARY.md                         # 汇总文档
 ```
 
@@ -215,9 +218,10 @@ study-idea/
 
 ---
 
-*最后更新：2026年7月*
+*最后更新：2026年8月*
 
-**项目总数：15个**
+**项目总数：18个**
 - 强烈推荐（2026年趋势）：6个
 - 推荐执行：3个
 - 保留观察：5个
+- GitHub生态专集：3个（024/025/026）
