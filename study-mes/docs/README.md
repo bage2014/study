@@ -21,8 +21,18 @@ docs/
 │   └── plm-workflow-20260816.md       # 流程：研发、变更、发布
 ├── management/                        # 通用管理系统
 │   └── management-overview-20260816.md # 概述：权限、组织、审批等通用能力
-└── integration/                       # 系统集成
-    └── integration-architecture-20260816.md # MES/BOM/PLM/ERP 集成架构
+├── integration/                       # 系统集成
+│   └── integration-architecture-20260816.md # MES/BOM/PLM/ERP 集成架构
+└── tech/                              # 技术实现文档
+    ├── tech-framework-20260816.md             # 框架选型与分层架构
+    ├── tech-data-model-20260816.md            # 核心数据模型设计
+    ├── tech-workorder-state-20260816.md       # 工单状态机实现
+    ├── tech-bom-explode-20260816.md           # BOM 展开算法实现
+    ├── tech-traceability-20260816.md          # 追溯查询实现
+    ├── tech-permission-20260816.md            # 权限与数据权限实现
+    ├── tech-workflow-20260816.md              # 审批工作流实现
+    ├── tech-mdm-sync-20260816.md              # 主数据事件同步实现
+    └── tech-concurrency-20260816.md           # 报工高并发与编码生成
 ```
 
 ## 文件命名规范
@@ -32,8 +42,9 @@ docs/
 ## 阅读建议
 
 1. 新人入门：先读各模块的 `overview`，再读 `modules`，最后读 `workflow`。
-2. 架构选型：重点看 `integration/integration-architecture`。
+2. 架构选型：重点看 `integration/integration-architecture` + `tech/tech-framework`。
 3. 业务对接：参考各模块的 `workflow` 文档。
+4. 技术实现：参考 `tech/` 目录下各实现思路文档。
 
 ## 维护说明
 
