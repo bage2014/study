@@ -32,7 +32,15 @@ docs/
     ├── tech-permission-20260816.md            # 权限与数据权限实现
     ├── tech-workflow-20260816.md              # 审批工作流实现
     ├── tech-mdm-sync-20260816.md              # 主数据事件同步实现
-    └── tech-concurrency-20260816.md           # 报工高并发与编码生成
+    ├── tech-concurrency-20260816.md           # 报工高并发与编码生成
+    ├── tech-iot-collection-20260816.md        # 设备数据采集（OPC-UA/MQTT）
+    ├── tech-dashboard-20260816.md              # 实时看板与数据聚合
+    ├── tech-quality-spc-20260816.md            # 质量管理与 SPC
+    ├── tech-material-kitting-20260816.md       # 物料齐套与配料
+    ├── tech-oee-20260816.md                    # 设备 OEE 计算
+    ├── tech-file-preview-20260816.md           # 文件存储与预览
+    ├── tech-testing-20260816.md                # 测试策略
+    └── tech-devops-20260816.md                 # 部署与运维
 ```
 
 ## 文件命名规范
