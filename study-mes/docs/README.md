@@ -23,24 +23,36 @@ docs/
 │   └── management-overview-20260816.md # 概述：权限、组织、审批等通用能力
 ├── integration/                       # 系统集成
 │   └── integration-architecture-20260816.md # MES/BOM/PLM/ERP 集成架构
-└── tech/                              # 技术实现文档
-    ├── tech-framework-20260816.md             # 框架选型与分层架构
-    ├── tech-data-model-20260816.md            # 核心数据模型设计
-    ├── tech-workorder-state-20260816.md       # 工单状态机实现
-    ├── tech-bom-explode-20260816.md           # BOM 展开算法实现
-    ├── tech-traceability-20260816.md          # 追溯查询实现
-    ├── tech-permission-20260816.md            # 权限与数据权限实现
-    ├── tech-workflow-20260816.md              # 审批工作流实现
-    ├── tech-mdm-sync-20260816.md              # 主数据事件同步实现
-    ├── tech-concurrency-20260816.md           # 报工高并发与编码生成
-    ├── tech-iot-collection-20260816.md        # 设备数据采集（OPC-UA/MQTT）
-    ├── tech-dashboard-20260816.md              # 实时看板与数据聚合
-    ├── tech-quality-spc-20260816.md            # 质量管理与 SPC
-    ├── tech-material-kitting-20260816.md       # 物料齐套与配料
-    ├── tech-oee-20260816.md                    # 设备 OEE 计算
-    ├── tech-file-preview-20260816.md           # 文件存储与预览
-    ├── tech-testing-20260816.md                # 测试策略
-    └── tech-devops-20260816.md                 # 部署与运维
+├── tech/                              # 技术实现文档
+│   ├── tech-framework-20260816.md             # 框架选型与分层架构
+│   ├── tech-data-model-20260816.md            # 核心数据模型设计
+│   ├── tech-workorder-state-20260816.md       # 工单状态机实现
+│   ├── tech-bom-explode-20260816.md           # BOM 展开算法实现
+│   ├── tech-traceability-20260816.md          # 追溯查询实现
+│   ├── tech-permission-20260816.md            # 权限与数据权限实现
+│   ├── tech-workflow-20260816.md              # 审批工作流实现
+│   ├── tech-mdm-sync-20260816.md              # 主数据事件同步实现
+│   ├── tech-concurrency-20260816.md           # 报工高并发与编码生成
+│   ├── tech-iot-collection-20260816.md        # 设备数据采集（OPC-UA/MQTT）
+│   ├── tech-dashboard-20260816.md              # 实时看板与数据聚合
+│   ├── tech-quality-spc-20260816.md            # 质量管理与 SPC
+│   ├── tech-material-kitting-20260816.md       # 物料齐套与配料
+│   ├── tech-oee-20260816.md                    # 设备 OEE 计算
+│   ├── tech-file-preview-20260816.md           # 文件存储与预览
+│   ├── tech-testing-20260816.md                # 测试策略
+│   └── tech-devops-20260816.md                 # 部署与运维
+├── processes/                          # 端到端跨系统业务流程
+│   ├── process-o2c-20260906.md          # 订单到回款（O2C）
+│   ├── process-p2p-20260906.md          # 采购到付款（P2P）
+│   ├── process-p2m-20260906.md          # 计划到生产（P2M）
+│   └── process-npi-20260906.md          # 新品导入（NPI）
+├── systems/                            # 周边管理系统
+│   ├── wms-overview-20260906.md         # WMS 仓储管理
+│   ├── srm-overview-20260906.md         # SRM 供应商关系
+│   ├── aps-overview-20260906.md         # APS 高级计划排程
+│   └── qms-overview-20260906.md         # QMS 质量管理体系
+└── products/                           # 产品方案与对比
+    └── product-comparison-20260906.md   # 主流产品方案对比
 ```
 
 ## 文件命名规范
