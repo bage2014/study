@@ -51,8 +51,15 @@ docs/
 │   ├── srm-overview-20260906.md         # SRM 供应商关系
 │   ├── aps-overview-20260906.md         # APS 高级计划排程
 │   └── qms-overview-20260906.md         # QMS 质量管理体系
-└── products/                           # 产品方案与对比
-    └── product-comparison-20260906.md   # 主流产品方案对比
+├── products/                           # 产品方案与对比
+│   └── product-comparison-20260906.md   # 主流产品方案对比
+├── resources/                          # 开源项目与标准参考
+│   └── resources-opensource-20260906.md # 开源项目汇总 + ISA-95 标准 + 参考链接
+└── concepts/                           # 概念+流程+Java实现综合文档
+    ├── routing-management-20260906.md    # 工艺路线与 BOP 管理
+    ├── document-management-20260906.md   # 文档管理
+    ├── bom-service-impl-20260906.md      # BOM 管理服务实现
+    └── item-master-20260906.md           # 物料主数据管理
 ```
 
 ## 文件命名规范
