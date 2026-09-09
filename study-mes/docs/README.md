@@ -59,7 +59,12 @@ docs/
     ├── routing-management-20260906.md    # 工艺路线与 BOP 管理
     ├── document-management-20260906.md   # 文档管理
     ├── bom-service-impl-20260906.md      # BOM 管理服务实现
-    └── item-master-20260906.md           # 物料主数据管理
+    ├── item-master-20260906.md           # 物料主数据管理
+    ├── work-order-impl-20260906.md       # 工单管理与派工
+    ├── inventory-ledger-20260906.md       # 库存事务与账本
+    ├── equipment-tpm-20260906.md          # 设备管理与 TPM
+    ├── rework-scrap-20260906.md            # 返工返修与报废
+    └── cost-accounting-20260906.md         # 生产成本核算
 ```
 
 ## 文件命名规范
