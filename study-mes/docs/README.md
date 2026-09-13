@@ -52,7 +52,9 @@ docs/
 │   ├── aps-overview-20260906.md         # APS 高级计划排程
 │   └── qms-overview-20260906.md         # QMS 质量管理体系
 ├── products/                           # 产品方案与对比
-│   └── product-comparison-20260906.md   # 主流产品方案对比
+│   ├── product-comparison-20260906.md   # 主流产品方案对比（简表）
+│   ├── mes-vendors-guide-20260913.md    # 主流 MES 软件使用指南（特点/手册/优缺点）
+│   └── bom-plm-vendors-guide-20260913.md # 主流 BOM/PLM 软件使用指南（特点/手册/优缺点）
 ├── resources/                          # 开源项目与标准参考
 │   └── resources-opensource-20260906.md # 开源项目汇总 + ISA-95 标准 + 参考链接
 └── concepts/                           # 概念+流程+Java实现综合文档
@@ -75,8 +77,9 @@ docs/
 
 1. 新人入门：先读各模块的 `overview`，再读 `modules`，最后读 `workflow`。
 2. 架构选型：重点看 `integration/integration-architecture` + `tech/tech-framework`。
-3. 业务对接：参考各模块的 `workflow` 文档。
-4. 技术实现：参考 `tech/` 目录下各实现思路文档。
+3. 厂商选型：看 `products/` 下两份软件使用指南（MES、BOM/PLM 的特点/手册/优缺点）。
+4. 业务对接：参考各模块的 `workflow` 文档。
+5. 技术实现：参考 `tech/` 目录下各实现思路文档。
 
 ## 维护说明
 
