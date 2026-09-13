@@ -28,6 +28,9 @@
 | [01-computer-basics.md](notes/01-computer-basics.md) | 计基：CPU / OS / 网络 / 数据库基础 | ★★ |
 | [04-system-modeling.md](notes/04-system-modeling.md) | 建模：UML 9 图 / MDA / DFD | ★★ |
 | [07-essay-topics.md](notes/07-essay-topics.md) | 论文方法：结构 / 5 篇主题 / 评分要点 | ★★★ |
+| [08-embedded-systems.md](notes/08-embedded-systems.md) | 嵌入式：RTOS / RM-EDF 调度 / 优先级反转 / AUTOSAR（案例试题三必考） | ★★★ |
+| [09-math-and-mgmt.md](notes/09-math-and-mgmt.md) | 数学与管理：EVM / 关键路径 / 盈亏平衡 / EMV / 图论 / 合同招投标 | ★★ |
+| [10-ip-standards-enterprise.md](notes/10-ip-standards-enterprise.md) | 知识产权期限表 + 标准代号 + ERP/EAI/电子政务（纯记忆送分） | ★★ |
 
 ### L1 背诵速记表（cheatsheet，每天默写）
 
@@ -36,6 +39,7 @@
 | [架构风格 14 种速记表](notes/cheatsheet-architecture-styles.md) | 5 大类 14 风格对照表 + 7 种补充 + 4 组易混淆对比 + 5 步法答题套路 |
 | [质量属性+战术速记表](notes/cheatsheet-quality-tactics.md) | 6 要素 + 6 大属性×战术矩阵 + SLA/MTBF 计算 + 案例答题 5 步法 |
 | [设计模式 23 种分类速记表](notes/cheatsheet-design-patterns.md) | 创建 5 / 结构 7 / 行为 11 + 口诀 + 易混淆对比 + 案例高频考法 |
+| [专业英语词汇速记表](notes/cheatsheet-english-glossary.md) | 11 类高频术语 + 完形逻辑词 + 答题技巧（上午 #71-75 送分） |
 
 ### 论文模板（essays/templates/，阶段 2 起每周一篇）
 
@@ -66,7 +70,10 @@ study-exam/
 ├── notes/                         学习笔记 + 背诵表
 │   ├── 00-project-casebank.md     ★ 项目案例库（优先填）
 │   ├── 01~07-*.md                 7 大章节笔记
-│   └── cheatsheet-*.md            3 张 L1 背诵速记表
+│   ├── 08-embedded-systems.md     嵌入式（案例试题三必考）
+│   ├── 09-math-and-mgmt.md        数学/运筹/项目管理计算
+│   ├── 10-ip-standards-*.md       知识产权/标准化/企业信息化
+│   └── cheatsheet-*.md            4 张 L1 背诵速记表
 ├── past-papers/                   真题 + 模拟题（见内部 README 索引）
 │   ├── README.md                  ★ 索引总表 + 勾选追踪
 │   ├── morning/                   上午综合（2021-2025 × 5 份）
@@ -86,11 +93,11 @@ study-exam/
 | 下午案例分析 | 5 道大题（必答） | 90 分钟 | ≥ 45 |
 | 下午论文 | 4 选 1，2500 字 | 120 分钟 | ≥ 45 |
 
-## 今日进度（2026-08-31）
+## 今日进度（2026-09-11）
 
-- **阶段**：阶段 1 扫盲 → W3 建模+中间件+嵌入式
-- **剩余**：约 9 周
+- **阶段**：阶段 1 扫盲 → W4 新兴+安全+可靠 / 数学+知识产权补课
+- **剩余**：约 8 周
 - **立即可做 3 件事**：
   1. 填 [00-project-casebank.md](notes/00-project-casebank.md) 的量化数据（1 小时搞定，论文 80% 素材）
-  2. 每天默写 3 张 cheatsheet（15 分钟/天）
-  3. 在 [progress-20260817.md](docs/changelog/progress-20260817.md) 补 W1、W2 打卡
+  2. 每天默写 4 张 cheatsheet（15 分钟/天）
+  3. 啃 [08-embedded-systems.md](notes/08-embedded-systems.md) 的 RM/EDF 计算 + AUTOSAR 分层（案例 15 分）
