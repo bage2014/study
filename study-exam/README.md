@@ -13,7 +13,7 @@
 | ① 读规划 | 搞清考什么、怎么考、时间怎么分 | [考试说明](docs/spec/exam-overview-20260817.md) → [复习思路](docs/spec/review-strategy-20260817.md) → [学习计划](docs/spec/study-plan-20260817.md) → [资料清单](docs/spec/resources-20260817.md) | 开局一次 |
 | ② 建框架 | 通读章节笔记，先混脸熟不抠细节 | notes/01 → 02 → 03 → 04 → 05 → 06 → 08 → 09 → 10（[00 案例库](notes/00-project-casebank.md) 随时填，别攒到最后） | 阶段 1 |
 | ③ 背 L1 | 每天默写 4 张速记表，各 15 分钟 | [架构风格](notes/cheatsheet-architecture-styles.md) / [质量属性+战术](notes/cheatsheet-quality-tactics.md) / [设计模式](notes/cheatsheet-design-patterns.md) / [英语词汇](notes/cheatsheet-english-glossary.md) | 阶段 1 起，每天 |
-| ④ 刷真题 | 按年倒序刷题，错题归档回 notes/ | [past-papers/README.md](past-papers/README.md)（内含 ①→⑧ 刷题顺序表：2025 → 2024 → 2023 → 2022 → 2021 → mock×3） | 阶段 2-4 主体 |
+| ④ 刷真题 | 按年倒序刷题，错题归档回 notes/ | [past-papers/README.md](past-papers/README.md)（内含 ①→⑧ 刷题顺序表：2025 → 2024 → 2023 → 2022 → 2021 → mock×3）；错题涉及的知识点查 [11-真题拓展手册](notes/11-papers-supplement.md) | 阶段 2-4 主体 |
 | ⑤ 写论文 | 填案例库 → 套模板 → 限时成文 | [00 案例库](notes/00-project-casebank.md) → [07-essay-topics](notes/07-essay-topics.md) → [essays/templates/ 01-05](essays/README.md)（每周 1 篇，按 [评分表](essays/README.md) 自评） | 阶段 2 末起 |
 
 **单日节奏**：早 15min 默写 cheatsheet → 晚 1-2h 专题笔记 / 真题 → 周末整套模拟 + 周日晚在 [进度记录](docs/changelog/progress-20260817.md) 打卡。
@@ -47,6 +47,7 @@
 | [08-embedded-systems.md](notes/08-embedded-systems.md) | 嵌入式：RTOS / RM-EDF 调度 / 优先级反转 / AUTOSAR（案例试题三必考） | ★★★ |
 | [09-math-and-mgmt.md](notes/09-math-and-mgmt.md) | 数学与管理：EVM / 关键路径 / 盈亏平衡 / EMV / 图论 / 合同招投标 | ★★ |
 | [10-ip-standards-enterprise.md](notes/10-ip-standards-enterprise.md) | 知识产权期限表 + 标准代号 + ERP/EAI/电子政务（纯记忆送分） | ★★ |
+| [11-papers-supplement.md](notes/11-papers-supplement.md) | ★ 五年真题汇总与拓展手册：频率总览 + 公式卡 + 案例套路 + 论文论据 + 混淆清单（刷题配套必查） | ★★★ |
 
 ### L1 背诵速记表（cheatsheet，每天默写）
 
@@ -89,6 +90,7 @@ study-exam/
 │   ├── 08-embedded-systems.md     嵌入式（案例试题三必考）
 │   ├── 09-math-and-mgmt.md        数学/运筹/项目管理计算
 │   ├── 10-ip-standards-*.md       知识产权/标准化/企业信息化
+│   ├── 11-papers-supplement.md    ★ 五年真题汇总与拓展手册（刷题配套）
 │   └── cheatsheet-*.md            4 张 L1 背诵速记表
 ├── past-papers/                   真题 + 模拟题（见内部 README 索引）
 │   ├── README.md                  ★ 索引总表 + 勾选追踪
