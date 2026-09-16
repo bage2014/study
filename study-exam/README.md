@@ -4,6 +4,22 @@
 > 起点：2026-08-17，剩约 9 周
 > 基础：Java 老手，已有软件设计师中级
 
+## ★ 复习顺序（如何阅读本仓库）
+
+> 新会话 / 不知道该干嘛时，按这张表走。与 [3 个月学习计划](docs/spec/study-plan-20260817.md) 的 4 阶段一一对应。
+
+| 步骤 | 做什么 | 用哪些文件（按序） | 对应阶段 |
+|------|--------|--------------------|----------|
+| ① 读规划 | 搞清考什么、怎么考、时间怎么分 | [考试说明](docs/spec/exam-overview-20260817.md) → [复习思路](docs/spec/review-strategy-20260817.md) → [学习计划](docs/spec/study-plan-20260817.md) → [资料清单](docs/spec/resources-20260817.md) | 开局一次 |
+| ② 建框架 | 通读章节笔记，先混脸熟不抠细节 | notes/01 → 02 → 03 → 04 → 05 → 06 → 08 → 09 → 10（[00 案例库](notes/00-project-casebank.md) 随时填，别攒到最后） | 阶段 1 |
+| ③ 背 L1 | 每天默写 4 张速记表，各 15 分钟 | [架构风格](notes/cheatsheet-architecture-styles.md) / [质量属性+战术](notes/cheatsheet-quality-tactics.md) / [设计模式](notes/cheatsheet-design-patterns.md) / [英语词汇](notes/cheatsheet-english-glossary.md) | 阶段 1 起，每天 |
+| ④ 刷真题 | 按年倒序刷题，错题归档回 notes/ | [past-papers/README.md](past-papers/README.md)（内含 ①→⑧ 刷题顺序表：2025 → 2024 → 2023 → 2022 → 2021 → mock×3） | 阶段 2-4 主体 |
+| ⑤ 写论文 | 填案例库 → 套模板 → 限时成文 | [00 案例库](notes/00-project-casebank.md) → [07-essay-topics](notes/07-essay-topics.md) → [essays/templates/ 01-05](essays/README.md)（每周 1 篇，按 [评分表](essays/README.md) 自评） | 阶段 2 末起 |
+
+**单日节奏**：早 15min 默写 cheatsheet → 晚 1-2h 专题笔记 / 真题 → 周末整套模拟 + 周日晚在 [进度记录](docs/changelog/progress-20260817.md) 打卡。
+
+**优先级口诀**：案例库 > cheatsheet > 架构核心(03) > 真题 > 其余笔记。时间不够先砍 09/10 这类纯记忆章节（考前 1 周突击即可）。
+
 ## 快速导航
 
 ### 规划层（必看）
@@ -93,11 +109,12 @@ study-exam/
 | 下午案例分析 | 5 道大题（必答） | 90 分钟 | ≥ 45 |
 | 下午论文 | 4 选 1，2500 字 | 120 分钟 | ≥ 45 |
 
-## 今日进度（2026-09-11）
+## 今日进度（2026-09-16）
 
-- **阶段**：阶段 1 扫盲 → W4 新兴+安全+可靠 / 数学+知识产权补课
-- **剩余**：约 8 周
+- **阶段**：阶段 2 专题突破进行中 → W5（9/14-9/20）专题：质量属性 + 架构评估
+- **剩余**：约 7.5 周（距 11/7 考试）
+- **本周主线**：按 [past-papers/README.md](past-papers/README.md) 顺序开刷 2025 三科真题（不限时，错题归档到 notes/）
 - **立即可做 3 件事**：
-  1. 填 [00-project-casebank.md](notes/00-project-casebank.md) 的量化数据（1 小时搞定，论文 80% 素材）
-  2. 每天默写 4 张 cheatsheet（15 分钟/天）
-  3. 啃 [08-embedded-systems.md](notes/08-embedded-systems.md) 的 RM/EDF 计算 + AUTOSAR 分层（案例 15 分）
+  1. 刷 [2025 上午 + 案例 + 论文](past-papers/README.md)（本周必做真题）
+  2. 填 [00-project-casebank.md](notes/00-project-casebank.md) 的量化数据（1 小时搞定，论文 80% 素材）
+  3. 每天默写 4 张 cheatsheet（15 分钟/天）

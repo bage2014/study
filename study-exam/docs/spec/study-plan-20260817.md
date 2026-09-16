@@ -37,7 +37,7 @@
 | 周三 | 质量属性 6 种 + 战术 |
 | 周四 | ABSD / ABC / DSSA / 构件复用 |
 | 周五 | 架构评估 ATAM / SAAM / SABB |
-| 周末 | 整理 [架构风格表](../notes/03-architecture-core.md) 背诵版 |
+| 周末 | 整理 [架构风格表](../../notes/03-architecture-core.md) 背诵版 |
 
 ### 第 3 周（8/31 - 9/6）系统建模 + 中间件 + 嵌入式
 

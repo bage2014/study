@@ -32,7 +32,7 @@
 | 51CTO 学院 | 51cto.com | 付费但解析详细 |
 | Runoob / CSDN | 搜"系统架构设计师 真题" | 散落但全 |
 
-> 真题文档放 [past-papers/](../past-papers/) 目录，建议按年份归档。
+> 真题文档放 [past-papers/](../../past-papers/) 目录，建议按年份归档。
 
 ## 4. 论文素材
 
@@ -49,9 +49,9 @@
 
 需要自己整理到 notes/ 下，必背清单：
 
-- [notes/03-architecture-core.md](../notes/03-architecture-core.md)：14 架构风格 + 6 质量属性 + 战术
-- [notes/04-system-modeling.md](../notes/04-system-modeling.md)：UML 9 图要素
-- [notes/02-software-engineering.md](../notes/02-software-engineering.md)：开发模型对比表
+- [notes/03-architecture-core.md](../../notes/03-architecture-core.md)：14 架构风格 + 6 质量属性 + 战术
+- [notes/04-system-modeling.md](../../notes/04-system-modeling.md)：UML 9 图要素
+- [notes/02-software-engineering.md](../../notes/02-software-engineering.md)：开发模型对比表
 - 设计模式 23 种分类速记（创建 5 + 结构 7 + 行为 11）
 
 ## 6. 工具与社区
