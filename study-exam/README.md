@@ -47,7 +47,7 @@
 | [08-embedded-systems.md](notes/08-embedded-systems.md) | 嵌入式：RTOS / RM-EDF 调度 / 优先级反转 / AUTOSAR（案例试题三必考） | ★★★ |
 | [09-math-and-mgmt.md](notes/09-math-and-mgmt.md) | 数学与管理：EVM / 关键路径 / 盈亏平衡 / EMV / 图论 / 合同招投标 | ★★ |
 | [10-ip-standards-enterprise.md](notes/10-ip-standards-enterprise.md) | 知识产权期限表 + 标准代号 + ERP/EAI/电子政务（纯记忆送分） | ★★ |
-| [11-papers-supplement.md](notes/11-papers-supplement.md) | ★ 五年真题汇总与拓展手册：频率总览 + 公式卡 + 案例套路 + 论文论据 + 混淆清单（刷题配套必查） | ★★★ |
+| [11-papers-supplement.md](notes/11-papers-supplement.md) | ★ 五年真题汇总与拓展手册：频率总览 + 公式卡 + 案例套路 + 论文论据 + 混淆清单 + 项目管理/法规速查 + 三科考场策略（刷题配套必查，580 行） | ★★★ |
 
 ### L1 背诵速记表（cheatsheet，每天默写）
 
