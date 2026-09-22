@@ -25,6 +25,10 @@
         <lombok.version>1.18.30</lombok.version>
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
 
+    </properties>
+
+    <dependencies>
+
         <!--Spring-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: study-ai-best-pratice-rca-agent
+
+  ai:
+    openai:
+      base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}
+      # 本地默认占位 key 仅为满足 Spring AI 启动期非空校验；rca.llm.enabled=false 时不会发起任何调用
+      api-key: ${DEEPSEEK_API_KEY:sk-dummy-local}
+      chat:
+        options:
+          model: ${DEEPSEEK_MODEL:deepseek-chat}
+          temperature: 0.1
+
+server:
+  port: 8082
+
+rca:
+  # LLM 仅工作在受约束节点（假设生成 / 证据解读）；关闭或调用失败时全链路确定性降级
+  llm:
+    enabled: ${RCA_LLM_ENABLED:false}
+  scan:
+    # BroadScan 每假设并发采集，FocusedScan 下钻的候选假设数
+    focused-top-n: 2
+    # 变更事件视为根因触发的时间窗（分钟）
+    change-window-minutes: 30
+    # 拓扑裁剪跳数
+    topology-hops: 2
+
+logging:
+  level:
+    com.bage.study.ai.best.practice.rca: INFO
