@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.bage</groupId>
+        <artifactId>study-ai-best-pratice-rca-agent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>study-ai-best-pratice-rca-agent-web</artifactId>
+    <name>study-ai-best-pratice-rca-agent-web</name>
+    <description>RCA Agent 前端 UI（Vue 3 + Vite + Element Plus）</description>
+    <packaging>pom</packaging>
+
+    <!--
+      前端独立构建，不参与 Maven 生命周期：
+        cd rca-agent-web
+        npm install
+        npm run dev      # 开发模式，默认代理 http://localhost:8082
+        npm run build    # 生产构建，产物输出到 dist/
+    -->
+</project>
