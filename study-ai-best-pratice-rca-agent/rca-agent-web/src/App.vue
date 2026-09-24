@@ -7,6 +7,9 @@
       </div>
       <el-menu mode="horizontal" :default-active="route.path" router class="nav-menu">
         <el-menu-item index="/analyze">RCA 分析</el-menu-item>
+        <el-menu-item index="/history">分析历史</el-menu-item>
+        <el-menu-item index="/recording">录制明细</el-menu-item>
+        <el-menu-item index="/replay">回放对比</el-menu-item>
         <el-menu-item index="/health">服务健康</el-menu-item>
       </el-menu>
     </el-header>

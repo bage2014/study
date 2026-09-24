@@ -9,6 +9,24 @@ const routes = [
     meta: { title: 'RCA 分析' }
   },
   {
+    path: '/history',
+    name: 'History',
+    component: () => import('@/views/History.vue'),
+    meta: { title: '分析历史' }
+  },
+  {
+    path: '/recording',
+    name: 'Recording',
+    component: () => import('@/views/Recording.vue'),
+    meta: { title: '录制明细' }
+  },
+  {
+    path: '/replay',
+    name: 'Replay',
+    component: () => import('@/views/Replay.vue'),
+    meta: { title: '回放对比' }
+  },
+  {
     path: '/health',
     name: 'Health',
     component: () => import('@/views/Health.vue'),

@@ -6,6 +6,8 @@ import com.bage.study.ai.best.practice.rca.agent.model.Hypothesis;
 import com.bage.study.ai.best.practice.rca.agent.model.MetricSnapshot;
 import com.bage.study.ai.best.practice.rca.agent.model.TimelineEvent;
 import com.bage.study.ai.best.practice.rca.agent.playbook.ScanPlaybook;
+import com.bage.study.ai.best.practice.rca.agent.recording.RecordingContext;
+import com.bage.study.ai.best.practice.rca.agent.recording.RecordingSession;
 import com.bage.study.ai.best.practice.rca.agent.tool.ChangeEventTool;
 import com.bage.study.ai.best.practice.rca.agent.tool.McpTool;
 import com.bage.study.ai.best.practice.rca.agent.tool.ToolQuery;
@@ -40,11 +42,13 @@ public class BroadScanService {
     }
 
     public ScanBundle scan(RcaRequest request, List<Hypothesis> hypotheses) {
+        // 在主线程捕获录制会话，供并行流中的 scanOneHypothesis 使用
+        RecordingSession session = RecordingContext.get();
         // 假设维度并发取数
         Map<String, List<Evidence>> byHypothesis = hypotheses.parallelStream()
                 .collect(Collectors.toMap(
                         Hypothesis::getId,
-                        h -> scanOneHypothesis(request, h),
+                        h -> scanOneHypothesis(request, h, session),
                         (a, b) -> a,
                         LinkedHashMap::new));
 
@@ -77,15 +81,26 @@ public class BroadScanService {
         return new ScanBundle(all, changeEvents, collected);
     }
 
-    private List<Evidence> scanOneHypothesis(RcaRequest request, Hypothesis hypothesis) {
+    private List<Evidence> scanOneHypothesis(RcaRequest request, Hypothesis hypothesis, RecordingSession session) {
         List<String> toolNames = playbook.broadTools(hypothesis);
         ToolQuery query = new ToolQuery(request.getAppId(), hypothesis.getTargetName(),
                 request.getAlarmTime(), request.getScene());
-        // 同一假设的多个工具并发调用
+        // 同一假设的多个工具并发调用；将录制会话传播到 worker 线程
         return toolNames.parallelStream()
                 .map(registry::get)
                 .filter(java.util.Objects::nonNull)
-                .map(tool -> tool.execute(query))
+                .map(tool -> {
+                    if (session != null) {
+                        RecordingContext.set(session);
+                    }
+                    try {
+                        return tool.execute(query);
+                    } finally {
+                        if (session != null) {
+                            RecordingContext.clear();
+                        }
+                    }
+                })
                 .filter(ToolResult::success)
                 .flatMap(r -> r.snapshots().stream())
                 .map(snapshot -> toEvidence(snapshot, hypothesis.getId()))

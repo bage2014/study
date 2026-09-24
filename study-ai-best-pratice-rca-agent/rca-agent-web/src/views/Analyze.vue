@@ -34,6 +34,10 @@
           <el-switch v-model="form.enableLlm" />
           <span class="form-tip">关闭时全链路走确定性规则，失败软降级</span>
         </el-form-item>
+        <el-form-item label="录制交互">
+          <el-switch v-model="form.record" />
+          <span class="form-tip">开启后录制全部工具/LLM 入参出参，支持回放</span>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="loading" @click="onAnalyze">执行分析</el-button>
           <el-button :loading="loading" @click="onAnalyzeMock">Mock 场景一键分析</el-button>
@@ -200,7 +204,8 @@ const form = reactive({
   appId: 'order-service',
   alarmDescription: '',
   scene: 'default',
-  enableLlm: false
+  enableLlm: false,
+  record: false
 })
 
 const loading = ref(false)

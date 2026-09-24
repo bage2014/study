@@ -10,9 +10,15 @@
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/rca/analyze` | 执行完整 RCA 分析（传入告警描述与场景） |
+| POST | `/api/rca/analyze` | 执行完整 RCA 分析（传入告警描述与场景，支持 `record` 录制） |
 | GET  | `/api/rca/analyze/mock` | Mock 场景便捷接口（按 scene 驱动模拟数据） |
 | GET  | `/api/rca/health` | 服务健康检查 |
+| GET  | `/api/rca/history` | 分析历史列表（分页） |
+| GET  | `/api/rca/history/{id}` | 分析历史详情（含请求、响应、录制） |
+| DELETE | `/api/rca/history/{id}` | 删除分析历史及关联录制 |
+| GET  | `/api/rca/recordings` | 录制列表 |
+| GET  | `/api/rca/recordings/{id}` | 录制详情（全部交互明细） |
+| POST | `/api/rca/replay/{id}` | 基于历史录制回放，返回确定性一致结果 |
 
 ---
 
@@ -31,6 +37,7 @@
 | alarmTime | datetime | 否 | 当前时间 | 告警触发时间，作为时间线锚点 |
 | scene | string | 否 | `default` | Mock 场景名，决定各工具返回正常/异常值（见第 5 节） |
 | enableLlm | boolean | 否 | `false` | 是否允许在 Plan/BroadAnalyze 调用 LLM；关闭时全链路确定性 |
+| record | boolean | 否 | `false` | 是否录制本次分析的全部工具与 LLM 交互；为 `true` 时结果将保存到历史并可回放 |
 
 ### 请求示例
 
@@ -40,7 +47,8 @@
   "alarmDescription": "订单状态更新延迟，MQ 消息堆积，消费者 lag 持续增长",
   "alarmTime": "2026-09-22T22:28:17",
   "scene": "mq_lag",
-  "enableLlm": false
+  "enableLlm": false,
+  "record": true
 }
 ```
 
@@ -290,7 +298,118 @@ curl http://localhost:8082/api/rca/health
 
 ---
 
-## 7. 配置项
+## 7. 分析历史与录制回放
+
+本节接口提供 RCA 分析历史管理、录制明细查询与确定性回放能力。数据存储于内存，服务重启后清空。
+
+### 7.1 GET /api/rca/history
+
+分析历史列表，按创建时间倒序分页。
+
+**Query**
+
+| 参数 | 类型 | 默认 | 说明 |
+|------|------|------|------|
+| page | int | 0 | 页码（从 0 开始） |
+| size | int | 20 | 每页条数 |
+
+**响应 200**
+
+```json
+{
+  "items": [
+    {
+      "analysisId": "de848200d402",
+      "appId": "order-service",
+      "scene": "mq_lag",
+      "resultLevel": "CONFIRMED",
+      "recorded": true,
+      "recordingId": "rec-de848200d402",
+      "createdAt": "2026-09-24T00:21:10"
+    }
+  ],
+  "total": 1,
+  "page": 0,
+  "size": 20
+}
+```
+
+### 7.2 GET /api/rca/history/{id}
+
+返回完整 `AnalysisRecord`，包含原始请求、响应及录制交互明细。
+
+| 状态 | 说明 |
+|------|------|
+| 200 | 成功，返回 AnalysisRecord |
+| 404 | 历史不存在 |
+
+### 7.3 DELETE /api/rca/history/{id}
+
+删除分析历史及其关联录制。
+
+| 状态 | 说明 |
+|------|------|
+| 204 | 删除成功 |
+| 404 | 历史不存在 |
+
+### 7.4 GET /api/rca/recordings
+
+录制列表。
+
+**响应 200**
+
+```json
+[
+  {
+    "recordingId": "rec-de848200d402",
+    "analysisId": "de848200d402",
+    "interactionCount": 15,
+    "createdAt": "2026-09-24T00:21:10"
+  }
+]
+```
+
+### 7.5 GET /api/rca/recordings/{id}
+
+返回完整 `Recording`，含全部 `InteractionRecord`（按时间顺序）。
+
+`InteractionRecord` 字段：
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| type | string | `TOOL` 或 `LLM` |
+| name | string | 工具名或 `complete`（LLM） |
+| inputJson | string | 入参 JSON |
+| outputJson | string | 出参 JSON |
+| timestamp | datetime | 交互时间 |
+| durationMs | long | 耗时（毫秒） |
+| success | boolean | 是否成功 |
+| error | string | 错误信息（失败时） |
+
+| 状态 | 说明 |
+|------|------|
+| 200 | 成功，返回 Recording |
+| 404 | 录制不存在 |
+
+### 7.6 POST /api/rca/replay/{id}
+
+基于指定历史的录制进行回放。回放时工具与 LLM 调用均返回录制的出参，不触发真实外部调用，保证结果确定性。
+
+| 状态 | 说明 |
+|------|------|
+| 200 | 成功，返回与原始分析一致的 RcaResponse |
+| 400 | 历史未录制（无法回放） |
+| 404 | 历史不存在 |
+
+**示例**
+
+```bash
+curl -X POST http://localhost:8082/api/rca/replay/de848200d402
+```
+
+---
+
+## 8. 配置项
 
 | 配置 | 环境变量 | 默认 | 说明 |
 |------|----------|------|------|
@@ -306,7 +425,7 @@ curl http://localhost:8082/api/rca/health
 
 ---
 
-## 8. 启动
+## 9. 启动
 
 ```bash
 mvn -pl study-ai-best-pratice-rca-agent spring-boot:run

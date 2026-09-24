@@ -23,6 +23,9 @@ public class RcaRequest {
     /** 是否允许在 Plan/Analyze 节点调用 LLM；关闭时走确定性规则，LLM 失败同样软降级。 */
     private Boolean enableLlm = false;
 
+    /** 是否录制本次分析的全部外部交互（工具/LLM 入参出参），用于回放。 */
+    private Boolean record = false;
+
     public String getAppId() {
         return appId;
     }
@@ -61,5 +64,13 @@ public class RcaRequest {
 
     public void setEnableLlm(Boolean enableLlm) {
         this.enableLlm = enableLlm;
+    }
+
+    public Boolean getRecord() {
+        return record;
+    }
+
+    public void setRecord(Boolean record) {
+        this.record = record;
     }
 }
