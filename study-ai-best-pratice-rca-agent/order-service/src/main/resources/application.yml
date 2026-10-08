@@ -1,0 +1,23 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: order-service
+
+supplier:
+  base-url: ${SUPPLIER_BASE_URL:http://localhost:8084}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # RCA 排查用：健康检查 / 指标 / 线程栈 / 堆转储 / 动态日志级别
+        include: health,info,metrics,threaddump,heapdump,loggers
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
