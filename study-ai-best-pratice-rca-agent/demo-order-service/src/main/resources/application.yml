@@ -1,9 +1,12 @@
 server:
-  port: 8084
+  port: 8083
 
 spring:
   application:
-    name: supplier-service
+    name: demo-order-service
+
+supplier:
+  base-url: ${SUPPLIER_BASE_URL:http://localhost:8084}
 
 management:
   endpoints:

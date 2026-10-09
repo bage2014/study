@@ -18,8 +18,8 @@
     <modules>
         <module>rca-agent-backend</module>
         <module>rca-agent-web</module>
-        <module>order-service</module>
-        <module>supplier-service</module>
+        <module>demo-order-service</module>
+        <module>demo-supplier-service</module>
     </modules>
 
     <properties>

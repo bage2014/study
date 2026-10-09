@@ -10,8 +10,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>order-service</artifactId>
-    <name>order-service</name>
+    <artifactId>demo-order-service</artifactId>
+    <name>demo-order-service</name>
     <description>RCA Demo - 订单服务（调用方）：可注入下游超时级联 / OOM / CPU 打满 / 线程池耗尽故障</description>
 
     <dependencies>

@@ -10,8 +10,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>supplier-service</artifactId>
-    <name>supplier-service</name>
+    <artifactId>demo-supplier-service</artifactId>
+    <name>demo-supplier-service</name>
     <description>RCA Demo - 供应服务（被调用方）：可注入慢响应 / OOM / CPU 打满 / 线程泄漏 / 错误率故障</description>
 
     <dependencies>
