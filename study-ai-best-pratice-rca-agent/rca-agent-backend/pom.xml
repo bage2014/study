@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>study-ai-best-pratice-rca-agent-backend</artifactId>
-    <name>study-ai-best-pratice-rca-agent-backend</name>
+    <name>rca-agent-backend</name>
     <description>RCA Agent 后端服务：Plan(LLM) -> Playbook(Rule) -> BroadScan -> BroadAnalyze -> FocusedScan -> FocusedAnalyze -> GlobalReact</description>
 
     <dependencies>

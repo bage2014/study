@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>study-ai-best-pratice-rca-agent-web</artifactId>
-    <name>study-ai-best-pratice-rca-agent-web</name>
+    <name>rca-agent-web</name>
     <description>RCA Agent 前端 UI（Vue 3 + Vite + Element Plus）</description>
     <packaging>pom</packaging>
 
