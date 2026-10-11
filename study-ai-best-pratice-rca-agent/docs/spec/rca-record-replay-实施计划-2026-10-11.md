@@ -1,5 +1,7 @@
 # RCA Agent 录制与回放 - Implementation Plan
 
+> 迁移说明：本文档原位于 `.trae/specs/rca-record-replay/tasks.md`，2026-10-11 合并迁移至 `docs/spec/` 统一管理。
+
 ## Task 1: 后端录制数据模型与存储服务
 - **Status**: `pending`
 - **Priority**: high

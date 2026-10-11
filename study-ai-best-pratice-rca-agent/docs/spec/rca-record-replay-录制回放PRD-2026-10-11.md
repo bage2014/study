@@ -1,5 +1,7 @@
 # RCA Agent 录制与回放 - Product Requirements Document
 
+> 迁移说明：本文档原位于 `.trae/specs/rca-record-replay/spec.md`，2026-10-11 合并迁移至 `docs/spec/` 统一管理。
+
 ## Overview
 - **Summary**: 为 RCA 后端服务增加「录制-回放」能力与 RCA 分析历史管理，并由 web 模块提供可视化页面。录制模式下捕获 RCA 管道中全部外部交互（MCP 工具调用、LLM 调用）的入参与出参；回放模式下用录制的出参替代真实外部调用，确定性复现任意一次分析结果。
 - **Purpose**: 让 RCA 分析过程可追溯、可复现、可对比，支撑故障复盘、回归验证、LLM 行为审计与问题定位。
