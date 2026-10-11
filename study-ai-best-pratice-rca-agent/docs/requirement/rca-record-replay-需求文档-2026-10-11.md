@@ -3,6 +3,7 @@
 > 模块：`study-ai-best-pratice-rca-agent`
 > 基础路径：`http://<host>:8082/api/rca`
 > 版本：v1.0
+> 命名说明：2026-10-11 按文档规范补充日期后缀归档（原文件名 `rca-record-replay-需求文档.md`），日期为归档日。
 > 相关文档：[录制回放 PRD](../spec/rca-record-replay-录制回放PRD-2026-10-11.md) ｜ [实施计划](../spec/rca-record-replay-实施计划-2026-10-11.md)
 
 ---

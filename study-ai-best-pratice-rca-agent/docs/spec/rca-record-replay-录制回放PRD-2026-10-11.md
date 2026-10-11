@@ -135,7 +135,7 @@
 - **Given**: 功能开发完成
 - **When**: 查看 `docs/` 目录
 - **Then**: 存在录制回放功能的需求文档，覆盖功能范围、接口、数据模型、使用方式
-- **Pass Condition**: `docs/requirement/rca-record-replay-需求文档.md` 存在且内容完整
+- **Pass Condition**: `docs/requirement/rca-record-replay-需求文档-2026-10-11.md` 存在且内容完整
 - **Evidence**: 文件存在性检查
 
 ## Open Questions

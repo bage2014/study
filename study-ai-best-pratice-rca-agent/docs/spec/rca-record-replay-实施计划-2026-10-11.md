@@ -146,9 +146,9 @@
 - **Priority**: medium
 - **Depends On**: Task 5
 - **Description**:
-  - 新建 `docs/requirement/rca-record-replay-需求文档.md`：覆盖功能范围、数据模型、接口清单、录制/回放原理、使用示例。
-  - 更新 `docs/api/rca-agent-接口文档.md`：补充新增接口。
+  - 新建 `docs/requirement/rca-record-replay-需求文档-2026-10-11.md`：覆盖功能范围、数据模型、接口清单、录制/回放原理、使用示例。
+  - 更新 `docs/api/rca-agent-接口文档-2026-10-11.md`：补充新增接口。
 - **Acceptance Criteria Addressed**: AC-10
 - **Test Requirements**:
-  - `rule` TR-12.1: `docs/requirement/rca-record-replay-需求文档.md` 存在且包含数据模型、接口、使用示例章节。证据：文件内容检查。
+  - `rule` TR-12.1: `docs/requirement/rca-record-replay-需求文档-2026-10-11.md` 存在且包含数据模型、接口、使用示例章节。证据：文件内容检查。
 - **Notes**: 文档语言中文，与现有文档风格一致。
