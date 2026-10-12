@@ -33,6 +33,11 @@
 | common-ui-mockup | UI原型图生成技能 |
 | common-data-migration | 数据迁移技能 |
 | common-dockerize | Docker容器化技能 |
+| common-test-driven-development | TDD 测试驱动开发，红绿重构循环（obra/superpowers@test-driven-development） |
+| common-systematic-debugging | 系统化调试，根因优先四阶段流程（obra/superpowers@systematic-debugging） |
+| common-design-brainstorming | 设计头脑风暴，路径分类 + 渐进式设计决策（obra/superpowers@brainstorming） |
+| common-technical-writer | 技术文档专家，README/API 文档/中英文互译（参考 shubhamsabooapps@technical-writer） |
+| common-visual-design | 视觉设计哲学，避免 AI 默认风格的有辨识度 UI（anthropics/skills@frontend-design） |
 
 ## 开源技能包装
 
@@ -93,7 +98,11 @@ skills:
 | 数据库 | common-db-design, common-data-migration | 数据库设计与迁移 |
 | API开发 | common-api-doc, common-contract-generation | API设计与文档 |
 | 代码质量 | common-code-review, common-coding | 代码审查与规范 |
-| 测试 | common-backend-unit-test, common-frontend-playwright-test | 单元测试与UI测试 |
+| 测试 | common-backend-unit-test, common-frontend-playwright-test, common-test-driven-development | 单元测试/UI测试/TDD |
 | 部署 | common-dockerize | Docker容器化 |
 | 工具类 | personal-java-common | Java通用工具类 |
 | 规范管理 | common-project-standard, common-requirement-clarification | 项目规范与需求澄清 |
+| 设计决策 | common-design-brainstorming, common-grill-me | 方案探索/深度质询 |
+| 调试修复 | common-systematic-debugging | Bug 根因排查 |
+| UI设计 | common-visual-design, common-ui-design-spec, common-ui-mockup | 视觉设计哲学/规范/原型 |
+| 文档写作 | common-technical-writer, personal-doc-manager | 技术文档/项目文档管理 |

@@ -13,6 +13,12 @@ tags: ["testing", "playwright", "frontend", "automation"]
 
 提供前端 UI 自动化测试能力，基于 Playwright 框架，帮助开发者编写高质量的端到端测试用例。
 
+## 触发条件
+
+- 需要编写前端自动化测试时
+- 用户提到"Playwright"、"E2E"、"端到端测试"时
+- 需要测试页面交互流程时
+
 ## 何时使用
 
 在以下情况调用此技能：
@@ -228,5 +234,60 @@ playwright:
 1. 在定位器生成器中添加新策略
 2. 定义策略的优先级和匹配规则
 3. 更新定位器最佳实践文档
-## 触发条件
+
+## Playwright 原生脚本模式（补充自 anthropics/webapp-testing）
+
+当需要快速写 Playwright 自动化脚本（不是测试用例）时，用 Python + sync_playwright。
+
+### 快速决策树
+
+```
+用户任务 → 是静态 HTML？
+ ├─ 是 → 直接读 HTML 识别 selector → 写脚本
+ └─ 否 → 服务器已启动？
+     ├─ 否 → 先启动服务器 → 写脚本
+     └─ 是 → 侦察再行动
+```
+
+### 侦察再行动模式
+
+动态页面**必须**先侦察再写脚本：
+
+```python
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)  # 始终 headless
+    page = browser.new_page()
+    page.goto('http://localhost:5173')
+    page.wait_for_load_state('networkidle')  # 关键！等 JS 执行完
+
+    # 侦察
+    page.screenshot(path='/tmp/inspect.png', full_page=True)
+    content = page.content()
+    buttons = page.locator('button').all()
+
+    # 看截图/DOM，再写 selector 和动作
+    browser.close()
+```
+
+### 常见坑
+
+❌ **不要**在 networkidle 之前检查 DOM
+✅ **要**等 `page.wait_for_load_state('networkidle')` 再检查
+
+### 原生脚本 vs 测试用例的区别
+
+| 维度 | 测试用例 | 原生脚本 |
+|------|----------|----------|
+| 用途 | 断言 pass/fail | 自动化动作（截图、爬数据） |
+| 框架 | @playwright/test pytest-playwright | sync_playwright() |
+| 服务器 | 测试框架 auto 管理 | 手动启动或 with_server.py |
+| 输出 | 测试报告 | 脚本执行结果 |
+
+### 参考来源
+
+补充内容参考自 `anthropics/skills@webapp-testing`
+安装命令：`npx skills add anthropics/skills@webapp-testing -y -g`
+
 
