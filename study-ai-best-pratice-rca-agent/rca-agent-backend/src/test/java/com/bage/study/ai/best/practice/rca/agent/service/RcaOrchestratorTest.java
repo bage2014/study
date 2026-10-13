@@ -18,7 +18,7 @@ import com.bage.study.ai.best.practice.rca.agent.model.Verdict;
 import com.bage.study.ai.best.practice.rca.agent.planner.LlmPlanner;
 import com.bage.study.ai.best.practice.rca.agent.planner.RuleBasedPlanner;
 import com.bage.study.ai.best.practice.rca.agent.playbook.ScanPlaybook;
-import com.bage.study.ai.best.practice.rca.agent.recording.RecordingService;
+import com.bage.study.ai.best.practice.rca.agent.recording.InMemoryRecordingService;
 import com.bage.study.ai.best.practice.rca.agent.scan.BroadScanService;
 import com.bage.study.ai.best.practice.rca.agent.scan.FocusedScanService;
 import com.bage.study.ai.best.practice.rca.agent.scan.TimelineService;
@@ -65,7 +65,7 @@ class RcaOrchestratorTest {
 
         RcaOrchestrator orchestrator = new RcaOrchestrator(
                 planner, broadScan, broadAnalyze, focusedScan, focusedAnalyze,
-                timelineService, globalReact, new RecordingService());
+                timelineService, globalReact, new InMemoryRecordingService());
         ReflectionTestUtils.setField(orchestrator, "focusedTopN", 2);
         return orchestrator;
     }

@@ -2,6 +2,20 @@ spring:
   application:
     name: study-ai-best-pratice-rca-agent
 
+  datasource:
+    url: jdbc:h2:mem:rca-agent;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
   ai:
     openai:
       base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}

@@ -55,12 +55,14 @@ docs/
 | 文档 | 说明 |
 |------|------|
 | [rca-demo-新增两个RCA演练服务-2026-10-08](changelog/rca-demo-新增两个RCA演练服务-2026-10-08.md) | 新增 demo-order-service / demo-supplier-service 并统一 demo- 命名的变更记录 |
+| [rca-agent-录制数据H2持久化-2026-10-13](changelog/rca-agent-录制数据H2持久化-2026-10-13.md) | 录制数据从内存迁移至 H2 持久化（JPA + JSON 序列化），解决重启丢失/容量上限/多实例不共享 |
 
 ### 测试报告（docs/report/）
 
 | 文档 | 说明 |
 |------|------|
 | [rca-demo-冒烟测试报告-2026-10-11](report/rca-demo-冒烟测试报告-2026-10-11.md) | 两个 demo 服务的构建测试与全场景冒烟测试结果归档 |
+| [rca-agent-优化空间调研报告-2026-10-13](report/rca-agent-优化空间调研报告-2026-10-13.md) | RCA Agent 源码走读：置信度模型、拓扑、反事实验证、并发模型等 10 项优化空间与优先级矩阵 |
 
 ## 4. 模块与文档对照
 

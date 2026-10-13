@@ -4,6 +4,7 @@ import com.bage.study.rca.demo.order.client.SupplierClient;
 import com.bage.study.rca.demo.order.model.CreateOrderRequest;
 import com.bage.study.rca.demo.order.model.Order;
 import com.bage.study.rca.demo.order.model.SupplyCheckResult;
+import com.bage.study.rca.demo.order.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
@@ -13,22 +14,19 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 订单服务：下单前远程校验供应库存，内存存储订单。
+ * 订单服务：下单前远程校验供应库存，订单持久化到 H2。
  */
 @Service
 public class OrderService {
 
     private final SupplierClient supplierClient;
-    private final Map<Long, Order> orderStore = new ConcurrentHashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong();
+    private final OrderRepository orderRepository;
 
-    public OrderService(SupplierClient supplierClient) {
+    public OrderService(SupplierClient supplierClient, OrderRepository orderRepository) {
         this.supplierClient = supplierClient;
+        this.orderRepository = orderRepository;
     }
 
     public Order createOrder(CreateOrderRequest request) {
@@ -50,23 +48,18 @@ public class OrderService {
                             .formatted(request.skuId(), request.quantity(), supply.availableQuantity()));
         }
 
-        long id = idGenerator.incrementAndGet();
         BigDecimal totalAmount = supply.unitPrice().multiply(BigDecimal.valueOf(request.quantity()));
-        Order order = new Order(id, request.skuId(), request.quantity(),
+        Order order = new Order(request.skuId(), request.quantity(),
                 supply.unitPrice(), totalAmount, "CREATED", Instant.now());
-        orderStore.put(id, order);
-        return order;
+        return orderRepository.save(order);
     }
 
     public Order getOrder(Long id) {
-        Order order = orderStore.get(id);
-        if (order == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "订单不存在: id=" + id);
-        }
-        return order;
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "订单不存在: id=" + id));
     }
 
     public List<Order> listOrders() {
-        return List.copyOf(orderStore.values());
+        return orderRepository.findAll();
     }
 }

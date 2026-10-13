@@ -25,8 +25,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * 录制与回放端到端测试：record=true 录制后回放，断言结果与原始一致。
@@ -71,7 +75,7 @@ class RecordReplayTest {
 
     @Test
     void recordedAnalysisShouldReplayIdentically() {
-        RecordingService service = new RecordingService();
+        InMemoryRecordingService service = new InMemoryRecordingService();
         RcaOrchestrator orchestrator = buildOrchestrator(service);
 
         RcaRequest request = request(MockToolCatalog.SCENE_MQ, "MQ 消息堆积，lag 增长");
@@ -118,7 +122,7 @@ class RecordReplayTest {
 
     @Test
     void nonRecordedAnalysisShouldHaveNoRecording() {
-        RecordingService service = new RecordingService();
+        InMemoryRecordingService service = new InMemoryRecordingService();
         RcaOrchestrator orchestrator = buildOrchestrator(service);
 
         RcaRequest request = request("default", "下单模块失败率略有升高");

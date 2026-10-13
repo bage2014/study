@@ -1,37 +1,35 @@
 package com.bage.study.rca.demo.supplier.service;
 
+import com.bage.study.rca.demo.supplier.model.Inventory;
 import com.bage.study.rca.demo.supplier.model.SupplyCheckResult;
+import com.bage.study.rca.demo.supplier.repository.InventoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 /**
- * 供应领域服务：内存模拟库存，不依赖数据库，便于独立启动。
+ * 供应领域服务：库存持久化到 H2，启动时写入种子数据。
  */
 @Service
 public class SupplyService {
 
-    private record Inventory(int quantity, BigDecimal price) {
-    }
+    private final InventoryRepository inventoryRepository;
 
-    private static final Map<String, Inventory> INVENTORY = Map.of(
-            "SKU-1", new Inventory(1000, new BigDecimal("19.99")),
-            "SKU-2", new Inventory(100, new BigDecimal("5.50")),
-            "SKU-3", new Inventory(0, new BigDecimal("99.00"))
-    );
+    public SupplyService(InventoryRepository inventoryRepository) {
+        this.inventoryRepository = inventoryRepository;
+    }
 
     /**
      * 正常库存查询：毫秒级返回。
      */
     public SupplyCheckResult check(String skuId, int requestedQuantity) {
-        Inventory inventory = INVENTORY.get(skuId);
+        Inventory inventory = inventoryRepository.findById(skuId).orElse(null);
         if (inventory == null) {
             return new SupplyCheckResult(skuId, false, 0, BigDecimal.ZERO);
         }
         return new SupplyCheckResult(skuId,
-                inventory.quantity() >= requestedQuantity,
-                inventory.quantity(),
-                inventory.price());
+                inventory.getQuantity() >= requestedQuantity,
+                inventory.getQuantity(),
+                inventory.getPrice());
     }
 }

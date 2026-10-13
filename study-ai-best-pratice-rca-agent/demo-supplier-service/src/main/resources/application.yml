@@ -5,6 +5,20 @@ spring:
   application:
     name: demo-supplier-service
 
+  datasource:
+    url: jdbc:h2:mem:rca-demo-supplier;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
 management:
   endpoints:
     web:
