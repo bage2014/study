@@ -30,19 +30,19 @@ if [ -f "$PROJECT_DIR/.env" ]; then
 fi
 
 echo "6. 启动 ai-pipeline-api (端口 8080)..."
-cd "$PROJECT_DIR/ai-pipeline-api"
+cd "$PROJECT_DIR/pipeline/ai-pipeline-api"
 nohup java -jar target/ai-pipeline-api-1.0.0-SNAPSHOT-exec.jar > /tmp/pipeline-api.log 2>&1 &
 echo "   PID: $!"
 sleep 8
 
 echo "7. 启动 ai-pipeline-gateway (端口 8082)..."
-cd "$PROJECT_DIR/ai-pipeline-gateway"
+cd "$PROJECT_DIR/pipeline/ai-pipeline-gateway"
 nohup java -jar target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar > /tmp/pipeline-gateway.log 2>&1 &
 echo "   PID: $!"
 sleep 5
 
 echo "8. 启动 ai-pipeline-ui (端口 8081)..."
-cd "$PROJECT_DIR/ai-pipeline-ui"
+cd "$PROJECT_DIR/pipeline/ai-pipeline-ui"
 nohup bash start.sh > /tmp/pipeline-ui.log 2>&1 &
 echo "   PID: $!"
 sleep 5

@@ -11,11 +11,8 @@
     <name>AI Pipeline Platform</name>
 
     <modules>
-        <module>ai-pipeline-api</module>
-        <module>ai-pipeline-core</module>
-        <module>ai-pipeline-agent</module>
-        <module>ai-pipeline-gateway</module>
-        <module>demo-backend</module>
+        <module>pipeline</module>
+        <module>demo</module>
     </modules>
 
     <properties>
