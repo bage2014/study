@@ -49,6 +49,7 @@ docs/
 | [rca-record-replay-录制回放PRD-2026-10-11](spec/rca-record-replay-录制回放PRD-2026-10-11.md) | 录制回放功能 PRD：目标、FR/NFR、验收标准（AC-1~AC-10） |
 | [rca-record-replay-实施计划-2026-10-11](spec/rca-record-replay-实施计划-2026-10-11.md) | 录制回放实施计划：Task 1~12 任务分解、依赖关系、测试要求 |
 | [rca-demo-服务说明与故障注入手册-2026-10-08](spec/rca-demo-服务说明与故障注入手册-2026-10-08.md) | 两个 RCA 演练服务（demo-order-service / demo-supplier-service）完整手册：架构、启动、接口清单、6 大故障场景演练、RCA 排查路径 |
+| [rca-agent-web-UI设计规范-2026-10-13](spec/rca-agent-web-UI设计规范-2026-10-13.md) | 前端控制台设计规范：设计令牌、布局、5 页面规范、组件状态、无障碍与验收标准 |
 
 ### 变更记录（docs/changelog/）
 
@@ -56,6 +57,7 @@ docs/
 |------|------|
 | [rca-demo-新增两个RCA演练服务-2026-10-08](changelog/rca-demo-新增两个RCA演练服务-2026-10-08.md) | 新增 demo-order-service / demo-supplier-service 并统一 demo- 命名的变更记录 |
 | [rca-agent-录制数据H2持久化-2026-10-13](changelog/rca-agent-录制数据H2持久化-2026-10-13.md) | 录制数据从内存迁移至 H2 持久化（JPA + JSON 序列化），解决重启丢失/容量上限/多实例不共享 |
+| [rca-demo-H2持久化与WebUI规范测试-2026-10-13](changelog/rca-demo-H2持久化与WebUI规范测试-2026-10-13.md) | demo 两服务业务数据接入 H2；新增 Web UI 设计规范与 15 条 Playwright UI 测试 |
 
 ### 测试报告（docs/report/）
 
@@ -63,13 +65,14 @@ docs/
 |------|------|
 | [rca-demo-冒烟测试报告-2026-10-11](report/rca-demo-冒烟测试报告-2026-10-11.md) | 两个 demo 服务的构建测试与全场景冒烟测试结果归档 |
 | [rca-agent-优化空间调研报告-2026-10-13](report/rca-agent-优化空间调研报告-2026-10-13.md) | RCA Agent 源码走读：置信度模型、拓扑、反事实验证、并发模型等 10 项优化空间与优先级矩阵 |
+| [rca-agent-web-UI测试报告-2026-10-13](report/rca-agent-web-UI测试报告-2026-10-13.md) | 15 条 Playwright UI 用例全过 + 真实后端浏览器实测记录 |
 
 ## 4. 模块与文档对照
 
 | 模块 | 端口 | 相关文档 |
 |------|------|---------|
 | rca-agent-backend | 8082 | 接口文档、录制回放需求/PRD/实施计划 |
-| rca-agent-web | 5173（dev） | 录制回放需求文档（前端部分） |
+| rca-agent-web | 5173（dev） | 录制回放需求文档（前端部分）、UI 设计规范、UI 测试报告 |
 | demo-order-service | 8083 | demo 手册、冒烟测试报告、[模块 README](../demo-order-service/README.md) |
 | demo-supplier-service | 8084 | demo 手册、冒烟测试报告、[模块 README](../demo-supplier-service/README.md) |
 

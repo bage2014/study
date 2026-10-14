@@ -95,20 +95,20 @@ test.describe('RCA 分析页', () => {
 
     // 阶段轨迹 Tab
     await page.getByRole('tab', { name: '阶段轨迹' }).click()
-    await expect(page.locator('.el-table__row', { hasText: 'BroadScan' })).toBeVisible()
+    await expect(page.locator('.el-table__row', { hasText: 'BroadScan' }).first()).toBeVisible()
 
     // 假设全景 Tab
     await page.getByRole('tab', { name: '假设全景' }).click()
-    await expect(page.locator('.el-table__row', { hasText: 'order-db' })).toBeVisible()
+    await expect(page.locator('.el-table__row', { hasText: 'order-db' }).first()).toBeVisible()
 
     // 时间线 Tab
     await page.getByRole('tab', { name: '时间线' }).click()
-    await expect(page.getByText('下单超时告警')).toBeVisible()
+    await expect(page.getByText('下单超时告警').first()).toBeVisible()
 
     // 证据 Tab
     await page.getByRole('tab', { name: '证据' }).click()
-    await expect(page.locator('.el-table__row', { hasText: 'SlowQueryLogTool' })).toBeVisible()
-    await expect(page.locator('.el-tag', { hasText: 'SUPPORT' })).toBeVisible()
+    await expect(page.locator('.el-table__row', { hasText: 'SlowQueryLogTool' }).first()).toBeVisible()
+    await expect(page.locator('.el-tag', { hasText: 'SUPPORT' }).first()).toBeVisible()
   })
 
   test('后端报错时展示错误提示', async ({ page }) => {

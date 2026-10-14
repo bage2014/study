@@ -9,7 +9,7 @@ test.describe('分析历史页', () => {
       if (route.request().method() === 'GET' && !/\/history\/[^/]+/.test(route.request().url())) {
         await route.fulfill({
           json: {
-            content: [
+            items: [
               {
                 analysisId: 'A-1',
                 appId: 'order-service',
@@ -19,10 +19,7 @@ test.describe('分析历史页', () => {
                 createdAt: '2026-10-13T10:00:00Z'
               }
             ],
-            totalElements: 1,
-            totalPages: 1,
-            number: 0,
-            size: 20
+            total: 1
           }
         })
       } else {
@@ -55,14 +52,15 @@ test.describe('录制明细页', () => {
 })
 
 test.describe('回放对比页', () => {
-  test('初始空态提示', async ({ page }) => {
+  test('初始空态：无可回放记录时执行按钮禁用', async ({ page }) => {
     await page.route('**/api/rca/history**', async (route) => {
-      await route.fulfill({ json: { content: [], totalElements: 0, totalPages: 0, number: 0, size: 20 } })
+      await route.fulfill({ json: { items: [], total: 0 } })
     })
 
     await page.goto('/replay')
     await expect(page.getByText('RCA 回放')).toBeVisible()
-    await expect(page.getByText('选择历史记录并点击回放')).toBeVisible()
+    await expect(page.getByText('选择一条已录制的分析')).toBeVisible()
+    await expect(page.getByRole('button', { name: '执行回放' })).toBeDisabled()
   })
 })
 
@@ -74,7 +72,7 @@ test.describe('服务健康页', () => {
 
     await page.goto('/health')
     await expect(page.getByText('服务运行中')).toBeVisible()
-    await expect(page.getByText('rca-agent-backend')).toBeVisible()
+    await expect(page.getByText('rca-agent-backend').first()).toBeVisible()
   })
 
   test('后端不可达时错误提示', async ({ page }) => {
