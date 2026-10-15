@@ -58,7 +58,21 @@ public class TaskSplitAgentService {
                 featurePoint.getScope(),
                 techStack,
                 conventions);
-        return parseTasks(result, featurePoint.getId());
+        List<AtomicTask> tasks = parseTasks(result, featurePoint.getId());
+        if (tasks.isEmpty()) {
+            // 首次解析失败（模型输出对话文本等），以硬约束重试一次
+            log.warn("Task split parse failed for {}, retrying with strict JSON-only prompt", featurePoint.getId());
+            String retryResult = aiService.splitStrict(
+                    featurePoint.getId(),
+                    featurePoint.getTitle(),
+                    featurePoint.getDescription(),
+                    String.join("\n- ", featurePoint.getAcceptanceCriteria()),
+                    featurePoint.getScope(),
+                    techStack,
+                    conventions);
+            tasks = parseTasks(retryResult, featurePoint.getId());
+        }
+        return tasks;
     }
 
     private List<AtomicTask> parseTasks(String json, String featurePointId) {
@@ -144,6 +158,45 @@ public class TaskSplitAgentService {
                 Split into 1-3 atomic tasks with exact file paths.
                 """)
         String split(
+                @V("featureId") String featureId,
+                @V("title") String title,
+                @V("description") String description,
+                @V("criteria") String criteria,
+                @V("scope") String scope,
+                @V("techStack") String techStack,
+                @V("conventions") String conventions);
+
+        /**
+         * 硬约束重试版本：不引用任何工具，只允许输出 JSON 数组本身
+         */
+        @SystemMessage("""
+                You are a senior {{techStack}} engineer.
+
+                Output ONLY a valid JSON array. No greetings, no explanations, no markdown fences, no tool usage.
+                The first character of your response MUST be '[' and the last character MUST be ']'.
+
+                Split the feature point into 1-3 atomic implementation tasks. Each task object:
+                {
+                  "id": "{{featureId}}-task-1",
+                  "featurePointId": "{{featureId}}",
+                  "title": "≤ 60 chars, action-oriented",
+                  "description": "exactly what code change to make",
+                  "targetFiles": ["src/main/java/... (real relative paths)"],
+                  "type": "BACKEND"
+                }
+                type must be exactly one of: BACKEND, FRONTEND, DATABASE, CONFIG.
+                """)
+        @UserMessage("""
+                Tech stack: {{techStack}}
+                Feature Point: {{title}} (scope: {{scope}})
+                Description: {{description}}
+                Acceptance criteria:
+                - {{criteria}}
+                {{conventions}}
+
+                Respond with the JSON array only.
+                """)
+        String splitStrict(
                 @V("featureId") String featureId,
                 @V("title") String title,
                 @V("description") String description,

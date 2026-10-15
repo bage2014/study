@@ -235,7 +235,7 @@ public class AgentToolRegistry {
 |------|------|------|------|
 | 主框架 | Spring Boot | 3.3.4 | Web / JPA |
 | AI 框架 | LangChain4j | 0.35.0 | Agent / Tool Calling |
-| Workflow 引擎 | Temporal SDK | 1.24.1 | 持久化工作流 / Signal 审批 |
+| Workflow 引擎 | Temporal SDK | 1.30.0 | 持久化工作流 / Signal 审批 |
 | 数据库 | H2 | - | 开发期零配置运行 |
 | Git 操作 | JGit | 6.9.0 | 纯 Java，跨平台 |
 | Java AST | JavaParser | - | AstAnalysisTool |

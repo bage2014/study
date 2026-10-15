@@ -398,7 +398,7 @@ TestExecutionActivity
 #### 3.2.1 通信架构
 
 ```
-UI (8082) → Gateway (8083) → API (8080)
+UI (8081) → Gateway (8083) → API (8080)
               │                    │
               └── WebClient        └── Temporal SDK
                                      │

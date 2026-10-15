@@ -50,8 +50,8 @@ AI Pipeline Platform 是一个 AI 自动化软件开发平台，采用**项目�
 ### 方法一：一键启动（推荐）
 
 ```bash
-# 进入项目目录
-cd /path/to/project
+# 进入 pipeline 目录
+cd /path/to/study-ai-dev-flow/pipeline
 
 # 执行启动脚本
 bash start.sh
@@ -60,15 +60,23 @@ bash start.sh
 ### 方法二：手动启动
 
 ```bash
-# 1. 启动 Temporal 服务器（工作流引擎）
-docker run -d --name temporal -p 7233:7233 -p 8233:8233 temporalio/temporal:latest server start-dev --ip 0.0.0.0
+# 进入 pipeline 目录
+cd /path/to/study-ai-dev-flow/pipeline
+
+# 1. 启动 Temporal 服务器（Temporal + PostgreSQL）
+docker compose up -d
 
 # 2. 构建项目
 mvn clean package -DskipTests -q
 
 # 3. 启动 AI Pipeline API
-cd pipeline/ai-pipeline-api
-java -jar target/ai-pipeline-api-1.0.0-SNAPSHOT.jar
+java -jar ai-pipeline-api/target/ai-pipeline-api-1.0.0-SNAPSHOT-exec.jar
+
+# 4. 启动 Gateway（新终端）
+java -jar ai-pipeline-gateway/target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar
+
+# 5. 启动前端（新终端）
+cd ai-pipeline-ui && npm run dev
 ```
 
 ### 确认系统启动成功
@@ -89,10 +97,12 @@ curl http://localhost:8080/api/pipeline
 
 | 页面 | 地址 | 用途 |
 |------|------|------|
+| **前端界面** | http://localhost:8081 | 需求录入、流水线管理 |
+| **Gateway API** | http://localhost:8083 | 前端 API 访问入口 |
 | **Temporal 工作流监控** | http://localhost:8233 | 查看流水线执行状态和历史 |
 | **H2 数据库控制台** | http://localhost:8080/h2-console | 查看流水线运行数据 |
 | **AI Pipeline API** | http://localhost:8080 | API 接口地址 |
-| **部署的应用** | http://localhost:8081 | AI 生成的目标应用 |
+| **部署的应用** | http://localhost:8082 | AI 生成的目标应用（部署阶段启动） |
 
 ### 3.1 查看工作流监控
 
@@ -116,7 +126,7 @@ curl http://localhost:8080/api/pipeline
 
 ### 4.1 通过 UI 录入需求
 
-1. **访问首页**：打开 http://localhost:8082/
+1. **访问首页**：打开 http://localhost:8081/
 
 2. **选择项目**：从项目列表中点击选择目标项目（如 demo-backend）
    - 选择后项目卡片会高亮显示
@@ -136,7 +146,7 @@ curl http://localhost:8080/api/pipeline
 使用 curl 命令录入需求：
 
 ```bash
-curl -X POST http://localhost:8083/api/pipelines/start \
+curl -X POST http://localhost:8083/api/pipeline/start \
   -H "Content-Type: application/json" \
   -d '{
     "requirementMd": "添加健康检查端点，返回服务状态信息",
@@ -250,7 +260,7 @@ curl -X POST http://localhost:8083/api/pipelines/start \
 
 ```bash
 # 查看应用日志
-curl http://localhost:8083/api/pipelines/{pipelineId}
+curl http://localhost:8083/api/pipeline/{pipelineId}
 ```
 
 响应示例：
@@ -312,7 +322,7 @@ public class HealthController {
 通过日志查看构建状态：
 
 ```bash
-curl http://localhost:8083/api/pipelines/{pipelineId}
+curl http://localhost:8083/api/pipeline/{pipelineId}
 ```
 
 当 `currentStage` 显示为 `BUILD` 时，表示正在构建。
@@ -339,14 +349,14 @@ curl http://localhost:8083/api/pipelines/{pipelineId}
 
 1. 创建 Docker 镜像
 2. 启动 Docker 容器
-3. 监听端口 8081
+3. 监听端口 8082
 
 ### 9.2 查看部署进度
 
 通过日志查看部署状态：
 
 ```bash
-curl http://localhost:8083/api/pipelines/{pipelineId}
+curl http://localhost:8083/api/pipeline/{pipelineId}
 ```
 
 当 `currentStage` 显示为 `DEPLOY` 时，表示正在部署。
@@ -360,7 +370,7 @@ curl http://localhost:8083/api/pipelines/{pipelineId}
 部署完成后，流水线状态变为 `COMPLETED`：
 
 ```bash
-curl http://localhost:8083/api/pipelines/{pipelineId}
+curl http://localhost:8083/api/pipeline/{pipelineId}
 ```
 
 响应示例：
@@ -370,7 +380,7 @@ curl http://localhost:8083/api/pipelines/{pipelineId}
     "pipelineId": "26c83132-7b81-404e-884b-e98b824d9843",
     "status": "COMPLETED",
     "currentStage": "DEPLOY",
-    "resultJson": "{\"status\":\"COMPLETED\",\"success\":true,\"message\":\"Pipeline completed. Access: http://localhost:8081\"}"
+    "resultJson": "{\"status\":\"COMPLETED\",\"success\":true,\"message\":\"Pipeline completed. Access: http://localhost:8082\"}"
 }
 ```
 
@@ -379,7 +389,7 @@ curl http://localhost:8083/api/pipelines/{pipelineId}
 访问 AI 生成的应用：
 
 ```bash
-curl http://localhost:8081/api/health
+curl http://localhost:8082/api/health
 ```
 
 预期响应：
@@ -393,7 +403,7 @@ curl http://localhost:8081/api/health
 查看所有历史流水线：
 
 ```bash
-curl http://localhost:8083/api/pipelines
+curl http://localhost:8083/api/pipeline
 ```
 
 ---
@@ -440,7 +450,7 @@ cat /var/folders/.../jobs/.../output.log
 ### Q1: 如何确认系统是否启动成功？
 
 ```bash
-curl http://localhost:8083/api/pipelines
+curl http://localhost:8083/api/pipeline
 # 返回 [] 表示成功
 ```
 
@@ -454,32 +464,32 @@ curl http://localhost:8083/api/pipelines
 ### Q3: 如何查看某个流水线的详细信息？
 
 ```bash
-curl http://localhost:8083/api/pipelines/{pipelineId}
+curl http://localhost:8083/api/pipeline/{pipelineId}
 ```
 
 ### Q4: 如何取消一个正在运行的流水线？
 
 ```bash
-curl -X POST http://localhost:8083/api/pipelines/{pipelineId}/cancel
+curl -X POST http://localhost:8083/api/pipeline/{pipelineId}/cancel
 ```
 
 ### Q5: 如何按状态筛选流水线？
 
 ```bash
 # 查看已完成的流水线
-curl http://localhost:8083/api/pipelines?status=COMPLETED
+curl http://localhost:8083/api/pipeline/status/COMPLETED
 
 # 查看运行中的流水线
-curl http://localhost:8083/api/pipelines?status=RUNNING
+curl http://localhost:8083/api/pipeline/status/RUNNING
 
 # 查看失败的流水线
-curl http://localhost:8083/api/pipelines?status=FAILED
+curl http://localhost:8083/api/pipeline/status/FAILED
 ```
 
 ### Q6: 如何查看项目的需求列表？
 
 ```bash
-curl http://localhost:8083/api/project/{projectId}/requirements
+curl http://localhost:8083/api/requirement/project/{projectId}
 ```
 
 ### Q7: 端口被占用怎么办？
@@ -514,7 +524,7 @@ docker restart temporal
 
 ```bash
 cd /path/to/demo-backend
-java -jar target/*.jar --server.port=8081
+java -jar target/*.jar --server.port=8082
 ```
 
 ### Q10: 如何查看项目详情？
@@ -529,14 +539,14 @@ curl http://localhost:8083/api/project/{projectId}
 
 ```
 1. 启动系统
-   → docker run -d --name temporal -p 7233:7233 -p 8233:8233 temporalio/temporal:latest server start-dev --ip 0.0.0.0
-   → mvn clean package -DskipTests
-   → java -jar pipeline/ai-pipeline-api/target/ai-pipeline-api-1.0.0-SNAPSHOT.jar
-   → java -jar pipeline/ai-pipeline-gateway/target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar
-   → cd pipeline/ai-pipeline-ui && npm run dev
+   → cd /path/to/study-ai-dev-flow/pipeline
+   → bash start.sh（或手动：docker compose up -d + mvn clean package -DskipTests）
+   → java -jar ai-pipeline-api/target/ai-pipeline-api-1.0.0-SNAPSHOT-exec.jar
+   → java -jar ai-pipeline-gateway/target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar
+   → cd ai-pipeline-ui && npm run dev
 
 2. 选择项目并录入需求
-   → 访问 http://localhost:8082/
+   → 访问 http://localhost:8081/
    → 选择项目（如 demo-backend）
    → 输入需求描述
    → 点击"提交需求，启动AI流水线"
@@ -545,14 +555,14 @@ curl http://localhost:8083/api/project/{projectId}
    → 系统自动完成：代码分析 → 需求分析 → 方案设计 → 功能拆分 → 任务拆分 → 代码生成 → 测试生成 → 代码审查 → 测试执行 → 构建 → 部署
 
 4. 查看进度
-   → 访问 http://localhost:8082/pipelines/{pipelineId}
+   → 访问 http://localhost:8081/pipelines/{pipelineId}
 
 5. 验证结果
-   → curl http://localhost:8081/api/health
+   → curl http://localhost:8082/api/health
    → 预期响应: {"status":"UP","service":"demo-backend","timestamp":"..."}
 ```
 
 ---
 
-**文档版本**: v2.0.0  
-**生成日期**: 2026-07-12
+**文档版本**: v2.1.0  
+**生成日期**: 2026-10-15

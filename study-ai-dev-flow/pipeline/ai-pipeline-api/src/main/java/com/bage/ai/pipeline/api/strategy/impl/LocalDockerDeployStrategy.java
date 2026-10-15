@@ -34,9 +34,12 @@ public class LocalDockerDeployStrategy implements DeployStrategy {
             }
             
             String jarPath = jarFiles[0].getAbsolutePath();
+            // 部署日志写入 target/deploy.log，避免子进程输出丢失导致排障困难
+            java.io.File deployLog = new java.io.File(targetDir, "deploy.log");
             ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, "--server.port=" + hostPort)
                     .directory(new java.io.File(projectPath))
-                    .redirectErrorStream(true);
+                    .redirectErrorStream(true)
+                    .redirectOutput(ProcessBuilder.Redirect.appendTo(deployLog));
             
             Process process = pb.start();
             log.info("Direct deployment started, process ID: {}", process.pid());

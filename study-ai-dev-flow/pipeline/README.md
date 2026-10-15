@@ -26,29 +26,39 @@ AI Pipeline Platform 是一款面向软件开发团队的 AI 驱动自动化开�
 - Node.js 18+
 - Docker
 
-### 一键启动
+### 一键启动（推荐）
 
 ```bash
 # 克隆项目
 git clone https://github.com/bage/study-ai-dev-flow.git
-cd study-ai-dev-flow
+cd study-ai-dev-flow/pipeline
 
-# 启动 Temporal 服务
-docker run -d --name temporal -p 7233:7233 -p 8233:8233 temporalio/temporal:latest server start-dev --ip 0.0.0.0
+# 配置环境变量（模型 API Key 等）
+cp .env.example .env
+
+# 执行一键启动脚本（Temporal + 后端 + 前端）
+bash start.sh
+```
+
+### 手动启动
+
+```bash
+cd study-ai-dev-flow/pipeline
+
+# 启动 Temporal 服务（Temporal + PostgreSQL）
+docker compose up -d
 
 # 构建后端
 mvn clean package -DskipTests
 
 # 启动 API 服务
-cd pipeline/ai-pipeline-api
-java -jar target/ai-pipeline-api-1.0.0-SNAPSHOT.jar
+java -jar ai-pipeline-api/target/ai-pipeline-api-1.0.0-SNAPSHOT-exec.jar
 
 # 启动 Gateway 服务（新终端）
-cd pipeline/ai-pipeline-gateway
-java -jar target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar
+java -jar ai-pipeline-gateway/target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar
 
 # 启动前端（新终端）
-cd pipeline/ai-pipeline-ui
+cd ai-pipeline-ui
 npm install
 npm run dev
 ```
@@ -57,11 +67,12 @@ npm run dev
 
 | 服务 | 地址 | 说明 |
 |------|------|------|
-| 前端界面 | http://localhost:8082 | AI Pipeline Platform |
+| 前端界面 | http://localhost:8081 | AI Pipeline Platform（Vite 开发服务器） |
 | API 服务 | http://localhost:8080 | 后端核心服务 |
-| Gateway | http://localhost:8083 | API 网关 |
+| Gateway | http://localhost:8083 | API 网关（前端访问入口） |
 | Temporal UI | http://localhost:8233 | 工作流监控 |
 | H2 Console | http://localhost:8080/h2-console | 数据库控制台 |
+| 部署的目标应用 | http://localhost:8082 | AI 生成的应用（部署阶段启动） |
 
 ## 📋 使用流程
 
@@ -91,52 +102,61 @@ npm run dev
 
 ### 5. 验证结果
 
-部署完成后，访问 http://localhost:8081 验证生成的应用
+部署完成后，访问 http://localhost:8082 验证生成的应用
 
 ## 📁 项目结构
 
 ```
-study-ai-dev-flow/
-├── pom.xml                      # 父 POM（BOM 统一版本管理）
+study-ai-dev-flow/                # 仓库根目录（根 POM，BOM 统一版本管理）
+├── pom.xml                       # 根 POM：聚合 pipeline/ 和 demo/
 │
-├── pipeline/                    # Pipeline 模块组
-│   ├── ai-pipeline-core/        # 核心模块（接口、DTO、枚举、Workflow）
-│   │   ├── activity/            # Temporal Activity 接口
-│   │   ├── workflow/            # PipelineWorkflow 接口 + 实现
-│   │   ├── dto/                 # 数据传输对象
-│   │   └── enums/               # 枚举定义
+├── pipeline/                     # Pipeline 模块组（pipeline-parent 聚合 POM）
+│   ├── pom.xml
+│   ├── ai-pipeline-core/         # 核心模块（接口、DTO、枚举、策略、Workflow）
+│   │   ├── activity/             # Temporal Activity 接口
+│   │   ├── workflow/             # PipelineWorkflow 接口 + 实现
+│   │   ├── dto/                  # 数据传输对象
+│   │   ├── enums/                # 枚举定义
+│   │   └── strategy/             # 策略接口（构建/部署/测试执行/PR 创建）
 │   │
-│   ├── ai-pipeline-agent/       # AI Agent 层
-│   │   ├── config/              # 配置类（模型网关、工具注册）
-│   │   ├── service/             # Agent 服务（需求分析、代码生成等）
-│   │   └── tool/                # 工具类（文件读写、Git、Maven 等）
+│   ├── ai-pipeline-agent/        # AI Agent 层（LangChain4j）
+│   │   ├── config/               # 配置类（模型网关、工具注册）
+│   │   ├── service/              # Agent 服务（需求分析、代码生成等）
+│   │   └── tool/                 # 工具类（文件读写、Git、Maven 等）
 │   │
-│   ├── ai-pipeline-api/         # API 服务（Spring Boot 主应用）
-│   │   ├── activity/            # Activity 实现
-│   │   ├── config/              # Temporal 配置
-│   │   ├── controller/          # REST 控制器
-│   │   ├── service/             # 业务服务
-│   │   ├── strategy/            # 策略模式实现
-│   │   ├── entity/              # JPA 实体
-│   │   └── repository/          # 数据仓库
+│   ├── ai-pipeline-api/          # API 服务（Spring Boot 主应用）
+│   │   ├── activity/             # Activity 实现
+│   │   ├── workflow/             # Workflow 实现编排
+│   │   ├── config/               # Temporal 配置
+│   │   ├── controller/           # REST 控制器
+│   │   ├── service/              # 业务服务
+│   │   ├── strategy/             # 策略模式实现
+│   │   ├── dto/                  # 接口层 DTO
+│   │   ├── entity/               # JPA 实体
+│   │   ├── enums/                # 枚举定义
+│   │   └── repository/           # 数据仓库
 │   │
-│   ├── ai-pipeline-gateway/     # API 网关
-│   │   ├── config/              # WebClient 配置
-│   │   ├── controller/          # 网关控制器
-│   │   └── service/             # 网关服务
+│   ├── ai-pipeline-gateway/      # API 网关
+│   │   ├── config/               # WebClient 配置
+│   │   ├── controller/           # 网关控制器
+│   │   └── service/              # 网关服务
 │   │
-│   └── ai-pipeline-ui/          # Vue 前端
-│       ├── src/api/             # API 封装
-│       ├── src/router/          # 路由配置
-│       ├── src/views/           # 页面组件
-│       └── src/components/      # 公共组件
+│   ├── ai-pipeline-ui/           # Vue 前端（非 Maven 模块）
+│   │   ├── src/api/              # API 封装
+│   │   ├── src/router/           # 路由配置
+│   │   ├── src/stores/           # 状态管理
+│   │   ├── src/views/            # 页面组件
+│   │   ├── src/components/       # 公共组件
+│   │   └── e2e/                  # Playwright 端到端测试
+│   │
+│   ├── docs/                     # 项目文档
+│   ├── docker-compose.yml        # Temporal + PostgreSQL 配置
+│   ├── start.sh                  # 一键启动脚本
+│   └── .env.example              # 环境变量模板
 │
-├── demo/                        # Demo 模块组
-│   ├── demo-backend/            # 演示目标项目（Spring Boot）
-│   └── demo-frontend/           # 演示目标项目（Vue）
-│
-├── docs/                        # 项目文档
-└── docker-compose.yml           # Docker Compose 配置
+└── demo/                         # Demo 模块组（demo-parent 聚合 POM）
+    ├── demo-backend/             # 演示目标项目（Spring Boot，流水线部署对象）
+    └── demo-frontend/            # 演示目标项目（Vue，未纳入 Maven 构建）
 ```
 
 ## 🛠️ 技术栈
@@ -146,7 +166,7 @@ study-ai-dev-flow/
 | 组件 | 版本 | 说明 |
 |------|------|------|
 | Spring Boot | 3.3.4 | Web 框架 |
-| Temporal SDK | 1.24.1 | 工作流引擎 |
+| Temporal SDK | 1.30.0 | 工作流引擎 |
 | LangChain4j | 0.35.0 | AI Agent 框架 |
 | JGit | 6.9.0 | Git 操作 |
 | JavaParser | - | 代码分析 |
@@ -173,16 +193,23 @@ study-ai-dev-flow/
 
 ## 🔧 API 接口
 
+Gateway（8083）与 API 服务（8080）接口路径一致，以下为 API 服务接口：
+
 ### 项目管理
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
 | GET | `/api/project` | 查询所有项目 |
 | GET | `/api/project/{id}` | 查询项目详情 |
+| GET | `/api/project/{id}/detail` | 查询项目聚合详情（需求汇总、流水线历史） |
 | POST | `/api/project` | 创建项目 |
 | PUT | `/api/project/{id}` | 更新项目 |
 | DELETE | `/api/project/{id}` | 删除项目 |
-| GET | `/api/project/{id}/requirements` | 查询项目需求 |
+| GET | `/api/project/stats` | 项目统计 |
+| POST | `/api/project/{id}/start` | 启动项目应用 |
+| POST | `/api/project/{id}/stop` | 停止项目应用 |
+| POST | `/api/project/{id}/restart` | 重启项目应用 |
+| GET | `/api/project/{id}/status` | 查询项目应用状态 |
 
 ### 需求管理
 
@@ -192,16 +219,24 @@ study-ai-dev-flow/
 | GET | `/api/requirement/{id}` | 查询需求 |
 | PUT | `/api/requirement/{id}` | 更新需求 |
 | DELETE | `/api/requirement/{id}` | 删除需求 |
+| GET | `/api/requirement/project/{projectId}` | 查询项目需求列表 |
+| GET | `/api/requirement/project/{projectId}/stats` | 需求状态统计 |
+| GET | `/api/requirement/pipeline/{pipelineId}` | 按流水线查询需求 |
 
 ### 流水线管理
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/pipelines/start` | 启动流水线 |
-| GET | `/api/pipelines` | 查询所有流水线 |
-| GET | `/api/pipelines/{id}` | 查询流水线详情 |
-| POST | `/api/pipelines/{id}/cancel` | 取消流水线 |
-| GET | `/api/pipelines/{id}/stages` | 查询阶段记录 |
+| POST | `/api/pipeline/start` | 启动流水线 |
+| GET | `/api/pipeline` | 查询所有流水线 |
+| GET | `/api/pipeline/{pipelineId}` | 查询流水线详情 |
+| GET | `/api/pipeline/status/{status}` | 按状态筛选流水线 |
+| GET | `/api/pipeline/project/{projectId}` | 查询项目下流水线 |
+| POST | `/api/pipeline/{pipelineId}/cancel` | 取消流水线 |
+| POST | `/api/pipeline/{pipelineId}/approval/{stage}` | 阶段人工审批 |
+| GET | `/api/pipeline/{pipelineId}/stages` | 查询阶段记录 |
+| GET | `/api/pipeline/{pipelineId}/files` | 查询生成文件列表 |
+| GET | `/api/pipeline/{pipelineId}/stream` | SSE 实时状态推送 |
 
 ## 🤝 贡献指南
 
@@ -224,4 +259,4 @@ MIT License
 ---
 
 **项目状态**: 🚀 开发中  
-**最后更新**: 2026-07-12
+**最后更新**: 2026-10-15

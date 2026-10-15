@@ -448,13 +448,15 @@ AI Pipeline Platform
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/pipelines/start` | 启动流水线 |
-| GET | `/api/pipelines` | 查询所有流水线 |
-| GET | `/api/pipelines/{id}` | 查询流水线详情 |
-| POST | `/api/pipelines/{id}/cancel` | 取消流水线 |
-| GET | `/api/pipelines/{id}/stages` | 查询阶段记录 |
-| GET | `/api/pipelines/{id}/files` | 查询生成文件列表 |
-| GET | `/api/pipelines/{id}/files/{fileName}` | 查询文件内容 |
+| POST | `/api/pipeline/start` | 启动流水线 |
+| GET | `/api/pipeline` | 查询所有流水线 |
+| GET | `/api/pipeline/{id}` | 查询流水线详情 |
+| GET | `/api/pipeline/status/{status}` | 按状态筛选流水线 |
+| POST | `/api/pipeline/{id}/cancel` | 取消流水线 |
+| POST | `/api/pipeline/{id}/approval/{stage}` | 阶段人工审批 |
+| GET | `/api/pipeline/{id}/stages` | 查询阶段记录 |
+| GET | `/api/pipeline/{id}/files` | 查询生成文件列表 |
+| GET | `/api/pipeline/{id}/files/{fileName}` | 查询文件内容 |
 
 ---
 
@@ -466,7 +468,7 @@ AI Pipeline Platform
 |------|------|------|------|
 | 主框架 | Spring Boot | 3.3.4 | Web / JPA |
 | AI 框架 | LangChain4j | 0.35.0 | Agent / Tool Calling |
-| Workflow 引擎 | Temporal SDK | 1.24.1 | 持久化工作流 / Signal 审批 |
+| Workflow 引擎 | Temporal SDK | 1.30.0 | 持久化工作流 / Signal 审批 |
 | 数据库 | H2 | - | 开发期零配置运行 |
 | Git 操作 | JGit | 6.9.0 | 纯 Java，跨平台 |
 | Java AST | JavaParser | - | 代码结构分析 |

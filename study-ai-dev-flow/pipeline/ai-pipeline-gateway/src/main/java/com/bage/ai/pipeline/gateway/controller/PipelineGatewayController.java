@@ -55,13 +55,28 @@ public class PipelineGatewayController {
         }
     }
 
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Map<String, Object>>> getPipelinesByStatus(@PathVariable String status) {
+        try {
+            List<Map<String, Object>> result = webClient.get()
+                    .uri("/api/pipeline/status/{status}", status)
+                    .retrieve()
+                    .bodyToMono(List.class)
+                    .block();
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("Failed to get pipelines by status: {}", e.getMessage());
+            return ResponseEntity.status(503).build();
+        }
+    }
+
     @PostMapping("/start")
     public ResponseEntity<Map<String, Object>> startPipeline(@RequestBody Map<String, Object> body) {
         try {
             PipelineStartInput input = new PipelineStartInput();
             input.setRequirementMd((String) body.get("requirementMd"));
             input.setProjectLocalPath((String) body.get("projectLocalPath"));
-            
+
             Object projectIdObj = body.get("projectId");
             if (projectIdObj != null) {
                 if (projectIdObj instanceof Number) {
@@ -69,6 +84,55 @@ public class PipelineGatewayController {
                 } else {
                     input.setProjectId(Long.parseLong(projectIdObj.toString()));
                 }
+            }
+
+            // 透传可选参数：审批配置、项目类型、构建工具、测试自修复
+            Object autoApproveObj = body.get("autoApproveMap");
+            if (autoApproveObj instanceof Map<?, ?> rawMap) {
+                Map<com.bage.ai.pipeline.core.enums.StageName, Boolean> approveMap = new HashMap<>();
+                rawMap.forEach((k, v) -> {
+                    try {
+                        approveMap.put(com.bage.ai.pipeline.core.enums.StageName.valueOf(String.valueOf(k)),
+                                Boolean.TRUE.equals(v) || "true".equalsIgnoreCase(String.valueOf(v)));
+                    } catch (IllegalArgumentException e) {
+                        log.warn("Unknown stage name in autoApproveMap: {}", k);
+                    }
+                });
+                input.setAutoApproveMap(approveMap);
+            }
+            Object projectTypeObj = body.get("projectType");
+            if (projectTypeObj != null && !projectTypeObj.toString().isBlank()) {
+                try {
+                    input.setProjectType(com.bage.ai.pipeline.core.enums.ProjectType.valueOf(projectTypeObj.toString()));
+                } catch (IllegalArgumentException e) {
+                    log.warn("Unknown projectType: {}", projectTypeObj);
+                }
+            }
+            Object buildToolObj = body.get("buildTool");
+            if (buildToolObj != null && !buildToolObj.toString().isBlank()) {
+                try {
+                    input.setBuildTool(com.bage.ai.pipeline.core.enums.BuildTool.valueOf(buildToolObj.toString()));
+                } catch (IllegalArgumentException e) {
+                    log.warn("Unknown buildTool: {}", buildToolObj);
+                }
+            }
+            Object frontendPathObj = body.get("frontendLocalPath");
+            if (frontendPathObj != null && !frontendPathObj.toString().isBlank()) {
+                input.setFrontendLocalPath(frontendPathObj.toString());
+            }
+            Object autoFixObj = body.get("autoFixOnTestFail");
+            if (autoFixObj != null) {
+                input.setAutoFixOnTestFail(Boolean.TRUE.equals(autoFixObj)
+                        || "true".equalsIgnoreCase(String.valueOf(autoFixObj)));
+            }
+            Object maxRetriesObj = body.get("maxTestFixRetries");
+            if (maxRetriesObj instanceof Number) {
+                input.setMaxTestFixRetries(((Number) maxRetriesObj).intValue());
+            }
+            Object sandboxObj = body.get("sandboxEnabled");
+            if (sandboxObj != null) {
+                input.setSandboxEnabled(Boolean.TRUE.equals(sandboxObj)
+                        || "true".equalsIgnoreCase(String.valueOf(sandboxObj)));
             }
 
             Map<String, Object> result = webClient.post()

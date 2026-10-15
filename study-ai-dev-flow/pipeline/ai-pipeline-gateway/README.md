@@ -18,7 +18,7 @@
 ### 构建项目
 
 ```bash
-cd pipeline/ai-pipeline-gateway
+cd study-ai-dev-flow/pipeline/ai-pipeline-gateway
 mvn clean package -DskipTests
 ```
 
@@ -38,34 +38,47 @@ ai-pipeline-gateway/
 │   └── main/
 │       ├── java/
 │       │   └── com/bage/ai/pipeline/gateway/
-│       │       ├── PipelineGatewayApplication.java   # 启动类
+│       │       ├── PipelineGatewayApplication.java       # 启动类
 │       │       ├── config/
-│       │       │   └── WebClientConfig.java          # WebClient 配置
+│       │       │   └── WebClientConfig.java              # WebClient 配置
 │       │       ├── controller/
-│       │       │   └── PipelineGatewayController.java # REST API 控制器
+│       │       │   ├── PipelineGatewayController.java    # 流水线 API
+│       │       │   ├── ProjectGatewayController.java     # 项目 API
+│       │       │   └── RequirementGatewayController.java # 需求 API
 │       │       └── service/
-│       │           └── PipelineGatewayService.java   # 服务层
+│       │           └── PipelineGatewayService.java       # 服务层（请求转发）
 │       └── resources/
-│           └── application.yml                       # 配置文件
+│           └── application.yml                           # 配置文件
 └── pom.xml
 ```
 
 ## API 接口
 
+与 Core API（8080）路径一致，仅端口不同。
+
+| 分组 | 路径前缀 | 说明 |
+|------|---------|------|
+| 流水线 | `/api/pipeline` | 启动 / 查询 / 取消 / 审批 / 阶段记录 / 生成文件 |
+| 项目 | `/api/project` | CRUD / 统计 / 项目应用 start-stop-restart |
+| 需求 | `/api/requirement` | CRUD / 按项目或流水线查询 |
+
+流水线主要接口：
+
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/api/pipelines` | 查询所有流水线 |
-| GET | `/api/pipelines/{pipelineId}` | 查询流水线详情 |
-| POST | `/api/pipelines/start` | 启动流水线 |
-| GET | `/api/pipelines/{pipelineId}/stages` | 查询阶段记录 |
-| GET | `/api/pipelines/{pipelineId}/files` | 查询生成文件列表 |
-| GET | `/api/pipelines/{pipelineId}/files/{fileName}` | 查询文件内容 |
-| POST | `/api/pipelines/{pipelineId}/cancel` | 取消流水线 |
+| POST | `/api/pipeline/start` | 启动流水线 |
+| GET | `/api/pipeline` | 查询所有流水线 |
+| GET | `/api/pipeline/{pipelineId}` | 查询流水线详情 |
+| GET | `/api/pipeline/{pipelineId}/stages` | 查询阶段记录 |
+| GET | `/api/pipeline/{pipelineId}/files` | 查询生成文件列表 |
+| GET | `/api/pipeline/{pipelineId}/files/{fileName}` | 查询文件内容 |
+| POST | `/api/pipeline/{pipelineId}/cancel` | 取消流水线 |
+| POST | `/api/pipeline/{pipelineId}/approval/{stage}` | 阶段人工审批 |
 
 ## 架构说明
 
 ```
-Vue UI (8082) 
+Vue UI (8081) 
     ↓ /api/* 代理
 Gateway (8083)  ← 当前模块
     ↓ WebClient 调用
@@ -85,12 +98,12 @@ API (8080)
 server:
   port: 8083
 
-app:
-  api-base-url: http://localhost:8080/api/pipeline
+pipeline:
+  api-url: http://localhost:8080/api/pipeline
 ```
 
 ## 端口说明
 
 - Gateway 服务：8083
 - API 服务：8080（后端核心）
-- UI 服务：8082（前端）
+- UI 服务：8081（前端）

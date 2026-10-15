@@ -1,7 +1,7 @@
 # AI 研发流水线平台 — 架构文档
 
-- **版本**：v2.0
-- **变更时间**：2026-07-11
+- **版本**：v2.1
+- **变更时间**：2026-10-15
 
 ---
 
@@ -10,7 +10,7 @@
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                   ai-pipeline-ui  (Vue 3 + Vite)                │
-│  端口: 8082                                                     │
+│  端口: 8081                                                     │
 │  页面: 需求录入 | 流水线列表 | 流水线详情 | 阶段进度 | 生成代码   │
 └───────────────────────┬─────────────────────────────────────────┘
                         │ /api/* 代理
@@ -96,14 +96,15 @@
 ## 2. 多模块结构
 
 ```
-study-ai-dev-flow/                ← 父 POM（BOM 统一版本管理）
+study-ai-dev-flow/                ← 根 POM（BOM 统一版本管理，聚合 pipeline/ 与 demo/）
 ├── pipeline/                     ← Pipeline 模块组（pipeline-parent 聚合 POM）
 │   ├── ai-pipeline-core/         ← 无 Spring 依赖的纯 Java 模块
 │   │   ├── activity/             ← Temporal Activity 接口（10 个）
 │   │   ├── workflow/             ← PipelineWorkflow 接口 + Impl
 │   │   ├── dto/activity/         ← 各阶段 Input/Result（Lombok @Data）
 │   │   ├── dto/workflow/         ← PipelineStartInput / Signal DTO
-│   │   └── enums/                ← ProjectType | BuildTool | TaskType | StageName
+│   │   ├── enums/                ← ProjectType | BuildTool | TaskType | StageName
+│   │   └── strategy/             ← 策略接口（Build / Deploy / TestExecution / PrCreation）
 │   │
 │   ├── ai-pipeline-agent/        ← LangChain4j Agent 层
 │   │   ├── config/
@@ -128,10 +129,13 @@ study-ai-dev-flow/                ← 父 POM（BOM 统一版本管理）
 │   │
 │   ├── ai-pipeline-api/          ← Spring Boot 主应用（端口 8080）
 │   │   ├── activity/*ActivityImpl ← 10 个 Temporal Activity 实现
+│   │   ├── workflow/             ← PipelineWorkflowImpl 编排实现
 │   │   ├── config/TemporalConfig ← Worker 注册所有 Activity
 │   │   ├── strategy/             ← 4 个可插拔策略维度
 │   │   ├── service/PipelineService ← 流水线入口
 │   │   ├── controller/           ← REST 控制器
+│   │   ├── dto/                  ← 接口层请求/响应 DTO
+│   │   ├── enums/                ← 接口层枚举
 │   │   ├── entity/               ← JPA 实体
 │   │   └── repository/           ← Spring Data Repository
 │   │
@@ -140,15 +144,22 @@ study-ai-dev-flow/                ← 父 POM（BOM 统一版本管理）
 │   │   ├── controller/PipelineGatewayController ← REST API（CORS）
 │   │   └── service/PipelineGatewayService ← 请求转发
 │   │
-│   └── ai-pipeline-ui/           ← Vue 3 + Vite 前端（端口 8082）
-│       ├── src/api/              ← API 封装
-│       ├── src/router/           ← 路由配置
-│       ├── src/views/            ← 页面组件
-│       └── src/App.vue           ← 根组件
+│   ├── ai-pipeline-ui/           ← Vue 3 + Vite 前端（端口 8081）
+│   │   ├── src/api/              ← API 封装
+│   │   ├── src/router/           ← 路由配置
+│   │   ├── src/stores/           ← 状态管理
+│   │   ├── src/views/            ← 页面组件
+│   │   ├── src/App.vue           ← 根组件
+│   │   └── e2e/                  ← Playwright 端到端测试
+│   │
+│   ├── docs/                     ← 项目文档（architecture / design / PRD 等）
+│   ├── docker-compose.yml        ← Temporal + PostgreSQL
+│   ├── start.sh                  ← 一键启动脚本
+│   └── .env.example              ← 环境变量模板
 │
 └── demo/                         ← Demo 模块组（demo-parent 聚合 POM）
     ├── demo-backend/             ← 演示目标项目（H2 内存 CRUD）
-    └── demo-frontend/            ← 演示目标项目（Vue）
+    └── demo-frontend/            ← 演示目标项目（Vue，未纳入 Maven 构建）
 ```
 
 ---
@@ -272,52 +283,70 @@ Service 使用示例：
 │
 ├── ai-pipeline-api          :8080  （内嵌 H2，无需独立 DB）
 ├── ai-pipeline-gateway      :8083  （API 网关，CORS 处理）
-├── ai-pipeline-ui           :8082  （Vue 前端）
-└── demo-backend (部署目标)   :8081
+├── ai-pipeline-ui           :8081  （Vue 前端，/api 代理至 Gateway）
+└── demo-backend (部署目标)   :8082
 ```
 
 ### 端口汇总
 
 | 服务 | 端口 | 说明 |
 |------|------|------|
-| ai-pipeline-ui | 8082 | Vue 前端界面 |
+| ai-pipeline-ui | 8081 | Vue 前端界面（Vite 开发服务器） |
 | ai-pipeline-gateway | 8083 | API 网关 |
 | ai-pipeline-api | 8080 | 后端核心服务 |
 | temporal-server | 7233 | Temporal 工作流引擎 |
 | postgresql | 5432 | Temporal 数据库 |
-| demo-backend (部署目标) | 8081 | AI 生成的应用 |
+| demo-backend (部署目标) | 8082 | AI 生成的应用（部署时以 `--server.port=8082` 启动） |
 
 ---
 
 ## 8. API 接口列表
 
-### Gateway API（前端访问入口，端口 8083）
+Gateway（8083）与 Core API（8080）路径一致，仅端口不同。
 
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/pipelines` | 查询所有流水线 |
-| GET | `/api/pipelines/{pipelineId}` | 查询流水线详情 |
-| POST | `/api/pipelines/start` | 启动流水线 |
-| GET | `/api/pipelines/{pipelineId}/stages` | 查询阶段记录 |
-| GET | `/api/pipelines/{pipelineId}/files` | 查询生成文件列表 |
-| GET | `/api/pipelines/{pipelineId}/files/{fileName}` | 查询文件内容 |
-| POST | `/api/pipelines/{pipelineId}/cancel` | 取消流水线 |
-
-### Core API（后端内部，端口 8080）
+### Pipeline 接口
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
 | POST | `/api/pipeline/start` | 启动流水线 |
-| GET | `/api/pipeline/{pipelineId}` | 查询流水线状态 |
 | GET | `/api/pipeline` | 查询所有流水线 |
-| GET | `/api/pipeline/status/{status}` | 按状态查询 |
+| GET | `/api/pipeline/{pipelineId}` | 查询流水线详情 |
+| GET | `/api/pipeline/status/{status}` | 按状态查询（Core API） |
+| GET | `/api/pipeline/project/{projectId}` | 查询项目下流水线 |
 | POST | `/api/pipeline/{pipelineId}/approval/{stage}` | 审批操作 |
 | GET | `/api/pipeline/{pipelineId}/approval/{stage}` | 查询审批状态 |
 | POST | `/api/pipeline/{pipelineId}/cancel` | 取消流水线 |
 | GET | `/api/pipeline/{pipelineId}/stages` | 查询阶段记录 |
 | GET | `/api/pipeline/{pipelineId}/files` | 查询生成文件列表 |
 | GET | `/api/pipeline/{pipelineId}/files/{fileName}` | 查询文件内容 |
-| GET | `/api/pipeline/{pipelineId}/stream` | SSE 实时状态推送 |
+| GET | `/api/pipeline/{pipelineId}/stream` | SSE 实时状态推送（Core API） |
+
+### Project 接口
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/api/project` | 查询所有项目 |
+| GET | `/api/project/{id}` | 查询项目详情 |
+| GET | `/api/project/{id}/detail` | 查询项目聚合详情 |
+| POST | `/api/project` | 创建项目 |
+| PUT | `/api/project/{id}` | 更新项目 |
+| DELETE | `/api/project/{id}` | 删除项目 |
+| GET | `/api/project/stats` | 项目统计 |
+| POST | `/api/project/{id}/start` / `stop` / `restart` | 项目应用生命周期操作 |
+| GET | `/api/project/{id}/status` | 查询项目应用状态 |
+
+### Requirement 接口
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/api/requirement` | 创建需求 |
+| GET | `/api/requirement/{id}` | 查询需求 |
+| PUT | `/api/requirement/{id}` | 更新需求 |
+| DELETE | `/api/requirement/{id}` | 删除需求 |
+| GET | `/api/requirement/project/{projectId}` | 查询项目需求列表 |
+| GET | `/api/requirement/project/{projectId}/stats` | 需求状态统计 |
+| GET | `/api/requirement/project/{projectId}/{status}` | 按状态筛选需求 |
+| GET | `/api/requirement/pipeline/{pipelineId}` | 按流水线查询需求 |
 
 ---
 

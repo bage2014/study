@@ -22,6 +22,9 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PipelineWorkflowImpl.class);
 
+    /** 部署目标应用宿主机端口（避开前端 UI 8081 / Gateway 8083，与 demo-backend 默认配置一致） */
+    private static final int DEPLOY_HOST_PORT = 8082;
+
     private final ActivityOptions defaultOptions = ActivityOptions.newBuilder()
             .setStartToCloseTimeout(Duration.ofMinutes(30))
             .build();
@@ -168,6 +171,22 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
             statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.CODE_GEN.name(), "", null);
         }
 
+        // 空产物校验：任务拆分/代码生成未产出任何文件则判定流水线失败，避免"假成功"
+        if (allGeneratedFiles.isEmpty()) {
+            log.error("Pipeline {} produced 0 generated files, marking as FAILED", input.getRunId());
+            statusUpdateActivity.updateStatus(PipelineStatusUpdateInput.builder()
+                    .runId(input.getRunId())
+                    .status(PipelineStatus.FAILED)
+                    .stage(StageName.CODE_GEN.name())
+                    .build());
+            PipelineRunResult failedResult = PipelineRunResult.failed(
+                    "未生成任何代码文件：任务拆分或代码生成阶段无有效产出（常见原因：模型输出无法解析为任务 JSON），请查看服务日志",
+                    null);
+            statusUpdateActivity.updateResult(input.getRunId(), failedResult);
+            throw io.temporal.failure.ApplicationFailure.newNonRetryableFailure(
+                    failedResult.getMessage(), "EmptyCodegenResult");
+        }
+
         codeResult = CodeGenResult.builder()
                 .runId(input.getRunId())
                 .generatedFiles(allGeneratedFiles)
@@ -296,7 +315,6 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                         .frontendLocalPath(input.getFrontendLocalPath())
                         .sandboxEnabled(input.isSandboxEnabled())
                         .build());
-                break;
             } catch (ActivityFailure e) {
                 testFailureContext = extractFailureMessage(e);
 
@@ -333,7 +351,45 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                         .build());
 
                 currentStage = StageName.TEST_EXEC;
+                continue;
             }
+
+            // 策略返回 success=false（如测试编译失败）同样进入自修复循环
+            if (testExecResult == null || !Boolean.TRUE.equals(testExecResult.getSuccess())) {
+                testFailureContext = testExecResult != null && testExecResult.getOutput() != null
+                        ? testExecResult.getOutput() : "Test execution failed without output";
+
+                if (!input.isAutoFixOnTestFail() || fixAttempt >= input.getMaxTestFixRetries()) {
+                    break;
+                }
+
+                fixAttempt++;
+                currentStage = StageName.CODE_GEN;
+                CodeGenInput fixInput = CodeGenInput.builder()
+                        .runId(input.getRunId())
+                        .projectLocalPath(input.getProjectLocalPath())
+                        .parsedRequirementJson(reqResult.getParsedRequirementJson())
+                        .projectType(input.getProjectType())
+                        .buildTool(input.getBuildTool())
+                        .frontendLocalPath(input.getFrontendLocalPath())
+                        .testFailureContext(testFailureContext)
+                        .build();
+                codeResult = codeGenActivity.generate(fixInput);
+
+                currentStage = StageName.PR_CREATION;
+                String fixMsg = "fix(ai-retry-" + fixAttempt + "): auto-fix for run " + input.getRunId();
+                writeResult = writeActivity.writeAndCommit(WriteAndCommitInput.builder()
+                        .runId(input.getRunId())
+                        .projectLocalPath(input.getProjectLocalPath())
+                        .generatedFiles(codeResult.getGeneratedFiles())
+                        .commitMessage(fixMsg)
+                        .frontendLocalPath(input.getFrontendLocalPath())
+                        .build());
+
+                currentStage = StageName.TEST_EXEC;
+                continue;
+            }
+            break;
         }
         try {
             var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
@@ -378,7 +434,7 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                     .frontendLocalPath(input.getFrontendLocalPath())
                     .projectLocalPath(input.getProjectLocalPath())
                     .frontendUrl("http://localhost:5173")
-                    .backendUrl("http://localhost:8081")
+                    .backendUrl("http://localhost:" + DEPLOY_HOST_PORT)
                     .build());
 
             if (!isAutoApprove(input, StageName.UI_TEST)) {
@@ -443,11 +499,30 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                 .imageName(buildResult.getImageName())
                 .imageTag(buildResult.getImageTag())
                 .containerName(containerName)
-                .hostPort(8081)
+                .hostPort(DEPLOY_HOST_PORT)
                 .containerPort(8080)
                 .frontendLocalPath(input.getFrontendLocalPath())
                 .frontendHostPort(5173)
                 .build());
+
+        // 部署失败校验：避免部署失败仍标记流水线 COMPLETED（假成功）
+        if (deployResult == null || !Boolean.TRUE.equals(deployResult.getSuccess())) {
+            String deployError = deployResult != null && deployResult.getDeployInfo() != null
+                    ? deployResult.getDeployInfo() : "部署失败（无详细信息）";
+            log.error("Pipeline {} deploy failed: {}", input.getRunId(), deployError);
+            statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.DEPLOY.name(),
+                    "{\"deployStatus\":\"FAILED\",\"error\":\"" + deployError.replace("\"", "'") + "\"}", deployError);
+            statusUpdateActivity.updateStatus(PipelineStatusUpdateInput.builder()
+                    .runId(input.getRunId())
+                    .status(PipelineStatus.FAILED)
+                    .stage(StageName.DEPLOY.name())
+                    .build());
+            PipelineRunResult deployFailedResult = PipelineRunResult.failed("部署失败：" + deployError, null);
+            statusUpdateActivity.updateResult(input.getRunId(), deployFailedResult);
+            throw io.temporal.failure.ApplicationFailure.newNonRetryableFailure(
+                    deployFailedResult.getMessage(), "DeployFailed");
+        }
+
         try {
             var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
             String deployJson = mapper.writeValueAsString(Map.of(
@@ -457,8 +532,8 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                     "imageName", buildResult.getImageName(),
                     "imageTag", buildResult.getImageTag(),
                     "endpoints", List.of(
-                            Map.of("method", "GET", "url", "http://localhost:8081/api/health", "status", "UP"),
-                            Map.of("method", "GET", "url", "http://localhost:8081/api/health/detail", "status", "UP")
+                            Map.of("method", "GET", "url", "http://localhost:" + DEPLOY_HOST_PORT + "/api/health", "status", "UP"),
+                            Map.of("method", "GET", "url", "http://localhost:" + DEPLOY_HOST_PORT + "/api/health/detail", "status", "UP")
                     )
             ));
             statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.DEPLOY.name(), deployJson, null);

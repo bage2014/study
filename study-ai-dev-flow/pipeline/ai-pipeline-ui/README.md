@@ -19,7 +19,7 @@
 ### 安装依赖
 
 ```bash
-cd pipeline/ai-pipeline-ui
+cd study-ai-dev-flow/pipeline/ai-pipeline-ui
 npm install
 ```
 
@@ -29,7 +29,7 @@ npm install
 npm run dev
 ```
 
-访问 http://localhost:8082
+访问 http://localhost:8081
 
 ### 生产构建
 
@@ -52,14 +52,30 @@ ai-pipeline-ui/
 │   │   └── index.js   # Axios 配置与接口定义
 │   ├── router/        # 路由配置
 │   │   └── index.js   # Vue Router 路由定义
+│   ├── stores/        # 状态管理
+│   │   └── projectStore.js
+│   ├── components/    # 公共组件
+│   │   ├── AppLayout.vue
+│   │   ├── Loading.vue
+│   │   └── Toast.vue
 │   ├── views/         # 页面组件
 │   │   ├── Home.vue           # 首页：需求录入与流水线启动
+│   │   ├── ProjectManagement.vue # 项目管理
+│   │   ├── ProjectDetail.vue  # 项目详情
 │   │   ├── PipelineList.vue   # 流水线列表
-│   │   └── PipelineDetail.vue # 流水线详情：阶段进度、生成代码
+│   │   ├── PipelineDetail.vue # 流水线详情：阶段进度、生成代码
+│   │   ├── DesignView.vue     # 方案设计
+│   │   ├── CodingView.vue     # 编码实现
+│   │   ├── PreviewView.vue    # 变更预览
+│   │   ├── BuildView.vue      # 编译构建
+│   │   └── DeployView.vue     # 发布部署
 │   ├── App.vue        # 根组件
 │   └── main.js        # 应用入口
+├── e2e/               # Playwright 端到端测试
 ├── index.html         # HTML 模板
 ├── vite.config.js     # Vite 配置
+├── tailwind.config.js # Tailwind CSS 配置
+├── playwright.config.js # Playwright 配置
 ├── package.json       # 依赖配置
 └── .gitignore         # Git 忽略配置
 ```
@@ -90,6 +106,6 @@ server: {
 
 ## 端口说明
 
-- 前端服务：8082
+- 前端服务：8081（Vite 开发服务器）
 - Gateway 服务：8083（后端代理）
 - API 服务：8080（后端核心）
