@@ -97,55 +97,58 @@
 
 ```
 study-ai-dev-flow/                ← 父 POM（BOM 统一版本管理）
-├── ai-pipeline-core/             ← 无 Spring 依赖的纯 Java 模块
-│   ├── activity/                 ← Temporal Activity 接口（10 个）
-│   ├── workflow/                 ← PipelineWorkflow 接口 + Impl
-│   ├── dto/activity/             ← 各阶段 Input/Result（Lombok @Data）
-│   ├── dto/workflow/             ← PipelineStartInput / Signal DTO
-│   └── enums/                    ← ProjectType | BuildTool | TaskType | StageName
+├── pipeline/                     ← Pipeline 模块组（pipeline-parent 聚合 POM）
+│   ├── ai-pipeline-core/         ← 无 Spring 依赖的纯 Java 模块
+│   │   ├── activity/             ← Temporal Activity 接口（10 个）
+│   │   ├── workflow/             ← PipelineWorkflow 接口 + Impl
+│   │   ├── dto/activity/         ← 各阶段 Input/Result（Lombok @Data）
+│   │   ├── dto/workflow/         ← PipelineStartInput / Signal DTO
+│   │   └── enums/                ← ProjectType | BuildTool | TaskType | StageName
+│   │
+│   ├── ai-pipeline-agent/        ← LangChain4j Agent 层
+│   │   ├── config/
+│   │   │   ├── ModelGatewayConfig    ← 多 Provider 工厂
+│   │   │   └── AgentToolRegistry     ← 自动收集所有 AgentTool Bean
+│   │   ├── service/
+│   │   │   ├── RequirementAgentService
+│   │   │   ├── FeaturePointSplitAgentService
+│   │   │   ├── TaskSplitAgentService
+│   │   │   ├── CodeGenAgentService
+│   │   │   ├── TestGenAgentService
+│   │   │   └── CodeReviewAgentService
+│   │   └── tool/
+│   │       ├── AgentTool         ← 标记接口，toolName() 方法
+│   │       ├── FileReadTool
+│   │       ├── FileWriteTool
+│   │       ├── GitTool
+│   │       ├── MavenTool
+│   │       ├── NpmTool
+│   │       ├── DockerTool
+│   │       └── AstAnalysisTool
+│   │
+│   ├── ai-pipeline-api/          ← Spring Boot 主应用（端口 8080）
+│   │   ├── activity/*ActivityImpl ← 10 个 Temporal Activity 实现
+│   │   ├── config/TemporalConfig ← Worker 注册所有 Activity
+│   │   ├── strategy/             ← 4 个可插拔策略维度
+│   │   ├── service/PipelineService ← 流水线入口
+│   │   ├── controller/           ← REST 控制器
+│   │   ├── entity/               ← JPA 实体
+│   │   └── repository/           ← Spring Data Repository
+│   │
+│   ├── ai-pipeline-gateway/      ← Spring Boot 网关服务（端口 8083）
+│   │   ├── config/WebClientConfig ← WebClient 配置
+│   │   ├── controller/PipelineGatewayController ← REST API（CORS）
+│   │   └── service/PipelineGatewayService ← 请求转发
+│   │
+│   └── ai-pipeline-ui/           ← Vue 3 + Vite 前端（端口 8082）
+│       ├── src/api/              ← API 封装
+│       ├── src/router/           ← 路由配置
+│       ├── src/views/            ← 页面组件
+│       └── src/App.vue           ← 根组件
 │
-├── ai-pipeline-agent/            ← LangChain4j Agent 层
-│   ├── config/
-│   │   ├── ModelGatewayConfig    ← 多 Provider 工厂
-│   │   └── AgentToolRegistry     ← 自动收集所有 AgentTool Bean
-│   ├── service/
-│   │   ├── RequirementAgentService
-│   │   ├── FeaturePointSplitAgentService
-│   │   ├── TaskSplitAgentService
-│   │   ├── CodeGenAgentService
-│   │   ├── TestGenAgentService
-│   │   └── CodeReviewAgentService
-│   └── tool/
-│       ├── AgentTool             ← 标记接口，toolName() 方法
-│       ├── FileReadTool
-│       ├── FileWriteTool
-│       ├── GitTool
-│       ├── MavenTool
-│       ├── NpmTool
-│       ├── DockerTool
-│       └── AstAnalysisTool
-│
-├── ai-pipeline-api/              ← Spring Boot 主应用（端口 8080）
-│   ├── activity/*ActivityImpl    ← 10 个 Temporal Activity 实现
-│   ├── config/TemporalConfig     ← Worker 注册所有 Activity
-│   ├── strategy/                 ← 4 个可插拔策略维度
-│   ├── service/PipelineService   ← 流水线入口
-│   ├── controller/               ← REST 控制器
-│   ├── entity/                   ← JPA 实体
-│   └── repository/               ← Spring Data Repository
-│
-├── ai-pipeline-gateway/          ← Spring Boot 网关服务（端口 8083）
-│   ├── config/WebClientConfig    ← WebClient 配置
-│   ├── controller/PipelineGatewayController ← REST API（CORS）
-│   └── service/PipelineGatewayService ← 请求转发
-│
-├── ai-pipeline-ui/               ← Vue 3 + Vite 前端（端口 8082）
-│   ├── src/api/                  ← API 封装
-│   ├── src/router/               ← 路由配置
-│   ├── src/views/                ← 页面组件
-│   └── src/App.vue               ← 根组件
-│
-└── demo-backend/                 ← 演示目标项目（H2 内存 CRUD）
+└── demo/                         ← Demo 模块组（demo-parent 聚合 POM）
+    ├── demo-backend/             ← 演示目标项目（H2 内存 CRUD）
+    └── demo-frontend/            ← 演示目标项目（Vue）
 ```
 
 ---

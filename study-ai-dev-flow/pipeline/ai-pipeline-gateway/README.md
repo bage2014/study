@@ -18,7 +18,7 @@
 ### 构建项目
 
 ```bash
-cd ai-pipeline-gateway
+cd pipeline/ai-pipeline-gateway
 mvn clean package -DskipTests
 ```
 

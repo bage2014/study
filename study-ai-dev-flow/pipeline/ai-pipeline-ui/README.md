@@ -19,7 +19,7 @@
 ### 安装依赖
 
 ```bash
-cd ai-pipeline-ui
+cd pipeline/ai-pipeline-ui
 npm install
 ```
 

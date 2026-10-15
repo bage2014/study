@@ -67,7 +67,7 @@ docker run -d --name temporal -p 7233:7233 -p 8233:8233 temporalio/temporal:late
 mvn clean package -DskipTests -q
 
 # 3. 启动 AI Pipeline API
-cd ai-pipeline-api
+cd pipeline/ai-pipeline-api
 java -jar target/ai-pipeline-api-1.0.0-SNAPSHOT.jar
 ```
 
@@ -141,7 +141,7 @@ curl -X POST http://localhost:8083/api/pipelines/start \
   -d '{
     "requirementMd": "添加健康检查端点，返回服务状态信息",
     "projectId": 1,
-    "projectLocalPath": "/Users/bage/bage/github/study/study-ai-dev-flow/demo-backend"
+    "projectLocalPath": "/Users/bage/bage/github/study/study-ai-dev-flow/demo/demo-backend"
   }'
 ```
 
@@ -270,10 +270,10 @@ curl http://localhost:8083/api/pipelines/{pipelineId}
 
 ```bash
 # 查看生成的文件列表
-ls -la /Users/bage/bage/github/study/study-ai-dev-flow/demo-backend/src/main/java/com/bage/demo/controller/
+ls -la /Users/bage/bage/github/study/study-ai-dev-flow/demo/demo-backend/src/main/java/com/bage/demo/controller/
 
 # 查看生成的代码内容
-cat /Users/bage/bage/github/study/study-ai-dev-flow/demo-backend/src/main/java/com/bage/demo/controller/HealthController.java
+cat /Users/bage/bage/github/study/study-ai-dev-flow/demo/demo-backend/src/main/java/com/bage/demo/controller/HealthController.java
 ```
 
 生成的代码示例：
@@ -531,9 +531,9 @@ curl http://localhost:8083/api/project/{projectId}
 1. 启动系统
    → docker run -d --name temporal -p 7233:7233 -p 8233:8233 temporalio/temporal:latest server start-dev --ip 0.0.0.0
    → mvn clean package -DskipTests
-   → java -jar ai-pipeline-api/target/ai-pipeline-api-1.0.0-SNAPSHOT.jar
-   → java -jar ai-pipeline-gateway/target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar
-   → cd ai-pipeline-ui && npm run dev
+   → java -jar pipeline/ai-pipeline-api/target/ai-pipeline-api-1.0.0-SNAPSHOT.jar
+   → java -jar pipeline/ai-pipeline-gateway/target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar
+   → cd pipeline/ai-pipeline-ui && npm run dev
 
 2. 选择项目并录入需求
    → 访问 http://localhost:8082/

@@ -40,15 +40,15 @@ docker run -d --name temporal -p 7233:7233 -p 8233:8233 temporalio/temporal:late
 mvn clean package -DskipTests
 
 # 启动 API 服务
-cd ai-pipeline-api
+cd pipeline/ai-pipeline-api
 java -jar target/ai-pipeline-api-1.0.0-SNAPSHOT.jar
 
 # 启动 Gateway 服务（新终端）
-cd ai-pipeline-gateway
+cd pipeline/ai-pipeline-gateway
 java -jar target/ai-pipeline-gateway-1.0.0-SNAPSHOT.jar
 
 # 启动前端（新终端）
-cd ai-pipeline-ui
+cd pipeline/ai-pipeline-ui
 npm install
 npm run dev
 ```
@@ -97,41 +97,46 @@ npm run dev
 
 ```
 study-ai-dev-flow/
-├── ai-pipeline-core/          # 核心模块（接口、DTO、枚举、Workflow）
-│   ├── activity/              # Temporal Activity 接口
-│   ├── workflow/              # PipelineWorkflow 接口 + 实现
-│   ├── dto/                   # 数据传输对象
-│   └── enums/                 # 枚举定义
+├── pom.xml                      # 父 POM（BOM 统一版本管理）
 │
-├── ai-pipeline-agent/         # AI Agent 层
-│   ├── config/                # 配置类（模型网关、工具注册）
-│   ├── service/               # Agent 服务（需求分析、代码生成等）
-│   └── tool/                  # 工具类（文件读写、Git、Maven 等）
+├── pipeline/                    # Pipeline 模块组
+│   ├── ai-pipeline-core/        # 核心模块（接口、DTO、枚举、Workflow）
+│   │   ├── activity/            # Temporal Activity 接口
+│   │   ├── workflow/            # PipelineWorkflow 接口 + 实现
+│   │   ├── dto/                 # 数据传输对象
+│   │   └── enums/               # 枚举定义
+│   │
+│   ├── ai-pipeline-agent/       # AI Agent 层
+│   │   ├── config/              # 配置类（模型网关、工具注册）
+│   │   ├── service/             # Agent 服务（需求分析、代码生成等）
+│   │   └── tool/                # 工具类（文件读写、Git、Maven 等）
+│   │
+│   ├── ai-pipeline-api/         # API 服务（Spring Boot 主应用）
+│   │   ├── activity/            # Activity 实现
+│   │   ├── config/              # Temporal 配置
+│   │   ├── controller/          # REST 控制器
+│   │   ├── service/             # 业务服务
+│   │   ├── strategy/            # 策略模式实现
+│   │   ├── entity/              # JPA 实体
+│   │   └── repository/          # 数据仓库
+│   │
+│   ├── ai-pipeline-gateway/     # API 网关
+│   │   ├── config/              # WebClient 配置
+│   │   ├── controller/          # 网关控制器
+│   │   └── service/             # 网关服务
+│   │
+│   └── ai-pipeline-ui/          # Vue 前端
+│       ├── src/api/             # API 封装
+│       ├── src/router/          # 路由配置
+│       ├── src/views/           # 页面组件
+│       └── src/components/      # 公共组件
 │
-├── ai-pipeline-api/           # API 服务（Spring Boot 主应用）
-│   ├── activity/              # Activity 实现
-│   ├── config/                # Temporal 配置
-│   ├── controller/            # REST 控制器
-│   ├── service/               # 业务服务
-│   ├── strategy/              # 策略模式实现
-│   ├── entity/                # JPA 实体
-│   └── repository/            # 数据仓库
+├── demo/                        # Demo 模块组
+│   ├── demo-backend/            # 演示目标项目（Spring Boot）
+│   └── demo-frontend/           # 演示目标项目（Vue）
 │
-├── ai-pipeline-gateway/       # API 网关
-│   ├── config/                # WebClient 配置
-│   ├── controller/            # 网关控制器
-│   └── service/               # 网关服务
-│
-├── ai-pipeline-ui/            # Vue 前端
-│   ├── src/api/               # API 封装
-│   ├── src/router/            # 路由配置
-│   ├── src/views/             # 页面组件
-│   └── src/components/        # 公共组件
-│
-├── demo-backend/              # 演示目标项目（Spring Boot）
-├── demo-frontend/             # 演示目标项目（Vue）
-├── docs/                      # 项目文档
-└── docker-compose.yml         # Docker Compose 配置
+├── docs/                        # 项目文档
+└── docker-compose.yml           # Docker Compose 配置
 ```
 
 ## 🛠️ 技术栈
