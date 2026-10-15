@@ -584,7 +584,7 @@ const getStageName = (stageName) => {
     'FEATURE_POINT_SPLIT': '功能点拆分',
     'TASK_SPLIT': '任务拆分',
     'DESIGN': '方案设计',
-    'CODE_GEN': '编码实现',
+    'CODE_GEN': '代码生成',
     'TEST_GEN': '测试生成',
     'CODE_REVIEW': '代码审查',
     'PR_CREATION': '变更预览',

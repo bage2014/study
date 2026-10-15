@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 - **API 路径修正**：文档中 `/api/pipelines/*` 统一修正为实际控制器路径 `/api/pipeline/*`，补充 approval / files / stream 等接口
 - **Temporal SDK 版本对齐**：文档版本号 1.24.1 修正为根 POM 实际版本 1.30.0
 
+### Added
+
+- **UI Playwright 测试**：新增 `ai-pipeline-ui/e2e/ui-test.spec.js`（9 个用例：导航布局、项目管理、流水线列表/详情），beforeAll 自动经 API 幂等准备测试数据，`npx playwright test e2e/ui-test.spec.js --headed` 运行
+
 ### Fixed
 
 - **任务拆分解析重试**：DeepSeek 输出对话文本导致任务 JSON 解析失败时，`TaskSplitAgentService` 以硬约束提示词（只输出 JSON 数组、禁用工具）自动重试一次
