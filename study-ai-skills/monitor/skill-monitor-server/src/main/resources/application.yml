@@ -1,0 +1,34 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    # H2 file 模式，重启不丢数据
+    url: jdbc:h2:file:${HOME}/skill-monitor/data;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+logging:
+  level:
+    com.studyskills: INFO
+
+# 监控配置
+monitor:
+  # 上传接口（客户端 curl POST 的地址）
+  upload-path: /api/skill-usage/batch
+  # 允许的客户端 token（简单鉴权）
+  client-token: "study-skills-local"

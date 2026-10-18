@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Trae Skill Monitor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0F172A;color:#E2E8F0;min-height:100vh;padding:24px}
+.container{max-width:1200px;margin:0 auto}
+h1{font-size:24px;margin-bottom:8px}
+.subtitle{color:#94A3B8;margin-bottom:24px;font-size:14px}
+.nav{margin-bottom:24px}
+.nav a{color:#38BDF8;text-decoration:none;margin-right:12px}
+.nav a.active{font-weight:bold;color:#A78BFA}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.card{background:#1E293B;border-radius:8px;padding:20px}
+.card .label{font-size:12px;color:#94A3B8;text-transform:uppercase;letter-spacing:.05em}
+.card .value{font-size:32px;font-weight:bold;margin-top:8px}
+.card .value.ok{color:#4ADE80}
+.card .value.warn{color:#F87171}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.panel{background:#1E293B;border-radius:8px;padding:20px}
+.panel h2{font-size:16px;margin-bottom:16px;border-bottom:1px solid #334155;padding-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 0;border-top:1px solid #334155}
+th{color:#94A3B8;font-weight:normal;font-size:12px;text-transform:uppercase}
+.empty{color:#64748B;font-style:italic}
+.bar{height:8px;background:#334155;border-radius:4px;overflow:hidden;margin-top:4px}
+.bar-fill{height:100%;background:linear-gradient(90deg,#38BDF8,#A78BFA);border-radius:4px}
+.trend{display:flex;align-items:flex-end;gap:4px;height:120px;margin-top:12px}
+.trend .bar{flex:1;background:linear-gradient(180deg,#38BDF8 0%,transparent 100%);border-radius:2px 2px 0 0;min-height:4px;position:relative}
+.trend .bar span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748B}
+.status{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px}
+.status.ok{background:#064E3B;color:#6EE7B7}
+.status.error{background:#7F1D1D;color:#FCA5A5}
+.auto{color:#A78BFA}.manual{color:#38BDF8}
+.footer{text-align:center;color:#475569;font-size:12px;margin-top:32px}
+.footer a{color:#475569}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>📊 Trae Skill 使用监控</h1>
+    <p class="subtitle">数据源: ~/.trae-cn/skill-usage.jsonl → Spring Boot → H2 File DB (port 8090)</p>
+
+    <div class="nav">
+        <a th:classappend="${days == 1} ? 'active'" th:href="@{/(days=1)}">今日</a>
+        <a th:classappend="${days == 7} ? 'active'" th:href="@{/(days=7)}">7天</a>
+        <a th:classappend="${days == 30} ? 'active'" th:href="@{/(days=30)}">30天</a>
+        <a th:classappend="${days == 90} ? 'active'" th:href="@{/(days=90)}">90天</a>
+        <span style="color:#64748B;margin-left:8px">（当前 <span th:text="${days}"></span> 天）</span>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <div class="label">总调用次数</div>
+            <div class="value" th:text="${overview['totalCalls']}">0</div>
+        </div>
+        <div class="card">
+            <div class="label">涉及 Skill 数</div>
+            <div class="value ok" th:text="${overview['uniqueSkills']}">0</div>
+        </div>
+        <div class="card">
+            <div class="label">错误次数</div>
+            <div class="value warn" th:text="${overview['errorCount']}">0</div>
+        </div>
+        <div class="card">
+            <div class="label">错误率</div>
+            <div class="value warn" th:text="${overview['errorRate']}">0%</div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="panel">
+            <h2>🏆 Top Skill 使用量</h2>
+            <div th:if="${#lists.isEmpty(topSkills)}" class="empty">暂无数据</div>
+            <table th:if="${!#lists.isEmpty(topSkills)}">
+                <thead><tr><th>Skill</th><th style="width:80px">次数</th><th>占比</th></tr></thead>
+                <tbody>
+                <tr th:each="row : ${topSkills}">
+                    <td th:text="${row['skillName']}"></td>
+                    <td th:text="${row['count']}"></td>
+                    <td><div class="bar"><div class="bar-fill" th:style="'width:' + (${row['count']} * 10 / 2 + 5) + '%'"></div></div></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel">
+            <h2>🎯 触发方式 & 客户端</h2>
+            <h3 style="font-size:13px;color:#94A3B8;margin-bottom:8px">触发方式</h3>
+            <table>
+                <tbody>
+                <tr th:each="row : ${triggerDist}">
+                    <td>
+                        <span th:if="${row['triggerType'] == 'manual'}" class="manual">👋 手动</span>
+                        <span th:if="${row['triggerType'] == 'auto'}" class="auto">🤖 自动</span>
+                        <span th:if="${row['triggerType'] != 'manual' and row['triggerType'] != 'auto'}" th:text="${row['triggerType']}"></span>
+                    </td>
+                    <td style="text-align:right" th:text="${row['count']} + ' 次'"></td>
+                </tr>
+                </tbody>
+            </table>
+            <h3 style="font-size:13px;color:#94A3B8;margin:16px 0 8px">客户端</h3>
+            <table>
+                <tbody>
+                <tr th:each="row : ${clientDist}">
+                    <td th:text="${row['client']}"></td>
+                    <td style="text-align:right" th:text="${row['count']} + ' 次'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:24px">
+        <h2>📈 每日调用趋势（最近 14 天）</h2>
+        <div th:if="${#lists.isEmpty(dailyTrend)}" class="empty">暂无趋势数据</div>
+        <div class="trend" th:if="${!#lists.isEmpty(dailyTrend)}">
+            <div th:each="row : ${dailyTrend}" class="bar" th:style="'height:' + ${row['count']} + 'px'">
+                <span th:text="${row['date']}"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>🕐 最新记录</h2>
+        <div th:if="${#lists.isEmpty(recent)}" class="empty">暂无记录</div>
+        <table th:if="${!#lists.isEmpty(recent)}">
+            <thead><tr><th>时间</th><th>Skill</th><th>事件</th><th>客户端</th><th>触发</th><th>状态</th></tr></thead>
+            <tbody>
+            <tr th:each="r : ${recent}">
+                <td th:text="${r.ts}"></td>
+                <td th:text="${r.skillName}"></td>
+                <td th:text="${r.eventType}"></td>
+                <td th:text="${r.client}"></td>
+                <td>
+                    <span th:if="${r.triggerType == 'manual'}" class="manual">手动</span>
+                    <span th:if="${r.triggerType == 'auto'}" class="auto">自动</span>
+                    <span th:if="${r.triggerType != 'manual' and r.triggerType != 'auto'}" th:text="${r.triggerType}"></span>
+                </td>
+                <td>
+                    <span th:if="${r.status == 'ok'}" class="status ok">OK</span>
+                    <span th:if="${r.status == 'error'}" class="status error">ERROR</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        Trae Skill Monitor · Spring Boot + H2 ·
+        <a th:href="@{/h2-console}" target="_blank">H2 Console</a> ·
+        <a th:href="@{/api/skill-usage/health}">Health API</a>
+    </div>
+</div>
+</body>
+</html>
