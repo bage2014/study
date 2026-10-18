@@ -47,32 +47,53 @@
 | os-ui-library-impl-native | UI组件库自研实现 | 自研轻量级实现 |
 | os-chat-model | 聊天模型技能 | 可配置（OpenAI/DeepSeek/Claude） |
 
-## 安装方式
+## 安装与更新
 
-### 使用安装脚本
+### 统一入口（推荐）
 
 ```bash
-# 安装所有技能到项目
-./install-skills.sh /path/to/project
+# 安装所有技能到 Trae 全局目录（~/.trae-cn/skills/）
+./scripts/skills.sh install
 
 # 安装指定技能
-./install-skills.sh -s common-coding -s common-project-standard .
+./scripts/skills.sh install common-coding common-project-standard
+
+# 全量更新（强制覆盖 + 重新注入监控埋点）
+./scripts/skills.sh update
+
+# 校验技能规范 / 列出技能 / 重新注入埋点
+./scripts/skills.sh validate
+./scripts/skills.sh list
+./scripts/skills.sh inject
+```
+
+### 底层脚本
+
+```bash
+# 安装所有技能到指定项目
+./scripts/install-skills.sh /path/to/project
+
+# 安装指定技能
+./scripts/install-skills.sh -s common-coding -s common-project-standard .
 
 # 列出可用技能
-./install-skills.sh -l
+./scripts/install-skills.sh -l
+
+# 全局命令安装（skills-install / skills-validate / skills-list / skills-update）
+./scripts/install-global.sh
 ```
 
 ## 规范验证
 
 ```bash
 # 验证所有技能
-./validate-skills.sh
+./scripts/validate-skills.sh
 
 # 验证指定技能
-./validate-skills.sh -s os-ui-library
+./scripts/validate-skills.sh -s os-ui-library
 
 # 修复技能格式
-./validate-skills.sh -f
+./scripts/validate-skills.sh -f
 ```
 
 ## 配置示例

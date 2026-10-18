@@ -14,7 +14,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # 配置常量
-SKILLS_REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILLS_REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TRAE_GLOBAL_DIR="$HOME/.trae"
 SKILLS_CONFIG_FILE="$TRAE_GLOBAL_DIR/skills-config.yml"
 SKILLS_PATH_FILE="$TRAE_GLOBAL_DIR/skills-path"
@@ -98,7 +98,7 @@ cat > "$TRAE_GLOBAL_DIR/bin/skills-install" << 'EOF'
 SKILLS_DIR=$(cat "$HOME/.trae/skills-path")
 SKILLS_REPO_DIR=$(dirname "$SKILLS_DIR")
 
-"$SKILLS_REPO_DIR/install-skills.sh" "$@"
+"$SKILLS_REPO_DIR/scripts/install-skills.sh" "$@"
 EOF
 chmod +x "$TRAE_GLOBAL_DIR/bin/skills-install"
 
@@ -110,7 +110,7 @@ cat > "$TRAE_GLOBAL_DIR/bin/skills-validate" << 'EOF'
 SKILLS_DIR=$(cat "$HOME/.trae/skills-path")
 SKILLS_REPO_DIR=$(dirname "$SKILLS_DIR")
 
-"$SKILLS_REPO_DIR/validate-skills.sh" "$@"
+"$SKILLS_REPO_DIR/scripts/validate-skills.sh" "$@"
 EOF
 chmod +x "$TRAE_GLOBAL_DIR/bin/skills-validate"
 
@@ -122,7 +122,7 @@ cat > "$TRAE_GLOBAL_DIR/bin/skills-list" << 'EOF'
 SKILLS_DIR=$(cat "$HOME/.trae/skills-path")
 SKILLS_REPO_DIR=$(dirname "$SKILLS_DIR")
 
-"$SKILLS_REPO_DIR/install-skills.sh" -l
+"$SKILLS_REPO_DIR/scripts/install-skills.sh" -l
 EOF
 chmod +x "$TRAE_GLOBAL_DIR/bin/skills-list"
 

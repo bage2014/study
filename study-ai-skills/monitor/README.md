@@ -78,6 +78,8 @@ chmod +x ~/.trae-cn/scripts/skill-usage.sh
 
 ## 脚本命令参考
 
+> 统一入口：`monitor/scripts/monitor.sh`（包装下方 skill-usage.sh：`start|stop|restart|status|cron-start|cron-stop|deploy|log`），推荐优先使用。仓库根 `scripts/skills.sh` 负责技能安装/更新/注入。
+
 ### skill-usage.sh
 
 ```bash

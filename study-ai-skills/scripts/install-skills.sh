@@ -481,7 +481,7 @@ main() {
 }
 
 # 获取脚本绝对路径
-SKILLS_SOURCE_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/skills
-SKILLS_TARGET_DIR=".trae/skills"
+SKILLS_SOURCE_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/skills
+SKILLS_TARGET_DIR="${SKILLS_TARGET_DIR:-.trae/skills}"
 
 main "$@"

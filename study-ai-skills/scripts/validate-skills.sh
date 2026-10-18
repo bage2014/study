@@ -5,7 +5,7 @@
 
 set -e
 
-SKILLS_DIR="skills"
+SKILLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/skills"
 VALIDATION_LOG="/tmp/skill-validation.log"
 
 # 定义标准结构

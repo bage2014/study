@@ -571,7 +571,7 @@ function Main {
 
 # 获取脚本绝对路径
 $scriptPath = $MyInvocation.MyCommand.Definition
-$SKILLS_SOURCE_DIR = Join-Path (Split-Path $scriptPath -Parent) ".trae" "skills"
+$SKILLS_SOURCE_DIR = Join-Path (Split-Path (Split-Path $scriptPath -Parent) -Parent) "skills"
 $SKILLS_TARGET_DIR = ".trae/skills"
 
 # 执行主函数
