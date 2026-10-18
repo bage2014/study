@@ -43,8 +43,14 @@ select:focus{outline:none;border-color:var(--accent)}
 .panel h3{font-size:13px;color:var(--muted);margin-bottom:8px}
 .sys-head{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;flex-wrap:wrap}
 .sys-head h2{font-size:16px}
-.sys-toggle{margin-left:auto;color:var(--dim);font-size:12px}
-.sys-head:hover .sys-toggle{color:var(--text)}
+.sys-toggle{margin-left:auto;color:var(--accent);font-size:12px;display:inline-flex;align-items:center;gap:4px;background:#0F172A;border:1px solid var(--border);border-radius:6px;padding:4px 8px;transition:all .2s}
+.sys-head:hover .sys-toggle{color:var(--accent2);border-color:var(--accent2)}
+.chev{transition:transform .2s}
+.chev.open{transform:rotate(0)}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px 2px}
+.sec-title{font-size:15px;font-weight:600;color:var(--muted)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:16px}
+.panel-head h2{border:none;margin:0;padding:0}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{text-align:left;padding:8px 8px 8px 0;border-top:1px solid var(--border);vertical-align:middle}
 th{color:var(--muted);font-weight:normal;font-size:12px;text-transform:uppercase}
@@ -97,7 +103,9 @@ tbody tr:first-child td{border-top:none}
             <span v-if="system.cronLoaded" class="status ok">Cron ON</span>
             <span v-else class="status error">Cron OFF</span>
             <span class="mono" v-if="system.pendingUpload != null && system.pendingUpload > 0">待上传 {{ system.pendingUpload }}</span>
-            <span class="sys-toggle">{{ sysCollapsed ? '▸ 展开' : '▾ 折叠' }}</span>
+            <span class="sys-toggle">
+                <svg class="chev" :class="{open: !sysCollapsed}" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
         </div>
         <div v-show="!sysCollapsed" class="grid-2" style="margin:16px 0 0">
             <div>
@@ -150,12 +158,6 @@ tbody tr:first-child td{border-top:none}
                 <option v-for="p in filterOptions.projects" :key="p" :value="p">{{ p }}</option>
             </select>
         </div>
-        <div class="group">
-            <span class="glabel">🏆 Top</span>
-            <select v-model.number="topN" @change="reload" style="min-width:90px">
-                <option v-for="n in [5,10,20,50]" :key="n" :value="n">Top {{ n }}</option>
-            </select>
-        </div>
         <button v-if="filterUser || filterProject" class="clearbtn" @click="filterUser=''; filterProject=''; reload()">✕ 清除筛选</button>
         <span v-if="filterUser || filterProject" class="active-filter">当前：{{ filterDesc }}</span>
     </div>
@@ -171,8 +173,15 @@ tbody tr:first-child td{border-top:none}
         <div class="card"><div class="label">错误 / 错误率</div><div class="value warn" style="font-size:22px">{{ overview.errorCount ?? 0 }} / {{ overview.errorRate ?? '0%' }}</div></div>
     </div>
 
-    <!-- Top 汇总：Skill / 项目 / 用户 -->
-    <div class="grid-3">
+    <!-- Top 汇总：Skill / 项目 / 用户（Top N 选择器在本区域内） -->
+    <div class="panel mb">
+        <div class="panel-head">
+            <h2>🏆 Top 汇总</h2>
+            <select v-model.number="topN" @change="reloadTop" style="min-width:90px">
+                <option v-for="n in [5,10,20]" :key="n" :value="n">Top {{ n }}</option>
+            </select>
+        </div>
+        <div class="grid-3" style="margin-bottom:0">
         <div class="panel">
             <h2>🏆 Top Skill（Top {{ topN }}）</h2>
             <div v-if="!topSkills.length" class="empty">暂无数据</div>
@@ -212,10 +221,11 @@ tbody tr:first-child td{border-top:none}
             <h3 style="margin-top:10px" v-if="topUsers.length">触发：{{ triggerSummary }}</h3>
         </div>
     </div>
+    </div>
 
-    <!-- 每日趋势（14 天，零填充） -->
+    <!-- 每日趋势（跟随时间选择区间） -->
     <div class="panel mb">
-        <h2>📈 每日调用趋势（最近 14 天{{ trendSuffix }}）</h2>
+        <h2>📈 每日调用趋势（最近 {{ days }} 天{{ trendSuffix }}）</h2>
         <div class="trend">
             <div v-for="row in trend" :key="row.date" class="col" :title="row.date + '：' + row.count + ' 次'">
                 <div class="num">{{ row.count > 0 ? row.count : '' }}</div>
@@ -225,9 +235,14 @@ tbody tr:first-child td{border-top:none}
         </div>
     </div>
 
-    <!-- 最新记录（平铺，跟随用户/项目筛选） -->
+    <!-- 最新记录（平铺，跟随用户/项目筛选；条数选择器仅作用于本面板） -->
     <div class="panel mb">
-        <h2>🕐 最新记录{{ filterDesc ? '（' + filterDesc + '）' : '' }}</h2>
+        <div class="panel-head">
+            <h2>🕐 最新记录{{ filterDesc ? '（' + filterDesc + '）' : '' }}</h2>
+            <select v-model.number="recentLimit" @change="reload" style="min-width:110px">
+                <option v-for="n in [5,10,20,50]" :key="n" :value="n">最新 {{ n }} 条</option>
+            </select>
+        </div>
         <div v-if="!recentFlat.length" class="empty">暂无记录</div>
         <table v-else>
             <thead><tr><th>时间</th><th>用户</th><th>Skill</th><th>项目</th><th>事件</th><th>触发</th><th>状态</th></tr></thead>
@@ -262,6 +277,7 @@ createApp({
         return {
             days: 7,
             topN: 5,
+            recentLimit: 5,
             sysCollapsed: false,
             filterUser: '',
             filterProject: '',
@@ -304,10 +320,10 @@ createApp({
                     this.jget('/api/skill-usage/top?days=' + d + '&topN=' + n + f),
                     this.jget('/api/skill-usage/top-projects?days=' + d + '&topN=' + n + (this.filterUser ? '&user=' + encodeURIComponent(this.filterUser) : '')),
                     this.jget('/api/skill-usage/top-users?days=' + d + '&topN=' + n + (this.filterProject ? '&project=' + encodeURIComponent(this.filterProject) : '')),
-                    this.jget('/api/skill-usage/daily-trend?days=14' + f),
+                    this.jget('/api/skill-usage/daily-trend?days=' + d + f),
                     this.jget('/api/skill-usage/trigger-dist?days=' + d + f),
                     this.jget('/api/skill-usage/client-dist?days=' + d + f),
-                    this.jget('/api/skill-usage/recent?limit=30' + f),
+                    this.jget('/api/skill-usage/recent?limit=' + this.recentLimit + f),
                     this.jget('/api/skill-usage/system/status'),
                     this.jget('/api/skill-usage/filters')
                 ]);
@@ -316,6 +332,19 @@ createApp({
                 this.opsMsg = '加载失败: ' + e.message;
             } finally {
                 this.loading = false;
+            }
+        },
+        async reloadTop() {
+            try {
+                const d = this.days, f = this.qs(), n = this.topN;
+                const [topSkills, topProjects, topUsers] = await Promise.all([
+                    this.jget('/api/skill-usage/top?days=' + d + '&topN=' + n + f),
+                    this.jget('/api/skill-usage/top-projects?days=' + d + '&topN=' + n + (this.filterUser ? '&user=' + encodeURIComponent(this.filterUser) : '')),
+                    this.jget('/api/skill-usage/top-users?days=' + d + '&topN=' + n + (this.filterProject ? '&project=' + encodeURIComponent(this.filterProject) : ''))
+                ]);
+                Object.assign(this, { topSkills, topProjects, topUsers });
+            } catch (e) {
+                this.opsMsg = 'Top 数据加载失败: ' + e.message;
             }
         },
         barHeight(count) { return Math.max(2, Math.round(count / this.trendMax * 100)); },
