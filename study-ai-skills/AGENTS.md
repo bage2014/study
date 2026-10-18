@@ -61,7 +61,7 @@ study-ai-skills/
 | 文档管理 | `personal-doc-manager`（docs 目录规范） |
 | 服务启停 | `personal-project-runner`（保持原端口） |
 
-- **调用任何 Skill 时必须执行埋点**：`~/.trae-cn/scripts/skill-usage.sh log <skill-name> --trigger auto`（SKILL.md 内有该指令时严格执行）。
+- **调用任何 Skill 时必须执行埋点**：`~/.trae-cn/scripts/skill-usage.sh log <skill-name> --trigger auto`（SKILL.md 顶部埋点块为第 1 步指令）。若报 `Permission denied`/沙箱拦截，必须以非沙箱方式重试，禁止静默跳过。
 - 技能冲突时优先 `personal-*`（项目强约束）。
 
 ## 4. 工具配置

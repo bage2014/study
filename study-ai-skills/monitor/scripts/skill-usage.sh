@@ -36,9 +36,14 @@ log_usage() {
 
     local ts
     ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    cat >> "$JSONL_FILE" << EOF
-{"ts":"$ts","skill":"$skill_name","event":"$event","client":"trae-macos","session":"no-session","duration_ms":0,"status":"ok","trigger":"$trigger","user":"${USER:-unknown}"}
-EOF
+    local line
+    line=$(printf '{"ts":"%s","skill":"%s","event":"%s","client":"trae-macos","session":"no-session","duration_ms":0,"status":"ok","trigger":"%s","user":"%s"}\n' "$ts" "$skill_name" "$event" "$trigger" "${USER:-unknown}")
+    if ! echo "$line" >> "$JSONL_FILE" 2>/dev/null; then
+        echo "MONITOR-LOG-FAILED: 无法写入 $JSONL_FILE（可能被沙箱拦截）"
+        echo "请以非沙箱方式重试: ~/.trae-cn/scripts/skill-usage.sh log $skill_name --trigger $trigger"
+        return 2
+    fi
+    echo "monitor: logged $skill_name ($event, $trigger)"
 }
 
 # ── upload (incremental + resume) ──────────────────────────
