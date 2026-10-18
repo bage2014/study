@@ -1,0 +1,16 @@
+# Codeium AI 忽略规则
+*.jar
+*.war
+*.zip
+*.tar.gz
+*.class
+*.dll
+*.so
+*.log
+*.tmp
+*.temp
+target/
+build/
+dist/
+node_modules/
+.cache/

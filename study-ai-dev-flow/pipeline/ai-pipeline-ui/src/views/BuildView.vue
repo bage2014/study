@@ -1,131 +1,120 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <header class="flex items-start justify-between">
       <div>
-        <h2 class="text-xl font-bold text-gray-800">编译构建</h2>
-        <p class="text-sm text-gray-500 mt-1">查看编译构建结果和测试验证报告</p>
+        <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mb-1">Stage 10</p>
+        <h1 class="text-2xl font-semibold tracking-tight text-ink">编译构建</h1>
+        <p class="text-ink-secondary mt-1 text-sm">查看编译构建结果和测试验证报告</p>
       </div>
-      <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">✓ 构建成功</span>
-    </div>
+      <span class="tag bg-ok-soft text-ok">构建成功</span>
+    </header>
 
-    <div class="bg-white rounded-xl shadow-md p-6">
+    <section class="card">
+      <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">构建信息</h2>
+      <div class="px-5 py-5 space-y-5">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line rounded-lg overflow-hidden">
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">构建工具</p>
+            <p class="mono text-sm text-ink mt-1">Maven</p>
+          </div>
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">构建耗时</p>
+            <p class="mono text-sm text-ok mt-1">12.5s</p>
+          </div>
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">Java 版本</p>
+            <p class="mono text-sm text-ink mt-1">21</p>
+          </div>
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">构建时间</p>
+            <p class="mono text-sm text-ink mt-1">2026-07-11</p>
+          </div>
+        </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-blue-50 p-4 rounded-lg">
-          <p class="text-xs text-blue-600 mb-1">构建工具</p>
-          <p class="text-lg font-bold text-blue-800">Maven</p>
-        </div>
-        <div class="bg-green-50 p-4 rounded-lg">
-          <p class="text-xs text-green-600 mb-1">构建耗时</p>
-          <p class="text-lg font-bold text-green-800">12.5s</p>
-        </div>
-        <div class="bg-purple-50 p-4 rounded-lg">
-          <p class="text-xs text-purple-600 mb-1">Java版本</p>
-          <p class="text-lg font-bold text-purple-800">21</p>
-        </div>
-        <div class="bg-orange-50 p-4 rounded-lg">
-          <p class="text-xs text-orange-600 mb-1">构建时间</p>
-          <p class="text-lg font-bold text-orange-800">2026-07-11</p>
+        <div class="bg-ink rounded overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-2 border-b border-white/10">
+            <span class="text-2xs font-medium uppercase tracking-wide text-white/60">构建日志</span>
+            <span class="text-2xs font-medium uppercase tracking-wide text-ok">SUCCESS</span>
+          </div>
+          <pre class="mono text-xs text-white/90 p-4 overflow-x-auto max-h-72 overflow-y-auto">{{ buildLog }}</pre>
         </div>
       </div>
+    </section>
 
-      <div class="bg-gray-900 rounded-lg p-4">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-xs text-gray-400">构建日志</span>
-          <span class="text-xs text-green-400">SUCCESS</span>
-        </div>
-        <pre class="text-sm text-gray-300 overflow-x-auto font-mono max-h-64 overflow-y-auto">{{ buildLog }}</pre>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h4 class="font-semibold text-gray-800 mb-4">测试结果</h4>
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <span class="text-gray-600">测试用例总数</span>
-            <span class="text-xl font-bold text-indigo-600">5</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-gray-600">通过</span>
-            <span class="text-xl font-bold text-green-600">5</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-gray-600">失败</span>
-            <span class="text-xl font-bold text-red-600">0</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-gray-600">跳过</span>
-            <span class="text-xl font-bold text-gray-600">0</span>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <section class="card">
+        <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">测试结果</h2>
+        <div class="px-5 py-4 space-y-4">
+          <div class="grid grid-cols-4 gap-px bg-line border border-line rounded overflow-hidden text-center">
+            <div class="bg-surface p-3">
+              <p class="mono text-lg text-ink">5</p>
+              <p class="text-2xs text-ink-muted">总数</p>
+            </div>
+            <div class="bg-surface p-3">
+              <p class="mono text-lg text-ok">5</p>
+              <p class="text-2xs text-ink-muted">通过</p>
+            </div>
+            <div class="bg-surface p-3">
+              <p class="mono text-lg text-danger">0</p>
+              <p class="text-2xs text-ink-muted">失败</p>
+            </div>
+            <div class="bg-surface p-3">
+              <p class="mono text-lg text-ink-secondary">0</p>
+              <p class="text-2xs text-ink-muted">跳过</p>
+            </div>
           </div>
           <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-gray-600">覆盖率</span>
-              <span class="text-green-600 font-medium">85%</span>
+            <div class="flex items-center justify-between mb-1.5 text-sm">
+              <span class="text-ink-secondary">覆盖率</span>
+              <span class="mono text-xs text-ink">85%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+            <div class="w-full bg-line rounded-full h-1">
+              <div class="bg-ok h-1 rounded-full" style="width: 85%"></div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h4 class="font-semibold text-gray-800 mb-4">测试用例详情</h4>
-        <div class="space-y-3">
-          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">HealthControllerTest</span>
-            <span class="text-green-600">✓ 通过</span>
-          </div>
-          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">HealthServiceTest</span>
-            <span class="text-green-600">✓ 通过</span>
-          </div>
-          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">HealthResponseTest</span>
-            <span class="text-green-600">✓ 通过</span>
-          </div>
-          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">HealthRepositoryTest</span>
-            <span class="text-green-600">✓ 通过</span>
-          </div>
-          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <span class="text-gray-700">IntegrationTest</span>
-            <span class="text-green-600">✓ 通过</span>
-          </div>
-        </div>
-      </div>
+      <section class="card">
+        <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">测试用例详情</h2>
+        <ul class="divide-y divide-line">
+          <li v-for="t in ['HealthControllerTest', 'HealthServiceTest', 'HealthResponseTest', 'HealthRepositoryTest', 'IntegrationTest']" :key="t" class="px-5 py-3 flex items-center justify-between text-sm">
+            <span class="mono text-xs text-ink">{{ t }}</span>
+            <span class="tag bg-ok-soft text-ok">通过</span>
+          </li>
+        </ul>
+      </section>
     </div>
 
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <h4 class="font-semibold text-gray-800 mb-4">生成的产物</h4>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-700">demo-backend-1.0.0.jar</span>
-            <span class="text-green-600">✓</span>
+    <section class="card">
+      <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">生成的产物</h2>
+      <div class="px-5 py-5 grid grid-cols-1 md:grid-cols-3 gap-2">
+        <div class="border border-line rounded p-3">
+          <div class="flex items-center justify-between">
+            <span class="mono text-xs font-medium text-ink">demo-backend-1.0.0.jar</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-ok"></span>
           </div>
-          <p class="text-xs text-gray-500">大小: 15.2 MB</p>
-          <p class="text-xs text-gray-500">路径: target/demo-backend-1.0.0.jar</p>
+          <p class="text-2xs text-ink-muted mt-2">大小 · 15.2 MB</p>
+          <p class="mono text-2xs text-ink-muted mt-0.5">target/demo-backend-1.0.0.jar</p>
         </div>
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-700">demo-backend-1.0.0.jar.original</span>
-            <span class="text-green-600">✓</span>
+        <div class="border border-line rounded p-3">
+          <div class="flex items-center justify-between">
+            <span class="mono text-xs font-medium text-ink">demo-backend-1.0.0.jar.original</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-ok"></span>
           </div>
-          <p class="text-xs text-gray-500">大小: 2.1 MB</p>
-          <p class="text-xs text-gray-500">路径: target/demo-backend-1.0.0.jar.original</p>
+          <p class="text-2xs text-ink-muted mt-2">大小 · 2.1 MB</p>
+          <p class="mono text-2xs text-ink-muted mt-0.5">target/demo-backend-1.0.0.jar.original</p>
         </div>
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-700">classes/</span>
-            <span class="text-green-600">✓</span>
+        <div class="border border-line rounded p-3">
+          <div class="flex items-center justify-between">
+            <span class="mono text-xs font-medium text-ink">classes/</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-ok"></span>
           </div>
-          <p class="text-xs text-gray-500">编译后的 class 文件</p>
-          <p class="text-xs text-gray-500">路径: target/classes/</p>
+          <p class="text-2xs text-ink-muted mt-2">编译后的 class 文件</p>
+          <p class="mono text-2xs text-ink-muted mt-0.5">target/classes/</p>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 

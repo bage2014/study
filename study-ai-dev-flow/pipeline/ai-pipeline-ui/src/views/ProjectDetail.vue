@@ -1,278 +1,166 @@
 <template>
   <div class="space-y-6">
-    <Loading v-if="loading" text="加载项目详情..." subtext="请稍候" />
-    
+    <Loading v-if="loading" text="加载项目详情" subtext="请稍候" />
+
     <template v-else>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center">
-          <button @click="goBack" class="mr-4 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-            <span class="text-xl text-gray-600">←</span>
-          </button>
-          <div>
-            <h2 class="text-xl font-bold text-gray-800">{{ project.name }}</h2>
-            <p class="text-sm text-gray-500">{{ project.description }}</p>
+      <header class="flex items-start justify-between">
+        <div class="flex items-start gap-3 min-w-0">
+          <button @click="goBack" class="btn-ghost px-2 flex-shrink-0">←</button>
+          <div class="min-w-0">
+            <h1 class="text-2xl font-semibold tracking-tight text-ink">{{ project.name }}</h1>
+            <p class="text-ink-secondary mt-1 text-sm">{{ project.description }}</p>
           </div>
         </div>
-        <button 
-          @click="showCreateRequirement = true" 
-          class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-all font-medium shadow-md"
-        >
-          + 新建需求
-        </button>
-      </div>
+        <button @click="showCreateRequirement = true" class="btn-primary flex-shrink-0">新建需求</button>
+      </header>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-2xl font-bold text-gray-800">{{ stats.total }}</p>
-              <p class="text-sm text-gray-500 mt-1">需求总数</p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-              <span class="text-indigo-600 text-lg">📋</span>
-            </div>
-          </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line rounded-lg overflow-hidden">
+        <div class="bg-surface p-5">
+          <p class="mono text-2xl text-ink">{{ stats.total }}</p>
+          <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mt-1">需求总数</p>
         </div>
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-2xl font-bold text-green-600">{{ stats.completed }}</p>
-              <p class="text-sm text-gray-500 mt-1">已完成</p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-              <span class="text-green-600 text-lg">✓</span>
-            </div>
-          </div>
+        <div class="bg-surface p-5">
+          <p class="mono text-2xl text-ok">{{ stats.completed }}</p>
+          <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mt-1">已完成</p>
         </div>
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-2xl font-bold text-yellow-600">{{ stats.inProgress }}</p>
-              <p class="text-sm text-gray-500 mt-1">执行中</p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-              <span class="text-yellow-600 text-lg">●</span>
-            </div>
-          </div>
+        <div class="bg-surface p-5">
+          <p class="mono text-2xl text-warn">{{ stats.inProgress }}</p>
+          <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mt-1">执行中</p>
         </div>
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-2xl font-bold text-gray-600">{{ stats.pending }}</p>
-              <p class="text-sm text-gray-500 mt-1">待处理</p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-              <span class="text-gray-600 text-lg">⏳</span>
-            </div>
-          </div>
+        <div class="bg-surface p-5">
+          <p class="mono text-2xl text-ink-secondary">{{ stats.pending }}</p>
+          <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mt-1">待处理</p>
         </div>
       </div>
 
-      <div class="bg-white rounded-xl shadow-md p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-semibold text-gray-800">需求列表</h3>
-          <div class="flex gap-2">
-            <button 
-              @click="currentFilter = 'all'"
-              :class="[
-                'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                currentFilter === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+      <section class="card">
+        <div class="px-5 py-3 border-b border-line flex items-center justify-between">
+          <h2 class="text-sm font-medium text-ink">需求列表</h2>
+          <div class="flex gap-1">
+            <button
+              v-for="f in [
+                { key: 'all', label: '全部' },
+                { key: 'completed', label: '已完成' },
+                { key: 'in_progress', label: '执行中' },
+                { key: 'pending', label: '待处理' }
               ]"
-            >
-              全部
-            </button>
-            <button 
-              @click="currentFilter = 'completed'"
+              :key="f.key"
+              @click="currentFilter = f.key"
               :class="[
-                'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                currentFilter === 'completed' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                'px-2.5 py-1 rounded text-xs font-medium transition-colors',
+                currentFilter === f.key
+                  ? 'bg-accent-soft text-accent'
+                  : 'text-ink-secondary hover:bg-base'
               ]"
-            >
-              已完成
-            </button>
-            <button 
-              @click="currentFilter = 'in_progress'"
-              :class="[
-                'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                currentFilter === 'in_progress' ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              ]"
-            >
-              执行中
-            </button>
-            <button 
-              @click="currentFilter = 'pending'"
-              :class="[
-                'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                currentFilter === 'pending' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              ]"
-            >
-              待处理
-            </button>
+            >{{ f.label }}</button>
           </div>
         </div>
-        
-        <div class="space-y-3">
-          <div 
-            v-for="req in requirements" 
+
+        <div v-if="requirements.length === 0" class="px-5 py-12 text-center">
+          <p class="text-ink-muted text-sm">暂无需求</p>
+          <button @click="showCreateRequirement = true" class="btn-primary mt-4 inline-flex">新建第一条需求</button>
+        </div>
+
+        <ul v-else class="divide-y divide-line">
+          <li
+            v-for="req in requirements"
             :key="req.id"
             @click="viewRequirement(req)"
-            class="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:border-indigo-300 hover:bg-gray-50 transition-all cursor-pointer"
+            class="px-5 py-4 flex items-center justify-between hover:bg-base cursor-pointer transition-colors"
           >
-            <div>
-              <p class="text-sm font-medium text-gray-800">{{ req.title }}</p>
-              <p class="text-xs text-gray-500 mt-1">{{ formatTime(req.createdAt) }} · {{ req.status }}</p>
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-ink">{{ req.title }}</p>
+              <p class="text-xs text-ink-muted mt-0.5">{{ formatTime(req.createdAt) }}</p>
             </div>
-            <div class="flex items-center space-x-3">
-              <span :class="[
-                'text-xs px-3 py-1.5 rounded-full font-medium',
-                req.status === 'completed' ? 'bg-green-100 text-green-700' :
-                req.status === 'in_progress' ? 'bg-yellow-100 text-yellow-700' :
-                'bg-gray-100 text-gray-700'
-              ]">
-                {{ statusText(req.status) }}
-              </span>
-              <button 
+            <div class="flex items-center gap-3 flex-shrink-0">
+              <span :class="['tag', statusClass(req.status)]">{{ statusText(req.status) }}</span>
+              <button
                 @click.stop="startPipeline(req)"
                 :disabled="startingPipelineId === req.id"
-                class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center space-x-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="btn-secondary text-xs"
               >
-                <span v-if="startingPipelineId === req.id">⏳</span>
-                <span v-else>🚀</span>
-                <span>{{ startingPipelineId === req.id ? '启动中...' : '启动' }}</span>
+                {{ startingPipelineId === req.id ? '启动中…' : '启动' }}
               </button>
             </div>
-          </div>
-          
-          <div v-if="requirements.length === 0" class="text-center py-8">
-            <div class="text-gray-400 text-4xl mb-4">📭</div>
-            <p class="text-gray-500">暂无需求，请点击上方按钮创建</p>
-          </div>
-        </div>
-      </div>
+          </li>
+        </ul>
+      </section>
 
-      <div class="bg-white rounded-xl shadow-md p-6">
-        <h3 class="font-semibold text-gray-800 mb-4">项目信息</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span class="text-gray-500">项目类型</span>
-            <span class="text-gray-700 font-medium">{{ project.projectType }}</span>
-          </div>
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span class="text-gray-500">数据库</span>
-            <span class="text-gray-700 font-medium">{{ project.database }}</span>
-          </div>
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span class="text-gray-500">代码仓库</span>
-            <span class="text-gray-700 font-medium">{{ project.repoUrl || 'GitHub' }}</span>
-          </div>
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span class="text-gray-500">最后更新</span>
-            <span class="text-gray-700 font-medium">{{ formatTime(project.updatedAt) }}</span>
-          </div>
-        </div>
-      </div>
+      <section class="card">
+        <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">项目信息</h2>
+        <dl class="px-5 py-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          <div class="flex justify-between"><dt class="text-ink-muted">项目类型</dt><dd class="text-ink">{{ project.projectType }}</dd></div>
+          <div class="flex justify-between"><dt class="text-ink-muted">数据库</dt><dd class="text-ink">{{ project.database }}</dd></div>
+          <div class="flex justify-between"><dt class="text-ink-muted">代码仓库</dt><dd class="mono text-xs text-ink">{{ project.repoUrl || 'GitHub' }}</dd></div>
+          <div class="flex justify-between"><dt class="text-ink-muted">最后更新</dt><dd class="text-ink">{{ formatTime(project.updatedAt) }}</dd></div>
+        </dl>
+      </section>
 
-      <div class="bg-white rounded-xl shadow-md p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-semibold text-gray-800">项目运行控制</h3>
-          <span :class="[
-            'px-3 py-1 rounded-full text-xs font-medium',
-            projectStatus.running ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
-          ]">
+      <section class="card">
+        <div class="px-5 py-3 border-b border-line flex items-center justify-between">
+          <h2 class="text-sm font-medium text-ink">运行控制</h2>
+          <span :class="['tag', projectStatus.running ? 'bg-ok-soft text-ok' : 'bg-base text-ink-muted']">
             {{ projectStatus.running ? '运行中' : '已停止' }}
           </span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span class="text-gray-500">进程PID</span>
-            <span class="text-gray-700 font-medium">{{ projectStatus.pid || '-' }}</span>
+        <dl class="px-5 py-4 grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-2 text-sm">
+          <div class="flex justify-between"><dt class="text-ink-muted">进程 PID</dt><dd class="mono text-xs text-ink">{{ projectStatus.pid || '—' }}</dd></div>
+          <div class="flex justify-between"><dt class="text-ink-muted">监听端口</dt><dd class="mono text-xs text-ink">{{ projectStatus.port || '—' }}</dd></div>
+          <div class="flex justify-between">
+            <dt class="text-ink-muted">状态</dt>
+            <dd :class="projectStatus.running ? 'text-ok' : 'text-ink-secondary'" class="font-medium">{{ projectStatus.status }}</dd>
           </div>
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span class="text-gray-500">监听端口</span>
-            <span class="text-gray-700 font-medium">{{ projectStatus.port || '-' }}</span>
-          </div>
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span class="text-gray-500">运行状态</span>
-            <span class="font-medium" :class="projectStatus.running ? 'text-green-600' : 'text-gray-600'">
-              {{ projectStatus.status }}
-            </span>
-          </div>
-        </div>
-        <div class="flex items-center gap-3">
+        </dl>
+        <div class="px-5 py-4 border-t border-line flex flex-wrap gap-2">
           <button
             @click="handleStartProject"
             :disabled="projectActionLoading !== '' || projectStatus.running"
-            class="bg-green-600 text-white px-4 py-2.5 rounded-lg hover:bg-green-700 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-          >
-            <span v-if="projectActionLoading === 'start'">⏳</span>
-            <span v-else>▶</span>
-            <span>{{ projectActionLoading === 'start' ? '启动中...' : '启动' }}</span>
-          </button>
+            class="btn-primary"
+          >{{ projectActionLoading === 'start' ? '启动中…' : '启动' }}</button>
           <button
             @click="handleStopProject"
             :disabled="projectActionLoading !== '' || !projectStatus.running"
-            class="bg-red-600 text-white px-4 py-2.5 rounded-lg hover:bg-red-700 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-          >
-            <span v-if="projectActionLoading === 'stop'">⏳</span>
-            <span v-else>■</span>
-            <span>{{ projectActionLoading === 'stop' ? '停止中...' : '停止' }}</span>
-          </button>
+            class="btn-secondary text-danger border-danger/30 hover:bg-danger-soft"
+          >{{ projectActionLoading === 'stop' ? '停止中…' : '停止' }}</button>
           <button
             @click="handleRestartProject"
             :disabled="projectActionLoading !== ''"
-            class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-          >
-            <span v-if="projectActionLoading === 'restart'">⏳</span>
-            <span v-else>↻</span>
-            <span>{{ projectActionLoading === 'restart' ? '重启中...' : '重启' }}</span>
-          </button>
+            class="btn-secondary"
+          >{{ projectActionLoading === 'restart' ? '重启中…' : '重启' }}</button>
           <button
             @click="loadProjectStatus"
             :disabled="projectActionLoading !== ''"
-            class="bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-          >
-            <span>⟳</span>
-            <span>刷新状态</span>
-          </button>
+            class="btn-ghost"
+          >刷新状态</button>
         </div>
-      </div>
+      </section>
 
-      <div v-if="showCreateRequirement" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
-          <h4 class="text-lg font-semibold text-gray-800 mb-4">新建需求</h4>
-          <div class="space-y-4">
+      <div v-if="showCreateRequirement" class="fixed inset-0 bg-ink/40 flex items-center justify-center z-50 px-4">
+        <div class="card w-full max-w-md p-6">
+          <h3 class="text-sm font-medium text-ink">新建需求</h3>
+          <div class="mt-4 space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">需求标题</label>
-              <input 
-                v-model="newRequirement.title" 
-                type="text" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              <label class="block text-2xs font-medium uppercase tracking-wide text-ink-muted mb-1.5">需求标题</label>
+              <input
+                v-model="newRequirement.title"
+                type="text"
+                class="input"
                 placeholder="请输入需求标题"
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">需求描述</label>
-              <textarea 
-                v-model="newRequirement.description" 
+              <label class="block text-2xs font-medium uppercase tracking-wide text-ink-muted mb-1.5">需求描述</label>
+              <textarea
+                v-model="newRequirement.description"
                 rows="4"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 resize-none"
-                placeholder="请详细描述需求..."
+                class="input resize-none"
+                placeholder="请详细描述需求…"
               ></textarea>
             </div>
           </div>
-          <div class="mt-6 flex gap-3">
-            <button 
-              @click="showCreateRequirement = false" 
-              class="flex-1 bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium"
-            >
-              取消
-            </button>
-            <button 
-              @click="createRequirement" 
-              class="flex-1 bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors font-medium"
-            >
-              创建
-            </button>
+          <div class="mt-6 flex gap-2 justify-end">
+            <button @click="showCreateRequirement = false" class="btn-secondary">取消</button>
+            <button @click="createRequirement" class="btn-primary">创建</button>
           </div>
         </div>
       </div>
@@ -329,13 +217,22 @@ const statusText = (status) => {
   }
 }
 
+const statusClass = (status) => {
+  switch (status) {
+    case 'completed': return 'bg-ok-soft text-ok'
+    case 'in_progress': return 'bg-warn-soft text-warn'
+    case 'pending': return 'bg-base text-ink-secondary'
+    default: return 'bg-base text-ink-secondary'
+  }
+}
+
 const formatTime = (timestamp) => {
   if (!timestamp) return '未知'
   const diff = Date.now() - (typeof timestamp === 'number' ? timestamp : new Date(timestamp).getTime())
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const minutes = Math.floor(diff / (1000 * 60))
-  
+
   if (days > 0) return `${days}天前`
   if (hours > 0) return `${hours}小时前`
   if (minutes > 0) return `${minutes}分钟前`
@@ -350,12 +247,12 @@ const loadProjectDetail = async () => {
       requirementApi.getProjectRequirementStats(projectId),
       requirementApi.getRequirementsByProject(projectId)
     ])
-    
+
     project.value = projectRes.data
     project.value.name = projectRes.data.projectName
-    
+
     stats.value = reqStatsRes.data
-    
+
     if (currentFilter.value === 'all') {
       requirements.value = reqRes.data
     } else {
@@ -388,7 +285,7 @@ const createRequirement = async () => {
     showToast?.warning('请输入需求标题')
     return
   }
-  
+
   try {
     await requirementApi.createRequirement({
       projectId: route.params.id,
@@ -416,23 +313,23 @@ const viewRequirement = (req) => {
 const startPipeline = async (req) => {
   try {
     startingPipelineId.value = req.id
-    
+
     const projectId = route.params.id
     const projectInfo = await projectApi.getProject(projectId)
-    
+
     const res = await pipelineApi.startPipeline({
       requirementMd: '# ' + req.title + '\n\n' + (req.description || ''),
       projectId: projectId,
       projectLocalPath: projectInfo.data.localPath
     })
-    
+
     const pipelineId = res.data.pipelineId
-    
+
     await requirementApi.updateRequirement(req.id, {
       pipelineId: pipelineId,
       status: 'in_progress'
     })
-    
+
     router.push(`/pipelines/${pipelineId}`)
   } catch (error) {
     console.error('Failed to start pipeline:', error)

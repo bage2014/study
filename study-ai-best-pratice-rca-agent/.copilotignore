@@ -1,0 +1,13 @@
+# GitHub Copilot 忽略规则
+.env
+*.key
+*.secret
+target/
+build/
+dist/
+node_modules/
+*.log
+reports/
+coverage/
+*.tmp
+*.temp

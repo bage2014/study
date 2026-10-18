@@ -1,18 +1,24 @@
 #!/bin/bash
 # ============================================================
-# Trae Skill Monitor v2.0
+# Trae Skill Monitor v2.1
 #   log <skill> [--trigger auto|manual]   Append JSONL record
 #   upload                                 Incremental upload with offset
 #   report [--days N]                     Local analysis
 #   start-cron / stop-cron                macOS launchd (every 60s)
+#   status                                Server + cron + data status
+#   start-server / stop-server / restart-server
+#                                         Spring Boot lifecycle
 # ============================================================
 
 set -eo pipefail
 
 JSONL_FILE="${HOME}/.trae-cn/skill-usage.jsonl"
 UPLOAD_OFFSET="${HOME}/.trae-cn/skill-upload.offset"
+UPLOAD_LOG="${HOME}/.trae-cn/skill-upload.log"
+SERVER_LOG="${HOME}/.trae-cn/skill-monitor-server.log"
 MONITOR_URL="${SKILL_MONITOR_URL:-http://localhost:8090}"
 UPLOAD_ENDPOINT="/api/skill-usage/batch"
+SERVER_DIR="${SKILL_MONITOR_DIR:-${HOME}/bage/github/study/study-ai-skills/monitor/skill-monitor-server}"
 
 mkdir -p "$(dirname "$JSONL_FILE")"
 
@@ -139,6 +145,84 @@ uninstall_cron() {
     [ -f "$plist" ] && { launchctl unload "$plist"; rm "$plist"; echo "cron removed"; } || echo "no plist found"
 }
 
+# ── server lifecycle ───────────────────────────────────────
+health_ok() {
+    curl -s -m 2 "$MONITOR_URL/api/skill-usage/health" >/dev/null 2>&1
+}
+
+do_status() {
+    local server="down" cron_state="not-installed" lines=0 offset=0
+    if health_ok; then server="up"; fi
+    if launchctl list com.studyskills.skill-monitor >/dev/null 2>&1; then
+        cron_state="installed(loaded)"
+    elif [ -f "$HOME/Library/LaunchAgents/com.studyskills.skill-monitor.plist" ]; then
+        cron_state="plist-only(not loaded)"
+    fi
+    if [ -f "$JSONL_FILE" ]; then
+        lines=$(wc -l < "$JSONL_FILE" | tr -d ' ')
+    fi
+    if [ -f "$UPLOAD_OFFSET" ]; then
+        offset=$(cat "$UPLOAD_OFFSET")
+    fi
+    echo "server     : $server ($MONITOR_URL)"
+    echo "cron       : $cron_state"
+    echo "jsonl      : $lines lines (offset $offset, pending $((lines - offset)))"
+    echo "upload log : $UPLOAD_LOG (last: $(tail -1 "$UPLOAD_LOG" 2>/dev/null || echo '-'))"
+    echo "server log : $SERVER_LOG"
+    echo "server dir : $SERVER_DIR"
+}
+
+start_server() {
+    if health_ok; then
+        echo "already running ($MONITOR_URL)"
+        return 0
+    fi
+    if [ ! -d "$SERVER_DIR" ]; then
+        echo "server dir not found: $SERVER_DIR (set SKILL_MONITOR_DIR)"
+        return 1
+    fi
+    if ! command -v mvn >/dev/null 2>&1; then
+        echo "mvn not found in PATH"
+        return 1
+    fi
+    echo "starting Spring Boot from $SERVER_DIR ..."
+    (cd "$SERVER_DIR" && nohup mvn -q spring-boot:run >> "$SERVER_LOG" 2>&1 &)
+    local i=0
+    until health_ok; do
+        i=$((i + 1))
+        if [ "$i" -gt 45 ]; then
+            echo "timeout: not healthy after 90s, check $SERVER_LOG"
+            return 1
+        fi
+        sleep 2
+    done
+    echo "server is up ($MONITOR_URL)"
+}
+
+stop_server() {
+    if ! health_ok; then
+        echo "already stopped"
+        return 0
+    fi
+    # [i] 括号技巧：避免 pkill -f 匹配到本脚本自身 shell
+    pkill -f 'SkillMonitorAppl[i]cation' || true
+    local i=0
+    while health_ok; do
+        i=$((i + 1))
+        if [ "$i" -gt 10 ]; then
+            echo "warn: port still responding after 10s"
+            return 1
+        fi
+        sleep 1
+    done
+    echo "server stopped"
+}
+
+restart_server() {
+    stop_server || true
+    start_server
+}
+
 # ── main ────────────────────────────────────────────────────
 case "${1:-}" in
     log|record)   shift; log_usage "$@" ;;
@@ -146,14 +230,23 @@ case "${1:-}" in
     report|show)  shift; do_report "$@" ;;
     start-cron)   install_cron ;;
     stop-cron)    uninstall_cron ;;
+    status)       do_status ;;
+    start-server) start_server ;;
+    stop-server)  stop_server ;;
+    restart-server) restart_server ;;
     *)
-        echo "Trae Skill Monitor v2.0"
+        echo "Trae Skill Monitor v2.1"
         echo "  log <skill> [--trigger auto|manual]"
         echo "  upload           # incremental -> Spring Boot"
         echo "  report [days]"
+        echo "  status           # server + cron + data overview"
+        echo "  start-server     # mvn spring-boot:run (nohup, waits for health)"
+        echo "  stop-server"
+        echo "  restart-server"
         echo "  start-cron       # macOS launchd every 60s"
         echo "  stop-cron"
         echo ""
         echo "  env: SKILL_MONITOR_URL=http://localhost:8090"
+        echo "       SKILL_MONITOR_DIR=~/bage/github/study/study-ai-skills/monitor/skill-monitor-server"
         exit 0 ;;
 esac

@@ -1,134 +1,130 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <header class="flex items-start justify-between">
       <div>
-        <h2 class="text-xl font-bold text-gray-800">发布部署</h2>
-        <p class="text-sm text-gray-500 mt-1">查看部署状态和运行监控信息</p>
+        <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mb-1">Stage 11</p>
+        <h1 class="text-2xl font-semibold tracking-tight text-ink">发布部署</h1>
+        <p class="text-ink-secondary mt-1 text-sm">查看部署状态和运行监控信息</p>
       </div>
-      <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">✓ 部署成功</span>
-    </div>
+      <span class="tag bg-ok-soft text-ok">部署成功</span>
+    </header>
 
-    <div class="bg-white rounded-xl shadow-md p-6">
-
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-        <div class="bg-blue-50 p-4 rounded-lg">
-          <p class="text-xs text-blue-600 mb-1">部署环境</p>
-          <p class="text-lg font-bold text-blue-800">开发环境</p>
-        </div>
-        <div class="bg-green-50 p-4 rounded-lg">
-          <p class="text-xs text-green-600 mb-1">部署状态</p>
-          <p class="text-lg font-bold text-green-800">运行中</p>
-        </div>
-        <div class="bg-purple-50 p-4 rounded-lg">
-          <p class="text-xs text-purple-600 mb-1">版本号</p>
-          <p class="text-lg font-bold text-purple-800">1.0.0</p>
-        </div>
-        <div class="bg-orange-50 p-4 rounded-lg">
-          <p class="text-xs text-orange-600 mb-1">部署时间</p>
-          <p class="text-lg font-bold text-orange-800">23:25</p>
-        </div>
-        <div class="bg-pink-50 p-4 rounded-lg">
-          <p class="text-xs text-pink-600 mb-1">部署耗时</p>
-          <p class="text-lg font-bold text-pink-800">45s</p>
+    <section class="card">
+      <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">部署信息</h2>
+      <div class="px-5 py-5">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-px bg-line border border-line rounded-lg overflow-hidden">
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">部署环境</p>
+            <p class="text-sm font-medium text-ink mt-1">开发环境</p>
+          </div>
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">部署状态</p>
+            <p class="text-sm font-medium text-ok mt-1">运行中</p>
+          </div>
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">版本号</p>
+            <p class="mono text-sm text-ink mt-1">1.0.0</p>
+          </div>
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">部署时间</p>
+            <p class="mono text-sm text-ink mt-1">23:25</p>
+          </div>
+          <div class="bg-surface p-4">
+            <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted">部署耗时</p>
+            <p class="mono text-sm text-ink mt-1">45s</p>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h4 class="font-semibold text-gray-800 mb-4">服务端点</h4>
-        <div class="space-y-3">
-          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <div>
-              <p class="text-gray-700 font-medium">健康检查</p>
-              <p class="text-xs text-gray-500">GET /api/health</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <section class="card">
+        <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">服务端点</h2>
+        <ul class="divide-y divide-line">
+          <li class="px-5 py-3 flex items-center justify-between gap-3 text-sm">
+            <span class="mono text-2xs font-medium text-accent w-12">GET</span>
+            <span class="mono text-xs text-ink-secondary flex-1 truncate">/api/health</span>
+            <span class="tag bg-ok-soft text-ok">在线</span>
+          </li>
+          <li class="px-5 py-3 flex items-center justify-between gap-3 text-sm">
+            <span class="mono text-2xs font-medium text-accent w-12">GET</span>
+            <span class="mono text-xs text-ink-secondary flex-1 truncate">/api/health/detail</span>
+            <span class="tag bg-ok-soft text-ok">在线</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">运行状态</h2>
+        <div class="px-5 py-4 space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5 text-sm">
+              <span class="text-ink-secondary">CPU 使用率</span>
+              <span class="mono text-xs text-ink">12%</span>
             </div>
-            <span class="text-green-600">✓ 在线</span>
-          </div>
-          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-            <div>
-              <p class="text-gray-700 font-medium">详细状态</p>
-              <p class="text-xs text-gray-500">GET /api/health/detail</p>
-            </div>
-            <span class="text-green-600">✓ 在线</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h4 class="font-semibold text-gray-800 mb-4">运行状态</h4>
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <span class="text-gray-600">CPU 使用率</span>
-            <span class="text-green-600 font-medium">12%</span>
-          </div>
-          <div class="w-full bg-gray-200 rounded-full h-2">
-            <div class="bg-green-600 h-2 rounded-full" style="width: 12%"></div>
-          </div>
-          
-          <div class="flex items-center justify-between">
-            <span class="text-gray-600">内存使用</span>
-            <span class="text-blue-600 font-medium">256 MB / 512 MB</span>
-          </div>
-          <div class="w-full bg-gray-200 rounded-full h-2">
-            <div class="bg-blue-600 h-2 rounded-full" style="width: 50%"></div>
-          </div>
-          
-          <div class="flex items-center justify-between">
-            <span class="text-gray-600">JVM 线程数</span>
-            <span class="text-purple-600 font-medium">24</span>
-          </div>
-          
-          <div class="flex items-center justify-between">
-            <span class="text-gray-600">启动时间</span>
-            <span class="text-gray-600 font-medium">2026-07-11 23:25:30</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <h4 class="font-semibold text-gray-800 mb-4">部署历史</h4>
-      <div class="space-y-3">
-        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-          <div class="flex items-center">
-            <span class="w-3 h-3 rounded-full bg-green-500 mr-3"></span>
-            <div>
-              <p class="text-gray-800 font-medium">版本 1.0.0</p>
-              <p class="text-xs text-gray-500">2026-07-11 23:25:30 | 部署到开发环境</p>
+            <div class="w-full bg-line rounded-full h-1">
+              <div class="bg-ok h-1 rounded-full" style="width: 12%"></div>
             </div>
           </div>
-          <span class="text-green-600 text-sm">成功</span>
-        </div>
-        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-          <div class="flex items-center">
-            <span class="w-3 h-3 rounded-full bg-yellow-500 mr-3"></span>
-            <div>
-              <p class="text-gray-800 font-medium">版本 0.9.0</p>
-              <p class="text-xs text-gray-500">2026-07-10 15:42:18 | 部署到开发环境</p>
+          <div>
+            <div class="flex items-center justify-between mb-1.5 text-sm">
+              <span class="text-ink-secondary">内存使用</span>
+              <span class="mono text-xs text-ink">256 MB / 512 MB</span>
+            </div>
+            <div class="w-full bg-line rounded-full h-1">
+              <div class="bg-accent h-1 rounded-full" style="width: 50%"></div>
             </div>
           </div>
-          <span class="text-yellow-600 text-sm">回滚</span>
+          <dl class="pt-1 space-y-2 text-sm">
+            <div class="flex justify-between"><dt class="text-ink-muted">JVM 线程数</dt><dd class="mono text-xs text-ink">24</dd></div>
+            <div class="flex justify-between"><dt class="text-ink-muted">启动时间</dt><dd class="mono text-xs text-ink">2026-07-11 23:25:30</dd></div>
+          </dl>
         </div>
-        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-          <div class="flex items-center">
-            <span class="w-3 h-3 rounded-full bg-green-500 mr-3"></span>
-            <div>
-              <p class="text-gray-800 font-medium">版本 0.8.0</p>
-              <p class="text-xs text-gray-500">2026-07-09 09:15:00 | 部署到开发环境</p>
-            </div>
-          </div>
-          <span class="text-green-600 text-sm">成功</span>
-        </div>
-      </div>
+      </section>
     </div>
 
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <h4 class="font-semibold text-gray-800 mb-4">部署日志</h4>
-      <div class="bg-gray-900 rounded-lg p-4">
-        <pre class="text-sm text-gray-300 overflow-x-auto font-mono max-h-48 overflow-y-auto">{{ deployLog }}</pre>
+    <section class="card">
+      <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">部署历史</h2>
+      <ol class="divide-y divide-line">
+        <li class="px-5 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-1.5 h-1.5 rounded-full bg-ok flex-shrink-0"></span>
+            <div>
+              <p class="text-sm font-medium text-ink">v1.0.0</p>
+              <p class="mono text-2xs text-ink-muted mt-0.5">2026-07-11 23:25:30 · 开发环境</p>
+            </div>
+          </div>
+          <span class="tag bg-ok-soft text-ok">成功</span>
+        </li>
+        <li class="px-5 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-1.5 h-1.5 rounded-full bg-warn flex-shrink-0"></span>
+            <div>
+              <p class="text-sm font-medium text-ink">v0.9.0</p>
+              <p class="mono text-2xs text-ink-muted mt-0.5">2026-07-10 15:42:18 · 开发环境</p>
+            </div>
+          </div>
+          <span class="tag bg-warn-soft text-warn">回滚</span>
+        </li>
+        <li class="px-5 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-1.5 h-1.5 rounded-full bg-ok flex-shrink-0"></span>
+            <div>
+              <p class="text-sm font-medium text-ink">v0.8.0</p>
+              <p class="mono text-2xs text-ink-muted mt-0.5">2026-07-09 09:15:00 · 开发环境</p>
+            </div>
+          </div>
+          <span class="tag bg-ok-soft text-ok">成功</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">部署日志</h2>
+      <div class="bg-ink">
+        <pre class="mono text-xs text-white/90 p-4 overflow-x-auto max-h-64 overflow-y-auto">{{ deployLog }}</pre>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 

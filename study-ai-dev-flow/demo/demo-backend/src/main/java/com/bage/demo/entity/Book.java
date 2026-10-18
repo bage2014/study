@@ -42,8 +42,7 @@ public class Book {
     @Column(nullable = false, unique = true)
     private String isbn;
 
-    @NotNull(message = "price must not be null")
     @Positive(message = "price must be greater than 0")
-    @Column(nullable = false)
+    @Column
     private BigDecimal price;
 }

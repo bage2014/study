@@ -1,0 +1,101 @@
+# ============================================================
+# 构建产物
+# ============================================================
+target/
+build/
+dist/
+dist-ssr/
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ============================================================
+# IDE
+# ============================================================
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+.project
+.classpath
+.settings/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*~
+
+# ============================================================
+# 日志
+# ============================================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+hs_err_pid*
+replay_pid*
+spring-shell.log
+
+# ============================================================
+# 配置 / 敏感文件
+# ============================================================
+.env
+.env.local
+.env.*.local
+application-local.yml
+application-local.properties
+*.key
+*.secret
+api-keys.json
+config/secrets.yml
+config/secrets.json
+
+# ============================================================
+# 前端（rca-agent-web）
+# ============================================================
+node_modules/
+coverage/
+*.local
+*.tsbuildinfo
+rca-agent-web/test-results/
+rca-agent-web/playwright-report/
+
+# ============================================================
+# 数据库（H2 本地文件）
+# ============================================================
+*.db
+*.sqlite
+*.mv.db
+*.trace.db
+
+# ============================================================
+# AI / 缓存
+# ============================================================
+.cache/
+__pycache__/
+.trae/cache/
+.trae/.cache/
+.trae/*.tmp
+
+# ============================================================
+# OS
+# ============================================================
+.DS_Store
+Thumbs.db

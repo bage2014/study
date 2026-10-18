@@ -1,0 +1,54 @@
+# Trae 技能系统配置
+
+skills:
+  # 是否自动加载所有技能
+  auto-load: true
+
+  # 技能搜索路径
+  paths:
+    - skills/
+
+  # 默认启用的技能（详见 SKILLS.md）
+  enabled:
+    # 个人定制
+    - personal-backend-coding-standard
+    - personal-frontend-coding-standard
+    - personal-java-common
+    - personal-project-runner
+    - personal-doc-manager
+    - personal-solution-research
+    - personal-brief-style
+    # 通用
+    - common-project-standard
+    - common-coding
+    - common-code-review
+    - common-requirement-clarification
+    - common-design-brainstorming
+    - common-spec-driven
+    - common-grill-me
+    - common-spring-boot-init
+    - common-vue-init
+    - common-db-design
+    - common-data-migration
+    - common-backend-unit-test
+    - common-frontend-playwright-test
+    - common-api-doc
+    - common-contract-generation
+    - common-ui-design-spec
+    - common-ui-mockup
+    - common-systematic-debugging
+    - common-test-driven-development
+    - common-technical-writer
+    - common-dockerize
+
+  # 开源技能包装（后续按需启用）
+  open-source: {}
+
+project:
+  name: study-ai-best-pratice-rca-agent
+  type: fullstack
+  modules:
+    - rca-agent-backend
+    - rca-agent-web
+    - demo-order-service
+    - demo-supplier-service

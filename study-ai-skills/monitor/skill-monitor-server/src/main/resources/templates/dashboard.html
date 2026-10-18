@@ -34,6 +34,13 @@ th{color:#94A3B8;font-weight:normal;font-size:12px;text-transform:uppercase}
 .status.ok{background:#064E3B;color:#6EE7B7}
 .status.error{background:#7F1D1D;color:#FCA5A5}
 .auto{color:#A78BFA}.manual{color:#38BDF8}
+.btn{display:inline-block;background:#334155;color:#E2E8F0;border:none;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;margin-right:8px;margin-top:8px}
+.btn:hover{background:#475569}
+.btn.danger{background:#7F1D1D}.btn.danger:hover{background:#991B1B}
+.btn.primary{background:#1D4ED8}.btn.primary:hover{background:#2563EB}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+#ops-msg{margin-top:10px;font-size:13px;color:#FBBF24;min-height:18px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#94A3B8}
 .footer{text-align:center;color:#475569;font-size:12px;margin-top:32px}
 .footer a{color:#475569}
 </style>
@@ -67,6 +74,65 @@ th{color:#94A3B8;font-weight:normal;font-size:12px;text-transform:uppercase}
         <div class="card">
             <div class="label">错误率</div>
             <div class="value warn" th:text="${overview['errorRate']}">0%</div>
+        </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:24px">
+        <h2>🩺 系统状态 & 运维</h2>
+        <div class="grid-2">
+            <div>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="width:110px">监控服务</td>
+                        <td>
+                            <span class="status ok">RUNNING</span>
+                            <span class="mono" th:text="' 启动于 ' + ${system['startTime']} + '（' + ${system['uptimeMinutes']} + ' 分钟）'"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cron 上传</td>
+                        <td>
+                            <span th:if="${system['cronLoaded']}" class="status ok">LOADED（60s）</span>
+                            <span th:if="${!system['cronLoaded'] and system['cronInstalled']}" class="status error">INSTALLED 未加载</span>
+                            <span th:if="${!system['cronInstalled']}" class="status error">NOT INSTALLED</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>埋点脚本</td>
+                        <td>
+                            <span th:if="${system['scriptExecutable']}" class="status ok">OK</span>
+                            <span th:if="${!system['scriptExecutable']}" class="status error">缺失/不可执行</span>
+                            <span class="mono" th:text="${system['scriptPath']}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>数据管道</td>
+                        <td>
+                            <span class="mono" th:text="'JSONL ' + ${system['jsonlLines']} + ' 行 · 已上传 ' + ${system['offset']} + ' · 待上传 ' + ${system['pendingUpload']} + ' · DB ' + ${system['dbRecords']} + ' 条'"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>最近上传</td>
+                        <td><span class="mono" th:text="${system['lastUploadLog']}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>最新记录</td>
+                        <td><span class="mono" th:text="${system['lastRecordTs']} ?: '-'"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3 style="font-size:13px;color:#94A3B8;margin-bottom:4px">服务操作</h3>
+                <button class="btn" onclick="refreshStatus()">🔄 刷新状态</button>
+                <button class="btn primary" onclick="systemOp('restart', '确认重启监控服务？预计 20-40 秒恢复。')">♻️ 重启服务</button>
+                <button class="btn danger" onclick="systemOp('stop', '确认关闭监控服务？关闭后埋点数据仍写入本地 JSONL，但不会上传。')">⏹ 关闭服务</button>
+                <h3 style="font-size:13px;color:#94A3B8;margin:16px 0 4px">Cron 操作</h3>
+                <button class="btn" onclick="cronOp(true)" th:disabled="${system['cronLoaded']}">▶️ 启动 Cron</button>
+                <button class="btn" onclick="cronOp(false)" th:disabled="${!system['cronLoaded']}">⏸ 停止 Cron</button>
+                <div id="ops-msg"></div>
+            </div>
         </div>
     </div>
 
@@ -154,5 +220,67 @@ th{color:#94A3B8;font-weight:normal;font-size:12px;text-transform:uppercase}
         <a th:href="@{/api/skill-usage/health}">Health API</a>
     </div>
 </div>
+<script>
+const API = '/api/skill-usage/system';
+const msg = document.getElementById('ops-msg');
+
+function setMsg(text) { msg.textContent = text; }
+
+async function systemOp(action, confirmText) {
+    if (!confirm(confirmText)) return;
+    setMsg('指令发送中...');
+    try {
+        const r = await fetch(API + '/' + action, {method: 'POST'});
+        const j = await r.json();
+        setMsg(j.message || j.status);
+        if (action === 'restart') pollUntil('up', 90);
+        if (action === 'stop') pollUntil('down', 15);
+    } catch (e) {
+        setMsg('请求失败: ' + e);
+    }
+}
+
+async function cronOp(start) {
+    setMsg(start ? '安装 Cron...' : '卸载 Cron...');
+    try {
+        const r = await fetch(API + '/cron/' + (start ? 'start' : 'stop'), {method: 'POST'});
+        const j = await r.json();
+        setMsg(j.message || j.status);
+        setTimeout(() => location.reload(), 1500);
+    } catch (e) {
+        setMsg('请求失败: ' + e);
+    }
+}
+
+async function refreshStatus() {
+    setMsg('刷新中...');
+    try {
+        const r = await fetch(API + '/status');
+        const s = await r.json();
+        setMsg(`服务运行 ${s.uptimeMinutes} 分钟 · Cron ${s.cronLoaded ? '已加载' : '未加载'} · 待上传 ${s.pendingUpload} 条 · DB ${s.dbRecords} 条`);
+    } catch (e) {
+        setMsg('刷新失败: ' + e);
+    }
+}
+
+/** dir='up': 等服务恢复后刷新页面；dir='down': 等服务停止后提示 */
+function pollUntil(dir, maxTries) {
+    let n = 0;
+    const timer = setInterval(async () => {
+        n++;
+        let up = false;
+        try {
+            const r = await fetch('/api/skill-usage/health', {cache: 'no-store'});
+            up = r.ok;
+        } catch (e) { up = false; }
+        if (dir === 'up' && up) { clearInterval(timer); location.reload(); return; }
+        if (dir === 'down' && !up) { clearInterval(timer); setMsg('✅ 服务已停止。埋点数据保留在本地 JSONL，可用 start-server 或脚本重新启动。'); return; }
+        if (n > maxTries) {
+            clearInterval(timer);
+            setMsg(dir === 'up' ? '等待恢复超时，请检查 ~/.trae-cn/skill-monitor-server.log 或手动刷新' : '等待停止超时，请手动刷新确认');
+        }
+    }, 2000);
+}
+</script>
 </body>
 </html>

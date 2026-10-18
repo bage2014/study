@@ -24,3 +24,12 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Test artifacts
+test-results/
+playwright-report/

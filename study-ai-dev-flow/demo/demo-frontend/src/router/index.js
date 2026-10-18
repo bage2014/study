@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ProductList from '../views/ProductList.vue'
+import BookList from '../views/BookList.vue'
 
 export default createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: ProductList }
+    { path: '/', component: BookList }
   ]
 })

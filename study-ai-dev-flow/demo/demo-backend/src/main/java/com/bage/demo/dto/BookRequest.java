@@ -27,7 +27,6 @@ public class BookRequest {
     @NotBlank(message = "isbn must not be blank")
     private String isbn;
 
-    @NotNull(message = "price must not be null")
     @Positive(message = "price must be greater than 0")
     private BigDecimal price;
 }

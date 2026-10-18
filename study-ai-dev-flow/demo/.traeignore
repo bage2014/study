@@ -1,0 +1,29 @@
+# 构建产物
+target/
+build/
+dist/
+
+# 依赖目录
+node_modules/
+
+# 日志文件
+*.log
+logs/
+
+# 测试产物
+test-results/
+playwright-report/
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.temp

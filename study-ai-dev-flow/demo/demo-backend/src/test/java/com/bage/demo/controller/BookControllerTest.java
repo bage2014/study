@@ -2,8 +2,9 @@ package com.bage.demo.controller;
 
 import com.bage.demo.dto.BookRequest;
 import com.bage.demo.dto.BookResponse;
+import com.bage.demo.exception.DuplicateIsbnException;
+import com.bage.demo.exception.ResourceNotFoundException;
 import com.bage.demo.service.BookService;
-import com.bage.demo.service.DuplicateIsbnException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,7 @@ class BookControllerTest {
 
     @Test
     void getBookByIdNotFoundReturnsNotFound() throws Exception {
-        when(bookService.getBookById(99L)).thenThrow(new RuntimeException("Book not found"));
+        when(bookService.getBookById(99L)).thenThrow(new ResourceNotFoundException("Book not found"));
 
         mockMvc.perform(get("/api/books/99"))
                 .andExpect(status().isNotFound());
@@ -179,7 +180,7 @@ class BookControllerTest {
                 .build();
 
         when(bookService.updateBook(eq(99L), any(BookRequest.class)))
-                .thenThrow(new RuntimeException("Book not found"));
+                .thenThrow(new ResourceNotFoundException("Book not found"));
 
         mockMvc.perform(put("/api/books/99")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -201,7 +202,7 @@ class BookControllerTest {
 
     @Test
     void deleteBookNotFoundReturnsNotFound() throws Exception {
-        doThrow(new RuntimeException("Book not found")).when(bookService).deleteBook(99L);
+        doThrow(new ResourceNotFoundException("Book not found")).when(bookService).deleteBook(99L);
 
         mockMvc.perform(delete("/api/books/99"))
                 .andExpect(status().isNotFound());

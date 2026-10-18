@@ -18,4 +18,5 @@ public class FeedbackResponse {
     private String name;
     private String email;
     private String content;
+    private Integer rating;
 }

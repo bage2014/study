@@ -1,475 +1,244 @@
 <template>
   <div class="space-y-6">
-    <Loading v-if="loading" text="加载流水线详情..." subtext="请稍候" />
-    
+    <Loading v-if="loading" text="加载流水线详情" subtext="请稍候" />
+
     <template v-else>
-      <div class="flex justify-between items-center">
+      <header class="flex items-start justify-between">
+        <div class="min-w-0">
+          <p class="mono text-xs text-ink-muted mb-1">{{ pipeline.pipelineId }}</p>
+          <h1 class="text-2xl font-semibold tracking-tight text-ink">{{ requirement.title }}</h1>
+          <p class="text-ink-secondary mt-1 text-sm">
+            <span class="mono">{{ requirement.project }}</span>
+            <span class="mx-2 text-line-strong">·</span>{{ formatTime(requirement.createdAt) }}
+          </p>
+        </div>
+        <div class="flex gap-2 flex-shrink-0">
+          <button v-if="pipeline.status === 'RUNNING'" @click="handleCancel" class="btn-secondary text-danger border-danger/30 hover:bg-danger-soft">取消</button>
+          <router-link to="/pipelines" class="btn-secondary">返回列表</router-link>
+        </div>
+      </header>
+
+      <div class="card px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span :class="['tag', statusClass(pipeline.status)]">{{ statusText(pipeline.status) }}</span>
+          <span class="text-sm text-ink-secondary">当前阶段 <span class="text-ink font-medium">{{ currentStageInfo.name }}</span></span>
+        </div>
+        <span class="mono text-xs text-ink-muted">{{ completedCount }} / {{ pipelineStages.length }}</span>
+      </div>
+
+      <div v-if="pipeline.status === 'WAITING_APPROVAL'" class="card border-warn/30 bg-warn-soft px-5 py-4 flex items-center justify-between">
         <div>
-          <h2 class="text-xl font-bold text-gray-800">{{ requirement.title }}</h2>
-          <p class="text-sm text-gray-500 mt-1">{{ requirement.project }} · {{ formatTime(requirement.createdAt) }}</p>
+          <p class="text-sm font-medium text-ink">等待审批</p>
+          <p class="text-xs text-ink-secondary mt-0.5">「{{ currentStageInfo.name }}」需要人工审批才能继续</p>
         </div>
         <div class="flex gap-2">
-          <button
-            v-if="pipeline.status === 'RUNNING'"
-            @click="handleCancel"
-            class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium"
-          >
-            取消流水线
-          </button>
-          <router-link to="/pipelines" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors font-medium">
-            返回列表
-          </router-link>
+          <button @click="handleApprove" class="btn-primary">批准</button>
+          <button @click="handleReject" class="btn-secondary text-danger border-danger/30 hover:bg-danger-soft">拒绝</button>
         </div>
       </div>
 
-      <div :class="[
-        'rounded-xl shadow-md p-4',
-        statusBgClass(pipeline.status)
-      ]">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <span
-              :class="[
-                'px-4 py-2 rounded-full text-sm font-semibold',
-                statusClass(pipeline.status)
-              ]"
-            >
-              {{ statusText(pipeline.status) }}
-            </span>
-            <span class="ml-4 text-gray-700 font-medium">当前阶段: {{ currentStageInfo.name }}</span>
-          </div>
-          <span class="text-sm text-gray-600 font-mono">流水线ID: {{ pipeline.pipelineId }}</span>
-        </div>
-      </div>
-
-      <div v-if="pipeline.status === 'WAITING_APPROVAL'" class="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <h4 class="font-semibold text-yellow-800 text-lg">⏳ 等待审批</h4>
-            <p class="text-sm text-yellow-600 mt-1">当前阶段 "{{ currentStageInfo.name }}" 需要人工审批才能继续</p>
-          </div>
-          <div class="flex gap-3">
-            <button 
-              @click="handleApprove" 
-              class="bg-green-600 text-white px-5 py-2.5 rounded-lg hover:bg-green-700 transition-all font-medium shadow-md"
-            >
-              ✓ 批准
-            </button>
-            <button 
-              @click="handleReject" 
-              class="bg-red-600 text-white px-5 py-2.5 rounded-lg hover:bg-red-700 transition-all font-medium shadow-md"
-            >
-              ✗ 拒绝
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-md p-6">
-        <h3 class="font-semibold text-gray-800 mb-4">流程进度</h3>
-        <div class="relative">
-          <div class="absolute top-5 left-0 right-0 h-2 bg-gray-200 rounded-full">
-            <div 
-              class="h-full bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full transition-all duration-500" 
-              :style="{ width: progressWidth }"
-            ></div>
-          </div>
-          
-          <div class="relative flex justify-between">
-            <div 
-              v-for="(stage, index) in pipelineStages" 
-              :key="stage.id"
-              class="flex flex-col items-center"
-            >
-              <div 
-                :class="[
-                  'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold transition-all duration-300',
-                  stage.status === 'COMPLETED' ? 'bg-green-500' :
-                  stage.status === 'RUNNING' ? 'bg-indigo-600 animate-pulse ring-4 ring-indigo-200' :
-                  stage.status === 'FAILED' ? 'bg-red-500' :
-                  'bg-gray-300'
-                ]"
-              >
-                <span>{{ stage.icon }}</span>
-              </div>
-              <p class="text-xs text-gray-600 mt-2 text-center max-w-16 truncate">{{ stage.name }}</p>
-              <p v-if="stage.time" class="text-xs text-gray-400 mt-1">{{ stage.time }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="space-y-4">
-        <div 
-          v-for="stage in pipelineStages" 
+      <ol class="card divide-y divide-line">
+        <li
+          v-for="(stage, i) in pipelineStages"
           :key="stage.id"
-          :class="[
-            'bg-white rounded-xl shadow-md overflow-hidden',
-            stage.status !== 'PENDING' ? 'border-l-4' : '',
-            stage.status === 'COMPLETED' ? 'border-green-500' :
-            stage.status === 'RUNNING' ? 'border-indigo-500' :
-            stage.status === 'FAILED' ? 'border-red-500' : ''
-          ]"
+          class="px-5 py-4"
         >
-          <div class="p-4 border-b border-gray-100">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <span class="text-xl mr-3">{{ stage.icon }}</span>
-                <div>
-                  <h4 class="font-semibold text-gray-800">{{ stage.name }}</h4>
-                  <span :class="[
-                    'text-xs px-2 py-1 rounded-full',
-                    stage.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
-                    stage.status === 'RUNNING' ? 'bg-indigo-100 text-indigo-700' :
-                    stage.status === 'FAILED' ? 'bg-red-100 text-red-700' :
-                    'bg-gray-100 text-gray-500'
-                  ]">
-                    {{ stage.statusText }}
-                  </span>
-                </div>
-              </div>
-              <div class="text-right">
-                <p v-if="stage.durationMs" class="text-sm text-gray-500">{{ formatDuration(stage.durationMs) }}</p>
-                <p v-if="stage.time" class="text-xs text-gray-400">{{ stage.time }}</p>
-              </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="mono text-2xs text-ink-muted w-6">{{ String(i + 1).padStart(2, '0') }}</span>
+              <span :class="['w-1.5 h-1.5 rounded-full flex-shrink-0', stageDotClass(stage.status)]"></span>
+              <span class="text-sm font-medium text-ink">{{ stage.name }}</span>
+              <span :class="['tag', stageTagClass(stage.status)]">{{ stage.statusText }}</span>
+            </div>
+            <div class="text-right text-xs text-ink-muted">
+              <span v-if="stage.durationMs">{{ formatDuration(stage.durationMs) }}</span>
+              <span v-if="stage.time" class="ml-2">{{ stage.time }}</span>
             </div>
           </div>
 
-          <div v-if="stage.status !== 'PENDING'" class="p-4 bg-gray-50">
-            <div v-if="stage.id === 'requirement-analysis'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">需求分析结果</h5>
-                <div v-if="stage.analysisResult" class="space-y-3">
-                  <div class="bg-blue-50 p-3 rounded-lg">
-                    <p class="text-xs font-medium text-blue-700">摘要</p>
-                    <p class="text-xs text-gray-600 mt-1">{{ stage.analysisResult.summary }}</p>
-                  </div>
-                  <div v-if="stage.analysisResult.features && stage.analysisResult.features.length > 0">
-                    <p class="text-xs font-medium text-gray-700">功能点</p>
-                    <div v-for="(feature, idx) in stage.analysisResult.features" :key="idx" class="bg-purple-50 p-3 rounded-lg mt-2">
-                      <p class="text-xs font-medium text-purple-700">{{ feature.name }}</p>
-                      <p class="text-xs text-gray-600 mt-1">{{ feature.description }}</p>
-                    </div>
-                  </div>
-                  <div v-if="stage.analysisResult.affected_files_hints && stage.analysisResult.affected_files_hints.length > 0">
-                    <p class="text-xs font-medium text-gray-700">影响文件</p>
-                    <div class="flex flex-wrap gap-1 mt-2">
-                      <span v-for="(file, idx) in stage.analysisResult.affected_files_hints" :key="idx" class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">{{ file }}</span>
+          <div v-if="stage.status !== 'PENDING'" class="mt-4 ml-10 space-y-4">
+            <template v-if="stage.id === 'requirement-analysis'">
+              <div v-if="stage.analysisResult" class="space-y-3">
+                <div class="border-l-2 border-accent pl-3">
+                  <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mb-1">摘要</p>
+                  <p class="text-sm text-ink-secondary">{{ stage.analysisResult.summary }}</p>
+                </div>
+                <div v-if="stage.analysisResult.features?.length">
+                  <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mb-2">功能点</p>
+                  <div class="space-y-2">
+                    <div v-for="(f, idx) in stage.analysisResult.features" :key="idx" class="bg-base rounded p-3">
+                      <p class="text-sm font-medium text-ink">{{ f.name }}</p>
+                      <p class="text-xs text-ink-secondary mt-0.5">{{ f.description }}</p>
                     </div>
                   </div>
                 </div>
-                <pre v-else class="bg-white p-4 rounded-lg text-xs text-gray-600 overflow-x-auto max-h-40 overflow-y-auto">{{ stage.resultJson || getDefaultAnalysis() }}</pre>
-              </div>
-            </div>
-
-            <div v-if="stage.id === 'feature-point-split'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">功能点拆分</h5>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div v-for="(point, idx) in stage.featurePoints || []" :key="idx" class="bg-purple-50 p-3 rounded-lg">
-                    <p class="text-sm font-medium text-purple-700">功能点 {{ idx + 1 }}: {{ point.title || point.name }}</p>
-                    <p class="text-xs text-gray-600 mt-1">{{ point.description }}</p>
-                  </div>
-                  <div v-if="!stage.featurePoints || stage.featurePoints.length === 0" class="bg-gray-100 p-4 rounded-lg">
-                    <p class="text-sm text-gray-500">AI 已将需求拆分为多个功能点</p>
+                <div v-if="stage.analysisResult.affected_files_hints?.length">
+                  <p class="text-2xs font-medium uppercase tracking-wide text-ink-muted mb-2">影响文件</p>
+                  <div class="flex flex-wrap gap-1">
+                    <code v-for="(f, idx) in stage.analysisResult.affected_files_hints" :key="idx" class="mono text-xs bg-base border border-line rounded px-1.5 py-0.5">{{ f }}</code>
                   </div>
                 </div>
               </div>
-            </div>
+              <pre v-else class="mono bg-ink text-white/90 p-4 rounded text-xs overflow-x-auto max-h-40 overflow-y-auto">{{ stage.resultJson || getDefaultAnalysis() }}</pre>
+            </template>
 
-            <div v-if="stage.id === 'task-split'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">任务拆分</h5>
-                <div v-if="stage.allTasks && stage.allTasks.length > 0" class="space-y-3">
-                  <div v-for="(fpGroup, fpIdx) in stage.allTasks" :key="fpIdx" class="border border-gray-200 rounded-lg p-3">
-                    <p class="text-xs font-medium text-purple-700 mb-2">功能点: {{ fpGroup.featurePoint }}</p>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      <div v-for="(task, taskIdx) in fpGroup.tasks || []" :key="taskIdx" class="bg-gray-100 p-2 rounded-lg text-xs">
-                        <p class="font-medium text-gray-700">{{ task.type || '未知' }}</p>
-                        <p class="text-gray-500">{{ task.description }}</p>
-                      </div>
+            <template v-if="stage.id === 'feature-point-split'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div v-for="(p, idx) in stage.featurePoints || []" :key="idx" class="border border-line rounded p-3">
+                  <p class="text-sm font-medium text-ink">{{ p.title || p.name }}</p>
+                  <p class="text-xs text-ink-secondary mt-0.5">{{ p.description }}</p>
+                </div>
+                <p v-if="!stage.featurePoints?.length" class="text-sm text-ink-muted">AI 已将需求拆分为多个功能点</p>
+              </div>
+            </template>
+
+            <template v-if="stage.id === 'task-split'">
+              <div v-if="stage.allTasks?.length" class="space-y-2">
+                <div v-for="(g, gi) in stage.allTasks" :key="gi" class="border border-line rounded p-3">
+                  <p class="text-xs font-medium text-ink mb-2">{{ g.featurePoint }}</p>
+                  <div class="grid grid-cols-2 md:grid-cols-3 gap-1.5">
+                    <div v-for="(t, ti) in g.tasks || []" :key="ti" class="bg-base rounded p-2 text-xs">
+                      <p class="font-medium text-ink">{{ t.type || '—' }}</p>
+                      <p class="text-ink-muted mt-0.5">{{ t.description }}</p>
                     </div>
                   </div>
                 </div>
-                <div v-else class="bg-gray-100 p-3 rounded-lg">
-                  <p class="text-sm text-gray-500">AI 已将功能点拆分为原子任务</p>
-                </div>
               </div>
-            </div>
+              <p v-else class="text-sm text-ink-muted">AI 已将功能点拆分为原子任务</p>
+            </template>
 
-            <div v-if="stage.id === 'code-gen'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">生成的文件</h5>
-                <div v-if="generatedFiles && generatedFiles.length > 0" class="flex flex-wrap gap-2">
-                  <button 
-                    v-for="file in generatedFiles" 
-                    :key="file.name"
-                    @click="selectCodeFile(file)"
-                    :class="[
-                      'px-3 py-1.5 rounded-lg text-xs transition-colors',
-                      selectedCodeFile?.name === file.name ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    ]"
-                  >
-                    {{ file.name }}
-                  </button>
-                </div>
-                <div v-else class="bg-gray-100 p-4 rounded-lg">
-                  <p class="text-sm text-gray-500">暂无生成文件</p>
-                </div>
+            <template v-if="stage.id === 'code-gen'">
+              <div v-if="generatedFiles.length" class="flex flex-wrap gap-1.5">
+                <button
+                  v-for="file in generatedFiles"
+                  :key="file.name"
+                  @click="selectCodeFile(file)"
+                  :class="[
+                    'mono text-xs px-2 py-1 rounded border transition-colors',
+                    selectedCodeFile?.name === file.name
+                      ? 'border-accent bg-accent-soft text-accent'
+                      : 'border-line text-ink-secondary hover:border-line-strong'
+                  ]"
+                >{{ file.name }}</button>
               </div>
-              <div v-if="selectedCodeFile" class="bg-white p-4 rounded-lg border border-gray-200">
-                <div class="flex items-center justify-between mb-2">
-                  <h6 class="text-sm font-medium text-gray-700">{{ selectedCodeFile.name }}</h6>
-                  <button @click="applyCode" class="bg-green-600 text-white px-4 py-1.5 rounded text-xs hover:bg-green-700 font-medium">
-                    💾 应用代码
-                  </button>
+              <p v-else class="text-sm text-ink-muted">暂无生成文件</p>
+              <div v-if="selectedCodeFile" class="border border-line rounded overflow-hidden">
+                <div class="flex items-center justify-between px-3 py-2 bg-base border-b border-line">
+                  <span class="mono text-xs text-ink">{{ selectedCodeFile.name }}</span>
+                  <button @click="applyCode" class="btn-secondary text-xs">应用代码</button>
                 </div>
-                <pre class="text-xs text-gray-600 overflow-x-auto max-h-64 overflow-y-auto">{{ selectedCodeFile.content }}</pre>
+                <pre class="mono text-xs p-4 overflow-x-auto max-h-72 overflow-y-auto bg-surface">{{ selectedCodeFile.content }}</pre>
               </div>
-            </div>
+            </template>
 
-            <div v-if="stage.id === 'test-gen'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">测试生成结果</h5>
-                <div v-if="testGeneratedFiles && testGeneratedFiles.length > 0" class="flex flex-wrap gap-2">
-                  <button 
-                    v-for="file in testGeneratedFiles" 
-                    :key="file.name"
-                    @click="selectCodeFile(file)"
-                    :class="[
-                      'px-3 py-1.5 rounded-lg text-xs transition-colors',
-                      selectedCodeFile?.name === file.name ? 'bg-green-600 text-white' : 'bg-green-50 text-green-700 hover:bg-green-100'
-                    ]"
-                  >
-                    {{ file.name }}
-                  </button>
-                </div>
-                <div v-else class="bg-green-50 p-4 rounded-lg">
-                  <p class="text-sm text-green-700">✓ AI 已生成单元测试用例</p>
-                </div>
+            <template v-if="stage.id === 'test-gen'">
+              <div v-if="testGeneratedFiles.length" class="flex flex-wrap gap-1.5">
+                <button
+                  v-for="file in testGeneratedFiles"
+                  :key="file.name"
+                  @click="selectCodeFile(file)"
+                  :class="[
+                    'mono text-xs px-2 py-1 rounded border transition-colors',
+                    selectedCodeFile?.name === file.name
+                      ? 'border-ok bg-ok-soft text-ok'
+                      : 'border-line text-ink-secondary hover:border-line-strong'
+                  ]"
+                >{{ file.name }}</button>
               </div>
-            </div>
+              <p v-else class="text-sm text-ok">测试用例已生成</p>
+            </template>
 
-            <div v-if="stage.id === 'code-review'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">代码审查结果</h5>
-                <div v-if="stage.issues && stage.issues.length > 0">
-                  <div v-for="(issue, idx) in stage.issues" :key="idx" :class="[
-                    'p-3 rounded-lg text-sm',
-                    issue.startsWith('CRITICAL') ? 'bg-red-50 text-red-700' : 'bg-yellow-50 text-yellow-700'
-                  ]">
-                    {{ issue }}
-                  </div>
-                </div>
-                <div v-else class="bg-blue-50 p-4 rounded-lg">
-                  <p class="text-sm text-blue-700">✓ 代码审查通过</p>
-                  <p class="text-xs text-blue-600 mt-2">代码质量评分：95/100</p>
-                </div>
+            <template v-if="stage.id === 'code-review'">
+              <div v-if="stage.issues?.length" class="space-y-1.5">
+                <div v-for="(issue, idx) in stage.issues" :key="idx"
+                  :class="['text-sm px-3 py-2 rounded border', issue.startsWith('CRITICAL') ? 'border-danger/30 bg-danger-soft text-danger' : 'border-warn/30 bg-warn-soft text-warn']"
+                >{{ issue }}</div>
               </div>
-            </div>
+              <p v-else class="text-sm text-ok">代码审查通过 · 评分 95/100</p>
+            </template>
 
-            <div v-if="stage.id === 'pr-creation'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">变更统计</h5>
-                <div class="flex gap-4">
-                  <div class="bg-green-50 px-4 py-2 rounded-lg">
-                    <p class="text-xl font-bold text-green-600">+{{ stage.stats?.added || 2 }}</p>
-                    <p class="text-xs text-green-600">新增文件</p>
-                  </div>
-                  <div class="bg-blue-50 px-4 py-2 rounded-lg">
-                    <p class="text-xl font-bold text-blue-600">~{{ stage.stats?.modified || 1 }}</p>
-                    <p class="text-xs text-blue-600">修改文件</p>
-                  </div>
-                  <div class="bg-red-50 px-4 py-2 rounded-lg">
-                    <p class="text-xl font-bold text-red-600">-{{ stage.stats?.deleted || 0 }}</p>
-                    <p class="text-xs text-red-600">删除文件</p>
-                  </div>
-                </div>
+            <template v-if="stage.id === 'pr-creation'">
+              <div class="flex gap-4 text-sm">
+                <div><span class="mono font-medium text-ok">+{{ stage.stats?.added ?? 2 }}</span> <span class="text-ink-muted text-xs ml-1">新增</span></div>
+                <div><span class="mono font-medium text-accent">~{{ stage.stats?.modified ?? 1 }}</span> <span class="text-ink-muted text-xs ml-1">修改</span></div>
+                <div><span class="mono font-medium text-danger">-{{ stage.stats?.deleted ?? 0 }}</span> <span class="text-ink-muted text-xs ml-1">删除</span></div>
               </div>
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">风险评估</h5>
-                <div :class="[
-                  'px-4 py-3 rounded-lg',
-                  stage.risk === '低' ? 'bg-green-50' : stage.risk === '中' ? 'bg-yellow-50' : 'bg-red-50'
-                ]">
-                  <div class="flex items-center justify-between">
-                    <span :class="[
-                      'font-medium',
-                      stage.risk === '低' ? 'text-green-700' : stage.risk === '中' ? 'text-yellow-700' : 'text-red-700'
-                    ]">
-                      风险等级：{{ stage.risk || '低' }}
-                    </span>
-                    <button @click="viewDiff" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
-                      查看差异对比 →
-                    </button>
-                  </div>
-                  <div class="mt-2 space-y-1">
-                    <p v-for="item in stage.riskItems || ['✅ 无破坏性变更', '✅ 向后兼容']" :key="item" class="text-xs text-gray-600">{{ item }}</p>
-                  </div>
-                </div>
+              <div class="flex items-center justify-between border border-line rounded px-3 py-2">
+                <span class="text-sm text-ink">风险等级 <span :class="['tag ml-2', riskClass(stage.risk)]">{{ stage.risk || '低' }}</span></span>
+                <button @click="viewDiff" class="text-sm text-accent hover:underline">查看差异</button>
               </div>
-            </div>
+            </template>
 
-            <div v-if="stage.id === 'test-exec'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">测试结果</h5>
-                <div class="grid grid-cols-4 gap-4">
-                  <div class="bg-gray-50 p-4 rounded-lg text-center">
-                    <p class="text-2xl font-bold text-gray-800">{{ stage.testStats?.total || 0 }}</p>
-                    <p class="text-xs text-gray-500">总数</p>
-                  </div>
-                  <div class="bg-green-50 p-4 rounded-lg text-center">
-                    <p class="text-2xl font-bold text-green-600">{{ stage.testStats?.passed || 0 }}</p>
-                    <p class="text-xs text-green-600">通过</p>
-                  </div>
-                  <div class="bg-red-50 p-4 rounded-lg text-center">
-                    <p class="text-2xl font-bold text-red-600">{{ stage.testStats?.failed || 0 }}</p>
-                    <p class="text-xs text-red-600">失败</p>
-                  </div>
-                  <div class="bg-blue-50 p-4 rounded-lg text-center">
-                    <p class="text-2xl font-bold text-blue-600">{{ stage.testStats?.coverage || '0%' }}</p>
-                    <p class="text-xs text-blue-600">覆盖率</p>
-                  </div>
-                </div>
+            <template v-if="stage.id === 'test-exec'">
+              <div class="grid grid-cols-4 gap-px bg-line border border-line rounded overflow-hidden text-center">
+                <div class="bg-surface p-3"><p class="mono text-lg text-ink">{{ stage.testStats?.total || 0 }}</p><p class="text-2xs text-ink-muted">总数</p></div>
+                <div class="bg-surface p-3"><p class="mono text-lg text-ok">{{ stage.testStats?.passed || 0 }}</p><p class="text-2xs text-ink-muted">通过</p></div>
+                <div class="bg-surface p-3"><p class="mono text-lg text-danger">{{ stage.testStats?.failed || 0 }}</p><p class="text-2xs text-ink-muted">失败</p></div>
+                <div class="bg-surface p-3"><p class="mono text-lg text-accent">{{ stage.testStats?.coverage || '0%' }}</p><p class="text-2xs text-ink-muted">覆盖率</p></div>
               </div>
-              <div>
-                <h5 class="text-sm font-medium text-gray-700 mb-2">测试用例</h5>
-                <div class="space-y-2">
-                  <div v-for="test in stage.tests || []" 
-                    :key="test.name"
-                    :class="[
-                      'p-3 rounded-lg flex items-center justify-between',
-                      test.status === 'PASSED' ? 'bg-green-50' : 'bg-red-50'
-                    ]">
-                    <span class="text-sm text-gray-700">{{ test.name }}</span>
-                    <span :class="[
-                      'text-xs font-medium',
-                      test.status === 'PASSED' ? 'text-green-600' : 'text-red-600'
-                    ]">
-                      {{ test.status === 'PASSED' ? '✓ 通过' : '✗ 失败' }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div v-if="stage.fixAttempts && stage.fixAttempts > 0" class="mt-4 bg-blue-50 p-3 rounded-lg">
-                <p class="text-sm text-blue-700">自动修复 {{ stage.fixAttempts }} 次后测试通过</p>
-              </div>
-            </div>
+              <ul class="space-y-1">
+                <li v-for="test in stage.tests || []" :key="test.name" class="flex items-center justify-between text-sm border-b border-line last:border-0 py-1.5">
+                  <span class="mono text-xs text-ink-secondary">{{ test.name }}</span>
+                  <span :class="test.status === 'PASSED' ? 'text-ok' : 'text-danger'" class="text-xs font-medium">{{ test.status === 'PASSED' ? '通过' : '失败' }}</span>
+                </li>
+              </ul>
+              <p v-if="stage.fixAttempts > 0" class="text-xs text-ink-muted">自动修复 {{ stage.fixAttempts }} 次后通过</p>
+            </template>
 
-            <div v-if="stage.id === 'build'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">构建状态</h5>
-                <div :class="[
-                  'p-4 rounded-lg',
-                  stage.buildStatus === 'SUCCESS' ? 'bg-green-50' : 'bg-red-50'
-                ]">
-                  <p :class="[
-                    'text-xl font-bold',
-                    stage.buildStatus === 'SUCCESS' ? 'text-green-600' : 'text-red-600'
-                  ]">
-                    {{ stage.buildStatus === 'SUCCESS' ? '✓ 构建成功' : '✗ 构建失败' }}
-                  </p>
-                  <p class="text-sm text-gray-600 mt-1">耗时: {{ stage.duration || '12.5s' }}</p>
-                </div>
-              </div>
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">构建日志</h5>
-                <pre class="bg-gray-900 text-gray-300 p-4 rounded-lg text-xs overflow-x-auto max-h-32 overflow-y-auto">{{ stage.log || '[INFO] BUILD SUCCESS\n[INFO] Total time: 12.534 s' }}</pre>
-              </div>
-            </div>
+            <template v-if="stage.id === 'build'">
+              <p :class="['text-sm font-medium', stage.buildStatus === 'SUCCESS' ? 'text-ok' : 'text-danger']">
+                {{ stage.buildStatus === 'SUCCESS' ? '构建成功' : '构建失败' }}
+                <span class="text-ink-muted font-normal ml-2">耗时 {{ stage.duration || '12.5s' }}</span>
+              </p>
+              <pre class="mono bg-ink text-white/90 p-4 rounded text-xs overflow-x-auto max-h-32 overflow-y-auto">{{ stage.log || '[INFO] BUILD SUCCESS' }}</pre>
+            </template>
 
-            <div v-if="stage.id === 'deploy'">
-              <div class="mb-4">
-                <h5 class="text-sm font-medium text-gray-700 mb-2">部署状态</h5>
-                <div :class="[
-                  'p-4 rounded-lg',
-                  stage.deployStatus === 'SUCCESS' ? 'bg-green-50' : stage.deployStatus === 'RUNNING' ? 'bg-yellow-50' : 'bg-red-50'
-                ]">
-                  <p :class="[
-                    'text-xl font-bold',
-                    stage.deployStatus === 'SUCCESS' ? 'text-green-600' : stage.deployStatus === 'RUNNING' ? 'text-yellow-600' : 'text-red-600'
-                  ]">
-                    {{ stage.deployStatus === 'SUCCESS' ? '✓ 部署成功' : stage.deployStatus === 'RUNNING' ? '● 部署中' : '✗ 部署失败' }}
-                  </p>
-                  <p class="text-sm text-gray-600 mt-1">环境: {{ stage.environment || '开发环境' }}</p>
-                  <p class="text-sm text-gray-600">版本: {{ stage.version || '1.0.0' }}</p>
-                </div>
-              </div>
-              <div>
-                <h5 class="text-sm font-medium text-gray-700 mb-2">服务端点</h5>
-                <div class="space-y-2">
-                  <div v-for="endpoint in stage.endpoints || getDefaultEndpoints()" :key="endpoint.path" class="bg-blue-50 p-3 rounded-lg">
-                    <span class="text-xs font-bold text-blue-600 mr-2">{{ endpoint.method }}</span>
-                    <span class="text-xs text-blue-700">{{ endpoint.url }}</span>
-                    <span :class="[
-                      'ml-auto text-xs px-2 py-0.5 rounded-full',
-                      endpoint.status === 'UP' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                    ]">
-                      {{ endpoint.status === 'UP' ? '在线' : '离线' }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <template v-if="stage.id === 'deploy'">
+              <p :class="['text-sm font-medium', deployStatusClass(stage.deployStatus)]">
+                {{ deployStatusText(stage.deployStatus) }}
+                <span class="text-ink-muted font-normal ml-2">{{ stage.environment || '开发环境' }} · v{{ stage.version || '1.0.0' }}</span>
+              </p>
+              <ul class="space-y-1">
+                <li v-for="ep in stage.endpoints || getDefaultEndpoints()" :key="ep.path" class="flex items-center gap-3 text-sm border-b border-line last:border-0 py-1.5">
+                  <span class="mono text-2xs font-medium text-accent w-12">{{ ep.method }}</span>
+                  <span class="mono text-xs text-ink-secondary flex-1 truncate">{{ ep.url }}</span>
+                  <span :class="['tag', ep.status === 'UP' ? 'bg-ok-soft text-ok' : 'bg-danger-soft text-danger']">{{ ep.status === 'UP' ? '在线' : '离线' }}</span>
+                </li>
+              </ul>
+            </template>
           </div>
-        </div>
-      </div>
+        </li>
+      </ol>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div class="bg-white rounded-xl shadow-md p-4">
-          <h4 class="font-semibold text-gray-700 mb-3">基本信息</h4>
-          <div class="space-y-2 text-sm">
-            <div class="flex justify-between">
-              <span class="text-gray-500">项目</span>
-              <span class="text-gray-700 font-medium">{{ requirement.project }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500">需求标题</span>
-              <span class="text-gray-700 font-medium">{{ requirement.title }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500">创建时间</span>
-              <span class="text-gray-700">{{ formatTime(requirement.createdAt) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500">流水线ID</span>
-              <span class="text-gray-700 font-mono text-xs">{{ pipeline.pipelineId }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500">当前阶段</span>
-              <span class="text-gray-700">{{ pipeline.currentStage }}</span>
-            </div>
-          </div>
-        </div>
+        <section class="card">
+          <h3 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">基本信息</h3>
+          <dl class="px-5 py-4 space-y-2 text-sm">
+            <div class="flex justify-between"><dt class="text-ink-muted">项目</dt><dd class="mono text-ink">{{ requirement.project }}</dd></div>
+            <div class="flex justify-between"><dt class="text-ink-muted">创建时间</dt><dd class="text-ink">{{ formatTime(requirement.createdAt) }}</dd></div>
+            <div class="flex justify-between"><dt class="text-ink-muted">当前阶段</dt><dd class="text-ink">{{ pipeline.currentStage }}</dd></div>
+          </dl>
+        </section>
 
-        <div class="bg-white rounded-xl shadow-md p-4">
-          <h4 class="font-semibold text-gray-700 mb-3">需求描述</h4>
-          <p class="text-sm text-gray-600 leading-relaxed">{{ requirement.description }}</p>
-        </div>
+        <section class="card">
+          <h3 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">需求描述</h3>
+          <p class="px-5 py-4 text-sm text-ink-secondary leading-relaxed">{{ requirement.description }}</p>
+        </section>
 
-        <div class="bg-white rounded-xl shadow-md p-4">
-          <h4 class="font-semibold text-gray-700 mb-3">执行日志</h4>
-          <div class="space-y-1 max-h-40 overflow-y-auto">
-            <div v-for="(log, idx) in executionLogs" :key="idx" class="text-xs text-gray-500">
-              {{ log }}
-            </div>
+        <section class="card">
+          <h3 class="px-5 py-3 border-b border-line text-sm font-medium text-ink">执行日志</h3>
+          <div class="px-5 py-4 space-y-1 max-h-40 overflow-y-auto">
+            <p v-for="(log, idx) in executionLogs" :key="idx" class="mono text-xs text-ink-muted">{{ log }}</p>
           </div>
-        </div>
+        </section>
       </div>
 
-      <div v-if="pipeline.status === 'COMPLETED'" class="bg-green-50 rounded-xl shadow-md p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <h4 class="font-semibold text-green-700 text-lg">🎉 部署成功</h4>
-            <p class="text-sm text-green-600 mt-1">应用已部署到开发环境</p>
-          </div>
-          <div class="flex gap-3">
-            <a href="http://localhost:8081/api/health" target="_blank" class="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-gray-50 font-medium flex items-center space-x-2">
-              <span>🌐</span>
-              <span>访问健康检查端点</span>
-            </a>
-          </div>
+      <div v-if="pipeline.status === 'COMPLETED'" class="card border-ok/30 bg-ok-soft px-5 py-4 flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-ok">部署成功</p>
+          <p class="text-xs text-ink-secondary mt-0.5">应用已部署到开发环境</p>
         </div>
+        <a href="http://localhost:8081/api/health" target="_blank" class="btn-secondary bg-surface">访问健康检查</a>
       </div>
     </template>
   </div>
@@ -486,91 +255,56 @@ const route = useRoute()
 const showToast = inject('showToast')
 
 const loading = ref(true)
-const requirement = ref({
-  id: '',
-  project: '',
-  title: '',
-  description: '',
-  createdAt: ''
-})
-
-const pipeline = ref({
-  pipelineId: '',
-  status: 'RUNNING',
-  currentStage: 'INIT'
-})
-
+const requirement = ref({ id: '', project: '', title: '', description: '', createdAt: '' })
+const pipeline = ref({ pipelineId: '', status: 'RUNNING', currentStage: 'INIT' })
 const selectedCodeFile = ref(null)
 const stages = ref([])
 const executionLogs = ref([])
-
 let pollInterval = null
 
 const pipelineStages = computed(() => {
-  if (stages.value.length > 0) {
-    return stages.value.map(s => {
-      const result = {
-        id: s.stageName.toLowerCase().replace('_', '-'),
-        name: getStageName(s.stageName),
-        icon: getStageIcon(s.stageName),
-        status: s.status,
-        statusText: getStageStatusText(s.status),
-        time: s.endTime ? formatTimeShort(s.endTime) : '',
-        hasContent: s.status !== 'PENDING',
-        durationMs: s.durationMs,
-        errorMessage: s.errorMessage
-      }
-
-      if (s.resultJson) {
-        try {
-          let json = JSON.parse(s.resultJson)
-          if (json.analysisResult && typeof json.analysisResult === 'string') {
-            try {
-              json.analysisResult = JSON.parse(json.analysisResult)
-            } catch (e) {}
-          }
-          Object.assign(result, json)
-        } catch (e) {}
-      }
-
-      return result
-    }).sort((a, b) => (a.orderNum || 0) - (b.orderNum || 0))
-  }
-  
-  return []
+  if (!stages.value.length) return []
+  return stages.value.map(s => {
+    const result = {
+      id: s.stageName.toLowerCase().replace('_', '-'),
+      name: getStageName(s.stageName),
+      status: s.status,
+      statusText: getStageStatusText(s.status),
+      time: s.endTime ? formatTimeShort(s.endTime) : '',
+      durationMs: s.durationMs,
+      errorMessage: s.errorMessage
+    }
+    if (s.resultJson) {
+      try {
+        let json = JSON.parse(s.resultJson)
+        if (json.analysisResult && typeof json.analysisResult === 'string') {
+          try { json.analysisResult = JSON.parse(json.analysisResult) } catch (e) {}
+        }
+        Object.assign(result, json)
+      } catch (e) {}
+    }
+    return result
+  }).sort((a, b) => (a.orderNum || 0) - (b.orderNum || 0))
 })
 
-const currentStageInfo = computed(() => {
-  const current = pipelineStages.value.find(s => s.status === 'RUNNING')
-  return current || pipelineStages.value[pipelineStages.value.length - 1] || { name: '未知' }
-})
+const currentStageInfo = computed(() =>
+  pipelineStages.value.find(s => s.status === 'RUNNING') ||
+  pipelineStages.value[pipelineStages.value.length - 1] ||
+  { name: '未知' }
+)
 
-const progressWidth = computed(() => {
-  const total = pipelineStages.value.length
-  const completed = pipelineStages.value.filter(s => s.status === 'COMPLETED').length
-  return `${(completed / total) * 100}%`
-})
+const completedCount = computed(() =>
+  pipelineStages.value.filter(s => s.status === 'COMPLETED').length
+)
 
 const generatedFiles = computed(() => {
-  const codeGenStage = pipelineStages.value.find(s => s.id === 'code-gen')
-  if (codeGenStage && codeGenStage.generatedFiles) {
-    return Object.entries(codeGenStage.generatedFiles).map(([name, content]) => ({
-      name,
-      content
-    }))
-  }
-  return []
+  const s = pipelineStages.value.find(s => s.id === 'code-gen')
+  return s?.generatedFiles ? Object.entries(s.generatedFiles).map(([name, content]) => ({ name, content })) : []
 })
 
 const testGeneratedFiles = computed(() => {
-  const testGenStage = pipelineStages.value.find(s => s.id === 'test-gen')
-  if (testGenStage && testGenStage.generatedFiles) {
-    return Object.entries(testGenStage.generatedFiles).map(([name, content]) => ({
-      name,
-      content
-    }))
-  }
-  return []
+  const s = pipelineStages.value.find(s => s.id === 'test-gen')
+  return s?.generatedFiles ? Object.entries(s.generatedFiles).map(([name, content]) => ({ name, content })) : []
 })
 
 const getDefaultEndpoints = () => [
@@ -578,161 +312,70 @@ const getDefaultEndpoints = () => [
   { method: 'GET', url: 'http://localhost:8081/api/health', status: 'UP' }
 ]
 
-const getStageName = (stageName) => {
-  const names = {
-    'REQUIREMENT_ANALYSIS': '需求分析',
-    'FEATURE_POINT_SPLIT': '功能点拆分',
-    'TASK_SPLIT': '任务拆分',
-    'DESIGN': '方案设计',
-    'CODE_GEN': '代码生成',
-    'TEST_GEN': '测试生成',
-    'CODE_REVIEW': '代码审查',
-    'PR_CREATION': '变更预览',
-    'TEST_EXEC': '测试验证',
-    'BUILD': '编译构建',
-    'DEPLOY': '发布部署'
-  }
-  return names[stageName] || stageName
+const getStageName = (n) => ({
+  REQUIREMENT_ANALYSIS: '需求分析', FEATURE_POINT_SPLIT: '功能点拆分', TASK_SPLIT: '任务拆分',
+  DESIGN: '方案设计', CODE_GEN: '代码生成', TEST_GEN: '测试生成',
+  CODE_REVIEW: '代码审查', PR_CREATION: '变更预览', TEST_EXEC: '测试验证',
+  BUILD: '编译构建', DEPLOY: '发布部署'
+}[n] || n)
+
+const getStageStatusText = (s) => ({ COMPLETED: '已完成', RUNNING: '执行中', FAILED: '失败' }[s] || '待处理')
+const statusText = (s) => ({ COMPLETED: '已完成', RUNNING: '执行中', FAILED: '失败', WAITING_APPROVAL: '等待审批', CANCELLED: '已取消' }[s] || s)
+
+const statusClass = (s) => ({
+  COMPLETED: 'bg-ok-soft text-ok',
+  RUNNING: 'bg-accent-soft text-accent',
+  FAILED: 'bg-danger-soft text-danger',
+  WAITING_APPROVAL: 'bg-warn-soft text-warn',
+}[s] || 'bg-base text-ink-secondary')
+
+const stageDotClass = (s) => ({
+  COMPLETED: 'bg-ok', RUNNING: 'bg-accent animate-pulse', FAILED: 'bg-danger'
+}[s] || 'bg-line-strong')
+
+const stageTagClass = (s) => ({
+  COMPLETED: 'bg-ok-soft text-ok', RUNNING: 'bg-accent-soft text-accent', FAILED: 'bg-danger-soft text-danger'
+}[s] || 'bg-base text-ink-muted')
+
+const riskClass = (r) => ({ 低: 'bg-ok-soft text-ok', 中: 'bg-warn-soft text-warn', 高: 'bg-danger-soft text-danger' }[r] || 'bg-ok-soft text-ok')
+
+const deployStatusClass = (s) => ({ SUCCESS: 'text-ok', RUNNING: 'text-warn' }[s] || 'text-danger')
+const deployStatusText = (s) => ({ SUCCESS: '部署成功', RUNNING: '部署中' }[s] || '部署失败')
+
+const formatTime = (t) => {
+  if (!t) return '—'
+  const d = new Date(t)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
 }
 
-const getStageIcon = (stageName) => {
-  const icons = {
-    'REQUIREMENT_ANALYSIS': '🎯',
-    'FEATURE_POINT_SPLIT': '📋',
-    'TASK_SPLIT': '📝',
-    'DESIGN': '📐',
-    'CODE_GEN': '💻',
-    'TEST_GEN': '🧪',
-    'CODE_REVIEW': '🔍',
-    'PR_CREATION': '👁️',
-    'TEST_EXEC': '✅',
-    'BUILD': '🔧',
-    'DEPLOY': '🚀'
-  }
-  return icons[stageName] || '📦'
-}
-
-const getStageStatusText = (status) => {
-  switch (status) {
-    case 'COMPLETED': return '已完成'
-    case 'RUNNING': return '执行中'
-    case 'FAILED': return '失败'
-    default: return '待处理'
-  }
-}
-
-const statusText = (status) => {
-  switch (status) {
-    case 'COMPLETED': return '已完成'
-    case 'RUNNING': return '执行中'
-    case 'FAILED': return '失败'
-    case 'WAITING_APPROVAL': return '等待审批'
-    case 'CANCELLED': return '已取消'
-    default: return status
-  }
-}
-
-const statusClass = (status) => {
-  switch (status) {
-    case 'COMPLETED': return 'bg-green-100 text-green-700'
-    case 'RUNNING': return 'bg-indigo-100 text-indigo-700'
-    case 'FAILED': return 'bg-red-100 text-red-700'
-    case 'WAITING_APPROVAL': return 'bg-yellow-100 text-yellow-700'
-    default: return 'bg-gray-100 text-gray-600'
-  }
-}
-
-const statusBgClass = (status) => {
-  switch (status) {
-    case 'COMPLETED': return 'bg-green-50 border-green-200'
-    case 'RUNNING': return 'bg-indigo-50 border-indigo-200'
-    case 'FAILED': return 'bg-red-50 border-red-200'
-    case 'WAITING_APPROVAL': return 'bg-yellow-50 border-yellow-200'
-    default: return 'bg-gray-50 border-gray-200'
-  }
-}
-
-const formatTime = (timestamp) => {
-  if (!timestamp) return '未知'
-  const date = new Date(timestamp)
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
-}
-
-const formatTimeShort = (timestamp) => {
-  if (!timestamp) return ''
-  const date = new Date(timestamp)
-  const hour = String(date.getHours()).padStart(2, '0')
-  const minute = String(date.getMinutes()).padStart(2, '0')
-  return `${hour}:${minute}`
+const formatTimeShort = (t) => {
+  if (!t) return ''
+  const d = new Date(t)
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
 }
 
 const formatDuration = (ms) => {
   if (!ms) return ''
-  const seconds = Math.floor(ms / 1000)
-  const minutes = Math.floor(seconds / 60)
-  if (minutes > 0) {
-    return `${minutes}分${seconds % 60}秒`
-  }
-  return `${seconds}秒`
+  const s = Math.floor(ms / 1000)
+  const m = Math.floor(s / 60)
+  return m > 0 ? `${m}m ${s % 60}s` : `${s}s`
 }
 
-const getDesignArchitecture = () => {
-  return `采用 Spring Boot 分层架构：
-├── Controller层：对外 REST API 控制
-├── Service层：业务逻辑处理
-├── Repository层：数据访问接口
-└── Entity层：数据库实体模型
+const getDefaultAnalysis = () => JSON.stringify({ success: true, projectType: 'SPRING_BOOT', database: 'H2' }, null, 2)
 
-使用 Spring Data JPA 进行数据持久化，H2 作为开发数据库。`
-}
-
-const getDesignApis = () => [
-  { method: 'GET', path: '/api/users', description: '获取用户列表' },
-  { method: 'POST', path: '/api/users', description: '创建新用户' },
-  { method: 'GET', path: '/api/users/{id}', description: '获取用户详情' },
-  { method: 'PUT', path: '/api/users/{id}', description: '更新用户信息' },
-  { method: 'DELETE', path: '/api/users/{id}', description: '删除用户' }
-]
-
-const getCodeFiles = () => [
-  { name: 'UserController.java', content: 'package com.bage.demo.controller;\n\nimport org.springframework.web.bind.annotation.*;\nimport java.util.List;\n\n@RestController\n@RequestMapping("/api/users")\npublic class UserController {\n    // CRUD endpoints\n}' },
-  { name: 'UserService.java', content: 'package com.bage.demo.service;\n\nimport com.bage.demo.entity.User;\nimport java.util.List;\n\npublic interface UserService {\n    List<User> getAllUsers();\n    User getUserById(Long id);\n    User createUser(User user);\n    User updateUser(Long id, User user);\n    void deleteUser(Long id);\n}' },
-  { name: 'UserRepository.java', content: 'package com.bage.demo.repository;\n\nimport com.bage.demo.entity.User;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface UserRepository extends JpaRepository<User, Long> {\n}' },
-  { name: 'User.java', content: 'package com.bage.demo.entity;\n\nimport jakarta.persistence.*;\n\n@Entity\n@Table(name = \"users\")\npublic class User {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    private String username;\n    private String email;\n    // getters and setters\n}' }
-]
-
-const getDefaultAnalysis = () => {
-  return JSON.stringify({
-    success: true,
-    projectType: 'SPRING_BOOT',
-    database: 'H2',
-    javaVersion: '21',
-    springBootVersion: '3.2.x',
-    modules: ['controller', 'service', 'repository', 'entity']
-  }, null, 2)
-}
-
-const selectCodeFile = (file) => {
-  selectedCodeFile.value = file
-}
-
-const applyCode = () => {
-  showToast?.success('代码已应用', `${selectedCodeFile.value.name}`)
-}
-
-const viewDiff = () => {
-  showToast?.info('正在打开差异对比视图...')
-}
+const selectCodeFile = (f) => { selectedCodeFile.value = f }
+const applyCode = () => showToast?.success('代码已应用', selectedCodeFile.value.name)
+const viewDiff = () => showToast?.info('正在打开差异对比视图')
 
 const handleCancel = () => {
-  if (confirm('确定要取消这条流水线吗？')) {
+  if (confirm('确定取消这条流水线？')) {
     pipelineApi.cancelPipeline(pipeline.value.pipelineId)
     router.push('/pipelines')
   }
 }
 
 const handleApprove = () => {
-  if (confirm('确定要批准当前阶段吗？')) {
+  if (confirm('确定批准当前阶段？')) {
     pipelineApi.approvePipeline(pipeline.value.pipelineId, pipeline.value.currentStage || 'DEPLOY', true, 'admin', '')
   }
 }
@@ -749,20 +392,17 @@ const loadPipelineData = async () => {
     const pipelineId = route.params.id
     const pipeRes = await pipelineApi.getPipeline(pipelineId)
     pipeline.value = pipeRes.data
-    
     const stageRes = await pipelineApi.getStages(pipelineId)
     stages.value = stageRes.data
-    
+
     let projectName = '未知项目'
     if (pipeline.value.projectId) {
       try {
         const projRes = await projectApi.getProject(pipeline.value.projectId)
         projectName = projRes.data.projectName || '未知项目'
-      } catch (e) {
-        console.error('Failed to load project:', e)
-      }
+      } catch (e) { console.error('Failed to load project:', e) }
     }
-    
+
     if (pipeline.value.requirementTitle) {
       requirement.value = {
         project: projectName,
@@ -772,24 +412,14 @@ const loadPipelineData = async () => {
       }
     } else {
       const reqRes = await requirementApi.getRequirementByPipelineId(pipelineId)
-      if (reqRes && reqRes.data) {
-        requirement.value = {
-          ...reqRes.data,
-          project: projectName
-        }
-      } else {
-        requirement.value = {
-          project: projectName,
-          title: '健康检查功能',
-          description: '添加健康检查端点，返回服务状态信息',
-          createdAt: pipeline.value.createdAt
-        }
-      }
+      requirement.value = reqRes?.data
+        ? { ...reqRes.data, project: projectName }
+        : { project: projectName, title: '需求处理中', description: '', createdAt: pipeline.value.createdAt }
     }
 
-    executionLogs.value = stages.value.map(s => 
-      `${formatTimeShort(s.startTime)} [${s.status}] ${getStageName(s.stageName)}`
-    ).filter(l => l.trim())
+    executionLogs.value = stages.value
+      .map(s => `${formatTimeShort(s.startTime)} [${s.status}] ${getStageName(s.stageName)}`)
+      .filter(l => l.trim())
   } catch (error) {
     console.error('Failed to load pipeline data:', error)
   } finally {
@@ -797,22 +427,12 @@ const loadPipelineData = async () => {
   }
 }
 
-const pollPipelineStatus = () => {
-  pollInterval = setInterval(() => {
-    if (pipeline.value.status === 'RUNNING') {
-      loadPipelineData()
-    }
-  }, 5000)
-}
-
 onMounted(() => {
   loadPipelineData()
-  pollPipelineStatus()
+  pollInterval = setInterval(() => {
+    if (pipeline.value.status === 'RUNNING') loadPipelineData()
+  }, 5000)
 })
 
-onUnmounted(() => {
-  if (pollInterval) {
-    clearInterval(pollInterval)
-  }
-})
+onUnmounted(() => { if (pollInterval) clearInterval(pollInterval) })
 </script>

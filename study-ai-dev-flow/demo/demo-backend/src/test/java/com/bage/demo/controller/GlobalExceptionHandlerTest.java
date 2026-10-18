@@ -1,6 +1,8 @@
 package com.bage.demo.controller;
 
-import com.bage.demo.service.DuplicateIsbnException;
+import com.bage.demo.exception.DuplicateIsbnException;
+import com.bage.demo.exception.GlobalExceptionHandler;
+import com.bage.demo.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,8 +35,8 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void handleRuntimeExceptionReturnsNotFound() throws Exception {
-        when(bookService.getBookById(99L)).thenThrow(new RuntimeException("Book not found"));
+    void handleResourceNotFoundExceptionReturnsNotFound() throws Exception {
+        when(bookService.getBookById(99L)).thenThrow(new ResourceNotFoundException("Book not found"));
 
         mockMvc.perform(get("/api/books/99"))
                 .andExpect(status().isNotFound())

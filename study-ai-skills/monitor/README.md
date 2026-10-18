@@ -91,7 +91,15 @@ skill-usage.sh upload
 # 3. 本地分析（不依赖 Spring Boot）
 skill-usage.sh report
 
-# 4. 管理 cron
+# 4. 状态总览（服务 + cron + 数据管道）
+skill-usage.sh status
+
+# 5. Spring Boot 生命周期管理
+skill-usage.sh start-server     # nohup mvn spring-boot:run，等待 health 通过
+skill-usage.sh stop-server      # pkill + 等待端口释放
+skill-usage.sh restart-server
+
+# 6. 管理 cron
 skill-usage.sh start-cron     # 安装 launchd plist（60s 间隔）
 skill-usage.sh stop-cron      # 卸载
 ```
@@ -101,6 +109,7 @@ skill-usage.sh stop-cron      # 卸载
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
 | `SKILL_MONITOR_URL` | `http://localhost:8090` | Spring Boot 服务地址 |
+| `SKILL_MONITOR_DIR` | `~/bage/github/study/study-ai-skills/monitor/skill-monitor-server` | start-server 使用的工程目录 |
 
 ### 数据文件（默认位置）
 
@@ -178,6 +187,18 @@ curl -X POST http://localhost:8090/api/skill-usage/batch \
 {"status": "ok", "time": 1792290405413}
 ```
 
+### 系统运维 API（SystemOpsController）
+
+| 方法 | 端点 | 说明 |
+|------|------|------|
+| GET | `/api/skill-usage/system/status` | 服务/Cron/脚本/数据管道状态聚合 |
+| POST | `/api/skill-usage/system/stop` | 关闭服务（先响应，1-2s 后停止） |
+| POST | `/api/skill-usage/system/restart` | 重启服务（detached，约 20-40s 恢复） |
+| POST | `/api/skill-usage/system/cron/start` | 安装 launchd Cron |
+| POST | `/api/skill-usage/system/cron/stop` | 卸载 Cron |
+
+关闭/重启实际委托给 `~/.trae-cn/scripts/skill-usage.sh`（detached 后台执行，服务可自行关闭/重启）。Dashboard 首页"🩺 系统状态 & 运维"面板可直接查看状态并点击操作。
+
 ---
 
 ## Dashboard 页面
@@ -188,6 +209,7 @@ curl -X POST http://localhost:8090/api/skill-usage/batch \
 |------|------|
 | 顶部导航 | 时间范围切换（今日 / 7 / 30 / 90 天） |
 | Overview 卡片 | 总调用次数 / 涉及 Skill 数 / 错误次数 / 错误率 |
+| 系统状态 & 运维 | 服务/Cron/脚本/数据管道状态 + 刷新/重启/关闭服务 + Cron 启停按钮 |
 | Top Skill | 横向条形图，Top N |
 | 触发方式 & 客户端 | 左右两列：自动 vs 手动 / trae-macos 分布 |
 | 每日趋势 | 最近 14 天柱状图 |

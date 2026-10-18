@@ -3,7 +3,9 @@ package com.bage.demo.service;
 import com.bage.demo.dto.BookRequest;
 import com.bage.demo.dto.BookResponse;
 import com.bage.demo.entity.Book;
+import com.bage.demo.exception.DuplicateIsbnException;
 import com.bage.demo.repository.BookRepository;
+import com.bage.demo.service.impl.BookServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 

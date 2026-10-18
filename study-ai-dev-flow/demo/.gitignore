@@ -1,0 +1,44 @@
+# OS 文件
+.DS_Store
+Thumbs.db
+
+# 构建产物
+target/
+build/
+dist/
+*.class
+*.jar
+*.war
+
+# IDE 文件
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# 日志文件
+*.log
+logs/
+
+# Gradle（统一使用 Maven，历史残留忽略）
+.gradle/
+
+# 前端
+node_modules/
+test-results/
+playwright-report/
+
+# 环境与密钥
+.env
+.env.local
+*.key
+*.secret
+
+# 数据库文件
+*.db
+*.sqlite
+
+# 临时文件
+*.tmp
+*.temp

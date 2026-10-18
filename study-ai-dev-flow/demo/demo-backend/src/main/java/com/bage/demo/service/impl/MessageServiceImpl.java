@@ -6,9 +6,11 @@ import com.bage.demo.dto.MessageUpdateRequest;
 import com.bage.demo.entity.Message;
 import com.bage.demo.repository.MessageRepository;
 import com.bage.demo.service.MessageService;
-import java.util.List;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,10 +38,24 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public MessageResponse getMessage(Long id) {
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Message not found: " + id));
+        return toResponse(message);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<MessageResponse> getAllMessages(Pageable pageable) {
+        return messageRepository.findAll(pageable).map(this::toResponse);
+    }
+
+    @Override
     @Transactional
     public MessageResponse updateMessage(Long id, MessageUpdateRequest request) {
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Message not found: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Message not found: " + id));
         if (request.getContent() != null) {
             message.setContent(request.getContent());
         }
@@ -47,15 +63,18 @@ public class MessageServiceImpl implements MessageService {
             message.setRead(request.getRead());
         }
         Message saved = messageRepository.save(message);
+        log.info("Updated message with id={}", saved.getId());
         return toResponse(saved);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<MessageResponse> getAllMessages() {
-        return messageRepository.findAll().stream()
-                .map(this::toResponse)
-                .toList();
+    @Transactional
+    public void deleteMessage(Long id) {
+        if (!messageRepository.existsById(id)) {
+            throw new EntityNotFoundException("Message not found: " + id);
+        }
+        messageRepository.deleteById(id);
+        log.info("Deleted message with id={}", id);
     }
 
     private MessageResponse toResponse(Message message) {

@@ -1,0 +1,54 @@
+# ============================================================
+# Trae 技能系统忽略规则
+# ============================================================
+
+# 技能缓存
+.cache/
+.skills-cache/
+*.tmp
+*.temp
+
+# 技能索引
+skills-index.json
+skills-mapping.json
+
+# 日志
+*.log
+logs/
+
+# 测试产物
+__tests__/
+*.test.js
+*.spec.js
+rca-agent-web/test-results/
+rca-agent-web/playwright-report/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 技能开发
+dev/
+examples/
+samples/
+*.template
+*.stub
+*.zip
+*.tar.gz
+*.tgz
+
+# 依赖
+node_modules/
+vendor/
+
+# 构建产物
+dist/
+build/
+target/

@@ -5,21 +5,20 @@
         v-for="toast in toasts"
         :key="toast.id"
         :class="[
-          'flex items-center px-4 py-3 rounded-lg shadow-lg min-w-80 max-w-sm',
-          getToastClass(toast.type)
+          'flex items-start gap-3 px-3 py-2.5 rounded border bg-surface min-w-72 max-w-sm shadow-none',
+          getBorderClass(toast.type)
         ]"
       >
-        <span class="text-xl mr-3">{{ getToastIcon(toast.type) }}</span>
-        <div class="flex-1">
-          <p class="font-medium">{{ toast.message }}</p>
-          <p v-if="toast.detail" class="text-sm opacity-80">{{ toast.detail }}</p>
+        <span :class="['mt-0.5 w-1.5 h-1.5 rounded-full flex-shrink-0', getDotClass(toast.type)]"></span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-ink font-medium">{{ toast.message }}</p>
+          <p v-if="toast.detail" class="mono text-xs text-ink-muted mt-0.5 break-all">{{ toast.detail }}</p>
         </div>
         <button
           @click="removeToast(toast.id)"
-          class="ml-2 text-gray-400 hover:text-gray-600"
-        >
-          <span class="text-lg">×</span>
-        </button>
+          class="text-ink-muted hover:text-ink text-lg leading-none px-1"
+          aria-label="关闭"
+        >×</button>
       </div>
     </TransitionGroup>
   </div>
@@ -30,21 +29,21 @@ import { ref } from 'vue'
 
 const toasts = ref([])
 
-const getToastClass = (type) => {
+const getBorderClass = (type) => {
   switch (type) {
-    case 'success': return 'bg-green-50 border border-green-200 text-green-700'
-    case 'error': return 'bg-red-50 border border-red-200 text-red-700'
-    case 'warning': return 'bg-yellow-50 border border-yellow-200 text-yellow-700'
-    default: return 'bg-blue-50 border border-blue-200 text-blue-700'
+    case 'success': return 'border-ok/30'
+    case 'error': return 'border-danger/30'
+    case 'warning': return 'border-warn/30'
+    default: return 'border-line'
   }
 }
 
-const getToastIcon = (type) => {
+const getDotClass = (type) => {
   switch (type) {
-    case 'success': return '✓'
-    case 'error': return '✗'
-    case 'warning': return '⚠️'
-    default: return 'ℹ️'
+    case 'success': return 'bg-ok'
+    case 'error': return 'bg-danger'
+    case 'warning': return 'bg-warn'
+    default: return 'bg-accent'
   }
 }
 
@@ -56,9 +55,7 @@ const addToast = (message, type = 'info', detail = '') => {
 
 const removeToast = (id) => {
   const index = toasts.value.findIndex(t => t.id === id)
-  if (index > -1) {
-    toasts.value.splice(index, 1)
-  }
+  if (index > -1) toasts.value.splice(index, 1)
 }
 
 defineExpose({
@@ -73,12 +70,11 @@ defineExpose({
 <style scoped>
 .toast-enter-active,
 .toast-leave-active {
-  transition: all 0.3s ease;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
-
 .toast-enter-from,
 .toast-leave-to {
   opacity: 0;
-  transform: translateX(100%);
+  transform: translateY(-4px);
 }
 </style>

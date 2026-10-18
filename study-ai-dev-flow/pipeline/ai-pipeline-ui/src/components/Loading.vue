@@ -1,25 +1,16 @@
 <template>
-  <div class="flex items-center justify-center h-full">
+  <div class="flex items-center justify-center py-16">
     <div class="text-center">
-      <div class="relative w-16 h-16 mx-auto mb-4">
-        <div class="absolute inset-0 border-4 border-indigo-200 rounded-full"></div>
-        <div class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
-      </div>
-      <p class="text-gray-500 font-medium">{{ text || '加载中...' }}</p>
-      <p v-if="subtext" class="text-gray-400 text-sm mt-2">{{ subtext }}</p>
+      <div class="w-6 h-6 mx-auto mb-3 border-2 border-line border-t-ink rounded-full animate-spin"></div>
+      <p class="text-ink-secondary text-sm">{{ text || '加载中' }}</p>
+      <p v-if="subtext" class="text-ink-muted text-xs mt-1">{{ subtext }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
 defineProps({
-  text: {
-    type: String,
-    default: '加载中...'
-  },
-  subtext: {
-    type: String,
-    default: ''
-  }
+  text: { type: String, default: '加载中' },
+  subtext: { type: String, default: '' }
 })
 </script>

@@ -1,15 +1,13 @@
-server:
-  port: 8082
-
 spring:
+  application:
+    name: demo-backend
+
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:demodb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
     username: sa
     password:
-  h2:
-    console:
-      enabled: true
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,3 +15,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        use_sql_comments: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+server:
+  port: 8082

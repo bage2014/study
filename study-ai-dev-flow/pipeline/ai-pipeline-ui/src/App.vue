@@ -1,50 +1,37 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <nav class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
-      <div class="container mx-auto px-4 py-3">
-        <div class="flex justify-between items-center">
-          <router-link to="/" class="text-xl font-bold hover:text-gray-100 transition-colors">
-            AI Pipeline Platform
+  <div class="min-h-screen bg-base">
+    <header class="sticky top-0 z-40 bg-surface border-b border-line">
+      <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-8">
+          <router-link to="/" class="flex items-center gap-2 text-ink font-semibold tracking-tight">
+            <span class="w-5 h-5 rounded-sm bg-accent inline-flex items-center justify-center">
+              <span class="w-2 h-2 bg-white rounded-[1px]"></span>
+            </span>
+            <span>AI Pipeline</span>
           </router-link>
-          <div class="flex items-center space-x-6">
-            <router-link 
-              to="/" 
+          <nav class="flex items-center gap-1">
+            <router-link
+              v-for="item in navItems"
+              :key="item.to"
+              :to="item.to"
               :class="[
-                'px-3 py-1.5 rounded-md transition-colors',
-                $route.path === '/' ? 'bg-white/20' : 'hover:text-gray-200'
+                'px-3 py-1.5 rounded text-sm transition-colors',
+                isActive(item)
+                  ? 'text-ink font-medium bg-base'
+                  : 'text-ink-secondary hover:text-ink'
               ]"
             >
-              录入需求
+              {{ item.label }}
             </router-link>
-            <router-link 
-              to="/pipelines" 
-              :class="[
-                'px-3 py-1.5 rounded-md transition-colors',
-                $route.path.startsWith('/pipelines') ? 'bg-white/20' : 'hover:text-gray-200'
-              ]"
-            >
-              流水线列表
-            </router-link>
-            <router-link 
-              to="/projects" 
-              :class="[
-                'px-3 py-1.5 rounded-md transition-colors',
-                $route.path.startsWith('/projects') ? 'bg-white/20' : 'hover:text-gray-200'
-              ]"
-            >
-              项目管理
-            </router-link>
-            <div v-if="projectStore.currentProject" class="ml-4 pl-4 border-l border-white/30">
-              <div class="flex items-center space-x-2">
-                <span class="text-xs bg-white/20 px-2 py-0.5 rounded">当前项目</span>
-                <span class="text-sm font-medium truncate max-w-32">{{ projectStore.currentProject.name }}</span>
-              </div>
-            </div>
-          </div>
+          </nav>
+        </div>
+        <div v-if="projectStore.currentProject" class="flex items-center gap-2 text-sm">
+          <span class="text-ink-muted text-2xs uppercase tracking-wide">Project</span>
+          <span class="mono text-ink">{{ projectStore.currentProject.name }}</span>
         </div>
       </div>
-    </nav>
-    <main class="container mx-auto px-4 py-6">
+    </header>
+    <main class="max-w-6xl mx-auto px-6 py-8">
       <router-view />
     </main>
     <Toast ref="toastRef" />
@@ -53,10 +40,20 @@
 
 <script setup>
 import { ref, provide } from 'vue'
+import { useRoute } from 'vue-router'
 import Toast from './components/Toast.vue'
 import { projectStore } from './stores/projectStore'
 
+const route = useRoute()
 const toastRef = ref(null)
+
+const navItems = [
+  { to: '/', label: '录入需求', match: (p) => p === '/' },
+  { to: '/pipelines', label: '流水线', match: (p) => p.startsWith('/pipelines') },
+  { to: '/projects', label: '项目', match: (p) => p.startsWith('/projects') },
+]
+
+const isActive = (item) => item.match(route.path)
 
 const showToast = {
   success: (msg, detail) => toastRef.value?.success(msg, detail),

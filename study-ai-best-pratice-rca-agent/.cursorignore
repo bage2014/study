@@ -1,0 +1,17 @@
+# Cursor AI 忽略规则
+target/
+build/
+dist/
+node_modules/
+.idea/
+.vscode/
+*.log
+logs/
+.env
+application-local.yml
+.DS_Store
+Thumbs.db
+*.pt
+*.pth
+*.onnx
+.cache/

@@ -1,0 +1,14 @@
+# Aider AI 忽略规则
+*.jar
+*.war
+*.exe
+target/
+build/
+dist/
+node_modules/
+*.log
+.env
+application-local.yml
+.idea/
+.vscode/
+.DS_Store
