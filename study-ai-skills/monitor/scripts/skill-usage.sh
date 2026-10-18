@@ -23,6 +23,21 @@ SERVER_DIR="${SKILL_MONITOR_DIR:-${HOME}/bage/github/study/study-ai-skills/monit
 mkdir -p "$(dirname "$JSONL_FILE")"
 
 # ── log ─────────────────────────────────────────────────────
+# 检测当前项目名：从 PWD 向上找最近的项目标记（pom.xml/package.json/.git/AGENTS.md 等），
+# 找不到则回退 git 根目录名，最后回退当前目录名。支持 monorepo 场景（仓库内多个子项目）。
+detect_project() {
+    local dir="$PWD" root m
+    root=$(git rev-parse --show-toplevel 2>/dev/null)
+    while [ "$dir" != "/" ] && [ "$dir" != "$HOME" ]; do
+        for m in .git pom.xml package.json build.gradle settings.gradle go.mod Cargo.toml pyproject.toml AGENTS.md; do
+            if [ -e "$dir/$m" ]; then basename "$dir"; return; fi
+        done
+        [ -n "$root" ] && [ "$dir" = "$root" ] && break
+        dir=$(dirname "$dir")
+    done
+    if [ -n "$root" ]; then basename "$root"; else basename "$PWD"; fi
+}
+
 log_usage() {
     local skill_name="" trigger="manual" event="tool_load"
     while [[ $# -gt 0 ]]; do
@@ -34,16 +49,17 @@ log_usage() {
     done
     [ -z "$skill_name" ] && { echo "missing skill-name"; return 1; }
 
-    local ts
+    local ts project
     ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    project=$(detect_project)
     local line
-    line=$(printf '{"ts":"%s","skill":"%s","event":"%s","client":"trae-macos","session":"no-session","duration_ms":0,"status":"ok","trigger":"%s","user":"%s"}\n' "$ts" "$skill_name" "$event" "$trigger" "${USER:-unknown}")
+    line=$(printf '{"ts":"%s","skill":"%s","event":"%s","client":"trae-macos","session":"no-session","duration_ms":0,"status":"ok","trigger":"%s","user":"%s","project":"%s"}\n' "$ts" "$skill_name" "$event" "$trigger" "${USER:-unknown}" "$project")
     if ! echo "$line" >> "$JSONL_FILE" 2>/dev/null; then
         echo "MONITOR-LOG-FAILED: 无法写入 $JSONL_FILE（可能被沙箱拦截）"
         echo "请以非沙箱方式重试: ~/.trae-cn/scripts/skill-usage.sh log $skill_name --trigger $trigger"
         return 2
     fi
-    echo "monitor: logged $skill_name ($event, $trigger)"
+    echo "monitor: logged $skill_name ($event, $trigger, $project)"
 }
 
 # ── upload (incremental + resume) ──────────────────────────

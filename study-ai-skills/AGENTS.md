@@ -24,7 +24,7 @@ study-ai-skills/
 ```
 
 - **Skill 是 Markdown 文档，不是可执行插件**：Agent 读取 SKILL.md 后按其中流程执行。
-- 监控链路：SKILL.md 内嵌埋点指令 → Agent 调 `skill-usage.sh log` 写 JSONL → launchd cron 每分钟增量上传 → Spring Boot 入库 → Dashboard 展示。
+- 监控链路：SKILL.md 内嵌埋点指令 → Agent 调 `skill-usage.sh log` 写 JSONL（含 ts/skill/user/**project** 等字段，project 自动从项目标记探测，支持 monorepo）→ launchd cron 每分钟增量上传 → Spring Boot 入库 → Dashboard（Vue 3 + API 驱动）展示。
 
 ## 2. 编码规则
 

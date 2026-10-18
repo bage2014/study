@@ -1,286 +1,373 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trae Skill Monitor</title>
 <style>
+:root{
+  --bg:#0F172A; --panel:#1E293B; --border:#334155; --text:#E2E8F0; --muted:#94A3B8;
+  --dim:#64748B; --accent:#38BDF8; --accent2:#A78BFA; --ok:#4ADE80; --err:#F87171;
+  --ok-bg:#064E3B; --ok-fg:#6EE7B7; --err-bg:#7F1D1D; --err-fg:#FCA5A5; --gold:#FBBF24;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0F172A;color:#E2E8F0;min-height:100vh;padding:24px}
-.container{max-width:1200px;margin:0 auto}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px}
+.container{max-width:1240px;margin:0 auto}
 h1{font-size:24px;margin-bottom:8px}
-.subtitle{color:#94A3B8;margin-bottom:24px;font-size:14px}
-.nav{margin-bottom:24px}
-.nav a{color:#38BDF8;text-decoration:none;margin-right:12px}
-.nav a.active{font-weight:bold;color:#A78BFA}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
-.card{background:#1E293B;border-radius:8px;padding:20px}
-.card .label{font-size:12px;color:#94A3B8;text-transform:uppercase;letter-spacing:.05em}
-.card .value{font-size:32px;font-weight:bold;margin-top:8px}
-.card .value.ok{color:#4ADE80}
-.card .value.warn{color:#F87171}
+.subtitle{color:var(--muted);margin-bottom:20px;font-size:14px}
+/* 顶部：时间范围 + 筛选 */
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:24px;background:var(--panel);border-radius:8px;padding:12px 16px}
+.toolbar .group{display:flex;align-items:center;gap:8px}
+.toolbar .glabel{font-size:12px;color:var(--muted)}
+.navbtn{background:none;border:1px solid var(--border);color:var(--accent);border-radius:6px;padding:5px 14px;font-size:13px;cursor:pointer}
+.navbtn.active{font-weight:bold;color:var(--accent2);border-color:var(--accent2);background:#0F172A}
+select{background:#0F172A;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;min-width:140px}
+select:focus{outline:none;border-color:var(--accent)}
+.clearbtn{background:none;border:none;color:var(--dim);font-size:13px;cursor:pointer;text-decoration:underline}
+.clearbtn:hover{color:var(--text)}
+.active-filter{font-size:12px;color:var(--gold)}
+.divider{width:1px;height:20px;background:var(--border)}
+/* 卡片 */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:24px}
+.card{background:var(--panel);border-radius:8px;padding:18px 20px}
+.card .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.card .value{font-size:30px;font-weight:bold;margin-top:8px}
+.card .value.ok{color:var(--ok)} .card .value.warn{color:var(--err)}
+/* 面板 */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
-.panel{background:#1E293B;border-radius:8px;padding:20px}
-.panel h2{font-size:16px;margin-bottom:16px;border-bottom:1px solid #334155;padding-bottom:8px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+@media (max-width:960px){.grid-3{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
+.panel{background:var(--panel);border-radius:8px;padding:20px}
+.panel.mb{margin-bottom:24px}
+.panel h2{font-size:16px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px}
+.panel h3{font-size:13px;color:var(--muted);margin-bottom:8px}
+.sys-head{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;flex-wrap:wrap}
+.sys-head h2{font-size:16px}
+.sys-toggle{margin-left:auto;color:var(--dim);font-size:12px}
+.sys-head:hover .sys-toggle{color:var(--text)}
 table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:8px 0;border-top:1px solid #334155}
-th{color:#94A3B8;font-weight:normal;font-size:12px;text-transform:uppercase}
-.empty{color:#64748B;font-style:italic}
-.bar{height:8px;background:#334155;border-radius:4px;overflow:hidden;margin-top:4px}
-.bar-fill{height:100%;background:linear-gradient(90deg,#38BDF8,#A78BFA);border-radius:4px}
-.trend{display:flex;align-items:flex-end;gap:4px;height:120px;margin-top:12px}
-.trend .bar{flex:1;background:linear-gradient(180deg,#38BDF8 0%,transparent 100%);border-radius:2px 2px 0 0;min-height:4px;position:relative}
-.trend .bar span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748B}
+th,td{text-align:left;padding:8px 8px 8px 0;border-top:1px solid var(--border);vertical-align:middle}
+th{color:var(--muted);font-weight:normal;font-size:12px;text-transform:uppercase}
+tbody tr:first-child td{border-top:none}
+.empty{color:var(--dim);font-style:italic;padding:8px 0}
+.bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:4px;min-width:56px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px}
+.rank{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:4px;background:var(--border);font-size:11px;color:var(--muted);margin-right:6px}
+.rank.r1{background:#1D4ED8;color:#fff}.rank.r2{background:#155E75;color:#fff}.rank.r3{background:#334155;color:var(--text)}
+/* 趋势图 */
+.trend{display:flex;align-items:flex-end;gap:6px;height:150px;margin-top:8px;padding-bottom:22px;position:relative}
+.trend .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.trend .col .bar-v{width:100%;max-width:40px;background:linear-gradient(180deg,var(--accent),rgba(56,189,248,.15));border-radius:3px 3px 0 0;min-height:2px;transition:height .3s}
+.trend .col .bar-v.zero{background:var(--border);opacity:.35}
+.trend .col .num{font-size:11px;color:var(--muted);margin-bottom:4px;min-height:14px}
+.trend .col .dt{position:absolute;bottom:-20px;font-size:10px;color:var(--dim);white-space:nowrap}
 .status{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px}
-.status.ok{background:#064E3B;color:#6EE7B7}
-.status.error{background:#7F1D1D;color:#FCA5A5}
-.auto{color:#A78BFA}.manual{color:#38BDF8}
-.btn{display:inline-block;background:#334155;color:#E2E8F0;border:none;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;margin-right:8px;margin-top:8px}
+.status.ok{background:var(--ok-bg);color:var(--ok-fg)}
+.status.error{background:var(--err-bg);color:var(--err-fg)}
+.auto{color:var(--accent2)}.manual{color:var(--accent)}
+.btn{display:inline-block;background:var(--border);color:var(--text);border:none;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;margin:0 8px 8px 0}
 .btn:hover{background:#475569}
-.btn.danger{background:#7F1D1D}.btn.danger:hover{background:#991B1B}
+.btn.danger{background:var(--err-bg)}.btn.danger:hover{background:#991B1B}
 .btn.primary{background:#1D4ED8}.btn.primary:hover{background:#2563EB}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-#ops-msg{margin-top:10px;font-size:13px;color:#FBBF24;min-height:18px}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#94A3B8}
-.footer{text-align:center;color:#475569;font-size:12px;margin-top:32px}
+#ops-msg{margin-top:4px;font-size:13px;color:var(--gold);min-height:18px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted)}
+.tag{display:inline-block;background:#0B3B54;color:#7DD3FC;border-radius:4px;padding:1px 7px;font-size:11px;font-family:ui-monospace,Menlo,monospace}
+.tag.proj{background:#2E1065;color:#C4B5FD}
+.user-head{display:flex;align-items:center;gap:10px;margin:18px 0 8px}
+.user-head .avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;color:#0F172A}
+.user-head .uname{font-weight:600}
+.user-head .ucount{font-size:12px;color:var(--dim)}
+.footer{text-align:center;color:#475569;font-size:12px;margin-top:8px}
 .footer a{color:#475569}
+.loading{color:var(--dim);padding:40px;text-align:center}
 </style>
 </head>
 <body>
-<div class="container">
+<div id="app" class="container">
     <h1>📊 Trae Skill 使用监控</h1>
-    <p class="subtitle">数据源: ~/.trae-cn/skill-usage.jsonl → Spring Boot → H2 File DB (port 8090)</p>
+    <p class="subtitle">数据源: ~/.trae-cn/skill-usage.jsonl → Spring Boot → H2 (localhost:8090)</p>
 
-    <div class="nav">
-        <a th:classappend="${days == 1} ? 'active'" th:href="@{/(days=1)}">今日</a>
-        <a th:classappend="${days == 7} ? 'active'" th:href="@{/(days=7)}">7天</a>
-        <a th:classappend="${days == 30} ? 'active'" th:href="@{/(days=30)}">30天</a>
-        <a th:classappend="${days == 90} ? 'active'" th:href="@{/(days=90)}">90天</a>
-        <span style="color:#64748B;margin-left:8px">（当前 <span th:text="${days}"></span> 天）</span>
+    <!-- 系统状态 & 运维（第一行，可折叠，不跟随筛选） -->
+    <div class="panel mb">
+        <div class="sys-head" @click="sysCollapsed = !sysCollapsed">
+            <h2 style="border:none;margin:0;padding:0">🩺 系统状态 &amp; 运维</h2>
+            <span v-if="system.uptimeMinutes != null" class="status ok">服务 RUNNING · {{ system.uptimeMinutes }} 分钟</span>
+            <span v-else class="status error">服务未知</span>
+            <span v-if="system.cronLoaded" class="status ok">Cron ON</span>
+            <span v-else class="status error">Cron OFF</span>
+            <span class="mono" v-if="system.pendingUpload != null && system.pendingUpload > 0">待上传 {{ system.pendingUpload }}</span>
+            <span class="sys-toggle">{{ sysCollapsed ? '▸ 展开' : '▾ 折叠' }}</span>
+        </div>
+        <div v-show="!sysCollapsed" class="grid-2" style="margin:16px 0 0">
+            <div>
+                <table><tbody>
+                    <tr><td style="width:110px">监控服务</td>
+                        <td><span class="status ok">RUNNING</span>
+                            <span class="mono" v-if="system.startTime"> 启动于 {{ system.startTime }}（{{ system.uptimeMinutes }} 分钟）</span></td></tr>
+                    <tr><td>Cron 上传</td>
+                        <td><span v-if="system.cronLoaded" class="status ok">LOADED（60s）</span>
+                            <span v-else class="status error">{{ system.cronInstalled ? 'INSTALLED 未加载' : 'NOT INSTALLED' }}</span></td></tr>
+                    <tr><td>埋点脚本</td>
+                        <td><span :class="['status', system.scriptExecutable ? 'ok' : 'error']">{{ system.scriptExecutable ? 'OK' : '缺失/不可执行' }}</span>
+                            <span class="mono">{{ system.scriptPath }}</span></td></tr>
+                    <tr><td>数据管道</td>
+                        <td><span class="mono">JSONL {{ system.jsonlLines }} 行 · 已上传 {{ system.offset }} · 待上传 {{ system.pendingUpload }} · DB {{ system.dbRecords }} 条</span></td></tr>
+                    <tr><td>最新记录</td><td><span class="mono">{{ system.lastRecordTs || '-' }}</span></td></tr>
+                </tbody></table>
+            </div>
+            <div>
+                <h3>服务操作</h3>
+                <button class="btn" @click.stop="refreshStatus">🔄 刷新状态</button>
+                <button class="btn primary" @click.stop="systemOp('restart','确认重启监控服务？预计 20-40 秒恢复。')">♻️ 重启服务</button>
+                <button class="btn danger" @click.stop="systemOp('stop','确认关闭监控服务？关闭后埋点数据仍写入本地 JSONL，但不会上传。')">⏹ 关闭服务</button>
+                <h3 style="margin-top:8px">Cron 操作</h3>
+                <button class="btn" @click.stop="cronOp(true)" :disabled="system.cronLoaded">▶️ 启动 Cron</button>
+                <button class="btn" @click.stop="cronOp(false)" :disabled="!system.cronLoaded">⏸ 停止 Cron</button>
+                <div id="ops-msg">{{ opsMsg }}</div>
+            </div>
+        </div>
     </div>
 
+    <!-- 工具栏：时间范围 + 用户/项目筛选 + Top N（系统状态面板除外，全部联动） -->
+    <div class="toolbar">
+        <div class="group">
+            <span class="glabel">时间</span>
+            <button v-for="d in [1,7,30,90]" :key="d" class="navbtn" :class="{active: days===d}" @click="days=d; reload()">{{ d===1 ? '今日' : d+'天' }}</button>
+        </div>
+        <div class="divider"></div>
+        <div class="group">
+            <span class="glabel">👤 用户</span>
+            <select v-model="filterUser" @change="reload">
+                <option value="">全部用户</option>
+                <option v-for="u in filterOptions.users" :key="u" :value="u">{{ u }}</option>
+            </select>
+        </div>
+        <div class="group">
+            <span class="glabel">📁 项目</span>
+            <select v-model="filterProject" @change="reload">
+                <option value="">全部项目</option>
+                <option v-for="p in filterOptions.projects" :key="p" :value="p">{{ p }}</option>
+            </select>
+        </div>
+        <div class="group">
+            <span class="glabel">🏆 Top</span>
+            <select v-model.number="topN" @change="reload" style="min-width:90px">
+                <option v-for="n in [5,10,20,50]" :key="n" :value="n">Top {{ n }}</option>
+            </select>
+        </div>
+        <button v-if="filterUser || filterProject" class="clearbtn" @click="filterUser=''; filterProject=''; reload()">✕ 清除筛选</button>
+        <span v-if="filterUser || filterProject" class="active-filter">当前：{{ filterDesc }}</span>
+    </div>
+
+    <div v-if="loading" class="loading">加载中…</div>
+    <template v-else>
+    <!-- 总览卡片 -->
     <div class="cards">
-        <div class="card">
-            <div class="label">总调用次数</div>
-            <div class="value" th:text="${overview['totalCalls']}">0</div>
-        </div>
-        <div class="card">
-            <div class="label">涉及 Skill 数</div>
-            <div class="value ok" th:text="${overview['uniqueSkills']}">0</div>
-        </div>
-        <div class="card">
-            <div class="label">错误次数</div>
-            <div class="value warn" th:text="${overview['errorCount']}">0</div>
-        </div>
-        <div class="card">
-            <div class="label">错误率</div>
-            <div class="value warn" th:text="${overview['errorRate']}">0%</div>
-        </div>
+        <div class="card"><div class="label">总调用次数</div><div class="value">{{ overview.totalCalls ?? 0 }}</div></div>
+        <div class="card"><div class="label">Skill 数</div><div class="value ok">{{ overview.uniqueSkills ?? 0 }}</div></div>
+        <div class="card"><div class="label">用户数</div><div class="value ok">{{ overview.uniqueUsers ?? 0 }}</div></div>
+        <div class="card"><div class="label">项目数</div><div class="value ok">{{ overview.uniqueProjects ?? 0 }}</div></div>
+        <div class="card"><div class="label">错误 / 错误率</div><div class="value warn" style="font-size:22px">{{ overview.errorCount ?? 0 }} / {{ overview.errorRate ?? '0%' }}</div></div>
     </div>
 
-    <div class="panel" style="margin-bottom:24px">
-        <h2>🩺 系统状态 & 运维</h2>
-        <div class="grid-2">
-            <div>
-                <table>
-                    <tbody>
-                    <tr>
-                        <td style="width:110px">监控服务</td>
-                        <td>
-                            <span class="status ok">RUNNING</span>
-                            <span class="mono" th:text="' 启动于 ' + ${system['startTime']} + '（' + ${system['uptimeMinutes']} + ' 分钟）'"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cron 上传</td>
-                        <td>
-                            <span th:if="${system['cronLoaded']}" class="status ok">LOADED（60s）</span>
-                            <span th:if="${!system['cronLoaded'] and system['cronInstalled']}" class="status error">INSTALLED 未加载</span>
-                            <span th:if="${!system['cronInstalled']}" class="status error">NOT INSTALLED</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>埋点脚本</td>
-                        <td>
-                            <span th:if="${system['scriptExecutable']}" class="status ok">OK</span>
-                            <span th:if="${!system['scriptExecutable']}" class="status error">缺失/不可执行</span>
-                            <span class="mono" th:text="${system['scriptPath']}"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>数据管道</td>
-                        <td>
-                            <span class="mono" th:text="'JSONL ' + ${system['jsonlLines']} + ' 行 · 已上传 ' + ${system['offset']} + ' · 待上传 ' + ${system['pendingUpload']} + ' · DB ' + ${system['dbRecords']} + ' 条'"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>最近上传</td>
-                        <td><span class="mono" th:text="${system['lastUploadLog']}"></span></td>
-                    </tr>
-                    <tr>
-                        <td>最新记录</td>
-                        <td><span class="mono" th:text="${system['lastRecordTs']} ?: '-'"></span></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div>
-                <h3 style="font-size:13px;color:#94A3B8;margin-bottom:4px">服务操作</h3>
-                <button class="btn" onclick="refreshStatus()">🔄 刷新状态</button>
-                <button class="btn primary" onclick="systemOp('restart', '确认重启监控服务？预计 20-40 秒恢复。')">♻️ 重启服务</button>
-                <button class="btn danger" onclick="systemOp('stop', '确认关闭监控服务？关闭后埋点数据仍写入本地 JSONL，但不会上传。')">⏹ 关闭服务</button>
-                <h3 style="font-size:13px;color:#94A3B8;margin:16px 0 4px">Cron 操作</h3>
-                <button class="btn" onclick="cronOp(true)" th:disabled="${system['cronLoaded']}">▶️ 启动 Cron</button>
-                <button class="btn" onclick="cronOp(false)" th:disabled="${!system['cronLoaded']}">⏸ 停止 Cron</button>
-                <div id="ops-msg"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="grid-2">
+    <!-- Top 汇总：Skill / 项目 / 用户 -->
+    <div class="grid-3">
         <div class="panel">
-            <h2>🏆 Top Skill 使用量</h2>
-            <div th:if="${#lists.isEmpty(topSkills)}" class="empty">暂无数据</div>
-            <table th:if="${!#lists.isEmpty(topSkills)}">
-                <thead><tr><th>Skill</th><th style="width:80px">次数</th><th>占比</th></tr></thead>
-                <tbody>
-                <tr th:each="row : ${topSkills}">
-                    <td th:text="${row['skillName']}"></td>
-                    <td th:text="${row['count']}"></td>
-                    <td><div class="bar"><div class="bar-fill" th:style="'width:' + (${row['count']} * 10 / 2 + 5) + '%'"></div></div></td>
+            <h2>🏆 Top Skill（Top {{ topN }}）</h2>
+            <div v-if="!topSkills.length" class="empty">暂无数据</div>
+            <table v-else><tbody>
+                <tr v-for="(row,i) in topSkills" :key="row.skillName">
+                    <td style="width:26px"><span class="rank" :class="'r'+(i+1)">{{ i+1 }}</span></td>
+                    <td>{{ row.skillName }}</td>
+                    <td style="width:50px;text-align:right">{{ row.count }}</td>
+                    <td style="width:70px"><div class="bar"><div class="bar-fill" :style="{width: pct(row.count, topSkills[0].count)+'%'}"></div></div></td>
                 </tr>
-                </tbody>
-            </table>
+            </tbody></table>
         </div>
-
         <div class="panel">
-            <h2>🎯 触发方式 & 客户端</h2>
-            <h3 style="font-size:13px;color:#94A3B8;margin-bottom:8px">触发方式</h3>
-            <table>
-                <tbody>
-                <tr th:each="row : ${triggerDist}">
-                    <td>
-                        <span th:if="${row['triggerType'] == 'manual'}" class="manual">👋 手动</span>
-                        <span th:if="${row['triggerType'] == 'auto'}" class="auto">🤖 自动</span>
-                        <span th:if="${row['triggerType'] != 'manual' and row['triggerType'] != 'auto'}" th:text="${row['triggerType']}"></span>
-                    </td>
-                    <td style="text-align:right" th:text="${row['count']} + ' 次'"></td>
+            <h2>📁 Top 项目（Top {{ topN }}）</h2>
+            <div v-if="!topProjects.length" class="empty">暂无数据</div>
+            <table v-else><tbody>
+                <tr v-for="(row,i) in topProjects" :key="row.projectName">
+                    <td style="width:26px"><span class="rank" :class="'r'+(i+1)">{{ i+1 }}</span></td>
+                    <td><span class="tag proj clickable" style="cursor:pointer" @click="filterProject=row.projectName; reload()" :title="'按项目 '+row.projectName+' 筛选'">{{ row.projectName }}</span></td>
+                    <td style="width:50px;text-align:right">{{ row.count }}</td>
+                    <td style="width:70px"><div class="bar"><div class="bar-fill" :style="{width: pct(row.count, topProjects[0].count)+'%'}"></div></div></td>
                 </tr>
-                </tbody>
-            </table>
-            <h3 style="font-size:13px;color:#94A3B8;margin:16px 0 8px">客户端</h3>
-            <table>
-                <tbody>
-                <tr th:each="row : ${clientDist}">
-                    <td th:text="${row['client']}"></td>
-                    <td style="text-align:right" th:text="${row['count']} + ' 次'"></td>
+            </tbody></table>
+            <h3 style="margin-top:10px" v-if="topProjects.length">各项目涉及 {{ sumSkills(topProjects, 'skills') }} 个 Skill 使用点</h3>
+        </div>
+        <div class="panel">
+            <h2>👤 Top 用户（Top {{ topN }}）</h2>
+            <div v-if="!topUsers.length" class="empty">暂无数据</div>
+            <table v-else><tbody>
+                <tr v-for="(row,i) in topUsers" :key="row.userId">
+                    <td style="width:26px"><span class="rank" :class="'r'+(i+1)">{{ i+1 }}</span></td>
+                    <td><span class="tag" style="cursor:pointer" @click="filterUser=row.userId; reload()" :title="'按用户 '+row.userId+' 筛选'">{{ row.userId }}</span></td>
+                    <td style="width:50px;text-align:right">{{ row.count }}</td>
+                    <td style="width:70px"><div class="bar"><div class="bar-fill" :style="{width: pct(row.count, topUsers[0].count)+'%'}"></div></div></td>
                 </tr>
-                </tbody>
-            </table>
+            </tbody></table>
+            <h3 style="margin-top:10px" v-if="topUsers.length">触发：{{ triggerSummary }}</h3>
         </div>
     </div>
 
-    <div class="panel" style="margin-bottom:24px">
-        <h2>📈 每日调用趋势（最近 14 天）</h2>
-        <div th:if="${#lists.isEmpty(dailyTrend)}" class="empty">暂无趋势数据</div>
-        <div class="trend" th:if="${!#lists.isEmpty(dailyTrend)}">
-            <div th:each="row : ${dailyTrend}" class="bar" th:style="'height:' + ${row['count']} + 'px'">
-                <span th:text="${row['date']}"></span>
+    <!-- 每日趋势（14 天，零填充） -->
+    <div class="panel mb">
+        <h2>📈 每日调用趋势（最近 14 天{{ trendSuffix }}）</h2>
+        <div class="trend">
+            <div v-for="row in trend" :key="row.date" class="col" :title="row.date + '：' + row.count + ' 次'">
+                <div class="num">{{ row.count > 0 ? row.count : '' }}</div>
+                <div class="bar-v" :class="{zero: row.count===0}" :style="{height: barHeight(row.count)+'%'}"></div>
+                <div class="dt">{{ shortDate(row.date) }}</div>
             </div>
         </div>
     </div>
 
-    <div class="panel">
-        <h2>🕐 最新记录</h2>
-        <div th:if="${#lists.isEmpty(recent)}" class="empty">暂无记录</div>
-        <table th:if="${!#lists.isEmpty(recent)}">
-            <thead><tr><th>时间</th><th>Skill</th><th>事件</th><th>客户端</th><th>触发</th><th>状态</th></tr></thead>
+    <!-- 最新记录（平铺，跟随用户/项目筛选） -->
+    <div class="panel mb">
+        <h2>🕐 最新记录{{ filterDesc ? '（' + filterDesc + '）' : '' }}</h2>
+        <div v-if="!recentFlat.length" class="empty">暂无记录</div>
+        <table v-else>
+            <thead><tr><th>时间</th><th>用户</th><th>Skill</th><th>项目</th><th>事件</th><th>触发</th><th>状态</th></tr></thead>
             <tbody>
-            <tr th:each="r : ${recent}">
-                <td th:text="${r.ts}"></td>
-                <td th:text="${r.skillName}"></td>
-                <td th:text="${r.eventType}"></td>
-                <td th:text="${r.client}"></td>
-                <td>
-                    <span th:if="${r.triggerType == 'manual'}" class="manual">手动</span>
-                    <span th:if="${r.triggerType == 'auto'}" class="auto">自动</span>
-                    <span th:if="${r.triggerType != 'manual' and r.triggerType != 'auto'}" th:text="${r.triggerType}"></span>
-                </td>
-                <td>
-                    <span th:if="${r.status == 'ok'}" class="status ok">OK</span>
-                    <span th:if="${r.status == 'error'}" class="status error">ERROR</span>
-                </td>
+            <tr v-for="r in recentFlat" :key="r.id">
+                <td class="mono">{{ fmtTs(r.ts) }}</td>
+                <td><span class="tag" style="cursor:pointer" @click="filterUser=r.userId; reload()" :title="'按用户 '+r.userId+' 筛选'">{{ r.userId }}</span></td>
+                <td>{{ r.skillName }}</td>
+                <td><span class="tag proj" v-if="r.projectName" style="cursor:pointer" @click="filterProject=r.projectName; reload()" :title="'按项目 '+r.projectName+' 筛选'">{{ r.projectName }}</span><span v-else class="mono">-</span></td>
+                <td>{{ r.eventType }}</td>
+                <td><span :class="r.triggerType">{{ r.triggerType==='manual' ? '手动' : r.triggerType==='auto' ? '自动' : r.triggerType }}</span></td>
+                <td><span :class="['status', r.status]">{{ r.status.toUpperCase() }}</span></td>
             </tr>
             </tbody>
         </table>
     </div>
+    </template>
 
     <div class="footer">
         Trae Skill Monitor · Spring Boot + H2 ·
-        <a th:href="@{/h2-console}" target="_blank">H2 Console</a> ·
-        <a th:href="@{/api/skill-usage/health}">Health API</a>
+        <a href="/h2-console" target="_blank">H2 Console</a> ·
+        <a href="/api/skill-usage/health">Health API</a>
     </div>
 </div>
+
+<script src="/vendor/vue.global.prod.js"></script>
 <script>
-const API = '/api/skill-usage/system';
-const msg = document.getElementById('ops-msg');
+const { createApp } = Vue;
 
-function setMsg(text) { msg.textContent = text; }
-
-async function systemOp(action, confirmText) {
-    if (!confirm(confirmText)) return;
-    setMsg('指令发送中...');
-    try {
-        const r = await fetch(API + '/' + action, {method: 'POST'});
-        const j = await r.json();
-        setMsg(j.message || j.status);
-        if (action === 'restart') pollUntil('up', 90);
-        if (action === 'stop') pollUntil('down', 15);
-    } catch (e) {
-        setMsg('请求失败: ' + e);
-    }
-}
-
-async function cronOp(start) {
-    setMsg(start ? '安装 Cron...' : '卸载 Cron...');
-    try {
-        const r = await fetch(API + '/cron/' + (start ? 'start' : 'stop'), {method: 'POST'});
-        const j = await r.json();
-        setMsg(j.message || j.status);
-        setTimeout(() => location.reload(), 1500);
-    } catch (e) {
-        setMsg('请求失败: ' + e);
-    }
-}
-
-async function refreshStatus() {
-    setMsg('刷新中...');
-    try {
-        const r = await fetch(API + '/status');
-        const s = await r.json();
-        setMsg(`服务运行 ${s.uptimeMinutes} 分钟 · Cron ${s.cronLoaded ? '已加载' : '未加载'} · 待上传 ${s.pendingUpload} 条 · DB ${s.dbRecords} 条`);
-    } catch (e) {
-        setMsg('刷新失败: ' + e);
-    }
-}
-
-/** dir='up': 等服务恢复后刷新页面；dir='down': 等服务停止后提示 */
-function pollUntil(dir, maxTries) {
-    let n = 0;
-    const timer = setInterval(async () => {
-        n++;
-        let up = false;
-        try {
-            const r = await fetch('/api/skill-usage/health', {cache: 'no-store'});
-            up = r.ok;
-        } catch (e) { up = false; }
-        if (dir === 'up' && up) { clearInterval(timer); location.reload(); return; }
-        if (dir === 'down' && !up) { clearInterval(timer); setMsg('✅ 服务已停止。埋点数据保留在本地 JSONL，可用 start-server 或脚本重新启动。'); return; }
-        if (n > maxTries) {
-            clearInterval(timer);
-            setMsg(dir === 'up' ? '等待恢复超时，请检查 ~/.trae-cn/skill-monitor-server.log 或手动刷新' : '等待停止超时，请手动刷新确认');
+createApp({
+    data() {
+        return {
+            days: 7,
+            topN: 5,
+            sysCollapsed: false,
+            filterUser: '',
+            filterProject: '',
+            loading: true,
+            filterOptions: { users: [], projects: [] },
+            overview: {}, topSkills: [], topProjects: [], topUsers: [],
+            trend: [], triggerDist: [], clientDist: [],
+            recentFlat: [],
+            system: {}, opsMsg: ''
+        };
+    },
+    computed: {
+        trendMax() { return Math.max(1, ...this.trend.map(r => r.count)); },
+        filterDesc() {
+            const parts = [];
+            if (this.filterUser) parts.push('用户 ' + this.filterUser);
+            if (this.filterProject) parts.push('项目 ' + this.filterProject);
+            return parts.join(' · ');
+        },
+        trendSuffix() { return this.filterDesc ? ' · ' + this.filterDesc : ''; },
+        triggerSummary() {
+            if (!this.triggerDist.length) return '-';
+            return this.triggerDist.map(t => (t.triggerType==='auto'?'自动':'手动') + ' ' + t.count).join(' / ');
         }
-    }, 2000);
-}
+    },
+    methods: {
+        async jget(url) { const r = await fetch(url); if (!r.ok) throw new Error(url + ' ' + r.status); return r.json(); },
+        qs() {
+            let q = '';
+            if (this.filterUser) q += '&user=' + encodeURIComponent(this.filterUser);
+            if (this.filterProject) q += '&project=' + encodeURIComponent(this.filterProject);
+            return q;
+        },
+        async reload() {
+            this.loading = true;
+            try {
+                const d = this.days, f = this.qs(), n = this.topN;
+                const [overview, topSkills, topProjects, topUsers, trend, triggerDist, clientDist, recentFlat, system, filterOptions] = await Promise.all([
+                    this.jget('/api/skill-usage/overview?days=' + d + f),
+                    this.jget('/api/skill-usage/top?days=' + d + '&topN=' + n + f),
+                    this.jget('/api/skill-usage/top-projects?days=' + d + '&topN=' + n + (this.filterUser ? '&user=' + encodeURIComponent(this.filterUser) : '')),
+                    this.jget('/api/skill-usage/top-users?days=' + d + '&topN=' + n + (this.filterProject ? '&project=' + encodeURIComponent(this.filterProject) : '')),
+                    this.jget('/api/skill-usage/daily-trend?days=14' + f),
+                    this.jget('/api/skill-usage/trigger-dist?days=' + d + f),
+                    this.jget('/api/skill-usage/client-dist?days=' + d + f),
+                    this.jget('/api/skill-usage/recent?limit=30' + f),
+                    this.jget('/api/skill-usage/system/status'),
+                    this.jget('/api/skill-usage/filters')
+                ]);
+                Object.assign(this, { overview, topSkills, topProjects, topUsers, trend, triggerDist, clientDist, recentFlat, system, filterOptions });
+            } catch (e) {
+                this.opsMsg = '加载失败: ' + e.message;
+            } finally {
+                this.loading = false;
+            }
+        },
+        barHeight(count) { return Math.max(2, Math.round(count / this.trendMax * 100)); },
+        pct(v, max) { return Math.max(4, Math.round(v / Math.max(1, max) * 100)); },
+        sumSkills(rows, key) { return rows.reduce((s, r) => s + (r[key] || 0), 0); },
+        shortDate(iso) { return iso.slice(5); },
+        fmtTs(iso) { const d = new Date(iso); const p = n => String(n).padStart(2,'0');
+            return `${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`; },
+
+        async systemOp(action, confirmText) {
+            if (!confirm(confirmText)) return;
+            this.opsMsg = '指令发送中...';
+            try {
+                const r = await fetch('/api/skill-usage/system/' + action, { method: 'POST' });
+                const j = await r.json();
+                this.opsMsg = j.message || j.status;
+                if (action === 'restart') this.pollUntil('up', 90);
+                if (action === 'stop') this.pollUntil('down', 15);
+            } catch (e) { this.opsMsg = '请求失败: ' + e; }
+        },
+        async cronOp(start) {
+            this.opsMsg = start ? '安装 Cron...' : '卸载 Cron...';
+            try {
+                const r = await fetch('/api/skill-usage/system/cron/' + (start ? 'start' : 'stop'), { method: 'POST' });
+                const j = await r.json();
+                this.opsMsg = j.message || j.status;
+                setTimeout(() => this.reload(), 1500);
+            } catch (e) { this.opsMsg = '请求失败: ' + e; }
+        },
+        async refreshStatus() {
+            this.opsMsg = '刷新中...';
+            try {
+                this.system = await this.jget('/api/skill-usage/system/status');
+                const s = this.system;
+                this.opsMsg = `服务运行 ${s.uptimeMinutes} 分钟 · Cron ${s.cronLoaded ? '已加载' : '未加载'} · 待上传 ${s.pendingUpload} 条 · DB ${s.dbRecords} 条`;
+            } catch (e) { this.opsMsg = '刷新失败: ' + e; }
+        },
+        pollUntil(dir, maxTries) {
+            let n = 0;
+            const timer = setInterval(async () => {
+                n++;
+                let up = false;
+                try { const r = await fetch('/api/skill-usage/health', { cache: 'no-store' }); up = r.ok; }
+                catch (e) { up = false; }
+                if (dir === 'up' && up) { clearInterval(timer); this.reload(); return; }
+                if (dir === 'down' && !up) { clearInterval(timer); this.opsMsg = '✅ 服务已停止。埋点数据保留在本地 JSONL，可用 start-server 重新启动。'; return; }
+                if (n > maxTries) { clearInterval(timer); this.opsMsg = '等待超时，请检查 ~/.trae-cn/skill-monitor-server.log 或手动刷新'; }
+            }, 2000);
+        }
+    },
+    mounted() { this.reload(); }
+}).mount('#app');
 </script>
 </body>
 </html>

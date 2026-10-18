@@ -64,6 +64,10 @@ public class SkillUsage {
     @Column(length = 50)
     private String userId;
 
+    /** 项目标识（git 仓库根目录名或当前目录名） */
+    @Column(length = 100)
+    private String projectName;
+
     /** 唯一键：防止重复上传 */
     @Column(length = 100, unique = true)
     private String dedupKey;

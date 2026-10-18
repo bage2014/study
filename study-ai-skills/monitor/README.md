@@ -163,8 +163,10 @@ curl -X POST http://localhost:8090/api/skill-usage/batch \
 
 ### GET /api/skill-usage/daily-trend?days=14
 
+零填充：无数据的日期返回 0，保证趋势图连续。
+
 ```json
-[{"date": "2026-10-18", "count": 8}, ...]
+[{"date": "2026-10-05", "count": 0}, ..., {"date": "2026-10-18", "count": 8}]
 ```
 
 ### GET /api/skill-usage/trigger-dist?days=7
@@ -179,9 +181,45 @@ curl -X POST http://localhost:8090/api/skill-usage/batch \
 [{"client": "trae-macos", "count": 12}]
 ```
 
+### GET /api/skill-usage/top-projects?days=7&topN=8&user=xxx
+
+Top N 项目（次数 + 涉及 Skill 数），可按用户过滤。
+
+```json
+[{"projectName": "study-ai-skills", "count": 20, "skills": 5}]
+```
+
+### GET /api/skill-usage/top-users?days=7&topN=8&project=xxx
+
+Top N 用户（次数 + 涉及项目数），可按项目过滤。
+
+```json
+[{"userId": "bage", "count": 35, "projects": 2}]
+```
+
+### GET /api/skill-usage/filters
+
+筛选下拉选项（全部去重用户 + 项目）。
+
+```json
+{"users": ["bage"], "projects": ["study-ai-skills", "study-ai-skills-test"]}
+```
+
+### 通用过滤参数
+
+`overview / top / daily-trend / trigger-dist / client-dist / recent / recent-by-user` 均支持可选参数 `user`、`project`（可单独或组合使用），用于 Dashboard 的全局筛选联动。
+
 ### GET /api/skill-usage/recent?limit=20
 
-返回最新 N 条 `SkillUsage` 实体（JSON）。
+返回最新 N 条 `SkillUsage` 实体（JSON，含 `userId` / `projectName` 字段）。
+
+### GET /api/skill-usage/recent-by-user?limit=30
+
+最新记录按用户分组（组间、组内均按时间倒序）。
+
+```json
+[{"userId": "bage", "records": [{"skillName": "common-coding", "projectName": "study-ai-skills", ...}]}]
+```
 
 ### GET /api/skill-usage/health
 

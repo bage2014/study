@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -67,6 +69,7 @@ public class SkillUsageService {
         String status = (String) map.getOrDefault("status", "ok");
         String triggerType = (String) map.getOrDefault("trigger", "manual");
         String userId = (String) map.getOrDefault("user", "unknown");
+        String projectName = (String) map.getOrDefault("project", "unknown");
         Long durationMs = map.get("duration_ms") != null
                 ? ((Number) map.get("duration_ms")).longValue()
                 : 0L;
@@ -83,106 +86,145 @@ public class SkillUsageService {
                 .status(status)
                 .triggerType(triggerType)
                 .userId(userId)
+                .projectName(projectName)
                 .dedupKey(dedupKey)
                 .build();
     }
 
-    // ── Dashboard 数据聚合 ────────────────────────────────────
+    // ── Dashboard 数据聚合（user/project 为可选过滤条件，null 表示不过滤）────
 
-    /** 指定天数内的总览数据 */
-    public Map<String, Object> overview(int days) {
+    /** 总览数据 */
+    public Map<String, Object> overview(int days, String user, String project) {
         Instant now = Instant.now();
         Instant start = now.minus(days, ChronoUnit.DAYS);
 
+        List<SkillUsage> records = repo.findFiltered(start, now, user, project);
+
         Map<String, Object> result = new LinkedHashMap<>();
+        result.put("totalCalls", records.size());
+        result.put("uniqueSkills", records.stream().map(SkillUsage::getSkillName).collect(Collectors.toSet()).size());
+        result.put("uniqueUsers", records.stream().map(SkillUsage::getUserId).filter(Objects::nonNull).collect(Collectors.toSet()).size());
+        result.put("uniqueProjects", records.stream().map(SkillUsage::getProjectName).filter(Objects::nonNull).collect(Collectors.toSet()).size());
 
-        // 总调用次数
-        long total = repo.countByTsBetween(start, now);
-        result.put("totalCalls", total);
-
-        // 涉及的 Skill 数量
-        Set<String> skills = repo.findByTsBetweenOrderByTsAsc(start, now).stream()
-                .map(SkillUsage::getSkillName).collect(Collectors.toSet());
-        result.put("uniqueSkills", skills.size());
-
-        // 错误次数
-        long errors = repo.findByTsBetweenOrderByTsAsc(start, now).stream()
-                .filter(u -> "error".equals(u.getStatus())).count();
+        long errors = records.stream().filter(u -> "error".equals(u.getStatus())).count();
         result.put("errorCount", errors);
-        result.put("errorRate", total > 0 ? String.format("%.1f%%", errors * 100.0 / total) : "0%");
-
-        // 时间范围
+        result.put("errorRate", !records.isEmpty() ? String.format("%.1f%%", errors * 100.0 / records.size()) : "0%");
         result.put("timeRange", Map.of("start", start.toString(), "end", now.toString()));
-
         return result;
     }
 
     /** Top N Skill 使用量 */
-    public List<Map<String, Object>> topSkills(int days, int topN) {
+    public List<Map<String, Object>> topSkills(int days, int topN, String user, String project) {
         Instant now = Instant.now();
         Instant start = now.minus(days, ChronoUnit.DAYS);
+        return toNameCount(repo.topSkills(start, now, user, project, PageRequest.of(0, topN)), "skillName");
+    }
 
-        List<Object[]> rows = repo.topSkills(start, now, PageRequest.of(0, topN));
+    /** Top N 项目（次数 + 涉及 Skill 数） */
+    public List<Map<String, Object>> topProjects(int days, int topN, String user) {
+        Instant now = Instant.now();
+        Instant start = now.minus(days, ChronoUnit.DAYS);
         List<Map<String, Object>> result = new ArrayList<>();
-        for (Object[] row : rows) {
+        for (Object[] row : repo.topProjects(start, now, user, PageRequest.of(0, topN))) {
             Map<String, Object> m = new LinkedHashMap<>();
-            m.put("skillName", row[0]);
+            m.put("projectName", row[0]);
             m.put("count", row[1]);
+            m.put("skills", row[2]);
             result.add(m);
         }
         return result;
     }
 
-    /** 每日调用趋势 */
-    public List<Map<String, Object>> dailyTrend(int days) {
+    /** Top N 用户（次数 + 涉及项目数） */
+    public List<Map<String, Object>> topUsers(int days, int topN, String project) {
+        Instant now = Instant.now();
+        Instant start = now.minus(days, ChronoUnit.DAYS);
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Object[] row : repo.topUsers(start, now, project, PageRequest.of(0, topN))) {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("userId", row[0]);
+            m.put("count", row[1]);
+            m.put("projects", row[2]);
+            result.add(m);
+        }
+        return result;
+    }
+
+    /** 每日调用趋势（零填充：无数据的日期返回 0，保证图表连续） */
+    public List<Map<String, Object>> dailyTrend(int days, String user, String project) {
         Instant now = Instant.now();
         Instant start = now.minus(days, ChronoUnit.DAYS);
 
-        List<Object[]> rows = repo.dailyTotalTrend(start, now);
+        Map<String, Long> byDate = new HashMap<>();
+        for (Object[] row : repo.dailyTotalTrend(start, now, user, project)) {
+            byDate.put((String) row[0], ((Number) row[1]).longValue());
+        }
+
         List<Map<String, Object>> result = new ArrayList<>();
-        for (Object[] row : rows) {
+        LocalDate today = LocalDate.now(ZoneOffset.UTC);
+        for (int i = days - 1; i >= 0; i--) {
+            String date = today.minusDays(i).toString();
             Map<String, Object> m = new LinkedHashMap<>();
-            m.put("date", row[0]);
-            m.put("count", row[1]);
+            m.put("date", date);
+            m.put("count", byDate.getOrDefault(date, 0L));
             result.add(m);
         }
         return result;
     }
 
     /** 触发方式分布 */
-    public List<Map<String, Object>> triggerDistribution(int days) {
+    public List<Map<String, Object>> triggerDistribution(int days, String user, String project) {
         Instant now = Instant.now();
         Instant start = now.minus(days, ChronoUnit.DAYS);
-
-        List<Object[]> rows = repo.triggerDistribution(start, now);
-        List<Map<String, Object>> result = new ArrayList<>();
-        for (Object[] row : rows) {
-            Map<String, Object> m = new LinkedHashMap<>();
-            m.put("triggerType", row[0]);
-            m.put("count", row[1]);
-            result.add(m);
-        }
-        return result;
+        return toNameCount(repo.triggerDistribution(start, now, user, project), "triggerType");
     }
 
     /** 客户端分布 */
-    public List<Map<String, Object>> clientDistribution(int days) {
+    public List<Map<String, Object>> clientDistribution(int days, String user, String project) {
         Instant now = Instant.now();
         Instant start = now.minus(days, ChronoUnit.DAYS);
+        return toNameCount(repo.clientDistribution(start, now, user, project), "client");
+    }
 
-        List<Object[]> rows = repo.clientDistribution(start, now);
+    private List<Map<String, Object>> toNameCount(List<Object[]> rows, String nameKey) {
         List<Map<String, Object>> result = new ArrayList<>();
         for (Object[] row : rows) {
             Map<String, Object> m = new LinkedHashMap<>();
-            m.put("client", row[0]);
+            m.put(nameKey, row[0]);
             m.put("count", row[1]);
             result.add(m);
         }
         return result;
     }
 
-    /** 最新 N 条记录（按时间倒序） */
-    public List<SkillUsage> recent(int limit) {
-        return repo.findAll(PageRequest.of(0, limit, org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "ts"))).getContent();
+    /** 筛选下拉选项（全部去重用户 + 项目） */
+    public Map<String, Object> filterOptions() {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("users", repo.distinctUsers());
+        result.put("projects", repo.distinctProjects());
+        return result;
+    }
+
+    /** 最新 N 条记录（按时间倒序，可选用户/项目过滤） */
+    public List<SkillUsage> recent(int limit, String user, String project) {
+        return repo.recentFiltered(user, project, PageRequest.of(0, limit));
+    }
+
+    /** 最新记录按用户分组（时间倒序，每组内保持时间倒序） */
+    public List<Map<String, Object>> recentByUser(int limit, String user, String project) {
+        List<SkillUsage> records = recent(limit, user, project);
+        Map<String, List<SkillUsage>> grouped = new LinkedHashMap<>();
+        for (SkillUsage r : records) {
+            String u = r.getUserId() != null ? r.getUserId() : "unknown";
+            grouped.computeIfAbsent(u, k -> new ArrayList<>()).add(r);
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map.Entry<String, List<SkillUsage>> e : grouped.entrySet()) {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("userId", e.getKey());
+            m.put("records", e.getValue());
+            result.add(m);
+        }
+        return result;
     }
 }

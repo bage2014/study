@@ -51,44 +51,94 @@ public class SkillUsageController {
     /** 总览数据 */
     @GetMapping("/overview")
     public ResponseEntity<Map<String, Object>> overview(
-            @RequestParam(defaultValue = "7") int days) {
-        return ResponseEntity.ok(service.overview(days));
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.overview(days, norm(user), norm(project)));
     }
 
     /** Top N Skill */
     @GetMapping("/top")
     public ResponseEntity<List<Map<String, Object>>> top(
             @RequestParam(defaultValue = "7") int days,
-            @RequestParam(defaultValue = "10") int topN) {
-        return ResponseEntity.ok(service.topSkills(days, topN));
+            @RequestParam(defaultValue = "10") int topN,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.topSkills(days, topN, norm(user), norm(project)));
+    }
+
+    /** Top N 项目 */
+    @GetMapping("/top-projects")
+    public ResponseEntity<List<Map<String, Object>>> topProjects(
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(defaultValue = "10") int topN,
+            @RequestParam(required = false) String user) {
+        return ResponseEntity.ok(service.topProjects(days, topN, norm(user)));
+    }
+
+    /** Top N 用户 */
+    @GetMapping("/top-users")
+    public ResponseEntity<List<Map<String, Object>>> topUsers(
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(defaultValue = "10") int topN,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.topUsers(days, topN, norm(project)));
     }
 
     /** 每日趋势 */
     @GetMapping("/daily-trend")
     public ResponseEntity<List<Map<String, Object>>> dailyTrend(
-            @RequestParam(defaultValue = "14") int days) {
-        return ResponseEntity.ok(service.dailyTrend(days));
+            @RequestParam(defaultValue = "14") int days,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.dailyTrend(days, norm(user), norm(project)));
     }
 
     /** 触发方式分布 */
     @GetMapping("/trigger-dist")
     public ResponseEntity<List<Map<String, Object>>> triggerDist(
-            @RequestParam(defaultValue = "7") int days) {
-        return ResponseEntity.ok(service.triggerDistribution(days));
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.triggerDistribution(days, norm(user), norm(project)));
     }
 
     /** 客户端分布 */
     @GetMapping("/client-dist")
     public ResponseEntity<List<Map<String, Object>>> clientDist(
-            @RequestParam(defaultValue = "7") int days) {
-        return ResponseEntity.ok(service.clientDistribution(days));
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.clientDistribution(days, norm(user), norm(project)));
     }
 
     /** 最新记录 */
     @GetMapping("/recent")
     public ResponseEntity<List<SkillUsage>> recent(
-            @RequestParam(defaultValue = "20") int limit) {
-        return ResponseEntity.ok(service.recent(limit));
+            @RequestParam(defaultValue = "20") int limit,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.recent(limit, norm(user), norm(project)));
+    }
+
+    /** 筛选下拉选项 */
+    @GetMapping("/filters")
+    public ResponseEntity<Map<String, Object>> filters() {
+        return ResponseEntity.ok(service.filterOptions());
+    }
+
+    /** 最新记录（按用户分组） */
+    @GetMapping("/recent-by-user")
+    public ResponseEntity<List<Map<String, Object>>> recentByUser(
+            @RequestParam(defaultValue = "30") int limit,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.recentByUser(limit, norm(user), norm(project)));
+    }
+
+    /** 空串归一为 null */
+    private String norm(String s) {
+        return (s == null || s.isBlank()) ? null : s;
     }
 
     /** 健康检查 */

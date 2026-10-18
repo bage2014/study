@@ -72,7 +72,7 @@ public class SystemOpsService {
         m.put("pendingUpload", Math.max(0, jsonlLines - offset));
         m.put("dbRecords", repo.count());
         m.put("lastUploadLog", lastLine(UPLOAD_LOG));
-        var last = skillUsageService.recent(1);
+        var last = skillUsageService.recent(1, null, null);
         m.put("lastRecordTs", last.isEmpty() ? null : FMT.format(last.get(0).getTs()));
 
         return m;
