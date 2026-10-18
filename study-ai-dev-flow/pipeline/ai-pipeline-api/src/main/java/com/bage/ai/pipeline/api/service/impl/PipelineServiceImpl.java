@@ -259,7 +259,7 @@ public class PipelineServiceImpl implements PipelineService {
     @Override
     public ApprovalEntity approve(String pipelineId, String stage, boolean approved,
                                   String reviewer, String comment) {
-        return approvalRepository.findByPipelineIdAndStage(pipelineId, stage)
+        ApprovalEntity saved = approvalRepository.findByPipelineIdAndStage(pipelineId, stage)
                 .map(approval -> {
                     approval.setApproved(approved);
                     approval.setReviewer(reviewer);
@@ -275,6 +275,23 @@ public class PipelineServiceImpl implements PipelineService {
                         .comment(comment)
                         .approvedAt(java.time.LocalDateTime.now())
                         .build()));
+
+        // 向 Temporal workflow 发送 signal，唤醒等待中的审批门禁
+        try {
+            PipelineWorkflow workflow = workflowClient.newWorkflowStub(PipelineWorkflow.class, pipelineId);
+            if (approved) {
+                workflow.approve(new com.bage.ai.pipeline.core.dto.workflow.ApprovalSignal(
+                        pipelineId, reviewer, comment));
+            } else {
+                workflow.reject(new com.bage.ai.pipeline.core.dto.workflow.RejectionSignal(
+                        pipelineId, reviewer, comment));
+            }
+            log.info("Approval signal sent to workflow: {}, stage: {}, approved: {}", pipelineId, stage, approved);
+        } catch (Exception e) {
+            log.warn("Failed to send approval signal to workflow {} (may have completed): {}", pipelineId, e.getMessage());
+        }
+
+        return saved;
     }
 
     @Override

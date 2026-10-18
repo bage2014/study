@@ -51,6 +51,8 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
             Workflow.newActivityStub(DeployActivity.class, defaultOptions);
     private final UiTestActivity uiTestActivity =
             Workflow.newActivityStub(UiTestActivity.class, defaultOptions);
+    private final CompileVerifyActivity compileVerifyActivity =
+            Workflow.newActivityStub(CompileVerifyActivity.class, defaultOptions);
     private final PipelineStatusUpdateActivity statusUpdateActivity =
             Workflow.newActivityStub(PipelineStatusUpdateActivity.class, defaultOptions);
 
@@ -72,20 +74,33 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                 .runId(input.getRunId())
                 .requirementMd(input.getRequirementMd())
                 .build());
+        List<String> clarificationQuestions = reqResult.getClarificationQuestions() != null
+                ? reqResult.getClarificationQuestions() : List.of();
         try {
             var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
             String reqResultJson = mapper.writeValueAsString(Map.of(
                     "analysisResult", reqResult.getParsedRequirementJson(),
-                    "requirementMd", input.getRequirementMd()
+                    "requirementMd", input.getRequirementMd(),
+                    "clarificationQuestions", clarificationQuestions
             ));
             statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.REQUIREMENT_ANALYSIS.name(), reqResultJson, null);
         } catch (Exception e) {
             statusUpdateActivity.recordStageEnd(input.getRunId(), StageName.REQUIREMENT_ANALYSIS.name(), "", null);
         }
 
-        if (!isAutoApprove(input, StageName.REQUIREMENT_ANALYSIS)) {
+        // 需求澄清回环：产出澄清问题时必须等待人工确认（approval comment 作为澄清回答回灌后续阶段）
+        if (!clarificationQuestions.isEmpty() || !isAutoApprove(input, StageName.REQUIREMENT_ANALYSIS)) {
             PipelineRunResult w = waitForApproval();
             if (w != null) return w;
+        }
+
+        // 人工澄清回答回灌：approval 时填写的 comment 拼入需求上下文，供特性拆分/代码生成使用
+        String effectiveRequirementJson = reqResult.getParsedRequirementJson();
+        if (!humanComment.isBlank()) {
+            log.info("Pipeline {} requirement clarified by human comment: {}", input.getRunId(), humanComment);
+            effectiveRequirementJson = effectiveRequirementJson
+                    + "\n\n## 人工澄清补充（优先级最高，以此为准）\n" + humanComment;
+            humanComment = "";
         }
 
         // Stage 2: Feature Point Split
@@ -93,7 +108,7 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
         statusUpdateActivity.recordStageStart(input.getRunId(), StageName.FEATURE_POINT_SPLIT.name(), 2);
         var fpResult = featurePointSplitActivity.split(FeaturePointSplitInput.builder()
                 .runId(input.getRunId())
-                .parsedRequirementJson(reqResult.getParsedRequirementJson())
+                .parsedRequirementJson(effectiveRequirementJson)
                 .projectType(input.getProjectType())
                 .buildTool(input.getBuildTool())
                 .projectLocalPath(input.getProjectLocalPath())
@@ -136,7 +151,7 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                 var taskCodeResult = codeGenActivity.generate(CodeGenInput.builder()
                         .runId(input.getRunId())
                         .projectLocalPath(input.getProjectLocalPath())
-                        .parsedRequirementJson(reqResult.getParsedRequirementJson())
+                        .parsedRequirementJson(effectiveRequirementJson)
                         .projectType(input.getProjectType())
                         .buildTool(input.getBuildTool())
                         .frontendLocalPath(isFrontendTask(task) ? input.getFrontendLocalPath() : null)
@@ -298,6 +313,62 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
             if (w != null) return w;
         }
 
+        // Stage 7.5: Compile verification gate（生成代码写盘后必须 mvn compile 通过，失败进入自修复）
+        int compileFixAttempt = 0;
+        while (true) {
+            var cvResult = compileVerifyActivity.verify(CompileVerifyInput.builder()
+                    .runId(input.getRunId())
+                    .projectLocalPath(input.getProjectLocalPath())
+                    .buildTool(input.getBuildTool())
+                    .build());
+            if (Boolean.TRUE.equals(cvResult.getSuccess())) {
+                break;
+            }
+            String compileError = cvResult.getOutput() != null ? cvResult.getOutput() : "compile failed without output";
+            log.warn("Pipeline {} compile verification failed (fix attempt {}/{}): {}",
+                    input.getRunId(), compileFixAttempt, input.getMaxTestFixRetries(),
+                    compileError.length() > 500 ? compileError.substring(0, 500) : compileError);
+
+            if (!input.isAutoFixOnTestFail() || compileFixAttempt >= input.getMaxTestFixRetries()) {
+                statusUpdateActivity.updateStatus(PipelineStatusUpdateInput.builder()
+                        .runId(input.getRunId())
+                        .status(PipelineStatus.FAILED)
+                        .stage(StageName.TEST_EXEC.name())
+                        .build());
+                PipelineRunResult compileFailed = PipelineRunResult.failed(
+                        "生成代码编译验证失败（已自修复重试 " + compileFixAttempt + " 次）："
+                                + (compileError.length() > 300 ? compileError.substring(0, 300) : compileError), null);
+                statusUpdateActivity.updateResult(input.getRunId(), compileFailed);
+                throw io.temporal.failure.ApplicationFailure.newNonRetryableFailure(
+                        compileFailed.getMessage(), "CompileVerifyFailed");
+            }
+
+            compileFixAttempt++;
+            currentStage = StageName.CODE_GEN;
+            codeResult = codeGenActivity.generate(CodeGenInput.builder()
+                    .runId(input.getRunId())
+                    .projectLocalPath(input.getProjectLocalPath())
+                    .parsedRequirementJson(effectiveRequirementJson)
+                    .projectType(input.getProjectType())
+                    .buildTool(input.getBuildTool())
+                    .frontendLocalPath(input.getFrontendLocalPath())
+                    .testFailureContext("编译失败（mvn compile），请修复以下编译错误：\n" + compileError)
+                    .build());
+
+            currentStage = StageName.PR_CREATION;
+            String fixMsg = "fix(compile-" + compileFixAttempt + "): compile error auto-fix for run " + input.getRunId();
+            writeResult = writeActivity.writeAndCommit(WriteAndCommitInput.builder()
+                    .runId(input.getRunId())
+                    .projectLocalPath(input.getProjectLocalPath())
+                    .generatedFiles(codeResult.getGeneratedFiles())
+                    .commitMessage(fixMsg)
+                    .frontendLocalPath(input.getFrontendLocalPath())
+                    .build());
+        }
+        if (compileFixAttempt > 0) {
+            log.info("Pipeline {} compile verification passed after {} fix attempt(s)", input.getRunId(), compileFixAttempt);
+        }
+
         // Stage 8: Test Execution + Auto-fix loop
         currentStage = StageName.TEST_EXEC;
         statusUpdateActivity.recordStageStart(input.getRunId(), StageName.TEST_EXEC.name(), 8);
@@ -332,7 +403,7 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                 CodeGenInput fixInput = CodeGenInput.builder()
                         .runId(input.getRunId())
                         .projectLocalPath(input.getProjectLocalPath())
-                        .parsedRequirementJson(reqResult.getParsedRequirementJson())
+                        .parsedRequirementJson(effectiveRequirementJson)
                         .projectType(input.getProjectType())
                         .buildTool(input.getBuildTool())
                         .frontendLocalPath(input.getFrontendLocalPath())
@@ -368,7 +439,7 @@ public class PipelineWorkflowImpl implements PipelineWorkflow {
                 CodeGenInput fixInput = CodeGenInput.builder()
                         .runId(input.getRunId())
                         .projectLocalPath(input.getProjectLocalPath())
-                        .parsedRequirementJson(reqResult.getParsedRequirementJson())
+                        .parsedRequirementJson(effectiveRequirementJson)
                         .projectType(input.getProjectType())
                         .buildTool(input.getBuildTool())
                         .frontendLocalPath(input.getFrontendLocalPath())

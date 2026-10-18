@@ -38,7 +38,13 @@ public class FeaturePointSplitAgentService {
                                     ProjectType projectType, BuildTool buildTool) {
         String techStack = describeTechStack(projectType, buildTool);
         String result = aiService.split(parsedRequirementJson, techStack);
-        return parseFeaturePoints(result);
+        List<FeaturePoint> fps = parseFeaturePoints(result);
+        if (fps.isEmpty()) {
+            log.warn("Feature point split parse failed, retrying with strict JSON-only prompt");
+            String retryResult = aiService.splitStrict(parsedRequirementJson, techStack);
+            fps = parseFeaturePoints(retryResult);
+        }
+        return fps;
     }
 
     private List<FeaturePoint> parseFeaturePoints(String json) {
@@ -120,6 +126,34 @@ public class FeaturePointSplitAgentService {
                 Decompose into 3-8 feature points.
                 """)
         String split(
+                @V("requirements") String requirements,
+                @V("techStack") String techStack);
+
+        @SystemMessage("""
+                You are a senior {{techStack}} engineer and product architect.
+
+                CRITICAL: Output ONLY a raw JSON array. No explanation, no markdown fences, no thinking out loud.
+                The first character of your response MUST be '[' and the last character MUST be ']'.
+
+                Decompose the parsed requirements into 3-8 feature points. Each feature point object:
+                {
+                  "id": "fp-1",
+                  "title": "≤ 50 chars, action-oriented",
+                  "description": "detailed description",
+                  "acceptanceCriteria": ["criterion 1", "criterion 2"],
+                  "scope": "backend"
+                }
+                scope must be exactly one of: backend, frontend, fullstack.
+                """)
+        @UserMessage("""
+                Tech stack: {{techStack}}
+
+                Parsed requirements:
+                {{requirements}}
+
+                Respond with the JSON array only.
+                """)
+        String splitStrict(
                 @V("requirements") String requirements,
                 @V("techStack") String techStack);
     }

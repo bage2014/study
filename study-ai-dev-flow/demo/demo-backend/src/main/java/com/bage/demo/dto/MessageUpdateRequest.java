@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Request payload for updating a message.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,6 +15,5 @@ import lombok.NoArgsConstructor;
 public class MessageUpdateRequest {
 
     private String content;
-
     private Boolean read;
 }

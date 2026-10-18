@@ -1,23 +1,20 @@
 package com.bage.demo.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Request payload for creating a message.
+ */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MessageCreateRequest {
 
-    @NotBlank(message = "消息内容不能为空")
     private String content;
-
-    @NotBlank(message = "发送者不能为空")
     private String sender;
-
-    @NotBlank(message = "接收者不能为空")
     private String receiver;
 }

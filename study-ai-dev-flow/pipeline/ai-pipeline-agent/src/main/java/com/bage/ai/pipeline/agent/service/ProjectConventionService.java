@@ -269,10 +269,26 @@ public class ProjectConventionService {
 
     private YamlConvention parseYaml(String content) {
         YamlConvention result = new YamlConvention();
-        
+
+        String currentListKey = null;
         String[] lines = content.split("\n");
-        for (String line : lines) {
-            line = line.trim();
+        for (String rawLine : lines) {
+            String line = rawLine.trim();
+            if (line.isEmpty() || line.startsWith("#")) {
+                continue;
+            }
+            // 列表项："- item"，归属于最近的列表 key
+            if (line.startsWith("- ") && currentListKey != null) {
+                String item = line.substring(2).trim();
+                switch (currentListKey) {
+                    case "dependencies" -> result.getDependencies().add(item);
+                    case "skillPaths" -> result.getSkillPaths().add(item);
+                    case "enabledSkills" -> result.getEnabledSkills().add(item);
+                    default -> { }
+                }
+                continue;
+            }
+            currentListKey = null;
             if (line.startsWith("basePackage:")) {
                 result.setBasePackage(line.substring("basePackage:".length()).trim());
             } else if (line.startsWith("controllerPackage:")) {
@@ -289,9 +305,15 @@ public class ProjectConventionService {
                 result.setCodeStyle(line.substring("codeStyle:".length()).trim());
             } else if (line.startsWith("apiPrefix:")) {
                 result.setApiPrefix(line.substring("apiPrefix:".length()).trim());
+            } else if (line.startsWith("dependencies:")) {
+                currentListKey = "dependencies";
+            } else if (line.startsWith("skillPaths:")) {
+                currentListKey = "skillPaths";
+            } else if (line.startsWith("enabledSkills:")) {
+                currentListKey = "enabledSkills";
             }
         }
-        
+
         return result;
     }
 
@@ -383,8 +405,8 @@ public class ProjectConventionService {
         private String dtoPackage;
         private String codeStyle;
         private String apiPrefix;
-        private List<String> dependencies;
-        private List<String> skillPaths;
-        private List<String> enabledSkills;
+        private List<String> dependencies = new ArrayList<>();
+        private List<String> skillPaths = new ArrayList<>();
+        private List<String> enabledSkills = new ArrayList<>();
     }
 }

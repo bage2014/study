@@ -6,13 +6,16 @@ import com.bage.demo.dto.MessageUpdateRequest;
 import com.bage.demo.entity.Message;
 import com.bage.demo.repository.MessageRepository;
 import com.bage.demo.service.MessageService;
-import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Default {@link MessageService} implementation.
+ */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
@@ -27,46 +30,32 @@ public class MessageServiceImpl implements MessageService {
                 .sender(request.getSender())
                 .receiver(request.getReceiver())
                 .build();
-        message = messageRepository.save(message);
-        return toResponse(message);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public MessageResponse getMessage(Long id) {
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("消息不存在，ID: " + id));
-        return toResponse(message);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<MessageResponse> getAllMessages(Pageable pageable) {
-        return messageRepository.findAll(pageable).map(this::toResponse);
+        Message saved = messageRepository.save(message);
+        log.info("Created message with id={}", saved.getId());
+        return toResponse(saved);
     }
 
     @Override
     @Transactional
     public MessageResponse updateMessage(Long id, MessageUpdateRequest request) {
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("消息不存在，ID: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Message not found: " + id));
         if (request.getContent() != null) {
             message.setContent(request.getContent());
         }
         if (request.getRead() != null) {
             message.setRead(request.getRead());
         }
-        message = messageRepository.save(message);
-        return toResponse(message);
+        Message saved = messageRepository.save(message);
+        return toResponse(saved);
     }
 
     @Override
-    @Transactional
-    public void deleteMessage(Long id) {
-        if (!messageRepository.existsById(id)) {
-            throw new EntityNotFoundException("消息不存在，ID: " + id);
-        }
-        messageRepository.deleteById(id);
+    @Transactional(readOnly = true)
+    public List<MessageResponse> getAllMessages() {
+        return messageRepository.findAll().stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     private MessageResponse toResponse(Message message) {

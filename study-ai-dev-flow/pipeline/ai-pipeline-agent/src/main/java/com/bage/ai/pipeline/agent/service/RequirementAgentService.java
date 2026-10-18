@@ -46,8 +46,14 @@ public class RequirementAgentService {
                       "acceptance_criteria": ["criterion 1", "criterion 2"]
                     }
                   ],
-                  "affected_files_hints": ["optional file path hints if obvious"]
+                  "affected_files_hints": ["optional file path hints if obvious"],
+                  "clarification_questions": ["question 1", "question 2"]
                 }
+
+                Rules for clarification_questions:
+                - If the requirement is ambiguous, missing key details (e.g. data fields, validation rules, permission scope), list 1-5 concrete questions that must be answered before coding
+                - If the requirement is clear enough to implement directly, output an empty array []
+                - Do NOT invent questions for well-specified requirements
 
                 Output ONLY the JSON object. No explanation, no markdown fences.
                 """)
