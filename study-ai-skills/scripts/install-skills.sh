@@ -23,8 +23,11 @@ detect_os() {
 detect_ide() {
     local ide="unknown"
     
+    # 检测 Qoder
+    if [[ -d "$HOME/.qoder-cn" ]] || [[ -n "$QODER_HOME" ]]; then
+        ide="qoder"
     # 检测 Trae
-    if [[ -n "$TRAE_HOME" ]] || [[ -n "$TRAE_PROJECT_DIR" ]]; then
+    elif [[ -n "$TRAE_HOME" ]] || [[ -n "$TRAE_PROJECT_DIR" ]]; then
         ide="trae"
     # 检测 Cursor
     elif [[ "$TERM_PROGRAM" == "Cursor" ]] || [[ -n "$CURSOR_HOME" ]]; then
@@ -46,6 +49,7 @@ detect_ide() {
 # 获取IDE名称显示
 get_ide_name() {
     case "$1" in
+        qoder) echo "Qoder" ;;
         trae) echo "Trae" ;;
         cursor) echo "Cursor" ;;
         vscode) echo "VS Code" ;;
@@ -92,7 +96,7 @@ show_help() {
     echo "  -s, --skill NAME    安装指定的技能（可多次使用）"
     echo "  -f, --force         强制覆盖已存在的技能"
     echo "  -i, --interactive   交互式安装模式"
-    echo "  --ide IDE           指定目标IDE (trae/cursor/vscode/jetbrains/codeium)"
+    echo "  --ide IDE           指定目标IDE (qoder/trae/cursor/vscode/jetbrains/codeium)"
     echo "  --os OS             指定操作系统 (linux/macos/windows)"
     echo ""
     echo "Examples:"
@@ -197,8 +201,8 @@ interactive_select() {
 
 # 交互式选择IDE
 interactive_select_ide() {
-    local ides=("trae" "cursor" "vscode" "jetbrains" "codeium" "none")
-    local names=("Trae" "Cursor" "VS Code" "JetBrains IDE" "Codeium (CC)" "不配置IDE")
+    local ides=("qoder" "trae" "cursor" "vscode" "jetbrains" "codeium" "none")
+    local names=("Qoder" "Trae" "Cursor" "VS Code" "JetBrains IDE" "Codeium (CC)" "不配置IDE")
     local i=1
     
     echo "请选择目标IDE:"
@@ -275,6 +279,21 @@ EOF
     
     # 根据IDE类型添加特定配置
     case "$ide" in
+        qoder)
+            # Qoder 特定配置
+            mkdir -p "$target_dir/.qoder"
+            cat > "$target_dir/.qoder/agents.yml" << EOF
+# Qoder 代理配置
+agents:
+  - name: skills-agent
+    skills:
+      - personal-backend-coding-standard
+      - personal-frontend-coding-standard
+      - common-project-standard
+      - common-coding
+EOF
+            echo "  ✓ 已创建 Qoder 代理配置"
+            ;;
         trae)
             # Trae 特定配置
             cat > "$target_dir/.trae/agents.yml" << EOF
