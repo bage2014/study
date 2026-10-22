@@ -136,6 +136,58 @@ public class SkillUsageController {
         return ResponseEntity.ok(service.recentByUser(limit, norm(user), norm(project)));
     }
 
+    /** 错误率趋势 */
+    @GetMapping("/error-trend")
+    public ResponseEntity<List<Map<String, Object>>> errorTrend(
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.errorTrend(days, norm(user), norm(project)));
+    }
+
+    /** 延迟百分位统计 */
+    @GetMapping("/latency-stats")
+    public ResponseEntity<Map<String, Object>> latencyStats(
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.latencyStats(days, norm(user), norm(project)));
+    }
+
+    /** Session 列表 */
+    @GetMapping("/sessions")
+    public ResponseEntity<List<Map<String, Object>>> sessionList(
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(defaultValue = "20") int limit,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.sessionList(days, norm(user), norm(project), limit));
+    }
+
+    /** Session 详情 */
+    @GetMapping("/session/{sessionId}")
+    public ResponseEntity<Map<String, Object>> sessionDetail(@PathVariable String sessionId) {
+        return ResponseEntity.ok(service.sessionDetail(sessionId));
+    }
+
+    /** 时段热力图 */
+    @GetMapping("/hourly-heatmap")
+    public ResponseEntity<List<Map<String, Object>>> hourlyHeatmap(
+            @RequestParam(defaultValue = "30") int days,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.hourlyHeatmap(days, norm(user), norm(project)));
+    }
+
+    /** 对比视图（当前周期 vs 上一周期） */
+    @GetMapping("/comparison")
+    public ResponseEntity<Map<String, Object>> comparison(
+            @RequestParam(defaultValue = "7") int days,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String project) {
+        return ResponseEntity.ok(service.comparison(days, norm(user), norm(project)));
+    }
+
     /** 空串归一为 null */
     private String norm(String s) {
         return (s == null || s.isBlank()) ? null : s;

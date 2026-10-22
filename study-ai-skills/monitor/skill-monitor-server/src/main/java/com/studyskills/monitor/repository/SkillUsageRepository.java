@@ -79,4 +79,40 @@ public interface SkillUsageRepository extends JpaRepository<SkillUsage, Long> {
 
     /** 检查去重键是否已存在 */
     boolean existsByDedupKey(String dedupKey);
+
+    /** 错误率趋势（按天分组，返回日期、总数、错误数） */
+    @Query("SELECT FUNCTION('FORMATDATETIME', u.ts, 'yyyy-MM-dd'), COUNT(u), " +
+           "SUM(CASE WHEN u.status = 'error' THEN 1 ELSE 0 END) " +
+           "FROM SkillUsage u WHERE " + FILTER +
+           "GROUP BY FUNCTION('FORMATDATETIME', u.ts, 'yyyy-MM-dd') ORDER BY 1 ASC")
+    List<Object[]> errorTrend(@Param("start") Instant start, @Param("end") Instant end,
+                              @Param("user") String user, @Param("project") String project);
+
+    /** 延迟统计（返回所有 durationMs 值，用于计算百分位） */
+    @Query("SELECT u.durationMs FROM SkillUsage u WHERE " + FILTER + "ORDER BY u.durationMs ASC")
+    List<Long> latencyValues(@Param("start") Instant start, @Param("end") Instant end,
+                             @Param("user") String user, @Param("project") String project);
+
+    /** 按 sessionId 分组查询（Session 聚合） */
+    @Query("SELECT u FROM SkillUsage u WHERE u.sessionId = :sessionId ORDER BY u.ts ASC")
+    List<SkillUsage> findBySessionId(@Param("sessionId") String sessionId);
+
+    /** 全部去重 sessionId 列表（下拉选项） */
+    @Query("SELECT DISTINCT u.sessionId FROM SkillUsage u WHERE u.ts BETWEEN :start AND :end " +
+           "AND (:user IS NULL OR u.userId = :user) " +
+           "AND (:project IS NULL OR u.projectName = :project)")
+    List<String> distinctSessions(@Param("start") Instant start, @Param("end") Instant end,
+                                  @Param("user") String user, @Param("project") String project);
+
+    /** 时段热力图（返回所有记录的时间戳，由 Service 层聚合） */
+    @Query("SELECT u.ts FROM SkillUsage u WHERE " + FILTER)
+    List<Instant> allTimestamps(@Param("start") Instant start, @Param("end") Instant end,
+                                @Param("user") String user, @Param("project") String project);
+
+    /** 按 Skill 分组的延迟统计（返回 skillName 和 durationMs 列表） */
+    @Query("SELECT u.skillName, u.durationMs FROM SkillUsage u WHERE " + FILTER +
+           "AND u.skillName = :skillName ORDER BY u.durationMs ASC")
+    List<Object[]> latencyBySkill(@Param("start") Instant start, @Param("end") Instant end,
+                                  @Param("user") String user, @Param("project") String project,
+                                  @Param("skillName") String skillName);
 }

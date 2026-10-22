@@ -235,6 +235,127 @@ tbody tr:first-child td{border-top:none}
         </div>
     </div>
 
+    <!-- 错误率趋势 + 延迟统计（Phase 1） -->
+    <div class="grid-2">
+        <div class="panel">
+            <h2>️ 错误率趋势（最近 {{ days }} 天）</h2>
+            <div class="trend">
+                <div v-for="row in errorTrend" :key="row.date" class="col" :title="row.date + '：错误率 ' + row.errorRate">
+                    <div class="num">{{ row.errors > 0 ? row.errorRate : '' }}</div>
+                    <div class="bar-v" :class="{zero: row.errors===0}" :style="{height: errorBarHeight(row.errors, row.total)+'%', background: row.errors > 0 ? 'linear-gradient(180deg, var(--err), rgba(248,113,113,.15))' : ''}"></div>
+                    <div class="dt">{{ shortDate(row.date) }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <h2>⏱️ 延迟统计（最近 {{ days }} 天）</h2>
+            <div v-if="!latencyStats.count" class="empty">暂无数据</div>
+            <table v-else><tbody>
+                <tr><td style="width:100px">样本数</td><td class="mono">{{ latencyStats.count }}</td></tr>
+                <tr><td>P50（中位数）</td><td class="mono">{{ latencyStats.p50 }} ms</td></tr>
+                <tr><td>P95</td><td class="mono">{{ latencyStats.p95 }} ms</td></tr>
+                <tr><td>P99</td><td class="mono">{{ latencyStats.p99 }} ms</td></tr>
+                <tr><td>平均值</td><td class="mono">{{ Math.round(latencyStats.avg) }} ms</td></tr>
+                <tr><td>最大值</td><td class="mono">{{ latencyStats.max }} ms</td></tr>
+                <tr><td>最小值</td><td class="mono">{{ latencyStats.min }} ms</td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 对比视图（Phase 2） -->
+    <div class="panel mb">
+        <h2> 周期对比（最近 {{ days }} 天 vs 上一周期）</h2>
+        <div class="grid-2" style="margin-bottom:0">
+            <div>
+                <h3>当前周期</h3>
+                <table><tbody>
+                    <tr><td style="width:100px">总调用</td><td class="mono">{{ comparison.current?.totalCalls ?? 0 }}</td></tr>
+                    <tr><td>Skill 数</td><td class="mono">{{ comparison.current?.uniqueSkills ?? 0 }}</td></tr>
+                    <tr><td>用户数</td><td class="mono">{{ comparison.current?.uniqueUsers ?? 0 }}</td></tr>
+                    <tr><td>项目数</td><td class="mono">{{ comparison.current?.uniqueProjects ?? 0 }}</td></tr>
+                    <tr><td>错误率</td><td class="mono">{{ comparison.current?.errorRate ?? '0%' }}</td></tr>
+                </tbody></table>
+            </div>
+            <div>
+                <h3>上一周期</h3>
+                <table><tbody>
+                    <tr><td style="width:100px">总调用</td><td class="mono">{{ comparison.previous?.totalCalls ?? 0 }}</td></tr>
+                    <tr><td>Skill 数</td><td class="mono">{{ comparison.previous?.uniqueSkills ?? 0 }}</td></tr>
+                    <tr><td>用户数</td><td class="mono">{{ comparison.previous?.uniqueUsers ?? 0 }}</td></tr>
+                    <tr><td>项目数</td><td class="mono">{{ comparison.previous?.uniqueProjects ?? 0 }}</td></tr>
+                    <tr><td>错误率</td><td class="mono">{{ comparison.previous?.errorRate ?? '0%' }}</td></tr>
+                </tbody></table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 时段热力图（Phase 2） -->
+    <div class="panel mb">
+        <h2>🔥 使用时段热力图（最近 30 天）</h2>
+        <div v-if="!heatmap.length" class="empty">暂无数据</div>
+        <div v-else style="overflow-x:auto">
+            <div style="display:grid;grid-template-columns:40px repeat(24,1fr);gap:2px;font-size:10px">
+                <div></div>
+                <div v-for="h in 24" :key="'h'+h" style="text-align:center;color:var(--dim)">{{ h-1 }}</div>
+                <div v-for="day in 7" :key="'d'+day" style="display:contents">
+                    <div style="color:var(--muted);line-height:20px">{{ ['日','一','二','三','四','五','六'][day-1] }}</div>
+                    <div v-for="h in 24" :key="'d'+day+'h'+h" :style="{background: heatmapColor(getHeatmapCount(h-1, day)), width:'100%', height:'20px', borderRadius:'2px'}" :title="['日','一','二','三','四','五','六'][day-1]+' '+ (h-1) +':00 - ' + getHeatmapCount(h-1, day) + ' 次'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Session 列表（Phase 1） -->
+    <div class="panel mb">
+        <div class="panel-head">
+            <h2>🔗 Session 列表（最近 {{ days }} 天）</h2>
+            <select v-model.number="sessionLimit" @change="reloadSessions" style="min-width:110px">
+                <option v-for="n in [10,20,50]" :key="n" :value="n">最新 {{ n }} 个</option>
+            </select>
+        </div>
+        <div v-if="!sessions.length" class="empty">暂无 Session</div>
+        <table v-else>
+            <thead><tr><th>Session ID</th><th>事件数</th><th>开始时间</th><th>涉及 Skill</th><th>用户</th></tr></thead>
+            <tbody>
+            <tr v-for="s in sessions" :key="s.sessionId">
+                <td class="mono" style="cursor:pointer;color:var(--accent)" @click="showSessionDetail(s.sessionId)" :title="'查看 Session 详情'">{{ s.sessionId.substring(0, 12) }}...</td>
+                <td>{{ s.eventCount }}</td>
+                <td class="mono">{{ fmtTs(s.startTime) }}</td>
+                <td><span class="tag" v-for="skill in s.skills.slice(0,3)" :key="skill">{{ skill }}</span><span v-if="s.skills.length > 3" class="mono"> +{{ s.skills.length - 3 }}</span></td>
+                <td><span class="tag" v-for="u in s.users" :key="u">{{ u }}</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Session 详情模态框 -->
+    <div v-if="selectedSession" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000" @click.self="selectedSession=null">
+        <div style="background:var(--panel);border-radius:8px;padding:24px;max-width:800px;width:90%;max-height:80vh;overflow-y:auto">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                <h2 style="margin:0">Session 详情</h2>
+                <button @click="selectedSession=null" style="background:none;border:none;color:var(--text);font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <div class="mono" style="margin-bottom:12px">
+                <div>Session: {{ selectedSession.sessionId }}</div>
+                <div>事件数: {{ selectedSession.eventCount }} · 时长: {{ selectedSession.durationMs }} ms</div>
+                <div>时间: {{ selectedSession.startTime }} → {{ selectedSession.endTime }}</div>
+            </div>
+            <table>
+                <thead><tr><th>时间</th><th>Skill</th><th>事件</th><th>触发</th><th>状态</th><th>耗时</th></tr></thead>
+                <tbody>
+                <tr v-for="e in selectedSession.events" :key="e.id">
+                    <td class="mono">{{ fmtTs(e.ts) }}</td>
+                    <td>{{ e.skillName }}</td>
+                    <td>{{ e.eventType }}</td>
+                    <td><span :class="e.triggerType">{{ e.triggerType==='manual' ? '手动' : e.triggerType==='auto' ? '自动' : e.triggerType }}</span></td>
+                    <td><span :class="['status', e.status]">{{ e.status.toUpperCase() }}</span></td>
+                    <td class="mono">{{ e.durationMs }} ms</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- 最新记录（平铺，跟随用户/项目筛选；条数选择器仅作用于本面板） -->
     <div class="panel mb">
         <div class="panel-head">
@@ -278,19 +399,23 @@ createApp({
             days: 7,
             topN: 5,
             recentLimit: 5,
+            sessionLimit: 20,
             sysCollapsed: false,
             filterUser: '',
             filterProject: '',
             loading: true,
             filterOptions: { users: [], projects: [] },
             overview: {}, topSkills: [], topProjects: [], topUsers: [],
-            trend: [], triggerDist: [], clientDist: [],
-            recentFlat: [],
+            trend: [], errorTrend: [], latencyStats: {}, comparison: {}, heatmap: [],
+            triggerDist: [], clientDist: [],
+            recentFlat: [], sessions: [], selectedSession: null,
             system: {}, opsMsg: ''
         };
     },
     computed: {
         trendMax() { return Math.max(1, ...this.trend.map(r => r.count)); },
+        errorTrendMax() { return Math.max(1, ...this.errorTrend.map(r => r.errors)); },
+        heatmapMax() { return Math.max(1, ...this.heatmap.map(r => r.count)); },
         filterDesc() {
             const parts = [];
             if (this.filterUser) parts.push('用户 ' + this.filterUser);
@@ -315,19 +440,24 @@ createApp({
             this.loading = true;
             try {
                 const d = this.days, f = this.qs(), n = this.topN;
-                const [overview, topSkills, topProjects, topUsers, trend, triggerDist, clientDist, recentFlat, system, filterOptions] = await Promise.all([
+                const [overview, topSkills, topProjects, topUsers, trend, errorTrend, latencyStats, comparison, heatmap, triggerDist, clientDist, recentFlat, system, filterOptions] = await Promise.all([
                     this.jget('/api/skill-usage/overview?days=' + d + f),
                     this.jget('/api/skill-usage/top?days=' + d + '&topN=' + n + f),
                     this.jget('/api/skill-usage/top-projects?days=' + d + '&topN=' + n + (this.filterUser ? '&user=' + encodeURIComponent(this.filterUser) : '')),
                     this.jget('/api/skill-usage/top-users?days=' + d + '&topN=' + n + (this.filterProject ? '&project=' + encodeURIComponent(this.filterProject) : '')),
                     this.jget('/api/skill-usage/daily-trend?days=' + d + f),
+                    this.jget('/api/skill-usage/error-trend?days=' + d + f),
+                    this.jget('/api/skill-usage/latency-stats?days=' + d + f),
+                    this.jget('/api/skill-usage/comparison?days=' + d + f),
+                    this.jget('/api/skill-usage/hourly-heatmap?days=30' + f),
                     this.jget('/api/skill-usage/trigger-dist?days=' + d + f),
                     this.jget('/api/skill-usage/client-dist?days=' + d + f),
                     this.jget('/api/skill-usage/recent?limit=' + this.recentLimit + f),
                     this.jget('/api/skill-usage/system/status'),
                     this.jget('/api/skill-usage/filters')
                 ]);
-                Object.assign(this, { overview, topSkills, topProjects, topUsers, trend, triggerDist, clientDist, recentFlat, system, filterOptions });
+                Object.assign(this, { overview, topSkills, topProjects, topUsers, trend, errorTrend, latencyStats, comparison, heatmap, triggerDist, clientDist, recentFlat, system, filterOptions });
+                await this.reloadSessions();
             } catch (e) {
                 this.opsMsg = '加载失败: ' + e.message;
             } finally {
@@ -353,6 +483,31 @@ createApp({
         shortDate(iso) { return iso.slice(5); },
         fmtTs(iso) { const d = new Date(iso); const p = n => String(n).padStart(2,'0');
             return `${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`; },
+        errorBarHeight(errors, total) { return total > 0 ? Math.max(2, Math.round(errors / this.errorTrendMax * 100)) : 2; },
+        heatmapColor(count) {
+            if (count === 0) return 'var(--border)';
+            const intensity = Math.min(1, count / this.heatmapMax);
+            return `rgba(56, 189, 248, ${0.2 + intensity * 0.8})`;
+        },
+        getHeatmapCount(hour, dayOfWeek) {
+            const item = this.heatmap.find(h => h.hour === hour && h.dayOfWeek === dayOfWeek);
+            return item ? item.count : 0;
+        },
+        async reloadSessions() {
+            try {
+                const d = this.days, f = this.qs();
+                this.sessions = await this.jget('/api/skill-usage/sessions?days=' + d + '&limit=' + this.sessionLimit + f);
+            } catch (e) {
+                this.opsMsg = 'Session 数据加载失败: ' + e.message;
+            }
+        },
+        async showSessionDetail(sessionId) {
+            try {
+                this.selectedSession = await this.jget('/api/skill-usage/session/' + encodeURIComponent(sessionId));
+            } catch (e) {
+                this.opsMsg = 'Session 详情加载失败: ' + e.message;
+            }
+        },
 
         async systemOp(action, confirmText) {
             if (!confirm(confirmText)) return;
