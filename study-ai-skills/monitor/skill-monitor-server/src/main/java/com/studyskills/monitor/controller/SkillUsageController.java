@@ -88,7 +88,7 @@ public class SkillUsageController {
     /** 每日趋势 */
     @GetMapping("/daily-trend")
     public ResponseEntity<List<Map<String, Object>>> dailyTrend(
-            @RequestParam(defaultValue = "14") int days,
+            @RequestParam(defaultValue = "7") int days,
             @RequestParam(required = false) String user,
             @RequestParam(required = false) String project) {
         return ResponseEntity.ok(service.dailyTrend(days, norm(user), norm(project)));
