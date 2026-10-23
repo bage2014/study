@@ -1,0 +1,13 @@
+package com.bage.ai.ops.api.activity;
+
+import com.bage.ai.ops.core.dto.activity.FeaturePointSplitInput;
+import com.bage.ai.ops.core.dto.activity.FeaturePointSplitResult;
+import io.temporal.activity.ActivityInterface;
+import io.temporal.activity.ActivityMethod;
+
+@ActivityInterface
+public interface FeaturePointSplitActivity {
+
+    @ActivityMethod(name = "FeaturePointSplit")
+    FeaturePointSplitResult split(FeaturePointSplitInput input);
+}

@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ai-ops-core
+  datasource:
+    url: jdbc:h2:mem:pipeline_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+temporal:
+  service:
+    address: localhost:7233
+
+ai:
+  requirement-model-provider: ${AI_REQUIREMENT_MODEL_PROVIDER:deepseek}
+  codegen-model-provider: ${AI_CODEGEN_MODEL_PROVIDER:deepseek}
+  requirement-model: ${AI_REQUIREMENT_MODEL:deepseek-chat}
+  codegen-model: ${AI_CODEGEN_MODEL:deepseek-chat}
+  deepseek:
+    api-key: ${AI_DEEPSEEK_API_KEY:}
+    base-url: ${AI_DEEPSEEK_BASE_URL:https://api.deepseek.com/v1}
+  openai:
+    api-key: ${AI_OPENAI_API_KEY:}
+  anthropic:
+    api-key: ${AI_ANTHROPIC_API_KEY:}
+
+logging:
+  level:
+    com.bage.ai.ops: INFO
+    io.temporal: WARN

@@ -1,0 +1,13 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: ai-ops-gateway
+
+pipeline:
+  api-url: http://localhost:8080/api/pipeline
+
+logging:
+  level:
+    com.bage.ai.ops.gateway: INFO

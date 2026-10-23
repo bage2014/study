@@ -1,0 +1,164 @@
+package com.bage.ai.ops.api.strategy.impl;
+
+import com.bage.ai.ops.agent.tool.MavenTool;
+import com.bage.ai.ops.agent.tool.NpmTool;
+import com.bage.ai.ops.core.dto.activity.TestExecInput;
+import com.bage.ai.ops.core.dto.activity.TestExecResult;
+import com.bage.ai.ops.core.enums.BuildTool;
+import com.bage.ai.ops.core.strategy.TestExecutionStrategy;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@Slf4j
+@Component
+public class LocalTestExecutionStrategy implements TestExecutionStrategy {
+
+    private final MavenTool mavenTool;
+    private final NpmTool npmTool;
+
+    private static final Pattern TEST_CLASS_LINE_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?.*--\\s+in\\s+(\\S+)");
+    private static final Pattern TOTAL_RESULT_PATTERN = Pattern.compile("\\[INFO\\]\\s*Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
+    private static final Pattern RUNNING_CLASS_PATTERN = Pattern.compile("\\[INFO\\]\\s*Running\\s+(\\S+)");
+    private static final Pattern SIMPLE_TEST_PATTERN = Pattern.compile("Tests\\s+run:\\s*(\\d+),\\s*Failures:\\s*(\\d+),\\s*Errors:\\s*(\\d+)(?:,\\s*Skipped:\\s*(\\d+))?");
+
+    public LocalTestExecutionStrategy(MavenTool mavenTool, NpmTool npmTool) {
+        this.mavenTool = mavenTool;
+        this.npmTool = npmTool;
+    }
+
+    @Override
+    public TestExecResult execute(TestExecInput input) {
+        try {
+            String projectPath = input.getProjectLocalPath();
+            BuildTool buildTool = input.getBuildTool();
+
+            String testOutput;
+            boolean success;
+            if (buildTool == null || buildTool == BuildTool.MAVEN) {
+                MavenTool.MavenResult mavenResult = mavenTool.runSafe(projectPath, "test");
+                testOutput = mavenResult.output();
+                success = mavenResult.exitCode() == 0;
+                log.info("Maven test exit code: {}, output length: {}", mavenResult.exitCode(), testOutput.length());
+            } else if (buildTool == BuildTool.GRADLE) {
+                testOutput = mavenTool.executeCommand(projectPath, "./gradlew test");
+                success = !testOutput.contains("BUILD FAILED") && !testOutput.startsWith("ERROR: ");
+                if (testOutput.startsWith("ERROR: ")) {
+                    testOutput = testOutput.substring(7);
+                }
+            } else {
+                testOutput = npmTool.run(projectPath, "test");
+                success = !testOutput.contains("BUILD FAILURE") &&
+                        !testOutput.contains("FAILED") &&
+                        !testOutput.contains("TestFailed");
+            }
+
+            // Strip "ERROR: " prefix if present (from MavenTool.run() legacy behavior)
+            if (testOutput.startsWith("ERROR: ")) {
+                testOutput = testOutput.substring(7);
+            }
+
+            TestExecResult.TestExecResultBuilder builder = TestExecResult.builder()
+                    .runId(input.getRunId())
+                    .success(success)
+                    .testOutput(testOutput);
+
+            parseTestResults(testOutput, builder);
+
+            TestExecResult result = builder.build();
+            log.info("Local test execution completed for project: {}, success: {}, total: {}, passed: {}, failed: {}",
+                    projectPath, success, result.getTotalTests(), result.getPassedTests(), result.getFailedTests());
+            return result;
+        } catch (Exception e) {
+            log.error("Local test execution failed: {}", e.getMessage(), e);
+            return TestExecResult.builder()
+                    .runId(input.getRunId())
+                    .success(false)
+                    .testOutput("Test execution failed: " + e.getMessage())
+                    .totalTests(0)
+                    .passedTests(0)
+                    .failedTests(0)
+                    .testDetails(new ArrayList<>())
+                    .build();
+        }
+    }
+
+    private void parseTestResults(String output, TestExecResult.TestExecResultBuilder builder) {
+        List<Map<String, String>> testDetails = new ArrayList<>();
+        int totalTests = 0;
+        int totalFailures = 0;
+
+        String[] lines = output.split("\n");
+
+        for (String line : lines) {
+            Matcher classLineMatcher = TEST_CLASS_LINE_PATTERN.matcher(line);
+            if (classLineMatcher.find()) {
+                int testsRun = Integer.parseInt(classLineMatcher.group(1));
+                int failures = Integer.parseInt(classLineMatcher.group(2));
+                int errors = Integer.parseInt(classLineMatcher.group(3));
+                String skippedStr = classLineMatcher.group(4);
+                int skipped = (skippedStr != null) ? Integer.parseInt(skippedStr) : 0;
+                String className = classLineMatcher.group(5);
+
+                totalTests += testsRun;
+                totalFailures += failures + errors;
+
+                String simpleClassName = className.contains(".")
+                        ? className.substring(className.lastIndexOf(".") + 1)
+                        : className;
+
+                Map<String, String> testDetail = new HashMap<>();
+                testDetail.put("name", simpleClassName);
+                testDetail.put("status", (failures + errors == 0) ? "PASSED" : "FAILED");
+                testDetail.put("total", String.valueOf(testsRun));
+                testDetail.put("passed", String.valueOf(testsRun - failures - errors));
+                testDetail.put("failed", String.valueOf(failures + errors));
+                testDetails.add(testDetail);
+
+                log.debug("Parsed test class: {}, tests={}, failures={}, errors={}, skipped={}",
+                        simpleClassName, testsRun, failures, errors, skipped);
+            }
+        }
+
+        if (testDetails.isEmpty()) {
+            log.info("No test class details found, trying to parse from summary...");
+            Matcher totalMatcher = TOTAL_RESULT_PATTERN.matcher(output);
+            if (totalMatcher.find()) {
+                totalTests = Integer.parseInt(totalMatcher.group(1));
+                totalFailures = Integer.parseInt(totalMatcher.group(2)) + Integer.parseInt(totalMatcher.group(3));
+                log.info("Parsed total tests from summary: total={}, failures={}", totalTests, totalFailures);
+            } else {
+                Matcher simpleMatcher = SIMPLE_TEST_PATTERN.matcher(output);
+                if (simpleMatcher.find()) {
+                    totalTests = Integer.parseInt(simpleMatcher.group(1));
+                    totalFailures = Integer.parseInt(simpleMatcher.group(2)) + Integer.parseInt(simpleMatcher.group(3));
+                    log.info("Parsed total tests from simple pattern: total={}, failures={}", totalTests, totalFailures);
+                }
+            }
+        }
+
+        if (totalTests == 0) {
+            log.warn("Failed to parse test results from output. Output snippet: {}", 
+                    output.length() > 500 ? output.substring(0, 500) : output);
+        } else {
+            log.info("Test results parsed: totalTests={}, totalFailures={}, details={}",
+                    totalTests, totalFailures, testDetails.size());
+        }
+
+        builder.totalTests(totalTests)
+                .passedTests(totalTests - totalFailures)
+                .failedTests(totalFailures)
+                .testDetails(testDetails);
+    }
+
+    @Override
+    public String getName() {
+        return "local";
+    }
+}
