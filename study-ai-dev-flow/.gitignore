@@ -1,0 +1,52 @@
+# 构建产物
+target/
+build/
+dist/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+.project
+.classpath
+.settings/
+
+# Node
+node_modules/
+*.tsbuildinfo
+
+# 日志
+*.log
+logs/
+
+# 环境配置
+.env
+.env.local
+.env.*.local
+application-local.yml
+application-local.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# 数据库
+*.db
+*.sqlite
+
+# JVM
+hs_err_pid*
+replay_pid*
+
+# 测试
+coverage/
+.nyc_output/

@@ -1,0 +1,26 @@
+# 构建产物
+target/
+build/
+dist/
+
+# IDE
+.idea/
+.vscode/
+
+# 日志
+*.log
+logs/
+
+# 依赖
+node_modules/
+
+# 系统
+.DS_Store
+
+# 环境
+.env
+*.local
+
+# 测试
+__tests__/
+coverage/

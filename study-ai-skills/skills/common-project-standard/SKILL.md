@@ -1042,8 +1042,16 @@ xx-parent/                     # Maven 父模块
 
 ### 7.3 包结构规范
 
+**包名命名规则**：项目名按连字符拆分，每个部分作为包名的一级
+
+| 项目名 | 根包名 | 说明 |
+|--------|--------|------|
+| `study-ai-dev-flow` | `com.bage.study.ai.dev.flow` | ✅ 连字符拆分 |
+| `study-ai-dev-flow` | `com.bage.studyaidevflow` | ❌ 禁止拼接 |
+| `user-service` | `com.bage.user.service` | ✅ 连字符拆分 |
+
 ```
-com/bage/xx/
+src/main/java/com/bage/study/ai/dev/flow/
 ├── controller/          # REST API 控制层
 ├── service/             # 业务逻辑层
 │   └── impl/           # 服务实现
@@ -1053,7 +1061,7 @@ com/bage/xx/
 │   ├── request/        # 请求 DTO
 │   └── response/       # 响应 DTO
 ├── config/              # 配置类
-├── exception/           # 自定义异常
+── exception/           # 自定义异常
 └── util/                # 工具类
 ```
 

@@ -257,7 +257,33 @@ public class UserController {
 }
 ```
 
-### 8. 安全规范
+### 8. Spring 依赖注入
+
+**推荐使用属性注入（`@Autowired`），暂不推荐使用构造器注入（`@RequiredArgsConstructor`）**
+
+| 方式 | 推荐度 | 说明 |
+|------|--------|------|
+| `@Autowired` 属性注入 | ✅ 推荐 | 简洁直观，适合本项目 |
+| `@RequiredArgsConstructor` 构造器注入 | ⚠️ 暂不推荐 | 代码冗长，增加认知负担 |
+
+**示例**：
+
+```java
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    
+    @Autowired
+    private UserService userService;
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable String id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+}
+```
+
+### 9. 安全规范
 
 | 原则 | 说明 |
 |------|------|
@@ -288,11 +314,8 @@ public class UserController {
 @Service
 public class UserServiceImpl implements UserService {
     
-    private final UserRepository userRepository;
-    
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
     
     @Override
     @Transactional
