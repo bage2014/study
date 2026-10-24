@@ -52,20 +52,38 @@
 ### 统一入口（推荐）
 
 ```bash
-# 安装所有技能到 Trae 全局目录（~/.trae-cn/skills/）
+# 安装所有技能到 Trae 全局目录（~/.trae-cn/skills/）和 Qoder（~/.qoder-cn/skills/）
 ./scripts/skills.sh install
 
 # 安装指定技能
 ./scripts/skills.sh install common-coding common-project-standard
 
-# 全量更新（强制覆盖 + 重新注入监控埋点）
+# 全量更新（强制覆盖 + 重新注入监控埋点 + 同步文档）
 ./scripts/skills.sh update
+
+# 同步汇总文档（SKILLS.md / AGENTS.md / SKILLS-ROUTER.md）
+./scripts/skills.sh sync-docs
 
 # 校验技能规范 / 列出技能 / 重新注入埋点
 ./scripts/skills.sh validate
 ./scripts/skills.sh list
 ./scripts/skills.sh inject
 ```
+
+### 技能管理流程
+
+```
+创建/修改技能 → 验证格式 → 安装到双平台 → 同步汇总文档
+     ↓              ↓              ↓              ↓
+  skills/     validate-      skills.sh      更新 SKILLS.md
+  SKILL.md    skills.sh      install        agents.md
+                                              SKILLS-ROUTER.md
+```
+
+**注意事项**：
+- 新增技能后必须运行 `sync-docs` 更新汇总文档
+- 删除技能时需手动从所有文档中移除对应条目
+- `update` 命令会自动调用 `sync-docs`
 
 ### 底层脚本
 

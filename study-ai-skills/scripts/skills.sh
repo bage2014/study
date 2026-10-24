@@ -7,6 +7,7 @@
 #   scripts/skills.sh validate             # 校验技能格式规范
 #   scripts/skills.sh list                 # 列出仓库内技能
 #   scripts/skills.sh inject               # 重新注入监控埋点到已部署技能
+#   scripts/skills.sh sync-docs            # 同步更新汇总文档（SKILLS.md / AGENTS.md）
 # ============================================================
 set -eo pipefail
 
@@ -28,6 +29,28 @@ install_to_platform() {
     echo ""
 }
 
+# 同步更新汇总文档
+sync_docs() {
+    echo "=== 同步汇总文档 ==="
+    
+    # 1. 更新 SKILLS.md 中的技能列表
+    echo "更新 SKILLS.md..."
+    python3 "$REPO_DIR/scripts/sync-skills-md.py" 2>/dev/null || echo "  (自动同步脚本不存在，请手动更新 SKILLS.md)"
+    
+    # 2. 检查 AGENTS.md 是否需要更新
+    echo "检查 AGENTS.md..."
+    if [ -f "$REPO_DIR/agents.md" ]; then
+        echo "  agents.md 存在，请确认技能路由表是否需要更新"
+    fi
+    
+    echo ""
+    echo "提示: 如有新增/删除技能，请手动更新以下文档:"
+    echo "  - SKILLS.md（技能清单）"
+    echo "  - agents.md（技能路由表）"
+    echo "  - SKILLS-ROUTER.md（场景路由索引）"
+    echo ""
+}
+
 case "${1:-}" in
     install)
         shift
@@ -35,6 +58,11 @@ case "${1:-}" in
         install_to_platform "trae" "$HOME/.trae-cn" "$@"
         install_to_platform "qoder" "$HOME/.qoder-cn" "$@"
         echo "✓ 安装完成：Trae (~/.trae-cn/skills/) + Qoder (~/.qoder-cn/skills/)"
+        
+        # 提示更新文档
+        echo ""
+        echo "提示: 如有新增/修改技能，请运行:"
+        echo "  $0 sync-docs    # 同步汇总文档"
         ;;
     update)
         # 全量强制覆盖 + 重新注入监控埋点（仓库源码不含埋点块）
@@ -49,6 +77,10 @@ case "${1:-}" in
         echo ""
         echo "--- 重新注入监控埋点 ---"
         "$REPO_DIR/monitor/scripts/inject-monitor-hook.sh"
+        
+        # 同步文档
+        echo ""
+        sync_docs
         ;;
     validate)
         "$REPO_DIR/scripts/validate-skills.sh"
@@ -65,13 +97,17 @@ case "${1:-}" in
             exit 1
         fi
         ;;
+    sync-docs)
+        sync_docs
+        ;;
     *)
-        echo "用法: $0 {install|update|validate|list|inject}"
+        echo "用法: $0 {install|update|validate|list|inject|sync-docs}"
         echo ""
         echo "  install [skill...]  安装指定技能（缺省全部）到 ~/.trae-cn/skills/ 和 ~/.qoder-cn/skills/"
-        echo "  update              全量更新已部署技能（Trae + Qoder）"
+        echo "  update              全量更新已部署技能（Trae + Qoder）+ 同步文档"
         echo "  validate            校验技能 Frontmatter/结构规范"
         echo "  list                列出仓库内技能"
         echo "  inject              重新注入监控埋点到已部署技能"
+        echo "  sync-docs           同步更新汇总文档（SKILLS.md / AGENTS.md）"
         exit 1 ;;
 esac

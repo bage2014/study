@@ -1,10 +1,13 @@
 # AI 编码助手规范
 
+> 本文件是所有 AI 编码助手在本项目中必须遵循的规范。打开项目后自动生效。
+> 技能路由表: ~/bage/github/study/study-ai-skills/SKILLS-ROUTER.md
+
 ## 1. 项目上下文
 
 ### 1.1 项目概述
 - 项目名称: study-ai-dev-flow
-- 类型: 研发流程标准项目（前后端分离）
+- 类型: 研发流程标准项目（前后端分离），作为团队开发规范基线
 - 后端: Java 21, Spring Boot 3.4, Spring Data JPA, H2
 - 前端: Vue 3.5, TypeScript 5.7, Vite 6, TailwindCSS 3.4, Pinia
 
@@ -13,60 +16,186 @@
 - 前端分层: Pages → Components → Services → Stores → Types
 - 前后端通过 Vite proxy 打通: `/api` → `http://localhost:8080`
 
-### 1.3 代码风格
-- 后端: Google Java Style, Lombok 简化
-- 前端: TypeScript 严格模式, Composition API, 单引号, 无分号
+### 1.3 项目结构
+```
+study-ai-dev-flow/
+├── study-ai-dev-flow-backend/     # 后端
+│   └── src/main/java/com/bage/study/ai/dev/flow/
+│       ├── controller/            # 仅 GET/POST
+│       ├── service/               # 接口
+│       │   └── impl/             # 实现
+│       ├── repository/
+│       ├── entity/
+│       ├── dto/request/           # 请求 DTO
+│       ├── dto/response/          # 响应 DTO
+│       ├── config/
+│       ├── exception/             # BusinessException + GlobalExceptionHandler
+│       └── util/
+├── study-ai-dev-flow-frontend/    # 前端
+│   └── src/
+│       ├── components/common/     # 公共基础组件
+│       ├── components/layout/     # 布局组件
+│       ├── components/pages/      # 页面组件
+│       ├── services/              # API 调用（禁止在组件中直接 axios）
+│       ├── stores/                # Pinia 状态管理
+│       ├── types/                 # TypeScript 类型定义
+│       ├── hooks/                 # 组合式函数
+│       ├── router/
+│       ├── assets/
+│       └── utils/
+└── docs/
+```
 
-## 2. 编码规则
+## 2. 后端编码规则（Java / Spring Boot）
 
-### 2.1 必须遵循
-- 包名按连字符拆分: `study-ai-dev-flow` → `com.bage.study.ai.dev.flow`
-- 使用 `@Autowired` 属性注入，不使用 `@RequiredArgsConstructor`
-- Service 层必须有接口 + 实现类
-- Controller 仅使用 GET 和 POST 方法
-- 使用 `@Slf4j` 注解记录日志
-- 使用 DTO 进行数据传输，不直接暴露 Entity
-- 前端 API 调用统一放在 `services/` 目录
-- 前端类型定义统一放在 `types/` 目录
+### 2.1 包名规则
+项目名按连字符拆分为多级包名：
+- `study-ai-dev-flow` → `com.bage.study.ai.dev.flow`
+- `user-service` → `com.bage.user.service`
+- 禁止拼接: `com.bage.studyaidevflow` ❌
 
-### 2.2 禁止操作
-- 禁止在 Controller 中写业务逻辑
-- 禁止使用 PUT、PATCH、DELETE HTTP 方法
-- 禁止使用构造器注入（`@RequiredArgsConstructor`）
-- 禁止直接返回 Entity，必须转换为 Response DTO
-- 禁止在前端组件中直接写 axios 调用
+### 2.2 依赖注入
+- 使用 `@Autowired` 属性注入 ✅
+- 禁止 `@RequiredArgsConstructor` 构造器注入 ❌
 
-### 2.3 最佳实践
-- 异常统一通过 GlobalExceptionHandler 处理
-- 使用 `@Transactional` 管理事务
-- 使用 `@Valid` 进行参数校验
-- 前端组件按职责分层: common(通用) / layout(布局) / pages(页面)
+```java
+// ✅ 正确
+@Autowired
+private UserService userService;
 
-## 3. 技能使用指引
+// ❌ 错误
+@RequiredArgsConstructor
+public class UserController {
+    private final UserService userService;
+}
+```
 
-### 3.1 推荐技能
-- `personal-backend-coding-standard` - 后端编码规范
-- `personal-frontend-coding-standard` - 前端编码规范
-- `common-project-standard` - 项目规范
-- `personal-project-runner` - 项目启动管理
-- `common-spring-boot-init` - Spring Boot 项目初始化
-- `common-vue-init` - Vue 项目初始化
+### 2.3 Service 层
+- 必须有接口 + 实现类
+- 实现类使用 `@Slf4j` 记录日志
+- 写操作加 `@Transactional`
 
-## 4. 工具配置
+```java
+// 接口
+public interface UserService { ... }
 
-### 4.1 后端
-- Lombok: 简化样板代码
-- Spring Boot Starter Validation: 参数校验
-- Spring Boot Actuator: 健康检查
+// 实现
+@Slf4j
+@Service
+public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserRepository userRepository;
+    ...
+}
+```
 
-### 4.2 前端
-- ESLint + Prettier: 代码质量 + 格式化
-- TailwindCSS: 原子化 CSS
-- TypeScript 严格模式
+### 2.4 Controller 层
+- 仅使用 GET 和 POST，禁止 PUT/PATCH/DELETE
+- 删除用 `POST /{id}/delete`，更新用 `POST /{id}/update`
+- 使用 `@Valid` 校验参数
+- 返回 DTO，不返回 Entity
+- 使用 `@Slf4j` 记录日志
 
-## 5. 安全规范
+```java
+@Slf4j
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    @Autowired
+    private UserService userService;
 
-### 5.1 敏感信息
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> list() { ... }
+
+    @PostMapping
+    public ResponseEntity<UserResponse> create(@Valid @RequestBody UserCreateRequest request) { ... }
+
+    @PostMapping("/{id}/update")
+    public ResponseEntity<UserResponse> update(@PathVariable Long id, @RequestBody UserUpdateRequest request) { ... }
+
+    @PostMapping("/{id}/delete")
+    public ResponseEntity<Void> delete(@PathVariable Long id) { ... }
+}
+```
+
+### 2.5 DTO 分层
+- `dto/request/` — 请求 DTO（带 `@NotBlank` 等校验注解）
+- `dto/response/` — 响应 DTO（带 `fromEntity()` 静态转换方法）
+- 禁止直接暴露 Entity
+
+### 2.6 异常处理
+- 自定义异常: `BusinessException(errorCode, message)`
+- 全局处理: `GlobalExceptionHandler`（`@RestControllerAdvice`）
+- 统一返回: `ErrorResponse(code, message)`
+
+### 2.7 日志
+- 统一使用 `@Slf4j`（Lombok 注解）
+- 入口方法用 `log.info()`
+- 调试信息用 `log.debug()`
+- 异常用 `log.error()` / `log.warn()`
+
+## 3. 前端编码规则（Vue / TypeScript）
+
+### 3.1 组件分层
+- `components/common/` — 通用基础组件（Button、Input 等）
+- `components/layout/` — 布局组件（Header、Sidebar 等）
+- `components/pages/` — 页面组件（HomePage、SamplesPage 等）
+
+### 3.2 API 调用
+- 统一放在 `services/` 目录
+- 禁止在组件中直接写 `axios.get/post`
+- 使用 TypeScript 类型约束请求和响应
+
+```typescript
+// services/api.ts ✅
+export const sampleApi = {
+  findAll() { return http.get<Sample[]>('/samples') },
+  create(data: SampleCreateRequest) { return http.post<Sample>('/samples', data) },
+}
+
+// 组件中使用 ✅
+const { data } = await sampleApi.findAll()
+```
+
+### 3.3 类型定义
+- 统一放在 `types/` 目录
+- 接口命名用 PascalCase
+- 导出所有公共类型
+
+### 3.4 组件规范
+- 使用 Composition API（`<script setup lang="ts">`）
+- 单文件组件，模板在上、脚本在下
+- Props 必须声明类型
+
+## 4. 创建新项目时必须加载的 Skill
+
+创建新项目时，**必须同时加载以下所有 Skill**，不能只加载初始化 Skill：
+
+| 阶段 | 必须加载的 Skill | 作用 |
+|------|-----------------|------|
+| 初始化 | `common-spring-boot-init` | 后端项目骨架 |
+| 初始化 | `common-vue-init` | 前端项目骨架 |
+| **编码规范** | **`personal-backend-coding-standard`** | **包名、DI、Service、Controller、DTO、异常、日志** |
+| **编码规范** | **`personal-frontend-coding-standard`** | **组件分层、services、types** |
+| **项目规范** | **`common-project-standard`** | **README、AGENTS.md、.gitignore** |
+| **启动管理** | **`personal-project-runner`** | **启动/重启/关闭** |
+
+> ⚠️ 只加载 init skill 而不加载规范 skill 是最常见的错误。init skill 只管骨架，规范 skill 才管代码怎么写。
+
+## 5. 禁止操作清单
+
+- ❌ 包名拼接（`com.bage.studyaidevflow`）
+- ❌ `@RequiredArgsConstructor` 构造器注入
+- ❌ PUT / PATCH / DELETE HTTP 方法
+- ❌ Controller 写业务逻辑
+- ❌ 直接返回 Entity
+- ❌ 组件内直接 axios 调用
+- ❌ 缺少 DTO 层
+- ❌ 缺少异常处理
+- ❌ 缺少 @Slf4j 日志
+- ❌ 缺少 AGENTS.md / README.md
+
+## 6. 安全规范
 - 禁止提交 .env 文件
 - API Key 通过环境变量注入
 - 数据库密码不硬编码

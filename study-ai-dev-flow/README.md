@@ -77,6 +77,45 @@ npm run dev
 - 前端: TypeScript 严格模式、Composition API、组件按职责分层
 - 包名: 项目名按连字符拆分为多级包名（`study-ai-dev-flow` → `com.bage.study.ai.dev.flow`）
 
+## 新项目初始化
+
+新建空目录项目时，运行初始化脚本，一键注入全部 AI 规范文件：
+
+```bash
+# 用法
+./templates/project-init/init.sh <项目目录> [项目名称]
+
+# 示例：在 ~/projects/user-service 创建规范文件
+./templates/project-init/init.sh ~/projects/user-service
+
+# 示例：指定项目名
+./templates/project-init/init.sh ~/projects/my-dir user-service
+```
+
+脚本会自动生成：
+- `AGENTS.md` — 完整编码规范（所有 AI 工具通用）
+- `.cursorrules` — Cursor AI 专用
+- `.windsurfrules` — WindSurf 专用
+- `.clinerules` — Cline 专用
+- `.github/copilot-instructions.md` — GitHub Copilot 专用
+- `.gitignore` — 标准忽略规则
+- `docs/` — 文档目录
+
+生成后，用任何 AI 工具打开项目，规范自动生效。
+
+### 创建新项目完整流程
+
+1. 运行 `init.sh` 注入规范文件
+2. 加载 Skill 创建前后端项目骨架：
+   - `common-spring-boot-init` — 后端 Spring Boot 项目
+   - `common-vue-init` — 前端 Vue 项目
+3. 同时加载编码规范 Skill（**必须，不能跳过**）：
+   - `personal-backend-coding-standard` — 后端编码规范
+   - `personal-frontend-coding-standard` — 前端编码规范
+4. 按 AGENTS.md 中的规则编写代码
+
+> ⚠️ 只加载 init skill 而不加载规范 skill 是最常见的错误。init skill 只管骨架，规范 skill 才管代码怎么写。
+
 ## API 示例
 
 | 方法 | 路径 | 说明 |

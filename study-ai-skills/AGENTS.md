@@ -52,6 +52,8 @@ study-ai-skills/
 
 ## 3. 技能使用指南
 
+**技能路由表**: `SKILLS-ROUTER.md`（本仓库根目录）— AI 按场景查找并加载对应技能的索引文件。
+
 | 场景 | 使用技能 |
 |------|----------|
 | 写/改 Java 代码 | `personal-backend-coding-standard`、`personal-java-common` |
@@ -60,6 +62,8 @@ study-ai-skills/
 | 写测试 | `common-test-driven-development` |
 | 文档管理 | `personal-doc-manager`（docs 目录规范） |
 | 服务启停 | `personal-project-runner`（保持原端口） |
+
+> 完整场景路由表见 `SKILLS-ROUTER.md`，新项目可通过 `templates/init-project.sh` 引用此路由表。
 
 - **调用任何 Skill 时必须执行埋点**：`~/.trae-cn/scripts/skill-usage.sh log <skill-name> --trigger auto`（SKILL.md 顶部埋点块为第 1 步指令）。若报 `Permission denied`/沙箱拦截，必须以非沙箱方式重试，禁止静默跳过。
 - 技能冲突时优先 `personal-*`（项目强约束）。

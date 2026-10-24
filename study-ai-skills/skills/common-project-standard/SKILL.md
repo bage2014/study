@@ -16,11 +16,15 @@ tags: ["project", "standard", "best-practices"]
 ## 何时使用
 
 在以下情况调用此技能：
-- 创建新项目时
-- 维护现有项目时
-- 需要制定项目规范时
-- 需要验证技能规范性时
-- 需要集成开源技能时
+- **创建新项目**：初始化项目结构、配置包名、设置目录规范
+- **包名设计**：根据项目名生成正确的根包名（连字符拆分规则）
+- **文档规范**：编写 README、AGENTS.md、SKILLS.md 等文档
+- **忽略配置**：配置 .gitignore、.traeignore、.cursorignore 等
+- **技能管理**：创建新技能、注册技能、验证技能格式
+- **开源集成**：包装开源技能、配置实现切换
+- **项目重构**：调整目录结构、统一命名规范
+- **团队规范**：制定团队编码约定、配置 AI 助手行为
+- **技能冲突**：确定技能优先级、解决规范冲突
 
 ## 核心功能
 
@@ -209,10 +213,32 @@ requires: ["common-db-design"]
 
 ### 1.4 技能注册流程
 
-1. 在 `skills/` 目录下创建技能目录
-2. 创建 `SKILL.md` 文件
-3. 在 `AGENTS.md` 中添加技能说明
-4. 在 `SKILLS.md` 中注册技能
+**创建新技能**：
+
+1. 在 `skills/` 目录下创建技能目录（命名：`personal-` 或 `common-` 前缀）
+2. 创建 `SKILL.md` 文件（包含完整的 Frontmatter 和章节）
+3. 运行验证：`./scripts/validate-skills.sh -s <skill-name>`
+4. 安装到双平台：`./scripts/skills.sh install <skill-name>`
+5. **同步汇总文档**：`./scripts/skills.sh sync-docs`
+6. 手动更新以下文档（如需要）：
+   - `SKILLS.md` — 添加技能到对应分类表格
+   - `agents.md` — 更新技能路由表
+   - `SKILLS-ROUTER.md` — 添加场景索引
+
+**更新现有技能**：
+
+1. 修改 `skills/<name>/SKILL.md`
+2. 运行验证：`./scripts/validate-skills.sh -s <skill-name>`
+3. 全量更新：`./scripts/skills.sh update`（自动同步文档）
+4. 检查文档是否需要更新（描述变更、新增场景等）
+
+**删除技能**：
+
+1. 删除 `skills/<name>/` 目录
+2. 从 `SKILLS.md` 中移除对应行
+3. 从 `agents.md` 中移除路由条目
+4. 从 `SKILLS-ROUTER.md` 中移除场景索引
+5. 运行 `./scripts/skills.sh update` 同步到双平台
 
 ---
 
