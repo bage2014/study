@@ -32,7 +32,9 @@ study-ai-skills/
 - 每个 Skill 目录必须含 `SKILL.md`，Frontmatter 必须包含：`name`、`description`、`trigger`、`disable-when`、`category`。
 - 命名前缀：个人技能 `personal-`，通用技能 `common-`。
 - 新技能优先做成**本地包装技能**（引用外部源技能），并在 description 末尾注明外部来源；`requires` 字段引用已有内部技能。
-- 修改 Skill 后需同步更新 `~/.trae-cn/skills/` 和 `~/.qoder-cn/skills/` 下的部署副本（或重新执行注入脚本）。
+- **包名规则**：项目名按连字符拆分，如 `study-ai-dev-flow` → `com.bage.study.ai.dev.flow`，禁止拼接。
+- 修改 Skill 后需同步更新 `~/.trae-cn/skills/` 和 `~/.qoder-cn/skills/` 下的部署副本（运行 `./scripts/skills.sh update`）。
+- **新增/删除技能后**必须运行 `./scripts/skills.sh sync-docs` 同步汇总文档。
 
 ### Shell 脚本（monitor/scripts）
 - `bash -n` 语法检查通过后再部署；`set -eo pipefail`。
@@ -41,7 +43,7 @@ study-ai-skills/
 - 输出面向终端用户：每步打印一行状态，不输出调试噪音。
 
 ### Java（skill-monitor-server）
-- Spring Boot 3 + Lombok `@RequiredArgsConstructor` 构造注入，不用字段注入。
+- Spring Boot 3 + Lombok，使用 `@Autowired` 属性注入，暂不使用 `@RequiredArgsConstructor` 构造器注入。
 - 遵守 `personal-backend-coding-standard` 技能；外部调用/IO 集中在 service 层。
 - 不为单次操作造抽象；不过度设计（无多余配置项、兼容层）。
 - 修改后必须重新编译部署验证（见第 4 节命令）。
@@ -81,7 +83,8 @@ study-ai-skills/
 
 # ── 技能管理（统一入口 scripts/skills.sh，同时安装到 Trae 和 Qoder）──
 ./scripts/skills.sh install          # 安装到 ~/.trae-cn/skills/ 和 ~/.qoder-cn/skills/
-./scripts/skills.sh update           # 全量更新（-f 覆盖 + 重注入埋点，双平台）
+./scripts/skills.sh update           # 全量更新（-f 覆盖 + 重注入埋点 + 同步文档，双平台）
+./scripts/skills.sh sync-docs        # 同步汇总文档（SKILLS.md / agents.md / SKILLS-ROUTER.md）
 ./scripts/skills.sh validate         # 规范校验
 
 # ── 底层 ──

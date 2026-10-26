@@ -73,6 +73,15 @@ AI 收到任务时，按以下流程操作：
 | **管理项目文档** | `personal-doc-manager` | — | 变更记录/Spec/测试报告 |
 | **调试/排错** | `common-systematic-debugging` | — | 根因优先，四阶段排查 |
 
+### 七、技能管理
+
+| 场景 | 必须加载的技能 | 可选技能 | 说明 |
+|------|---------------|---------|------|
+| **创建新技能** | `common-project-standard` | — | 目录结构 + SKILL.md 规范 + 注册流程 |
+| **更新技能内容** | `common-project-standard` | — | 修改后运行 `skills.sh update` 同步双平台 |
+| **删除技能** | `common-project-standard` | — | 删除目录 + 清理文档条目 + `skills.sh update` |
+| **同步汇总文档** | — | — | 运行 `./scripts/skills.sh sync-docs` |
+
 ---
 
 ## 技能组合速查
@@ -101,6 +110,22 @@ AI 收到任务时，按以下流程操作：
   common-systematic-debugging                       → 根因排查
   → common-backend-unit-test                        → 补测试
   → common-code-review                              → 审查修复
+
+技能管理:
+  创建新技能:
+    1. skills/<name>/SKILL.md                       → 编写技能
+    2. ./scripts/validate-skills.sh -s <name>       → 验证格式
+    3. ./scripts/skills.sh install <name>           → 安装双平台
+    4. ./scripts/skills.sh sync-docs                → 同步文档
+  
+  更新技能:
+    1. 修改 skills/<name>/SKILL.md                  → 编辑内容
+    2. ./scripts/skills.sh update                   → 全量更新 + 同步文档
+  
+  删除技能:
+    1. 删除 skills/<name>/                          → 移除目录
+    2. 更新 SKILLS.md / agents.md / SKILLS-ROUTER.md → 清理条目
+    3. ./scripts/skills.sh update                   → 同步双平台
 ```
 
 ---
