@@ -6,6 +6,15 @@ export interface Sample {
   updatedAt: string
 }
 
+export interface User {
+  id: number
+  username: string
+  email: string
+  phone: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface ApiResponse<T> {
   data: T
   message?: string

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Sample } from '@/types'
+import type { Sample, User } from '@/types'
 
 const http = axios.create({
   baseURL: '/api',
@@ -21,5 +21,23 @@ export const sampleApi = {
   },
   delete(id: number) {
     return http.post(`/samples/${id}/delete`)
+  },
+}
+
+export const userApi = {
+  findAll() {
+    return http.get<User[]>('/users')
+  },
+  findById(id: number) {
+    return http.get<User>(`/users/${id}`)
+  },
+  create(data: { username: string; email: string; phone?: string }) {
+    return http.post<User>('/users', data)
+  },
+  update(id: number, data: { username?: string; email?: string; phone?: string }) {
+    return http.post<User>(`/users/${id}/update`, data)
+  },
+  delete(id: number) {
+    return http.post(`/users/${id}/delete`)
   },
 }

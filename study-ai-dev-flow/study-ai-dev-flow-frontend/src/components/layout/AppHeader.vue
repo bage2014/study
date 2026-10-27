@@ -22,6 +22,13 @@
           >
             示例
           </router-link>
+          <router-link
+            to="/users"
+            class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+            active-class="text-gray-900 bg-gray-100"
+          >
+            用户
+          </router-link>
         </div>
       </div>
     </div>

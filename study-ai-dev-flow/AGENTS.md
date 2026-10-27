@@ -167,6 +167,13 @@ const { data } = await sampleApi.findAll()
 - 单文件组件，模板在上、脚本在下
 - Props 必须声明类型
 
+### 3.5 测试规范
+- **实现任何功能后，必须自动生成对应测试**
+- 后端: Service 层单元测试（JUnit 5 + Mockito）+ Controller 层 WebMvc 测试
+- 前端: Playwright E2E 测试（页面导航 + 核心交互）
+- 加载 `common-backend-unit-test` 生成后端测试
+- 加载 `common-frontend-playwright-test` 生成前端测试
+
 ## 4. 创建新项目时必须加载的 Skill
 
 创建新项目时，**必须同时加载以下所有 Skill**，不能只加载初始化 Skill：
