@@ -112,6 +112,71 @@
 - 删除技能时需手动从所有文档中移除对应条目
 - `update` 命令会自动调用 `sync-docs`
 
+---
+
+### 任务流程强制约束
+
+**核心原则**：必要环节不能少，可以多，但绝对不能少！
+
+技能系统根据任务类型强制执行不同的完整流程：
+
+#### 调研/方案类任务（7 步强制流程）
+
+| 步骤 | 环节 | 必须加载的技能 | 输出物 |
+|------|------|---------------|--------|
+| 1 | 明确调研目标 | — | 问题边界 + 评估维度 |
+| 2 | 收集候选方案 | `personal-solution-research` | **至少 3 个互联网大厂/业界标杆** |
+| 3 | 深度比对分析 | `personal-solution-research` | 功能/性能/成本/生态/维护性对比 |
+| 4 | 优劣特色总结 | `personal-solution-research` | 每个方案的核心优劣势 |
+| 5 | 受益情况分析 | `personal-solution-research` | 各方案实际收益评估 |
+| 6 | 推荐理由 | `personal-solution-research` | 基于项目上下文的推荐及理由 |
+| 7 | 输出调研报告 | `personal-doc-manager` | `docs/report/` 或 `docs/spec/` |
+
+**强制要求**：
+- ✅ 至少比对 3 个互联网大厂或业界标杆
+- ✅ 必须给出优劣特色和理由
+- ✅ 必须分析受益情况
+- ❌ 禁止只给 1-2 个方案就下结论
+
+---
+
+#### 编码/开发类任务（8 步强制流程）
+
+| 步骤 | 环节 | 必须加载的技能 | 输出物 |
+|------|------|---------------|--------|
+| 1 | 需求澄清 | `common-requirement-clarification` + `common-grill-me` | 澄清记录 |
+| 2 | 需求文档化 | `personal-doc-manager` | `docs/spec/` 需求文档 |
+| 3 | 方案设计 | `common-design-brainstorming` + `personal-solution-research` | 方案对比 |
+| 4 | 技术方案 | `common-spec-driven` | 架构/接口/数据模型 |
+| 5 | 编码实现 | `personal-backend-coding-standard` 或 `personal-frontend-coding-standard` | 代码 |
+| 6 | 单元测试 | `common-backend-unit-test` 或 `common-test-driven-development` | 测试代码 |
+| 7 | UI 测试验证 | `common-frontend-playwright-test` | **涉及 UI 时 mandatory** |
+| 8 | 测试报告汇总 | `personal-doc-manager` | 覆盖率/通过率/UI 截图 |
+
+**强制要求**：
+- ✅ 需求澄清不可跳过（必须经过 grill-me 深度质询）
+- ✅ 单元测试不可跳过
+- ✅ **涉及 UI 页面时，UI 测试验证 mandatory**
+- ❌ 禁止跳过测试直接提交
+
+---
+
+#### Bug 修复类任务（4 步强制流程）
+
+| 步骤 | 环节 | 必须加载的技能 | 输出物 |
+|------|------|---------------|--------|
+| 1 | 问题定位 | `common-systematic-debugging` | 根因分析 |
+| 2 | 修复实现 | 编码规范技能 | 最小化改动代码 |
+| 3 | 测试验证 | 单元测试 + 回归测试 | 测试通过 |
+| 4 | UI 验证 | `common-frontend-playwright-test` | **涉及 UI 时 mandatory** |
+
+**简化说明**：
+- ✅ 不需要完整的需求澄清和方案设计
+- ✅ 测试环节不可跳过
+- ✅ **涉及 UI 时，UI 验证 mandatory**
+
+---
+
 ### 底层脚本
 
 ```bash

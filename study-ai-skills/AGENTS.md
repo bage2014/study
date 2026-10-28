@@ -28,6 +28,65 @@ study-ai-skills/
 
 ## 2. 编码规则
 
+### 强制流程约束
+
+**核心原则**：必要环节不能少，可以多，但绝对不能少！
+
+根据任务类型，必须执行对应的完整流程：
+
+#### 类型一：调研/方案类任务
+
+**适用场景**：技术选型、方案设计、竞品分析、架构决策
+
+**强制流程**（7 步，缺一不可）：
+1. **明确调研目标** → 定义问题边界和评估维度
+2. **收集候选方案** → 至少 3 个互联网大厂或业界标杆
+3. **深度比对分析** → 功能/性能/成本/生态/维护性
+4. **优劣特色总结** → 每个方案的核心优势和劣势
+5. **受益情况分析** → 对各方案的实际收益评估
+6. **推荐理由** → 基于项目上下文的推荐及理由
+7. **输出调研报告** → 文档化结论（`docs/report/` 或 `docs/spec/`）
+
+**调用技能**：`personal-solution-research`（强制 3-5 方案比对）
+
+---
+
+#### 类型二：编码/开发类任务
+
+**适用场景**：新功能开发、功能增强、重构优化
+
+**强制流程**（8 步，缺一不可）：
+1. **需求澄清** → `common-requirement-clarification` + `common-grill-me`（深度质询）
+2. **需求文档化** → 沉淀到 `docs/spec/` 或 `docs/changelog/`
+3. **方案设计** → `common-design-brainstorming` + `personal-solution-research`
+4. **技术方案** → 架构设计、接口定义、数据模型
+5. **编码实现** → 遵循 `personal-backend-coding-standard` 或 `personal-frontend-coding-standard`
+6. **单元测试** → `common-backend-unit-test` 或 `common-test-driven-development`
+7. **UI 测试验证** → `common-frontend-playwright-test`（**涉及 UI 页面时 mandatory**）
+8. **测试报告汇总** → 输出测试覆盖率、通过率、UI 验证截图
+
+**调用技能链**：
+```
+requirement-clarification → grill-me → spec-driven → solution-research → 
+coding-standard → unit-test → [playwright-test if UI] → doc-manager
+```
+
+---
+
+#### 类型三：Bug 修复类任务
+
+**适用场景**：缺陷修复、问题排查、线上故障
+
+**强制流程**（4 步，缺一不可）：
+1. **问题定位** → `common-systematic-debugging`（根因优先，禁止盲试）
+2. **修复实现** → 最小化改动，遵循编码规范
+3. **测试验证** → 单元测试 + 回归测试
+4. **UI 验证** → `common-frontend-playwright-test`（**涉及 UI 时 mandatory**）
+
+**简化说明**：不需要完整的需求澄清和方案设计，但测试环节不可跳过
+
+---
+
 ### Skill 文件
 - 每个 Skill 目录必须含 `SKILL.md`，Frontmatter 必须包含：`name`、`description`、`trigger`、`disable-when`、`category`。
 - 命名前缀：个人技能 `personal-`，通用技能 `common-`。
