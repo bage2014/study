@@ -38,6 +38,8 @@
 | common-design-brainstorming | 设计头脑风暴，路径分类 + 渐进式设计决策（obra/superpowers@brainstorming） |
 | common-technical-writer | 技术文档专家，README/API 文档/中英文互译（参考 shubhamsabooapps@technical-writer） |
 | common-visual-design | 视觉设计哲学，避免 AI 默认风格的有辨识度 UI（anthropics/skills@frontend-design） |
+| **common-security-audit** | **安全审计技能，OWASP Top 10 检查、漏洞扫描、渗透测试指导** |
+| **common-performance-tuning** | **性能优化技能，性能分析、瓶颈定位、压力测试指导** |
 
 ## 开源技能包装
 
@@ -174,6 +176,40 @@
 - ✅ 不需要完整的需求澄清和方案设计
 - ✅ 测试环节不可跳过
 - ✅ **涉及 UI 时，UI 验证 mandatory**
+
+---
+
+#### 性能优化类任务（可选增强流程）
+
+| 步骤 | 环节 | 必须加载的技能 | 输出物 |
+|------|------|---------------|--------|
+| 1 | 性能基线测试 | `common-performance-tuning` | P50/P95/P99 响应时间 |
+| 2 | 瓶颈定位 | `common-performance-tuning` | Profiling 报告 |
+| 3 | 优化方案 | `common-performance-tuning` | 优化建议列表 |
+| 4 | 实施优化 | 编码规范技能 | 优化代码 |
+| 5 | 复测验证 | `common-performance-tuning` | 性能对比报告 |
+
+**适用场景**：
+- 新功能上线前性能验证
+- 线上性能问题排查
+- 持续性能改进迭代
+
+---
+
+#### 安全审计类任务（可选增强流程）
+
+| 步骤 | 环节 | 必须加载的技能 | 输出物 |
+|------|------|---------------|--------|
+| 1 | 依赖漏洞扫描 | `common-security-audit` | SCA 报告 |
+| 2 | 静态代码分析 | `common-security-audit` | SAST 报告 |
+| 3 | OWASP Top 10 检查 | `common-security-audit` | 安全检查清单 |
+| 4 | 修复建议 | `common-security-audit` | 修复方案 + 优先级 |
+| 5 | 复测验证 | `common-security-audit` | 漏洞关闭确认 |
+
+**适用场景**：
+- 上线前安全审计
+- 定期安全巡检
+- 合规要求检查
 
 ---
 

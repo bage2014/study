@@ -137,7 +137,16 @@ AI 收到任务时，按以下流程操作：
 | **管理项目文档** | `personal-doc-manager` | — | 变更记录/Spec/测试报告 |
 | **调试/排错** | `common-systematic-debugging` | — | 根因优先，四阶段排查 |
 
-### 七、技能管理
+### 七、性能与安全
+
+| 场景 | 必须加载的技能 | 可选技能 | 说明 |
+|------|---------------|---------|------|
+| **性能优化** | `common-performance-tuning` | — | Profiling + 瓶颈定位 + 优化方案 |
+| **压力测试** | `common-performance-tuning` | — | JMeter/Gatling 压测 + 容量规划 |
+| **安全审计** | `common-security-audit` | — | OWASP Top 10 + 漏洞扫描 + 渗透测试 |
+| **依赖安全检查** | `common-security-audit` | — | SCA 工具扫描已知漏洞 |
+
+### 八、技能管理
 
 | 场景 | 必须加载的技能 | 可选技能 | 说明 |
 |------|---------------|---------|------|
