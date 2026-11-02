@@ -40,6 +40,7 @@
 | common-visual-design | 视觉设计哲学，避免 AI 默认风格的有辨识度 UI（anthropics/skills@frontend-design） |
 | **common-security-audit** | **安全审计技能，OWASP Top 10 检查、漏洞扫描、渗透测试指导** |
 | **common-performance-tuning** | **性能优化技能，性能分析、瓶颈定位、压力测试指导** |
+| **common-refactoring** | **代码重构技能，识别坏味道、安全重构手法、保持功能不变** |
 
 ## 开源技能包装
 

@@ -117,7 +117,8 @@ AI 收到任务时，按以下流程操作：
 
 | 场景 | 必须加载的技能 | 可选技能 | 说明 |
 |------|---------------|---------|------|
-| **代码审查** | `common-code-review` | — | 代码质量检查 + 改进建议 |
+| **代码审查** | `common-code-review` | `common-refactoring` | 代码质量检查 + 改进建议 |
+| **代码重构** | `common-refactoring` | `common-code-review` | 识别坏味道 + 安全重构手法 |
 | **写后端单元测试** | `common-backend-unit-test` | `common-test-driven-development` | JUnit 5 + Mockito |
 | **写前端 E2E 测试** | `common-frontend-playwright-test` | — | Playwright UI 自动化 |
 | **TDD 开发** | `common-test-driven-development` | — | 红→绿→重构循环 |
