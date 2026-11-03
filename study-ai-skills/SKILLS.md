@@ -41,6 +41,12 @@
 | **common-security-audit** | **安全审计技能，OWASP Top 10 检查、漏洞扫描、渗透测试指导** |
 | **common-performance-tuning** | **性能优化技能，性能分析、瓶颈定位、压力测试指导** |
 | **common-refactoring** | **代码重构技能，识别坏味道、安全重构手法、保持功能不变** |
+| **common-product-verification** | **产品验收技能，UAT 测试、需求回溯、验收流程管理** |
+| **common-visual-regression-test** | **视觉回归测试技能，UI 截图对比、样式检查、视觉差异检测** |
+| **common-feature-flag** | **功能开关技能，灰度发布、A/B 测试、渐进式上线** |
+| **common-integration-test** | **集成测试技能，接口联调、端到端验证、服务集成** |
+| **common-contract-test** | **契约测试技能，API 契约验证、消费者驱动契约、接口兼容性** |
+| **common-load-testing** | **压力测试技能，JMeter/Gatling/k6 压测、容量规划、性能基线** |
 
 ## 开源技能包装
 

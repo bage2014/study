@@ -120,8 +120,13 @@ AI 收到任务时，按以下流程操作：
 | **代码审查** | `common-code-review` | `common-refactoring` | 代码质量检查 + 改进建议 |
 | **代码重构** | `common-refactoring` | `common-code-review` | 识别坏味道 + 安全重构手法 |
 | **写后端单元测试** | `common-backend-unit-test` | `common-test-driven-development` | JUnit 5 + Mockito |
-| **写前端 E2E 测试** | `common-frontend-playwright-test` | — | Playwright UI 自动化 |
+| **写前端 E2E 测试** | `common-frontend-playwright-test` | `common-visual-regression-test` | Playwright UI 自动化 |
+| **视觉回归测试** | `common-visual-regression-test` | `common-frontend-playwright-test` | UI 截图对比 + 样式检查 |
 | **TDD 开发** | `common-test-driven-development` | — | 红→绿→重构循环 |
+| **产品验收/UAT** | `common-product-verification` | `common-frontend-playwright-test` | 需求回溯 + 功能验收 |
+| **集成测试** | `common-integration-test` | `common-contract-test` | 接口联调 + 服务集成 |
+| **契约测试** | `common-contract-test` | `common-integration-test` | API 契约验证 + 兼容性检查 |
+| **压力测试** | `common-load-testing` | `common-performance-tuning` | JMeter/Gatling/k6 压测 |
 
 ### 五、运维部署
 
@@ -129,6 +134,7 @@ AI 收到任务时，按以下流程操作：
 |------|---------------|---------|------|
 | **Docker 容器化** | `common-dockerize` | — | 生成 Dockerfile + compose |
 | **数据库迁移** | `common-data-migration` | — | Flyway / Liquibase |
+| **功能开关/灰度发布** | `common-feature-flag` | — | 渐进式上线 + A/B 测试 |
 
 ### 六、文档与调试
 
