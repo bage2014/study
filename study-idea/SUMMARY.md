@@ -188,6 +188,7 @@ study-idea/
 ├── side-hustle-027-jetbrains-plugins/ # JetBrains Marketplace插件开发
 ├── side-hustle-028-api-as-a-service/  # API即服务（按调用计费）
 ├── side-hustle-029-tech-ebook-codebundle/ # 技术电子书+代码包数字商品
+├── AI_SIDE_HUSTLE_ANALYSIS.md             # AI赋能副业 & 产品经理视角分析
 └── SUMMARY.md                         # 汇总文档
 ```
 
