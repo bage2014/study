@@ -34,11 +34,26 @@ requires: ["common-db-design"]
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | projectName | String | 是 | 项目名称 |
-| groupId | String | 是 | Maven Group ID |
+| groupId | String | 否 | Maven Group ID（如未提供，自动根据项目名生成：`com.bage.<项目名按连字符拆分>`） |
 | artifactId | String | 是 | Maven Artifact ID |
 | javaVersion | String | 否 | Java 版本（默认 21） |
 | database | String | 否 | 数据库类型（h2/mysql/postgresql，默认 h2） |
 | dependencies | Array | 否 | 额外依赖（spring-web, spring-data-jpa, spring-ai等） |
+
+## 包命名规范（强制）
+
+**必须遵守**：Java 包名必须将项目名按连字符拆分，前缀 `com.bage.`
+
+**示例**：
+- `user-backend` → `com.bage.study.userbackend`（本项目简化）或 `com.bage.user.backend`（完整）
+- `study-ai-dev-flow` → `com.bage.study.ai.dev.flow`
+- **禁止**：`com.study.xxx` 或 `com.bage.studyaixxx`（连字符必须拆分）
+
+**自动生成规则**：
+如果用户未提供 `groupId`，技能应自动根据以下规则生成：
+1. 前缀：`com.bage.`
+2. 项目名按 `-` 拆分，每段作为一级包名
+3. 示例：`my-project` → `com.bage.my.project`
 
 ## 输出格式
 
