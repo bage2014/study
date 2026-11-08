@@ -8,11 +8,26 @@
 - 目标：验证当前会话可用的全部技能（Skill）能否被真实触发调用
 - 验证方式：**提示词驱动**——每个技能一个独立提示词文件，人工拷贝到 TRAE 对话窗口执行，观察技能是否触发并输出执行响应（不使用测试脚本）
 
+## 包命名规范（必须遵守）
+
+**Java 后端包名规则：**
+- 根包名格式：`com.bage.<项目名按连字符拆分>`
+- 本项目：`study-ai-skills-test` → `com.bage.study.ai.skills.test`
+- 简化示例：`user-backend` 模块 → `com.bage.study.userbackend`
+- **禁止**：`com.study.xxx` 或 `com.bage.studyaixxx`（连字符必须拆分）
+
+**前端命名规则：**
+- 组件名：PascalCase（如 `UserManagement.vue`）
+- API 文件：camelCase（如 `user.js`）
+
 ## 目录结构
 
 ```
 study-ai-skills-test/
 ├── AGENTS.md                 # 本文件
+├── backend/                  # Spring Boot 后端
+│   └── src/main/java/com/bage/study/
+├── frontend/                 # Vue 前端
 └── prompts/
     ├── README.md             # 提示词索引（按分类列出全部技能）
     └── <skill-id>.md         # 每个技能一个独立验证提示词
