@@ -46,6 +46,16 @@ docs/
 │   ├── process-p2p-20260906.md          # 采购到付款（P2P）
 │   ├── process-p2m-20260906.md          # 计划到生产（P2M）
 │   └── process-npi-20260906.md          # 新品导入（NPI）
+├── demos/                              # 跨系统流程推演（含逐表数据变化）
+│   ├── README.md                        # Demo 统一模板与写作约束
+│   ├── demo-case-sada-20261116.md       # 贯穿样例：航天 SADA 型号、主数据、编码、断言库
+│   ├── demo-flow-mission-change-20261116.md    # 任务变更（发射窗口提前）传导链
+│   ├── demo-flow-config-change-20261116.md     # Ⅰ类技术状态更改对在制飞行件影响
+│   ├── demo-flow-qualification-gate-20261116.md # 鉴定件→验收件→飞行件转阶段
+│   ├── demo-flow-quality-closure-20261116.md   # 质量问题双五条归零与水平排查
+│   ├── demo-flow-part-shortage-20261116.md     # 长周期元器件断供与国产化替代
+│   ├── demo-flow-concession-20261116.md        # 来料超差让步接收与批次反查
+│   └── demo-flow-refix-rework-20261116.md      # 飞行件返厂排故与加改装回写
 ├── systems/                            # 周边管理系统
 │   ├── wms-overview-20260906.md         # WMS 仓储管理
 │   ├── srm-overview-20260906.md         # SRM 供应商关系
@@ -80,6 +90,7 @@ docs/
 3. 厂商选型：看 `products/` 下两份软件使用指南（MES、BOM/PLM 的特点/手册/优缺点）。
 4. 业务对接：参考各模块的 `workflow` 文档。
 5. 技术实现：参考 `tech/` 目录下各实现思路文档。
+6. 想看懂"业务跑起来数据怎么变"：直接读 `demos/`，先读贯穿样例再读单篇推演。
 
 ## 维护说明
 
