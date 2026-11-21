@@ -21,14 +21,15 @@
 
 | 顺序 | 文件 | 理由 |
 |------|------|------|
-| ① 必做 | [2025-morning.md](morning/2025-morning.md) + [2025-case.md](afternoon-case/2025-case.md) + [2025-essay.md](afternoon-essay/2025-essay.md) | 最新真题，含大模型/Serverless/云原生/AI 测试等 2026 高频考点 |
-| ② 必做 | [2024-morning.md](morning/2024-morning.md) + [2024-case.md](afternoon-case/2024-case.md) + [2024-essay.md](afternoon-essay/2024-essay.md) | 真题原文最完整（含完整答案卡 + 解析） |
-| ③ 推荐 | [2023-morning.md](morning/2023-morning.md) + [2023-case.md](afternoon-case/2023-case.md) + [2023-essay.md](afternoon-essay/2023-essay.md) | 含边云协同、多源集成等近年新主题 |
-| ④ 补充 | [2022-morning.md](morning/2022-morning.md) + [2022-case.md](afternoon-case/2022-case.md) + [2022-essay.md](afternoon-essay/2022-essay.md) | 含湖仓一体、区块链 |
-| ⑤ 补充 | [2021-morning.md](morning/2021-morning.md) + [2021-case.md](afternoon-case/2021-case.md) + [2021-essay.md](afternoon-essay/2021-essay.md) | 含 AOP、企业集成平台 ESB |
-| ⑥ 模考 | [mock-01-2026.md](mock/mock-01-2026.md) | 阶段 3 末（10/18）限时模考，侧重 Web 高并发 |
-| ⑦ 模考 | [mock-02-2026.md](mock/mock-02-2026.md) | 阶段 4（11/02）侧重架构风格/ATAM |
-| ⑧ 模考 | [mock-03-2026.md](mock/mock-03-2026.md) | 阶段 4（11/04）侧重数据库/分布式/云原生 |
+| ① 最新 | [2026-morning.md](morning/2026-morning.md) + [2026-case.md](afternoon-case/2026-case.md) + [2026-essay.md](afternoon-essay/2026-essay.md) | **最新真题（上 5/23 + 下 10/24 两批）**，AI 含量极高：大模型幻觉治理、数据湖、向量库、移动端 AI 测试、AIOps、嵌入式+AI；命题转向场景识别与方案比较 |
+| ② 必做 | [2025-morning.md](morning/2025-morning.md) + [2025-case.md](afternoon-case/2025-case.md) + [2025-essay.md](afternoon-essay/2025-essay.md) | 含大模型/Serverless/云原生/AI 测试等高频考点 |
+| ③ 必做 | [2024-morning.md](morning/2024-morning.md) + [2024-case.md](afternoon-case/2024-case.md) + [2024-essay.md](afternoon-essay/2024-essay.md) | 真题原文最完整（含完整答案卡 + 解析） |
+| ④ 推荐 | [2023-morning.md](morning/2023-morning.md) + [2023-case.md](afternoon-case/2023-case.md) + [2023-essay.md](afternoon-essay/2023-essay.md) | 含边云协同、多源集成等近年新主题 |
+| ⑤ 补充 | [2022-morning.md](morning/2022-morning.md) + [2022-case.md](afternoon-case/2022-case.md) + [2022-essay.md](afternoon-essay/2022-essay.md) | 含湖仓一体、区块链 |
+| ⑥ 补充 | [2021-morning.md](morning/2021-morning.md) + [2021-case.md](afternoon-case/2021-case.md) + [2021-essay.md](afternoon-essay/2021-essay.md) | 含 AOP、企业集成平台 ESB |
+| ⑦ 模考 | [mock-01-2026.md](mock/mock-01-2026.md) | 侧重 Web 高并发 |
+| ⑧ 模考 | [mock-02-2026.md](mock/mock-02-2026.md) | 侧重架构风格/ATAM |
+| ⑨ 模考 | [mock-03-2026.md](mock/mock-03-2026.md) | 侧重数据库/分布式/云原生 |
 
 ### 第三步：刷题三阶段策略
 
@@ -50,12 +51,12 @@
 
 ## ★ 核心题目大纲（高频考点速查）
 
-> 按 5 年真题统计出的高频考点 + 对应真题题号索引
+> 按 6 年真题（2021-2026）统计出的高频考点 + 对应真题题号索引
 > 考前 1 周重点回看这些题
 
 ### 一、上午综合知识高频考点（按出现频次降序）
 
-| 考点 | 5 年出现次数 | 典型题（年份-题号） | 重点笔记 |
+| 考点 | 6 年出现次数 | 典型题（年份-题号） | 重点笔记 |
 |------|--------------|---------------------|----------|
 | 软件架构风格 | ★★★★★ | 2024-#25/26, 2025-#29 | [cheatsheet-architecture-styles.md](../notes/cheatsheet-architecture-styles.md) |
 | 质量属性六要素 | ★★★★★ | 2024-#75, 2025-#31-35 | [cheatsheet-quality-tactics.md](../notes/cheatsheet-quality-tactics.md) |
@@ -77,24 +78,44 @@
 | 外观设计专利 | ★★ | 2024-#1 | [02-software-engineering.md](../notes/02-software-engineering.md) |
 | PV 操作 / 资源计算 | ★★ | 2024-#5, 2025-#23 | [01-computer-basics.md](../notes/01-computer-basics.md) |
 | 英语 5 题（质量属性场景） | ★★★★★ | 2025-#31-35 | [cheatsheet-quality-tactics.md](../notes/cheatsheet-quality-tactics.md) |
+| 架构三要素（构件/连接件/配置） | ★★★ | 2026下-#1 | [03-architecture-core.md](../notes/03-architecture-core.md) |
+| 架构动态性（结构 vs 体系） | ★★★ | 2026下-#6 | [03-architecture-core.md](../notes/03-architecture-core.md) |
+| 架构坏味道（循环依赖/共变耦合） | ★★★ | 2026下-#7/8 | [03-architecture-core.md](../notes/03-architecture-core.md) |
+| 探索场景 / 权衡点 / 敏感点 | ★★★ | 2026下-#9/10 | [cheatsheet-quality-tactics.md](../notes/cheatsheet-quality-tactics.md) |
+| CBAM（成本收益） | ★★ | 2026下-#11 | [03-architecture-core.md](../notes/03-architecture-core.md) |
+| 阿姆达尔定律（加速比） | ★★★ | 2026下-#20/21 | [01-computer-basics.md](../notes/01-computer-basics.md) |
+| 可靠度串并联 / 可用性 | ★★★ | 2026下-#22-25 | [06-security-reliability.md](../notes/06-security-reliability.md) |
+| 关联规则（支持度/置信度） | ★★★ | 2026下-#27 | [09-math-and-mgmt.md](../notes/09-math-and-mgmt.md) |
+| 等价类/边界值 | ★★★ | 2026下-#29-31 | [02-software-engineering.md](../notes/02-software-engineering.md) |
+| 缺陷检出率 / 可测试性 | ★★★ | 2026下-#32/35 | [02-software-engineering.md](../notes/02-software-engineering.md) |
+| SM4 对称 / 数字签名 | ★★★ | 2026下-#52-55 | [06-security-reliability.md](../notes/06-security-reliability.md) |
+| 知识图谱实体链接 | ★★ | 2026下-#59 | [05-emerging-tech.md](../notes/05-emerging-tech.md) |
+| K-means 初始中心敏感 | ★★ | 2026下-#62 | [05-emerging-tech.md](../notes/05-emerging-tech.md) |
+| 标记耦合（特征耦合） | ★★ | 2026下-#70 | [02-software-engineering.md](../notes/02-software-engineering.md) |
+| 英语（黑板架构） | ★★★★★ | 2026下-#71-75 | [cheatsheet-english-glossary.md](../notes/cheatsheet-english-glossary.md) |
 
-### 二、下午案例必考 5 大题型（每年套路一致）
+### 二、下午案例必考 5 大题型（2026 起位序不再固定）
 
-| 试题 | 主题 | 5 年必考套路 | 真题索引 |
-|------|------|--------------|----------|
-| **试题一** | 质量属性 + 架构风格 | 给 8-12 条需求→识别质量属性→对比两种架构风格→补架构图 | [2024-#1](afternoon-case/2024-case.md) [2025-#1](afternoon-case/2025-case.md) [2023-#1](afternoon-case/2023-case.md) |
-| **试题二** | UML 建模 / 设计模式 | 用例图 / 类图 / 活动图 / 状态模式 / 责任链 | [2024-#2](afternoon-case/2024-case.md) [2025-#2](afternoon-case/2025-case.md) |
-| **试题三** | 嵌入式系统 | AUTOSAR 层次 / RM/EDF 调度 / 实时 OS | [2024-#3](afternoon-case/2024-case.md) [2025-#3](afternoon-case/2025-case.md) |
-| **试题四** | 数据库设计 | 范式判断 / 反规范化 / NoSQL / 三级模式 / 2PC | [2024-#4](afternoon-case/2024-case.md) [2025-#4](afternoon-case/2025-case.md) |
-| **试题五** | Web 架构 / 微服务 | DDD 拆分 / 服务治理组件 / 绞杀者模式 / 负载均衡 / 缓存 | [2024-#5](afternoon-case/2024-case.md) [2025-#5](afternoon-case/2025-case.md) |
+> ⚠️ 2024-2025 年五大题型位序固定（质量属性/UML/嵌入式/数据库/Web）；**2026 年打破固定位序**，IoT、Redis、推荐、云边、UML、嵌入式出现位置随机，但**内核考点不变**。下表"2026 主题"标注当年实际出现位置。
 
-### 三、下午论文 2021-2025 全部 28 个论题速查
+| 试题 | 经典主题 | 必考套路 | 2026 实际主题 | 真题索引 |
+|------|----------|----------|---------------|----------|
+| **试题一** | 质量属性 + 架构风格 | 给 8-12 条需求→识别质量属性→对比两种风格→补架构图 | 上：入侵检测（质量属性+管道vs批处理）；下：AQI（六要素+集群性能优化） | [2024-#1](afternoon-case/2024-case.md) [2025-#1](afternoon-case/2025-case.md) [2026](afternoon-case/2026-case.md) |
+| **试题二** | UML / 设计模式 / 数据库 | 用例/类/活动图、范式、缓存 | 上：IoT+时序库+MQTT QoS；下：Redis 主从+哨兵 | [2024-#2](afternoon-case/2024-case.md) [2025-#2](afternoon-case/2025-case.md) [2026](afternoon-case/2026-case.md) |
+| **试题三** | 嵌入式 / Web | 调度、实时 OS、高并发 | 上：Redis 超卖+悲观/乐观锁；下：长尾推荐+支付安全 | [2024-#3](afternoon-case/2024-case.md) [2025-#3](afternoon-case/2025-case.md) [2026](afternoon-case/2026-case.md) |
+| **试题四** | 数据库 / 分布式 | 范式、2PC、云边协同 | 上：AIoT 云边协同四层架构；下：UML 六关系+活动/通信图 | [2024-#4](afternoon-case/2024-case.md) [2025-#4](afternoon-case/2025-case.md) [2026](afternoon-case/2026-case.md) |
+| **试题五** | Web 架构 / 微服务 | DDD、服务治理、缓存 | 上：DFD+推荐冷启动+知识图谱；下：嵌入式+AI 辅助开发+分层 | [2024-#5](afternoon-case/2024-case.md) [2025-#5](afternoon-case/2025-case.md) [2026](afternoon-case/2026-case.md) |
+
+### 三、下午论文 2021-2026 全部论题速查（约 36 个）
 
 > 高频主题，4 选 1 中至少有 1 题考架构
 > 覆盖对应模板：essays/templates/01-05
+> ⚠️ 2026 为回忆版，下半年第 4 题暂缺；上半年另有回忆版本含"软件架构风格"
 
 | 年份 | 试题一 | 试题二 | 试题三 | 试题四 | 对应模板 |
 |------|--------|--------|--------|--------|----------|
+| 2026 下 | 数据湖 | 大模型幻觉治理 | IT 运维 / AIOps | 回忆不全 | 04-db |
+| 2026 上 | 移动端 AI 测试 | 高并发系统架构 | 向量数据库 / RAG | 六边形架构 | 01/02/04 |
 | 2025 下 | 性能测试 | 秒杀 | Serverless | 云原生数据库 | 01-web-arch |
 | 2025 上 | AI 测试 | 负载均衡 | 事件驱动 | 多模型数据库 | 01-web-arch |
 | 2024 下 | SOA | 软件维护 | 多源异构数据集成 | 分布式事务 | 02/04/05 |
@@ -103,15 +124,17 @@
 | 2022 | 构件开发 | 软件维护 | 区块链 | 湖仓一体 | 02-arch |
 | 2021 | AOP | 系统安全架构 | 企业集成平台 ESB | 微服务 | 05-micro |
 
-### 四、论文 5 大必备主题（按 5 年命中率）
+### 四、论文必备主题（按 6 年命中率）
 
-| 主题 | 5 年命中次数 | 必备模板 | 论据来源 |
+| 主题 | 6 年命中次数 | 必备模板 | 论据来源 |
 |------|--------------|----------|----------|
 | 微服务 / SOA | 5 次 | [05-microservices.md](../essays/templates/05-microservices.md) | 项目案例库 A |
-| 架构风格选择 | 4 次 | [02-architecture-style.md](../essays/templates/02-architecture-style.md) | 案例库 A |
-| Web 高并发 / 负载均衡 | 4 次 | [01-web-architecture.md](../essays/templates/01-web-architecture.md) | 案例库 A |
-| 数据库架构 / 数据集成 | 3 次 | [04-database-optimization.md](../essays/templates/04-database-optimization.md) | 案例库 A |
+| 架构风格选择（含六边形） | 5 次 | [02-architecture-style.md](../essays/templates/02-architecture-style.md) | 案例库 A |
+| Web 高并发 / 负载均衡 | 5 次 | [01-web-architecture.md](../essays/templates/01-web-architecture.md) | 案例库 A |
+| 数据库架构 / 数据集成（向量库/数据湖） | 5 次 | [04-database-optimization.md](../essays/templates/04-database-optimization.md) | 案例库 A |
 | 质量属性 / ATAM / 可靠性 | 3 次 | [03-quality-attributes.md](../essays/templates/03-quality-attributes.md) | 案例库 A |
+| **AI 主题（2026 新趋势）** | 4 次（2025 起） | 01/02/04 + [11-papers-supplement §七](../notes/11-papers-supplement.md) | 案例库 A |
+| 测试 / 运维（含 AIOps） | 3 次 | [01-web-architecture.md](../essays/templates/01-web-architecture.md) | 案例库 A |
 
 ---
 
