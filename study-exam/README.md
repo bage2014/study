@@ -1,8 +1,9 @@
 # 软考高级 - 系统架构设计师 备考仓库
 
-> 目标：2026 年 11 月考试通过
-> 起点：2026-08-17，剩约 9 周
+> 目标：通过系统架构设计师（2026 已考；下一个窗口 2027 上半年）
+> 起点：2026-08-17
 > 基础：Java 老手，已有软件设计师中级
+> 最新：2026 上下半年三科真题回忆版已入库（[2026 真题](past-papers/README.md)）
 
 ## ★ 复习顺序（如何阅读本仓库）
 
@@ -13,7 +14,7 @@
 | ① 读规划 | 搞清考什么、怎么考、时间怎么分 | [考试说明](docs/spec/exam-overview-20260817.md) → [复习思路](docs/spec/review-strategy-20260817.md) → [学习计划](docs/spec/study-plan-20260817.md) → [资料清单](docs/spec/resources-20260817.md) | 开局一次 |
 | ② 建框架 | 通读章节笔记，先混脸熟不抠细节 | notes/01 → 02 → 03 → 04 → 05 → 06 → 08 → 09 → 10（[00 案例库](notes/00-project-casebank.md) 随时填，别攒到最后） | 阶段 1 |
 | ③ 背 L1 | 每天默写 4 张速记表，各 15 分钟 | [架构风格](notes/cheatsheet-architecture-styles.md) / [质量属性+战术](notes/cheatsheet-quality-tactics.md) / [设计模式](notes/cheatsheet-design-patterns.md) / [英语词汇](notes/cheatsheet-english-glossary.md) | 阶段 1 起，每天 |
-| ④ 刷真题 | 按年倒序刷题，错题归档回 notes/ | [past-papers/README.md](past-papers/README.md)（内含 ①→⑧ 刷题顺序表：2025 → 2024 → 2023 → 2022 → 2021 → mock×3）；错题涉及的知识点查 [11-真题拓展手册](notes/11-papers-supplement.md) | 阶段 2-4 主体 |
+| ④ 刷真题 | 按年倒序刷题，错题归档回 notes/ | [past-papers/README.md](past-papers/README.md)（内含 ①→⑨ 刷题顺序表：2026 → 2025 → 2024 → 2023 → 2022 → 2021 → mock×3）；错题涉及的知识点查 [11-真题拓展手册](notes/11-papers-supplement.md) | 阶段 1-4 主体 |
 | ⑤ 写论文 | 填案例库 → 套模板 → 限时成文 | [00 案例库](notes/00-project-casebank.md) → [07-essay-topics](notes/07-essay-topics.md) → [essays/templates/ 01-05](essays/README.md)（每周 1 篇，按 [评分表](essays/README.md) 自评） | 阶段 2 末起 |
 
 **单日节奏**：早 15min 默写 cheatsheet → 晚 1-2h 专题笔记 / 真题 → 周末整套模拟 + 周日晚在 [进度记录](docs/changelog/progress-20260817.md) 打卡。
@@ -47,7 +48,7 @@
 | [08-embedded-systems.md](notes/08-embedded-systems.md) | 嵌入式：RTOS / RM-EDF 调度 / 优先级反转 / AUTOSAR（案例试题三必考） | ★★★ |
 | [09-math-and-mgmt.md](notes/09-math-and-mgmt.md) | 数学与管理：EVM / 关键路径 / 盈亏平衡 / EMV / 图论 / 合同招投标 | ★★ |
 | [10-ip-standards-enterprise.md](notes/10-ip-standards-enterprise.md) | 知识产权期限表 + 标准代号 + ERP/EAI/电子政务（纯记忆送分） | ★★ |
-| [11-papers-supplement.md](notes/11-papers-supplement.md) | ★ 五年真题汇总与拓展手册：频率总览 + 公式卡 + 案例套路 + 论文论据 + 混淆清单 + 项目管理/法规速查 + 三科考场策略（刷题配套必查，700 行） | ★★★ |
+| [11-papers-supplement.md](notes/11-papers-supplement.md) | ★ 六年真题汇总与拓展手册：频率总览 + 公式卡 + 案例套路 + 论文论据 + 混淆清单 + 构件/可靠性/数据治理 + 2026 前沿 + 三科考场策略（刷题配套必查，708 行） | ★★★ |
 
 ### L1 背诵速记表（cheatsheet，每天默写）
 
@@ -71,9 +72,10 @@
 ### 历年真题与模拟题（past-papers/）
 
 ★ 入口：[past-papers/README.md](past-papers/README.md)（含刷题指南 + 核心大纲 + 勾选追踪）
-- 18 份文件已填真实题目（约 12 万字），可直接刷题
-- 覆盖：2021-2025 五年真题（上午 / 案例 / 论文）× 3 套综合模拟卷
+- 21 份文件已填真实题目（约 14 万字），可直接刷题
+- 覆盖：2021-2025 五年真题 + **2026 上下半年三科回忆版**（上午/案例/论文）× 3 套综合模拟卷
 - 含：如何开始（4 步法）+ 核心题目大纲（4 张高频考点速查表）+ 推荐刷题顺序
+- 2026 重点：AI 论文四连（AI 测试/向量库 RAG/幻觉治理/数据湖）、案例位序打乱、云边协同与 IoT
 
 ## 目录结构
 
@@ -90,13 +92,13 @@ study-exam/
 │   ├── 08-embedded-systems.md     嵌入式（案例试题三必考）
 │   ├── 09-math-and-mgmt.md        数学/运筹/项目管理计算
 │   ├── 10-ip-standards-*.md       知识产权/标准化/企业信息化
-│   ├── 11-papers-supplement.md    ★ 五年真题汇总与拓展手册（刷题配套）
+│   ├── 11-papers-supplement.md    ★ 六年真题汇总与拓展手册（刷题配套）
 │   └── cheatsheet-*.md            4 张 L1 背诵速记表
 ├── past-papers/                   真题 + 模拟题（见内部 README 索引）
 │   ├── README.md                  ★ 索引总表 + 勾选追踪
-│   ├── morning/                   上午综合（2021-2025 × 5 份）
-│   ├── afternoon-case/            下午案例（2021-2025 × 5 份）
-│   ├── afternoon-essay/           下午论文（2021-2025 × 5 份）
+│   ├── morning/                   上午综合（2021-2026）
+│   ├── afternoon-case/            下午案例（2021-2026）
+│   ├── afternoon-essay/           下午论文（2021-2026）
 │   └── mock/                      综合模拟卷 × 3 套
 └── essays/                        论文练习
     ├── README.md                  流程 + 评分表
@@ -111,12 +113,11 @@ study-exam/
 | 下午案例分析 | 5 道大题（必答） | 90 分钟 | ≥ 45 |
 | 下午论文 | 4 选 1，2500 字 | 120 分钟 | ≥ 45 |
 
-## 今日进度（2026-09-16）
+## 今日进度（2026-11-21）
 
-- **阶段**：阶段 2 专题突破进行中 → W5（9/14-9/20）专题：质量属性 + 架构评估
-- **剩余**：约 7.5 周（距 11/7 考试）
-- **本周主线**：按 [past-papers/README.md](past-papers/README.md) 顺序开刷 2025 三科真题（不限时，错题归档到 notes/）
-- **立即可做 3 件事**：
-  1. 刷 [2025 上午 + 案例 + 论文](past-papers/README.md)（本周必做真题）
-  2. 填 [00-project-casebank.md](notes/00-project-casebank.md) 的量化数据（1 小时搞定，论文 80% 素材）
+- **状态**：2026 下半年考试（10/24）已结束，真题回忆版已全部入库
+- **最新动作**：补齐 2026 上下半年三科真题 + 6 年频率统计 + 2026 前沿考点
+- **下一步建议**：
+  1. 用 [2026 三科真题](past-papers/README.md) 复盘，重点看 AI 类论文（AI 测试/向量库 RAG/幻觉治理/数据湖）
+  2. 对照 [11-真题拓展手册 §〇](notes/11-papers-supplement.md) 检查 6 年高频域是否补齐
   3. 每天默写 4 张 cheatsheet（15 分钟/天）
